@@ -3381,3 +3381,6 @@ game/GameEngine/Source/GameLogic/Object/Update/TensileFormationUpdateModuleDataC
 game/GameEngine/Source/GameLogic/Object/Behavior/FlightDeckBehaviorModuleDataConstructor.cpp|member||m_bfmeC4,ee3de9df5b3759cfa0825865,gpt-6.1-sol,20261016060707-dd28e2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/FlightDeckBehaviorModuleDataConstructor.cpp|member||m_bfmeC8,1ec524701fdfaa27a95bec28,gpt-6.1-sol,20261016060707-dd28e2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/FlightDeckBehaviorModuleDataConstructor.cpp|member||m_bfmeCC,59cb97fb34f10c0a6801a43d,gpt-6.1-sol,20261016060707-dd28e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdateModuleDataConstructorThunk.cpp|member||m_10,f54b1d6f35e00778c913acf0,gpt-6.1-sol,20261016060712-8d01ca,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdateModuleDataConstructorThunk.cpp|member||m_14,6e6106fc1928c3f256c74755,gpt-6.1-sol,20261016060712-8d01ca,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdateModuleDataConstructorThunk.cpp|member||m_18,7105561bd0831ecf6e9272f0,gpt-6.1-sol,20261016060712-8d01ca,2026-10-16
