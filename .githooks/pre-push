@@ -78,6 +78,12 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
     fi
 
     python3 tools/check_csv.py --ref "$local_sha" || fail "ledger integrity at $local_sha (see above)"
+    # --ref judges re_attempts.log only tip-vs-first-parent; a deletion in a
+    # commit below the tip would pass it, so every outgoing commit is judged.
+    if [ -n "$base" ]; then
+        python3 tools/check_csv.py --re-attempts-range "$base" "$local_sha" \
+            || fail "re_attempts.log append-only across the outgoing range (see above)"
+    fi
     # identity_guard runs at commit time; a commit rebased past a lowered baseline needs this.
     python3 tools/one_identity.py --check-ref "$local_sha" || fail "second real name on one body at $local_sha (see above)"
 

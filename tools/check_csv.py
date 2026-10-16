@@ -16,6 +16,7 @@ import argparse
 import csv
 import io
 import json
+import os
 import re
 import subprocess
 import sys
@@ -256,7 +257,49 @@ def read_re_attempts(spec):
     return out.stdout
 
 
-def check_re_attempts_append_only(base, new, problems):
+# `<N> runs base=<blob>`: the claim is bound to the one log it dedupes (the git
+# blob id of the base re_attempts.log), so it can never be reused on a later log.
+DEDUPE_CLAIM = r"(\d+)[ \t]+runs?[ \t]+base=([0-9a-f]{40})"
+DEDUPE_TRAILER_RE = re.compile(r"^Re-Attempts-Dedupe:[ \t]*" + DEDUPE_CLAIM + r"[ \t]*$", re.MULTILINE)
+DEDUPE_ENV_RE = re.compile(r"^[ \t]*" + DEDUPE_CLAIM + r"[ \t]*$")
+
+
+def git_blob_id(raw):
+    """The git blob id of RAW (what `git hash-object` prints)."""
+    import hashlib
+    return hashlib.sha1(b"blob %d\0" % len(raw) + raw).hexdigest()
+
+
+def re_attempts_dedupe_claim(ref=None):
+    """(runs, base blob id) a commit claims to dedupe from re_attempts.log, or
+    None: the `Re-Attempts-Dedupe: <N> runs base=<blob>` trailer of REF's
+    message (--ref), or BFME_RE_ATTEMPTS_DEDUPE='<N> runs base=<blob>' for the
+    pre-commit of that one commit (--staged, which cannot see the message)."""
+    if ref:
+        message = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%B", ref],
+                                 capture_output=True, text=True).stdout
+        found = DEDUPE_TRAILER_RE.search(message)
+    else:
+        found = DEDUPE_ENV_RE.match(os.environ.get("BFME_RE_ATTEMPTS_DEDUPE") or "")
+    return (int(found.group(1)), found.group(2)) if found else None
+
+
+def check_re_attempts_range(base, tip, problems):
+    """The append-only rule for EVERY commit in BASE..TIP, each against its first
+    parent with its own trailer, so a deletion below the pushed tip is caught."""
+    commits = subprocess.run(["git", "-C", str(ROOT), "rev-list", "--reverse", "--first-parent",
+                              f"{base}..{tip}", "--", RE_ATTEMPTS_REL],
+                             capture_output=True, text=True)
+    if commits.returncode != 0:
+        raise SystemExit(f"check_csv: cannot list {base}..{tip}: {commits.stderr.strip()}")
+    for commit in commits.stdout.split():
+        found = []
+        check_re_attempts_append_only(read_re_attempts(f"{commit}^"), read_re_attempts(commit), found,
+                                      dedupe_claim=re_attempts_dedupe_claim(commit))
+        problems.extend(f"{commit[:10]}: {p}" for p in found)
+
+
+def check_re_attempts_append_only(base, new, problems, dedupe_claim=None):
     """re_attempts.log only grows: its old lines stay, in order, and lines are
     appended after them (approved by the project lead 2026-10-16). Compared
     with CR-at-EOL ignored, so the one-time LF normalisation passes, but a
@@ -265,6 +308,20 @@ def check_re_attempts_append_only(base, new, problems):
     lose its CR, never gain one; an appended line must be LF and must not
     repeat a line already in the log."""
     if base is None or new is None:
+        return
+    # A claim applies only to the log it names and only when the log changed: a
+    # claim on any other base (reused, or a stale environment variable) is not
+    # an exemption, so the ordinary append-only rules below judge the commit.
+    if dedupe_claim is not None and new != base and dedupe_claim[1] == git_blob_id(base):
+        # The one sanctioned deletion (approved by the project lead 2026-10-16):
+        # exactly the union-merge duplicate runs tools/re_attempts_dedupe.py
+        # finds in the base, nothing more and nothing less.
+        import re_attempts_dedupe
+        expected, runs, _singles = re_attempts_dedupe.dedupe(base)
+        if not runs or dedupe_claim[0] != len(runs) or new != expected:
+            problems.append(f"{RE_ATTEMPTS_REL}: the commit claims a dedupe of {dedupe_claim[0]} run(s), but "
+                            f"the log is not the base with exactly its {len(runs)} duplicate run(s) removed "
+                            "(tools/re_attempts_dedupe.py --write)")
         return
     base_lines = base.split(b"\n")
     new_lines = new.split(b"\n")
@@ -687,7 +744,21 @@ def main():
                        help="validate the git-staged ledgers instead of the working tree")
     where.add_argument("--ref", metavar="REF",
                        help="validate the ledgers as committed at REF")
+    where.add_argument("--re-attempts-range", nargs=2, metavar=("BASE", "TIP"),
+                       help="only re_attempts.log's append-only rule, for every commit in BASE..TIP "
+                            "(pre-push: a deletion below the pushed tip)")
     args = parser.parse_args()
+    if args.re_attempts_range:
+        problems = []
+        check_re_attempts_range(*args.re_attempts_range, problems)
+        if problems:
+            print(f"check_csv: {len(problems)} problem(s):", file=sys.stderr)
+            for p in problems:
+                print(f"  - {p}", file=sys.stderr)
+            raise SystemExit(1)
+        print(f"check_csv: OK ({RE_ATTEMPTS_REL} append-only over "
+              f"{args.re_attempts_range[0]}..{args.re_attempts_range[1]})")
+        return
 
     spec = "" if args.staged else args.ref  # None -> working tree
     problems = []
@@ -709,7 +780,8 @@ def main():
         has_base = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "-q", "--verify", base_spec],
                                   capture_output=True).returncode == 0
         if has_base:
-            check_re_attempts_append_only(read_re_attempts(base_spec), read_re_attempts(spec), problems)
+            check_re_attempts_append_only(read_re_attempts(base_spec), read_re_attempts(spec), problems,
+                                          dedupe_claim=re_attempts_dedupe_claim(args.ref))
     check_attempts(spec, problems, functions_raw=functions_raw,
                    sources_ok=sources_ok)
     data_raw = read_data_rows(spec)
