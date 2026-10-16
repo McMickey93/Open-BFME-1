@@ -4798,3 +4798,7 @@ game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|local|AIGroup::recompu
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberIndex00240F10.cpp|member||at03c,5ab96db91a978c9375358d0e,gpt-6.1-sol,20261016071615-26c12d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberIndex00240F10.cpp|member||at048,420140b28c63faf8cb54c8ec,gpt-6.1-sol,20261016071615-26c12d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberIndex00240F10.cpp|member||at054,907b50240e70ae32aa445cfa,gpt-6.1-sol,20261016071615-26c12d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at3c,e59509323901fe5efd8fec38,gpt-6.1-sol,20261016071621-a72758,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at20,77929eec7c27587e34f735bf,gpt-6.1-sol,20261016071621-a72758,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at04,9781ca108c7d97603dc23cf1,gpt-6.1-sol,20261016071621-a72758,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at24,ef209426b826ba217cc850af,gpt-6.1-sol,20261016071621-a72758,2026-10-16
