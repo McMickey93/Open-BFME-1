@@ -3196,3 +3196,7 @@ game/GameEngine/Source/GameClient/DrawableConstructor.cpp|local|compareNoCase|p,
 game/GameEngine/Source/GameClient/DrawableConstructor.cpp|local|compareNoCase|c,4ea425725721dfdb63d97fd1,gpt-6.1-sol,20261016055640-48d816,2026-10-16
 game/GameEngine/Source/GameClient/DrawableConstructor.cpp|param|view|t,44f34ce8a53e6d1356971e50,gpt-6.1-sol,20261016055640-48d816,2026-10-16
 game/GameEngine/Source/GameClient/DrawableConstructor.cpp|local|Drawable::Drawable|m,1b1965c828ce57838194d2f3,gpt-6.1-sol,20261016055640-48d816,2026-10-16
+game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|member||m_wordE4,60377d0eb878cb5a31406b66,gpt-6.1-sol,20261016060125-893f47,2026-10-16
+game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|member||m_wordE5,2f6243c70b1cc1053388d575,gpt-6.1-sol,20261016060125-893f47,2026-10-16
+game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|param|isInList_TeamInstanceList|o,a262ba43552a563c787309de,gpt-6.1-sol,20261016060125-893f47,2026-10-16
+game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|param|prependTo_TeamInstanceList|o,36d90460e7496dd069f42931,gpt-6.1-sol,20261016060125-893f47,2026-10-16
