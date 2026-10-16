@@ -5239,3 +5239,9 @@ game/GameEngineDevice/Source/MilesAudioDevice/StartAudioStream006AE2C0.cpp|membe
 game/GameEngineDevice/Source/MilesAudioDevice/StartAudioStream006AE2C0.cpp|member||float_80,f8a03c20fba008839a9851b7,gpt-6.1-sol,20261016074655-9cb5fc,2026-10-16
 game/GameEngineDevice/Source/MilesAudioDevice/StartAudioStream006AE2C0.cpp|member||byte_633,18dcf6f99f58e90c3811b8e9,gpt-6.1-sol,20261016074655-9cb5fc,2026-10-16
 game/GameEngineDevice/Source/MilesAudioDevice/StartAudioStream006AE2C0.cpp|param|Ref006AE2C0|r,edaaccff0ce5c0dfd3943e66,gpt-6.1-sol,20261016074655-9cb5fc,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|type||WaterTransparency006CFAE0,34a27d0621687c6b86839fe8,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer3098,d9e205a1bb28b6c7e5c28e8f,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30A4,444fc1d5b4a9adf0c2c5940c,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30A8,601581a33fbbe292c021f377,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30B0,8880eafaa62002f17eb5a627,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30BC,3e9fe889830af803286f43e8,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
