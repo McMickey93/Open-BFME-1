@@ -744,3 +744,20 @@ game/GameEngine/Source/GameLogic/Object/ObjectAttemptHealingFromSoleBenefactor.c
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_value84,m_flightPathAdjustDistPerSecond,gpt-6.1-sol+grok,"disputed: Retail FlightPathAdjustDistPerSecond at table RVA 0x00ca2140 uses the velocity parser. Matched BezierProjectileBehavior_update.cpp clamps movement once per frame using +0x84. Zero Hour DumbProjectileBehavior.cpp maps the same INI key through parseVelocityReal to m_flightPathAdjustDistPerFrame, proving the stored member is per-frame rather than per-second.",2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|function|BfmeThingQW@|bfmeFindQW,find,claude-opus+gpt-6-astra,agreed,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|function|BfmeThingQW@|bfmeFindQW,find,claude-opus+gpt-6-astra,applied,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme08,m_cloudTexture,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme0c,m_darkCloudTexture,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme10,m_alphaTexture,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme14,m_propagateSpeed,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme20,m_dissipateTexture,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme24,m_dissipateStartLevel,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme28,m_dissipateSpeed,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme38,m_darkeningRate,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme3c,m_lighteningRate,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme48,m_dissipateRateScale,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme4c,m_lightningShadows,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme50,m_lightningChance,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme60,m_lightningShadowIntensity,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme70,m_lightningFrequency,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme80,m_jitterLightningLightPosition,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme81,m_jitterLightningLightIntensity,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme9c,m_lightningFX,gpt-6.1-sol+grok,agreed,2026-10-16
