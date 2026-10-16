@@ -60,7 +60,6 @@ targets/game/reverse/**/*.tsv text eol=lf
 # that commit deletes its line here.
 targets/game/reverse/functions.csv !text !eol
 targets/game/reverse/symbols.csv !text !eol
-targets/game/reverse/re_attempts.log !text !eol
 targets/game/reverse/name_corrections.json !text !eol
 targets/game/reverse/field_names.csv !text !eol
 targets/game/reverse/exports.csv !text !eol
