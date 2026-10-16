@@ -5683,3 +5683,7 @@ game/GameEngine/Source/Common/BfmeConv1137CachedRandom.cpp|param|walk3|d,af7dacd
 game/GameEngine/Source/Common/BfmeConv1137CachedRandom.cpp|local|walk3|f,057bd707e88496aec558f1d6,gpt-6.1-sol,20261016123513-b0f67e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1137CachedRandom.cpp|local|BfmeA1137::cachedRandom|d,782f4946a67428bcf2556fe3,gpt-6.1-sol,20261016123513-b0f67e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1137CachedRandom.cpp|local|BfmeA1137::cachedRandom|f,1ea528721148e4c84eeb1795,gpt-6.1-sol,20261016123513-b0f67e,2026-10-16
+game/GameEngine/Source/Common/Rva004488B0FourBlockCopy.cpp|param|Rva004488B0FourBlockRecord::copy|a,4604ea33400dbf563c893132,gpt-6.1-sol,20261016123520-d41f8e,2026-10-16
+game/GameEngine/Source/Common/Rva004488B0FourBlockCopy.cpp|param|Rva004488B0FourBlockRecord::copy|b,e71ce09a03c81c0969f696c8,gpt-6.1-sol,20261016123520-d41f8e,2026-10-16
+game/GameEngine/Source/Common/Rva004488B0FourBlockCopy.cpp|param|Rva004488B0FourBlockRecord::copy|c,f807abf5f1d39ea92bb7c946,gpt-6.1-sol,20261016123520-d41f8e,2026-10-16
+game/GameEngine/Source/Common/Rva004488B0FourBlockCopy.cpp|param|Rva004488B0FourBlockRecord::copy|d,0dac1a40bda24f6b9c919c61,gpt-6.1-sol,20261016123520-d41f8e,2026-10-16
