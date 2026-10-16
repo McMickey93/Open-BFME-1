@@ -66,63 +66,63 @@ public:
 	virtual void stateBaseAnchor();
 };
 
-class Rva0014F420State : public Rva000A19E0StateBase
+class AIDockWaitForClearanceState : public Rva000A19E0StateBase
 {
 public:
-	Rva0014F420State( void *machine );
+	AIDockWaitForClearanceState( StateMachine *machine );
 
 	char m_gap0[ 0x20 ];
 	int m_field0;
 };
 
-Rva0014F420State::Rva0014F420State( void *machine )
+AIDockWaitForClearanceState::AIDockWaitForClearanceState( StateMachine *machine )
 	: Rva000A19E0StateBase( machine, AsciiString( "AIDockWaitForClearanceState" ) ),
 	  m_field0( 0x0 )
 {
 }
 
-class Rva0014F710State : public Rva000A19E0StateBase
+class AIDockProcessDockState : public Rva000A19E0StateBase
 {
 public:
-	Rva0014F710State( void *machine );
+	AIDockProcessDockState( StateMachine *machine );
 
 	char m_gap0[ 0x20 ];
 	int m_field0;
 	int m_field1;
 };
 
-Rva0014F710State::Rva0014F710State( void *machine )
+AIDockProcessDockState::AIDockProcessDockState( StateMachine *machine )
 	: Rva000A19E0StateBase( machine, AsciiString( "AIDockProcessDockState" ) ),
 	  m_field0( 0x0 ),
 	  m_field1( 0x0 )
 {
 }
 
-class Rva0015CF50State : public AIInternalMoveToState
+class AIGuardReturnState : public AIInternalMoveToState
 {
 public:
-	Rva0015CF50State( void *machine );
+	AIGuardReturnState( StateMachine *machine );
 
 	char m_gap0[ 0x4C ];
 	int m_field0;
 };
 
-Rva0015CF50State::Rva0015CF50State( void *machine )
+AIGuardReturnState::AIGuardReturnState( StateMachine *machine )
 	: AIInternalMoveToState( machine, AsciiString( "AIGuardReturn" ) ),
 	  m_field0( 0x0 )
 {
 }
 
-class Rva0015EC40State : public AIInternalMoveToState
+class AIGuardRetaliateReturnState : public AIInternalMoveToState
 {
 public:
-	Rva0015EC40State( void *machine );
+	AIGuardRetaliateReturnState( StateMachine *machine );
 
 	char m_gap0[ 0x4C ];
 	int m_field0;
 };
 
-Rva0015EC40State::Rva0015EC40State( void *machine )
+AIGuardRetaliateReturnState::AIGuardRetaliateReturnState( StateMachine *machine )
 	: AIInternalMoveToState( machine, AsciiString( "AIGuardRetaliateReturn" ) ),
 	  m_field0( 0x0 )
 {

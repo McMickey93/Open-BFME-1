@@ -75,9 +75,7 @@ public:
 	NAME::NAME( void *machine ) : BASE( machine, AsciiString( TEXT ) ) {}
 
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F380State, AIInternalMoveToState, "AIDockApproachState" )
-BFME_STATE_SELF_NAMING_CTOR( Rva0014F490State, AIInternalMoveToState, "AIDockApproachState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F590State, AIInternalMoveToState, "AIDockMoveToDockState" )
-BFME_STATE_SELF_NAMING_CTOR( Rva0014F610State, AIInternalMoveToState, "AIDockMoveToRallyState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F690State, AIInternalMoveToState, "AIDockMoveToExitState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0015CE80State, Rva000A19E0StateBase, "AIGuardIdleState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0015FD00State, AIInternalMoveToState, "AIHarvestApproachSiteState" )
@@ -94,16 +92,23 @@ BFME_STATE_SELF_NAMING_CTOR( Rva002B77F0State, Rva000A19E0StateBase, "DozerPrima
 // (0x002C6430), which builds this state inline with the same literal, base and
 // vftable 0x010C9308; Zero Hour signature. identity_evidence/002c6100-supplytruck-wants-to-pickup-state.md
 class StateMachine;
-// 0x0014F510: stores vftable 0x01095CC0, whose slots are the matched
-// AIDockMoveToEntryState onEnter/update/onExit and whose ??_G (0x0014F550)
-// is AIDockMoveToEntryState's; the literal agrees.
-class AIDockMoveToEntryState : public AIInternalMoveToState
-{
-public:
-	AIDockMoveToEntryState( StateMachine *machine );
-};
-AIDockMoveToEntryState::AIDockMoveToEntryState( StateMachine *machine )
-	: AIInternalMoveToState( machine, AsciiString( "AIDockMoveToEntryState" ) ) {}
+
+// Recovered state classes: each constructor stores the vftable whose ??_G is
+// the class's matched scalar-deleting destructor, ilt_oracle CONFIRMS the
+// name, and the literal is Zero Hour's (AIDockAdvancePositionState passes
+// "AIDockApproachState" there too).
+// identity_evidence/0014f510-aidock-movetoentry-ctor.md, aidock-state-ctors.md
+#define BFME_STATE_CTOR( NAME, BASE, TEXT )                                   \
+	class NAME : public BASE                                                  \
+	{                                                                         \
+	public:                                                                   \
+		NAME( StateMachine *machine );                                        \
+	};                                                                        \
+	NAME::NAME( StateMachine *machine ) : BASE( machine, AsciiString( TEXT ) ) {}
+
+BFME_STATE_CTOR( AIDockAdvancePositionState, AIInternalMoveToState, "AIDockApproachState" )
+BFME_STATE_CTOR( AIDockMoveToEntryState, AIInternalMoveToState, "AIDockMoveToEntryState" )
+BFME_STATE_CTOR( AIDockMoveToRallyState, AIInternalMoveToState, "AIDockMoveToRallyState" )
 class SupplyTruckWantsToPickUpOrDeliverBoxesState : public Rva000A19E0StateBase
 {
 public:
