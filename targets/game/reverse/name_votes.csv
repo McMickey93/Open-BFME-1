@@ -1815,3 +1815,15 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModu
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_0D,5aaca24dfdf17db77d8cac75,gpt-6.1-sol,20261016035734-63de30,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_0E,af3105cf14826e52defd1771,gpt-6.1-sol,20261016035734-63de30,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_10,5a64c30e85f3cf501d902abc,gpt-6.1-sol,20261016035734-63de30,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d084,029373eee4abff43704d67fa,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d088,e835ac2b8a584fabc84780c1,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d08c,d4e1f7a50aad6a6c1d645889,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d090,6c6efada0cd3ced437f4fc49,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d094,5c608702bcc6f406b0900383,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d098,587ab3902dd6cfe13d3aa231,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d09c,391e4b84bbb97b966ca0cb74,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0a0,6f47daf2a127381dea30722e,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0a4,87f62a239e2ab559e1fa43cb,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0a8,01932c7aead862cbc0c95d3c,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0ac,1e15a6924dd678e97e48a9a5,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0b0,47e16e56a30de7c2519ab6f8,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
