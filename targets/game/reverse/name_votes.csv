@@ -3533,3 +3533,4 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDra
 game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDraw005F43B0.cpp|local|LightningDraw005F43B0::draw|a,8e9c55798b397a343dc0562c,gpt-6.1-sol,20261016060859-a5d060,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDraw005F43B0.cpp|local|LightningDraw005F43B0::draw|b,bb29d1abb26aa46c0e8c3e1a,gpt-6.1-sol,20261016060859-a5d060,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDraw005F43B0.cpp|local|LightningDraw005F43B0::draw|c,cd4e9fbaf17253890bd025e2,gpt-6.1-sol,20261016060859-a5d060,2026-10-16
+game/GameEngine/Source/Common/Rva008B7040Build.cpp|member||field00,c9674f298f7c4ca152ea8591,gpt-6.1-sol,20261016061335-ef1687,2026-10-16
