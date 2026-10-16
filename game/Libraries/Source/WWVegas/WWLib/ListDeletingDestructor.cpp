@@ -3,6 +3,8 @@
 
 // The List interface inherits GenericList without adding storage. Its
 // scalar-deleting destructor is the 30-byte wrapper at retail 0x009E3460.
+// List declares no destructor, so ~List (retail 0x009E3110) is the implicit
+// one: a bare jump to GenericList::~GenericList 0x009E2F30 with no vptr store.
 class GenericList
 {
 public:
@@ -11,8 +13,6 @@ public:
 
 class List : public GenericList
 {
-public:
-	virtual ~List();
 };
 
 void forceListDeletingDestructor()
