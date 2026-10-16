@@ -1,5 +1,4 @@
 // ?DoXfer@LivingWorldEyeTower@@UAEXAAVXfer@@@Z
-// partial score=1.0 date=2026-10-16
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/GameEngine/Source
 // stlport
 //
