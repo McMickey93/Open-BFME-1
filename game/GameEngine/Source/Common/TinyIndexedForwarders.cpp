@@ -222,3 +222,18 @@ unsigned char Rva0016A000::get() const
 {
     return m_at29D;
 }
+
+// BFME 2 DispDwordFieldGetters.cpp shape; retail supplies offset 0x208.
+class Rva00169F70
+{
+public:
+    int get() const;
+private:
+    char m_at00[0x208];
+    int m_at208;
+};
+
+int Rva00169F70::get() const
+{
+    return m_at208;
+}
