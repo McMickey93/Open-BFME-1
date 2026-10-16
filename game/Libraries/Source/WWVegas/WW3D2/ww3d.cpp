@@ -597,7 +597,6 @@ int WW3D::Get_Render_Device(void)
  *   3/26/98    GTH : Created.                                                                 *
  *   1/25/2001  gth : converted to dx8                                                         *
  *=============================================================================================*/
-// ?Get_Render_Device_Desc@WW3D@@ present-unmatched
 const RenderDeviceDescClass & WW3D::Get_Render_Device_Desc(int deviceidx)
 {
 	return DX8Wrapper::Get_Render_Device_Desc(deviceidx);
@@ -638,7 +637,6 @@ const int WW3D::Get_Render_Device_Count(void)
  *   5/19/99    GTH : Created.                                                                 *
  *   1/25/2001  gth : converted to dx8                                                         *
  *=============================================================================================*/
-// ?Get_Render_Device_Name@WW3D@@ present-unmatched
 const char * WW3D::Get_Render_Device_Name(int device_index)
 {
 	return DX8Wrapper::Get_Render_Device_Name(device_index);
@@ -756,7 +754,6 @@ void DX8Wrapper::Get_Render_Target_Resolution(int &width, int &height, int &bitD
  *   3/24/98    GTH : Created.                                                                 *
  *   1/25/2001  gth : converted to dx8                                                         *
  *=============================================================================================*/
-// ?Get_Device_Resolution@WW3D@@ present-unmatched
 void WW3D::Get_Device_Resolution(int & set_w,int & set_h,int & set_bits,bool & set_windowed)
 {
 	DX8Wrapper::Get_Device_Resolution(set_w,set_h,set_bits,set_windowed);
@@ -851,7 +848,6 @@ bool rva008fd230RegistrySaveRenderDevice(const char *sub_key, int device, int wi
  * HISTORY:                                                                                    *
  *   12/3/98    BMG : Created.                                                                 *
  *=============================================================================================*/
-// ?Registry_Load_Render_Device@WW3D@@ present-unmatched
 WW3DErrorType WW3D::Registry_Load_Render_Device( const char * sub_key, bool resize_window )
 {
 	bool success = DX8Wrapper::Registry_Load_Render_Device(sub_key,resize_window);
@@ -874,7 +870,6 @@ bool rva008fd270RegistryLoadRenderDevice( const char * sub_key, bool resize_wind
 	return false;
 }
 
-// ?Registry_Load_Render_Device@WW3D@@ present-unmatched
 bool WW3D::Registry_Load_Render_Device( const char * sub_key, char *device, int device_len, int &width, int &height, int &depth, int &windowed, int &texture_depth)
 {
 	return DX8Wrapper::Registry_Load_Render_Device(sub_key,device,device_len,width,height,depth,windowed,texture_depth);
@@ -1174,7 +1169,6 @@ void WW3D::Flush(RenderInfoClass & rinfo)
  * HISTORY:                                                                                    *
  *   6/20/01    DEL : Created.                                                                 *
  *=============================================================================================*/
-// ?Flip_To_Primary@WW3D@@ present-unmatched
 void WW3D::Flip_To_Primary(void)
 {
 	DX8Wrapper::Flip_To_Primary();
@@ -1237,7 +1231,6 @@ void WW3D::Sync(unsigned int sync_time)
  * HISTORY:                                                                                    *
  *   5/07/98    NH : Created.                                                                  *
  *=============================================================================================*/
-// ?Set_Ext_Swap_Interval@WW3D@@ present-unmatched
 void WW3D::Set_Ext_Swap_Interval(long swap)
 {
 	DX8Wrapper::Set_Swap_Interval(swap);

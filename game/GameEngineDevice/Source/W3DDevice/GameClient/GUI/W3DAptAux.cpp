@@ -127,10 +127,7 @@ static File *Open2OpenPastSeparators(const AsciiString &name) throw()
 
 #include "texture.h"
 #include "dx8wrapper.h"
-// Retail calls the distinct padded jump body at 008FD200, not the
-// DX8Wrapper implementation at 00902170. Its four-reference cdecl ABI is
-// established by that target and the caller's stack cleanup.
-void j_008fd200();
+#include "ww3d.h"
 
 class GlobalData;
 extern GlobalData *TheWritableGlobalData;
@@ -269,7 +266,7 @@ void Gen_007892D0::bfmeStep2(void)
 	struct { int width, height; } resolution;
 	int refresh;
 	bool unusedWindowed;
-	reinterpret_cast<void (__cdecl *)(int &, int &, int &, bool &)>(j_008fd200)(
+	WW3D::Get_Device_Resolution(
 		resolution.width, resolution.height, refresh, unusedWindowed);
 	unsigned char windowed = ((const Rva00788460GlobalDataView *)TheWritableGlobalData)->m_resolutionFlag;
 	if (resolution.width == 0x400)

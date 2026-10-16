@@ -63,6 +63,7 @@ public:
     static bool Set_Render_Device(int,int,int,int,int,bool,bool,bool);
     static void Set_Prelit_Mode(PrelitModeEnum v) { Rva012D6D80=v; }
     static void Set_Collision_Box_Display_Mask(int);
+    static void Set_Ext_Swap_Interval(long);
     static void Enable_Static_Sort_Lists(bool v) { AreStaticSortListsEnabled=v; }
     static void Set_Thumbnail_Enabled(bool v) { Rva012D6D84=v; }
     static void Set_Screen_UV_Bias(bool v) { IsScreenUVBiased=v; }
@@ -117,7 +118,6 @@ class FontLibrary { public: GameFont *getFont(AsciiString *, float, bool); };
 extern FontLibrary *TheFontLibrary;
 bool Rva00938620(AsciiString, AsciiString);
 void Rva009EBC00(int);
-void Rva008FD330(bool);
 
 class Rva006ED5B0DisplaySlots {
 public:
@@ -196,7 +196,7 @@ void W3DDisplay::init(void)
                 WW3D::Shutdown(); WWMath::Shutdown(); throw (unsigned)0xdead0007;
             }
         }
-        if (d->slot40()) Rva008FD330(false); else clipCursorToClient();
+        if (d->slot40()) WW3D::Set_Ext_Swap_Interval(0); else clipCursorToClient();
     }
     render164->Set_Coordinate_Range(RectClass(0,0,(float)d->slot2c(),(float)d->slot30()));
     Rva0134FAA0 = new Rva009EB960;
