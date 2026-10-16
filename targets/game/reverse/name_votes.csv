@@ -4406,3 +4406,16 @@ game/GameEngine/Source/Common/BfmeConv2153.cpp|member||m_at13C,7596552e2d42487ec
 game/GameEngine/Source/Common/BfmeConv2153.cpp|member||m_at17C,023fbb5ad54e7f63dae29d77,gpt-6.1-sol,20261016065739-518934,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2153.cpp|member||m_at180,d3fc48905a5173e652490472,gpt-6.1-sol,20261016065739-518934,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2153.cpp|member||m_at184,062fb08a9810c2d0a22cf33d,gpt-6.1-sol,20261016065739-518934,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_58,c927f54cf09250d6305c2e44,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_5c,11a6fa36f1b3f9c067e984b7,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_60,c81adec4283bc3b15ed0c6f2,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_64,7caa0138b8e442d01b2e117c,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_68,2249e9e30895ec2d894b92cb,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_260,edc6e8f8fcad3e055ffbdd51,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_294,fb6b2199aae0a2bbf5be748d,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_295,77cc72927160b14e600d6f9f,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_298,73fa2188ab46ccb21a07b0ec,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_29f,5a04369f1ba3ccd3ca8442f0,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_2c0,9e610f48ae1fdf0711a3ec31,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_2c4,d882a7a0a50bc2662ba83467,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_344,341b78de47a64d4b44cc36ed,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
