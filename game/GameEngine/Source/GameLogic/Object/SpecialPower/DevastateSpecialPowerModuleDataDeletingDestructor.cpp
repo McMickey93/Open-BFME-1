@@ -6,10 +6,19 @@
 // 0x00034897 to this 30-byte wrapper. The wrapper calls the complete
 // destructor through ILT 0x00032E25.
 
-class DevastateSpecialPowerModuleData
+// The destructor is implicit: retail ~DevastateSpecialPowerModuleData at 0x0025AC80 (own ILT 0x00032E25) is a
+// bare tail jump to SpecialPowerModuleData::~SpecialPowerModuleData (ILT 0x0001D7B4) with no vptr reset, the
+// shape VC7.1 gives an implicit virtual destructor; both ILTs are
+// ilt_oracle CONFIRMED exact.
+
+class SpecialPowerModuleData
 {
 public:
-	virtual ~DevastateSpecialPowerModuleData();
+	virtual ~SpecialPowerModuleData();
+};
+
+class DevastateSpecialPowerModuleData : public SpecialPowerModuleData
+{
 };
 
 void forceDevastateSpecialPowerModuleDataDeletingDestructor()

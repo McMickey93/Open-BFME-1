@@ -6,10 +6,19 @@
 // 0x000314B7 to this 30-byte wrapper. The wrapper calls the complete
 // destructor through ILT 0x00025577.
 
-class ScavengerSpecialPowerModuleData
+// The destructor is implicit: retail ~ScavengerSpecialPowerModuleData at 0x00265AE0 (own ILT 0x00025577) is a
+// bare tail jump to SpecialPowerModuleData::~SpecialPowerModuleData (ILT 0x0001D7B4) with no vptr reset, the
+// shape VC7.1 gives an implicit virtual destructor; both ILTs are
+// ilt_oracle CONFIRMED exact.
+
+class SpecialPowerModuleData
 {
 public:
-	virtual ~ScavengerSpecialPowerModuleData();
+	virtual ~SpecialPowerModuleData();
+};
+
+class ScavengerSpecialPowerModuleData : public SpecialPowerModuleData
+{
 };
 
 void forceScavengerSpecialPowerModuleDataDeletingDestructor()

@@ -5,10 +5,19 @@
 // slot zero routes through ILT 0x00006528 to this 30-byte wrapper, whose
 // complete destructor is reached through ILT 0x00038622.
 
-class HordeGarrisonContain
+// The destructor is implicit: retail ~HordeGarrisonContain at 0x0021A2B0 (own ILT 0x00038622) is a
+// bare tail jump to GarrisonContain::~GarrisonContain (ILT 0x00037A24) with no vptr reset, the
+// shape VC7.1 gives an implicit virtual destructor; both ILTs are
+// ilt_oracle CONFIRMED exact.
+
+class GarrisonContain
 {
 public:
-	virtual ~HordeGarrisonContain();
+	virtual ~GarrisonContain();
+};
+
+class HordeGarrisonContain : public GarrisonContain
+{
 };
 
 void forceHordeGarrisonContainDeletingDestructor()

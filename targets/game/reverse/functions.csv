@@ -122289,7 +122289,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002188e0@@YAXXZ,,0x002188E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_00218c90@@YAXXZ,,0x00218C90,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_00219a70@@YAXXZ,,0x00219A70,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0002ECC1
-?j_0021a2b0@@YAXXZ,,0x0021A2B0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0061d9c0
 ?j_0021a730@@YAXXZ,,0x0021A730,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0021b4d0@@YAXXZ,,0x0021B4D0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000078C4
 ?j_0021b6e0@@YAXXZ,,0x0021B6E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0061b400
@@ -122384,7 +122383,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00258320@@YAXXZ,,0x00258320,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0066a1a0
 ?j_00259080@@YAXXZ,,0x00259080,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_002597c0@@YAXXZ,,0x002597C0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
-?j_00259900@@YAXXZ,,0x00259900,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_00259bf0@@YAXXZ,,0x00259BF0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_00259f10@@YAXXZ,,0x00259F10,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_00259fc0@@YAXXZ,,0x00259FC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
@@ -122392,7 +122390,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0025a3e0@@YAXXZ,,0x0025A3E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004A9F3
 ?j_0025a650@@YAXXZ,,0x0025A650,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0065a4a0
 ?j_0025a830@@YAXXZ,,0x0025A830,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
-?j_0025ac80@@YAXXZ,,0x0025AC80,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_0025ad80@@YAXXZ,,0x0025AD80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000C63F
 ?j_0025ae60@@YAXXZ,,0x0025AE60,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_006a5cc0
 ?j_0025b320@@YAXXZ,,0x0025B320,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
@@ -122413,7 +122410,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002605f0@@YAXXZ,,0x002605F0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002AF8B
 ?j_00260680@@YAXXZ,,0x00260680,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_00260b50@@YAXXZ,,0x00260B50,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=FUN_0042041e
-?j_002612b0@@YAXXZ,,0x002612B0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_00262950@@YAXXZ,,0x00262950,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_00263a50@@YAXXZ,,0x00263A50,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0066a1a0
 ?j_00263c90@@YAXXZ,,0x00263C90,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
@@ -122421,11 +122417,9 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002644a0@@YAXXZ,,0x002644A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_00264580@@YAXXZ,,0x00264580,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=FUN_0042041e
 ?j_00264880@@YAXXZ,,0x00264880,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
-?j_002649e0@@YAXXZ,,0x002649E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_00264b20@@YAXXZ,,0x00264B20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_006a71e0
 ?j_00264b30@@YAXXZ,,0x00264B30,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_00265950@@YAXXZ,,0x00265950,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
-?j_00265ae0@@YAXXZ,,0x00265AE0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_00265c20@@YAXXZ,,0x00265C20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_00265de0@@YAXXZ,,0x00265DE0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0065a4a0
 ?j_00266350@@YAXXZ,,0x00266350,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004A9F3
@@ -122434,7 +122428,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0026a7f0@@YAXXZ,,0x0026A7F0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_0026b020@@YAXXZ,,0x0026B020,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002AF8B
 ?j_0026b0c0@@YAXXZ,,0x0026B0C0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
-?j_0026b220@@YAXXZ,,0x0026B220,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_0026b3f0@@YAXXZ,,0x0026B3F0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_0026b610@@YAXXZ,,0x0026B610,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_0026b6c0@@YAXXZ,,0x0026B6C0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
@@ -172541,3 +172534,10 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?get@Rva00169FC0@@QBEHXZ,,0x00169FC0,7,game/GameEngine/Source/Common/TinyIndexedForwarders.cpp,matched,unreferenced leaf getter; REL32 carve ret+int3 extent; reached only from its ILT entry so the owner is opaque;model=claude-opus-5-5;host=app
 ?get@Rva00169FD0@@QBEHXZ,,0x00169FD0,7,game/GameEngine/Source/Common/TinyIndexedForwarders.cpp,matched,unreferenced leaf getter; REL32 carve ret+int3 extent; reached only from its ILT entry so the owner is opaque;model=claude-opus-5-5;host=app
 ?get@Rva00169FE0@@QBEHXZ,,0x00169FE0,4,game/GameEngine/Source/Common/TinyIndexedForwarders.cpp,matched,unreferenced leaf getter; REL32 carve ret+int3 extent; reached only from its ILT entry so the owner is opaque;model=claude-opus-5-5;host=app
+??1CombineHordeSpecialPowerModuleData@@UAE@XZ,,0x00259900,5,game/GameEngine/Source/GameLogic/Object/SpecialPower/CombineHordeSpecialPowerModuleDataDeletingDestructor.cpp,matched,implicit ~CombineHordeSpecialPowerModuleData: bare jmp SpecialPowerModuleData::~SpecialPowerModuleData ILT 0x0001D7B4 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0000B37F ilt_oracle CONFIRMED exact and called by matched ??_GCombineHordeSpecialPowerModuleData in the same TU;model=claude-opus-5-5;host=app
+??1DevastateSpecialPowerModuleData@@UAE@XZ,,0x0025AC80,5,game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataDeletingDestructor.cpp,matched,implicit ~DevastateSpecialPowerModuleData: bare jmp SpecialPowerModuleData::~SpecialPowerModuleData ILT 0x0001D7B4 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00032E25 ilt_oracle CONFIRMED exact and called by matched ??_GDevastateSpecialPowerModuleData in the same TU;model=claude-opus-5-5;host=app
+??1ManTheWallsSpecialPowerModuleData@@UAE@XZ,,0x002612B0,5,game/GameEngine/Source/GameLogic/Object/SpecialPower/ManTheWallsSpecialPowerModuleDataDeletingDestructor.cpp,matched,implicit ~ManTheWallsSpecialPowerModuleData: bare jmp SpecialPowerModuleData::~SpecialPowerModuleData ILT 0x0001D7B4 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00016220 ilt_oracle CONFIRMED exact and called by matched ??_GManTheWallsSpecialPowerModuleData in the same TU;model=claude-opus-5-5;host=app
+??1RepairSpecialPowerModuleData@@UAE@XZ,,0x002649E0,5,game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerModuleDataDeletingDestructor.cpp,matched,implicit ~RepairSpecialPowerModuleData: bare jmp SpecialPowerModuleData::~SpecialPowerModuleData ILT 0x0001D7B4 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00004AAC ilt_oracle CONFIRMED exact and called by matched ??_GRepairSpecialPowerModuleData in the same TU;model=claude-opus-5-5;host=app
+??1ScavengerSpecialPowerModuleData@@UAE@XZ,,0x00265AE0,5,game/GameEngine/Source/GameLogic/Object/SpecialPower/ScavengerSpecialPowerModuleDataDeletingDestructor.cpp,matched,implicit ~ScavengerSpecialPowerModuleData: bare jmp SpecialPowerModuleData::~SpecialPowerModuleData ILT 0x0001D7B4 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00025577 ilt_oracle CONFIRMED exact and called by matched ??_GScavengerSpecialPowerModuleData in the same TU;model=claude-opus-5-5;host=app
+??1SplitHordeSpecialPowerModuleData@@UAE@XZ,,0x0026B220,5,game/GameEngine/Source/GameLogic/Object/SpecialPower/SplitHordeSpecialPowerModuleDataDeletingDestructor.cpp,matched,implicit ~SplitHordeSpecialPowerModuleData: bare jmp SpecialPowerModuleData::~SpecialPowerModuleData ILT 0x0001D7B4 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00018AC0 ilt_oracle CONFIRMED exact and called by matched ??_GSplitHordeSpecialPowerModuleData in the same TU;model=claude-opus-5-5;host=app
+??1HordeGarrisonContain@@UAE@XZ,,0x0021A2B0,5,game/GameEngine/Source/GameLogic/Object/Contain/HordeGarrisonContainDeletingDestructor.cpp,matched,implicit ~HordeGarrisonContain: bare jmp GarrisonContain::~GarrisonContain ILT 0x00037A24 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00038622 ilt_oracle CONFIRMED exact and called by matched ??_GHordeGarrisonContain in the same TU;model=claude-opus-5-5;host=app

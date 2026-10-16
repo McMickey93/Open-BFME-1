@@ -55755,3 +55755,10 @@ Rva003DC780	0x003DC780	105	blocked	Round2 selected small donor candidate immedia
 ?get@Rva00169FC0@@QBEHXZ	0x00169FC0	7	landed	carved REL32 entry (own ILT, no callers) and ret+int3 end; opaque leaf getter t=3 model=claude-opus-5-5
 ?get@Rva00169FD0@@QBEHXZ	0x00169FD0	7	landed	carved REL32 entry (own ILT, no callers) and ret+int3 end; opaque leaf getter t=3 model=claude-opus-5-5
 ?get@Rva00169FE0@@QBEHXZ	0x00169FE0	4	landed	carved REL32 entry (own ILT, no callers) and ret+int3 end; opaque leaf getter t=3 model=claude-opus-5-5
+??1CombineHordeSpecialPowerModuleData@@UAE@XZ	0x00259900	5	converted	exact 5B implicit dtor: bare jmp SpecialPowerModuleData dtor ILT; own ILT 0x0000B37F oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
+??1DevastateSpecialPowerModuleData@@UAE@XZ	0x0025AC80	5	converted	exact 5B implicit dtor: bare jmp SpecialPowerModuleData dtor ILT; own ILT 0x00032E25 oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
+??1ManTheWallsSpecialPowerModuleData@@UAE@XZ	0x002612B0	5	converted	exact 5B implicit dtor: bare jmp SpecialPowerModuleData dtor ILT; own ILT 0x00016220 oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
+??1RepairSpecialPowerModuleData@@UAE@XZ	0x002649E0	5	converted	exact 5B implicit dtor: bare jmp SpecialPowerModuleData dtor ILT; own ILT 0x00004AAC oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
+??1ScavengerSpecialPowerModuleData@@UAE@XZ	0x00265AE0	5	converted	exact 5B implicit dtor: bare jmp SpecialPowerModuleData dtor ILT; own ILT 0x00025577 oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
+??1SplitHordeSpecialPowerModuleData@@UAE@XZ	0x0026B220	5	converted	exact 5B implicit dtor: bare jmp SpecialPowerModuleData dtor ILT; own ILT 0x00018AC0 oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
+??1HordeGarrisonContain@@UAE@XZ	0x0021A2B0	5	converted	exact 5B implicit dtor: bare jmp GarrisonContain dtor ILT; own ILT 0x00038622 oracle CONFIRMED; matched ??_G caller same TU t=3min model=claude-opus-5-5
