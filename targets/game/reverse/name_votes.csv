@@ -3822,3 +3822,4 @@ game/GameEngine/Source/Common/BfmeConv979.cpp|local|BfmeB979::bfmeGo979B|s,ad340
 game/GameEngine/Source/Common/BfmeConv979.cpp|local|BfmeC979::bfmeGo979C|g,d9256780d45a1154f516aac6,gpt-6.1-sol,20261016062549-29d530,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PartTheHeavensUpdateUpdate.cpp|member||m_bfmeFrameFV,2afc12df8c52ab731af6e055,gpt-6.1-sol,20261016062555-a541e5,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PartTheHeavensUpdateUpdate.cpp|member||m_bfmeStampFV,48498688cb577fe0d12a579d,gpt-6.1-sol,20261016062555-a541e5,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1980.cpp|member||m_bfmeTextETA,2b192b1160a6ecdb3bee1bb1,gpt-6.1-sol,20261016062611-43697d,2026-10-16
