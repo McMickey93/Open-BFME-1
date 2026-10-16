@@ -681,11 +681,15 @@ def _anon(text):
 
 
 def _truth_rows(text, layout=(0, None, None)):
-    """({name: frozenset of lines naming it}, {(space, address): set of lines})
-    for one truth file's text. A row names its name column and any
-    object-symbol= note; anonymous-namespace hashes are normalised."""
+    """({name: tuple of the lines naming it, in file order},
+    {(space, address): set of lines}) for one truth file's text. A row names
+    its name column and any object-symbol= note; anonymous-namespace hashes
+    are normalised. Per name the ORDER counts: link_census.pins() takes a
+    name's first pin and first route= (round 9), so swapping two pin lines
+    moves its truth. An RVA-space address spelled as a VA (>= the 0x400000
+    image base) is read as its RVA, as RetailTruth reads it."""
     name_col, address_col, space = layout
-    by_name, by_address = collections.defaultdict(set), collections.defaultdict(set)
+    by_name, by_address = collections.defaultdict(list), collections.defaultdict(set)
     for line in text.splitlines()[1:]:
         line = _anon(line.rstrip("\r"))
         if not line:
@@ -694,13 +698,16 @@ def _truth_rows(text, layout=(0, None, None)):
         if name_col is not None and len(fields) > name_col:
             for key in {fields[name_col], *_OBJECT_SYMBOL.findall(line)}:
                 if key:
-                    by_name[key].add(line)
+                    by_name[key].append(line)
         if address_col is not None and len(fields) > address_col:
             try:
-                by_address[(space, int(fields[address_col], 16))].add(line)
+                address = int(fields[address_col], 16)
             except ValueError:
-                pass
-    return by_name, by_address
+                continue
+            if space == "rva" and address >= 0x400000:
+                address -= 0x400000
+            by_address[(space, address)].add(line)
+    return {name: tuple(lines) for name, lines in by_name.items()}, by_address
 
 
 class AllNames(frozenset):
