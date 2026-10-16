@@ -859,6 +859,7 @@ address_global	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BC3
 address_global	game/GameEngine/Source/GameLogic/Object/Update/AttributeModifierAuraUpdateModuleDataCtorThunk.cpp	g_Rva0107301CEmptyString	2
 address_global	game/GameEngine/Source/GameLogic/Object/Update/BfmeObjectReferenceStoreClear.cpp	g_Rva0107301CEmptyString	2
 address_global	game/GameEngine/Source/GameLogic/Object/Update/FlammableUpdateParseFireFXList.cpp	g_Rva0107301CEmptyString	2
+address_global	game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorRva0029B350.cpp	g_Va010C0904	3	allow=49acf40cd2ca410cfc256ca234da43112a7e838d
 address_global	game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp	g_Rva0107301CEmptyString	2
 address_global	game/GameEngine/Source/GameLogic/Object/Update/StructureToppleUpdateModuleData_ctor_Thunk.cpp	g_Rva0107301CEmptyString	2
 address_global	game/GameEngine/Source/GameLogic/Object/VictorySystemXfer.cpp	g_Rva00F36E5C	2

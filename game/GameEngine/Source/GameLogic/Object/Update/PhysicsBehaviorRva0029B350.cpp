@@ -36,6 +36,11 @@ public:
     Rva0029AB10Coord3D position;
 };
 
+// Retail keeps this TU's 0.35f in its own .rdata cell at VA 0x010C0904 (the only
+// reference is this body, +0x11F); SlowDeathBehavior's 0.35f literal is a separate
+// copy at VA 0x010A6568. Address-named per the owner rulings of 2026-10-09.
+extern const float g_Va010C0904;
+
 enum UpdateSleepTime { UPDATE_SLEEP_NONE = 1 };
 
 class UpdateModule
@@ -104,8 +109,10 @@ void PhysicsBehavior::rva0029B350(bool skipWake)
         pos.x = obj->position.x + direction.X * (delta.length2D() * 0.5f);
         pos.y = obj->position.y + direction.Y * (delta.length2D() * 0.5f);
         pos.z = table->height(terrain, table, pos.x, pos.y, 0);
-        (this->*(Rva0029AB10FloatWhen)&PhysicsBehavior::rva0029AB10)(&pos, at48 * 0.35f, at44 * 0.85f);
+        (this->*(Rva0029AB10FloatWhen)&PhysicsBehavior::rva0029AB10)(&pos, at48 * g_Va010C0904, at44 * 0.85f);
     }
 
     at5e = true;
 }
+
+extern const float g_Va010C0904 = 0.35f;
