@@ -169,14 +169,23 @@ def test_a_deferral_comes_back_when_its_blocker_lands(tmp_path):
     assert set(released) == {CALLER} and released[CALLER][1] == [BLOCKER]
 
 
-def test_a_blocker_that_had_already_landed_releases_nothing(tmp_path):
+def test_release_reads_the_standing_verdict_not_line_order(tmp_path):
+    """A union-merged rebase can put the landing above the deferral."""
     log = _write(tmp_path, landed(), deferral())
+    assert set(eligibility.released_rvas(log, rows=_rows(REAL_ROW))) == {CALLER}
+
+
+def test_a_blocker_whose_standing_verdict_is_not_a_resolution_releases_nothing(tmp_path):
+    later = "?blocker@X@@QAEXXZ\t0x00002000\t16\tblocked\tregressed blocker=x/y model=m"
+    log = _write(tmp_path, deferral(), landed(), later)
     assert eligibility.released_rvas(log, rows=_rows(REAL_ROW)) == {}
 
 
 def test_a_generated_row_or_a_missing_resolution_releases_nothing(tmp_path):
     log = _write(tmp_path, deferral(), landed())
     assert eligibility.released_rvas(log, rows=_rows(GEN_ROW)) == {}
+    placeholder = ("?d_00002000@@YAXXZ", BLOCKER, "game/X.cpp", "model=m")
+    assert eligibility.released_rvas(log, rows=_rows(placeholder)) == {}
     log = _write(tmp_path, deferral())
     assert eligibility.released_rvas(log, rows=_rows(REAL_ROW)) == {}
 
@@ -200,7 +209,9 @@ def test_a_dead_end_or_a_later_deferral_without_the_token_is_not_released(tmp_pa
     assert eligibility.released_rvas(log, rows=_rows(REAL_ROW)) == {}
 
 
-def test_released_is_served_as_untried(tmp_path, monkeypatch):
+def test_released_loses_the_deferral_penalty_but_keeps_its_attempts(tmp_path, monkeypatch):
+    """Releasing lifts the place behind untried work; the attempt count (the
+    hard_bodies / max_attempts guard) stands."""
     log = _write(tmp_path, f"?caller@X@@QAEXXZ\t0x{CALLER:08X}\t32\tblocked\tfirst blocker=x/y model=m",
                  deferral(), landed())
     monkeypatch.setattr(re_log, "RE_ATTEMPTS", log)
@@ -208,11 +219,97 @@ def test_released_is_served_as_untried(tmp_path, monkeypatch):
     eligibility._RELEASED.clear()
     latest = eligibility.latest_verdicts(log)
     assert latest[CALLER] == "blocked"
-    assert not eligibility.deferred(CALLER, latest)
-    assert eligibility.attempt_counts(log).get(CALLER, 0) == 0
+    assert not eligibility.deferred(CALLER, latest, log)
+    assert eligibility.attempt_counts(log)[CALLER] == 2
     re_log._reset()
     monkeypatch.setattr(eligibility, "load_rows", lambda *a, **k: _rows(GEN_ROW))
     eligibility._RELEASED.clear()
-    assert eligibility.deferred(CALLER, latest)
-    assert eligibility.attempt_counts(log)[CALLER] == 2
+    assert eligibility.deferred(CALLER, latest, log)
     eligibility._RELEASED.clear()
+
+
+# -- review round 1 ------------------------------------------------------------
+
+def test_r1_m1_a_relanding_after_a_later_deferral_is_recorded_and_releases(landing, capsys):
+    """X landed, X blocked later, a caller blocked-on=X, then X lands again:
+    the stale landing must not suppress the new one."""
+    root, _state = landing
+    log = root / "targets/game/reverse/re_attempts.log"
+    add_match.record_landing(root, REAL, 0x00ABCD00, 32, SOURCE_REL, "model=m")
+    with log.open("ab") as handle:
+        handle.write(f"{REAL}\t0x00ABCD00\t32\tblocked\tregressed blocker=x/y model=m\n".encode())
+    text = log.read_text()
+    assert not add_match.landing_recorded(text, REAL, 0x00ABCD00, 32, SOURCE_REL)
+    add_match.record_landing(root, REAL, 0x00ABCD00, 32, SOURCE_REL, "model=m")
+    records, _r = re_log.indexed_records(log)
+    assert records[0x00ABCD00][1][3] == "landed"
+    rows = _rows((REAL, 0x00ABCD00, SOURCE_REL, "model=m"))
+    assert 0x00ABCE00 in eligibility.released_rvas(log, rows=rows)
+
+
+def test_r1_m1_and_9_add_match_reports_the_release_from_its_own_root(landing, capsys):
+    root, _state = landing
+    add_match.main()
+    out = capsys.readouterr().out
+    assert "?caller@Thing@@QAEXXZ @ 0x00ABCE00 (blocked) named this body in blocked-on=; released" in out
+
+
+def _guard(base, new, ledger):
+    found = []
+    check_csv.check_re_attempts_append_only(base, new, found, ledger=ledger)
+    return found
+
+
+LANDED_LINE = (f"{REAL}\t0x00ABCD00\t32\tlanded\tlanded-by=add_match source={SOURCE_REL} "
+               "extent=0x00ABCD00..0x00ABCD20 size=32B model=m ; notes: -\n").encode()
+KEY = (REAL, 0x00ABCD00, 32)
+
+
+def test_r1_m2_a_landed_row_rides_only_with_its_matched_row():
+    base = OLD_LOG.encode()
+    assert _guard(base, base + LANDED_LINE, {KEY}) == []
+    assert "no matched row" in _guard(base, base + LANDED_LINE, set())[0]
+    assert "no matched row" in _guard(base, base + LANDED_LINE, {(REAL, 0x00ABCD00, 33)})[0]
+
+
+def test_r1_m2_reverting_a_landing_takes_its_row_back_and_nothing_else():
+    base = OLD_LOG.encode() + LANDED_LINE
+    assert _guard(base, OLD_LOG.encode(), set()) == [], "git revert of the landing commit"
+    assert _guard(base, OLD_LOG.encode(), {KEY}), "the ledger row is still there"
+    assert _guard(base, OLD_LOG.encode()[:-10], set()), "any other deletion stays refused"
+
+
+def test_r1_5_near_spellings_are_refused_not_ignored():
+    for text in ("Blocked-On=0x2000", "blocked_on=0x2000", "(blocked-on=0x2000)",
+                 "blocker=x;blocked-on=0x2000", "BLOCKED-ON=0x2000"):
+        assert re_log.blocked_on(text) == [], text
+        with pytest.raises(SystemExit):
+            re_log.blocked_on(text, status="blocked")
+    assert re_log.blocked_on("blocked on the callee, blocker=callee/x", status="blocked") == []
+
+
+def _record(monkeypatch, log, *argv):
+    monkeypatch.setattr(re_log, "RE_ATTEMPTS", log)
+    re_log._reset()
+    monkeypatch.delenv("BFME_MODEL", raising=False)
+    re_log._record(list(argv))
+
+
+def test_r1_3_a_blocker_that_has_already_landed_is_refused_at_record(tmp_path, monkeypatch):
+    log = _write(tmp_path, landed())
+    monkeypatch.setattr(eligibility, "landed_identities", lambda rows=None: {BLOCKER})
+    with pytest.raises(SystemExit, match="already has a matched identity row"):
+        _record(monkeypatch, log, "?caller@X@@QAEXXZ", "0x00001000", "32", "blocked",
+                "wall blocked-on=0x00002000 blocker=callee/x t=40 model=m")
+    monkeypatch.setattr(eligibility, "landed_identities", lambda rows=None: set())
+    _record(monkeypatch, log, "?caller@X@@QAEXXZ", "0x00001000", "32", "blocked",
+            "wall blocked-on=0x00002000 blocker=callee/x t=40 model=m")
+    assert "blocked-on=0x00002000" in log.read_text()
+
+
+def test_r1_7_a_hand_typed_second_landing_is_refused(landing, monkeypatch):
+    root, _state = landing
+    log = root / "targets/game/reverse/re_attempts.log"
+    add_match.record_landing(root, REAL, 0x00ABCD00, 32, SOURCE_REL, "model=m")
+    with pytest.raises(SystemExit, match="already recorded"):
+        _record(monkeypatch, log, REAL, "0x00ABCD00", "32", "landed", "by hand model=m")

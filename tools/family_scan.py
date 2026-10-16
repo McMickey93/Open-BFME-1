@@ -182,8 +182,11 @@ def load_attempted():
     siblings as context; dead-end members are removed individually. Shared
     blockers require explicit evidence, not merely equal normalized bytes.
     """
-    latest = re_log.latest_records(ROOT / "targets/game/reverse/re_attempts.log")
-    seen = set(latest)
+    import eligibility
+    log = ROOT / "targets/game/reverse/re_attempts.log"
+    latest = re_log.latest_records(log)
+    # a deferral whose blocked-on= blockers all landed is served as untried
+    seen = set(latest) - set(eligibility.released_rvas(log))
     dead = {rva for rva, fields in latest.items() if fields[3] in re_log.DEAD_END_STATUSES}
     return seen, dead
 

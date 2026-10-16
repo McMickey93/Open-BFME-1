@@ -628,7 +628,26 @@ def _record(argv):
             f"revert, or record `blocked` with your evidence instead.")
     # before _bank: a refused row must not leave a stash behind
     evidence = _census_tag(status, rva_text, symbol, _require_tags(status, evidence))
-    blocked_on(evidence, status=status)        # a malformed or misplaced token is refused
+    blockers = blocked_on(evidence, status=status)   # a malformed or misplaced token is refused
+    if blockers:
+        # A blocker that has already landed is no blocker: naming it would
+        # release this deferral at once (and lets the release rule ignore order).
+        import eligibility
+        landed = eligibility.landed_identities()
+        already = [b for b in blockers if b in landed]
+        if already:
+            raise SystemExit("blocked-on names " + ", ".join(f"0x{b:08X}" for b in already)
+                             + ", which already has a matched identity row: it is not what stops "
+                               "this attempt")
+    if status == "landed":
+        # add_match records its own landing; a hand-typed second row would
+        # double it (the standing verdict is already this landing).
+        records, _resolved = indexed_records()
+        standing = records.get(int(rva_text, 16))
+        if standing and standing[1][3] == "landed" and standing[1][0] == symbol \
+                and standing[1][4].startswith(LANDED_BY):
+            raise SystemExit(f"add_match already recorded `landed` for {symbol} @ {rva_text} and it is "
+                             "the standing verdict; do not record it again")
     if stash_text is not None:
         if status != STASH_STATUS:
             raise SystemExit(
@@ -672,40 +691,51 @@ def append(symbol, rva_text, size_text, status, evidence, *, path=None):
 # ---------------------------------------------------------------------------
 BLOCKED_ON = re.compile(r"(?:^|(?<=\s))blocked-on=(\S*)")
 BLOCKED_ON_VALUE = re.compile(r"0x[0-9A-Fa-f]{1,8}(?:,0x[0-9A-Fa-f]{1,8})*")
+BLOCKED_ON_LOOSE = re.compile(r"blocked[-_]on\s*=", re.IGNORECASE)
+LANDED_BY = "landed-by=add_match "      # the evidence prefix add_match's own `landed` rows carry
 
 
 def blocked_on(evidence, *, status=None):
     """[rva] a deferral names as its blockers, in order; [] when it names none.
 
     All-or-nothing: `blocked-on=0x2000, 0x3000` is not read as [0x2000] (that
-    released a caller whose second blocker was missing in Open-BFME-2). With
-    STATUS (the record path) a malformed token, or one on a non-deferral, is
-    refused; without it (reading old rows) a malformed token names nothing."""
-    found = []
-    for match in BLOCKED_ON.finditer(evidence or ""):
+    released a caller whose second blocker was missing in Open-BFME-2), and a
+    near spelling -- Blocked-On=, blocked_on=, (blocked-on=..),
+    blocker=x;blocked-on=.. -- is not silently a deferral with no blocker:
+    every case-insensitive `blocked[-_]on=` must be an exact, whitespace-
+    delimited, well-formed token (prose such as "blocked on the callee" has no `=` and is not
+    read). With STATUS (the record path) anything else,
+    or a token on a non-deferral, is refused; reading old rows it names nothing."""
+    text = evidence or ""
+    found, exact = [], 0
+    for match in BLOCKED_ON.finditer(text):
         value = match.group(1)
         if not BLOCKED_ON_VALUE.fullmatch(value):
             if status is not None:
                 raise SystemExit(f"malformed blocked-on={value!r}: write blocked-on=0x<rva>"
                                  "[,0x<rva>...] with no spaces")
             return []
-        found.extend(int(text, 16) for text in value.split(","))
+        exact += 1
+        found.extend(int(item, 16) for item in value.split(","))
+    if len(BLOCKED_ON_LOOSE.findall(text)) != exact:
+        if status is not None:
+            raise SystemExit("a blocked-on token must be written exactly `blocked-on=0x<rva>[,0x<rva>...]`, "
+                             "lower case, after a space or at the start (no Blocked-On=, blocked_on=, "
+                             "(blocked-on=, x;blocked-on=)")
+        return []
     if found and status is not None and status not in DEFERRED_STATUSES:
         raise SystemExit(f"blocked-on= belongs on a deferral ({sorted(DEFERRED_STATUSES)}), "
                          f"not on {status!r}")
     return found
 
 
-def indexed_records(path=None):
+def indexed_records_text(text):
     """({rva: (line index, fields)} of the latest live five-field verdict per RVA,
-    {rva: line index of the latest live RESOLVED verdict}). Same void and
-    annotation rules as latest_records."""
+    {rva: line index of the latest live RESOLVED verdict}) of a log's TEXT.
+    Same void and annotation rules as latest_records."""
     records, resolved = {}, {}
-    path = path or RE_ATTEMPTS
-    if not path.exists():
-        return {}, {}
     rows = {}
-    for index, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines()):
+    for index, line in enumerate(text.splitlines()):
         fields = line.split("\t")
         if len(fields) < 5:
             continue
@@ -723,6 +753,14 @@ def indexed_records(path=None):
             if fields[3] in RESOLVED_STATUSES and resolved.get(rva, -1) < index:
                 resolved[rva] = index
     return records, resolved
+
+
+def indexed_records(path=None):
+    """indexed_records_text over the log at PATH (default the repo's)."""
+    path = path or RE_ATTEMPTS
+    if not path.exists():
+        return {}, {}
+    return indexed_records_text(path.read_text(encoding="utf-8", errors="replace"))
 
 
 MODEL_TAG = re.compile(r"(?:^|\s)model=(\S+)")

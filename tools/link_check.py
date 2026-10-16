@@ -1091,12 +1091,16 @@ def blocked_files(callers, records, census, shared=frozenset()):
     again. A verdict from an earlier census is stale and blocks nothing.
     `callers` is {source: ledger rows}, `records` re_log.latest_link_records(),
     `shared` the (rva, name) pairs of several sources."""
+    import eligibility
     import re_log
     stops = re_log.DEFERRED_STATUSES | re_log.DEAD_END_STATUSES
+    released = eligibility.released_rvas()     # a deferral whose blocked-on= blockers landed blocks nothing
     found = {}
     for source, rows in callers.items():
         for row in rows:
             fields = row_verdict(records, row, source, shared)
+            if fields and fields[3] in re_log.DEFERRED_STATUSES and int(fields[1], 16) in released:
+                continue
             if fields and fields[3] in stops and same_commit(re_log.census_of(fields[4]), census):
                 found[source] = f"{fields[3]} {fields[1]} at census {census}"
                 break

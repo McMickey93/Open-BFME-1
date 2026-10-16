@@ -13,6 +13,7 @@ if __name__ == "__main__":
     require_game_cli("check_csv.py")
 
 import argparse
+import collections
 import csv
 import io
 import json
@@ -295,11 +296,52 @@ def check_re_attempts_range(base, tip, problems):
     for commit in commits.stdout.split():
         found = []
         check_re_attempts_append_only(read_re_attempts(f"{commit}^"), read_re_attempts(commit), found,
-                                      dedupe_claim=re_attempts_dedupe_claim(commit))
+                                      dedupe_claim=re_attempts_dedupe_claim(commit),
+                                      ledger=ledger_keys_at(commit))
         problems.extend(f"{commit[:10]}: {p}" for p in found)
 
 
-def check_re_attempts_append_only(base, new, problems, dedupe_claim=None):
+ADD_MATCH_LANDED = b"landed-by=add_match "
+
+
+def matched_ledger_keys(functions_raw):
+    """{(name, rva, size)} of the matched functions.csv rows in FUNCTIONS_RAW."""
+    keys = set()
+    if not functions_raw:
+        return keys
+    text = functions_raw.decode("utf-8", "replace") if isinstance(functions_raw, bytes) else functions_raw
+    for row in csv.DictReader(io.StringIO(text, newline="")):
+        if row.get("status") != "matched":
+            continue
+        try:
+            keys.add((row["name"], int(row["target_rva"], 16), int(row["target_size"])))
+        except (KeyError, TypeError, ValueError):
+            continue
+    return keys
+
+
+def ledger_keys_at(commit):
+    """matched_ledger_keys of functions.csv at COMMIT, or None when the commit
+    has no ledger (then no landed row can be judged against it)."""
+    rel = "targets/game/reverse/functions.csv"
+    shown = subprocess.run(["git", "-C", str(ROOT), "show", f"{commit}:{rel}"], capture_output=True)
+    if shown.returncode != 0:
+        return None
+    return matched_ledger_keys(shown.stdout)
+
+
+def add_match_landing(line):
+    """(name, rva, size) of a `landed` row add_match wrote, else None."""
+    fields = line.rstrip(b"\r").split(b"\t")
+    if len(fields) < 5 or fields[3] != b"landed" or not fields[4].startswith(ADD_MATCH_LANDED):
+        return None
+    try:
+        return fields[0].decode("utf-8", "replace"), int(fields[1], 16), int(fields[2])
+    except ValueError:
+        return None
+
+
+def check_re_attempts_append_only(base, new, problems, dedupe_claim=None, ledger=None):
     """re_attempts.log only grows: its old lines stay, in order, and lines are
     appended after them (approved by the project lead 2026-10-16). Compared
     with CR-at-EOL ignored, so the one-time LF normalisation passes, but a
@@ -330,6 +372,19 @@ def check_re_attempts_append_only(base, new, problems, dedupe_claim=None):
     if tail_base:
         base_lines.append(tail_base)               # last line without newline
     plain = lambda line: line[:-1] if line.endswith(b"\r") else line
+    if ledger is not None:
+        # The one deletion a landing may take back: `git revert` of a landing
+        # commit removes add_match's `landed` row together with its ledger row.
+        # A landed row whose (name, rva, size) is no longer a matched row may
+        # leave the log; every other line stays append-only.
+        survivors = collections.Counter(plain(line) for line in new_lines + [tail_new])
+        kept = []
+        for line in base_lines:
+            key = add_match_landing(line)
+            if key is not None and key not in ledger and not survivors[plain(line)]:
+                continue
+            kept.append(line)
+        base_lines = kept
     n = len(base_lines)
     if len(new_lines) + (1 if tail_new else 0) < n:
         problems.append(f"{RE_ATTEMPTS_REL}: {n - len(new_lines)} line(s) removed; the log is append-only")
@@ -352,6 +407,18 @@ def check_re_attempts_append_only(base, new, problems, dedupe_claim=None):
                             "Rebase with -X renormalize (git pull --rebase -X renormalize); do not strip "
                             "CRs from a rebased log")
             return
+    if ledger is not None:
+        # add_match writes `landed` after its scoped build; if the full gate
+        # then fails and the ledger is reverted, the row must not ride into a
+        # commit that does not carry the matched row it records.
+        for k, line in enumerate(appended, n + 1):
+            key = add_match_landing(line)
+            if key is not None and key not in ledger:
+                problems.append(f"{RE_ATTEMPTS_REL}: appended line {k} records add_match landing "
+                                f"{key[0]} @ 0x{key[1]:08X}/{key[2]}B, but functions.csv in this commit "
+                                "has no matched row with that name, rva and size; drop the line "
+                                "with the reverted landing")
+                return
     # Union duplication re-adds whole runs of rows. A single repeated row can be
     # a coincidence (the log already holds 4,948 rows written more than once),
     # so only two or more consecutive appended rows that repeat two consecutive
@@ -783,7 +850,8 @@ def main():
                                   capture_output=True).returncode == 0
         if has_base:
             check_re_attempts_append_only(read_re_attempts(base_spec), read_re_attempts(spec), problems,
-                                          dedupe_claim=re_attempts_dedupe_claim(args.ref))
+                                          dedupe_claim=re_attempts_dedupe_claim(args.ref),
+                                          ledger=matched_ledger_keys(functions_raw))
     check_attempts(spec, problems, functions_raw=functions_raw,
                    sources_ok=sources_ok)
     data_raw = read_data_rows(spec)

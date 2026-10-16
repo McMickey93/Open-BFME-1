@@ -506,24 +506,19 @@ LANDED_BY = "landed-by=add_match"
 
 
 def landing_recorded(text, name, rva, size, source_rel):
-    """True when TEXT (the attempt log) already holds this exact landing, not
-    voided since: re-running a landing never writes a second row."""
-    token = f"{LANDED_BY} source={source_rel}"
-    found = False
-    for line in text.splitlines():
-        fields = line.split("\t")
-        if len(fields) < 5 or fields[0] != name:
-            continue
-        try:
-            if int(fields[1], 16) != rva:
-                continue
-        except ValueError:
-            continue
-        if fields[3] == "void":
-            found = False
-        elif fields[3] == "landed" and fields[2] == str(size) and f"{token} " in fields[4]:
-            found = True
-    return found
+    """True when this exact landing is the STANDING verdict at rva in TEXT (the
+    attempt log): re-running a landing never writes a second row. A landing
+    that a later verdict at that address superseded (a `blocked` after it, a
+    void) is not standing, so the re-landing is recorded again -- otherwise
+    the later deferral would stay the last word on a matched body."""
+    import re_log
+    records, _resolved = re_log.indexed_records_text(text)
+    standing = records.get(rva)
+    if standing is None:
+        return False
+    fields = standing[1]
+    return (fields[0] == name and fields[3] == "landed" and fields[2] == str(size)
+            and fields[4].startswith(f"{LANDED_BY} source={source_rel} "))
 
 
 def landing_evidence(rva, size, source_rel, notes):
@@ -558,10 +553,11 @@ def record_landing(root, name, rva, size, source_rel, notes, *, text=None):
     return text + f"{name}\t0x{rva:08X}\t{size}\tlanded\t{evidence}\n"
 
 
-def report_waiting(rva, path=None):
+def report_waiting(rva, path=None, root=None):
     """Print the standing deferrals this landing concerns: those naming it in
     blocked-on= (released once all their blockers landed), and, as a report
-    only, those whose free text mentions the address."""
+    only, those whose free text mentions the address. Under --root it reads
+    that root's log and ledger."""
     import eligibility
     import re_log
     records, _resolved = re_log.indexed_records(path)
@@ -574,7 +570,10 @@ def report_waiting(rva, path=None):
             named.append((at, fields))
         elif pattern.search(fields[4]):
             mentioned.append((at, fields))
-    released = eligibility.released_rvas(path) if named else {}
+    rows = None
+    if named and root is not None:
+        rows = eligibility.load_rows(Path(root) / "targets/game/reverse" / "functions.csv")
+    released = eligibility.released_rvas(path, rows=rows) if named else {}
     for at, fields in named:
         state = ("released: served as untried again" if at in released
                  else "still waits on another blocked-on= body")
@@ -1141,10 +1140,14 @@ def main():
     remove_stash(rva, args.root)
     try:
         record_landing(root, name, rva, size, source_rel, args.notes)
-        report_waiting(rva, root / "targets/game/reverse" / "re_attempts.log")
     except (Exception, SystemExit) as error:   # the row is verified; never revert it over the log
         print(f"add_match: COULD NOT record `landed` ({error}); record it with "
               f"tools/re_log.py record {name} 0x{rva:08X} {size} landed <evidence>", file=sys.stderr)
+    try:                                       # a report: its failure must not invite a re-record
+        report_waiting(rva, root / "targets/game/reverse" / "re_attempts.log", root)
+    except (Exception, SystemExit) as error:
+        print(f"add_match: could not list the deferrals waiting on 0x{rva:08X} ({error}); "
+              "the landing itself is recorded", file=sys.stderr)
     # Verified HERE is not landed: the commit may never be pushed, or be
     # rejected. Releasing now (force, anyone's claim -- the old behaviour) let
     # another worker take a body whose conversion was still unpublished. Queue

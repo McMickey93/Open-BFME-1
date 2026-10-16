@@ -328,6 +328,13 @@ def main():
     except (Exception, SystemExit) as error:
         print(f"add_match_batch: COULD NOT record `landed` verdicts ({error}); record them "
               "with tools/re_log.py record", file=sys.stderr)
+    log = root / "targets/game/reverse" / "re_attempts.log"
+    for c in claims:
+        try:
+            add_match.report_waiting(c["rva"], log, root)
+        except (Exception, SystemExit) as error:
+            print(f"add_match_batch: could not list the deferrals waiting on 0x{c['rva']:08X} "
+                  f"({error}); the landing itself is recorded", file=sys.stderr)
 
 
 if __name__ == "__main__":

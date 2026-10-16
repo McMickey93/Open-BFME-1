@@ -233,6 +233,9 @@ def describe(rva, rows, pins, latest, near, depth=5):
         st = re.search(r"stash=(\S+)", ev)
         sc = re.search(r"score=([0-9.]+)", ev)
         parts += digest(rva, depth) or [f"    last attempt ({p[3]}{', score ' + sc.group(1) if sc else ''}): {ev[:220]}"]
+        import eligibility
+        if eligibility.released(rva):
+            parts.append("    RELEASED: every blocked-on= body it waited on has landed; try it afresh")
         if st and (ROOT / st.group(1)).exists():
             parts.append(f"    START FROM STASH: {st.group(1)}")
     parts += lift_lines(r)
