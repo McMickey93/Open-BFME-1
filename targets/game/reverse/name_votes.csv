@@ -3765,3 +3765,7 @@ game/GameEngine/Source/GameLogic/AI/PathfinderGroundCellsAlongLineRva003E2620.cp
 game/GameEngine/Source/Common/S3HandleCompareAssign.cpp|member||m_bfmeRefCount,49c8e142cf7ed9e71167a84f,gpt-6.1-sol,20261016061822-d7ae03,2026-10-16
 game/GameEngine/Source/Common/Bfme5ChainDisposals.cpp|member||m_bfmeNext,61675b7b57165ee823a6d54b,gpt-6.1-sol,20261016062042-cd6287,2026-10-16
 game/GameEngine/Source/Common/Bfme5ChainDisposals.cpp|member||m_bfmeField,96d1445260561a00b3d65793,gpt-6.1-sol,20261016062042-cd6287,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|member||m_vector28C,4c1784b1230015ccbe163d8f,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|member||m_input298,9fd27a54c1ee4b83bf4f8190,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|member||m_vector2B0,99a099eec4d6af8c826559d0,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|local|FormationBuild00245010::build|r,f0ad3060ad6cff204f6f6081,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
