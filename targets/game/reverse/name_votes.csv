@@ -5451,3 +5451,7 @@ game/GameEngine/Source/Common/Rva003C7B60CreateRenderObject.cpp|member||m_field0
 game/Libraries/Source/WWVegas/WW3D2/SimpleSceneClass_Unregister_Thunk.cpp|member||m_list74,d77ac570f6bc933ad0c573cb,gpt-6.1-sol,20261016082348-cd6d64,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/SimpleSceneClass_Unregister_Thunk.cpp|member||m_list8C,0b4bacf2103eef06a917248d,gpt-6.1-sol,20261016082348-cd6d64,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/SimpleSceneClass_Unregister_Thunk.cpp|member||m_listA4,2584939f65d4ab4a819ff1cf,gpt-6.1-sol,20261016082348-cd6d64,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E650.cpp|param|bfmeMin|a,a8d9ef017083b3c05bdaaa16,gpt-6.1-sol,20261016082355-3b2bc2,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E650.cpp|param|bfmeMin|b,b227d9fdc44c5d5986ea968d,gpt-6.1-sol,20261016082355-3b2bc2,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E650.cpp|param|bfmeMax|a,0717ebcfbd03a5b15bfe1eec,gpt-6.1-sol,20261016082355-3b2bc2,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E650.cpp|param|bfmeMax|b,1e07f1a07e4da70a56c632f7,gpt-6.1-sol,20261016082355-3b2bc2,2026-10-16
