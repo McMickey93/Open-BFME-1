@@ -20288,5 +20288,15 @@
   "after_sha256": "dc9aaf745682cf68c717962c376bbbe251ca40d1ceb507fbf08ec85753230a24",
   "evidence": "targets/game/reverse/identity_evidence/00143580-ilt-contradiction.md",
   "reason": "retail ILT 0x00004B92 (the thunk the converted 0x00144DC0 calls) contradicts the ThingTemplate::GetAssetList decoration and no tried spelling fits its window; the name was an analogy, so the 0x00143580 body keeps an address-derived name with unchanged class, access and signature"
+ },
+ {
+  "old_path": "game/Libraries/Source/WWVegas/WWSaveLoad/PtrRemapDynamicVectorDeletingDestructor.cpp",
+  "new_path": "game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp",
+  "old_name": "PointerRemapClass",
+  "new_name": "BfmeHandleCX",
+  "before_sha256": "139965ddd5ba66c049e05a562ff76ef4c36228c77aaee88270a3d02dabfbe95e",
+  "after_sha256": "dde90107001605c45577eac5c6d569b82b1a6f7517f00eec1523193bdb84142a",
+  "evidence": "targets/game/reverse/identity_evidence/009305d0-vectorclass-shaderclass-ctor.md",
+  "reason": "approved by the project lead 2026-10-16: false pairing. 0x00930D30 is slot 0 of the DynamicVectorClass<ShaderClass> vtable 0x0113C644, so its row moves from the deleted PtrRemapDynamicVectorDeletingDestructor.cpp (which only forced the wrong PtrRemapStruct instantiation) to matinfo.cpp; no PointerRemapClass name is renamed to BfmeHandleCX"
  }
 ]

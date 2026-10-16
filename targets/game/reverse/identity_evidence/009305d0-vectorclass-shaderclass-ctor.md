@@ -69,7 +69,18 @@ wrong.
   0x0113C644 at +0x14, the `DynamicVectorClass<ShaderClass>` table that
   MeshLoadContextClass (+0xAC, `Shaders`) and MaterialCollectorClass also store.
 
-Not changed here (same family, left for a follow-up): `??_G` 0x00930D30 and the
-`??1` pin 0x00930040 are still spelled `DynamicVectorClass<PtrRemapStruct>`; by the
-same table evidence (0x00930040 stores 0x0113C5E4) they are the ShaderClass
-instantiation too.
+## Follow-up: the DynamicVectorClass<ShaderClass> destructors
+
+Retail table 0x0113C644 (`DynamicVectorClass<ShaderClass>`, stored by 0x00930C50,
+MeshLoadContextClass +0xAC and MaterialCollectorClass) reads
+`0xD30D30 0xD2F9D0 0xD30D00 0xD30C80 0xD30CD0 0xD30CB0`: slot 0, the scalar-deleting
+destructor, is 0x00930D30. 0x00930D30 calls 0x00930040, which stores the
+`VectorClass<ShaderClass>` table 0x0113C5E4 and frees with `??_V` with no element
+destructor (ShaderClass has none).
+
+- 0x00930D30 -> `??_G?$DynamicVectorClass@VShaderClass@@@@UAEPAXI@Z` (matinfo.cpp);
+  the `??_G?$DynamicVectorClass@UPtrRemapStruct@PointerRemapClass@@@@UAEPAXI@Z`
+  claim at 0x00930D30 is retired, and PtrRemapDynamicVectorDeletingDestructor.cpp,
+  which existed only to emit that name, is deleted (it owns no row).
+- symbols.csv pin `??1?$DynamicVectorClass@UPtrRemapStruct@PointerRemapClass@@@@UAE@XZ`
+  0x00930040 re-homed to `??1?$DynamicVectorClass@VShaderClass@@@@UAE@XZ`.
