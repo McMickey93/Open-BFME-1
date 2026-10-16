@@ -2930,3 +2930,6 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDat
 game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_234,95994e33c1495c66ff03b3a4,gpt-6.1-sol,20261016052946-b156f5,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_238,3b53f59c6920128ba1afbe55,gpt-6.1-sol,20261016052946-b156f5,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_248,9b61d74b523b5e7c4dde5c2e,gpt-6.1-sol,20261016052946-b156f5,2026-10-16
+game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|type||BfmeItemKV,5fcff39914c94bd7af049461,gpt-6.1-sol,20261016053341-f8a5bc,2026-10-16
+game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeFirst,17c7970a91043a9df04a644a,gpt-6.1-sol,20261016053341-f8a5bc,2026-10-16
+game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeSecond,5f40451847907b47466fb53d,gpt-6.1-sol,20261016053341-f8a5bc,2026-10-16
