@@ -3,6 +3,7 @@
 // Open-BFME5: lift MASM dump to standalone C++ thunk.
 
 #include <new.h>
+#include <new>
 
 void *__cdecl operator new[](unsigned int size);
 void __cdecl operator delete[](void *pointer);
