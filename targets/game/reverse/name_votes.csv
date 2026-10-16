@@ -4345,3 +4345,5 @@ game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|p
 game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|local|Rva00377740Interface::Rva00377740|p,e9c06432e441aff867a322fd,gpt-6.1-sol,20261016065531-693b39,2026-10-16
 game/GameEngine/Source/Common/Bfme5ThreeMemberDtor.cpp|type||Gen_000F8A40,1095440ce2ac835868a35842,gpt-6.1-sol,20261016065227-1febca,2026-10-16
 game/GameEngine/Source/Common/Bfme5ThreeMemberDtor.cpp|member||m_bfmeFirst,91f7eb9d4962b9f6bea013fa,gpt-6.1-sol,20261016065227-1febca,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorConstructor.cpp|param|SpawnUnitBehaviorBase|m,762f8cc263a3a19bb0b2c7ea,gpt-6.1-sol,20261016065537-71af86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorConstructor.cpp|param|SpawnUnitBehavior::SpawnUnitBehavior|m,1cb567707a9e63bfc3e317ac,gpt-6.1-sol,20261016065537-71af86,2026-10-16
