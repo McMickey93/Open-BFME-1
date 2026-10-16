@@ -15,6 +15,9 @@ class GameLogic {
 public:
     Object *getFirstObject();
 };
+// ILT 0x358BE reaches this existing address-derived 7-byte getter.
+// Its int-sized EAX result is the Object pointer consumed by this caller.
+struct Gen_00383090 { int m(); };
 extern GameLogic *TheGameLogic;
 class Rva2225E0Filter {
 public:
@@ -36,7 +39,7 @@ public:
 void Rva00259160Owner::applyToFilteredObjects()
 {
     Object *targetObject = target;
-    Object *object = TheGameLogic->getFirstObject();
+    Object *object = reinterpret_cast<Object *>(reinterpret_cast<Gen_00383090 *>(TheGameLogic)->m());
     while (object != 0) {
         Rva00259160Context *currentContext = context;
         if (currentContext->filter.accepts(object, targetObject->getControllingPlayer()))
