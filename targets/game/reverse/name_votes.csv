@@ -2279,3 +2279,5 @@ game/GameEngine/Source/Common/Rva0046F060DrawImageAt.cpp|param|drawImage|y1,d76a
 game/GameEngine/Source/GameLogic/Object/Update/SpecialAbilityUpdate_apply.cpp|local|SpecialAbilityUpdate::rva002A7E90|tmpl,d36035627934ac43dcd5ab93,gpt-6.1-sol,20261016041545-af99cc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorRva001FE970.cpp|member||m_field2c,00d310bd5e09f6da02e93d35,gpt-6.1-sol,20261016041552-a4a0bd,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorRva001FE970.cpp|member||m_field28,976035f8cd5c04763df615ca,gpt-6.1-sol,20261016041552-a4a0bd,2026-10-16
+game/GameEngine/Source/GameLogic/Map/SidesListClearSideStorage.cpp|type||Rva0019BE80SideInfo,d24227e1b0ca16e643326068,gpt-6.1-sol,20261016041557-807ded,2026-10-16
+game/GameEngine/Source/GameLogic/Map/SidesListClearSideStorage.cpp|function|Rva0019BE80SidesList@|clearSideStorageAt0019B4C0,b6a6d3d8519e03943ffc70cb,gpt-6.1-sol,20261016041557-807ded,2026-10-16
