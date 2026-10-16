@@ -2266,3 +2266,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCto
 game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value11,1a486340e2f9790d8381da46,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||field12f0,c787c21123e6fc1df558864c,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||field12f4,e8db3a72e425ed79ae220f53,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|function||Rva00589040Draw,1e6bddd0c0e9a19bbd3cf3e0,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
+game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|param|Rva00589040Draw|v1,740506fb26dc32c7f159616a,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
+game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|param|Rva00589040Draw|v2,89bf7d683154c598207e6353,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
