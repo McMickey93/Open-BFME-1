@@ -4365,3 +4365,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cp
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_240c,ef9b18b3f54958f0f6855945,gpt-6.1-sol,20261016065210-10a187,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorOnDie.cpp|member||m_weaponOffset78,2ca52ff21aa64d49356c5e70,gpt-6.1-sol,20261016065847-661126,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorOnDie.cpp|local|FireWeaponWhenDeadBehavior::onDie|d,c6acf255c03a2e218ab5e864,gpt-6.1-sol,20261016065847-661126,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdAttackState_update.cpp|member||m_targetID3f8,ca39f71bd7db2ff67ffa3214,gpt-6.1-sol,20261016065842-b97c74,2026-10-16
