@@ -2584,3 +2584,4 @@ game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorCalcFli
 game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeFlagBA,6effd3ac9dbe2e2c441e19c8,gpt-6.1-sol,20261016051327-470824,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,3bba99048ec298aead04230e,gpt-6.1-sol,20261016051327-470824,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1907.cpp|function|BfmeHostBA@|bfmeSaveBA,ff78c2f42f211cfa564a9462,gpt-6.1-sol,20261016051327-470824,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1838.cpp|function|BfmeHolderXB@|bfmeOnXB,b0437a158b0ffd07fdbb2cfa,gpt-6.1-sol,20261016051332-ca12b0,2026-10-16
