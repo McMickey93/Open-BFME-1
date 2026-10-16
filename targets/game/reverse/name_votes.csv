@@ -2691,3 +2691,7 @@ game/GameEngine/Source/Common/BfmeConv997.cpp|member||m_bfmeArgA,8ddd9e6659d94aa
 game/GameEngine/Source/Common/BfmeConv997.cpp|member||m_bfmeStamp,17c10931a55bbfaa3f028930,gpt-6.1-sol,20261016051439-451f89,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/RubbleRiseUpdateModuleDataCtorThunk.cpp|member||m_dwordB4,fc7842dee35a219f61972c93,gpt-6.1-sol,20261016051830-56f9ea,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/RubbleRiseUpdateModuleDataCtorThunk.cpp|member||m_dwordC4,d8c175ca23df4c4b654549f5,gpt-6.1-sol,20261016051830-56f9ea,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_228,79a7633c22742eceaf1be78e,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_234,95994e33c1495c66ff03b3a4,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_238,3b53f59c6920128ba1afbe55,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_248,9b61d74b523b5e7c4dde5c2e,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
