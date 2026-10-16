@@ -2271,3 +2271,8 @@ game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|param|Rva00589040Draw|
 game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|param|Rva00589040Draw|v2,89bf7d683154c598207e6353,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
 game/GameEngine/Source/GameClient/GUI/AptPalantirHeroSelectorResetSlots.cpp|member||m_bfmeABC,a05080ed56045d0a65900bef,gpt-6.1-sol,20261016041533-e90af4,2026-10-16
 game/GameEngine/Source/GameClient/GUI/AptPalantirHeroSelectorResetSlots.cpp|function|AptPalantirHeroSelector@|rva0058d930,c382ac4123b5a6734dd2ebe0,gpt-6.1-sol,20261016041533-e90af4,2026-10-16
+game/GameEngine/Source/Common/Rva0046F060DrawImageAt.cpp|function||Rva0046F060DrawImageAt,eb290143a4cba76f1f309385,gpt-6.1-sol,20261016041539-1e548c,2026-10-16
+game/GameEngine/Source/Common/Rva0046F060DrawImageAt.cpp|param|drawImage|x0,90274b98f85359b34dcb605d,gpt-6.1-sol,20261016041539-1e548c,2026-10-16
+game/GameEngine/Source/Common/Rva0046F060DrawImageAt.cpp|param|drawImage|y0,aa85de89bf28ceaa03d3efef,gpt-6.1-sol,20261016041539-1e548c,2026-10-16
+game/GameEngine/Source/Common/Rva0046F060DrawImageAt.cpp|param|drawImage|x1,a5a0130f3dc019c1b399cb11,gpt-6.1-sol,20261016041539-1e548c,2026-10-16
+game/GameEngine/Source/Common/Rva0046F060DrawImageAt.cpp|param|drawImage|y1,d76a1770e8064e7f3edadbe3,gpt-6.1-sol,20261016041539-1e548c,2026-10-16
