@@ -2122,3 +2122,13 @@ game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_cto
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_zero160,397d16175f4a2e2ad22e2197,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_field19c,f9dfbb6abc81a49ca455da42,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_field1a0,613bd002e99b0fa2a0e470d4,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value08,f6fb0cd2a9155ffe73dd40e3,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value0C,071ca3d8394d5ead238d0492,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_name0,f821059e26e84f4427f29c6c,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_name1,7cd4338afeb1c0598a7eb702,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_name2,b9d916ea60d6fcd368760052,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_name3,0377d914eef4ada64ec151bd,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value20,7dc5c1a62ce4aa5895ec08bc,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value24,ef86b131cce1fa1c30956d68,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value28,2a135cb1622eabffeaa6a0c2,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_flag2C,cec9a5366603d7d26b717f42,gpt-6.1-sol,20261016041432-a218df,2026-10-16
