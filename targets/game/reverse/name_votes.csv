@@ -5122,3 +5122,11 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_
 game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field0080,8d29caf21e32b7d7f58a584f,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field00A0,a7b3c80f0f521690fe20f702,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field0004,8644468c51771c7fc88a81da,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|type||S4BuiltRva005A01F0,3a12499f6a77c709b421d98c,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|member||m_00,e2f77dca05aa15d496acf124,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|member||m_04,a92af8dba16716d7e3239a50,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|member||m_09,b70abfdd4cd94b5d8fdddd29,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|member||m_0C,f4cc106f0e8bdf87dd127363,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|member||m_10,c3cc860a76cd7098ed5f3122,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|member||m_14,2057a149494d43b6f6dcc6dd,gpt-6.1-sol,20261016074051-da5346,2026-10-16
+game/GameEngine/Source/Common/Rva005A01F0AttackNuggetFactory.cpp|local|s4ParseFieldsRva005A01F0|t,bac77a53de050b5388a33567,gpt-6.1-sol,20261016074051-da5346,2026-10-16
