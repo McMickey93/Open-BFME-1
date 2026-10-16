@@ -2245,3 +2245,6 @@ game/GameEngine/Source/GameLogic/Object/Update/StealthDetectorUpdateConstructor.
 game/GameEngine/Source/GameLogic/Object/Update/PointDefenseLaserUpdateCtorThunk.cpp|member||m_f14,e85de16710c57a55f8930fba,gpt-6.1-sol,20261016043143-740631,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PointDefenseLaserUpdateCtorThunk.cpp|member||m_f18,6388d024a0d5ab5d724d5ecd,gpt-6.1-sol,20261016043143-740631,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorConstructor.cpp|member||m_f18,0dd6e548896771f3b567ab67,gpt-6.1-sol,20261016043152-96c25a,2026-10-16
+game/GameEngine/Source/GameNetwork/LANAPIConstructor.cpp|member||m_bfme_0x34,7efec201f36e32502f017f7a,gpt-6.1-sol,20261016043200-fec085,2026-10-16
+game/GameEngine/Source/GameNetwork/LANAPIConstructor.cpp|member||m_bfme_0x60,819d4bbd0f8ba39679c8c396,gpt-6.1-sol,20261016043200-fec085,2026-10-16
+game/GameEngine/Source/GameNetwork/LANAPIConstructor.cpp|member||m_bfme_0x64,a7d141ae9c66726ede0bfe9d,gpt-6.1-sol,20261016043200-fec085,2026-10-16
