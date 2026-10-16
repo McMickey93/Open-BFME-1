@@ -5796,3 +5796,4 @@ game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptScoreScreenConstructor
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShroudCollectDirtyCells.cpp|local|W3DShroud::collectDirtyCells|a,44f9936e317e33d7f150d111,gpt-6.1-sol,20261016130957-8ce124,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShroudCollectDirtyCells.cpp|local|W3DShroud::collectDirtyCells|b,4ac3ba3935432f1b42abe9fc,gpt-6.1-sol,20261016130957-8ce124,2026-10-16
 game/GameEngine/Source/Common/System/UnicodeString.cpp|local|UnicodeString::nextToken|tmp,c522cc124f016e784e9b03fc,gpt-6.1-sol,20261016131002-996bfd,2026-10-16
+game/Libraries/Source/collisionmanager/BfmeConv597.cpp|local|BfmeThingCGD::bfmeOneCGD|n,2df3c8bfa2bcf0a231a4289f,gpt-6.1-sol,20261016131007-a3562a,2026-10-16
