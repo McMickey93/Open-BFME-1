@@ -3895,3 +3895,7 @@ game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|l
 game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|y,a0f61809c6bfa61d730e653b,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
 game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|x1,286873c6f7981c1e78bd91d6,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
 game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|y1,6d9997b6b62ad8497d8c5f6a,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeGetBlockZone,ed251d891eaac443e442e250,gpt-6.1-sol,20261016062409-edc145,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeGetWaypoint,a37e286191b2fee27f2358f7,gpt-6.1-sol,20261016062409-edc145,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeHasWaypoints,54ae2fa74b1ebc82c956ba6c,gpt-6.1-sol,20261016062409-edc145,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeInteractsWithBridge,a9e7a548847193381d350940,gpt-6.1-sol,20261016062409-edc145,2026-10-16
