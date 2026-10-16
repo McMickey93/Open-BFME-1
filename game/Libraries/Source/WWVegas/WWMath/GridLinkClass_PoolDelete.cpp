@@ -14,6 +14,9 @@
 
 class GridLinkClass;
 
+// Keep the retail lock-bearing specialization in ObjectPoolFreeObjectMemory.cpp.
+template<> void ObjectPoolClass<GridLinkClass,256>::Free_Object_Memory(GridLinkClass *);
+
 extern ObjectPoolClass<GridLinkClass,256> g_pool008DDA50;
 
 // ?dup_008ddeb0@@YAXPAX@Z

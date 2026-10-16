@@ -16,6 +16,9 @@
 // Do not instantiate the unlocked upstream template copy in this TU.
 template<> GridLinkClass *ObjectPoolClass<GridLinkClass,256>::Allocate_Object_Memory(void);
 
+// Keep the retail lock-bearing specialization in ObjectPoolFreeObjectMemory.cpp.
+template<> void ObjectPoolClass<GridLinkClass,256>::Free_Object_Memory(GridLinkClass *);
+
 DEFINE_AUTO_POOL(GridLinkClass,256);
 
 
