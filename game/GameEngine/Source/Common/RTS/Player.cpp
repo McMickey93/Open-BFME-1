@@ -118,6 +118,7 @@ template Int BitFlags<116>::size() const;
 // +0x2c, not at the +0x30 this header's two-base layout gives getNext(). Read it at
 // retail's offset so this TU stops emitting a wrong ?getNext@BuildListInfo COMDAT.
 static inline BuildListInfo *bfmeBuildListNext(BuildListInfo *b) { return *(BuildListInfo **)((char *)b + 0x2c); }
+static inline void bfmeSetBuildListNext(BuildListInfo *b, BuildListInfo *n) { *(BuildListInfo **)((char *)b + 0x2c) = n; }
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -841,7 +842,7 @@ void Player::addToBuildList(Object *obj)
 	newInfo->setLocation(*obj->getPosition());
 	newInfo->setAngle(obj->getOrientation());
 	newInfo->setNumRebuilds(0);	 // Can't rebuild. 
-	newInfo->setNextBuildList(m_pBuildList);
+	bfmeSetBuildListNext(newInfo, m_pBuildList);
 	m_pBuildList = newInfo;
 } 
 
@@ -855,7 +856,7 @@ void Player::addToPriorityBuildList(AsciiString templateName, Coord3D *pos, Real
 	newInfo->setAngle(angle);
 	newInfo->markPriorityBuild();
 	newInfo->setNumRebuilds(1);	 // Build once. 
-	newInfo->setNextBuildList(m_pBuildList);
+	bfmeSetBuildListNext(newInfo, m_pBuildList);
 	m_pBuildList = newInfo;
 } 
 
@@ -4945,7 +4946,7 @@ void Player::xfer( Xfer *xfer )
 
 			// allocate new build list
 			buildListInfo = newInstance( BuildListInfo );	
-			buildListInfo->setNextBuildList( NULL );
+			bfmeSetBuildListNext(buildListInfo, NULL);
 
 			// attach to the *end* of the list in the player
 			if( m_pBuildList == NULL )
@@ -4957,7 +4958,7 @@ void Player::xfer( Xfer *xfer )
 				while( bfmeBuildListNext(last) != NULL )
 					last = bfmeBuildListNext(last);
 
-				last->setNextBuildList( buildListInfo );
+				bfmeSetBuildListNext(last, buildListInfo);
 
 			}  // end else
 
