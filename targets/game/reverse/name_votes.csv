@@ -4102,3 +4102,15 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnE
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_container214,b88c0075880e23768faced52,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_field1cc,23d83969dd921eb59281c729,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_rva002C3020_28Position,ec57bfbd6f5db308cf0a01c3,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at030,1cee3f3d60c0950ebda5c906,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at194,97f3fd36fb24daa57d72ff3c,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at1cc,a684b4269ed0f4e72cd2cdf9,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at326,e27bf8ddb29a0e40ff5fdcb4,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at328,88fcc48c0be9db0ddf6306a5,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at204,2ee1d7e4c2d23d81c913da62,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at010,3da94de633e7b51e5bf9f897,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at01c,4c4c410933f0e84e82b37589,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at024,e25bda3ab9a708d8472061c6,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at04c,f2072fa6484425e3beb6e26f,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at050,aae139c3162de40d49a41fec,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at054,eb6aa67b5b8f1cd69409210d,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
