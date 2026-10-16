@@ -3226,3 +3226,4 @@ game/GameEngine/Source/Common/BfmeTreeSingletonYM.cpp|member||m_bfmeRight,622633
 game/GameEngine/Source/Common/BfmeTreeSingletonYM.cpp|member||m_bfmeNode,8b74424843a25a3882636933,gpt-6.1-sol,20261016060258-8e6c8f,2026-10-16
 game/GameEngine/Source/Common/BfmeTreeSingletonYM.cpp|member||m_bfmeCount,b3960f1c5e75b1143fbcac04,gpt-6.1-sol,20261016060258-8e6c8f,2026-10-16
 game/GameEngine/Source/Common/BfmeTreeSingletonYM.cpp|local|bfmeTreeYM|s_bfmeTreeYM,79d49469ba20d325dfd90a57,gpt-6.1-sol,20261016060258-8e6c8f,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIGroup_groupEnter.cpp|member||m_bfmeAI,28e73a1c2638046d86edbc8f,gpt-6.1-sol,20261016060304-d0508a,2026-10-16
