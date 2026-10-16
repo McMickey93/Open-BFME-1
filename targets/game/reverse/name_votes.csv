@@ -5503,3 +5503,4 @@ game/GameEngine/Source/GameClient/GUI/CrossFadeImage_draw.cpp|member||m_image2,0
 game/GameEngine/Source/Common/MapObject.cpp|type||Rva0088B70ThingRegistry,81302a74e1cb43d298015b66,gpt-6.1-sol,20261016121904-075de5,2026-10-16
 game/GameEngine/Source/Common/MapObject.cpp|function||Rva00088B70ReadMapObject,5bfe95aac6c9b748b1cfc580,gpt-6.1-sol,20261016121904-075de5,2026-10-16
 game/GameEngine/Source/Common/MapObject.cpp|local|Rva00088B70ReadMapObject|tmplate,7478964d130cd7d6cf8cbbbd,gpt-6.1-sol,20261016121904-075de5,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemComputeParticleVelocity.cpp|member||m_valueAB4,8339559f47a71ff4dcdb2043,gpt-6.1-sol,20261016122011-5783c2,2026-10-16
