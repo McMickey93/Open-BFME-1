@@ -77,6 +77,9 @@ public:
 	SpecialAbilityUpdate(Thing *, const ModuleData *);
     virtual ~SpecialAbilityUpdate();
 
+protected:
+    virtual bool continuePreparation();
+
 private:
     unsigned char m_pad[0x10];
     AudioEventRTS m_prepSoundLoop;
@@ -90,6 +93,7 @@ public:
 	RousingSpeechUpdate(Thing *, const ModuleData *);
 protected:
     virtual ~RousingSpeechUpdate();
+    virtual bool continuePreparation();
 
 private:
     _STL::list<int> m_speechObjectIDList;
@@ -109,4 +113,12 @@ RousingSpeechUpdate::RousingSpeechUpdate(Thing *thing, const ModuleData *data)
 RousingSpeechUpdate::~RousingSpeechUpdate()
 {
 	m_speechObjectIDList.clear();
+}
+
+// Extend-base override, a bare tail jump to the SpecialAbilityUpdate ILT
+// 0x0002FE05. Retail 0x00264B20; ilt_oracle CONFIRMS the protected-virtual
+// name exact at its ILT 0x0004A930.
+bool RousingSpeechUpdate::continuePreparation()
+{
+    return SpecialAbilityUpdate::continuePreparation();
 }

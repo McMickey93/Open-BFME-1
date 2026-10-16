@@ -122344,7 +122344,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0025d600@@YAXXZ,,0x0025D600,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0066a1a0
 ?j_0025d920@@YAXXZ,,0x0025D920,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
 ?j_0025dac0@@YAXXZ,,0x0025DAC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000C63F
-?j_0025e820@@YAXXZ,,0x0025E820,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_006a71e0
 ?j_0025e830@@YAXXZ,,0x0025E830,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000C63F
 ?j_0025f150@@YAXXZ,,0x0025F150,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0066a1a0
 ?j_0025f2c0@@YAXXZ,,0x0025F2C0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00658730
@@ -122361,7 +122360,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002644a0@@YAXXZ,,0x002644A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_00264580@@YAXXZ,,0x00264580,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=FUN_0042041e
 ?j_00264880@@YAXXZ,,0x00264880,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
-?j_00264b20@@YAXXZ,,0x00264B20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_006a71e0
 ?j_00264b30@@YAXXZ,,0x00264B30,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_00265950@@YAXXZ,,0x00265950,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_00265c20@@YAXXZ,,0x00265C20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
@@ -172541,3 +172539,5 @@ _lua_pushcclosure,,0x009904E0,5,game/Libraries/Source/Lua/lapi.c,matched,vendore
 ??1NetDisconnectFrameCommandMsg@@UAE@XZ,,0x00674100,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
 ??1NetDisconnectScreenOffCommandMsg@@UAE@XZ,,0x00674350,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
 ?attackTargetNow@HorseHordeContain@@UAEXPAVObject@@@Z,,0x0024D340,5,game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00241F10MemberAttackTarget.cpp,matched,extend-base override; tail jmp to HordeContain::attackTargetNow ILT 0x0000483B; ilt_oracle CONFIRMED exact at ILT 0x00004417;model=claude-opus-5-5;host=app
+?continuePreparation@GloriousChargeUpdate@@MAE_NXZ,,0x0025E820,5,game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateUpdate.cpp,matched,extend-base override; tail jmp to SpecialAbilityUpdate::continuePreparation ILT 0x0002FE05; ilt_oracle CONFIRMED exact at ILT 0x0001B1C6;model=claude-opus-5-5;host=app
+?continuePreparation@RousingSpeechUpdate@@MAE_NXZ,,0x00264B20,5,game/GameEngine/Source/GameLogic/Object/Update/RousingSpeechUpdate.cpp,matched,extend-base override; tail jmp to SpecialAbilityUpdate::continuePreparation ILT 0x0002FE05; ilt_oracle CONFIRMED exact at ILT 0x0004A930;model=claude-opus-5-5;host=app

@@ -71,9 +71,14 @@ public:
     // ILT0x0004315D -> full179B body at0x0025EB90, primary receiver, RET0.
     void clearAffected();
 };
-class GloriousChargeUpdate {
+class SpecialAbilityUpdate {
+protected:
+    virtual bool continuePreparation();
+};
+class GloriousChargeUpdate : public SpecialAbilityUpdate {
 protected:
     virtual UpdateSleepTime update();
+    virtual bool continuePreparation();
 public:
     Object *getObject() const { return *(Object **)((char *)this-8); }
     Rva0025EC70Data *getData() const { return *(Rva0025EC70Data **)((char *)this-0xc); }
@@ -128,4 +133,12 @@ UpdateSleepTime GloriousChargeUpdate::update()
 // Both the inactive path and active tick return the configured sleep value.
 sleep:
     return getData()->sleep;
+}
+
+// Extend-base override, a bare tail jump to the SpecialAbilityUpdate ILT
+// 0x0002FE05. Retail 0x0025E820; ilt_oracle CONFIRMS the protected-virtual
+// name exact at its ILT 0x0001B1C6.
+bool GloriousChargeUpdate::continuePreparation()
+{
+    return SpecialAbilityUpdate::continuePreparation();
 }
