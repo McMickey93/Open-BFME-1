@@ -1827,3 +1827,6 @@ game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_
 game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0a8,01932c7aead862cbc0c95d3c,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
 game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0ac,1e15a6924dd678e97e48a9a5,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
 game/GameEngine/Source/GameLogic/Object/WeaponTemplate_CopyAssign.cpp|member||m_d0b0,47e16e56a30de7c2519ab6f8,gpt-6.1-sol,20261016035658-ba5c74,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorModuleDataCtorThunk.cpp|member||m_08,c8701e945d0c1e8c2d4acbcb,gpt-6.1-sol,20261016035944-85a01a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorModuleDataCtorThunk.cpp|member||m_0c,4f65aa7b34ec0daaa8184c5b,gpt-6.1-sol,20261016035944-85a01a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorModuleDataCtorThunk.cpp|member||m_10,6e51615e2e1d22d49fbb9f77,gpt-6.1-sol,20261016035944-85a01a,2026-10-16
