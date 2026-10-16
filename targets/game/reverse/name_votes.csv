@@ -5446,3 +5446,4 @@ game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C2F0Box::copyFrom
 game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C2F0Box::copyFrom|b,49ac17f59a287ff417f16f97,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
 game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C310Box::copyFrom|a,f48d777abad261e6f31ab742,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
 game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C310Box::copyFrom|b,af3344ccbbfd2d65c8bb3369,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Rva001C0010GeometryPosition.cpp|member||m_rva001C0010_ac,d99bc7cdfc8f27fa1bb4f5e5,gpt-6.1-sol,20261016082219-d11df3,2026-10-16
