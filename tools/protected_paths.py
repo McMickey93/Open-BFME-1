@@ -21,6 +21,12 @@ RULES.
      tools/name_oracle.py and carries the trailer (the detector widened).
      pin_consistency_baseline.csv has its own key-level check in both hooks
      (pin_consistency --assert-shrink-only) and is only rule 1 here.
+  3. A commit that ADDS a `pin-identity-override: <name> 0x<address> ...`
+     line to targets/game/reverse/identity_evidence/ must declare each one in
+     a trailer `Identity-Override: <name> 0x<address>` (approved by the project
+     lead 2026-10-16). pin_consistency --delta honours only override lines the
+     judged diff adds and verifies the caller each one cites; this makes every
+     use visible in `git log --grep '^Identity-Override:'`.
 
 WHERE. .githooks/commit-msg runs `--commit-msg FILE` on the staged change;
 .githooks/pre-push runs `--range BASE TIP` on every outgoing commit, so a
@@ -245,9 +251,44 @@ HOWTO = ("  Add a trailer line to the commit message saying why the check change
          "  (git commit --amend keeps your change; the push hook checks every commit.)")
 
 
+EVIDENCE_DIR = "targets/game/reverse/identity_evidence/"
+OVERRIDE_LINE = re.compile(r"^[ \t]*pin-identity-override:[ \t]*(\S+)[ \t]+0x([0-9A-Fa-f]{1,8})\b",
+                           re.MULTILINE)
+OVERRIDE_TRAILER = re.compile(r"^Identity-Override:[ \t]*(\S+)[ \t]+0x([0-9A-Fa-f]{1,8})[ \t]*$",
+                              re.MULTILINE)
+
+
+def added_overrides(*diff_args):
+    """{(name, address)} of override lines a diff ADDS under identity_evidence/."""
+    text = git("diff", "-U0", "--no-color", "--no-renames", "--no-ext-diff", "--no-textconv",
+               *diff_args, "--", EVIDENCE_DIR, check=True).stdout
+    added = "\n".join(line[1:] for line in text.replace("\r", "").splitlines()
+                      if line.startswith("+") and not line.startswith("+++ "))
+    return {(name, int(address, 16)) for name, address in OVERRIDE_LINE.findall(added)}
+
+
+def undeclared_overrides(overrides, message):
+    body = "\n".join(line for line in message.splitlines() if not line.startswith("#"))
+    declared = {(name, int(address, 16)) for name, address in OVERRIDE_TRAILER.findall(body)}
+    return sorted(overrides - declared)
+
+
+def report_overrides(missing, where=""):
+    for name, address in missing:
+        print(f"protected_paths: pin-identity-override for {name} 0x{address:08X}{where} has no "
+              f"`Identity-Override: {name} 0x{address:08X}` trailer", file=sys.stderr)
+
+
 def check_staged(message_file):
     if git("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode == 0:
         return 0                        # a merge is judged per commit by the push hook
+    head = "HEAD" if git("rev-parse", "-q", "--verify", "HEAD").returncode == 0 else None
+    if head:
+        with open(message_file, encoding="utf-8", errors="replace") as handle:
+            missing = undeclared_overrides(added_overrides("--cached", head), handle.read())
+        if missing:
+            report_overrides(missing)
+            return 1
     # --no-renames: a protected file moved to an unprotected path is listed under its old name too
     staged = git("diff", "--cached", "--name-only", "--no-renames", "--diff-filter=ACMRDT",
                  check=True).stdout.split()
@@ -289,6 +330,12 @@ def check_range(base, tip):
     commits = git("rev-list", "--reverse", f"{base}..{tip}", check=True).stdout.split()
     bad, grown = 0, []
     for sha in commits:
+        parent = (parents_of(sha) or ["4b825dc642cb6eb9a060e54bf8d69288fbee4904"])[0]
+        missing = undeclared_overrides(added_overrides(parent, sha),
+                                       git("log", "-1", "--format=%B", sha, check=True).stdout)
+        if missing:
+            report_overrides(missing, f" in {sha[:10]}")
+            bad += 1
         paths = commit_paths(sha)
         hits = protected(paths)
         if not hits:

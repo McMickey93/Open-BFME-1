@@ -53,23 +53,32 @@ def symbols_text():
 
 
 def pin(name, address, notes="test"):
-    return {"name": name, "address": f"0x{address:08X}", "notes": notes}
+    return P._norm({"name": name, "address": f"0x{address:08X}", "notes": notes}, P.PIN_FIELDS)
 
 
 def row(name, address, size, source="game/Test/Fake.cpp", status="matched", notes="test"):
-    return {"name": name, "export_rva": "", "target_rva": f"0x{address:08X}",
-            "target_size": str(size), "source": source, "status": status, "notes": notes}
+    return P._norm({"name": name, "export_rva": "", "target_rva": f"0x{address:08X}",
+                    "target_size": str(size), "source": source, "status": status,
+                    "notes": notes}, P.FUNCTION_FIELDS)
+
+
+def _line(p):
+    return f"{p['name']},{p['address']},{P.joined(p)}\n"
 
 
 def fake_delta(tmp_path, rows, symbols_text, *, pins_added=(), pins_removed=(),
                rows_added=(), rows_removed=()):
-    """A Delta whose new side is ROWS/SYMBOLS_TEXT plus what it adds, no git."""
+    """A Delta whose new side is ROWS/SYMBOLS_TEXT with the diff applied, no git."""
     work = P.Delta.__new__(P.Delta)
     work.base_ref, work.new_ref = "BASE", ":"
-    work.new_rows = list(rows) + [dict(r) for r in rows_added]
+    work.new_rows = P._multiset_minus(list(rows), rows_removed, P.FUNCTION_FIELDS) + \
+        [dict(r) for r in rows_added]
+    gone = {_line(p) for p in pins_removed}
+    kept = "".join(l for l in symbols_text.splitlines(keepends=True)
+                   if l.replace("\r", "") not in gone)
     work.new_symbols = tmp_path / "symbols.csv"
-    extra = "".join(f"{p['name']},{p['address']},{p['notes']}\n" for p in pins_added)
-    work.new_symbols.write_text(symbols_text + extra, encoding="utf-8", newline="")
+    work.new_symbols.write_text(kept + "".join(_line(p) for p in pins_added),
+                                encoding="utf-8", newline="")
     work.pins_added, work.pins_removed = list(pins_added), list(pins_removed)
     work.rows_added, work.rows_removed = list(rows_added), list(rows_removed)
     work._group()
@@ -78,8 +87,11 @@ def fake_delta(tmp_path, rows, symbols_text, *, pins_added=(), pins_removed=(),
 
 def conflicts(tmp_path, rows, scanner, symbols_text, **diff):
     work = fake_delta(tmp_path, rows, symbols_text, **diff)
+    if diff.get("rows_added") or diff.get("rows_removed"):
+        scanner = P.Scanner(work.new_rows)
     return [(kind, name, address) for kind, name, address, _why
-            in P.new_identity_conflicts(work, scanner, ilt_oracle.oracle)]
+            in P.new_identity_conflicts(work, scanner, work.base_scanner(scanner),
+                                        ilt_oracle.oracle())]
 
 
 # -- identity: one address, many names --------------------------------------
@@ -141,22 +153,140 @@ def test_an_identity_row_on_another_identity_is_refused(tmp_path, rows, scanner,
 
 
 def test_an_edited_pin_is_not_an_added_pin(tmp_path, rows, scanner, symbols_text):
-    """A notes-only edit shows as -/+ of one (name, address); nothing is added."""
+    """A notes-only edit shows as -/+ of one (name, address); nothing is added,
+    and a pin that conflicted before and after is no NEW conflict."""
     assert conflicts(tmp_path, rows, scanner, symbols_text,
                      pins_added=[pin(FAKE, EASTRING_BODY, "new note")],
                      pins_removed=[pin(FAKE, EASTRING_BODY, "old note")]) == []
 
 
-def test_an_override_is_exact_and_needs_a_reason():
-    text = ("pin-identity-override: ?fake@Foo@@QAEXXZ 0x00891B80 thunk slot 4411 proves it\r\n"
-            "pin-identity-override: ?other@Foo@@QAEXXZ 0x00891B80 short\n")
-    allowed = {(n, int(a, 16)): r for n, a, r in P.OVERRIDE_RE.findall(text.replace("\r", ""))}
-    assert set(allowed) == {(FAKE, EASTRING_BODY)}
+# Review round 1 (2026-10-16), one regression per finding.
+
+BORDER_BODY = 0x00479040            # ?winSetEnabledBorderColor@GameWindow@@QAEHHH@Z, 37 bytes
+BORDER_VARIANT = "?winSetEnabledBorderColor@GameWindow@@QAEHII@Z"
+INI_LIST_BODY = 0x009E3880          # pinned ??1?$List@PAUINISection@@@@UAE@XZ, no row
+INI_BLOCK_LIST = "??1?$List@PAUINIBlock@@@@UAE@XZ"
+SPELLING = "?method@Rva00479040Window@@QAEHHH@Z"   # a second, address-derived spelling
+
+
+def test_r1_2_confirmed_does_not_beat_a_real_owner(tmp_path, rows, scanner, symbols_text):
+    """A signature variant salted to fit the slot's window is CONFIRMED; the
+    body already has a real name the slot does not refute, so it is refused."""
+    assert ilt_oracle.check(BORDER_VARIANT, BORDER_BODY)[0] == ilt_oracle.CONFIRMED
+    assert conflicts(tmp_path, rows, scanner, symbols_text,
+                     pins_added=[pin(BORDER_VARIANT, BORDER_BODY)]) == \
+        [("pin-on-other-identity", BORDER_VARIANT, BORDER_BODY)]
+
+
+def test_r1_3_a_pin_only_name_is_an_identity(tmp_path, rows, scanner, symbols_text):
+    """No functions.csv row names 0x009E3880; its real-name pin does."""
+    assert not scanner.identities.get(INI_LIST_BODY)
+    assert conflicts(tmp_path, rows, scanner, symbols_text,
+                     pins_added=[pin(INI_BLOCK_LIST, INI_LIST_BODY)]) == \
+        [("pin-on-other-identity", INI_BLOCK_LIST, INI_LIST_BODY)]
+
+
+def _row_at(rows, address):
+    return next(P._norm(r, P.FUNCTION_FIELDS) for r in rows
+                if int(r["target_rva"], 16) == address and P.names_identity(r))
+
+
+def test_r1_4_demoting_the_owner_in_the_same_commit_does_not_clear_the_way(
+        tmp_path, rows, scanner, symbols_text):
+    """A placeholder spelling, so the ILT has no say and only identity decides."""
+    owner = _row_at(rows, BORDER_BODY)
+    demoted = dict(owner, status="failed")
+    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+                      rows_added=[demoted], pins_added=[pin(SPELLING, BORDER_BODY)])
+    assert ("pin-on-other-identity", SPELLING, BORDER_BODY) in found
+    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+                      pins_added=[pin(SPELLING, BORDER_BODY)])
+    assert ("pin-on-other-identity", SPELLING, BORDER_BODY) in found
+
+
+def test_r1_4_a_rename_moves_the_identity(tmp_path, rows, scanner, symbols_text):
+    """Replacing the row at its own address and pinning the new name passes."""
+    owner = _row_at(rows, EASTRING_BODY)
+    renamed = dict(owner, name=FAKE)
+    old_pin = [r for r in (P._norm(x, P.PIN_FIELDS) for x in
+                           csv.DictReader(io.StringIO(symbols_text)))
+               if int(r["address"], 16) == EASTRING_BODY]
+    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+                      rows_added=[renamed], pins_removed=old_pin,
+                      pins_added=[pin(FAKE, EASTRING_BODY)])
+    assert found == []
+
+
+# A body named by one row and a same-name pin on the body itself; no ILT slot,
+# so only identity can decide.
+COPY_BODY = 0x009F5370
+COPY_NAME = ("??$_M_allocate_and_copy@PBUICoord2D@@@?$vector@UICoord2D@@V?$allocator@UICoord2D@@@"
+             "_STL@@@_STL@@IAEPAUICoord2D@@IPBU2@0@Z")
+# An abi-view pin whose body is named differently (its canonical).
+VIEW_NAME, VIEW_PIN = "?rva001C1EA0@Rva002E6B70Object@@QAEX_N@Z", 0x0001E33F
+
+
+def test_r1_5_a_rename_that_leaves_the_old_pin_behind_is_refused(tmp_path, rows, scanner,
+                                                                 symbols_text):
+    owner = _row_at(rows, COPY_BODY)
+    assert owner["name"] == COPY_NAME
+    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+                      rows_added=[dict(owner, name="?method@Rva009F5370Vector@@QAEXXZ")])
+    assert ("existing-pin-now-conflicts", COPY_NAME, COPY_BODY) in found
+    # the renamed row is refused too: the left-behind real pin still names the body
+    assert ("row-on-other-identity", "?method@Rva009F5370Vector@@QAEXXZ", COPY_BODY) in found
+
+
+def test_r1_5_losing_abi_view_makes_an_existing_pin_conflict(tmp_path, rows, scanner,
+                                                             symbols_text):
+    view = next(r for r in (P._norm(x, P.PIN_FIELDS) for x in
+                            csv.DictReader(io.StringIO(symbols_text)))
+                if r["name"] == VIEW_NAME and int(r["address"], 16) == VIEW_PIN)
+    assert P.pin_exemption(view) == "view"
+    plain = dict(view, notes="no longer a view", _overflow="")
+    found = conflicts(tmp_path, rows, scanner, symbols_text, pins_removed=[view],
+                      pins_added=[plain])
+    assert found == [("existing-pin-now-conflicts", VIEW_NAME, VIEW_PIN)]
+
+
+def test_r1_6_a_pin_inside_a_named_body_is_refused(tmp_path, rows, scanner, symbols_text):
+    assert conflicts(tmp_path, rows, scanner, symbols_text,
+                     pins_added=[pin(FAKE, BORDER_BODY + 0x10)]) == \
+        [("pin-inside-body", FAKE, BORDER_BODY + 0x10)]
+
+
+def test_r1_7_an_override_needs_a_verified_caller():
+    good = "caller=0x00C57408 its unwind funclet destroys the string through this body"
+    s = P.Scanner()
+    assert P.verify_override(s, None, "??1Rva8CD130String@@QAE@XZ", EASTRING_BODY, good) is None
+    assert "no caller" in P.verify_override(s, None, FAKE, EASTRING_BODY, "trust me, it is")
+    assert "never spells" in P.verify_override(s, None, FAKE, EASTRING_BODY, good)
+    assert "no E8/E9" in P.verify_override(s, None, "??1Rva8CD130String@@QAE@XZ",
+                                           EASTRING_BODY + 1, good)
+
+
+def test_r1_7_an_override_is_exact_and_never_excuses_a_contradiction():
     found = [("pin-on-other-identity", FAKE, EASTRING_BODY, "w"),
              ("pin-on-other-identity", FAKE, EASTRING_BODY + 1, "w"),
-             ("ilt-contradicted", FAKE, EASTRING_BODY, "w")]
-    assert P.apply_overrides(found, allowed) == found[1:], \
-        "an override names one (name, address) and never excuses an ILT contradiction"
+             ("ilt-contradicted", FAKE, EASTRING_BODY, "w"),
+             ("pin-inside-body", FAKE, EASTRING_BODY, "w")]
+    left, applied = P.apply_overrides(found, {(FAKE, EASTRING_BODY): "caller=0x1 why"})
+    assert left == found[1:] and [c for c, _r in applied] == found[:1]
+
+
+def test_r1_8b_one_parser_for_both_sides():
+    """A route= past an unquoted comma: --check (load_routes) reads only the
+    first notes field, abi_view the joined notes; the delta reads both the same
+    way on both sides."""
+    raw = next(csv.DictReader(io.StringIO(
+        "name,address,notes\n?x@@YAXXZ,0x00001000,first, then; route=0x00002000\n")))
+    norm = P._norm(raw, P.PIN_FIELDS)
+    assert norm["notes"] == "first" and P.pin_exemption(norm) is None
+    assert P.joined(norm) == "first, then; route=0x00002000"
+
+
+def test_r1_8c_the_diff_is_literal():
+    assert "--no-textconv" in P._diff_sides("A", "B") and "--no-ext-diff" in P._diff_sides("A", None)
 
 
 # -- the candidate list: one name, many addresses ---------------------------
@@ -254,7 +384,7 @@ def test_diff_rows_reads_every_side_and_folds_comma_overflow(tmp_path, monkeypat
     assert removed == [] and added == [P._norm({"name": "?b@@YAXXZ", "address": "0x00002000",
                                                 "notes": "two", None: [" with a comma"]},
                                                P.PIN_FIELDS)]
-    assert added[0]["notes"] == "two, with a comma"
+    assert added[0]["notes"] == "two" and P.joined(added[0]) == "two, with a comma"
     assert P.diff_rows("HEAD", ":", P.SYMBOLS_REL, P.PIN_FIELDS) == ([], [])
     _git(repo, "add", "-A")
     assert P.diff_rows("HEAD", ":", P.SYMBOLS_REL, P.PIN_FIELDS)[1] == added
@@ -304,12 +434,63 @@ PAIR_PLACEHOLDER = "??1?$pair@$$CBVAsciiString@@W4Rva001360E0Mapped@@@_STL@@QAE@
 
 
 def test_a_tail_jump_target_is_another_function(tmp_path, rows, scanner, symbols_text):
-    """The walk stops at the body the ILT slot serves; the release body's owners
-    say nothing about the pair destructor that tail-jumps into it."""
+    """The walk stops at the body the ILT slot serves; the release body's many
+    owners say nothing about the pair destructor that tail-jumps into it. (That
+    5-byte body itself carries a real-name pin, pair<AsciiString,ThingTemplate*>,
+    which is what a second spelling there is refused against.)"""
     assert scanner.image.resolve(PAIR_SLOT)[1] == [PAIR_SLOT, PAIR_BODY, RELEASE]
     assert len(scanner.identities[RELEASE]) > 1
-    assert conflicts(tmp_path, rows, scanner, symbols_text,
-                     pins_added=[pin(PAIR_PLACEHOLDER, PAIR_SLOT)]) == []
-    assert conflicts(tmp_path, rows, scanner, symbols_text,
-                     pins_added=[pin(PAIR_PLACEHOLDER, RELEASE)]) == \
-        [("pin-on-other-identity", PAIR_PLACEHOLDER, RELEASE)]
+    work = fake_delta(tmp_path, rows, symbols_text, pins_added=[pin(PAIR_PLACEHOLDER, PAIR_SLOT)])
+    found = P.new_identity_conflicts(work, scanner, work.base_scanner(scanner), ilt_oracle.oracle())
+    assert [(k, a) for k, _n, a, _w in found] == [("pin-on-other-identity", PAIR_SLOT)]
+    why = found[0][3]
+    assert "ThingTemplate" in why and f"0x{RELEASE:08X}" not in why
+
+
+def _evidence_repo(tmp_path, monkeypatch):
+    repo = tmp_path / "ev"
+    (repo / P.EVIDENCE_REL).mkdir(parents=True)
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.email", "t@example.invalid")
+    _git(repo, "config", "user.name", "t")
+    old = repo / P.EVIDENCE_REL / "a.md"
+    old.write_text(f"pin-identity-override: {FAKE} 0x00891B80 caller=0x00C57408 already spent\n")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "base")
+    monkeypatch.setattr(P, "ROOT", repo)
+    return repo
+
+
+def test_r1_1_overrides_are_read_from_the_index(tmp_path, monkeypatch):
+    """Pre-commit judges the index (new_ref ':'); the old `git grep` put
+    --cached after the pattern and died, so no staged override was ever read."""
+    repo = _evidence_repo(tmp_path, monkeypatch)
+    evidence = repo / P.EVIDENCE_REL / "a.md"
+    evidence.write_text(evidence.read_text() + "# proof\r\n"
+                        f"pin-identity-override: {FAKE} 0x00479040 caller=0x00C57408 "
+                        "the funclet calls it by this name\r\n")
+    assert P.added_overrides("HEAD", ":") == [], "unstaged: not in the index yet"
+    assert [(n, a) for n, a, _r in P.added_overrides("HEAD", None)] == [(FAKE, 0x00479040)]
+    _git(repo, "add", "-A")
+    assert [(n, a) for n, a, _r in P.added_overrides("HEAD", ":")] == [(FAKE, 0x00479040)], \
+        "only the line this diff adds; the committed one is spent"
+    _git(repo, "commit", "-qm", "new")
+    assert [(n, a) for n, a, _r in P.added_overrides("HEAD~1", "HEAD")] == [(FAKE, 0x00479040)]
+
+
+def test_r1_7_an_added_override_needs_its_trailer(tmp_path, monkeypatch):
+    import protected_paths
+    repo = _evidence_repo(tmp_path, monkeypatch)
+    monkeypatch.chdir(repo)
+    (repo / P.EVIDENCE_REL / "b.md").write_text(
+        f"pin-identity-override: {FAKE} 0x00479040 caller=0x00C57408 the funclet calls it\n")
+    _git(repo, "add", "-A")
+    message = tmp_path / "msg"
+    message.write_text("subject\n\nbody\n")
+    assert protected_paths.check_staged(str(message)) == 1
+    message.write_text(f"subject\n\nIdentity-Override: {FAKE} 0x00479040\n")
+    assert protected_paths.check_staged(str(message)) == 0
+    _git(repo, "commit", "-qm", "no trailer")
+    assert protected_paths.check_range("HEAD~1", "HEAD") == 1
+    _git(repo, "commit", "-q", "--amend", "-m", f"t\n\nIdentity-Override: {FAKE} 0x479040")
+    assert protected_paths.check_range("HEAD~1", "HEAD") == 0

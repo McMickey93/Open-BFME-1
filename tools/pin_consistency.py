@@ -36,11 +36,19 @@ candidate-list violations exist.
    pin exactly one address and are never compared to anything. A blanket check
    is not the answer -- many bodies legitimately carry several names (folded
    destructors reached through one release body, ILT stubs, routes, views) --
-   so `--delta` judges only what a diff ADDS: a pin whose thunk walk reaches
-   another identity and not its own, or an identity row on an address that
-   already names another, unless the image proves it (route=, abi-view=, an
-   ILT CONFIRMED, a placeholder spelling its own address) or a committed
-   identity_evidence line overrides it.
+   so `--delta` judges what a diff changes. Policy (project lead 2026-10-16):
+   a second spelling on an already-named body is refused; it lands as an
+   abi-view= row or with a verified override. Identities are matched rows AND
+   real-name pins, keyed by the body their address leads to (through ILT
+   slots only). Refused: an added pin or identity row on a body another name
+   holds (judged against base and new names together, so demoting the owner
+   in the same commit does not help; a row replaced at its own address is a
+   rename); an added pin inside a matched body; an existing pin the diff turns
+   into a conflict. Admitted by proof: route= and abi-view= rows the image
+   admits, a placeholder spelling its own address, and a real name the ILT
+   CONFIRMS over rivals that are placeholders or ILT-refuted. An override is a
+   `pin-identity-override:` line the same diff adds, citing a verified
+   caller=, declared by an `Identity-Override:` trailer.
 
 2. THE OTHER HALF OF THE CANDIDATE LIST. load_symbol_map seeds each name from
    its functions.csv rows and THEN appends its symbols.csv pins, so the additive
@@ -1146,8 +1154,11 @@ SELF_ADDRESSED = re.compile(r"^\?(?:[abdj]|dup)_([0-9A-Fa-f]{6,8})@@")
 # The machine-checkable override for an added pin or row the identity check
 # refuses: a line in a committed targets/game/reverse/identity_evidence/ file
 # that names the exact (name, address) and gives the proof, e.g.
-#   pin-identity-override: ??1Foo@@QAE@XZ 0x0001A2B3 <why, at least 12 characters>
-# It never overrides a candidate-list violation or an ILT contradiction.
+#   pin-identity-override: ??1Foo@@QAE@XZ 0x0001A2B3 caller=0x00123450 <why>
+# Only a line the judged diff ADDS counts, the commit must carry a matching
+# `Identity-Override: <name> 0x<address>` trailer (tools/protected_paths.py),
+# and the cited caller is verified (verify_override). It never overrides a
+# candidate-list violation, an ILT contradiction or a pin inside a body.
 OVERRIDE_RE = re.compile(
     r"^[ \t]*pin-identity-override:[ \t]*(\S+)[ \t]+0x([0-9A-Fa-f]{1,8})[ \t]+(\S[^\n]{11,})$",
     re.MULTILINE)
@@ -1169,6 +1180,17 @@ def _read_side(ref, rel):
     return _git_text("show", f"{ref}:{rel}" if ref != ":" else f":{rel}")
 
 
+def _diff_sides(base_ref, new_ref):
+    """`git diff` arguments for BASE against the new side, literal: no rename
+    pairing, no external diff, no textconv filter."""
+    literal = ["-U0", "--no-color", "--no-renames", "--no-ext-diff", "--no-textconv"]
+    if new_ref is None:
+        return literal + [base_ref]
+    if new_ref == ":":
+        return literal + ["--cached", base_ref]
+    return literal + [base_ref, new_ref]
+
+
 def diff_rows(base_ref, new_ref, rel, fields):
     """(removed, added) ledger rows between BASE and the new side, as dicts.
 
@@ -1178,14 +1200,7 @@ def diff_rows(base_ref, new_ref, rel, fields):
     literal. Lines split exactly where csv on the full file splits them (a bare
     CR included), so the derived base side parses like a full read would.
     """
-    if new_ref is None:
-        sides = [base_ref]
-    elif new_ref == ":":
-        sides = ["--cached", base_ref]
-    else:
-        sides = [base_ref, new_ref]
-    text = _git_text("diff", "-U0", "--no-color", "--no-renames", "--no-ext-diff",
-                     *sides, "--", rel)
+    text = _git_text("diff", *_diff_sides(base_ref, new_ref), "--", rel)
     side = {"+": [], "-": []}
     for line in text.splitlines():
         if line[:1] in side and not line.startswith(("+++ ", "--- ")):
@@ -1202,11 +1217,31 @@ def diff_rows(base_ref, new_ref, rel, fields):
 
 
 def _norm(row, fields):
-    """ROW as {field: text}, an unquoted comma's overflow folded back into the notes."""
+    """ROW as {field: text} plus `_overflow`, the fields an unquoted comma split
+    off. `notes` stays the first notes field, as csv.DictReader (build, --check,
+    load_routes) reads it; `joined()` is notes plus overflow, as abi_view reads it.
+    One parser for both sides of a delta, so a route= past a stray comma is read
+    the same way everywhere."""
     out = {field: row.get(field) or "" for field in fields}
-    if row.get(None):
-        out[fields[-1]] = ",".join([out[fields[-1]]] + row[None])
+    out["_overflow"] = ",".join(row.get(None) or ())
     return out
+
+
+def joined(row):
+    """The notes as tools/abi_view.py reads them: every field after the second."""
+    return row["notes"] + ("," + row["_overflow"] if row.get("_overflow") else "")
+
+
+def pin_exemption(row):
+    """'view', 'route' or None for a normalised symbols.csv row, read exactly as
+    --check reads it: abi-view= over the joined notes (abi_view.view_rows),
+    route= over the first notes field (load_routes)."""
+    import abi_view
+    if abi_view.is_view(joined(row)):
+        return "view"
+    if ROUTE_RE.search(row["notes"]):
+        return "route"
+    return None
 
 
 def _rva(row, column):
@@ -1306,7 +1341,6 @@ class Delta:
 
     def base_candidates(self, names):
         """name -> the base side's candidate SET, for NAMES (what candidate_lists would give)."""
-        import abi_view
         rows = collections.defaultdict(list)
         for row in self.new_rows:
             if row["name"] in names:
@@ -1326,37 +1360,22 @@ class Delta:
             pinned += self._by["pins-"].get(name, [])
             found = {_rva(r, "target_rva") for r in here}
             for pin in pinned:
-                notes = pin["notes"]
-                if not ROUTE_RE.search(notes) or abi_view.is_view(notes):
+                if pin_exemption(pin) != "route":
                     found.add(int(pin["address"], 16))
             out[name] = found
         return out
 
-    def added_pins(self):
-        removed = {(r["name"], int(r["address"], 16)) for r in self.pins_removed}
-        out = {}
-        for row in self.pins_added:
-            key = (row["name"], int(row["address"], 16))
-            if key not in removed:
-                out[key] = row["notes"]
-        return out
+    def new_pin_rows(self):
+        """Every new-side symbols.csv row, normalised (_norm), read once."""
+        if not hasattr(self, "_new_pins"):
+            with self.new_symbols.open("r", encoding="utf-8", newline="") as handle:
+                self._new_pins = [_norm(row, PIN_FIELDS) for row in csv.DictReader(handle)]
+        return self._new_pins
 
     def added_identity_rows(self):
         def ids(rows):
             return {(r["name"], _rva(r, "target_rva")) for r in rows if names_identity(r)}
         return ids(self.rows_added) - ids(self.rows_removed)
-
-
-def overrides(ref):
-    """{(name, address): reason} from the identity_evidence files on the new side."""
-    args = ["grep", "-h", "-I", "-E", "pin-identity-override:"]
-    if ref == ":":
-        args.append("--cached")
-    elif ref is not None:
-        args.append(ref)
-    text = _git_text(*args, "--", EVIDENCE_REL, ok=(0, 1))
-    return {(name, int(address, 16)): reason.strip()
-            for name, address, reason in OVERRIDE_RE.findall(text.replace("\r", ""))}
 
 
 def candidate_violations(scanner, lists, names=None):
@@ -1406,86 +1425,291 @@ def _is_ilt_slot(oracle, rva):
     return rest == 0 and 0 <= slot < len(oracle.target)
 
 
-def _identities_along(scanner, address, oracle):
-    """[(hop, {identity names})] from ADDRESS through ILT slots to the body they serve.
+def _counts_as_identity(row):
+    """Does this normalised pin assert WHICH function lives where it leads?
 
-    A pin names the function its address is: an ILT slot names its target, and
-    the walk stops at the first hop that is not a slot. Past it a 5-byte body
-    tail-jumps into ANOTHER function (a pair destructor into the shared string
-    release body), whose names say nothing about this one. `?j_` rows claim no
-    identity.
+    A route= or abi-view= row does not (it is a call encoding or a compilation
+    view), nor a placeholder spelling its own address (a compat pin), nor any
+    other placeholder or invented stand-in (ilt_oracle.tier): those are honest
+    "unknown" names. A real decorated name does, row or pin alike.
     """
-    hops = []
-    for hop in scanner.image.resolve(address)[1]:
-        hops.append((hop, {n for n in scanner.identities.get(hop, ()) if not n.startswith("?j_")}))
-        if not _is_ilt_slot(oracle, hop):
-            break
-    return hops
+    import ilt_oracle
+    if pin_exemption(row):
+        return False
+    spelled = SELF_ADDRESSED.match(row["name"])
+    if spelled and int(spelled.group(1), 16) == int(row["address"], 16):
+        return False
+    return ilt_oracle.tier(row["name"]) == "real"
 
 
-def new_identity_conflicts(delta_, scanner, oracle_factory):
-    """[(kind, name, address, why)]: what the diff ADDS at another identity's address.
+class Identities:
+    """One side's identities, keyed by the body each names.
 
-    An added pin passes when it is a route= or abi-view= row the image admits,
-    a placeholder spelling its own address, a real name retail's ILT CONFIRMS
-    there, a name that is an identity on its walk to the body it names (through
-    ILT slots, see _identities_along), or a pin whose walk there reaches no
-    identity at all. A real name the ILT CONTRADICTS is
-    refused outright (ilt_guard's rule, here for pre-push too). An added
-    identity row passes unless its exact address already names another
-    identity. Overrides are applied by the caller, to the identity kinds only.
+    A name is an identity of the body its address LEADS to: through ILT slots,
+    stopping at the first hop that is not a slot (past it a 5-byte body
+    tail-jumps into ANOTHER function, e.g. a pair destructor into the shared
+    string release body). Sources: matched, identity-naming functions.csv rows
+    (`?j_` thunk rows excluded) and real-name symbols.csv pins (see
+    _counts_as_identity) -- a pin-only name is as much a claim as a row.
+    """
+
+    def __init__(self, scanner, pin_rows, oracle):
+        self.scanner, self.oracle = scanner, oracle
+        self._walks = {}
+        self.names = collections.defaultdict(lambda: collections.defaultdict(set))
+        for rva, names in scanner.identities.items():
+            for name in names:
+                if not name.startswith("?j_"):
+                    self.names[self.body_of(rva)][name].add(("row", rva))
+        for row in pin_rows:
+            address = int(row["address"], 16)
+            if scanner.image.in_text(address) and _counts_as_identity(row):
+                self.names[self.body_of(address)][row["name"]].add(("pin", address))
+
+    def walk(self, address):
+        """The hops from ADDRESS to the body it names (see the class docstring)."""
+        found = self._walks.get(address)
+        if found is None:
+            found = []
+            if not _is_ilt_slot(self.oracle, address):
+                found = [address]       # not a slot: it names itself
+            else:
+                for hop in self.scanner.image.resolve(address)[1]:
+                    found.append(hop)
+                    if not _is_ilt_slot(self.oracle, hop):
+                        break
+            self._walks[address] = found
+        return found
+
+    def body_of(self, address):
+        return self.walk(address)[-1]
+
+    def at(self, body, excluding=None):
+        """{name} naming BODY, without the one source EXCLUDING=(name, (kind, address))."""
+        out = set()
+        for name, sources in self.names.get(body, {}).items():
+            if excluding and name == excluding[0]:
+                sources = sources - {excluding[1]}
+            if sources:
+                out.add(name)
+        return out
+
+
+def _judge_pin(name, address, here, oracle):
+    """(kind, why) when a pin NAME at ADDRESS conflicts with the names HERE
+    (the other identities of the body it names), else None."""
+    import ilt_oracle
+    real = ilt_oracle.tier(name) == "real"
+    if real:
+        verdict, _p, why = oracle.check(name, address)
+        if verdict == ilt_oracle.CONTRADICTED:
+            return "ilt-contradicted", why
+    if name in here or not here:
+        return None
+    if real and verdict == ilt_oracle.CONFIRMED:
+        # The ILT window fits ~2.5e-4 of names, so a signature variant of the
+        # real owner can be salted to fit. CONFIRMED wins only over names that
+        # are no claim (placeholders) or that the same slot refutes.
+        rivals = sorted(o for o in here if ilt_oracle.tier(o) == "real"
+                        and oracle.check(o, address)[0] != ilt_oracle.CONTRADICTED)
+        if not rivals:
+            return None
+        return "pin-on-other-identity", ("ILT CONFIRMED, but the body already carries the real "
+                                         "name(s) " + ", ".join(rivals))
+    return "pin-on-other-identity", "the body already carries " + ", ".join(sorted(here))
+
+
+def _key(row):
+    return row["name"], int(row["address"], 16)
+
+
+def _show_walk(identities, address):
+    return " -> ".join(f"0x{hop:08X}" for hop in identities.walk(address))
+
+
+def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle):
+    """[(kind, name, address, why)]: identity debt the diff ADDS.
+
+    * an added pin that names a body already carrying another identity, judged
+      against base and new identities together (deleting or demoting the named
+      row in the same commit does not clear the way), except names a row
+      REPLACED at its own address (a rename moves the identity, it does not
+      add one); an ILT-CONTRADICTED real name is refused outright; CONFIRMED
+      wins only over placeholder or ILT-refuted rivals (_judge_pin);
+    * an added pin landing strictly inside a matched body (no function starts
+      there), unless it is a route= or abi-view= row;
+    * an added route= or abi-view= pin the image does not admit;
+    * an existing pin the diff turns into a conflict it was not on the base
+      side (a renamed or re-pointed row, a pin losing its abi-view=);
+    * an added identity row on a body that already carries another identity.
     """
     import abi_view
-    import ilt_oracle
     refused = []
+    new_pins = delta_.new_pin_rows()
+    base_pins = _multiset_minus(new_pins, delta_.pins_added, PIN_FIELDS) + delta_.pins_removed
+    new_ids = Identities(new_scanner, new_pins, oracle)
+    base_ids = Identities(base_scanner, base_pins, oracle)
+    # A row removed at an address where an identity row is added is a rename:
+    # its old name leaves the body rather than standing beside the new one.
+    renamed = {(r["name"], _rva(r, "target_rva")) for r in delta_.rows_removed
+               if any(names_identity(a) for a in delta_._by["rows+"].get(_rva(r, "target_rva"), ()))}
+
+    def union_at(body, excluding):
+        out = new_ids.at(body, excluding)
+        for name, sources in base_ids.names.get(body, {}).items():
+            if excluding and name == excluding[0]:
+                sources = sources - {excluding[1]}
+            if any(not (kind == "row" and (name, rva) in renamed) for kind, rva in sources):
+                out.add(name)
+        return out
+
+    removed_keys = {_key(r) for r in delta_.pins_removed}
+    base_by_key = {_key(r): r for r in delta_.pins_removed}
+    added_keys = set()
     ctx = None
-    for (name, address), notes in sorted(delta_.added_pins().items()):
-        if abi_view.is_view(notes):
+    for row in sorted(delta_.pins_added, key=_key):
+        name, address = _key(row)
+        if (name, address) in removed_keys:
+            continue                        # a notes edit, re-judged below
+        added_keys.add((name, address))
+        exempt = pin_exemption(row)
+        if exempt == "view":
             if ctx is None:
                 ctx = abi_view.Context(rows=delta_.new_rows,
                                        pins=abi_view.load_pin_addresses(delta_.new_symbols))
-            canonical = abi_view.ABI_VIEW_RE.search(notes).group(1).strip()
-            why = abi_view.view_verdict(ctx, name, address, canonical, notes)
+            canonical = abi_view.ABI_VIEW_RE.search(joined(row)).group(1).strip()
+            why = abi_view.view_verdict(ctx, name, address, canonical, joined(row))
             if why:
                 refused.append(("abi-view", name, address, why))
             continue
-        claim = ROUTE_RE.search(notes)
-        if claim:
-            why = route_verdict(scanner, name, address, claim.group(1).strip())
+        if exempt == "route":
+            why = route_verdict(new_scanner, name, address,
+                                ROUTE_RE.search(row["notes"]).group(1).strip())
             if why:
                 refused.append(("route", name, address, why))
+            continue
+        if not new_scanner.image.in_text(address):
+            continue                        # a data pin names no code body
+        body = new_ids.body_of(address)
+        inside = new_scanner.interior_of(body)
+        if inside:
+            refused.append(("pin-inside-body", name, address,
+                            f"walk {_show_walk(new_ids, address)} lands +0x{body - inside[1]:X} "
+                            f"inside {inside[0]} (0x{inside[1]:08X}, {inside[2]} bytes)"))
             continue
         spelled = SELF_ADDRESSED.match(name)
         if spelled and int(spelled.group(1), 16) == address:
             continue
-        if ilt_oracle.tier(name) == "real":
-            verdict, _p, why = oracle_factory().check(name, address)
-            if verdict == ilt_oracle.CONTRADICTED:
-                refused.append(("ilt-contradicted", name, address, why))
-                continue
-            if verdict == ilt_oracle.CONFIRMED:
-                continue
-        hops = _identities_along(scanner, address, oracle_factory())
-        if any(name in names for _hop, names in hops) or not any(names for _hop, names in hops):
+        found = _judge_pin(name, address, union_at(body, (name, ("pin", address))), oracle)
+        if found:
+            refused.append((found[0], name, address,
+                            f"walk {_show_walk(new_ids, address)}: {found[1]}"))
+
+    # Existing pins the diff re-points or re-labels: refuse only a conflict the
+    # base side did not already have.
+    for row in new_pins:
+        key = _key(row)
+        name, address = key
+        if key in added_keys or not new_scanner.image.in_text(address):
             continue
-        refused.append(("pin-on-other-identity", name, address, "walk " + " -> ".join(
-            f"0x{hop:08X}" + (f" [{', '.join(sorted(names))}]" if names else "")
-            for hop, names in hops)))
+        edited = key in removed_keys
+        if not edited and not (set(new_ids.walk(address)) | set(base_ids.walk(address))) \
+                & delta_.changed:
+            continue
+        if pin_exemption(row):
+            continue
+        spelled = SELF_ADDRESSED.match(name)
+        if spelled and int(spelled.group(1), 16) == address:
+            continue
+        after = _judge_pin(name, address,
+                           new_ids.at(new_ids.body_of(address), (name, ("pin", address))), oracle)
+        if not after:
+            continue
+        before_row = base_by_key.get(key, row)
+        before = None if pin_exemption(before_row) else _judge_pin(
+            name, address, base_ids.at(base_ids.body_of(address), (name, ("pin", address))), oracle)
+        if not before:
+            refused.append(("existing-pin-now-conflicts", name, address,
+                            f"walk {_show_walk(new_ids, address)}: {after[1]}"))
+
     for name, address in sorted(delta_.added_identity_rows()):
-        others = {n for n in scanner.identities.get(address, ())
-                  if n != name and not n.startswith("?j_")}
-        if others:
+        if name.startswith("?j_"):
+            continue
+        body = new_ids.body_of(address)
+        here = union_at(body, (name, ("row", address)))
+        if here and name not in here:
             refused.append(("row-on-other-identity", name, address,
-                            "the address already names " + ", ".join(sorted(others))))
+                            "the body already carries " + ", ".join(sorted(here))))
     return refused
 
 
-OVERRIDABLE = ("pin-on-other-identity", "row-on-other-identity")
+OVERRIDABLE = ("pin-on-other-identity", "row-on-other-identity", "existing-pin-now-conflicts")
+OVERRIDE_CALLER_RE = re.compile(r"\bcaller=0x([0-9A-Fa-f]{1,8})\b")
+
+
+def added_overrides(base_ref, new_ref):
+    """[(name, address, reason)] of override lines the diff ADDS to identity_evidence/.
+    A line already committed overrides nothing: an override is spent with the
+    commit that cites it."""
+    text = _git_text("diff", *_diff_sides(base_ref, new_ref), "--", EVIDENCE_REL)
+    added = "\n".join(line[1:] for line in text.replace("\r", "").splitlines()
+                      if line.startswith("+") and not line.startswith("+++ "))
+    return [(name, int(address, 16), reason.strip())
+            for name, address, reason in OVERRIDE_RE.findall(added)]
+
+
+def base_identifier(name):
+    """The plain identifier a source file spells for a decorated NAME:
+    `?unregister@Manager@@...` -> unregister, `??1?$List@...` -> List,
+    `??0Foo@@...` -> Foo, `_foo` -> foo."""
+    found = re.match(r"\?(?:\?[0-9A-Z]|\?_[0-9A-Z])?(?:\?\$)?([A-Za-z_][A-Za-z0-9_]*)", name)
+    if found:
+        return found.group(1)
+    found = re.match(r"_*([A-Za-z][A-Za-z0-9_]*)", name)
+    return found.group(1) if found else None
+
+
+def verify_override(scanner, new_ref, name, address, reason):
+    """None when an override's cited fact checks out, else why not.
+
+    The reason must cite `caller=0x<rva>`: the start of a matched functions.csv
+    row with a hand-written source (not generated) whose retail bytes call or
+    jump to ADDRESS (E8/E9 rel32) and whose source spells NAME's identifier --
+    a byte-verified caller that reaches this address under this name.
+    """
+    cited = OVERRIDE_CALLER_RE.search(reason)
+    if not cited:
+        return "the reason cites no caller=0x<rva>"
+    caller = int(cited.group(1), 16)
+    rows = [r for r in (scanner.rows if scanner.rows is not None else build.load_all_function_rows())
+            if r["status"] == "matched" and int(r["target_rva"], 16) == caller
+            and not r["source"].startswith(progress.GENERATED_ROOTS)]
+    if len(rows) != 1:
+        return f"0x{caller:08X} is not the start of exactly one matched hand-written row"
+    row, size = rows[0], int(rows[0]["target_size"])
+    code = build.read_target_bytes(caller, size)
+    sites = [i for i in range(len(code) - 4) if code[i] in (0xE8, 0xE9)
+             and caller + i + 5 + struct.unpack_from("<i", code, i + 1)[0] == address]
+    if not sites:
+        return f"{row['name']} (0x{caller:08X}, {size} bytes) has no E8/E9 to 0x{address:08X}"
+    word = base_identifier(name)
+    try:
+        text = _read_side(new_ref, row["source"])
+    except (OSError, SystemExit):
+        return f"cannot read the caller's source {row['source']}"
+    if not word or not re.search(rf"\b{re.escape(word)}\b", text):
+        return f"the caller's source {row['source']} never spells {word!r}"
+    return None
 
 
 def apply_overrides(conflicts, allowed):
-    """CONFLICTS minus the identity kinds an override line names exactly."""
-    return [c for c in conflicts if not (c[0] in OVERRIDABLE and (c[1], c[2]) in allowed)]
+    """(conflicts left, [(conflict, reason) applied]): the identity kinds an
+    ALLOWED (name, address) -> reason entry names exactly."""
+    left, applied = [], []
+    for conflict in conflicts:
+        reason = allowed.get((conflict[1], conflict[2])) if conflict[0] in OVERRIDABLE else None
+        (applied if reason else left).append((conflict, reason) if reason else conflict)
+    return left, applied
 
 
 def delta(base_ref, new_ref=":"):
@@ -1494,6 +1718,7 @@ def delta(base_ref, new_ref=":"):
     import ilt_oracle
     started = time.monotonic()
     work = Delta(base_ref, new_ref)
+    applied, rejected = [], []
     try:
         if not (work.rows_removed or work.rows_added or work.pins_removed or work.pins_added):
             print(f"Pin delta: OK (no functions.csv/symbols.csv change vs {base_ref})")
@@ -1502,12 +1727,23 @@ def delta(base_ref, new_ref=":"):
         base_scanner = work.base_scanner(new_scanner)
         new_lists = candidate_lists(work.new_rows, work.new_symbols)
         debt, affected = new_candidate_debt(work, base_scanner, new_scanner, new_lists)
-        conflicts = new_identity_conflicts(work, new_scanner, ilt_oracle.oracle)
+        conflicts = new_identity_conflicts(work, new_scanner, base_scanner, ilt_oracle.oracle())
         if any(kind in OVERRIDABLE for kind, *_rest in conflicts):
-            conflicts = apply_overrides(conflicts, overrides(new_ref))
+            allowed = {}
+            for name, address, reason in added_overrides(base_ref, new_ref):
+                why = verify_override(new_scanner, new_ref, name, address, reason)
+                if why:
+                    rejected.append((name, address, why))
+                else:
+                    allowed[(name, address)] = reason
+            conflicts, applied = apply_overrides(conflicts, allowed)
     finally:
         work.close()
     took = time.monotonic() - started
+    for (kind, name, address, _why), reason in applied:
+        print(f"Pin delta: override applied [{kind}] {name} 0x{address:08X}: {reason}")
+    for name, address, why in rejected:
+        print(f"Pin delta: override NOT applied for {name} 0x{address:08X}: {why}")
     if debt or conflicts:
         if debt:
             print(f"Pin delta: FAIL {len(debt)} NEW candidate-list violation(s) vs {base_ref} "
@@ -1516,14 +1752,16 @@ def delta(base_ref, new_ref=":"):
                 print(f"    {violation['symbol']}")
                 print(f"        {violation['kind']}: {violation['evidence']}")
         if conflicts:
-            print(f"Pin delta: FAIL {len(conflicts)} added pin(s)/row(s) at an address that "
-                  "already carries a different identity, or that retail's ILT contradicts")
+            print(f"Pin delta: FAIL {len(conflicts)} pin(s)/row(s) name a body that already "
+                  "carries a different identity, or that retail's ILT contradicts")
             for kind, name, address, why in conflicts[:12]:
                 print(f"    [{kind}] {name} 0x{address:08X}")
                 print(f"        {why}")
-            print("    Pin the body the name really is, keep an address-derived name, use a route=/"
-                  "abi-view= row the image admits, or cite proof with a `pin-identity-override: "
-                  f"<name> 0x<address> <why>` line in a committed {EVIDENCE_REL}/ file.")
+            print("    Pin the body the name really is, keep an address-derived name, or use an "
+                  "abi-view=/route= row the image admits. For proof the checks cannot see, add "
+                  "`pin-identity-override: <name> 0x<address> caller=0x<rva> <why>` to an "
+                  f"{EVIDENCE_REL}/ file in this commit, with an `Identity-Override: <name> "
+                  "0x<address>` trailer.")
         print("    Existing debt never blocks; this diff ADDS the lines above. "
               "Do not record them anywhere to go green.")
         raise SystemExit(1)
