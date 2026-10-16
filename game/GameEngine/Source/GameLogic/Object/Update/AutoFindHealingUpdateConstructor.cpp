@@ -1,102 +1,94 @@
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/sweep
+// cl: /DNDEBUG /MD /EHsc
+// BFME-2 AutoFindHealingUpdateCtor.cpp at 2a0f7acb06 confirms trailing +0x20 zero.
+// BFME-1 factory 0x00119780 and retail body 0x00281480..0x002814CD establish
+// identity and layout; ProneUpdateConstructor.cpp supplies the BFME-1 inline
+// three-base shape instead of BFME-2 UpdateModule call and dummy vtables.
+class Thing;
+class ModuleData;
+class Object;
 
-// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Thing.h
-class Thing
-{
-};
-
-// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Module.h
-class ModuleData
-{
-};
-
-// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/AutoFindHealingUpdate.h
-class AutoFindHealingUpdate
+// upstream layout: GameLogic/Module/ObjectModule.h
+class ObjectModule
 {
 public:
-	AutoFindHealingUpdate( Thing *, const ModuleData * );
+	ObjectModule(Thing *, const ModuleData *);
+	virtual ~ObjectModule();
+
+protected:
+	void *m_moduleData;
+	Object *m_object;
 };
 
-__declspec(naked) AutoFindHealingUpdate::AutoFindHealingUpdate( Thing *, const ModuleData * )
+// upstream layout: GameLogic/Module/UpdateModule.h
+class UpdateModuleInterface
 {
-	__asm {
-		_emit 08Bh
-		_emit 044h
-		_emit 024h
-		_emit 008h
-		_emit 056h
-		_emit 08Bh
-		_emit 0F1h
-		_emit 08Bh
-		_emit 04Ch
-		_emit 024h
-		_emit 008h
-		_emit 050h
-		_emit 051h
-		_emit 08Bh
-		_emit 0CEh
-		_emit 0E8h
-		_emit 050h
-		_emit 05Ch
-		_emit 0D9h
-		_emit 0FFh
-		_emit 0C7h
-		_emit 046h
-		_emit 00Ch
-		_emit 0D0h
-		_emit 0C9h
-		_emit 009h
-		_emit 001h
-		_emit 0C7h
-		_emit 046h
-		_emit 010h
-		_emit 0A0h
-		_emit 0CBh
-		_emit 009h
-		_emit 001h
-		_emit 083h
-		_emit 0C8h
-		_emit 0FFh
-		_emit 033h
-		_emit 0C9h
-		_emit 089h
-		_emit 046h
-		_emit 018h
-		_emit 089h
-		_emit 046h
-		_emit 01Ch
-		_emit 089h
-		_emit 04Eh
-		_emit 014h
-		_emit 0C7h
-		_emit 006h
-		_emit 0C4h
-		_emit 0B3h
-		_emit 00Bh
-		_emit 001h
-		_emit 0C7h
-		_emit 046h
-		_emit 00Ch
-		_emit 000h
-		_emit 0B3h
-		_emit 00Bh
-		_emit 001h
-		_emit 0C7h
-		_emit 046h
-		_emit 010h
-		_emit 0F0h
-		_emit 0B2h
-		_emit 00Bh
-		_emit 001h
-		_emit 089h
-		_emit 04Eh
-		_emit 020h
-		_emit 08Bh
-		_emit 0C6h
-		_emit 05Eh
-		_emit 0C2h
-		_emit 008h
-		_emit 000h
-	}
-}
+public:
+	virtual void updateInterfaceAnchor();
+};
 
+// upstream layout: GameLogic/Module/BehaviorModule.h
+class BehaviorModuleInterface
+{
+public:
+	virtual void behaviorInterfaceAnchor();
+};
+
+// upstream layout: GameLogic/Module/UpdateModule.h
+// The three subobjects' names are opaque and keep the address of the table
+// AutoFindHealingUpdate installs in each (0x010BB3C4 at +0x00, 0x010BB300 at
+// +0x0C, 0x010BB2F0 at +0x10), so MSVC spells its vftables
+// ??_7AutoFindHealingUpdate@@6BVa010BB3C4Subobject@@@ and so on. Retail proves
+// which table sits at which offset, not what BFME called the base that
+// introduced it, and MSVC 7.1 derives that part of the name from the whole
+// declared hierarchy. novtable keeps the two interface subobjects from
+// installing tables of their own, so the inlined base stores stay
+// BehaviorModuleInterface's and UpdateModuleInterface's.
+class Va010BB3C4Subobject : public ObjectModule
+{
+public:
+	Va010BB3C4Subobject(Thing *thing, const ModuleData *moduleData) : ObjectModule(thing, moduleData) {}
+};
+
+class __declspec(novtable) Va010BB300Subobject : public BehaviorModuleInterface
+{
+};
+
+class __declspec(novtable) Va010BB2F0Subobject : public UpdateModuleInterface
+{
+};
+
+class UpdateModule : public Va010BB3C4Subobject,
+	public Va010BB300Subobject,
+	public Va010BB2F0Subobject
+{
+public:
+	UpdateModule(Thing *thing, const ModuleData *moduleData)
+		: Va010BB3C4Subobject(thing, moduleData),
+		  m_nextCallFrameAndPhase(0), m_indexInLogic(-1), m_pad(-1)
+	{
+	}
+
+private:
+	unsigned int m_nextCallFrameAndPhase;
+	int m_indexInLogic;
+	int m_pad;
+};
+
+// upstream layout: GameLogic/Module/AutoFindHealingUpdate.h
+class AutoFindHealingUpdate : public UpdateModule
+{
+public:
+	AutoFindHealingUpdate(Thing *, const ModuleData *);
+
+private:
+	int m_nextScanFrames;
+};
+
+AutoFindHealingUpdate::AutoFindHealingUpdate(Thing *thing, const ModuleData *moduleData)
+	: UpdateModule(thing, moduleData)
+{
+	// Retail writes the trailing field AFTER its own most-derived vftable batch
+	// and before the epilogue, which a plain store would sink past the batch;
+	// the volatile lvalue is what keeps it in the middle.
+	*(volatile int *)&m_nextScanFrames = 0;
+}
