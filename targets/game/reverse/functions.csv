@@ -122993,12 +122993,7 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006e9150@@YAXXZ,,0x006E9150,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009372D0
 ?j_006f8940@@YAXXZ,,0x006F8940,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00af88b0
 ?j_006f91e0@@YAXXZ,,0x006F91E0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00af89e0
-?j_006fbaf0@@YAXXZ,,0x006FBAF0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004559D
-?j_006fbb00@@YAXXZ,,0x006FBB00,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_008329d0
-?j_006fbb10@@YAXXZ,,0x006FBB10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00831900
 ?j_006fbfc0@@YAXXZ,,0x006FBFC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00025027
-?j_006fbfd0@@YAXXZ,,0x006FBFD0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000750E
-?j_006fbfe0@@YAXXZ,,0x006FBFE0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000015A5
 ?j_006fd6f0@@YAXXZ,,0x006FD6F0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d43e70
 ?j_00700810@@YAXXZ,,0x00700810,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009a4410
 ?j_00702580@@YAXXZ,,0x00702580,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d33420
@@ -123053,7 +123048,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0078ac70@@YAXXZ,,0x0078AC70,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002869B
 ?j_0078c750@@YAXXZ,,0x0078C750,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b8c440
 ?j_0078eaf0@@YAXXZ,,0x0078EAF0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b8d040
-?j_0078f990@@YAXXZ,,0x0078F990,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00021C79
 ?j_0078f9c0@@YAXXZ,,0x0078F9C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b8d040
 ?j_0078fae0@@YAXXZ,,0x0078FAE0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b8d040
 ?j_0078fcc0@@YAXXZ,,0x0078FCC0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b8d040
@@ -172541,3 +172535,9 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?ReAcquireResources@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D50,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::ReAcquireResources ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x10799;model=claude-opus-5-5;host=app
 ?reset@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D60,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::reset ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x2CBBF;model=claude-opus-5-5;host=app
 ??0Rva0094D1E0List@@QAE@HH@Z,,0x0094D1E0,101,game/GameEngineDevice/Source/W3DDevice/GameClient/Rva0094D1E0List_ctor.cpp,matched,Rva0094D1E0List ctor: callers W3DTreeBuffer/W3DShrubBuffer ctors; STLport tree header self-link via __node_alloc<true 0>::_M_allocate(0x24); clamp to 0x800 unsigned; cursor at +0x14 = leftmost;model=claude-opus-5-5;host=app
+?init@W3DGameClient@@UAEXXZ,,0x006FBAF0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DGameClient.cpp,matched,ZH extend-base forwarder (jmp GameClient::init ILT); ilt_oracle CONFIRMED at W3DGameClient vtable ILT 0x2E9C9;model=claude-opus-5-5;host=app
+?update@W3DGameClient@@UAEXXZ,,0x006FBB00,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DGameClient.cpp,matched,ZH extend-base forwarder (jmp GameClient::update ILT); ilt_oracle CONFIRMED at W3DGameClient vtable ILT 0x10A69;model=claude-opus-5-5;host=app
+?reset@W3DGameClient@@UAEXXZ,,0x006FBB10,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DGameClient.cpp,matched,ZH extend-base forwarder (jmp GameClient::reset ILT); ilt_oracle CONFIRMED at W3DGameClient vtable ILT 0x4734D;model=claude-opus-5-5;host=app
+?update@W3DInGameUI@@UAEXXZ,,0x006FBFD0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_dtor.cpp,matched,ZH extend-base forwarder (jmp InGameUI::update ILT); ilt_oracle CONFIRMED at W3DInGameUI vtable ILT 0x416D2;model=claude-opus-5-5;host=app
+?reset@W3DInGameUI@@UAEXXZ,,0x006FBFE0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_dtor.cpp,matched,ZH extend-base forwarder (jmp InGameUI::reset ILT); ilt_oracle CONFIRMED at W3DInGameUI vtable ILT 0x4B4C;model=claude-opus-5-5;host=app
+?init@W3DGameWindowManager@@UAEXXZ,,0x0078F990,5,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/W3DGameWindowManager.cpp,matched,ZH extend-base forwarder (jmp GameWindowManager::init ILT 0x21C79); ilt_oracle CONFIRMED at W3DGameWindowManager vtable ILT 0x35FA8;model=claude-opus-5-5;host=app

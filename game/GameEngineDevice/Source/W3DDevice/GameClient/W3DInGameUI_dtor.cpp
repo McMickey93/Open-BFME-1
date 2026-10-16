@@ -24,6 +24,8 @@ class InGameUI : public InGameUIPrimary, public InGameUISecondary
 {
 public:
 	virtual ~InGameUI();
+	virtual void update();					// ILT 0x0000750E
+	virtual void reset();					// ILT 0x000015A5
 
 private:
 	unsigned char m_unmodelled_0C[ 0x13AC - 0x0C ];
@@ -48,6 +50,8 @@ class W3DInGameUI : public InGameUI
 {
 public:
 	virtual ~W3DInGameUI();
+	virtual void update();
+	virtual void reset();
 
 private:
 	RefCounted *m_first[ 25 ];
@@ -75,4 +79,16 @@ W3DInGameUI::~W3DInGameUI()
 
 	releaseRef( m_buildingPlacementAnchor );
 	releaseRef( m_buildingPlacementArrow );
+}
+
+// ?update@W3DInGameUI@@UAEXXZ (retail 0x006FBFD0)
+void W3DInGameUI::update()
+{
+	InGameUI::update();
+}
+
+// ?reset@W3DInGameUI@@UAEXXZ (retail 0x006FBFE0)
+void W3DInGameUI::reset()
+{
+	InGameUI::reset();
 }

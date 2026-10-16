@@ -87,7 +87,6 @@ W3DGameWindowManager::~W3DGameWindowManager( void )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-// ?init@W3DGameWindowManager@@ present-unmatched
 void W3DGameWindowManager::init( void )
 {
 

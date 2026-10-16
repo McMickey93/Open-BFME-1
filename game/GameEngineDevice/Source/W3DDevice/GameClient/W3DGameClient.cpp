@@ -299,7 +299,6 @@ W3DGameClient::~W3DGameClient()
 //-------------------------------------------------------------------------------------------------
 /** Initialize resources for the w3d game client */
 //-------------------------------------------------------------------------------------------------
-// ?init@W3DGameClient@@UAEXXZ present-unmatched
 void W3DGameClient::init( void )
 {
 
@@ -311,7 +310,6 @@ void W3DGameClient::init( void )
 //-------------------------------------------------------------------------------------------------
 /** Per frame udpate, note we are extending functionality */
 //-------------------------------------------------------------------------------------------------
-// ?update@W3DGameClient@@UAEXXZ present-unmatched
 void W3DGameClient::update( void )
 {
 
@@ -324,7 +322,6 @@ void W3DGameClient::update( void )
 /** Reset this device client system.  Note we are extending reset functionality from
 	* the device independent client */
 //-------------------------------------------------------------------------------------------------
-// ?reset@W3DGameClient@@UAEXXZ present-unmatched
 void W3DGameClient::reset( void )
 {
 
