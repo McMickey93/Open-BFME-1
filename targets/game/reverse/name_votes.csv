@@ -3570,3 +3570,5 @@ game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|member||m_alt
 game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|member||m_squishable1f4,3a7c3d3290ef406e0fc62224,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|local|Object::canCrushOrSquish|d,3a35ef2959f7e0886600d8de,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|local|Object::canCrushOrSquish|f,49ac2d8f25ce0eb8da27b232,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
+game/GameEngine/Source/Common/Bfme5TinyFive.cpp|member||m_bfmeStamp,c2bd5653afa9cbcdf1cf7200,gpt-6.1-sol,20261016061505-620fce,2026-10-16
+game/GameEngine/Source/Common/Bfme5TinyFive.cpp|member||m_bfmeDeadline,45ab10ccb2e34fe6589898ed,gpt-6.1-sol,20261016061505-620fce,2026-10-16
