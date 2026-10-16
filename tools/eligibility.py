@@ -120,8 +120,11 @@ def is_lift_row(row):
     admitted -- it would invite a match against the wrong bytes -- and is
     listed by `lift_lane.py --suspect` instead."""
     source = row.get("source", "")
+    import progress
+    # Generated trees hold machine dumps, never a named lift: the one
+    # generated-path predicate (progress.GENERATED_ROOTS), not a local list.
     if (row.get("status") != "matched" or Path(source).suffix.lower() not in (".c", ".cpp")
-            or source.startswith(("game/gen_small/", "game/gen_asm/"))):
+            or source.startswith(progress.GENERATED_ROOTS)):
         return False
     return (row.get("name"), row.get("target_rva")) in _lift_keys()
 
