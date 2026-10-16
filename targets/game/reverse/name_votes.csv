@@ -2695,3 +2695,6 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDat
 game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_234,95994e33c1495c66ff03b3a4,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_238,3b53f59c6920128ba1afbe55,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDataConstructor.cpp|member||m_248,9b61d74b523b5e7c4dde5c2e,gpt-6.1-sol,20261016051844-5327ea,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme0C,b345226c0078e7a8c0a79651,gpt-6.1-sol,20261016051850-f09630,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme10,8e95d9dd5e96315de9864041,gpt-6.1-sol,20261016051850-f09630,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme14,a6c52f95fab872fe1d09a528,gpt-6.1-sol,20261016051850-f09630,2026-10-16
