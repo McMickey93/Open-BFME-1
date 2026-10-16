@@ -57,7 +57,7 @@ public:
 struct Rva005655C0PlayerList
 {
 	unsigned char m_padding00[ 0x0c ];
-	Player *m_localPlayer0c;
+	Player *m_localPlayer;
 };
 
 struct Rva00370730ModuleData
@@ -93,7 +93,7 @@ void Rva00370730CastleMemberInterface::run( Int, Int, Int mode )
 		if( moduleData->m_isCastleBehavior )
 		{
 			Player *localPlayer =
-				((Rva005655C0PlayerList *)ThePlayerList)->m_localPlayer0c;
+				((Rva005655C0PlayerList *)ThePlayerList)->m_localPlayer;
 			if( localPlayer ==
 				(*(Object * volatile *)( self - 0x08 ))->getControllingPlayer() )
 			{
