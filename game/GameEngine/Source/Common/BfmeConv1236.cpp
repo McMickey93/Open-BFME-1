@@ -8,10 +8,15 @@ struct BfmeVec4_1236
 	float w;
 };
 
+class Rva008AD8F0
+{
+public:
+	void method(void *a);
+};
+
 class BfmeB1236
 {
 public:
-	void bfmeApply1236(void *a);
 	void bfmeEmit1236(void *a, int b, void *c);
 	unsigned m_bfme00;
 	unsigned m_bfme04;
@@ -55,7 +60,7 @@ void bfmeGo1236(BfmeA1236 *a, BfmeB1236 *b, void *c)
 		reinterpret_cast<const BfmeS1209 *>(&b->m_bfme28));
 	((Gen_008D2C80 *)a)->bfmePush();
 	if ((b->m_bfme04 & 0x3f) == 0xf && !((unsigned char)(~(b->m_bfme04 >> 15)) & 1))
-		b->bfmeApply1236(b->m_bfme4c);
+		reinterpret_cast<Rva008AD8F0 *>(b)->method(b->m_bfme4c);
 	reinterpret_cast<BfmeThingDXH *>(a)->bfmeGoDXH(&b->m_bfme10);
 	b->bfmeEmit1236(a, 0, c);
 	reinterpret_cast<BfmeA1210 *>(a)->bfmePop1210();
@@ -90,7 +95,7 @@ void bfmeCombine1236(BfmeTransform1236 *result, BfmeTransform1236 *left, BfmeTra
 void bfmeTransform1236(void *context, BfmeB1236 *b, void *tail)
 {
 	if ((b->m_bfme04 & 0x3f) == 0xf && !((unsigned char)(~(b->m_bfme04 >> 15)) & 1))
-		b->bfmeApply1236(b->m_bfme4c);
+		reinterpret_cast<Rva008AD8F0 *>(b)->method(b->m_bfme4c);
 
 	BfmeTransform1236 *previous = g_bfmeArenaCursor;
 	BfmeTransform1236 *current = ++g_bfmeArenaCursor;

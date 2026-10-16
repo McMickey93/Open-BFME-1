@@ -118,11 +118,16 @@ public:
 	void rva00244f00( Rva0024SourceHolder *src );
 };
 
+class BfmeHordeContainRoster
+{
+public:
+	void rva0023B9F0();
+};
+
 class FormationBuild00245010 : public Rva00244F00Owner
 {
 public:
 	void build( Int arg );
-	void rva0023b9f0();
 
 private:
 	_STL::list<Int> m_list138;
@@ -183,6 +188,6 @@ void FormationBuild00245010::build( Int arg )
 		add( &data->m_input298, 0, &field1B8 );
 	if ( !data->m_vector2B0.empty() )
 		rva00244f00( data );
-	rva0023b9f0();
+	reinterpret_cast<BfmeHordeContainRoster *>( this )->rva0023B9F0();
 	m_flag13C = true;
 }

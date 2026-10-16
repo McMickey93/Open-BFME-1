@@ -130,7 +130,7 @@ public:
 };
 
 struct Rva8BB1A0Bounds { float left, top, right, bottom; };
-class BfmeB1236 { public: void bfmeApply1236(void *a); };
+class Rva008AD8F0 { public: void method(void *a); };
 class BfmeN1235 { public: void bfmeInitEmpty1235(Rva8BB1A0Bounds *bounds); };
 class BfmeSlotState1289 { public: void bfmeSetAxis1289(int axis, float value, int enabled); };
 class BfmeRef008A4B20;
@@ -198,7 +198,7 @@ bool rva008AF650Implementation(Rva008AF650Object *object, BfmeStrVKI *key, AptVa
                 int count = value->toInteger();
                 int old = text->m_count2c;
                 if (text->m_flags6c & 4)
-                    ((BfmeB1236 *)object)->bfmeApply1236(object->m_unknown4c);
+                    ((Rva008AD8F0 *)object)->method(object->m_unknown4c);
                 text->m_count2c = count;
                 if (count > text->m_limit28)
                     text->m_count2c = text->m_limit28;

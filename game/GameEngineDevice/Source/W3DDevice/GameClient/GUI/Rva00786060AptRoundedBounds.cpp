@@ -15,7 +15,7 @@ public:
  virtual void slot1();
  virtual Rva00785FD0Item *item();
 };
-class BfmeHub982 { public: void bfmeBegin982C(); void bfmeEnd982C(); };
+class BfmeHub982 { public: void bfmeBegin982C(); void bfmeEnd982C0078B4F0(); };
 class BfmeHostDO { public: void bfmeApplyDO(const char *, int, int, int, int); };
 class Rva00785FD0Renderer;
 extern Rva00785FD0Renderer *g_rva00785FD0Renderer;
@@ -55,6 +55,6 @@ void applyRoundedBounds00786060(const char *name, int first, BoundsSource0078606
  extent.y = (float)(int)(extent.y + 0.5f);
  ((BfmeHostDO *)g_rva012F19E8WindowManager)->bfmeApplyDO(name, (int)&minPt, (int)&extent, first, fourth);
  Rva00782E10::s_value = saved;
- reinterpret_cast<BfmeHub982 *>(g_rva00785FD0Renderer)->bfmeEnd982C();
+ reinterpret_cast<BfmeHub982 *>(g_rva00785FD0Renderer)->bfmeEnd982C0078B4F0();
 }
 

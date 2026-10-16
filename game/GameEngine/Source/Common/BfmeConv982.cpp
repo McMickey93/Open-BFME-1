@@ -113,7 +113,7 @@ class BfmeHub982
 {
 public:
 	void bfmeBegin982C();
-	void bfmeEnd982C();
+	void bfmeEnd982C0078B4F0();
 };
 
 class Rva00785FD0Renderer;
@@ -133,7 +133,7 @@ void bfmeGo982C(BfmeT982 *t)
 
 	reinterpret_cast<BfmeHub982 *>(g_rva00785FD0Renderer)->bfmeBegin982C();
 	t->bfmeTouch982C();
-	reinterpret_cast<BfmeHub982 *>(g_rva00785FD0Renderer)->bfmeEnd982C();
+	reinterpret_cast<BfmeHub982 *>(g_rva00785FD0Renderer)->bfmeEnd982C0078B4F0();
 }
 
 int __cdecl bfmeHelpWI(int color);

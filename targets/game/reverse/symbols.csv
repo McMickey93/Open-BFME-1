@@ -76678,7 +76678,6 @@ name,address,notes
 ?bfmeAppendXO@BfmeQueueXO@@QAEXHHHH@Z,0x008FBCB0,append
 ?bfmeApply1023@BfmeB1023@@QAEXH@Z,0x00003FE4,pin
 ?bfmeApply1040@@YAXPAUBfmeS1040@@H@Z,0x009A6630,pin
-?bfmeApply1236@BfmeB1236@@QAEXPAX@Z,0x008AD8F0,pin
 ?bfmeApply1243@BfmeA1243@@QAEXPAX00@Z,0x008B65E0,pin
 ?bfmeApply1VNI@BfmeOwnerVNI@@QAEXXZ,0x0002191D,Open-BFME5 first source-distinct owner apply tail-call from the 0x00298530 update
 ?bfmeApply2VNI@BfmeOwnerVNI@@QAEXXZ,0x0002191D,Open-BFME5 second source-distinct owner apply tail-call from the 0x00298530 update
@@ -77715,7 +77714,7 @@ name,address,notes
 ?bfmeEnd1100@BfmeZ1100@@QAEXH@Z,0x0003D578,pin
 ?bfmeEnd1111@BfmeK1111@@QAEXXZ,0x000097BE,pin
 ?bfmeEnd1236@BfmeA1236@@QAEXXZ,0x008D2B80,pin
-?bfmeEnd982C@BfmeHub982@@QAEXXZ,0x00008D4B,pin
+?bfmeEnd982C0078B4F0@BfmeHub982@@QAEXXZ,0x00008D4B,route=0x0078B4F0; 0x00786060 and BfmeConv982 reach the matched row through this thunk
 ?bfmeEndAT@BfmeHostAT@@QAEXPAVBfmeAgentAT@@@Z,0x000289F7
 ?bfmeEndRenderToTexture@@YAPAXXZ,0x0003FAC6,ILT of W3DShaderManager::endRenderToTexture called from ScreenDefaultFilter::postRender
 ?bfmeEndSGA@@YAXXZ,0x0000AF33,pin
@@ -87657,7 +87656,7 @@ name,address,notes
 ?rva001cb270@Rva0041D290Condition@@QAEXPAVXfer@@@Z,0x00026DD7,REL32 pin from Drawable::xfer 0x0041D290 (ILT to unclaimed 0x001CB270)
 ?rva00225960@Rva00225960Owner@@QAEXXZ,0x0001727E,route=0x00225960;retail 0x0022BFF0 call +0x10 via 0x0022CDB0 and 0x0002ECC1
 ?rva00225960@Rva00225960Owner@@QAEXXZ,0x0004098F,route=0x00225960;retail 0x0024A900 call +0x10 via 0x0024B8D0 and 0x0001727E
-?rva0023b9f0@FormationBuild00245010@@QAEXXZ,0x0001D9D0,thunk to 0x0023B9F0; 0x00245010 calls this thunk as a no-argument thiscall on the same object it passes to 0x00244F00; target body is still a gen dump so the name stays address-derived
+?rva0023B9F0@BfmeHordeContainRoster@@QAEXXZ,0x0001D9D0,route=0x0023B9F0; 0x00245010 calls this thunk as a no-argument thiscall on the same object it passes to 0x00244F00
 ?rva0023cdd0@Rva0023CDD0Owner@@QAEHHPAH@Z,0x0003087D,ILT thunk called from 0x00245B20 (rva00245b20); jumps to retail 0x0023CDD0, still an unnamed dump
 ?rva0024CD10Message@@YAHHHHH@Z,0x00001BAE,assigned-body helper for Rva0024CD10
 ?rva0026E380OwnerHelper@Rva0026E380Owner@@QAEXXZ,0x002A9850,body pin; caller0026E380+0B viaILT3FA30 passesECX no args; complete2403B helper savesreceiverEDI and returnsRET0 at+516; independentcaller0025EF90; proof=targets/game/reverse/identity_evidence/0026e380-condition-dispatch.md
