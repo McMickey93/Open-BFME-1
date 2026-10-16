@@ -52,7 +52,7 @@ private:
 	BezierProjectileSixWords m_firstCurve;
 	BezierProjectileSixWords m_secondCurve;
 	unsigned int m_garrisonHitKillFX;
-	unsigned int m_value84;
+	unsigned int m_flightPathAdjustDistPerSecond;
 	unsigned char m_flag88;
 	unsigned char m_pad89[ 3 ];
 	float m_minCurveFraction;
@@ -92,7 +92,7 @@ BezierProjectileBehaviorModuleData::BezierProjectileBehaviorModuleData()
 	m_firstCurve.clear();
 	m_secondCurve.clear();
 	m_garrisonHitKillFX = 0;
-	m_value84 = 0;
+	m_flightPathAdjustDistPerSecond = 0;
 	m_flag88 = 0;
 	m_minCurveFraction = 0.33f;
 	m_maxCurveFraction = 0.66f;

@@ -702,6 +702,7 @@ game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleD
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_flag48,m_tumbleRandomly,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_value4C,m_garrisonHitKillCount,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_value80,m_garrisonHitKillFX,gpt-6.1-sol+grok,applied,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_value84,m_flightPathAdjustDistPerSecond,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_effect94,m_groundHitFX,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_effect98,m_groundBounceFX,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_effect9C,m_groundHitWeapon,gpt-6.1-sol+grok,applied,2026-10-16
