@@ -1278,3 +1278,4 @@ game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||
 game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||m_28,c6dbe69503d3d3c06b83ef6b,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|param|contains|p,25428fcd48c9b68091dedf16,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|local|DistanceUpdate003C5990::update|p,315cf38c7fcc372c198695d8,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
+game/GameEngine/Source/GameNetwork/V2FeslBrowserEvents.cpp|function||Rva007F79F0Callback,f98ae198f7f98a33573c1c61,gpt-6.1-sol,20261016025933-4627db,2026-10-16
