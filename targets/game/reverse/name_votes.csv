@@ -4205,3 +4205,5 @@ game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|
 game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|Rva00265150RJFilter|p,7f9c414ba10b5a60205bc3e3,gpt-6.1-sol,20261016064151-d38322,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|Rva00260180SelfFilter|p,2db1cb76cb6e97078b6d104d,gpt-6.1-sol,20261016064151-d38322,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|PartitionFilterRelationship|p,c93aae4f4776302d8bd3c595,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdFollowThruStateUpdate.cpp|member||m_ai204,675229205505c5181a2ffb15,gpt-6.1-sol,20261016064212-f5c123,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdFollowThruStateUpdate.cpp|member||m_machine1c,ebb361bbde93ca893e45b21c,gpt-6.1-sol,20261016064212-f5c123,2026-10-16
