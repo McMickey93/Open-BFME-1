@@ -5094,3 +5094,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/Rva00764290Updat
 game/GameEngine/Source/Common/BfmeConv1703.cpp|type||BfmeOwnerFU,e951fe4da418b74d6eb4e45f,gpt-6.1-sol,20261016073902-7e700d,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1703.cpp|member||m_bfmeSubFU,d8e0bd9b43e770057f7b4829,gpt-6.1-sol,20261016073902-7e700d,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1703.cpp|function|BfmeOwnerFU@|bfmeGoFU,1989bb172d72f454b9b1813d,gpt-6.1-sol,20261016073902-7e700d,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/Rva0090FBA0ConvertColors.cpp|type||Rva0090FBA0Vector3,530f59a1bc97737c237c7485,gpt-6.1-sol,20261016073732-4a5cdf,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/Rva0090FBA0ConvertColors.cpp|type||Rva0090FBA0Vector4,45dad72745b677ab2941f101,gpt-6.1-sol,20261016073732-4a5cdf,2026-10-16
