@@ -2048,3 +2048,6 @@ game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorTh
 game/GameEngine/Source/GameLogic/Object/Behavior/PropagandaTowerBehaviorModuleDataConstructor.cpp|member||m_unmodelled_08,7840a78df6be9653cc0b0e78,gpt-6.1-sol,20261016041042-07dbbf,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/PropagandaTowerBehaviorModuleDataConstructor.cpp|member||m_unmodelled_0C,d2c98fb61b320c827cef14e3,gpt-6.1-sol,20261016041042-07dbbf,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/PropagandaTowerBehaviorModuleDataConstructor.cpp|member||m_unmodelled_20,2939db8e731545af5e9ce55e,gpt-6.1-sol,20261016041042-07dbbf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/CloudBreakSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_210,5a83a12cfddadfd610ceab9a,gpt-6.1-sol,20261016041054-1faf4f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/CloudBreakSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_214,d7cea49aa812e8c683b2345e,gpt-6.1-sol,20261016041054-1faf4f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/CloudBreakSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_21C,663b6fb2640476139b0cf835,gpt-6.1-sol,20261016041054-1faf4f,2026-10-16
