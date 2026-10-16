@@ -12,21 +12,21 @@ public:
 private:
 	unsigned int m_gap4;
 	unsigned int m_u8;
-	unsigned char m_b0c;
+	unsigned char m_useCloseRangeWhileMounted;
 	unsigned char m_pad0d;
 	unsigned char m_pad0e;
 	unsigned char m_pad0f;
-	unsigned int m_u10;
-	unsigned char m_b14;
-	unsigned char m_b15;
+	unsigned int m_minimumSwitchTime;
+	unsigned char m_useHordeRangeWeapon;
+	unsigned char m_useRealVictimRange;
 };
 
 // ??0DualWeaponBehaviorModuleData@@QAE@XZ
 DualWeaponBehaviorModuleData::DualWeaponBehaviorModuleData()
 {
 	m_u8 = 0;
-	m_b0c = 0;
-	m_u10 = 0;
-	m_b14 = 0;
-	m_b15 = 0;
+	m_useCloseRangeWhileMounted = 0;
+	m_minimumSwitchTime = 0;
+	m_useHordeRangeWeapon = 0;
+	m_useRealVictimRange = 0;
 }
