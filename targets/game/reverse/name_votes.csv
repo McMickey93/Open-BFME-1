@@ -2544,3 +2544,9 @@ game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarConstructor.cpp|membe
 game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarConstructor.cpp|member||f2e0,1aa888f0af89d108a4d5f0f4,gpt-6.1-sol,20261016050604-568c63,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarConstructor.cpp|member||f2e4,f72e2c7744312c2bb69c11a3,gpt-6.1-sol,20261016050604-568c63,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarConstructor.cpp|member||f2e8,950fe7c4f10ca35d129f4d82,gpt-6.1-sol,20261016050604-568c63,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp|member||m_bfme30,5a29beff433497604eca5364,gpt-6.1-sol,20261016050829-96179b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp|member||m_bfme34,0a115a2d6d87696ea7758d71,gpt-6.1-sol,20261016050829-96179b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp|member||m_bfme38,efa8d256366d47d879550ae9,gpt-6.1-sol,20261016050829-96179b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp|member||m_bfme3c,2af48393c84f6bfc64b50b78,gpt-6.1-sol,20261016050829-96179b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp|member||m_bfme3d,a8abb9d56057be724cb4542d,gpt-6.1-sol,20261016050829-96179b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cpp|member||m_bfme40,89aab1018b25161a4c5d10f2,gpt-6.1-sol,20261016050829-96179b,2026-10-16
