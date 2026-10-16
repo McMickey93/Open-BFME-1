@@ -1,5 +1,5 @@
 // ?_FunctionAptActionPush@AptActionInterpreter@@SAXPAV1@PAULocalContextT@1@@Z
-// partial score=0.0968 date=2026-09-29
+// partial score=0.9677 date=2026-10-16
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 
 // EA Apt ActionScript Push (opcode 0x96), retail 0x008CA9D0: slot 0x96 of
@@ -54,6 +54,13 @@ public:
 	AptValue **m_registers58;
 	char m_pad5C[4];
 	AptValue **m_constants;
+
+	void push(AptValue *value)
+	{
+		m_stack[m_stackTop++] = value;
+		if (!value->GetMaxRefCountHit())
+			value->AddRef();
+	}
 };
 
 extern AptValue *gpUndefinedValue;
@@ -67,17 +74,16 @@ void AptActionInterpreter::_FunctionAptActionPush(
 	{
 		AptValue *value = (*(AptValue ***)(p + 4))[i];
 		if (value->getType() == 8 && !value->isUndefined())
-		{
-			value = interpreter->m_constants[value->m_index];
-		}
+			interpreter->push(interpreter->m_constants[value->m_index]);
 		else if (value->getType() == 4 && !value->isUndefined())
 		{
-			value = interpreter->m_registers58[value->m_index];
-			if (value == 0)
-				value = gpUndefinedValue;
+			AptValue *r = interpreter->m_registers58[value->m_index];
+			if (r)
+				interpreter->push(r);
+			else
+				interpreter->push(gpUndefinedValue);
 		}
-		interpreter->m_stack[interpreter->m_stackTop++] = value;
-		if (!value->GetMaxRefCountHit())
-			value->AddRef();
+		else
+			interpreter->push(value);
 	}
 }
