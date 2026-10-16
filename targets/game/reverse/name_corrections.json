@@ -10837,7 +10837,7 @@
   "before_sha256": "f7e5d09f1cbf930ac788454f477de0f8a34230a240809a07b39ad4de302464bb",
   "after_sha256": "d2b55bf8e53365558121bbc7b5b9e7ba359746f86886b4d7d44fffbbd6e4b1ec",
   "evidence": "targets/game/reverse/identity_evidence/00905140-gen-handle.md",
-  "reason": "The matched WaterRenderObjClass::ReAcquireResources source declares DX8Wrapper::Create_Render_Target as returning Gen_005D2040 and stores it in a Gen_005D2040 member. That signature refutes the bank\u2019s RefCountPtr<TextureClass> return."
+  "reason": "The matched WaterRenderObjClass::ReAcquireResources source declares DX8Wrapper::Create_Render_Target as returning Gen_005D2040 and stores it in a Gen_005D2040 member. That signature refutes the bank’s RefCountPtr<TextureClass> return."
  },
  {
   "old_path": "targets/game/reverse/attempts/0x00410f90.cpp",
@@ -20358,5 +20358,35 @@
   "after_sha256": "726eca3afb6b6430f1ebdb2228ced6f6d13428dde55219d5aa1920acabe737a3",
   "evidence": "targets/game/reverse/identity_evidence/name-lane-disputes.md",
   "reason": "disputed: Retail FlightPathAdjustDistPerSecond at table RVA 0x00ca2140 uses the velocity parser. Matched BezierProjectileBehavior_update.cpp clamps movement once per frame using +0x84. Zero Hour DumbProjectileBehavior.cpp maps the same INI key through parseVelocityReal to m_flightPathAdjustDistPerFrame, proving the stored member is per-frame rather than per-second."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "erase",
+  "new_name": "dup_00456690",
+  "before_sha256": "19cdb9ffda4e0f5485955844f793e9d195d22bbd94bddd122d04130bd464dd24",
+  "after_sha256": "158d3a30e429bf39ed5ce6801fcef921aabb96801c6dd952f33322bf5eba7095",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch3-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "insert_unique",
+  "new_name": "dup_009401f0",
+  "before_sha256": "55e99127f6ea10d2ce13e42695eddb9d7de8cdcac8b89ae99fd477d55cb2e009",
+  "after_sha256": "5d5d008a0f2c1ee68ea192adc47206beed47bab720936d25ca4cca5eb668dd7e",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch3-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "push_back",
+  "new_name": "dup_00757e20",
+  "before_sha256": "c65f47c47f21420bff34a417ca5d48a50f7eed3a4ea4a382e9906137ebd903aa",
+  "after_sha256": "e658c6a048642f77e1c18e8cb001e1ad8aadcfc649c72373d603e010c18cbe73",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch3-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
  }
 ]
