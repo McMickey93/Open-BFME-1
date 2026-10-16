@@ -2077,3 +2077,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00733E30.cpp|t
 game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|function||Rva009F40A0DistanceSquared,6c35f13b1fa4353f7789872c,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
 game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|param|Rva009F40A0DistanceSquared|a,0c6afb0ef48899ebf9ad61a1,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
 game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|local|Rva009F40A0DistanceSquared|b,89ed7e395c60ed37b087ca60,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/Rva00972A30AddPrototype.cpp|local|Create_Rva00972880_Prototype|p,9b071d2964517af04d128059,gpt-6.1-sol,20261016041258-c763d2,2026-10-16
