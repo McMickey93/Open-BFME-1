@@ -3880,3 +3880,12 @@ game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|bfmeSwapCK#5|o,6
 game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|BfmeThingCK::bfmeSwapCK|o,ae3aba1abde994a365583b6e,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
 game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|local|BfmeThingCK::bfmeSwapCK|t,149710e7db897507bd6e25fe,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
 game/GameEngine/Source/Common/Rva005336D0Sort.cpp|local|Rva005336D0|n,d22c45e73fac9d1c5dc6d174,gpt-6.1-sol,20261016062304-52ecc4,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeNext,e3c5cb401b164dc8d85f5623,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmePrev,25dae7857a829723d33e5cf8,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeValue,8d221c41fe677175faa952c2,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeStamp,71c14c0360670b92956e8a42,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeTime,e218b38dab36f1c7d532d0ab,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeOffset,be866eb8d89d49b3825153fb,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeOwner,fd0129ef1f2464843bd79727,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeList,66bc0e72699baa5b2e8e312c,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
+game/GameEngine/Source/Common/Bfme5PruningSum.cpp|function|Gen_00250F50@|bfmeSum,bf2a49caebf316a8e7b36de4,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
