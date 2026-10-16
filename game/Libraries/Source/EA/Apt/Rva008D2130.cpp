@@ -12,12 +12,13 @@ public:
  static void operator delete(void *p,unsigned n) { TheBfmeFree(p,n); }
  void *m_nested;
 };
-class Rva0089C860State {
+// Retail unwind state 0 pushes 16 and the allocation, then calls the 0x008976D0 thunk.
+struct Gen_uws16_008976d0 { static void operator delete(void *,unsigned); };
+class Rva0089C860State : public Gen_uws16_008976d0 {
 public:
  Rva0089C860State(int value) { initialize(value); }
  Rva0089C860State *initialize(int);
  static void *operator new(unsigned n) { return Rva008C5D70Alloc(n); }
- static void operator delete(void *p,unsigned n) { TheBfmeFree(p,n); }
  int m_value,m_first,m_second,m_third;
 };
 class Gen_008bd690 { public:int m(); };
