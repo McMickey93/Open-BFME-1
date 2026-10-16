@@ -4975,3 +4975,9 @@ game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unkn
 game/GameEngine/Source/GameLogic/Object/Locomotor_rva001B7200.cpp|type||Rva001B7200Locomotor,e3e086d4f60919605b2c7e15,gpt-6.1-sol,20261016072224-157019,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Locomotor_rva001B7200.cpp|member||m_coord04,aae2a4c19d00f449e190997f,gpt-6.1-sol,20261016072224-157019,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Locomotor_rva001B7200.cpp|member||m_int0A8,4d3b6eb1f7c63a8f6f9044cc,gpt-6.1-sol,20261016072224-157019,2026-10-16
+game/GameEngine/Source/Common/Rva00409F40Loop.cpp|member||m_08,b5d37ca9a69af8a98a98bb0c,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
+game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|z,6ce1d3a648b745342b158ed5,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
+game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|p,22f96c36385642893bf0e182,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
+game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|s,4320d3d9e3bbda9f17109dbb,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
+game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|n,ec40cc30e970dfe58493c2e4,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
+game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|h,710c6196d2ae33877dcca463,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
