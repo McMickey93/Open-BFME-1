@@ -38,6 +38,7 @@ class INI
 {
 public:
 	const char *getNextToken(const char *seps = 0);		///< ILT thunk at 0x00850970
+	static void parseBool(INI *ini, void *instance, void *store, const void *userData);	///< 0x00852E00
 };
 
 // Retail .data VA 0x012B5F80: 51 command names and a NULL (208 B).
@@ -101,8 +102,17 @@ const char *TheCommandNames[] =
 class CommandButton
 {
 public:
+	static void parseDoubleClick(INI *, void *, void *, const void *);
 	static void parseCommand(INI *, void *, void *, const void *);
 };
+
+// ?parseDoubleClick@CommandButton@@SAXPAVINI@@PAX1PBX@Z
+// The CommandButton field table parses "DoubleClick" through this wrapper
+// (ILT 0x00036A07, retail 0x0049AB80), a tail jump to INI::parseBool.
+void CommandButton::parseDoubleClick(INI *ini, void *instance, void *store, const void *userData)
+{
+	INI::parseBool(ini, instance, store, userData);
+}
 
 // ?parseCommand@CommandButton@@SAXPAVINI@@PAX1PBX@Z
 void CommandButton::parseCommand(INI *ini, void *instance, void *store, const void *userData)
