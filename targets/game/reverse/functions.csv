@@ -122922,7 +122922,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006354e0@@YAXXZ,,0x006354E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000052BD
 ?j_00635b90@@YAXXZ,,0x00635B90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a35920
 ?j_00636d30@@YAXXZ,,0x00636D30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041AEC
-?j_00637d10@@YAXXZ,,0x00637D10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a1e8b0
 ?j_006384f0@@YAXXZ,,0x006384F0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00006CD0
 ?j_0063a730@@YAXXZ,,0x0063A730,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x007E86C0
 ?j_0063a8c0@@YAXXZ,,0x0063A8C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00be86c0
@@ -172541,3 +172540,4 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?dup_00478dd0@@YAXXZ,,0x00478DD0,13,game/GameEngine/Source/GameClient/GUI/GameWindow.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md;object-symbol=?winSetPrevInLayout@GameWindow@@QAEXPAV1@@Z;C++ alias: ilt_oracle contradicts this name at this body;model=claude-opus-5.5;host=GreatFaram
 ?reset@FrameData@@QAEXXZ,,0x00670220,5,game/GameEngine/Source/GameNetwork/FrameData.cpp,matched,ZH FrameData::reset forwards to init; retail tail jmp to init ILT 0x00022340 (ilt_oracle CONFIRMED); reset ILT 0x0003BB6F CONFIRMED;model=claude-opus-5-5;host=app
 ?removeAllSequentialScripts@ScriptEngine@@QAEXPAVTeam@@@Z,,0x0033E870,5,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineNotifyTeamDestruction.cpp,matched,ZH removeAllSequentialScripts(Team*) forwards to notifyOfTeamDestruction; retail tail jmp to ILT 0x00042910 (ilt_oracle CONFIRMED notifyOfTeamDestruction); own ILT 0x00040EFD CONFIRMED;model=claude-opus-5-5;host=app
+?getGameSpySlot@GameSpyStagingRoom@@QAEPAVGameSpyGameSlot@@H@Z,,0x00637D10,5,game/GameEngine/Source/GameNetwork/GameSpy/StagingRoomGameInfo.cpp,matched,ZH getGameSpySlot returns getSlot(index) (assert compiled out); retail tail jmp to GameInfo::getSlot ILT 0x0001EC18 (ilt_oracle CONFIRMED); own ILT 0x000061D6 CONFIRMED;model=claude-opus-5-5;host=app

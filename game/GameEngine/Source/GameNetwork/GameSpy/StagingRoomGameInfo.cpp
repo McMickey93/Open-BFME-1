@@ -485,7 +485,6 @@ void GameSpyStagingRoom::cleanUpSlotPointers( void )
 		setSlotPointer(i, BFME_STAGING_SLOT(this, i));
 }
 
-// ?getGameSpySlot@GameSpyStagingRoom@@ present-unmatched
 GameSpyGameSlot * GameSpyStagingRoom::getGameSpySlot( Int index )
 {
 	GameSlot *slot = getSlot(index);
