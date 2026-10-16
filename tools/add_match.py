@@ -502,6 +502,88 @@ def remove_stash(rva, root):
         print(f"add_match: cleared banked attempt {stash.relative_to(Path(root)).as_posix()}")
 
 
+LANDED_BY = "landed-by=add_match"
+
+
+def landing_recorded(text, name, rva, size, source_rel):
+    """True when TEXT (the attempt log) already holds this exact landing, not
+    voided since: re-running a landing never writes a second row."""
+    token = f"{LANDED_BY} source={source_rel}"
+    found = False
+    for line in text.splitlines():
+        fields = line.split("\t")
+        if len(fields) < 5 or fields[0] != name:
+            continue
+        try:
+            if int(fields[1], 16) != rva:
+                continue
+        except ValueError:
+            continue
+        if fields[3] == "void":
+            found = False
+        elif fields[3] == "landed" and fields[2] == str(size) and f"{token} " in fields[4]:
+            found = True
+    return found
+
+
+def landing_evidence(rva, size, source_rel, notes):
+    """The `landed` row's evidence: who landed what, at which extent, with the
+    ledger notes (model=, identity-correction=, ...) as the evidence trail."""
+    model = re.search(r"(?:^|;)model=([^;\s]+)", notes or "")
+    clean = " ".join((notes or "").replace(";", "; ").split())
+    return (f"{LANDED_BY} source={source_rel} extent=0x{rva:08X}..0x{rva + size:08X} "
+            f"size={size}B model={model.group(1) if model else 'unrecorded'} ; notes: {clean or '-'}")
+
+
+def record_landing(root, name, rva, size, source_rel, notes, *, text=None):
+    """Append the `landed` verdict for a verified row (approved by the project
+    lead 2026-10-16; ported from Open-BFME-2 4ebbfc02b2). Workers forgot it, so
+    the log's last word on a landed body stayed an old `blocked`, and the
+    deferrals waiting on it never learned their wall was gone
+    (eligibility.released_rvas). Written through re_log.append (LF, one line,
+    append-only) only after verification; idempotent. Returns the log text
+    after the call, or None when nothing could be recorded."""
+    import re_log
+    log = Path(root) / "targets/game/reverse" / "re_attempts.log"
+    if not log.exists():
+        return None
+    text = log.read_text(encoding="utf-8", errors="replace") if text is None else text
+    if landing_recorded(text, name, rva, size, source_rel):
+        print(f"add_match: `landed` for {name} @ 0x{rva:08X} already in re_attempts.log")
+        return text
+    evidence = landing_evidence(rva, size, source_rel, notes)
+    re_log.append(name, f"0x{rva:08X}", str(size), "landed", evidence, path=log)
+    print(f"add_match: recorded `landed` in targets/game/reverse/re_attempts.log -- stage it "
+          "with the ledger")
+    return text + f"{name}\t0x{rva:08X}\t{size}\tlanded\t{evidence}\n"
+
+
+def report_waiting(rva, path=None):
+    """Print the standing deferrals this landing concerns: those naming it in
+    blocked-on= (released once all their blockers landed), and, as a report
+    only, those whose free text mentions the address."""
+    import eligibility
+    import re_log
+    records, _resolved = re_log.indexed_records(path)
+    named, mentioned = [], []
+    pattern = re.compile(rf"(?<![0-9A-Fa-f])(?:0x)?0*{rva:X}(?![0-9A-Fa-f])", re.IGNORECASE)
+    for at, (_index, fields) in sorted(records.items()):
+        if at == rva or fields[3] not in re_log.DEFERRED_STATUSES:
+            continue
+        if rva in re_log.blocked_on(fields[4]):
+            named.append((at, fields))
+        elif pattern.search(fields[4]):
+            mentioned.append((at, fields))
+    released = eligibility.released_rvas(path) if named else {}
+    for at, fields in named:
+        state = ("released: served as untried again" if at in released
+                 else "still waits on another blocked-on= body")
+        print(f"add_match: {fields[0]} @ 0x{at:08X} ({fields[3]}) named this body in blocked-on=; {state}")
+    for at, fields in mentioned[:10]:
+        print(f"add_match: {fields[0]} @ 0x{at:08X} ({fields[3]}) mentions this address; if it "
+              f"waited on it, re-record it with blocked-on=0x{rva:08X}")
+
+
 def replacement_tombstone_record(replaced, successor_name, successor_rva,
                                  successor_size, successor_source, *, verified,
                                  boundary_evidence=None, identity_evidence=None):
@@ -1057,6 +1139,12 @@ def main():
         import gate_writers             # a verified relabel of an existing row (pre-commit shadow check)
         gate_writers.stamp("eh_label", raw, functions_csv.read_bytes(), root=root)
     remove_stash(rva, args.root)
+    try:
+        record_landing(root, name, rva, size, source_rel, args.notes)
+        report_waiting(rva, root / "targets/game/reverse" / "re_attempts.log")
+    except (Exception, SystemExit) as error:   # the row is verified; never revert it over the log
+        print(f"add_match: COULD NOT record `landed` ({error}); record it with "
+              f"tools/re_log.py record {name} 0x{rva:08X} {size} landed <evidence>", file=sys.stderr)
     # Verified HERE is not landed: the commit may never be pushed, or be
     # rejected. Releasing now (force, anyone's claim -- the old behaviour) let
     # another worker take a body whose conversion was still unpublished. Queue

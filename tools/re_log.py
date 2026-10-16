@@ -571,6 +571,11 @@ def _record(argv):
     Put attempt duration and model in the evidence free-text (e.g. "t=25min
     model=haiku ...") — that is what lets the selection weights in
     tools/yield_model.py be refit from outcomes instead of guessed.
+
+    A deferral stopped by bodies that are not landed yet should name them as
+    `blocked-on=0x<rva>[,0x<rva>...]` (no spaces): once every named body has a
+    matched identity row and a later resolution verdict (add_match records
+    `landed` itself), eligibility.released() serves this body as untried again.
     """
     argv, stash_text = _take(argv, "--stash")
     argv, score_text = _take(argv, "--score")
@@ -623,6 +628,7 @@ def _record(argv):
             f"revert, or record `blocked` with your evidence instead.")
     # before _bank: a refused row must not leave a stash behind
     evidence = _census_tag(status, rva_text, symbol, _require_tags(status, evidence))
+    blocked_on(evidence, status=status)        # a malformed or misplaced token is refused
     if stash_text is not None:
         if status != STASH_STATUS:
             raise SystemExit(
@@ -630,10 +636,93 @@ def _record(argv):
                 f"{status!r}: a dead end has nothing worth handing on, and a "
                 f"landed body belongs in game/.")
         evidence = f"{evidence} {_bank(symbol, rva_text, stash_text, score_text)}"
-    row = f"{symbol}\t{rva_text}\t{size_text}\t{status}\t{evidence}\n"  # LF: check_csv refuses appended CRLF
-    with RE_ATTEMPTS.open("ab") as handle:
-        handle.write(row.encode("utf-8"))
+    append(symbol, rva_text, size_text, status, evidence)
     print(f"recorded: {symbol} @ {rva_text} -> {status}")
+
+
+SEPARATORS = "\t\n\r\v\f\x1c\x1d\x1e\x85\u2028\u2029"
+
+
+def append(symbol, rva_text, size_text, status, evidence, *, path=None):
+    """Write one five-field verdict row: the single writer `record` and
+    add_match/add_match_batch share. LF only (check_csv refuses an appended
+    CRLF row), one physical line, a known status, numeric rva and size."""
+    path = path or RE_ATTEMPTS
+    for name, value in zip(("symbol", "rva", "size", "status", "evidence"),
+                           (symbol, rva_text, size_text, status, evidence)):
+        if any(char in value for char in SEPARATORS):
+            raise SystemExit(f"{name} contains a tab or line separator; "
+                             "a verdict is exactly one five-field line.")
+    if status not in VERDICT_STATUSES and status != VOID_STATUS:
+        raise SystemExit(f"unknown status {status!r}")
+    int(rva_text, 16), int(size_text)
+    row = f"{symbol}\t{rva_text}\t{size_text}\t{status}\t{evidence}\n"
+    with path.open("ab") as handle:
+        handle.write(row.encode("utf-8"))
+    _reset()
+
+
+# ---------------------------------------------------------------------------
+# blocked-on: the one machine-readable link from a deferral to its blocker.
+# `blocked-on=0x<rva>[,0x<rva>...]` in a deferral's evidence names the bodies
+# whose absence stopped the attempt (approved by the project lead 2026-10-16;
+# ported from Open-BFME-2 4ebbfc02b2/ab1a8a5ed6). eligibility.released()
+# re-serves the deferral as untried once every named body has landed; free
+# text (blocker=callee/..., an address in prose) is only ever reported.
+# ---------------------------------------------------------------------------
+BLOCKED_ON = re.compile(r"(?:^|(?<=\s))blocked-on=(\S*)")
+BLOCKED_ON_VALUE = re.compile(r"0x[0-9A-Fa-f]{1,8}(?:,0x[0-9A-Fa-f]{1,8})*")
+
+
+def blocked_on(evidence, *, status=None):
+    """[rva] a deferral names as its blockers, in order; [] when it names none.
+
+    All-or-nothing: `blocked-on=0x2000, 0x3000` is not read as [0x2000] (that
+    released a caller whose second blocker was missing in Open-BFME-2). With
+    STATUS (the record path) a malformed token, or one on a non-deferral, is
+    refused; without it (reading old rows) a malformed token names nothing."""
+    found = []
+    for match in BLOCKED_ON.finditer(evidence or ""):
+        value = match.group(1)
+        if not BLOCKED_ON_VALUE.fullmatch(value):
+            if status is not None:
+                raise SystemExit(f"malformed blocked-on={value!r}: write blocked-on=0x<rva>"
+                                 "[,0x<rva>...] with no spaces")
+            return []
+        found.extend(int(text, 16) for text in value.split(","))
+    if found and status is not None and status not in DEFERRED_STATUSES:
+        raise SystemExit(f"blocked-on= belongs on a deferral ({sorted(DEFERRED_STATUSES)}), "
+                         f"not on {status!r}")
+    return found
+
+
+def indexed_records(path=None):
+    """({rva: (line index, fields)} of the latest live five-field verdict per RVA,
+    {rva: line index of the latest live RESOLVED verdict}). Same void and
+    annotation rules as latest_records."""
+    records, resolved = {}, {}
+    path = path or RE_ATTEMPTS
+    if not path.exists():
+        return {}, {}
+    rows = {}
+    for index, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines()):
+        fields = line.split("\t")
+        if len(fields) < 5:
+            continue
+        symbol, status, rva = _parse(fields)
+        if rva is None:
+            continue
+        if status == VOID_STATUS:
+            rows.pop((symbol, rva), None)
+        elif status in VERDICT_STATUSES:
+            rows.setdefault((symbol, rva), []).append((index, fields))
+    for (_symbol, rva), entries in rows.items():
+        for index, fields in entries:
+            if rva not in records or records[rva][0] < index:
+                records[rva] = index, fields
+            if fields[3] in RESOLVED_STATUSES and resolved.get(rva, -1) < index:
+                resolved[rva] = index
+    return records, resolved
 
 
 MODEL_TAG = re.compile(r"(?:^|\s)model=(\S+)")

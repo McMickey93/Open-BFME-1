@@ -22,6 +22,11 @@ Rules:
     compiler output and no source can ever reproduce the original.
   * a DEFERRAL never retires: blocked/attempted/abandoned/partial say a
     session failed, not that the address is wrong.
+  * a RELEASED deferral is served as untried again (released()): its standing
+    verdict names its blockers with `blocked-on=0x<rva>[,...]`, and every one
+    has since landed -- a matched, identity-naming row at that RVA now, and a
+    resolution verdict for it recorded AFTER the deferral (add_match writes
+    `landed`). Free text is never acted on; dead ends are never released.
   * a banked STASH outlives a later deferral: the body is the evidence.
   * BUSY means a live fleet lease (tools/fleet_run claims, pid-checked) or,
     until a stopped-fleet cutover, an old seat log assignment. New selections
@@ -148,7 +153,64 @@ def retired(rva, latest):
 
 
 def deferred(rva, latest):
-    return latest.get(rva) in re_log.DEFERRED_STATUSES
+    """A standing deferral that still waits: a released one is served as untried."""
+    return latest.get(rva) in re_log.DEFERRED_STATUSES and rva not in released_rvas()
+
+
+def _stamp(path):
+    try:
+        stat = path.stat()
+    except OSError:
+        return None
+    return stat.st_mtime_ns, stat.st_size
+
+
+_RELEASED = {}
+
+
+def released_rvas(path=None, rows=None):
+    """{rva: (deferral line index, [blocker rvas])} of deferrals whose blockers landed.
+
+    The link is explicit and exact: the STANDING verdict at rva is a deferral
+    (re_log.DEFERRED_STATUSES) whose evidence carries `blocked-on=0x<rva>[,...]`
+    (re_log.blocked_on, all-or-nothing). It is released only when EVERY named
+    blocker
+      * has a matched, identity-naming functions.csv row at exactly that RVA
+        now (pin_consistency.names_identity: not generated, not a gen- note,
+        not a ?dup_ alias), and
+      * carries a resolution verdict (re_log.RESOLVED_STATUSES, e.g. the
+        `landed` add_match records) on a later line of the log than the
+        deferral, so a blocker that had already landed when the deferral was
+        written does not release it.
+    A dead end is never released, nor a deferral whose tokens are malformed,
+    nor one that names no blocker."""
+    import pin_consistency
+    path = path or re_log.RE_ATTEMPTS
+    key = (str(path), _stamp(path), _stamp(build.FUNCTIONS)) if rows is None else None
+    if key is not None and key in _RELEASED:
+        return _RELEASED[key]
+    records, resolved = re_log.indexed_records(path)
+    waiting = {}
+    for rva, (index, fields) in records.items():
+        if fields[3] in re_log.DEFERRED_STATUSES:
+            blockers = re_log.blocked_on(fields[4])
+            if blockers:
+                waiting[rva] = (index, blockers)
+    out = {}
+    if waiting:
+        rows = load_rows() if rows is None else rows
+        landed = {rva_of(row) for row in rows if pin_consistency.names_identity(row)}
+        for rva, (index, blockers) in waiting.items():
+            if all(b in landed and resolved.get(b, -1) > index for b in blockers):
+                out[rva] = (index, blockers)
+    if key is not None:
+        _RELEASED.clear()
+        _RELEASED[key] = out
+    return out
+
+
+def released(rva):
+    return rva in released_rvas()
 
 
 def stash(rva):
@@ -187,7 +249,12 @@ def attempt_counts(path=None):
     counts = {}
     if not path.exists():
         return counts
-    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+    # A released deferral starts the count afresh: rows up to and including
+    # the deferral its landed blockers released are not attempts at the body
+    # as it can be tried now (released_rvas).
+    fresh_after = {rva: index for rva, (index, _b) in released_rvas(path).items()}
+    for line_index, line in enumerate(path.read_text(encoding="utf-8",
+                                                     errors="replace").splitlines()):
         f = line.split("\t")
         if len(f) >= 5 and f[1].startswith("0x"):
             try:
@@ -195,6 +262,8 @@ def attempt_counts(path=None):
             except ValueError:
                 continue
             if quick_look(f[3], f[4]):
+                continue
+            if line_index <= fresh_after.get(rva, -1):
                 continue
             counts[rva] = counts.get(rva, 0) + 1
     return counts

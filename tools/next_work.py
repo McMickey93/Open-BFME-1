@@ -711,6 +711,11 @@ def _print_stash(candidate):
         print(line)
 
 
+def _released(rva):
+    import eligibility
+    return eligibility.released(rva)
+
+
 def drop_logged(candidates):
     """Filter one queue, returning (kept, dropped_count). Never silent: main()
     reports the count so a shrunken queue is visibly explained, not mistaken
@@ -735,7 +740,10 @@ def drop_logged(candidates):
         if re_log.is_dead_end(candidate["function"], rva, boundary_moved=moved):
             dropped += 1
             continue
-        if re_log.is_deferred(candidate["function"], rva, boundary_moved=moved):
+        if (re_log.is_deferred(candidate["function"], rva, boundary_moved=moved)
+                and not (rva is not None and _released(rva))):
+            # A deferral whose blocked-on= blockers have all landed is served
+            # as untried again (eligibility.released_rvas).
             candidate["deferred_attempts"] = max(
                 candidate.get("deferred_attempts", 0),
                 re_log.attempts(candidate["function"]))

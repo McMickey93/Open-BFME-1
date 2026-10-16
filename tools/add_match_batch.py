@@ -46,6 +46,7 @@ Usage:
     ... < rows.csv
 """
 import argparse
+import os
 import csv
 import io
 import json
@@ -311,6 +312,22 @@ def main():
         raise
     add_match.delete_emptied_sources(root, emptied, tool="add_match_batch")
     print(f"add_match_batch: verified OK -- {len(claims)} row(s) live")
+    # One `landed` verdict per verified row, through re_log's writer, reading
+    # the log once for the whole batch (add_match.record_landing).
+    try:
+        text = None
+        for c in claims:
+            notes = c["notes"]
+            if "model=" not in notes and os.environ.get("BFME_MODEL"):
+                notes = f"{notes};model={os.environ['BFME_MODEL']}" if notes else \
+                    f"model={os.environ['BFME_MODEL']}"
+            text = add_match.record_landing(root, c["name"], c["rva"], c["size"],
+                                            c["source"], notes, text=text)
+            if text is None:
+                break
+    except (Exception, SystemExit) as error:
+        print(f"add_match_batch: COULD NOT record `landed` verdicts ({error}); record them "
+              "with tools/re_log.py record", file=sys.stderr)
 
 
 if __name__ == "__main__":
