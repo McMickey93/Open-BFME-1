@@ -4287,3 +4287,7 @@ game/GameEngine/Source/Common/BfmeLimitedEdgeFilters.cpp|local|Rva009AFA60Filter
 game/GameEngine/Source/Common/BfmeLimitedEdgeFilters.cpp|local|Rva009AFEC0FilterHoriz|t,7eeec89e2247fccb20189955,gpt-6.1-sol,20261016064649-29ec83,2026-10-16
 game/GameEngine/Source/Common/BfmeLimitedEdgeFilters.cpp|local|Rva009AFEC0FilterHoriz|s,dab5fabbb67be2f4eb011262,gpt-6.1-sol,20261016064649-29ec83,2026-10-16
 game/GameEngine/Source/Common/BfmeLimitedEdgeFilters.cpp|local|Rva009AFEC0FilterHoriz|v,11ea2b7672922e1a6b1b3679,gpt-6.1-sol,20261016064649-29ec83,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_28,3a1215d66d385cf1f857c856,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_2C,a2ff53d4b000b87997d7e543,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_30,ce439dca2a9d979287996cf0,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_34,41f512d2aa694212bddd06ff,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
