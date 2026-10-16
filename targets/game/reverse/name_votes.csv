@@ -2227,3 +2227,4 @@ game/GameEngine/Source/GameClient/GUI/Gadget/GadgetProgressBar.cpp|param|GadgetP
 game/GameEngine/Source/GameClient/GUI/WindowFieldParsersBfme.cpp|local|parseTooltipCallback|c,ef76e0ebdbbc59a83561b425,gpt-6.1-sol,20261016042713-fd8147,2026-10-16
 game/GameEngine/Source/GameClient/GUI/WindowFieldParsersBfme.cpp|local|parseText|c,41d8e41adbb645119bde2b54,gpt-6.1-sol,20261016042713-fd8147,2026-10-16
 game/GameEngine/Source/GameClient/GUI/WindowFieldParsersBfme.cpp|local|parseTooltipText|c,7874b801b307b5c3e7a4fd42,gpt-6.1-sol,20261016042713-fd8147,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIGuardMachineCtor.cpp|param|StateConditionInfo|t,4ddd2e1af28b98630f785abc,gpt-6.1-sol,20261016043103-0ff900,2026-10-16
