@@ -5489,3 +5489,8 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransf
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||matrix234,019bcb8c573942d3251ab24b,gpt-6.1-sol,20261016083234-d49289,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||blend264,ce52ce9c8d7e2def59510b53,gpt-6.1-sol,20261016083234-d49289,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||frame268,2a5a2399e11f6da072842962,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1780.cpp|type||BfmeSourceGK,e71dd7192573a6523b42ebbc,gpt-6.1-sol,20261016083401-573822,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1780.cpp|type||BfmeOwnerGK,77c3f12041080968108960ae,gpt-6.1-sol,20261016083401-573822,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1780.cpp|member||m_bfmeSourceGK,abd547f12c85777cb5f865fd,gpt-6.1-sol,20261016083401-573822,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1780.cpp|member||m_bfmeAgentGK,f7bbdd1dca7a977368fca218,gpt-6.1-sol,20261016083401-573822,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1780.cpp|member||m_bfmeListGK,4c92a849ac81e78824a82e89,gpt-6.1-sol,20261016083401-573822,2026-10-16
