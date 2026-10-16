@@ -85657,7 +85657,7 @@ name,address,notes
 ?initialize@DeathStatusFlags@@QAEXHHHHHH@Z,0x00034CE8,SlowDeathBehavior DeathFlags status mask initializer ILT
 ?initialize@Rva00016FAE@@QAEXXZ,0x00016FAE,Rva000FA610 constructor member call resolves through the retail ILT thunk
 ?initialize@Rva002BC260Global@@QAEXPAX00000@Z,0x0000A795,address-derived six-argument goal initializer used by 0x002BC260
-?initialize@Rva00473900@@AAEXPA_NH@Z,0x0000CDB0,address-derived proxy initializer call view for Rva00473900
+?rva00473250@Rva00473900@@AAEXPA_NH@Z,0x0000CDB0,abi-view=?dup_00473250@@YAXXZ;address-derived proxy initializer call view for Rva00473900
 ?initialize@Rva00473930@@AAEXPA_NH@Z,0x0000E7CD,initializer thunk proven by the 0x00473930 retail call
 ?initialize@Rva007B12F0Base@@QAEXXZ,0x0000AF38,member-initializer view of the proven Rva007B12F0 base initialization target
 ?initialize@Rva007F01F0@@QAEXHH@Z,0x007F01F0,address-derived 25-byte two-argument initializer independently witnessed at 0x00C6C8E0

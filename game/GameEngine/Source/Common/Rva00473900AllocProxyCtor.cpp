@@ -25,7 +25,7 @@ public:
 	Rva00473900( int flags );
 
 private:
-	void initialize( Bool *out, int mode );
+	void rva00473250( Bool *out, int mode );
 	void *m_bfmePtr;
 };
 
