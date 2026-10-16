@@ -3758,3 +3758,6 @@ game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainCtor.cpp|member||
 game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainCtor.cpp|member||m_unmodelled_9a8,34ad12afda52cf420f3564c6,gpt-6.1-sol,20261016061756-f17459,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainCtor.cpp|member||m_unmodelled_9b4,3da3636eb789bbca779a3e68,gpt-6.1-sol,20261016061756-f17459,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainCtor.cpp|member||m_unmodelled_9b6,50712a943392eda138af7602,gpt-6.1-sol,20261016061756-f17459,2026-10-16
+game/GameEngine/Source/Common/Bfme5EightyTwo.cpp|member||m_bfmeIndex,c32f571f09c3859bd1725401,gpt-6.1-sol,20261016061811-090a0b,2026-10-16
+game/GameEngine/Source/Common/Bfme5EightyTwo.cpp|member||m_bfmeNext,0e375b287a2627c2c6a49755,gpt-6.1-sol,20261016061811-090a0b,2026-10-16
+game/GameEngine/Source/Common/Bfme5EightyTwo.cpp|member||m_bfmeHead,5f2102017f19d2fd53f6e485,gpt-6.1-sol,20261016061811-090a0b,2026-10-16
