@@ -4601,3 +4601,8 @@ game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_fl
 game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|local|getFinalTemplate|tmpl,7ab58d9975c65d22528b87c4,gpt-6.1-sol,20261016070508-0393c3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|param|minOf|a,94e055ec3f3852873dd6ec10,gpt-6.1-sol,20261016070508-0393c3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|param|minOf|b,1bd265347da40d4513794aa3,gpt-6.1-sol,20261016070508-0393c3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainMemberNameMatches.cpp|member||m_bfmeId,c41fadbe7a2ae80c011fd2a2,gpt-6.1-sol,20261016070523-0e1f3a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainMemberNameMatches.cpp|member||m_bfmeName,746ddccdf3d552f72639d4b4,gpt-6.1-sol,20261016070523-0e1f3a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainMemberNameMatches.cpp|member||m_bfmeBegin,e837fd6cdb2caf544d7e85ca,gpt-6.1-sol,20261016070523-0e1f3a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainMemberNameMatches.cpp|member||m_bfmeEnd,3cf1793554c0dd0e5975627b,gpt-6.1-sol,20261016070523-0e1f3a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainMemberNameMatches.cpp|member||m_bfmeOwner,5a72124279aa1c8244ee177e,gpt-6.1-sol,20261016070523-0e1f3a,2026-10-16
