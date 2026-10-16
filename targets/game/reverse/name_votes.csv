@@ -5832,3 +5832,4 @@ game/GameEngine/Source/Common/BfmeConv1269.cpp|member||m_bfmeab4,8db8c418a1a595c
 game/GameEngine/Source/Common/BfmeConv1196.cpp|member||m_bfme1bc,942812ad2163546e6107214e,gpt-6.1-sol,20261016132522-04e310,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1807.cpp|member||m_bfmeScaleRW,99cfd3c83d79e9b0b452348f,gpt-6.1-sol,20261016132528-93eefd,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006C9270ResetTextureStages.cpp|member||m_flag4C,2e419194a86ae7048653eeb2,gpt-6.1-sol,20261016132535-07c523,2026-10-16
+game/GameEngine/Source/Common/Rva005C36C0Forward.cpp|member||m_valueAB4,9c2548ffa97d7293fae9d8b2,gpt-6.1-sol,20261016132540-63662e,2026-10-16
