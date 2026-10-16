@@ -2211,3 +2211,5 @@ game/GameEngine/Source/GameClient/GUI/OnlineQuickMatchSaveOptions.cpp|function|B
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|x,78211f45b67249605ee057ec,gpt-6.1-sol,20261016042632-d82492,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|p,e644ab34868b10a5e3e320f1,gpt-6.1-sol,20261016042632-d82492,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|n,73fe3ce00764269d778c1c55,gpt-6.1-sol,20261016042632-d82492,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuSmallScaleDownTransition_draw.cpp|local|MainMenuSmallScaleDownTransition::draw|x1,2febc516bb73ea65cb87c53d,gpt-6.1-sol,20261016042646-75d941,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuSmallScaleDownTransition_draw.cpp|local|MainMenuSmallScaleDownTransition::draw|y1,9c09122b05676a5c1c94b5a6,gpt-6.1-sol,20261016042646-75d941,2026-10-16
