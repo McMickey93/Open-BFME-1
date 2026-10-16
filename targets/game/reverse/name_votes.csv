@@ -2579,3 +2579,5 @@ game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeConcat#2|s,a0a38cd9c0bba87144346ece,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeFind|s,14e8a9dfccacb5ac61c4db8f,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|local|bfmeFind|p,211021527d7bf80821d68d21,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorCalcFlightPath.cpp|local|BezierProjectileBehavior::calcFlightPath|d,3c3fb0553ba998b236c4b850,gpt-6.1-sol,20261016051006-83e43c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorCalcFlightPath.cpp|local|BezierProjectileBehavior::calcFlightPath|z2,92f7f7b6b23836bbaf018ac0,gpt-6.1-sol,20261016051006-83e43c,2026-10-16
