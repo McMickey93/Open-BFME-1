@@ -2834,3 +2834,9 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleData
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_flag40,d663daa08f4cdaaecf7712c4,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown48,cc37e92cd5460b12bbc452cd,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_flag54,fb7ce1f3c462bdfefa48d6e9,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_name0,c9fbb57cfad8df4055151f70,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_name1,09532f1268c30cb27b6ce361,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f0,bee816f2b5ef1f16495137d9,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f1,b38d76650bf4ffe7ef537284,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f2,3dd6c84130c5909a7efb186a,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f3,02bfbe5478ee29e0c1d2d51d,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
