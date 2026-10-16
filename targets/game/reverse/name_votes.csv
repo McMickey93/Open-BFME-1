@@ -5079,3 +5079,5 @@ game/GameEngine/Source/Common/Bfme5ThirtyOne.cpp|member||m_bfmeHandle,1def268991
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineAttackInfo.cpp|param|friend_setName|n,addc7f1bf53b71398b7b1fe3,gpt-6.1-sol,20261016073405-512363,2026-10-16
 game/Libraries/Source/EA/Apt/Rva008930C0AptLookup.cpp|member||m_bfme54,1a38da949f60a5a27ce1845d,gpt-6.1-sol,20261016073553-9646dd,2026-10-16
 game/Libraries/Source/EA/Apt/Rva008930C0AptLookup.cpp|member||m_bfme58,b5ed1bc04ed2b4dac2da1e05,gpt-6.1-sol,20261016073553-9646dd,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7440.cpp|local|Rva003D7440Pathfinder::iterateCellsAlongLine003D7440|x,ef0cb4ab2d35e2bf20a8e148,gpt-6.1-sol,20261016073608-853fec,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7440.cpp|local|Rva003D7440Pathfinder::iterateCellsAlongLine003D7440|y,99d9d6d60b47ff3152252876,gpt-6.1-sol,20261016073608-853fec,2026-10-16
