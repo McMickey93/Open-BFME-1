@@ -5412,3 +5412,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTre
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|member||flag54,3cbfc35a805b190dd15e67b7,gpt-6.1-sol,20261016081411-284703,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|member||field58,6a22983f2da67b28e76a4d73,gpt-6.1-sol,20261016081411-284703,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|function|W3DTreeBuffer@|rva00736b60,0a3288ca9728bb4b4bea298c,gpt-6.1-sol,20261016081411-284703,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva00326F40.cpp|type||Rva00326F40Field210,35008adebb548edc24351c1b,gpt-6.1-sol,20261016081751-2a2f8b,2026-10-16
