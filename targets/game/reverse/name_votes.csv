@@ -4734,3 +4734,9 @@ game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member|
 game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field44,5367852b4d4ce5fd37c62d6e,gpt-6.1-sol,20261016071259-5d6b7e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field204,63518a4f053ab197bce67fae,gpt-6.1-sol,20261016071259-5d6b7e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field208,83dbd8b13391c17cc0f02f84,gpt-6.1-sol,20261016071259-5d6b7e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_sourceID008,f21608419e63f53600e53899,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_direction030,5a6ce3e07bd6e1d6dd58c2c1,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_amount03C,17a5a00b6a1b30a0dac25ed3,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_amount040,814ce6ccf56dbe144481bd7b,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_amount044,71e63f58ac478b6379a02eef,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|local|getFinalTemplate|tmpl,fdb5939db02885c3418017e0,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
