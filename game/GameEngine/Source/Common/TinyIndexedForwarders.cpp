@@ -237,3 +237,19 @@ int Rva00169F70::get() const
 {
     return m_at208;
 }
+
+// BFME 2 AudioEventInfoPriority.cpp assignment shape; no enum identity
+// is inferred for this independently witnessed four-byte field.
+class Rva00169FB0
+{
+public:
+    void storeWord(unsigned int value);
+private:
+    char m_at00[0x3A4];
+    unsigned int m_at3A4;
+};
+
+void Rva00169FB0::storeWord(unsigned int value)
+{
+    m_at3A4 = value;
+}
