@@ -5801,3 +5801,6 @@ game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|getIndicatorColor|
 game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|rva001C15F0NightColor|p,f5cf0c42af592f63226ef7dd,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|Object::rva001C15F0|r,c0a48d2b69d620e5aca038c1,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
 game/GameEngine/Source/GameClient/MessageStream/HotKeyTranslator_translateGameMessage_Thunk.cpp|local|HotKeyTranslator::translateGameMessage|t,c815c0a74541ae07f04de77f,gpt-6.1-sol,20261016131017-f883e5,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setGameList|w,3cd51b715571639efd8c527b,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setChatWindow|w,8610b6456033143eeab261dc,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setPlayerList|w,985247280b4acd83680f547d,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
