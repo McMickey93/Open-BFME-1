@@ -2804,3 +2804,13 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateModul
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateModuleDataCtorThunk.cpp|member||m_flag40,ff9180e90c6a5d79b5507aa2,gpt-6.1-sol,20261016052747-39f552,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateModuleDataCtorThunk.cpp|member||m_unknown48,5554e4c4e06b6b38e8fb7ba3,gpt-6.1-sol,20261016052747-39f552,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateModuleDataCtorThunk.cpp|member||m_flag54,50f0ee9e0acbe38851eab221,gpt-6.1-sol,20261016052747-39f552,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_unknown20,889f14e931b33e060d1b4ca4,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_flag28,de20f2f85cbdffb6115acb21,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_flag29,8b5f9535c8e38a5e4ed82b92,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_unknown2c,b779698afe676bbd1e704be1,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_unknown34,2ecd9101c08c020935a1ea3d,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_unknown38,4e8b028bb0e77622f5a1f7f6,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_unknown3c,ec5ce6559b15e533e0671c71,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_flag40,c96e0f776b57fd0996eb3691,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_unknown48,4c5a967aa2edc58f1dc27ec3,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/UpdateModuleModuleData_ctor_Thunk.cpp|member||m_flag54,ffe75f4b31c1d01e3ddabcd3,gpt-6.1-sol,20261016052754-49c04b,2026-10-16
