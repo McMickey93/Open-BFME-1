@@ -9,13 +9,13 @@ extern "C" char *__cdecl __identifier("?bfmeGoOR@@YAXPAX0E@Z")(char *first, char
 
 struct BfmeThingQW
 {
-	int bfmeFindQW(unsigned char what, unsigned int from);
+	int find(unsigned char what, unsigned int from);
 
 	char *m_bfmeAt;				// 0x0
 	char *m_bfmeEnd;			// 0x4
 };
 
-int BfmeThingQW::bfmeFindQW(unsigned char what, unsigned int from)
+int BfmeThingQW::find(unsigned char what, unsigned int from)
 {
 	if (from > (unsigned int)(m_bfmeEnd - m_bfmeAt))
 		return -1;

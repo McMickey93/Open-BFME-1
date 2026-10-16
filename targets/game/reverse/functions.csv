@@ -29221,7 +29221,7 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?bfmeFindPrev@Gen_0034FC60@@QAEPAVBfmeNodeCS@@PAV2@@Z,,0x0034FC60,34,game/GameEngine/Source/Common/Bfme5TinyTwentyFive.cpp,matched,
 ?bfmeFindPrevious@Gen_0075F1A0@@QBEPAVBfmeItemED@@PAV2@@Z,,0x0075F1A0,39,game/GameEngine/Source/Common/Bfme5FiftyEight.cpp,matched,
 ?bfmeFindPrevious@Gen_007602B0@@QBEPAVBfmeItemED@@PAV2@@Z,,0x007602B0,42,game/GameEngine/Source/Common/Bfme5FindPreviousNested.cpp,matched,Open-BFME5 clean nested previous-element walk; paired Gen_0075F1A0 body proves the 0xbc stride; owner view at this+4 matches retail registers
-?bfmeFindQW@BfmeThingQW@@QAEHEI@Z,,0x0082E2E0,107,game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp,matched,
+?find@BfmeThingQW@@QAEHEI@Z,,0x0082E2E0,107,game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp,matched,
 ?bfmeFindRecord@FontLibraryBFMERetail@@AAEPAUBfmeFontRecord@@PAVAsciiString@@M@Z,,0x00476E20,90,game/GameEngine/Source/GameClient/GUI/FontLibraryBFMERetail_getFont.cpp,matched,caller FontLibraryBFMERetail::getFont at 0x004772D0
 ?bfmeFindSlot@Gen_0061E920@@QBEHXZ,,0x0061E920,74,game/GameEngine/Source/Common/BfmeOneHundredFour.cpp,matched,
 ?bfmeFindUpgradeByName@@YAPBVUpgradeTemplate@@PBD@Z,,0x000BB270,124,game/GameEngine/Source/Common/UpgradeCenter_findUpgradeByName.cpp,matched,BFME raw-name upgrade lookup wrapper; exact caller is an unmatched INI list parser at 0x00147440
