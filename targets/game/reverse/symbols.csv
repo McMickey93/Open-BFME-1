@@ -84122,7 +84122,7 @@ name,address,notes
 ?getFormationMovementStep@BfmeAIUpdateInterface@@QAEMPAVBfmeUpdateObject@@@Z,0x00024F7D,ILT thunk used by AOD formation update
 ?getFrameCommandList@ConnectionManager@@QAEPAVNetCommandList@@I@Z,0x00663450,ZH twin: new NetCommandList(0x10 bytes ctor 0x00672EA0) reset 0x006731A0; per FrameDataManager at +0x120E4 appendList(0x00673580) of getFrameCommandList 0x006706A0 then resetFrame(frame-FRAMES_TO_KEEP;TRUE) 0x006706D0 with FRAMES_TO_KEEP global 0x012BA08C=0x41; sole caller Network frame tick 0x00682AB6; ILT 0x0001EF5B
 ?getGameInfoRva00516850@BfmeAptScreenLanLobby@@QAE_NHPAPAX@Z,0x00516850,Address-preserving bank name; ILT3C065 target independently decoded through 239B; ECX lobby and index/out-pointer stack args; writes pointer and returns AL with RET8; evidence=identity_evidence/00518610-system-message.md
-?getGameName@BfmeWolGameNameView@@QAE?AVUnicodeString@@XZ,0x0002C7B4,ABI view for the BFME +0x418 staging-room wide-string accessor used by InitWOLGameGadgets
+?rva00385F20@BfmeWolGameNameView@@QAE?AVUnicodeString@@XZ,0x0002C7B4,abi-view=?copyStringAt418@Rva00385F20Host@@QAE?AV?$StringBase@G@@XZ;ABI view for the BFME +0x418 staging-room wide-string accessor used by InitWOLGameGadgets
 ?getGameName@GameSpyStagingRoom@@QAE?AVUnicodeString@@XZ,0x0002C7B4,ILT of staging-room wide string at +0x418 used by CustomMatch 0x0053B980
 ?getGameSpySlot@GameSpyStagingRoom@@QAEPAVGameSpyGameSlot@@H@Z,0x000061D6,ICF alias: this thunk chains to the GameInfo::getSlot body at 0x0061E8B0; the slot accessors compile to the same bytes
 ?getGoalObject@BfmeOutOfWeaponRangeStateMachine@@QAEPAVBfmeOutOfWeaponRangeObject@@XZ,0x0000E570,outOfWeaponRangeObject retail goal-object thunk
@@ -84558,7 +84558,7 @@ name,address,notes
 ?get_shade_indices@MeshGeometryClass@@IAEPAK_N@Z,0x00924600,Open-BFME5 retail MeshGeometryClass shade-index accessor pin
 ?get_vert_normals@MeshGeometryClass@@IAEPAVVector3@@_N@Z,0x00927230,BFME normal reader9274C0 calls927230; helper selects normal buffers40/44 and named VertexNorm allocation anchor
 ?getframe@AdaptiveDeltaMotionChannelClass@@AAEMKK@Z,0x00977FF0
-?getloc@BfmeIosLocaleView@_STL@@QBE?AVBfmeInlineLocale@2@XZ,0x00038E47,TU-local ABI view of ios_base::getloc; same return layout and call as canonical getloc pin; used to preserve retail inline locale release
+?rva00537630@BfmeIosLocaleView@_STL@@QBE?AVBfmeInlineLocale@2@XZ,0x00038E47,abi-view=?copyStringAt20@Rva00537630Host@@QAE?AVRva00537630String@@XZ;TU-local ABI view of ios_base::getloc; same return layout and call as canonical getloc pin; used to preserve retail inline locale release
 ?getloc@ios_base@_STL@@QBE?AVlocale@2@XZ,0x00038E47,STLport basic_ostream numeric helper callee reached by the 0x005F0120 body
 ?giveUpgrade@Object@@QAEXPBVUpgradeTemplate@@@Z,0x0001A97E
 ?giveUpgrade@Team@@QAEXPBVUpgradeTemplate@@@Z,0x0002DA5B,TEAM_UPGRADE canonical body grants the template to every team member

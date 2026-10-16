@@ -35,10 +35,10 @@ private:
 class BfmeIosLocaleView
 {
 public:
-	BfmeInlineLocale getloc() const;
+	BfmeInlineLocale rva00537630() const;
 };
 
-#pragma comment(linker, "/alternatename:?getloc@BfmeIosLocaleView@_STL@@QBE?AVBfmeInlineLocale@2@XZ=?getloc@ios_base@_STL@@QBE?AVlocale@2@XZ")
+#pragma comment(linker, "/alternatename:?rva00537630@BfmeIosLocaleView@_STL@@QBE?AVBfmeInlineLocale@2@XZ=?getloc@ios_base@_STL@@QBE?AVlocale@2@XZ")
 
 template <class CharT, class OutputIter>
 OutputIter _STLP_CALL __copy_integer_and_fill(const CharT *, ptrdiff_t,
@@ -55,7 +55,7 @@ num_put<char, BfmeNarrowPutIterator>::do_put(BfmeNarrowPutIterator output,
 	if (!(stream.flags() & ios_base::boolalpha))
 		return this->do_put(output, stream, fill, (long)value);
 
-	BfmeInlineLocale loc = ((BfmeIosLocaleView &)stream).getloc();
+	BfmeInlineLocale loc = ((BfmeIosLocaleView &)stream).rva00537630();
 	const numpunct<char> &punct =
 		*(const numpunct<char> *)stream._M_numpunct_facet();
 	basic_string<char> text = value ? punct.truename() : punct.falsename();

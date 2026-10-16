@@ -1112,7 +1112,7 @@ extern void j_0002c7b4();
 class BfmeWolGameNameView
 {
 public:
-	UnicodeString getGameName()
+	UnicodeString rva00385F20()
 	{
 		typedef UnicodeString ( BfmeWolGameNameView::*Fn )();
 		union { void (*fn)(); Fn call; } u = { j_0002c7b4 };
@@ -2450,7 +2450,7 @@ void InitWOLGameGadgets( void )
 	if (staticTextTitle)
 	{
 		GadgetStaticTextSetText(staticTextTitle,
-			((BfmeWolGameNameView *)TheGameSpyGame)->getGameName());
+			((BfmeWolGameNameView *)TheGameSpyGame)->rva00385F20());
 	}
 
 	if (!theGameInfo)
