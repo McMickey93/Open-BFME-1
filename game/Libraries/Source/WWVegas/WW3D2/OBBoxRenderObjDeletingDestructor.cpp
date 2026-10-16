@@ -9,19 +9,28 @@
 class RenderObjClass
 {
 public:
-	RenderObjClass();
 	virtual ~RenderObjClass();
 };
 
 class BoxRenderObjClass : public RenderObjClass
 {
+public:
+	BoxRenderObjClass();
 };
+
+// boxrobj.cpp's own ??_GOBBoxRenderObjClass carries the W3DMPO adjustment, so
+// this TU supplies the retail wrapper. The tag constructor only makes the
+// compiler emit the vtable (and with it ??_G) without a copy of any retail
+// constructor.
+struct OBBoxRenderObjVtableTag;
 
 class OBBoxRenderObjClass : public BoxRenderObjClass
 {
+public:
+	explicit OBBoxRenderObjClass( OBBoxRenderObjVtableTag * ) {}
 };
 
 void Force_OBBoxRenderObj_Deleting_Destructor()
 {
-	OBBoxRenderObjClass box;
+	OBBoxRenderObjClass box( 0 );
 }

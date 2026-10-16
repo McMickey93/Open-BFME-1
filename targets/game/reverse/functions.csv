@@ -123148,7 +123148,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0094dfb6@@YAXXZ,,0x0094DFB6,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x0092C220
 ?j_0094dfc0@@YAXXZ,,0x0094DFC0,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x0092F0D0
 ?j_0094f946@@YAXXZ,,0x0094F946,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009600A0
-?j_00956950@@YAXXZ,,0x00956950,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d1fc10
 ?j_009587e0@@YAXXZ,,0x009587E0,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x00881F30
 ?j_0095c6d0@@YAXXZ,,0x0095C6D0,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009E5ED0
 ?j_0096d120@@YAXXZ,,0x0096D120,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00ddb7a0
@@ -123168,8 +123167,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_009d82c0@@YAXXZ,,0x009D82C0,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009D8230
 ?j_009d83c0@@YAXXZ,,0x009D83C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00dd82d0
 ?j_009db820@@YAXXZ,,0x009DB820,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00ddb7a0
-?j_009e1f00@@YAXXZ,,0x009E1F00,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00de78c0
-?j_009e1f40@@YAXXZ,,0x009E1F40,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00de1a90
 ?j_009e24b0@@YAXXZ,,0x009E24B0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00de71b0
 ?j_009e3110@@YAXXZ,,0x009E3110,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00de2f30
 ?j_009ec5a0@@YAXXZ,,0x009EC5A0,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009EC540
@@ -172541,3 +172538,6 @@ _lua_pushcclosure,,0x009904E0,5,game/Libraries/Source/Lua/lapi.c,matched,vendore
 ??1AIDockMoveToDockState@@UAE@XZ,,0x0014F600,5,game/GameEngine/Source/GameLogic/AI/AIDockStateDestructors.cpp,matched,complete dtor: tail jump to ~AIInternalMoveToState via ILT 0x4AAF7; ??_G 0x14F5D0 calls it via ILT 0x11658 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
 ??1AIDockMoveToExitState@@UAE@XZ,,0x0014F700,5,game/GameEngine/Source/GameLogic/AI/AIDockStateDestructors.cpp,matched,complete dtor: tail jump to ~AIInternalMoveToState via ILT 0x4AAF7; ??_G 0x14F6D0 calls it via ILT 0x15979 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
 ??1AIGuardIdleState@@UAE@XZ,,0x0015D180,5,game/GameEngine/Source/GameLogic/AI/AIGuardIdleStateDestructor.cpp,matched,complete dtor: tail jump to ~State via ILT 0x16725; ??_G 0x15D150 calls it via ILT 0x48829 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
+??1Base64Pipe@@UAE@XZ,,0x009E1F00,5,game/Libraries/Source/WWVegas/WWLib/ini.cpp,matched,implicit virtual dtor (b64pipe.h declares none): bare jmp to Pipe::~Pipe 0x009E78C0; called by ??_GBase64Pipe 0x009E2500; already pinned;model=claude-opus-5-5;host=app
+??1Base64Straw@@UAE@XZ,,0x009E1F40,5,game/Libraries/Source/WWVegas/WWLib/ini.cpp,matched,implicit virtual dtor (b64straw.h declares none): bare jmp to Straw::~Straw 0x009E1A90; called by ??_GBase64Straw 0x009E2520; already pinned;model=claude-opus-5-5;host=app
+??1BoxRenderObjClass@@UAE@XZ,,0x00956950,5,game/Libraries/Source/WWVegas/WW3D2/boxrobj.cpp,matched,implicit virtual dtor (boxrobj.h declares none): bare jmp to RenderObjClass::~RenderObjClass 0x0091FC10; called by ??_GBoxRenderObjClass 0x00956D10; already pinned;model=claude-opus-5-5;host=app
