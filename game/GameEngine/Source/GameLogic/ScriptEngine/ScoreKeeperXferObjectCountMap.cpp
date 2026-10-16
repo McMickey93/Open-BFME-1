@@ -95,14 +95,14 @@ public:
 	int tag;
 };
 
-class Rva000EACD0ScoreKeeper
+class ScoreKeeper
 {
 public:
 	void xferObjectCountMap(Xfer *xfer, ObjectCountMap *map);
 };
 
-// ?xferObjectCountMap@Rva000EACD0ScoreKeeper@@QAEXXZ absent-from-retail
-void Rva000EACD0ScoreKeeper::xferObjectCountMap(Xfer *xfer, ObjectCountMap *map)
+// ?xferObjectCountMap@ScoreKeeper@@QAEXPAVXfer@@PAV?$map@PBVThingTemplate@@HU?$less@PBVThingTemplate@@@_STL@@V?$allocator@U?$pair@QBVThingTemplate@@H@_STL@@@3@@_STL@@@Z
+void ScoreKeeper::xferObjectCountMap(Xfer *xfer, ObjectCountMap *map)
 {
 	XferVersion version(1);
 	xfer->xferVersion(&version);
