@@ -5036,3 +5036,14 @@ game/GameEngine/Source/Common/BfmeConv913.cpp|local|BfmeThing913D::bfmeGo913D|n,
 game/GameEngine/Source/Common/BfmeConv913.cpp|param|bfmeGo913E|a,9722fdd8181ca41bd4a32d8d,gpt-6.1-sol,20261016072429-cf9898,2026-10-16
 game/GameEngine/Source/Common/BfmeConv913.cpp|local|bfmeGo913E|o,a1df4a2a377e06fae24066ba,gpt-6.1-sol,20261016072429-cf9898,2026-10-16
 game/GameEngine/Source/Common/BfmeConv913.cpp|local|bfmeGo913E|s,3c76ba405f2adceca7da90ee,gpt-6.1-sol,20261016072429-cf9898,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|type||BfmeStateERI,005f4a5e30083cfd6d2063c1,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|member||m_bfmeFlagsERI,d9f8409aec449eab76271c49,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|member||m_bfmeBERI,544f00490ca25657e87b11b7,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|member||m_bfmeAERI,76e5e21976a36afea2171144,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|member||m_bfmeNextERI,4273256bc333f71e5b676dfc,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|member||m_bfmeThingERI,5f5a7cdcb8245ead296609b3,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|member||m_bfmeListERI,a5dad50b82dd3cc5f8913838,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|local|BfmeHostERI::bfmeSweepERI|n,508b1fceedd1908b3d4d5d82,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|local|BfmeHostERI::bfmeSweepERI|a,f6fdeff7105354fa9ef2d7a9,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|local|BfmeHostERI::bfmeSweepERI|b,e346e4b781b5e8c9df8adab9,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1953.cpp|local|BfmeHostERI::bfmeSweepERI|s_bfmeKeyERI,47473cb6c8da7b2d7beece53,gpt-6.1-sol,20261016072601-d5a1fc,2026-10-16
