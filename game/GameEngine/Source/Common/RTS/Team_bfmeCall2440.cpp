@@ -74,6 +74,6 @@ void Team::bfmeCall2440(const AsciiString &key, unsigned char mode)
     }
     else if (mode == 1)
     {
-        (*reinterpret_cast<_STL::hash_map<AsciiString, unsigned char, rts::hash<AsciiString>, rts::equal_to<AsciiString>, _STL::allocator<_STL::pair<const AsciiString, unsigned char> > > *>(values))[key] = 1;
+        (*reinterpret_cast<_STL::hash_map<AsciiString, bool, rts::hash<AsciiString>, rts::equal_to<AsciiString>, _STL::allocator<_STL::pair<const AsciiString, bool> > > *>(values))[key] = true;
     }
 }
