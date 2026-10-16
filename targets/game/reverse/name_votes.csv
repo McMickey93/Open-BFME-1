@@ -4572,3 +4572,13 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRele
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_time3f4,48597ff42a08cc80de503b28,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_id3fc,64ccf54ac131bfbb449436c0,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Body/ActiveBody_setCorrectDamageState.cpp|member||m_field34,55278dd0c16af1c1c1f4340f,gpt-6.1-sol,20261016065955-dae516,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_224,5585c8a9300f864c4e646f13,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_230,7111655f4ee859127ab363f1,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_23c,3dc24bb94cc5a66b494c582e,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_24c,195cfd728bb6957e0024b532,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_250,55a8f7f5a71f777990b19cf4,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_25c,7a05d568e6c69ff88798e810,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_28c,5764740d371d1f924a669d07,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_2a4,6f20ae29c48fcf23098841fa,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_2b0,977ca61c0b4b886de07f1464,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_2bc,b474dc9a79c023138bda72b2,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
