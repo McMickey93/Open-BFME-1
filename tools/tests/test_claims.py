@@ -565,13 +565,14 @@ def test_fetch_master_preserves_commands_and_reports_failed_step(
             "env": dict(inherited_env, GIT_CEILING_DIRECTORIES=str(tmp_path.parent)),
         }
         if step == "fetch":
-            assert command == ["git", "fetch", "-q", "--no-tags", "fixture-origin", "master"]
+            assert command == ["git", "fetch", "-q", "--no-tags", "--recurse-submodules=no", "--refmap=", "fixture-origin",
+                               f"+refs/heads/master:{claims.MASTER_SEEN}"]
             if failure == "timeout":
                 raise subprocess.TimeoutExpired(command, 300)
             if failure == "fetch":
                 return subprocess.CompletedProcess(command, 128, "", "fatal: fixture fetch failed\n")
             return subprocess.CompletedProcess(command, 0, "", "")
-        assert command == ["git", "rev-parse", "FETCH_HEAD"]
+        assert command == ["git", "rev-parse", claims.MASTER_SEEN]
         if failure == "head":
             return subprocess.CompletedProcess(command, 128, "", "fatal: fixture FETCH_HEAD failed\n")
         if failure == "head_error_with_output":
@@ -592,9 +593,9 @@ def test_fetch_master_preserves_commands_and_reports_failed_step(
         assert result is None
         expected = {
             "fetch": "claims: git fetch fixture-origin master failed (exit 128): fatal: fixture fetch failed\n",
-            "head": "claims: git rev-parse FETCH_HEAD failed (exit 128, empty stdout): fatal: fixture FETCH_HEAD failed\n",
-            "head_error_with_output": "claims: git rev-parse FETCH_HEAD failed (exit 128): fatal: fixture FETCH_HEAD failed\n",
-            "empty": "claims: git rev-parse FETCH_HEAD failed (exit 0, empty stdout): (no stderr)\n",
+            "head": "claims: git rev-parse refs/worktree/claims-master failed (exit 128, empty stdout): fatal: fixture FETCH_HEAD failed\n",
+            "head_error_with_output": "claims: git rev-parse refs/worktree/claims-master failed (exit 128): fatal: fixture FETCH_HEAD failed\n",
+            "empty": "claims: git rev-parse refs/worktree/claims-master failed (exit 0, empty stdout): (no stderr)\n",
             "timeout": "claims: git fetch fixture-origin master failed (exit 124): timed out after 300s\n",
         }
         assert captured.err == expected[failure]
@@ -796,3 +797,18 @@ def test_an_entry_without_a_base_needs_the_tip_blob(hosts):
     _set_pending(a, base=None)                      # queued before this change
     _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
     assert claims.release_landed() == ([], [0x100])
+
+
+def test_settling_never_moves_the_worktrees_origin_master(hosts):
+    # review 2026-10-15 round 1: settlement inside `claims.py claim` fetched
+    # origin master and moved refs/remotes/origin/master mid-task.
+    a = hosts("a")
+    _published_and_queued(a)
+    before = _git(a, "rev-parse", "refs/remotes/origin/master").strip()
+    hosts("b")
+    _commit_ledger(hosts.origin.parent / "b", [], "peer moves master")
+    _git(hosts.origin.parent / "b", "push", "-q", "-f", "origin", "HEAD:refs/heads/master")
+    hosts("a")
+    claims.release_landed()
+    assert _git(a, "rev-parse", "refs/remotes/origin/master").strip() == before
+    assert _git(a, "rev-parse", claims.MASTER_SEEN).strip() != before

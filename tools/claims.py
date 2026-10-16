@@ -77,6 +77,7 @@ NS = "refs/claims/"
 # every worker against the same authoritative claim. (Ported from Open-BFME-2
 # 542acb66c4; the old shared refs/claims-seen/ mirror is no longer read.)
 SEEN = "refs/worktree/claims-seen/"  # local mirror; never pushed
+MASTER_SEEN = "refs/worktree/claims-master"  # origin/master as settlement saw it
 LEGACY_SEEN = "refs/claims-seen/"    # the old shared mirror: older checkouts still read it
 TTL_HOURS = float(os.environ.get("BFME_CLAIM_TTL_HOURS", "4"))
 REMOTE = os.environ.get("BFME_CLAIM_REMOTE", "origin")
@@ -675,15 +676,23 @@ def _row_key(row):
 
 
 def _fetch_master(root=None):
-    """origin/master's sha after a fetch, or None."""
-    fetched = _git("fetch", "-q", "--no-tags", REMOTE, "master", cwd=root, timeout=300)
+    """origin/master's sha after a fetch, or None.
+
+    Fetched into this worktree's private ref (MASTER_SEEN), never
+    refs/remotes/origin/master: a settlement that runs inside `claims.py
+    claim` must not move the origin/master a worker's task is built against
+    (landing_deps diffs origin/master...HEAD; queue_landed records it as the
+    landing's base). Review 2026-10-15 round 1."""
+    # --refmap= : no opportunistic refs/remotes/origin/master update either
+    fetched = _git("fetch", "-q", "--no-tags", "--recurse-submodules=no", "--refmap=", REMOTE,
+                   f"+refs/heads/master:{MASTER_SEEN}", cwd=root, timeout=300)
     if fetched.returncode:
         print(f"claims: git fetch {REMOTE} master failed (exit {fetched.returncode}): "
               f"{fetched.stderr.strip() or '(no stderr)'}", file=sys.stderr)
         return None
-    resolved = _git("rev-parse", "FETCH_HEAD", cwd=root)
+    resolved = _git("rev-parse", MASTER_SEEN, cwd=root)
     if resolved.returncode or not resolved.stdout.strip():
-        print(f"claims: git rev-parse FETCH_HEAD failed (exit {resolved.returncode}"
+        print(f"claims: git rev-parse {MASTER_SEEN} failed (exit {resolved.returncode}"
               f"{', empty stdout' if not resolved.stdout.strip() else ''}): "
               f"{resolved.stderr.strip() or '(no stderr)'}", file=sys.stderr)
         return None
