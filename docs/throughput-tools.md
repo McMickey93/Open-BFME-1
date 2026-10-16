@@ -163,6 +163,13 @@ compiles. Best candidates and the unchanged starting body live in a unique
 `build/shape_search/` directory. Restore a chosen body to its intended source
 path and run normal verification; scratch paths can affect C++ code generation.
 
+When no hypothesis is left, `python3 tools/permute.py --list` ranks banked
+attempts and `permute.py 0xRVA --minutes 10` (or `--next N`, which claims)
+randomly mutates one and keeps candidates whose bytes get closer. `--flags`
+sweeps `// cl:` flag changes, `--offsets` searches literal offsets and
+`--recheck` compiles every bank once. A win is `build/permute/<rva>/win.cpp`:
+land it by hand like any body (identity, add_match, gates).
+
 ## Donors, handoffs and scheduling
 
 ```sh
