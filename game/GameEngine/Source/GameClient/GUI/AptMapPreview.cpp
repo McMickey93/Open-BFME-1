@@ -1,10 +1,12 @@
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Include
+// stlport
 // AptMapPreview callbacks and teardown share this observed 0x40-byte layout.
 // Constructor 0x00520670 writes through +0x3C; the enclosing setup constructor
 // places its next member at preview+0x40. Unknown fields remain raw storage.
 
 #include "ascii_string.h"
 #include "basetype.h"
+#include <map>
 // Retail comparison 0x0005FFA0 calls ILT 0x0000A8D5 -> 0x0005DC70,
 // a call-free length-bounded character loop. Specialize the canonical member
 // locally as non-throwing before UnicodeString's inline forwarding definition:
@@ -32,7 +34,12 @@ class BfmeObjENK;
 class MapMetaData
 {
 public:
-	char m_unmodelled00[0x50];
+	char m_unmodelled00[0x20];
+	int m_numPlayers;
+	bool m_isMultiplayer;
+	char m_unmodelled25[0x38 - 0x25];
+	std::map<AsciiString, Coord3D> m_waypoints;
+	char m_unmodelled44[0x50 - 0x44];
 	AsciiString m_mapName;
 	UnicodeString getDescription();
 };
@@ -121,6 +128,7 @@ class AptMapPreview
 public:
 	void bfmeReset(void);
 	void rva005216B0(MapMetaData *metadata);
+	void rva00521160(MapMetaData *metadata);
 	void rva00521390(MapMetaData *metadata);
 	void rva00521000(MapMetaData *metadata);
 	void bfmeSetMapTitle(MapMetaData *metadata);
@@ -140,7 +148,9 @@ private:
 	GameWindow *m_children[8];
 	const Image *m_picture;
 	bool m_pictureOwned;
-	unsigned char m_unmodelled39[7];
+	bool m_enableStartSpots;
+	char m_unmodelled3a[2];
+	MapMetaData *m_defaultMap;
 };
 
 // Retail 0x005207C0, 214 bytes. Named MpGameSetup initialization and shutdown
@@ -296,4 +306,69 @@ void AptMapPreview::rva00521000(MapMetaData *metadata)
 			m_mapInfo->winEnable(true);
 		}
 	}
+}
+
+void positionAdditionalImages(MapMetaData *, GameWindow *, bool);
+void positionStartSpotControls(GameWindow *, GameWindow *, Coord3D *, MapMetaData *, GameWindow *[]);
+void GadgetRadioSetText(GameWindow *, UnicodeString);
+
+class GameTextInterface
+{
+public:
+    virtual void slot00(); virtual void slot01();
+    virtual void slot02(); virtual void slot03();
+    virtual void slot04(); virtual void slot05();
+    virtual void slot06(); virtual void slot07();
+    virtual void slot08(); virtual void slot09();
+    virtual UnicodeString fetch(const char *, bool * = 0);
+};
+extern GameTextInterface *TheGameText;
+
+// Opaque spelling retains the body address; donor UpdateMapStartSpots is BFME 2.
+void AptMapPreview::rva00521160(MapMetaData *metadata)
+{
+    if (metadata != 0 && metadata != m_defaultMap)
+    {
+        m_currentMap->winEnable(true);
+        positionAdditionalImages(metadata, m_currentMap, true);
+        AsciiString waypointName;
+        int i = 0;
+        for (; i < metadata->m_numPlayers && metadata->m_isMultiplayer; ++i)
+        {
+            waypointName.format("Player_%d_Start", i + 1);
+            std::map<AsciiString, Coord3D>::iterator it = metadata->m_waypoints.find(waypointName);
+            if (it != metadata->m_waypoints.end())
+            {
+                Coord3D *position = &it->second;
+                positionStartSpotControls(m_children[i], m_currentMap,
+                    position, metadata, m_children);
+                if (m_children[i] != 0)
+                {
+                    m_children[i]->winEnable(m_enableStartSpots);
+                    m_children[i]->winHide(false);
+                }
+            }
+        }
+        for (; i < 8; ++i)
+        {
+            if (m_children[i] != 0)
+            {
+                m_children[i]->winHide(true);
+                GadgetRadioSetText(m_children[i], TheGameText->fetch("GUI:Blank"));
+            }
+        }
+    }
+    else
+    {
+        m_currentMap->winEnable(false);
+        positionAdditionalImages(0, m_currentMap, true);
+        for (int i = 0; i < 8; ++i)
+        {
+            if (m_children[i] != 0)
+            {
+                m_children[i]->winHide(true);
+                GadgetRadioSetText(m_children[i], TheGameText->fetch("GUI:Blank"));
+            }
+        }
+    }
 }

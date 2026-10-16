@@ -43,3 +43,35 @@ unproven: component behavior alone cannot establish an EA C++ spelling.
 An eventual reconstruction can use an address-preserving AptMapPreview
 member and the observed MapMetaData* ABI. No source reconstruction, ledger
 rename, pin or data change is made in this evidence-only session.
+
+## Clean C++ donor recovery
+
+BFME 2's GameClient/GUI/GUICallbacks/Apt/AptMapPreview.cpp contains the clean
+UpdateMapStartSpots body at RVA 0x0057DA21 (374 bytes). Its WorldBuilder-backed
+method spelling is not asserted for BFME 1: the new member remains
+AptMapPreview::rva00521160(MapMetaData*). The donor supplies the two map/default
+branches, waypoint lookup, eight child-window loop, and GUI:Blank fetches.
+BFME 1 checks m_isMultiplayer on each iteration and has no GameLogic mode gate.
+The existing BFME constructor and caller chain above establish the layouts.
+
+The waypoint map is at metadata+0x38. The existing typed _M_find pin at ILT
+0x00010AAF uses map<AsciiString, Coord3D>; node payload +0x14 is passed to
+positionStartSpotControls. That matched helper's native declaration uses
+GameWindow *buttonMapStartPositions[] as its last argument. The source retains
+that array declaration rather than introducing a different mangled ** contract.
+The observed bool at preview+0x39 is the winEnable input. TheGameText fetch
+uses virtual slot +0x28 and returns the canonical UnicodeString by value.
+
+A complete donor port initially emitted 450 bytes with the receiver in EBP
+instead of EDI and the waypoint tree in EDI instead of EBP. A named
+Coord3D *position = &it->second before the five-argument positioning call
+settles both register allocation and the metadata-push ordering. It emits all
+447 target bytes with 25 aligned relocation slots. Four other local/loop
+spellings were inert; eight EH combinations did not improve the initial form.
+
+The strict scoped build verifies all seven TU rows, nine literals plus one
+empty-string reference, all five DIR32 references, and body guards. The
+pre-existing cleanup's compiler label was repinned solely by eh_state_pins.py
+against its retail parent's unwind state. link_check.py before/after reports
+LINKED 0 -> 0 bytes: no existing linked bytes are lost. No pin, header, shim,
+assembly, or hatch was introduced.
