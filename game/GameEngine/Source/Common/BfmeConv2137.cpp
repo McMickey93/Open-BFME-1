@@ -9,11 +9,11 @@ class Rva009EBCE0AssetReference
 public:
 	__forceinline ~Rva009EBCE0AssetReference()
 	{
-		if (m_bfmePtrXT != 0)
-			m_bfmePtrXT->Release_Ref();
+		if (m_texture != 0)
+			m_texture->Release_Ref();
 	}
 
-	TextureClass *m_bfmePtrXT;
+	TextureClass *m_texture;
 };
 
 Rva009EBCE0AssetReference Rva009EBCE0_GetPrototype(const char *name);
