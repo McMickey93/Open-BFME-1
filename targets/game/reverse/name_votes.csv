@@ -1694,3 +1694,4 @@ game/GameEngine/Source/Common/Rva00063F90Blend.cpp|local|Rva00063F90Blend::eval|
 game/GameEngine/Source/Common/Rva00063F90Blend.cpp|local|Rva00063F90Blend::eval|u,28a951508bf845913fc0db40,gpt-6.1-sol,20261016033917-bbfb7f,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1667.cpp|member||m_bfmeHEQA,e802d7ddf9d3e9136af4e3bf,gpt-6.1-sol,20261016033924-f67b63,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1667.cpp|local|BfmeThingEQA::bfmeGoEQA|h,8a73dbe0d143dc56e9cf9f95,gpt-6.1-sol,20261016033924-f67b63,2026-10-16
+game/GameEngine/Source/Common/SmallGaps/Rva009F2FA0PopSqrt.cpp|local|Rva009F2FA0Reader::popSqrt|e,d9c37bdce35d3f452637aa18,gpt-6.1-sol,20261016033931-da3520,2026-10-16
