@@ -4125,3 +4125,7 @@ game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|funct
 game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|function|BfmeObjectAI@|bfmeStateValue,d7cc968320de1335dcc25780,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/LocomotorConstructor.cpp|param|setFlag|f,035edfe4550d5790b8f00635,gpt-6.1-sol,20261016063702-1b4f77,2026-10-16
 game/GameEngine/Source/GameLogic/Object/LocomotorConstructor.cpp|param|Locomotor::Locomotor|tmpl,9f0db7bc1a3d9e862228e29a,gpt-6.1-sol,20261016063702-1b4f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|member||m_rva16c,953cec7bfa284b5dd4d543f2,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|member||m_rva1d4,c181d14190ac776a12d49405,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|member||m_rva1dc,c83f335522a11cbaca3899ee,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|local|Object::~Object|b,266b3c410d67c26d60b40729,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
