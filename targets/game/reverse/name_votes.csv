@@ -5573,3 +5573,10 @@ game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|Scor
 game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|ScoreScaleUpTransition::draw|x1,b9ba9739f646de7739096afd,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|ScoreScaleUpTransition::draw|y1,2a2262bd3e27844012bf4efc,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00740440CameraPathAngles.cpp|local|Rva00740440::rva00740440|p,3ed9cacb7a3a0146bd2d1556,gpt-6.1-sol,20261016122639-8299ef,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|member||m_bfmeNext,34232223c58b1dbc4edc58bc,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|member||m_bfmeList,e718943bfcc338cae53d2464,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|member||m_bfmeBegin,2400d369207ed9fdbe612f25,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|member||m_bfmeEnd,7ae8645329349460ae7f3335,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|function||bfmeUnregisterY,817ddb13ce5fdcb0101e28f2,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|local|bfmeUnregisterY|e,f48175249f677a8f01474d8e,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|local|bfmeUnregisterY|n,cf9645ba098518cc6067df7d,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
