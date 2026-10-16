@@ -2784,3 +2784,13 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag40,9abb401c3e8cdd3af6a0ca91,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown48,ad1d3bff1c14bbe6c94f420e,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag54,11affc74617d4dbbc4ad814e,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_unknown20,0ea9bb20351d3e710494ae44,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_flag28,7e2404eaa28d30b0ab2fc4f2,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_flag29,9da5a91151f40677fc7d9445,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_unknown2c,fa41100cabc58967ae0337e3,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_unknown34,4a591baea9de3266fd5cbff2,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_unknown38,1e2948c48fd89c0bf4ba7ccc,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_unknown3c,8ef5a4ef522c0891c95433c7,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_flag40,1405f37547a60880b80d8f95,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_unknown48,4729e9d7d0c1e9a5fcc6a499,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Collide/CollideModuleModuleDataCtorThunk.cpp|member||m_flag54,451e01212cc09326f3fa3b12,gpt-6.1-sol,20261016052740-61f22a,2026-10-16
