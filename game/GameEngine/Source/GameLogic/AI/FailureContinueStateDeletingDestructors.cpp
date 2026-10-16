@@ -19,8 +19,9 @@ class FailureState : public State
 {
 	friend void forceFailureStateDeletingDestructor();
 
-public:
-	virtual ~FailureState() {}
+	// Implicit destructor: retail 0x0017F280 (own ILT 0x000047F0, ilt_oracle
+	// CONFIRMED exact) is a bare jmp to State::~State (ILT 0x00016725) with no
+	// vptr reset, which a user-declared one would emit.
 };
 
 class ContinueState : public State

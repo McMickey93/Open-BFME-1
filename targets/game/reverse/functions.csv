@@ -122166,7 +122166,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00178d80@@YAXXZ,,0x00178D80,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00029311
 ?j_00178e00@@YAXXZ,,0x00178E00,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00029311
 ?j_0017db00@@YAXXZ,,0x0017DB00,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00029311
-?j_0017f280@@YAXXZ,,0x0017F280,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_0017f2c0@@YAXXZ,,0x0017F2C0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_0017f300@@YAXXZ,,0x0017F300,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_0017f340@@YAXXZ,,0x0017F340,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
@@ -122188,14 +122187,9 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00185300@@YAXXZ,,0x00185300,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_00185340@@YAXXZ,,0x00185340,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_00185380@@YAXXZ,,0x00185380,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_001853c0@@YAXXZ,,0x001853C0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_00185400@@YAXXZ,,0x00185400,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_00185440@@YAXXZ,,0x00185440,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_001854c0@@YAXXZ,,0x001854C0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_00185530@@YAXXZ,,0x00185530,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_00185570@@YAXXZ,,0x00185570,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_001855b0@@YAXXZ,,0x001855B0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_001855f0@@YAXXZ,,0x001855F0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_00185670@@YAXXZ,,0x00185670,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_001856b0@@YAXXZ,,0x001856B0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_001856f0@@YAXXZ,,0x001856F0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
@@ -172535,3 +172529,9 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ??1GiantBirdGuardAttackAggressorState@@UAE@XZ,,0x002C1D70,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/GiantBirdGuardAttackAggressorStateDeletingDestructor.cpp,matched,implicit ~GiantBirdGuardAttackAggressorState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0000FDC1 ilt_oracle CONFIRMED exact and called by matched ??_GGiantBirdGuardAttackAggressorState in the same TU;model=claude-opus-5-5;host=app
 ??1ActAsDozerState@@UAE@XZ,,0x002C9BF0,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WorkerAIUpdateDozerDeletingDestructor.cpp,matched,implicit ~ActAsDozerState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0003C943 ilt_oracle CONFIRMED exact and called by matched ??_GActAsDozerState in the same TU;model=claude-opus-5-5;host=app
 ??1ActAsSupplyTruckState@@UAE@XZ,,0x002C9C30,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WorkerAIUpdateSupplyTruckDeletingDestructor.cpp,matched,implicit ~ActAsSupplyTruckState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0003CCB8 ilt_oracle CONFIRMED exact and called by matched ??_GActAsSupplyTruckState in the same TU;model=claude-opus-5-5;host=app
+??1AIAttackMeleeHordeApproachTargetState@@UAE@XZ,,0x001853C0,5,game/GameEngine/Source/GameLogic/AI/AITargetMovementDeletingDestructors.cpp,matched,implicit ~AIAttackMeleeHordeApproachTargetState: bare jmp AIInternalMoveToState::~AIInternalMoveToState ILT 0x0004AAF7 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00020DBA ilt_oracle CONFIRMED exact and called by matched ??_GAIAttackMeleeHordeApproachTargetState in the same TU;model=claude-opus-5-5;host=app
+??1AIAttackFireDuringApproachState@@UAE@XZ,,0x00185440,5,game/GameEngine/Source/GameLogic/AI/AITargetMovementDeletingDestructors.cpp,matched,implicit ~AIAttackFireDuringApproachState: bare jmp AIInternalMoveToState::~AIInternalMoveToState ILT 0x0004AAF7 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00027F43 ilt_oracle CONFIRMED exact and called by matched ??_GAIAttackFireDuringApproachState in the same TU;model=claude-opus-5-5;host=app
+??1AIAttackMeleeSquishState@@UAE@XZ,,0x001854C0,5,game/GameEngine/Source/GameLogic/AI/AITargetMovementDeletingDestructors.cpp,matched,implicit ~AIAttackMeleeSquishState: bare jmp AIInternalMoveToState::~AIInternalMoveToState ILT 0x0004AAF7 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00013D59 ilt_oracle CONFIRMED exact and called by matched ??_GAIAttackMeleeSquishState in the same TU;model=claude-opus-5-5;host=app
+??1AIWanderState@@UAE@XZ,,0x00185570,5,game/GameEngine/Source/GameLogic/AI/AIMovementStateDeletingDestructors.cpp,matched,implicit ~AIWanderState: bare jmp AIInternalMoveToState::~AIInternalMoveToState ILT 0x0004AAF7 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00016095 ilt_oracle CONFIRMED exact and called by matched ??_GAIWanderState in the same TU;model=claude-opus-5-5;host=app
+??1AIPanicState@@UAE@XZ,,0x001855F0,5,game/GameEngine/Source/GameLogic/AI/AIMovementStateDeletingDestructors.cpp,matched,implicit ~AIPanicState: bare jmp AIInternalMoveToState::~AIInternalMoveToState ILT 0x0004AAF7 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0001CA08 ilt_oracle CONFIRMED exact and called by matched ??_GAIPanicState in the same TU;model=claude-opus-5-5;host=app
+??1FailureState@@UAE@XZ,,0x0017F280,5,game/GameEngine/Source/GameLogic/AI/FailureContinueStateDeletingDestructors.cpp,matched,implicit ~FailureState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x000047F0 ilt_oracle CONFIRMED exact and called by matched ??_GFailureState in the same TU;model=claude-opus-5-5;host=app

@@ -28,26 +28,31 @@ private:
 	friend void forceAIAttackPursueTargetStateDeletingDestructor();
 };
 
-class AIAttackMeleeHordeApproachTargetState
+// These destructors are implicit: retail ~AIAttackMeleeHordeApproachTargetState at 0x001853C0 (own ILT 0x00020DBA), ~AIAttackFireDuringApproachState at 0x00185440 (own ILT 0x00027F43), ~AIAttackMeleeSquishState at 0x001854C0 (own ILT 0x00013D59) are each a bare tail
+// jump to AIInternalMoveToState::~AIInternalMoveToState (ILT 0x0004AAF7)
+// with no vptr reset, the shape VC7.1 gives an implicit virtual
+// destructor; every ILT named here is ilt_oracle CONFIRMED exact.
+
+class AIInternalMoveToState
 {
 public:
-	virtual ~AIAttackMeleeHordeApproachTargetState();
+	virtual ~AIInternalMoveToState();
+};
+
+class AIAttackMeleeHordeApproachTargetState : public AIInternalMoveToState
+{
 private:
 	friend void forceAIAttackMeleeHordeApproachTargetStateDeletingDestructor();
 };
 
-class AIAttackFireDuringApproachState
+class AIAttackFireDuringApproachState : public AIInternalMoveToState
 {
-public:
-	virtual ~AIAttackFireDuringApproachState();
 private:
 	friend void forceAIAttackFireDuringApproachStateDeletingDestructor();
 };
 
-class AIAttackMeleeSquishState
+class AIAttackMeleeSquishState : public AIInternalMoveToState
 {
-public:
-	virtual ~AIAttackMeleeSquishState();
 private:
 	friend void forceAIAttackMeleeSquishStateDeletingDestructor();
 };
