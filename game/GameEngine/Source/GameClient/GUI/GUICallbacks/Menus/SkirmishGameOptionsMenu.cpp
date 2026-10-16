@@ -522,61 +522,8 @@ static void startPressed(void)
 
 }//void startPressed(void)
 
-/////////////////////////////////////////////////////
-// MapSelectorTooltip - shows tooltips for the tech buildings 
-//											and supply depots
-// Added By : Sadullah Nader
-/////////////////////////////////////////////////////
-void MapSelectorTooltip(GameWindow *window,
-												WinInstanceData *instData,
-												UnsignedInt mouse)
-{
-	Int x, y;
-	x = LOLONGTOSHORT(mouse);
-	y = HILONGTOSHORT(mouse);
-
-	Int pixelX, pixelY;
-	window->winGetScreenPosition(&pixelX, &pixelY);
-
-	const Image *image = TheMappedImageCollection->findImageByName("TecBuilding");
-	const Image *image2 = TheMappedImageCollection->findImageByName("Cash");
-
-
-	ICoord2DList::iterator it = TheSupplyAndTechImageLocations.m_techPosList.begin();
-	ICoord2DList::iterator it2 = TheSupplyAndTechImageLocations.m_supplyPosList.begin();
-	
-	if( image )
-	{
-		// Check to see if we mouse over a tech building 
-		while(it != TheSupplyAndTechImageLocations.m_techPosList.end())
-		{
-			if ((x > (pixelX + it->x) && x < (pixelX + it->x + SUPPLY_TECH_SIZE)) 
-				  && ( y > (pixelY + it->y) && y < (pixelY + it->y + SUPPLY_TECH_SIZE)))
-			{
-				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:TechBuilding"), -1, NULL); //, 1.5f
-				return;
-			}
-			it++;
-		}
-	}
-
-	if (image2)
-	{
-		// Check to see if we mouse over a supply dock
-		while (it2 != TheSupplyAndTechImageLocations.m_supplyPosList.end())
-		{
-			if ((x > (pixelX + it2->x) && x < (pixelX + it2->x + SUPPLY_TECH_SIZE))
-					 && ( y > (pixelY + it2->y) && y < (pixelY + it2->y + SUPPLY_TECH_SIZE)))
-			{
-				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:SupplyDock"), -1, NULL); // , 1.5f
-				break;
-			}
-			it2++;
-		}
-	}
-	
-}
-
+// Retail MapSelectorTooltip is defined in MapSelectorTooltip.cpp.
+void MapSelectorTooltip(GameWindow *, WinInstanceData *, UnsignedInt);
 
 void positionStartSpotControls( GameWindow *win, GameWindow *mapWindow, Coord3D *pos, MapMetaData *mmd, GameWindow *buttonMapStartPositions[]);
 TechAndSupplyImages TheSupplyAndTechImageLocations;
