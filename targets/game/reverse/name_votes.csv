@@ -5392,3 +5392,7 @@ game/GameEngine/Source/Common/Bfme5SixtyNine.cpp|member||m_bfmeC,3ec35c92361da02
 game/GameEngine/Source/Common/Bfme5SixtyNine.cpp|member||m_bfmeFirst,4e68640838a91c4f5c29f4ce,gpt-6.1-sol,20261016081344-9ccae7,2026-10-16
 game/GameEngine/Source/Common/Bfme5SixtyNine.cpp|member||m_bfmeSecond,3e5abb59f7b4094ac0a9838a,gpt-6.1-sol,20261016081344-9ccae7,2026-10-16
 game/GameEngine/Source/Common/Bfme5SixtyNine.cpp|member||m_bfmeThird,7fe9a37a859dea0e1a45c8c8,gpt-6.1-sol,20261016081344-9ccae7,2026-10-16
+game/GameEngine/Source/Common/Rva0020DEE0VirtualMode.cpp|member||m_08,d05294cc41173b9bcc4a9e19,gpt-6.1-sol,20261016081339-ac23ad,2026-10-16
+game/GameEngine/Source/Common/Rva0020DEE0VirtualMode.cpp|member||m_10,19dee437eb4e5f944c05169b,gpt-6.1-sol,20261016081339-ac23ad,2026-10-16
+game/GameEngine/Source/Common/Rva0020DEE0VirtualMode.cpp|member||m_14,e12596a1df5b7cef380dc685,gpt-6.1-sol,20261016081339-ac23ad,2026-10-16
+game/GameEngine/Source/Common/Rva0020DEE0VirtualMode.cpp|member||m_18,0ae28ec1fa4de0a98bf8977d,gpt-6.1-sol,20261016081339-ac23ad,2026-10-16
