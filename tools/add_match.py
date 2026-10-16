@@ -505,14 +505,14 @@ def remove_stash(rva, root):
 LANDED_BY = "landed-by=add_match"
 
 
-def landing_recorded(text, name, rva, size, source_rel):
-    """True when this exact landing is the STANDING verdict at rva in TEXT (the
-    attempt log): re-running a landing never writes a second row. A landing
-    that a later verdict at that address superseded (a `blocked` after it, a
-    void) is not standing, so the re-landing is recorded again -- otherwise
-    the later deferral would stay the last word on a matched body."""
+def landing_recorded(raw, name, rva, size, source_rel):
+    """True when this exact landing is the STANDING verdict at rva in RAW (the
+    attempt log's bytes): re-running a landing never writes a second row. A
+    landing that a later verdict at that address superseded (a `blocked` after
+    it, a void) is not standing, so the re-landing is recorded again --
+    otherwise the later deferral would stay the last word on a matched body."""
     import re_log
-    records, _resolved = re_log.indexed_records_text(text)
+    records, _resolved = re_log.indexed_records_text(raw.decode("utf-8", "replace"))
     standing = records.get(rva)
     if standing is None:
         return False
@@ -521,32 +521,47 @@ def landing_recorded(text, name, rva, size, source_rel):
             and fields[4].startswith(f"{LANDED_BY} source={source_rel} "))
 
 
-def drop_uncommitted_landing(root, log, text, rva):
+def drop_uncommitted_landing(root, log, raw, rva):
     """A same-session re-landing at RVA (--replace-existing at a new size, a
     --replace-rva rename) supersedes this session's own earlier add_match
     `landed` line: drop such a line that HEAD's log does not hold yet, so the
-    commit carries one landing, not an orphan check_csv would refuse."""
+    commit carries one landing, not an orphan check_csv would refuse.
+
+    Bytes in, bytes out, split on LF only: the log holds a mid-line CR (the
+    ?getPath00083DD0@ScreenshotGlobalData row) and may hold invalid UTF-8,
+    and every line but the dropped one must stay byte-identical.
+
+    Known residuals (review round 3): one add_match session per worktree (a
+    second session's uncommitted landing at the same RVA is dropped too); a
+    git revert of a same-extent --replace-existing re-landing is refused by
+    check_csv (the parent still carries the same key); a hand-deleted landed
+    line inside a commit that also renames its row passes check_csv; and
+    blocked-on= must name the start of a functions.csv row, so a blocker
+    with no row is carved first."""
     committed = subprocess.run(["git", "-C", str(root), "show",
                                 "HEAD:targets/game/reverse/re_attempts.log"], capture_output=True)
-    held = set(committed.stdout.decode("utf-8", "replace").splitlines()) if committed.returncode == 0 else set()
+    held = set(committed.stdout.split(b"\n")) if committed.returncode == 0 else set()
+    lines = raw.split(b"\n")
     kept, dropped = [], 0
-    for line in text.splitlines(keepends=True):
-        fields = line.rstrip("\r\n").split("\t")
-        try:
-            mine = (len(fields) >= 5 and fields[3] == "landed" and fields[4].startswith(LANDED_BY + " ")
-                    and int(fields[1], 16) == rva)
-        except ValueError:
-            mine = False
-        if mine and line.rstrip("\r\n") not in held:
+    marker = (LANDED_BY + " ").encode()
+    for index, line in enumerate(lines):
+        fields = line.split(b"\t")
+        mine = False
+        if len(fields) >= 5 and fields[3] == b"landed" and fields[4].startswith(marker):
+            try:
+                mine = int(fields[1], 16) == rva
+            except ValueError:
+                mine = False
+        if mine and index < len(lines) - 1 and line not in held:
             dropped += 1
             continue
         kept.append(line)
     if not dropped:
-        return text
-    new_text = "".join(kept)
-    ledger_io.atomic_write_bytes(log, new_text.encode("utf-8"))
+        return raw
+    new_raw = b"\n".join(kept)
+    ledger_io.atomic_write_bytes(log, new_raw)
     print(f"add_match: replaced this session's uncommitted `landed` line for 0x{rva:08X}")
-    return new_text
+    return new_raw
 
 
 def landing_evidence(rva, size, source_rel, notes):
@@ -565,21 +580,22 @@ def record_landing(root, name, rva, size, source_rel, notes, *, text=None):
     deferrals waiting on it never learned their wall was gone
     (eligibility.released_rvas). Written through re_log.append (LF, one line,
     append-only) only after verification; idempotent. Returns the log text
-    after the call, or None when nothing could be recorded."""
+    after the call (bytes), or None when nothing could be recorded. TEXT is a
+    previous call's return value (add_match_batch reads the log once)."""
     import re_log
     log = Path(root) / "targets/game/reverse" / "re_attempts.log"
     if not log.exists():
         return None
-    text = log.read_text(encoding="utf-8", errors="replace") if text is None else text
-    text = drop_uncommitted_landing(root, log, text, rva)
-    if landing_recorded(text, name, rva, size, source_rel):
+    raw = log.read_bytes() if text is None else text
+    raw = drop_uncommitted_landing(root, log, raw, rva)
+    if landing_recorded(raw, name, rva, size, source_rel):
         print(f"add_match: `landed` for {name} @ 0x{rva:08X} already in re_attempts.log")
-        return text
+        return raw
     evidence = landing_evidence(rva, size, source_rel, notes)
     re_log.append(name, f"0x{rva:08X}", str(size), "landed", evidence, path=log)
     print(f"add_match: recorded `landed` in targets/game/reverse/re_attempts.log -- stage it "
           "with the ledger")
-    return text + f"{name}\t0x{rva:08X}\t{size}\tlanded\t{evidence}\n"
+    return raw + f"{name}\t0x{rva:08X}\t{size}\tlanded\t{evidence}\n".encode("utf-8")
 
 
 def report_waiting(rva, path=None, root=None):

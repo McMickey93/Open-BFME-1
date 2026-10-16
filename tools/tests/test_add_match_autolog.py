@@ -250,8 +250,7 @@ def test_r1_m1_a_relanding_after_a_later_deferral_is_recorded_and_releases(landi
     add_match.record_landing(root, REAL, 0x00ABCD00, 32, SOURCE_REL, "model=m")
     with log.open("ab") as handle:
         handle.write(f"{REAL}\t0x00ABCD00\t32\tblocked\tregressed blocker=x/y model=m\n".encode())
-    text = log.read_text()
-    assert not add_match.landing_recorded(text, REAL, 0x00ABCD00, 32, SOURCE_REL)
+    assert not add_match.landing_recorded(log.read_bytes(), REAL, 0x00ABCD00, 32, SOURCE_REL)
     add_match.record_landing(root, REAL, 0x00ABCD00, 32, SOURCE_REL, "model=m")
     records, _r = re_log.indexed_records(log)
     assert records[0x00ABCD00][1][3] == "landed"
@@ -398,3 +397,27 @@ def test_r2_4_add_match_batch_reports_the_waiting_deferrals(tmp_path, monkeypatc
     add_match_batch.main()
     assert reported == [(0x00ABCD00, reverse / "re_attempts.log", tmp_path.resolve())]
     assert (reverse / "re_attempts.log").read_text().count("\tlanded\t") == 1
+
+
+# -- review round 3 ------------------------------------------------------------
+
+def test_r3_dropping_a_line_leaves_every_other_byte_alone(landing):
+    """The log holds a mid-line CR and may hold invalid UTF-8: a same-session
+    re-landing drops only its own earlier line, byte for byte."""
+    root, _state = landing
+    log = root / "targets/game/reverse/re_attempts.log"
+    odd = (b"?getPath00083DD0@ScreenshotGlobalData@@QAEXXZ\t0x00083DD0\t8\tblocked\tcr\rinside "
+           b"blocker=x/y model=m\n"
+           b"?bad@Utf8@@QAEXXZ\t0x00000010\t8\tblocked\tlatin \xe9\xff byte blocker=x/y model=m\n")
+    log.write_bytes(OLD_LOG.encode() + odd)
+    _commit(root)
+    add_match.record_landing(root, REAL, 0x00ABCD00, 32, SOURCE_REL, "model=m")
+    before = log.read_bytes()
+    add_match.record_landing(root, REAL, 0x00ABCD00, 40, SOURCE_REL, "model=m")
+    after = log.read_bytes()
+    assert after.startswith(OLD_LOG.encode() + odd), "every committed line byte-identical"
+    assert before.count(b"\tlanded\t") == after.count(b"\tlanded\t") == 1
+    assert after.split(b"\n")[-2].split(b"\t")[2] == b"40"
+    problems = []
+    check_csv.check_re_attempts_append_only(OLD_LOG.encode() + odd, after, problems)
+    assert problems == []
