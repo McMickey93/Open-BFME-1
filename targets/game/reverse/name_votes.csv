@@ -3800,3 +3800,5 @@ game/GameEngine/Source/Common/BfmeConv1380.cpp|param|BfmeThingVIY::bfmeSubVIY|m,
 game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||radius08,f0a7deea271cb9af0080b54d,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||data04,e57a5bb7e92afc7244c548e8,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||ids24,fa5f428be1dd9db5776e17d7,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AD10Find.cpp|local|Gen_0021AD10::bfmeFind|n,6b3b72330b80ede63bb3c401,gpt-6.1-sol,20261016062224-39e9a3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AD10Find.cpp|local|Gen_0021AD10::bfmeFind|c,be614a8009e8c968379a171a,gpt-6.1-sol,20261016062224-39e9a3,2026-10-16
