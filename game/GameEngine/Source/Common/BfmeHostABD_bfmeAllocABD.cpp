@@ -43,7 +43,7 @@ public:
 	Rva00803080 *m_bfme04ABD;
 	BfmeSlotABD m_lookups[4];
 	int m_numLookups;
-	Rva007EAServiceList *m_bfme4CABD;
+	Rva007EAServiceList *m_serviceList;
 };
 
 int BfmeHostABD::bfmeAllocABD(const char *name, void *a, void *b, void *c)
@@ -75,7 +75,7 @@ int BfmeHostABD::bfmeAllocABD(const char *name, void *a, void *b, void *c)
 
 		++m_numLookups;
 
-		m_bfme4CABD->add((Rva00803080 *)&m_bfme04ABD);
+		m_serviceList->add((Rva00803080 *)&m_bfme04ABD);
 
 		return 0;
 	}
