@@ -3005,3 +3005,10 @@ game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgrad
 game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910Nested,397635129acac886dcc12d82,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910Element,f81fee19995db560445c3d11,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910State,98638d8e85edd57a0cd26455,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|type||BfmeCZD,5bcc77bcffa2d4b769af3bcb,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|member||m_bfmeBaseZD,f6ee30a8a1aff5db7c0fa4d3,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|member||m_bfmeFirstZD,1e544edadd55cff171bd64c7,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|member||m_bfmeSecondZD,3ba941eba48e04c1b12a704a,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|param|bfmeDoZD|c,b5e33a8c553871435b963aae,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|local|LevelUpUpgrade::upgradeImplementation|a,1d09a2f1ace289e1d886e267,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LevelUpUpgradeUpgradeImplementation.cpp|local|LevelUpUpgrade::upgradeImplementation|c,4d9d1c0ee6d970fe1857d477,gpt-6.1-sol,20261016054242-3b6aa9,2026-10-16
