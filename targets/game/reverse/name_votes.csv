@@ -2418,3 +2418,14 @@ game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCto
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value24,ef86b131cce1fa1c30956d68,gpt-6.1-sol,20261016044553-ce7526,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value28,2a135cb1622eabffeaa6a0c2,gpt-6.1-sol,20261016044553-ce7526,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_flag2C,cec9a5366603d7d26b717f42,gpt-6.1-sol,20261016044553-ce7526,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_08,171e7f6d4d353d0307abe45d,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_0c,4cfd58086b8772de818316c5,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_10,e23f89129bd58725f45d5151,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_14,956bf3cea8f05902a3c0abf3,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_18,b5ac2f52ad12618e57af14b3,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_1c,534c7352edc2123708babbe0,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_20,7b2af556efcffde94800d6c9,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_24,4bea21f952c23d0e318eb7da,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_28,e88641907acdf06141e48426,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_29,487cd5c11fa7d7f4621879c3,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|local|CastleMemberBehaviorModuleData::CastleMemberBehaviorModuleData|n,0c1e352fc2a0207f64e40b6b,gpt-6.1-sol,20261016044559-126f60,2026-10-16
