@@ -4920,3 +4920,5 @@ game/GameEngine/Source/Common/Bfme5TinyFive6.cpp|function||bfmeWiden,1243a87cf5c
 game/GameEngine/Source/GameLogic/LivingWorld/Rva00618980.cpp|member||byte10,692735cee8535b443dbc4512,gpt-6.1-sol,20261016071719-b71780,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1253.cpp|type||BfmeVec1253,7b02f2ad837e66fcc7b059c4,gpt-6.1-sol,20261016071749-26fe77,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1253.cpp|param|BfmeA1253::bfmeDraw1253|p,272a6e74eb7288f789dd2334,gpt-6.1-sol,20261016071749-26fe77,2026-10-16
+game/GameEngine/Source/Common/TripleMemberCopies.cpp|local|Rva00138BA0Copy|n,eb0eb4dacc5d2eceabd744b7,gpt-6.1-sol,20261016071841-8f4206,2026-10-16
+game/GameEngine/Source/Common/TripleMemberCopies.cpp|local|Rva00146B10Copy|n,184433809f0e617c8fbc7cfc,gpt-6.1-sol,20261016071841-8f4206,2026-10-16
