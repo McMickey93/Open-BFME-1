@@ -20438,5 +20438,45 @@
   "after_sha256": "c9ab88c8ec8c2da03024251dcf8270dba0416e02dc51a9afd4182b62c9c6c875",
   "evidence": "targets/game/reverse/identity_evidence/rva001FF060-gettingbuilt.md",
   "reason": "the banked attempt's guessed method name is CONTRADICTED by ilt_oracle at the body's only ILT 0x00036449; the matched caller GettingBuiltBehavior::update proves only the owning class, so the method keeps an address-derived name"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00205440.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorRva00205440.cpp",
+  "old_name": "ReportView",
+  "new_name": "BFMEReportDamageSource",
+  "before_sha256": "18ba1535a14df789ce8d675877adea46bef94a8975de418d144b429c1ab1b8ab",
+  "after_sha256": "3d867483d32214c135cdb53e2d3066bf51edbb949515bba88f520ebdd152495a",
+  "evidence": "targets/game/reverse/identity_evidence/rva00205440-runoffmap.md",
+  "reason": "the bank's local stand-in class; symbols.csv pins report() at body 0x001C9490 under BFMEReportDamageSource"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00205440.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorRva00205440.cpp",
+  "old_name": "getID",
+  "new_name": "bfmeSetModelConditionState",
+  "before_sha256": "18ba1535a14df789ce8d675877adea46bef94a8975de418d144b429c1ab1b8ab",
+  "after_sha256": "3d867483d32214c135cdb53e2d3066bf51edbb949515bba88f520ebdd152495a",
+  "evidence": "targets/game/reverse/identity_evidence/rva00205440-runoffmap.md",
+  "reason": "false pairing: the bank misread body-module slot 15 as getID (now getLastDamageInfo); bfmeSetModelConditionState is an unrelated new inline"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00205440.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorRva00205440.cpp",
+  "old_name": "method",
+  "new_name": "rva00205440",
+  "before_sha256": "18ba1535a14df789ce8d675877adea46bef94a8975de418d144b429c1ab1b8ab",
+  "after_sha256": "3d867483d32214c135cdb53e2d3066bf51edbb949515bba88f520ebdd152495a",
+  "evidence": "targets/game/reverse/identity_evidence/rva00205440-runoffmap.md",
+  "reason": "the bank's own placeholder on an anonymous class; the vtable proves the RunOffMapBehavior owner but not the meaning, so the method keeps the address"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00205440.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorRva00205440.cpp",
+  "old_name": "pad",
+  "new_name": "m_unmodelled_00",
+  "before_sha256": "18ba1535a14df789ce8d675877adea46bef94a8975de418d144b429c1ab1b8ab",
+  "after_sha256": "3d867483d32214c135cdb53e2d3066bf51edbb949515bba88f520ebdd152495a",
+  "evidence": "targets/game/reverse/identity_evidence/rva00205440-runoffmap.md",
+  "reason": "padding member renamed to the project's unmodelled-bytes convention"
  }
 ]
