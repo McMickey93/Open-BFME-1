@@ -77,8 +77,6 @@ struct GenNode_006fa270
 		}
 	}
 
-	~GenNode_006fa270(void) { unlink(); }
-
 	GenNode_006fa270 &operator=(const GenNode_006fa270 &o)
 	{
 		if (this != &o)
@@ -104,5 +102,8 @@ GenNode_006fa270 *gen_copy_006fa270(GenNode_006fa270 *first, GenNode_006fa270 *l
 void gen_destroy_006fa420(GenNode_006fa270 *first, GenNode_006fa270 *last)
 {
 	for (; first != last; ++first)
+	{
+		first->unlink();
 		first->~GenNode_006fa270();
+	}
 }
