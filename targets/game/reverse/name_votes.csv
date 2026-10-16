@@ -2111,3 +2111,10 @@ game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThun
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThunk.cpp|member||m_4C,78cd017d6fa2c8a8f9608351,gpt-6.1-sol,20261016041411-8046a3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThunk.cpp|member||m_50,f58fc7f43f4fb0bb00bf91ee,gpt-6.1-sol,20261016041411-8046a3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThunk.cpp|member||m_54,055a6f5a5a2465d08227cae2,gpt-6.1-sol,20261016041411-8046a3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x70,c370465e54fd6cabb536c8c8,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x74,13a4d8d34790b9056395ddfd,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x78,cdb14e3c53f5b4b7fc7d50f4,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x7c,265637aaeae071f9fa06801f,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x88,75dde3ffb4ce477e3e9eb1f2,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x8c,762f103699ba596c7207bf3e,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x8d,e536df25bd13fa54571e5695,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
