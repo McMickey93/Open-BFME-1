@@ -3738,3 +3738,7 @@ game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||flags04,847b6d79f0c5d5
 game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||field0c,425cc1fb7d96c15b0a61e736,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
 game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||field4c,facebd3738ac59eae037d219,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
 game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||field58,a179bc0ab129880d7ee1949b,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|function|ScriptConditions@|bfmeAreaGate,0956c48ce43f29abbcd02e26,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|a,d290894c47d55a7df0a60d16,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|b,3d55759c77947f16ff2a24a0,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|c,333f51df62c7c81600416137,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
