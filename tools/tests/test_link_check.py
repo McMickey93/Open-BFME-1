@@ -392,7 +392,8 @@ def _new_files(monkeypatch, tmp_path, objects, order):
     monkeypatch.setattr(link_census, "link_order", lambda rows, data: [Path(name) for name in order])
     monkeypatch.setattr(C, "source_bytes", lambda sources: {s: 100 for s in sources})
     # the census objects' inputs are known and unchanged since the census
-    monkeypatch.setattr(C, "changed_since", lambda commit: C.Changed())
+    monkeypatch.setattr(C, "changed_since", lambda commit: _since(()))
+    monkeypatch.setattr(C, "MOVED_CACHE", tmp_path / "moved_cache.json")
     monkeypatch.setattr(C, "object_inputs", lambda obj, sources, receipts: {obj.name})
     return ix
 
@@ -1043,7 +1044,8 @@ def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, l
     monkeypatch.setattr(link_census, "objects", lambda rows: (present, missing))
     monkeypatch.setattr(link_census, "link_order", lambda rows, data=(): order)
     monkeypatch.setattr(link_census, "data_ledger", lambda: [])
-    monkeypatch.setattr(C, "changed_since", lambda commit: set(since))
+    monkeypatch.setattr(C, "changed_since", lambda commit: _since(since))
+    monkeypatch.setattr(C, "MOVED_CACHE", Path(__import__("tempfile").mkdtemp()) / "moved_cache.json")
     monkeypatch.setattr(C, "object_inputs",
                         lambda obj, sources, receipts: inputs.get(obj.name, {obj.name + ".cpp"}))
     monkeypatch.setattr(C, "_refresh_receipts", lambda: type("R", (), {"save": lambda self: None})())
@@ -1053,6 +1055,18 @@ def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, l
     monkeypatch.setattr(link_census, "_refresh_missing_search_root_receipts", lambda *a: None)
     refreshed.compiled = compiled
     return ix, refreshed, facts_of
+
+
+class _Everything(frozenset):
+    def __contains__(self, item):
+        return True
+
+
+def _since(paths, tracked=_Everything()):
+    """A changed_since answer for fixtures: every input is tracked by git."""
+    changed = C.Changed(paths)
+    changed.tracked = tracked
+    return changed
 
 
 ROWS = [{"name": "fixture"}]       # a non-empty ledger: the rule reads link order only then
@@ -1346,9 +1360,52 @@ def test_object_inputs_trusts_only_a_sidecar_whose_files_still_match(monkeypatch
     obj.write_bytes(b"obj")
     md5 = lambda p: hashlib.md5(p.read_bytes()).hexdigest()
     sidecar = tmp_path / "a.deps.json"
-    sidecar.write_text(__import__("json").dumps({"source": md5(src), "deps": {str(hdr): md5(hdr)}}))
+    sidecar.write_text(__import__("json").dumps({"cmd": "today", "source": md5(src), "deps": {str(hdr): md5(hdr)}}))
     monkeypatch.setattr(build, "_deps_sidecar", lambda o: sidecar)
+    monkeypatch.setattr(C, "_current_fingerprint", lambda source, obj: "today")
     got = C.object_inputs(obj, {obj: src}, None)
     assert got == {C.repo_path(src), C.repo_path(hdr)}
+    monkeypatch.setattr(C, "_current_fingerprint", lambda source, obj: "another command")   # round 5 F1
+    assert C.object_inputs(obj, {obj: src}, None) is None
+    monkeypatch.setattr(C, "_current_fingerprint", lambda source, obj: "today")
     hdr.write_text("#define A 2\n")                    # the header moved on since that build
     assert C.object_inputs(obj, {obj: src}, None) is None
+
+
+def test_hook_mode_reports_unknown_for_unstaged_edits_and_exits_zero(monkeypatch, capsys):
+    monkeypatch.setattr(C, "_git", lambda *a, **k: "game/x.cpp\0")
+    monkeypatch.setattr(C, "load_index", lambda: pytest.fail("no preview when unstaged edits differ"))
+    assert C.main(["--hook", "game/a.cpp"]) == 0
+    assert "game/a.cpp: LINKED PREVIEW UNKNOWN (unstaged game/ edits" in capsys.readouterr().out
+
+
+def test_hook_mode_never_compiles_and_never_fails(monkeypatch, capsys):
+    calls = []
+    monkeypatch.setattr(C, "_git", lambda *a, **k: "")
+
+    def fake_main(argv, hook=False):
+        calls.append((argv, hook))
+        raise SystemExit("link_check: no census index")
+    real_main = C.main
+    monkeypatch.setattr(C, "main", fake_main)
+    args = type("A", (), {"paths": ["game/a.cpp"], "compile_limit": None, "census_only": False,
+                          "deadline": 5})()
+    assert C.hook_main(args) == 0
+    assert calls == [(["game/a.cpp", "--compile-limit", "0"], True)]
+    assert "LINKED PREVIEW UNKNOWN" in capsys.readouterr().out
+    monkeypatch.setattr(C, "main", real_main)
+
+
+def test_hook_mode_deadline_says_unknown(monkeypatch, capfd):
+    """Past the deadline the hook prints UNKNOWN (timeout) and exits 0."""
+    import subprocess
+    import sys as _sys
+    code = ("import sys, time; sys.path.insert(0, %r); import link_check as C\n"
+            "C._git = lambda *a, **k: ''\n"
+            "C.main = lambda argv, hook=False: time.sleep(30)\n"
+            "args = type('A', (), {'paths': ['game/a.cpp'], 'compile_limit': None, 'census_only': False, "
+            "'deadline': 1})()\n"
+            "C.hook_main(args)\n") % str(C.ROOT / "tools")
+    done = subprocess.run([_sys.executable, "-c", code], capture_output=True, text=True, timeout=60)
+    assert done.returncode == 0
+    assert "game/a.cpp: LINKED PREVIEW UNKNOWN (timeout after 1s)" in done.stdout

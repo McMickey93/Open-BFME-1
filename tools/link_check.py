@@ -481,8 +481,24 @@ def _object_is_current(obj, sources, receipts):
 
 
 class Changed(set):
-    """Repo paths changed since the census; `.added` holds the new ones."""
+    """Repo paths changed since the census; `.added` holds the new ones and
+    `.removed` the deleted ones (both may shadow or unshadow a same-name
+    header); `.tracked` every path git tracks now (None: ask git)."""
     added = frozenset()
+    removed = frozenset()
+    tracked = None
+
+
+_TRACKED = None
+
+
+def tracked_files():
+    """Every path git tracks in this checkout (memoised)."""
+    global _TRACKED
+    if _TRACKED is None:
+        listed = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, text=True)
+        _TRACKED = frozenset(p for p in listed.stdout.split("\0") if p) if listed.returncode == 0 else frozenset()
+    return _TRACKED
 
 
 def changed_since(commit):
@@ -499,15 +515,19 @@ def changed_since(commit):
     if diff.returncode or untracked.returncode:
         return None
     fields = diff.stdout.split("\0")
-    changed, added = Changed(), set()
+    changed, added, removed = Changed(), set(), set()
     for status, path in zip(fields[0::2], fields[1::2]):
         if path:
             changed.add(path)
             if status.startswith("A"):
                 added.add(path)
+            elif status.startswith("D"):
+                removed.add(path)
     new = {path for path in untracked.stdout.split("\0") if path}
     changed |= new
     changed.added = frozenset(added | new)
+    changed.removed = frozenset(removed)
+    changed.tracked = tracked_files()
     return changed
 
 
@@ -522,6 +542,22 @@ def _sha256(path):
             _SHA256[key] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
         return _SHA256[key]
     except OSError:
+        return None
+
+
+def _current_command(source, obj):
+    try:
+        return list(build.compiler_command(Path(source), Path(obj))[0])
+    except (Exception, SystemExit):  # noqa: BLE001
+        return None
+
+
+def _current_fingerprint(source, obj):
+    """The sidecar `cmd` today's build.py would record (round 5 F1: a sidecar
+    built with another command is not this tree's build)."""
+    try:
+        return build._cmd_fingerprint(*build.compiler_command(Path(source), Path(obj)))
+    except (Exception, SystemExit):  # noqa: BLE001
         return None
 
 
@@ -548,27 +584,80 @@ def object_inputs(obj, sources, receipts):
             except (ValueError, SyntaxError):
                 deps = None
         if (isinstance(deps, dict) and source is not None
+                and recorded.get("cmd") is not None and recorded.get("cmd") == _current_fingerprint(source, obj)
                 and recorded.get("source") == build._hash_file(str(source))
                 and all(build._hash_file(str(ROOT / path if not Path(path).is_absolute() else path)) == md5
                         for path, md5 in deps.items())):
             return {repo_path(source, ROOT)} | {repo_path(path, ROOT) for path in deps}
     entry = getattr(receipts, "entries", {}).get(str(Path(obj).resolve())) if receipts else None
     files = (entry or {}).get("input", {}).get("files") if isinstance((entry or {}).get("input"), dict) else None
-    if isinstance(files, dict) and all(_sha256(path) == sha for path, sha in files.items()):
+    if (isinstance(files, dict) and source is not None and entry.get("command") is not None
+            and entry.get("command") == _current_command(source, obj)
+            and all(_sha256(path) == sha for path, sha in files.items())):
         inputs = {repo_path(path, ROOT) for path in files}
         return inputs | ({repo_path(source, ROOT)} if source is not None else set())
     return None
 
 
 def inputs_moved(inputs, since):
-    """Did any input change since the census, or could a header added since
-    shadow one (same file name)? Undeterminable (None) counts as moved."""
+    """Did any input change since the census? Also counts as moved: a header
+    added or deleted since whose file name matches an input (shadowing either
+    way; round 5 F2), and an input git cannot vouch for -- ignored, or
+    outside this checkout (round 5 F3). Undeterminable (None) counts too."""
     if inputs is None or since is None:
         return True
     if inputs & since:
         return True
-    added = {Path(path).name.lower() for path in getattr(since, "added", ())}
-    return bool(added and any(Path(path).name.lower() in added for path in inputs))
+    tracked = getattr(since, "tracked", None)
+    tracked = tracked_files() if tracked is None else tracked
+    if any(path not in tracked and path not in since for path in inputs):
+        return True
+    names = {Path(path).name.lower() for path in (*getattr(since, "added", ()), *getattr(since, "removed", ()))}
+    return bool(names and any(Path(path).name.lower() in names for path in inputs))
+
+
+def portable_command(module, source, obj):
+    """A host-portable fingerprint of the compile command `module` (a
+    tools/build.py) gives `source`: no wine path, no drive map."""
+    command, env = module.compiler_command(Path(source), Path(obj))
+    if os.name != "nt":
+        command = command[1:]               # the host's wine binary
+    payload = [[module._portable(str(part)) for part in command], module._portable(env.get("INCLUDE", ""))]
+    return hashlib.md5(json.dumps(payload).encode()).hexdigest()
+
+
+def command_moves(commit, sources):
+    """Objects whose compile command differs between the census commit's
+    tools/build.py and the current one (a base flag, a -D, an include root;
+    round 5 F1). None when that cannot be computed (then nothing is known)."""
+    import types
+    shown = subprocess.run(["git", "show", f"{commit}:tools/build.py"], cwd=ROOT, capture_output=True, text=True)
+    if shown.returncode:
+        return None
+    census_build = types.ModuleType("build_at_census")
+    census_build.__file__ = str(ROOT / "tools" / "build.py")
+    try:
+        exec(compile(shown.stdout, census_build.__file__, "exec"), census_build.__dict__)
+        return {Path(obj).name for obj, source in sources.items()
+                if Path(source).suffix.lower() in (".c", ".cpp")
+                and portable_command(census_build, source, obj) != portable_command(build, source, obj)}
+    except (Exception, SystemExit):  # noqa: BLE001 -- unknown means unknown, never "unchanged"
+        return None
+
+
+MOVED_CACHE = link_census.OUT / "moved_cache.json"
+
+
+def _scan_key(commit, since):
+    """What the moved-object scan depends on: census commit, HEAD, the content
+    of every file changed since the census, and tools/build.py."""
+    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    digest = hashlib.sha256()
+    for path in sorted(since or ()):
+        digest.update(path.encode() + b"\0" + (_sha256(ROOT / path) or "-").encode() + b"\0")
+    ledger = ROOT / "targets" / "game" / "reverse"
+    return json.dumps([commit, head, digest.hexdigest(), _sha256(ROOT / "tools" / "build.py"),
+                       _sha256(ledger / "functions.csv"), _sha256(ledger / "data_rows.csv")])
 
 
 def reorder_to_ledger(index, order):
@@ -599,6 +688,78 @@ def reorder_to_ledger(index, order):
             for name, holder in selection["exceptions"].items()
             if holder is None or shift[holder] not in dropped}}
     return gone
+
+
+def _moved_objects(commit, since, order, ledger_objects, census_objects, sources, receipts):
+    """({object names new or changed since the census}, unknown?). Cached in
+    MOVED_CACHE under _scan_key; a tools/build.py change since the census
+    adds every object whose compile command changed (command_moves); if that
+    cannot be computed the answer is unknown (every touched name UNKNOWN)."""
+    key = _scan_key(commit, since) if since is not None else None
+    if key is not None:
+        try:
+            cached = json.loads(MOVED_CACHE.read_text(encoding="utf-8"))
+            if cached.get("key") == key:
+                return set(cached["moved"]), bool(cached["unknown"])
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
+    moved = {name for name in order if name in ledger_objects
+             and (name not in census_objects
+                  or inputs_moved(object_inputs(ledger_objects[name], sources, receipts), since))}
+    unknown = False
+    if since is None or "tools/build.py" in since:
+        by_command = command_moves(commit, sources) if commit else None
+        if by_command is None:
+            unknown = True
+        else:
+            moved |= by_command
+    if key is not None:
+        try:
+            MOVED_CACHE.parent.mkdir(parents=True, exist_ok=True)
+            MOVED_CACHE.write_text(json.dumps({"key": key, "moved": sorted(moved), "unknown": unknown}))
+        except OSError:
+            pass
+    return moved, unknown
+
+
+HOOK_DEADLINE = 120.0
+
+
+def hook_main(args):
+    """--hook: the shared LINKED-claim rule under hook settings. Report only:
+    exit 0 whatever the verdict. Never takes the host build lock for
+    definers (compile_limit 0 unless --compile-limit says otherwise). The
+    staged state is what a commit records, so unstaged game/ edits make the
+    preview UNKNOWN; past the deadline every file is UNKNOWN (timeout).
+    Never LINKS on a guess, never a positive LINKED delta it did not prove."""
+    import threading
+    paths = list(args.paths)
+    unstaged = [p for p in _git("diff", "--name-only", "-z", "--", "game").split("\0") if p]
+    if unstaged:
+        for path in paths:
+            print(f"{path}: LINKED PREVIEW UNKNOWN (unstaged game/ edits differ from the staged state, "
+                  f"e.g. {unstaged[0]})")
+        return 0
+
+    def give_up():
+        for path in paths:
+            print(f"{path}: LINKED PREVIEW UNKNOWN (timeout after {deadline:.0f}s)", flush=True)
+        sys.stdout.flush()
+        os._exit(0)
+    deadline = HOOK_DEADLINE if args.deadline is None else args.deadline
+    timer = threading.Timer(deadline, give_up)
+    timer.daemon = True
+    timer.start()
+    try:
+        forwarded = [*paths, "--compile-limit", str(0 if args.compile_limit is None else args.compile_limit)]
+        if args.census_only:
+            forwarded.append("--census-only")
+        main(forwarded, hook=True)
+    except SystemExit as error:
+        print(f"link_check --hook: LINKED PREVIEW UNKNOWN ({error})")
+    finally:
+        timer.cancel()
+    return 0
 
 
 def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None):
@@ -675,11 +836,12 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
         extra = [obj.name for obj in objects if obj.name not in set(order)]
         reorder_to_ledger(index, order + extra)
     # 2. objects new or changed since the census (F3, N1)
-    since = changed_since(index.get("meta", {}).get("commit"))
+    commit = index.get("meta", {}).get("commit")
+    since = changed_since(commit)
+    moved_names, scan_unknown = _moved_objects(commit, since, order, ledger_objects, census_objects, sources,
+                                               receipts)
     moved = [ledger_objects[name] for name in order
-             if name not in checked and name in ledger_objects
-             and (name not in census_objects
-                  or inputs_moved(object_inputs(ledger_objects[name], sources, receipts), since))]
+             if name not in checked and name in ledger_objects and name in moved_names]
     moved_ok, moved_unreadable = readable(moved)
     refresh(index, list(objects) + moved_ok, truth)
     selection = index["selection"]
@@ -712,7 +874,7 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
     selection = index["selection"]
     selection["changed"], selection["stale"] = changed, stale
     selection["census_kept"] = {name: census_kept.get(name) for name in changed}
-    selection["unknown_definers"] = bool(moved_unreadable)
+    selection["unknown_definers"] = bool(moved_unreadable) or scan_unknown
     if moved_unreadable:
         print(f"link_check: {len(moved_unreadable):,} ledger object(s) new or changed since the census cannot "
               f"be read here (e.g. {moved_unreadable[0].name}); any name may be defined there", file=sys.stderr)
@@ -1918,7 +2080,7 @@ def near(argv):
     return 0
 
 
-def main(argv=None):
+def main(argv=None, hook=False):
     argv = sys.argv[1:] if argv is None else argv
     if argv[:1] == ["next"]:
         return serve(argv[1:])
@@ -1934,6 +2096,12 @@ def main(argv=None):
                     help="judge against the CURRENT ledger's objects, all re-read with current retail truth, "
                          "instead of the census's definitions (refuses a dirty tree; an unprovable kept "
                          "definition counts as a blocker; ~minutes; never a census verdict)")
+    ap.add_argument("--hook", action="store_true",
+                    help="report-only mode for a git hook: never compiles definers (--compile-limit 0), gives up "
+                         "after --deadline seconds with LINKED PREVIEW UNKNOWN (timeout), says LINKED PREVIEW "
+                         "UNKNOWN when unstaged game/ edits differ from the staged state, always exits 0")
+    ap.add_argument("--deadline", type=float, default=None, metavar="S",
+                    help=f"with --hook: wall-clock limit in seconds (default {HOOK_DEADLINE:.0f})")
     ap.add_argument("--compile-limit", type=int, default=None, metavar="N",
                     help=f"compile at most N missing or stale definers of changed names (default "
                          f"{REFRESH_COMPILE_LIMIT}; 0 never); past it those names are LINKED PREVIEW UNKNOWN")
@@ -1945,6 +2113,10 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if not args.paths and not args.next and not args.publish:
         ap.error("give sources, --next, --publish or `next`")
+    if args.hook:
+        return hook_main(args)
+    if args.deadline is not None:
+        ap.error("--deadline needs --hook")
     started = time.time()
     index = load_index()
     if args.publish:
@@ -2003,7 +2175,7 @@ def main(argv=None):
             clean.append(False)
             continue
         clean.append(report(source, obj, result, index, now.get(source, 0)))
-        if not index.get("refreshed"):     # a refreshed preview is not the census's verdict
+        if not index.get("refreshed") and not hook:     # a refreshed or hook preview is not the census's verdict
             note_evaluated(rows_of.get(source, ()), index["meta"].get("commit", ""))
         entry = index["blockers"].get(source or "", {})
         before += index["bytes"].get(source, 0) if entry.get("linked") else 0
