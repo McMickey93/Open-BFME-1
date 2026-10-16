@@ -3792,3 +3792,8 @@ game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cp
 game/GameEngine/Source/Common/S3SeedPairsShort.cpp|member||m_bfmeFirst,cc832347ea02f391d0830ba9,gpt-6.1-sol,20261016062138-29dcd2,2026-10-16
 game/GameEngine/Source/Common/S3SeedPairsShort.cpp|member||m_bfmeSecond,e16c2b635fe1e80060621506,gpt-6.1-sol,20261016062138-29dcd2,2026-10-16
 game/GameEngine/Source/GameLogic/System/VersionedRecord37A610.cpp|local|VersionedRecord37A610::transfer|v,5fdb67ca28e6bf8069408040,gpt-6.1-sol,20261016062159-5ab160,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1380.cpp|param|bfmeGoVIX|m,935ac6a70bb325af039e8512,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1380.cpp|local|bfmeGoVIX|g,d5023811519ac5dac7d44fc8,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1380.cpp|param|BfmeThingVIY::bfmeGoVIY|m,0a04d60c23eda69bbf1228fa,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1380.cpp|local|BfmeThingVIY::bfmeGoVIY|g,32e7a0febcb7aa13321639f4,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1380.cpp|param|BfmeThingVIY::bfmeSubVIY|m,c0f892c4544705affc6b12b7,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
