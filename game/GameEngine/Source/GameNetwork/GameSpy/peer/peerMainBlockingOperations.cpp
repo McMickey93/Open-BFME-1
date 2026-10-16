@@ -1696,6 +1696,14 @@ void peerEnumPlayers(PEER peer, int roomType,
 
 
 
+void piSendNatNegotiateCookie(PEER peer, unsigned int ip, unsigned short port,
+	int cookie);
+
+void peerSendNatNegotiateCookie(PEER peer, unsigned int ip,
+	unsigned short port, int cookie)
+{
+	piSendNatNegotiateCookie(peer, ip, port, cookie);
+}
 
 void peerAlwaysGetPlayerInfo(PEER peer, int always)
 {

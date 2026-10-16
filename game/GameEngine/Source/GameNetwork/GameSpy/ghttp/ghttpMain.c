@@ -1094,6 +1094,19 @@ GHTTPBool ghttpSetProxy
 	return ghiSetProxy(server);
 }
 
+/* Later SDKs' per-request proxy setter (retail 0x0087AD50, a tail jump to
+   ghiSetRequestProxy in ghttpCommon.c, which ghttpCommon.h here lacks). */
+GHTTPBool ghiSetRequestProxy(GHTTPRequest request, const char * server);
+
+GHTTPBool ghttpSetRequestProxy
+(
+	GHTTPRequest request,
+	const char * server
+)
+{
+	return ghiSetRequestProxy(request, server);
+}
+
 void ghttpSetThrottle
 (
 	GHTTPRequest request,

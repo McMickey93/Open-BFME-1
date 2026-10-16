@@ -123074,12 +123074,8 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0084e770@@YAXXZ,,0x0084E770,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
 ?j_00853580@@YAXXZ,,0x00853580,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c53460
 ?j_008543a0@@YAXXZ,,0x008543A0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=WSACleanup
-?j_008575a0@@YAXXZ,,0x008575A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00864F00
 ?j_00857ea0@@YAXXZ,,0x00857EA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c667a0
 ?j_00861200@@YAXXZ,,0x00861200,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00872680
-?j_0087ad40@@YAXXZ,,0x0087AD40,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c7c900
-?j_0087ad50@@YAXXZ,,0x0087AD50,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0087C950
-?j_0087add0@@YAXXZ,,0x0087ADD0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0087CA40
 ?j_0087ffb0@@YAXXZ,,0x0087FFB0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0087FDC0
 ?j_00891dd0@@YAXXZ,,0x00891DD0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00897190
 ?j_00893c90@@YAXXZ,,0x00893C90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c93960
@@ -123097,7 +123093,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_008c5fb0@@YAXXZ,,0x008C5FB0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x008A0CF0
 ?j_008c5fc0@@YAXXZ,,0x008C5FC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x008C5BB0
 ?j_008cc560@@YAXXZ,,0x008CC560,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00ccbdf0
-?j_008eaee0@@YAXXZ,,0x008EAEE0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x008F0500
 ?j_008fd350@@YAXXZ,,0x008FD350,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d56a70
 ?j_008fd360@@YAXXZ,,0x008FD360,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x00956A80
 ?j_008feb60@@YAXXZ,,0x008FEB60,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00deb810
@@ -172541,3 +172536,8 @@ _lua_pushcclosure,,0x009904E0,5,game/Libraries/Source/Lua/lapi.c,matched,vendore
 ?continuePreparation@GloriousChargeUpdate@@MAE_NXZ,,0x0025E820,5,game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateUpdate.cpp,matched,extend-base override; tail jmp to SpecialAbilityUpdate::continuePreparation ILT 0x0002FE05; ilt_oracle CONFIRMED exact at ILT 0x0001B1C6;model=claude-opus-5-5;host=app
 ?continuePreparation@RousingSpeechUpdate@@MAE_NXZ,,0x00264B20,5,game/GameEngine/Source/GameLogic/Object/Update/RousingSpeechUpdate.cpp,matched,extend-base override; tail jmp to SpecialAbilityUpdate::continuePreparation ILT 0x0002FE05; ilt_oracle CONFIRMED exact at ILT 0x0004A930;model=claude-opus-5-5;host=app
 ??1W3DShadowGeometryManagerIterator@@UAE@XZ,,0x007B96D0,7,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowGeometryManagerIteratorDestructor.cpp,matched,complete dtor re-seating only the base vftable 0x011283D4 (??_7Rva007AE550Base); ??_G 0x7BB4F0 calls it via ILT 0x10B3B (ilt_oracle CONFIRMED UAE; MAE contradicted);model=claude-opus-5-5;host=app
+_ghttpSetProxy,,0x0087AD40,5,game/GameEngine/Source/GameNetwork/GameSpy/ghttp/ghttpMain.c,matched,vendored=gamespy-2004; tail jmp to ghiSetProxy 0x0087C900; source order GetURL 0x87AD20 < SetProxy < SetRequestProxy < SetThrottle 0x87AD60;model=claude-opus-5-5;host=app
+_ghttpNewPost,,0x0087ADD0,5,game/GameEngine/Source/GameNetwork/GameSpy/ghttp/ghttpMain.c,matched,vendored=gamespy-2004; tail jmp to ghiNewPost 0x0087CA40; follows ghttpSetMaxRecvTime 0x87ADB0 in source order;model=claude-opus-5-5;host=app
+_ghttpSetRequestProxy,,0x0087AD50,5,game/GameEngine/Source/GameNetwork/GameSpy/ghttp/ghttpMain.c,matched,later-SDK ghttpMain.c forwarder: tail jmp to ghiSetRequestProxy 0x0087C950; between ghttpSetProxy 0x87AD40 and ghttpSetThrottle 0x87AD60;model=claude-opus-5-5;host=app
+_gpSetInfoCacheFilenameA,,0x008EAEE0,5,game/GameEngine/Source/GameNetwork/GameSpy/gp/gp.c,matched,tail jmp to gpiSetInfoCacheFilename 0x008F0500; immediately precedes gpSetInfoCacheFilenameW 0x8EAEF0 as in gp.c;model=claude-opus-5-5;host=app
+_peerSendNatNegotiateCookie,,0x008575A0,5,game/GameEngine/Source/GameNetwork/GameSpy/peer/peerMainBlockingOperations.cpp,matched,peerMain.c forwarder: tail jmp to piSendNatNegotiateCookie 0x00864F00; between peerParseQuery 0x857570 and peerAlwaysGetPlayerInfo 0x8575B0;model=claude-opus-5-5;host=app
