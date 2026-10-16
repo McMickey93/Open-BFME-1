@@ -3913,3 +3913,9 @@ game/GameEngine/Source/GameClient/System/ParticleSystemDebugDisplay.cpp|member||
 game/GameEngine/Source/Common/Open2Twins007.cpp|param|Open2VectorAnchor063700|v,45cc524c1ae5f7038ff87807,gpt-6.1-sol,20261016062743-c7934a,2026-10-16
 game/GameEngine/Source/Common/Open2Twins007.cpp|param|Open2VectorAnchor247180|v,f85ca0e70a3297ff6cd847ba,gpt-6.1-sol,20261016062743-c7934a,2026-10-16
 game/GameEngine/Source/Common/Rva007861E0ParsePathNumber.cpp|local|reverseFind|p,3bc98588e4929504428f816a,gpt-6.1-sol,20261016062748-e9bd88,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|type||Rva0029C380Key,920bd12a58dc13b0d9e0fa62,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|type||Rva0029C380Record,c91002d6a9fa358fbc605ff6,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|type||Rva0029C380Embedded,8bcd9b144c86df6e2a4efbeb,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|type||Rva0029C380,62e76b0c5ebbb8d86e8c9c43,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|member||m_key08,ece44093c0073a2365d9fbc4,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|function|Rva0029C380@|m0029C380,0aebd005ebde470c50a6bb3d,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
