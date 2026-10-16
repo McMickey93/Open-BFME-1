@@ -5245,3 +5245,7 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|m
 game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30A8,601581a33fbbe292c021f377,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30B0,8880eafaa62002f17eb5a627,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapConstructor.cpp|member||buffer30BC,3e9fe889830af803286f43e8,gpt-6.1-sol,20261016074705-9b6901,2026-10-16
+game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|type||Rva000F9FF0ExperienceTracker,e5c139c0060ebac1f5223fdd,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
+game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|member||m_f08,371548d2550712654d7683f2,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
+game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|member||m_f2c,15a4cddd87a5c63b30077a92,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
+game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|member||m_f34,aca077f02504da705a7f30c6,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
