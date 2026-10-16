@@ -259,7 +259,6 @@ RenderObjClass * ParticleEmitterClass::Clone(void) const
 	return W3DNEW ParticleEmitterClass(*this);
 }
 
-// ?ParticleEmitterClass::Restart present-unmatched
 void ParticleEmitterClass::Restart(void)
 {
 	// calling Start will cause all internal counters to reset

@@ -88,7 +88,6 @@ AABTreeBuilderClass::AABTreeBuilderClass(void) :
  * HISTORY:                                                                                    *
  *   5/19/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-// ?AABTreeBuilderClass::~AABTreeBuilderClass present-unmatched
 AABTreeBuilderClass::~AABTreeBuilderClass(void) 
 { 
 	Reset();
