@@ -708,3 +708,4 @@ game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleD
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_effectA0,m_groundBounceWeapon,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_invalidA4,m_preLandingEmotion,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_valueA8,m_preLandingEmotionRadius,gpt-6.1-sol+grok,applied,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorFriendNewModuleDataThunk.cpp|member||m_bfme08,m_fadeOutTime,gpt-6.1-sol+grok,agreed,2026-10-16

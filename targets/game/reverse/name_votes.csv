@@ -1799,3 +1799,5 @@ game/GameEngine/Source/GameLogic/AI/TAiDataAssign.cpp|member||m_treeF02,98ca75c1
 game/GameEngine/Source/GameLogic/AI/TAiDataAssign.cpp|member||m_ptStump02,e7465a26b96e8b064150f98a,gpt-6.1-sol,20261016035120-07e0df,2026-10-16
 game/GameEngine/Source/GameLogic/AI/TAiDataAssign.cpp|member||m_bfmeE4,c788b02c0b24d7dade638493,gpt-6.1-sol,20261016035120-07e0df,2026-10-16
 game/GameEngine/Source/GameLogic/AI/TAiDataAssign.cpp|member||m_bfmeE8,1dd26175906af208df1918a1,gpt-6.1-sol,20261016035120-07e0df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorFriendNewModuleDataThunk.cpp|member||m_bfmeVptr,a5d2fbe10c3d90cb71dfff4b,gpt-6.1-sol,20261016035646-6596a6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorFriendNewModuleDataThunk.cpp|member||m_bfme08,46435ebd5d8c90657423b51d,gpt-6.1-sol,20261016035646-6596a6,2026-10-16
