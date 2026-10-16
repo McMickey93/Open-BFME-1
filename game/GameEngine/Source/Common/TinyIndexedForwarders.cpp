@@ -269,3 +269,90 @@ int Rva00169F50::isPositive() const
 {
     return m_at1A0 > 0;
 }
+
+// Unreferenced leaf getters between 0x00169F80 and 0x00169FE0: each is a
+// REL32-carved complete body (ret then int3) reached only from its own ILT
+// entry, so no owner is witnessed and every name keeps its address.
+class Rva00169F80
+{
+public:
+    int get() const;
+private:
+    char m_at00[0x208];
+    int m_at208;
+};
+
+int Rva00169F80::get() const
+{
+    return m_at208;
+}
+
+class Rva00169F90
+{
+public:
+    unsigned char get() const;
+private:
+    char m_at00[0x1F5];
+    unsigned char m_at1F5;
+};
+
+unsigned char Rva00169F90::get() const
+{
+    return m_at1F5;
+}
+
+class Rva00169FA0
+{
+public:
+    int get() const;
+private:
+    char m_at00[0x1EC];
+    int m_at1EC;
+};
+
+int Rva00169FA0::get() const
+{
+    return m_at1EC;
+}
+
+class Rva00169FC0
+{
+public:
+    int get() const;
+private:
+    char m_at00[0x3A4];
+    int m_at3A4;
+};
+
+int Rva00169FC0::get() const
+{
+    return m_at3A4;
+}
+
+class Rva00169FD0
+{
+public:
+    int get() const;
+private:
+    char m_at00[0x1F8];
+    int m_at1F8;
+};
+
+int Rva00169FD0::get() const
+{
+    return m_at1F8;
+}
+
+class Rva00169FE0
+{
+public:
+    int get() const;
+private:
+    char m_at00[0x40];
+    int m_at40;
+};
+
+int Rva00169FE0::get() const
+{
+    return m_at40;
+}
