@@ -298,13 +298,6 @@ public:
 };
 
 extern std::list<PeerResponse> TheLobbyQueuedUTMs;
-class Gen_00C701B0Target
-{
-public:
-	void bfmeForward(void);					// retail 0x0003B304
-};
-
-extern Gen_00C701B0Target TheBfmeObject_00C701B0;		// 0x12f48c8
 class AsciiString
 {
 public:
@@ -1057,11 +1050,7 @@ void bfmeForward_00C701A0(void)
 {
 	((Gen_00C701A0Target *)&TheLobbyQueuedUTMs)->bfmeForward();
 }
-// ?bfmeForward_00C701B0@@YAXXZ
-void bfmeForward_00C701B0(void)
-{
-	TheBfmeObject_00C701B0.bfmeForward();
-}
+// 0x00C701B0 is emitted with its global in StaticInit/Rva012F48C8Global.cpp.
 // ?bfmeForward_00C701C0@@YAXXZ
 void bfmeForward_00C701C0(void)
 {
