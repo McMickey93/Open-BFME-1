@@ -27,17 +27,17 @@ public:
 #include <stl/_alloc.c>
 #undef _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
 
-class BfmeNodeAllocLock : public _STL::_Node_Alloc_Lock<false, 0>
+// Retail's out-of-line copy (0x0082BDC0) keeps an unreferenced local, so
+// the guard destructor gets the frame the vendor header's body lacks.
+template <>
+inline _STL::_Node_Alloc_Lock<false, 0>::~_Node_Alloc_Lock()
 {
-	int m_dummy;
-
-public:
-	~BfmeNodeAllocLock()
-	{
-		int unused;
-		(void)unused;
-    }
-};
+	if (false) {
+		_S_lock._M_release_lock();
+	}
+	int unused;
+	(void)unused;
+}
 
 // The matched STLport refill body is also known under this BFME alias at the
 // retail address.  Calling the alias keeps the private-member decoration from
@@ -49,7 +49,7 @@ void *bfmeSmallAllocPR(unsigned int bytes)
 	void *result;
 	_STL::_Node_alloc_obj * volatile *my_free_list =
 		_STL::__node_alloc<false, 0>::_S_free_list + ((bytes - 1) >> 3);
-	BfmeNodeAllocLock lock_instance;
+	_STL::_Node_Alloc_Lock<false, 0> lock_instance;
 	if ((result = *my_free_list) != 0) {
 		*my_free_list = ((_STL::_Node_alloc_obj *)result)->_M_free_list_link;
 	} else {
