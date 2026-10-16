@@ -5249,3 +5249,13 @@ game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|type||Rva000F9FF0Experi
 game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|member||m_f08,371548d2550712654d7683f2,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
 game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|member||m_f2c,15a4cddd87a5c63b30077a92,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
 game/GameEngine/Source/Common/RTS/UnitRevivalTracker.cpp|member||m_f34,aca077f02504da705a7f30c6,gpt-6.1-sol,20261016074725-c9cb70,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|member||m_f9c,494b2ab440ff3a7596b51df9,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|member||m_fb0,f7d5ceb5d18483053bece4ac,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|member||m_fb4,5ec847f12fe40a1a072f30ca,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|member||m_fb8,a98843147dbc23e1e8704292,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|member||m_fc0,7a00b9ac71a8766f8d8b5424,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|member||m_c4,b6ab6c46180e5ce6eac4c795,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|local|Rva006996F0Owner::update|t,69a31164014ee8efece761c9,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|local|Rva006996F0Owner::update|t2,ded78efedd7f774e56a57d8f,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|local|Rva006996F0Owner::update|t3,9e6d8dc42265ca722077ac7c,gpt-6.1-sol,20261016075028-93082d,2026-10-16
+game/GameEngine/Source/Common/Rva006996F0EnvelopeUpdate.cpp|local|Rva006996F0Owner::update|v,5355da1fa5db637a6bdd3d15,gpt-6.1-sol,20261016075028-93082d,2026-10-16
