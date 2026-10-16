@@ -5860,3 +5860,12 @@ game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|local|BfmeOwnerRC::
 game/GameEngine/Source/Common/RTS/Team_evacuateTeam.cpp|type||BfmeEvacuateContain,e85cb3ce51537309790162de,gpt-6.1-sol,20261016133829-b52b04,2026-10-16
 game/GameEngine/Source/Common/RTS/Team_evacuateTeam.cpp|member||m_contain1FC,8ad5d6006631923d51c5ef26,gpt-6.1-sol,20261016133829-b52b04,2026-10-16
 game/GameEngine/Source/Common/RTS/Team_evacuateTeam.cpp|member||m_effectivelyDead344,5ff674b261a2b56223ebec3b,gpt-6.1-sol,20261016133829-b52b04,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0014F420State,0f04d23f9ba0ff32277be7a3,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0014F710State,5909be7f2fdd24790c8a04e4,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0015CF50State,4f125e3a8a35dc17778b864b,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0015EC40State,a6ccf4cd0583ee9a2362b897,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva00171610State,b16e9e023c5245861bf66748,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva001716D0State,9f836c5b810fac72e10e605e,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva00171820State,f5b9f142f072dd2a58502ea4,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0018AC40State,7c33d3b22c08fe342905509a,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
+game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0018AD60State,226f397aa757f792be34500e,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
