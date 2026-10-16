@@ -5423,3 +5423,6 @@ game/GameEngine/Source/Common/BfmeConv817.cpp|type||BfmeSubVfnD1B,2f67c96fe8ddb2
 game/GameEngine/Source/Common/BfmeConv817.cpp|type||BfmeThing404,b1d38acb7398682e45dac6d0,gpt-6.1-sol,20261016081936-aab139,2026-10-16
 game/GameEngine/Source/Common/BfmeConv817.cpp|member||m_flag344,96db96b6a4df7c0f6ac6ec27,gpt-6.1-sol,20261016081936-aab139,2026-10-16
 game/GameEngine/Source/Common/BfmeConv817.cpp|local|BfmeThingD77::matches|s,fca46a56c6b2a43bb84c33eb,gpt-6.1-sol,20261016081936-aab139,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_bfmeIndexOf.cpp|member||m_bfmeNextOverride,57a3cf8413f7e99eff7f62ca,gpt-6.1-sol,20261016082059-6b69e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_bfmeIndexOf.cpp|member||m_bfmeKey,7fec5e1b3036beb4fcb4987a,gpt-6.1-sol,20261016082059-6b69e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_bfmeIndexOf.cpp|param|BfmeSpecialPowerAllowanceStore::bfmeIndexOf|tmpl,7a428dc018cf4f80bba26c7f,gpt-6.1-sol,20261016082059-6b69e2,2026-10-16
