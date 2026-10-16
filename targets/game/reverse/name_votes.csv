@@ -2231,3 +2231,6 @@ game/GameEngine/Source/GameLogic/AI/AIGuardMachineCtor.cpp|param|StateConditionI
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateCtorThunk.cpp|member||m_3f4,9587dfd19ea5375af84df1d9,gpt-6.1-sol,20261016043110-420806,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateCtorThunk.cpp|member||m_3f8,6d71866e6ac61cf3c7123ab5,gpt-6.1-sol,20261016043110-420806,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateCtorThunk.cpp|member||m_3fc,ab34e741e190f7722a9d505d,gpt-6.1-sol,20261016043110-420806,2026-10-16
+game/GameEngine/Source/GameNetwork/FeslMessage_getInt64_rva007E8930.cpp|member||m_10,f041ec3c634ac28f6fb29b24,gpt-6.1-sol,20261016043116-a0f6ed,2026-10-16
+game/GameEngine/Source/GameNetwork/FeslMessage_getInt64_rva007E8930.cpp|local|Rva007E8810Message::getInt64|s,b2abc7a0a50c4dd1b87922e9,gpt-6.1-sol,20261016043116-a0f6ed,2026-10-16
+game/GameEngine/Source/GameNetwork/FeslMessage_getInt64_rva007E8930.cpp|local|Rva007E8810Message::getInt64|v,80c79c3d10a9b99fcc7fbba5,gpt-6.1-sol,20261016043116-a0f6ed,2026-10-16
