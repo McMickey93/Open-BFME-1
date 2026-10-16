@@ -29,7 +29,9 @@ class Overridable
 {
 public:
 	virtual ~Overridable();
-	const Overridable *friend_getFinalOverride() const
+	// Non-const, as Zero Hour declares it: the recursion's call binds to
+	// ILT 0x00048C61, where ilt_oracle confirms the non-const decoration.
+	Overridable *friend_getFinalOverride()
 	{
 		if( m_nextOverride )
 			return m_nextOverride->friend_getFinalOverride();
