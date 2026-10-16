@@ -5754,3 +5754,4 @@ game/GameEngine/Source/GameLogic/Object/Damage/TransitionDamageFXRubbleNeighbors
 game/GameEngine/Source/Common/U2AllocatedRangeCopies.cpp|local|Rva0083F2F0Duplicate|p,c8c68aa04511cd67cdedb66a,gpt-6.1-sol,20261016130711-d8886e,2026-10-16
 game/GameEngine/Source/Common/U2AllocatedRangeCopies.cpp|local|Rva0083F330Duplicate|p,8c0918646b615b58885a3721,gpt-6.1-sol,20261016130711-d8886e,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva0034E520.cpp|local|compare|c,ec9087b73bd3207ee398ec2b,gpt-6.1-sol,20261016130716-7e2102,2026-10-16
+game/GameEngine/Source/Common/Rva008A0FF0ValueStackReleaseAll.cpp|local|Rva008A0FF0ValueStack::releaseAll|n,b6359f46a64cc1fd766520a0,gpt-6.1-sol,20261016130722-78ce5a,2026-10-16
