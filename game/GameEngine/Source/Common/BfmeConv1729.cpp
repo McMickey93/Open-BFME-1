@@ -1,13 +1,13 @@
-class BfmeVecUC
+class Coord3D
 {
 public:
-	BfmeVecUC(const BfmeVecUC &other) throw()
+	Coord3D(const Coord3D &other) throw()
 	{
 		m_bfmeXUC = other.m_bfmeXUC;
 		m_bfmeYUC = other.m_bfmeYUC;
 		m_bfmeZUC = other.m_bfmeZUC;
 	}
-	~BfmeVecUC() throw() {}
+	~Coord3D() throw() {}
 
 	int m_bfmeXUC;
 	int m_bfmeYUC;
@@ -50,14 +50,14 @@ public:
 class W3DTerrainVisual
 {
 public:
-	void bfmeFwdUC(void *first, BfmeVecUC value, void *third, void *fourth,
+	void bfmeFwdUC(void *first, Coord3D value, void *third, void *fourth,
 		void *fifth, void *sixth, void *seventh, void *eighth, void *ninth);
 
 	unsigned char m_bfmeHeadUC[0x10];
 	BfmeOwnUE *m_terrainRenderObject;
 };
 
-void W3DTerrainVisual::bfmeFwdUC(void *first, BfmeVecUC value, void *third, void *fourth,
+void W3DTerrainVisual::bfmeFwdUC(void *first, Coord3D value, void *third, void *fourth,
 	void *fifth, void *sixth, void *seventh, void *eighth, void *ninth)
 {
 	if (m_terrainRenderObject)

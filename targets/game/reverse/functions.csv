@@ -29483,7 +29483,7 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?bfmeFwdLA@BfmeOwnLA@@QAEXUBfmePairLA@@@Z,,0x004AD980,45,game/GameEngine/Source/Common/BfmeConv1724.cpp,matched,by-value pair in; member struct forwarded by value; marker slot names the last param
 ?bfmeFwdLB@BfmeOwnLB@@QAEXUBfmePairLB@@@Z,,0x004AD9C0,45,game/GameEngine/Source/Common/BfmeConv1725.cpp,matched,twin of 0x004AD980; different target thunk
 ?bfmeFwdUB@BfmeOwnUB@@QAEXPAXVBfmeVecUB@@0000000@Z,,0x00730D90,87,game/GameEngine/Source/Common/BfmeConv1728.cpp,matched,nine-argument guarded forwarder; one 12-byte by-value struct
-?bfmeFwdUC@W3DTerrainVisual@@QAEXPAXVBfmeVecUC@@0000000@Z,,0x00730F70,87,game/GameEngine/Source/Common/BfmeConv1729.cpp,matched,twin of 0x00730D90
+?bfmeFwdUC@W3DTerrainVisual@@QAEXPAXVCoord3D@@0000000@Z,,0x00730F70,87,game/GameEngine/Source/Common/BfmeConv1729.cpp,matched,twin of 0x00730D90
 ?bfmeFwdUD@BfmeOwnUD@@QAEXPAXVBfmeVecUD@@0000000@Z,,0x006C8950,93,game/GameEngine/Source/Common/BfmeConv1730.cpp,matched,nine-argument guarded forwarder; member at +0x3094
 ?bfmeFwdUE@BfmeOwnUE@@QAEXPAXVBfmeVecUE@@0000000@Z,,0x006C8AA0,93,game/GameEngine/Source/Common/BfmeConv1731.cpp,matched,twin of 0x006C8950; member at +0x3098
 ?bfmeFwdV26@@YAPAXHHHHHHD@Z,,0x0082DFE0,144,game/GameEngine/Source/Common/BfmeConv1466.cpp,matched,Open-BFME5 convert /Od iterator find forwarder
