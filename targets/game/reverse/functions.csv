@@ -124863,7 +124863,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_007af1e0@@QAEXXZ,,0x007AF1E0,7,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00baf1e0
 ?m@Gen_007af2b0@@QAEXXZ,,0x007AF2B0,7,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00baf2b0
 ?m@Gen_007af2c0@@QAEXXZ,,0x007AF2C0,7,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00baf2c0
-?m@Gen_007b96d0@@QAEXXZ,,0x007B96D0,7,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00bb96d0
 ?m@Gen_007b9920@@QAE_NXZ,,0x007B9920,3,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=ret-true;ghidra=FUN_00bb9920
 ?m@Gen_007c10f0@@QAEXXZ,,0x007C10F0,1,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=ret-void;ghidra=FUN_00bc10f0
 ?m@Gen_007e3a60@@QAEXXZ,,0x007E3A60,7,game/gen_small/fun_005.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00be3a60
@@ -172541,3 +172540,4 @@ _lua_pushcclosure,,0x009904E0,5,game/Libraries/Source/Lua/lapi.c,matched,vendore
 ?attackTargetNow@HorseHordeContain@@UAEXPAVObject@@@Z,,0x0024D340,5,game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00241F10MemberAttackTarget.cpp,matched,extend-base override; tail jmp to HordeContain::attackTargetNow ILT 0x0000483B; ilt_oracle CONFIRMED exact at ILT 0x00004417;model=claude-opus-5-5;host=app
 ?continuePreparation@GloriousChargeUpdate@@MAE_NXZ,,0x0025E820,5,game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateUpdate.cpp,matched,extend-base override; tail jmp to SpecialAbilityUpdate::continuePreparation ILT 0x0002FE05; ilt_oracle CONFIRMED exact at ILT 0x0001B1C6;model=claude-opus-5-5;host=app
 ?continuePreparation@RousingSpeechUpdate@@MAE_NXZ,,0x00264B20,5,game/GameEngine/Source/GameLogic/Object/Update/RousingSpeechUpdate.cpp,matched,extend-base override; tail jmp to SpecialAbilityUpdate::continuePreparation ILT 0x0002FE05; ilt_oracle CONFIRMED exact at ILT 0x0004A930;model=claude-opus-5-5;host=app
+??1W3DShadowGeometryManagerIterator@@UAE@XZ,,0x007B96D0,7,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowGeometryManagerIteratorDestructor.cpp,matched,complete dtor re-seating only the base vftable 0x011283D4 (??_7Rva007AE550Base); ??_G 0x7BB4F0 calls it via ILT 0x10B3B (ilt_oracle CONFIRMED UAE; MAE contradicted);model=claude-opus-5-5;host=app
