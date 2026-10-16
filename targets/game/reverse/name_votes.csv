@@ -5473,3 +5473,9 @@ game/GameEngine/Source/Common/BfmeConv1999.cpp|member||m_bfmeSinkEVI,e19289597eb
 game/GameEngine/Source/GameLogic/Object/Update/WallUpgradeUpdateCtorThunk.cpp|member||m_f14,8ad37fb9fbbd2526dacde18d,gpt-6.1-sol,20261016083058-53d695,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/WallUpgradeUpdateCtorThunk.cpp|member||m_f18,e81e2f01d685effae036f217,gpt-6.1-sol,20261016083058-53d695,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/WallUpgradeUpdateCtorThunk.cpp|member||m_f1c,ba800b165819e890483fff27,gpt-6.1-sol,20261016083058-53d695,2026-10-16
+game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeScale,f283faab8fcb4fe1ebe954c3,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeMode,50a8cd2e748a580a24fb7ba8,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeZero,6a9d4c0ba7fe0b7ea53fbac9,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeArg,04be0a0b5f808ae98265914a,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeStamp,a036c030ae950becc646b547,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv962.cpp|function|BfmeInit962@|bfmeInit962,0bf6ce73d63e0d41598b83a3,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
