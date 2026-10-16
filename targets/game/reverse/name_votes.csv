@@ -4129,3 +4129,4 @@ game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|member||m_rva16c,95
 game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|member||m_rva1d4,c181d14190ac776a12d49405,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|member||m_rva1dc,c83f335522a11cbaca3899ee,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|local|Object::~Object|b,266b3c410d67c26d60b40729,gpt-6.1-sol,20261016063708-cd1423,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Serialize0020C190.cpp|member||name20,2efe7195d341efd5207814de,gpt-6.1-sol,20261016063718-7cf5ff,2026-10-16
