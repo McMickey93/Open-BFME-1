@@ -5548,3 +5548,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Gen_006CC000_TerrainBit.cpp|lo
 game/GameEngine/Source/GameClient/GUI/ControlBar/UnitHelpText.cpp|function|Rva004B2300@|slot04,21aa3718103cc165b96bf15a,gpt-6.1-sol,20261016122447-d1d407,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ControlBar/UnitHelpText.cpp|param|Rva004B2470Handle|p,f5b1f508e6ae2faa38934e24,gpt-6.1-sol,20261016122447-d1d407,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ControlBar/UnitHelpText.cpp|local|release|p,9fa9175caae0f541a2293eb3,gpt-6.1-sol,20261016122447-d1d407,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/WorldHeightMapTerrainTextureGetters.cpp|param|TerrainTextureRef::TerrainTextureRef|p,f2058e6a916e6333f66039b2,gpt-6.1-sol,20261016122455-c8735b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/WorldHeightMapTerrainTextureGetters.cpp|local|WorldHeightMap::getAlphaTerrainTexture|tmp,782146c598b31966294b48a6,gpt-6.1-sol,20261016122455-c8735b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/WorldHeightMapTerrainTextureGetters.cpp|local|WorldHeightMap::getEdgeTerrainTexture|tmp,3c0e31c01c9def6aa7c00b4e,gpt-6.1-sol,20261016122455-c8735b,2026-10-16
