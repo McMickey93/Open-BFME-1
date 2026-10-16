@@ -2936,3 +2936,4 @@ game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeSecond,5f404
 game/Libraries/Source/WWVegas/WWLib/Rva0084DBStringAndCodePage.cpp|type||Rva0084D860CpInfo,9daf9d9c9d43afd33b9600c4,gpt-6.1-sol,20261016053456-024efc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/Rva002D3080Destructor.cpp|member||m_field2c,9b415cf9913ec234b2cc2e66,gpt-6.1-sol,20261016053503-2dab1a,2026-10-16
 game/GameEngine/Source/Common/Bfme5EightyOne.cpp|member||m_bfmeRefs,ac284bd868e0275fd845976f,gpt-6.1-sol,20261016053725-aa9b72,2026-10-16
+game/GameEngine/Source/Common/Rva0016A490Set.cpp|param|Rva0016A490::set|p,5d00f109435459fdbfa243aa,gpt-6.1-sol,20261016053749-e52453,2026-10-16
