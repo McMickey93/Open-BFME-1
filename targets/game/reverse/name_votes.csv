@@ -3753,3 +3753,4 @@ game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeF,
 game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeBonusMask,3f166716460dfbf2432bf525,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeBonuses,ae9a60eab169e4bf74622140,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeTemplate,f39b5b11bd8d7ead78088dc1,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/Gen_00943CF0_Second.cpp|member||m_cells18,14fcbf769ac49d7c9b9904cf,gpt-6.1-sol,20261016061751-ff5a81,2026-10-16
