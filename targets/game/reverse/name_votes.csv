@@ -5887,3 +5887,4 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContainReleaseMember.cpp|me
 game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_allows.cpp|member||m_bfmeNextOverride,1c4c87706c357f1cd8ae6482,gpt-6.1-sol,20261016135729-cdbaee,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1921.cpp|member||m_bfmeFlagsBX,8d7194df53853449b38326f8,gpt-6.1-sol,20261016135735-b5c7eb,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/DX8FVFCategoryContainerGenerateTextureCategoriesBFME.cpp|local|Has_Material_Array|d,10243f97cdfd1a572186b015,gpt-6.1-sol,20261016140705-71f3f7,2026-10-16
+game/GameEngine/Source/GameClient/GlobalLanguage_onGameEngineExit.cpp|type||BfmeFindData,b3a583626e1d0ac2da94e163,gpt-6.1-sol,20261016142801-836a75,2026-10-16
