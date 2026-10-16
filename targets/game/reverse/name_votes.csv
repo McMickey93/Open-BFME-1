@@ -5426,3 +5426,12 @@ game/GameEngine/Source/Common/BfmeConv817.cpp|local|BfmeThingD77::matches|s,fca4
 game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_bfmeIndexOf.cpp|member||m_bfmeNextOverride,57a3cf8413f7e99eff7f62ca,gpt-6.1-sol,20261016082059-6b69e2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_bfmeIndexOf.cpp|member||m_bfmeKey,7fec5e1b3036beb4fcb4987a,gpt-6.1-sol,20261016082059-6b69e2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_bfmeIndexOf.cpp|param|BfmeSpecialPowerAllowanceStore::bfmeIndexOf|tmpl,7a428dc018cf4f80bba26c7f,gpt-6.1-sol,20261016082059-6b69e2,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|type||BfmeVec2EZ,0930460ff4c39e45ad3ef7f7,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|member||m_bfmePosEZ,ed9d57bf2ef023352eb60dfc,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|member||m_bfmePathEZ,e235c63653292d56cb37e395,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|member||m_bfmeBestEZ,f61f7871b9449624d9bec595,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|member||m_bfmeNodeEZ,0c096496f5118beb754b9ffe,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|member||m_bfmeObjEZ,a5eb852045eaea81d5fda067,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|param|BfmeHostEZ::bfmeConsiderEZ|n,89e7a084faabfc09d928ba3e,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|param|BfmeHostEZ::bfmeConsiderEZ|p,3ee08e22b4dbfc7f38107f5e,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|local|BfmeHostEZ::bfmeConsiderEZ|d2,37d79564d9518840f91a74e7,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
