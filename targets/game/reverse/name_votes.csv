@@ -4892,3 +4892,9 @@ game/GameEngine/Source/Common/BfmeConv1760.cpp|member||m_bfmeEntryBV,f4b282e67a2
 game/GameEngine/Source/Common/BfmeConv1760.cpp|member||m_bfmeNextBV,0d92b35c6a34880376caedf8,gpt-6.1-sol,20261016071359-267275,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1760.cpp|member||m_bfmeListBV,0aefd9bb959fe680dc4929d4,gpt-6.1-sol,20261016071359-267275,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1760.cpp|function|BfmeOwnBV@|bfmeFindBV,2aa0a3ccaca7af11f77001c2,gpt-6.1-sol,20261016071359-267275,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1517.cpp|member||m_bfme0c,8e039b1aaf1c8c2f264fd644,gpt-6.1-sol,20261016071347-846e00,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1517.cpp|member||m_bfme18,b54adca71653a01c508819d1,gpt-6.1-sol,20261016071347-846e00,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1517.cpp|member||m_bfme30,7baf7f30f95c0a62a9aeb498,gpt-6.1-sol,20261016071347-846e00,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1517.cpp|function|BfmeThingVNQ@|bfmeTotalVNQ,51e2af3de6b5859a489b3320,gpt-6.1-sol,20261016071347-846e00,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1517.cpp|local|BfmeThingVNQ::bfmeTotalVNQ|n,3789dde16696c88e5febaf97,gpt-6.1-sol,20261016071347-846e00,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1517.cpp|local|BfmeThingVNQ::bfmeTotalVNQ|p,7c737e6d3a2873500c739fae,gpt-6.1-sol,20261016071347-846e00,2026-10-16
