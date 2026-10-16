@@ -1369,3 +1369,5 @@ game/GameEngine/Source/Common/Rva009A2350Init.cpp|local|Rva009A2350::init|p,2b60
 game/GameEngine/Source/Common/Rva009A2350Init.cpp|local|Rva009A2350::init|q,43adfd63efa7dec8b6f2d7bc,gpt-6.1-sol,20261016030752-a0a2d6,2026-10-16
 game/GameEngine/Source/Common/Rva0087EA20Copy.cpp|local|bfmeCopyA2|n,3daf998a235eed276bcb43d7,gpt-6.1-sol,20261016030800-5a075f,2026-10-16
 game/GameEngine/Source/Common/Rva0087EA20Copy.cpp|local|bfmeCopyA2|m,3b7b8feea3ef8770ffe45950,gpt-6.1-sol,20261016030800-5a075f,2026-10-16
+game/GameEngine/Source/Common/BfmeConv912.cpp|local|bfmeGo912B|p,5e640e2c3864e77808339352,gpt-6.1-sol,20261016030807-54d42b,2026-10-16
+game/GameEngine/Source/Common/BfmeConv912.cpp|local|RAMFile::readEntireAndClose|s,ea14fe25c9b2f06d8d585555,gpt-6.1-sol,20261016030807-54d42b,2026-10-16
