@@ -2368,3 +2368,7 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|para
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|y1,71b4378dded0a2bf809ccd50,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
 game/GameEngine/Source/Common/Rva001F9C60UpdateModuleRun.cpp|member||m_field74,45ce2b8487499d2a49bf8f43,gpt-6.1-sol,20261016044422-2b8c12,2026-10-16
 game/GameEngine/Source/Common/Rva001F9C60UpdateModuleRun.cpp|member||m_bfmePathCL,fee50cd098d403b4e603fe18,gpt-6.1-sol,20261016044422-2b8c12,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|member||at24,48b8c94f8def17e744c36569,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|member||at1c,5518e4fdc27417aa39ed1c55,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|function||bfmeTailCHG,04245b257e330ba288dc6316,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|param|FxHandle0042CDF0#2|v,c390bbfe6a8f60ccc07a81cc,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
