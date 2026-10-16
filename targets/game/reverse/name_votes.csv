@@ -5406,3 +5406,9 @@ game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::not
 game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|d,42eaad227e301a7b375fc2fd,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
 game/GameEngine/Source/Common/Bfme5TinyTwentyNine.cpp|member||m_bfmeDeadline,18f213ff99807f6b5f13a20f,gpt-6.1-sol,20261016080924-cfd433,2026-10-16
 game/GameEngine/Source/Common/Bfme5TinyTwentyNine.cpp|member||m_bfmeNow,fddf9bac7dbe9eb16079e618,gpt-6.1-sol,20261016080924-cfd433,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|type||Rva00736B60Data,ca4dc8e9c522284a188bd7a8,gpt-6.1-sol,20261016081411-284703,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|type||Rva00736B60Tree,79844b05672636a937987a24,gpt-6.1-sol,20261016081411-284703,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|member||name48,abf6508841c6f31178beab8c,gpt-6.1-sol,20261016081411-284703,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|member||flag54,3cbfc35a805b190dd15e67b7,gpt-6.1-sol,20261016081411-284703,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|member||field58,6a22983f2da67b28e76a4d73,gpt-6.1-sol,20261016081411-284703,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTree.cpp|function|W3DTreeBuffer@|rva00736b60,0a3288ca9728bb4b4bea298c,gpt-6.1-sol,20261016081411-284703,2026-10-16
