@@ -29458,7 +29458,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?bfmeForward_00C701C0@@YAXXZ,,0x00C701C0,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
 ?bfmeForward_00C701D0@@YAXXZ,,0x00C701D0,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
 ?bfmeForward_00C701E0@@YAXXZ,,0x00C701E0,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
-?bfmeForward_00C701F0@@YAXXZ,,0x00C701F0,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
 ?bfmeForward_00C70500@@YAXXZ,,0x00C70500,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
 ?bfmeForward_00C70510@@YAXXZ,,0x00C70510,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
 ?bfmeForward_00C70610@@YAXXZ,,0x00C70610,10,game/GameEngine/Source/Common/S3SingletonForwarders.cpp,matched,
@@ -38572,7 +38571,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c6b9e0@@YAXXZ,,0x00C6B9E0,29,game/gen_asm/d_00c6b180.asm,matched,gen-dump;int3-carved start=int3-aligned;abs-ref end=ret+int3 refs=1
 ?d_00c6ba40@@YAXXZ,,0x00C6BA40,30,game/gen_asm/d_00c6b180.asm,matched,gen-dump;int3-carved start=int3-aligned;abs-ref end=ret+int3 refs=1
 ?d_00c6bc20@@YAXXZ,,0x00C6BC20,27,game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLivingWorldUIRegisterCallbacks.cpp,matched,object-symbol=_$E1;LivingWorldUI.apt AsciiString static initializer;retail literal VA 0x01105F90;datum VA 0x012F49A0;exact ILT route 0x00012C42 to 0x0005EE70;identity evidence targets/game/reverse/identity_evidence/012f49a0-datum.md;model=gpt-6.1-sol;host=fleet
-?d_00c6bcb0@@YAXXZ,,0x00C6BCB0,27,game/gen_asm/d_00c6bad0.asm,matched,gen-dump;int3-carved start=int3-aligned;abs-ref end=ret+int3 refs=1
 ?d_00c6dd30@@YAXXZ,,0x00C6DD30,36,game/gen_asm/d_00c6dd30.asm,matched,gen-dump;int3-carved start=int3-aligned;abs-ref end=ret+int3 refs=1
 ?damageTeamMembers@Team@@QAE_NM@Z,,0x000F33F0,159,game/GameEngine/Source/Common/RTS/Team_damageTeamMembers.cpp,matched,root full159B retail/source; matched TeamPrototype::damageTeamMembers000F41A0 via ILT0000D148 names method; Team head+0c; Object PMF and statusbits; canonical kill and DamageInfo constructor; Object attemptDamage+34; no emittedtable/newpins; campaign=36h-20260908-1018;lane=lane02;model=gpt-5.6-luna-max
 ?damageTeamMembers@TeamPrototype@@QAEXM@Z,,0x000F41A0,46,game/GameEngine/Source/Common/RTS/TeamPrototypeInstanceWalks.cpp,matched,Open-BFME5 clean C++ TeamPrototype instance-list damage walk; head at this+0x274 via ILT 0x00022A70; Team::damageTeamMembers via ILT 0x0000D148
@@ -172555,3 +172553,5 @@ _rva009B1ED0,,0x009B1ED0,701,game/GameEngine/Source/Common/Rva009B1ED0Filter.cpp
 ?Rva00C6BAD0Init@@YAXXZ,,0x00C6BAD0,22,game/GameEngine/Source/Common/StaticInit/Rva012F3DC4Global.cpp,matched,object-symbol=_$E1;native UnicodeString global initializer;identity-evidence=targets/game/reverse/identity_evidence/00c6bad0-unicode-global-lifetime.md;model=gpt-6;host=cal-desktop
 ?bfmeForward_00C701B0@@YAXXZ,,0x00C701B0,10,game/GameEngine/Source/Common/StaticInit/Rva012F48C8Global.cpp,matched,object-symbol=_$E2;native UnicodeString global cleanup;identity-evidence=targets/game/reverse/identity_evidence/00c6bb80-unicode-global-lifetime.md;model=gpt-6;host=cal-desktop
 ?Rva00C6BB80Init@@YAXXZ,,0x00C6BB80,22,game/GameEngine/Source/Common/StaticInit/Rva012F48C8Global.cpp,matched,object-symbol=_$E1;native UnicodeString global initializer;identity-evidence=targets/game/reverse/identity_evidence/00c6bb80-unicode-global-lifetime.md;model=gpt-6;host=cal-desktop
+?bfmeForward_00C701F0@@YAXXZ,,0x00C701F0,10,game/GameEngine/Source/Common/StaticInit/Rva012F4B00Global.cpp,matched,object-symbol=_$E2;native Palantir filename cleanup;identity-evidence=targets/game/reverse/identity_evidence/00c6bcb0-palantir-global-lifetime.md;model=gpt-6;host=cal-desktop
+?Rva00C6BCB0Init@@YAXXZ,,0x00C6BCB0,27,game/GameEngine/Source/Common/StaticInit/Rva012F4B00Global.cpp,matched,object-symbol=_$E1;native Palantir filename initializer;identity-evidence=targets/game/reverse/identity_evidence/00c6bcb0-palantir-global-lifetime.md;model=gpt-6;host=cal-desktop

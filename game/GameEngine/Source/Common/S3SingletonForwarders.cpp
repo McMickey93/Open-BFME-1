@@ -307,13 +307,6 @@ public:
 extern AsciiString g_guiFxFile;		// 0x12f4978
 extern UnicodeString g_unicode12F498C;		// 0x12f498c
 extern AsciiString g_aptLivingWorldCachedName;		// 0x12f49a0
-class Gen_00C701F0Target
-{
-public:
-	void bfmeForward(void);					// retail 0x0000D828
-};
-
-extern Gen_00C701F0Target TheBfmeObject_00C701F0;		// 0x12f4b00
 class Gen_00C70500Target
 {
 public:
@@ -1066,11 +1059,7 @@ void bfmeForward_00C701E0(void)
 {
 	g_aptLivingWorldCachedName.~AsciiString();
 }
-// ?bfmeForward_00C701F0@@YAXXZ
-void bfmeForward_00C701F0(void)
-{
-	TheBfmeObject_00C701F0.bfmeForward();
-}
+// 0x00C701F0 is emitted with its global in StaticInit/Rva012F4B00Global.cpp.
 // ?bfmeForward_00C70500@@YAXXZ
 void bfmeForward_00C70500(void)
 {

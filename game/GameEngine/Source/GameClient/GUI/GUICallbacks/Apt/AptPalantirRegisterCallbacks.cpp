@@ -123,9 +123,8 @@ extern const char *volatile g_012B7D7C;	// retail 0x012B7D7C, player-side name; 
 extern int g_aptPalantirWindow;						// retail 0x012B7D80
 extern unsigned char g_aptPalantirClosed;		// retail 0x012B7D84
 
-// retail 0x012F4B00: ?TheBfmeObject_00C701F0@@3VGen_00C701F0Target@@A
-class Gen_00C701F0Target;
-extern Gen_00C701F0Target TheBfmeObject_00C701F0;
+// Native filename global constructed by retail initializer 0x00C6BCB0.
+extern AsciiString g_rva012F4B00;
 
 // Apt callback entry points.  None has a recorded name, so each keeps the
 // address in its name rather than a guessed one.
@@ -155,7 +154,7 @@ void d_00565f30()
 
 	int windowIndex = g_rva012F19E8WindowManager->loadAptWindow(
 		"Apt\\",
-		*reinterpret_cast<AsciiString *>( &TheBfmeObject_00C701F0 ), 0, 0, -1 );
+		g_rva012F4B00, 0, 0, -1 );
 	g_aptPalantirWindow = windowIndex;
 	if( windowIndex == -1 )
 		return;
