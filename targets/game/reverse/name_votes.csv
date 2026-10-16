@@ -2053,3 +2053,5 @@ game/GameEngine/Source/GameLogic/Object/SpecialPower/CloudBreakSpecialPowerModul
 game/GameEngine/Source/GameLogic/Object/SpecialPower/CloudBreakSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_21C,663b6fb2640476139b0cf835,gpt-6.1-sol,20261016041054-1faf4f,2026-10-16
 game/GameEngine/Source/Common/Audio/AudioManagerInit.cpp|member||m_field44,d373ef69d7d0a360e2a12810,gpt-6.1-sol,20261016040245-81b5c9,2026-10-16
 game/GameEngine/Source/Common/Audio/AudioManagerInit.cpp|member||m_bfmeB1012,011ea86b19278e5cda9ddcc1,gpt-6.1-sol,20261016040245-81b5c9,2026-10-16
+game/GameEngine/Source/Common/Q2TrailingZeroForwarders.cpp|local|compare|n,37345597f7cded09c4c82442,gpt-6.1-sol,20261016040245-377fb7,2026-10-16
+game/GameEngine/Source/Common/Q2TrailingZeroForwarders.cpp|local|compare|c,be00a470757ff4c8499cf548,gpt-6.1-sol,20261016040245-377fb7,2026-10-16
