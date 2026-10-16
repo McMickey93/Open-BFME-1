@@ -4841,3 +4841,6 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|local|parent|m,5f522baec3bfeadce6d14fa2,gpt-6.1-sol,20261016072049-83440e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|local|action|m,aa15e3b75d70fc567d0baa2a,gpt-6.1-sol,20261016072049-83440e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|param|MemberTarget002439F0::check|arg,61fcb948609b2de03974a4ab,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindGetRadiusAndCenterE30.cpp|member||m_unknown00,d652613528581fd86aca681b,gpt-6.1-sol,20261016072055-364586,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindGetRadiusAndCenterE30.cpp|local|Pathfinder::validateEndpoint003E2140|b,957bf3c41424ca746346bc4f,gpt-6.1-sol,20261016072055-364586,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindGetRadiusAndCenterE30.cpp|local|Pathfinder::validateEndpoint003E2140|a,bee73ac36842bef3f7df8ddb,gpt-6.1-sol,20261016072055-364586,2026-10-16
