@@ -2343,7 +2343,6 @@ name,address,notes
 ??0AIGuardRetaliateMachine@@QAE@PAVObject@@@Z,0x0003E8D3,ILT to AIGuardRetaliateMachine ctor 0x0015F240; retail onEnter@AIGuardRetaliateState call
 ??0AIInternalMoveToState@@QAE@PAVStateMachine@@VAsciiString@@@Z,0x0014F280,base ctor of 13 retail State subclasses; the reference declares exactly those classes deriving from AIInternalMoveToState and its ctor takes (StateMachine* AsciiString) by value which matches the copy-then-pass at this address
 ??0AIInternalMoveToState@@QAE@PAXVAsciiString@@@Z,0x00032182,base constructor thunk address decoded from the retail REL32 call site; name is address-derived
-??0AIMoveToState@@QAE@PAVStateMachine@@@Z,0x0000C6E9,pinharvest x1 (thunk)
 ??0AINamedListNode@@QAE@VAsciiString@@@Z,0x000026BC,AI::newOverride retail ILT-derived constructor callee
 ??0AIPlayer@@QAE@PAVPlayer@@@Z,0x0002D731,Player setPlayerType constructs the 0x78-byte base AI through this retail ILT
 ??0AISideInfo@@QAE@XZ,0x00045165,AI::newOverride retail ILT-derived constructor callee
@@ -2356,7 +2355,6 @@ name,address,notes
 ??0AODCrushCollideModuleData@@QAE@XZ,0x000103E8,module-data constructor called by AODCrushCollide::friend_newModuleData at 0x0011ECA0
 ??0ActiveBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x00025509,RespawnBody constructor base-call ILT to 0x00211A50
 ??0ActiveBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x00211A50,BFME ActiveBody constructor body
-??0ActiveBodyModuleData@@QAE@XZ,0x00001780,pinharvest x1 (thunk)
 ??0ActiveShroudUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x0004709B
 ??0ActiveShroudUpgradeModuleData@@QAE@XZ,0x00023DCB,ModuleFactory ILT thunk to 0x00201650; the byte-verified retail caller encodes it
 ??0AdaptiveDeltaMotionChannelClass@@QAE@XZ,0x00978340
@@ -2425,7 +2423,6 @@ name,address,notes
 ??0AudioEventRTS@@QAE@PAXH@Z,0x00025306,Open-BFME5 AudioEventRTS retail constructor
 ??0AudioLoopUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x00046EA7,link thunk to the AudioLoopUpgrade constructor; named from the ModuleFactory registration that pairs "AudioLoopUpgrade" with factory 0x0011E0B0
 ??0AutoDepositUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00C15D,module ctor (friend_newModuleInstance retail call target)
-??0AutoDepositUpdateModuleData@@QAE@XZ,0x00001780,pinharvest x1 (thunk)
 ??0AutoFindHealingUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x02E12C,module ctor (friend_newModuleInstance retail call target)
 ??0AutoFindHealingUpdateModuleData@@QAE@XZ,0x0001D4EE,module-glue cascade callee (from retail call site)
 ??0AutoHealBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x00048B9E,REL32 pin from AutoHealBehavior::friend_newModuleInstance @0x114200
@@ -2453,7 +2450,6 @@ name,address,notes
 ??0BFMEWaterTrackTextureHandle@@QAE@ABVRva009EBCE0AssetReference@@@Z,0x0090DB70,TU-local ABI constructor alias emitted by W3DWaterTracks.cpp; alternatename targets canonical ??0Gen0090DB70@@QAE@PAX@Z at 0x0090DB70
 ??0BFU_DeepBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,BoneFXUpdate constructor calls the shared ObjectModule constructor ILT
 ??0BPU_BaseModuleData@@QAE@XZ,0x0000F0A6,BattlePlanUpdateModuleData constructs the shared module-data base through this ILT
-??0BaikonurLaunchPowerModuleData@@QAE@XZ,0x0001ABF9,pinharvest x1 (thunk)
 ??0BaikonurLaunchPowerModuleDataBase@@QAE@XZ,0x0003C556,Open-BFME5 the incremental-link thunk that constructor encodes
 ??0BannerAptCallbackHolder@@QAE@P6AXXZ@Z,0x0000C56D,BannerUI APT callback ref-counted holder ctor ILT
 ??0BannerCarrierUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003DB36,BannerCarrierUpdate ctor for friend_new
@@ -2479,7 +2475,6 @@ name,address,notes
 ??0BaseY005E7620@@QAE@PAVOwnerY005E7620@@@Z,0x005FFBB0,ctor of the base subobject constructed inline by the 102-byte adjusted-owner new family (Q4NewInlineCtorAdjusted.cpp); address-derived name; identity not recovered
 ??0Rva005EA080@@QAE@PAVOwnerY005E7940@@@Z,0x006009B0,second ctor of class Rva005EA080: stamps its dir32 vftables (identity_evidence/006009b0-rva005ea080-owner-ctor.md); called by HostY005E7940::create in Q4NewInlineCtorAdjusted.cpp
 ??0BattlePlanUpdateModuleData@@QAE@XZ,0x0003025B
-??0BeaconClientUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0BeaconClientUpdateModuleData@@QAE@XZ,0x000286C3,module-glue cascade callee (from retail call site)
 ??0BehaviorModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,exact retail rel32 target of the six module constructors that call it; the body at 0x00113C60 is retail's ICF fold with ??0ObjectModule@@QAE@PAVThing@@PBVModuleData@@@Z
 ??0BezierSegment@@QAE@XZ,0x00043A9A
@@ -2785,15 +2780,11 @@ name,address,notes
 ??0CountermeasuresBehaviorModuleData@@QAE@XZ,0x0003025B,derived-ICF
 ??0CrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z,0x00217660,BFME CrateCollide ctor body; ILT 0x0002AC43 used by legacy crate constructors
 ??0CrateCollideModuleData@@QAE@XZ,0x000441CA,Open-BFME5 UnitCrateCollide base constructor pin
-??0CreateCrateDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
-??0CreateCrateDieModuleData@@QAE@XZ,0x0000497B,pinharvest x1 (thunk)
 ??0CreateModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x00026CAB,constructor ILT called by seven named derived constructors
 ??0CreateModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x0024F450,Open-BFME5 base constructor every *Create module ctor forwards to
-??0CreateObjectDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0CreateObjectDieModuleData@@QAE@XZ,0x00010B2C,derived-ICF
 ??0CriticalSectionClass@@QAE@XZ,0x009DB420
 ??0CritterEmitterUpdateModuleDataInner@@QAE@XZ,0x0000F0A6,CritterEmitterUpdateModuleData +0x08 base member constructor called before the derived vtable store and paired with its matched destructor
-??0CrushDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0CullNodeStruct@AABTreeBuilderClass@@QAE@XZ,0x0096B500
 ??0CullSystemClass@@QAE@XZ,0x008E2140
 ??0CursorParticleSystemFXNugget@@QAE@XZ,0x0042B280,constructor run on the 0xEC-byte allocation in CursorParticleSystemFXNugget::parse at 0x0042CCA0; the INI keyword table at 0x00CF2130 names that parse callback CursorParticleSystem
@@ -2815,7 +2806,6 @@ name,address,notes
 ??0DarknessSpecialPowerModuleDataBase@@QAE@XZ,0x00015C44,DarknessSpecialPowerModuleData base ctor
 ??0DefaultProductionExitUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00025581,module ctor (friend_newModuleInstance retail call target)
 ??0DefectorSpecialPower@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003A49F,link thunk to the DefectorSpecialPower constructor; named from the ModuleFactory registration that pairs "DefectorSpecialPower" with factory 0x0011FE80
-??0DefectorSpecialPowerModuleData@@QAE@XZ,0x0001ABF9,pinharvest x1 (thunk)
 ??0DeflectSpecialPowerModuleData@@QAE@XZ,0x00046259,DeflectSpecialPower ModuleData ctor
 ??0DeflectSpecialPowerModuleDataBase@@QAE@XZ,0x00023FE7,Open-BFME5 the incremental-link thunk that constructor encodes
 ??0DelayedDeathBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x0002C818,link thunk to body 0x00212810; named from the ModuleFactory registration at 0x0012FF59 that pairs "DelayedDeathBody" with factory thunk 0x0004A0CA
@@ -2829,11 +2819,9 @@ name,address,notes
 ??0DemoTrapUpdateModuleData@@QAE@XZ,0x0002BFF8,derived-ICF
 ??0DeployStyleAIUpdateBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000292A3,DeployStyleAIUpdate ctor base call
 ??0DeployStyleAIUpdateMember@@QAE@XZ,0x0001A9B0,DeployStyleAIUpdate member ctor at this+0x340
-??0DestroyDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0DestroyModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x0002D9A7,constructor ILT to 0x00253C30
 ??0DetachableRiderBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x0002F3AB,link thunk to the DetachableRiderBody constructor; named from the ModuleFactory registration that pairs "DetachableRiderBody" with factory 0x0011FA50
 ??0DetachableRiderUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0004773F,link thunk to the DetachableRiderUpdate constructor; named from the ModuleFactory registration that pairs "DetachableRiderUpdate" with factory 0x0011CAF0
-??0DetailedArchivedDirectoryInfo@@QAE@ABV0@@Z,0x009CA8F0,pinharvest x1 (body)
 ??0DevastateSpecialPowerModuleDataBase@@QAE@XZ,0x00015C44,DevastateSpecialPowerModuleData base ctor
 ??0Dict@@QAE@H@Z,0x00002ECD,ParseObjectDataChunk 0x00088B70 Dict(Int) ctor thunk
 ??0DieModuleData@@QAE@XZ,0x0004A426,ModuleFactory ILT thunk to 0x001F7810; the byte-verified retail caller encodes it
@@ -2867,7 +2855,6 @@ name,address,notes
 ??0ExperienceLevelCreateBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x00026CAB,ExperienceLevelCreate ctor base
 ??0ExperienceScalarTable@@QAE@ABVAsciiString@@@Z,0x0037EF50,Open-BFME5 REL32 target of parseExperienceScalarTable's new
 ??0ExperienceScalarUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x000380D2,module ctor (friend_newModuleInstance retail call target)
-??0ExperienceScalarUpgradeModuleData@@QAE@XZ,0x00010C80,pinharvest x1 (thunk)
 ??0FU_DeepBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,FlammableUpdate constructor calls the shared ObjectModule constructor ILT
 ??0FWU_DeepBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,FireWeaponUpdate constructor calls the shared ObjectModule constructor ILT
 ??0FWWD_BaseModuleData@@QAE@XZ,0x0000F0A6,FireWeaponWhenDamagedBehaviorModuleData constructs the shared module-data base through this ILT
@@ -2875,7 +2862,6 @@ name,address,notes
 ??0FWWDead_UpgradeMuxData@@QAE@XZ,0x0000F0A6,FireWeaponWhenDeadBehaviorModuleData UpgradeMuxData constructor ILT
 ??0FXList@@QAE@ABVAsciiString@@@Z,0x0042B4D0,FXListStore::parseFXListDefinition 0x0042E130 call +0x5D via ILT 0x000399F5; body stores the FXList vtable and copies the AsciiString argument into the name at +0x0C
 ??0FXListAtBonePosFXNugget@@QAE@XZ,0x00429E30,constructor run on the 0xBC-byte allocation in FXListAtBonePosFXNugget::parse at 0x0042C860; the INI keyword table at 0x00CF2130 names that parse callback FXListAtBonePos
-??0FXListDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x00008878,pinharvest x1 (thunk)
 ??0FXListDieModuleData@@QAE@XZ,0x00025EBE,derived-ICF
 ??0FXNugget@@QAE@XZ,0x00428590,BFME's 225-byte FXNugget constructor; the false 0x00061D90 zero-store claim was retired in fcf825b4f7
 ??0FastAllocatorGeneral@@QAE@XZ,0x00B027B0
@@ -2883,12 +2869,9 @@ name,address,notes
 ??0FireOCLAfterWeaponCooldownUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00048B9E,ModuleFactory ILT thunk to 0x001EE950; the byte-verified retail caller encodes it
 ??0FireOCLAfterWeaponCooldownUpdateModuleData@@QAE@XZ,0x0000B997,pinharvest x1 (thunk)
 ??0FireSpreadUpdateModuleData@@QAE@XZ,0x000104B5,module-glue cascade callee (from retail call site)
-??0FireWeaponCollide@@QAE@PAVThing@@PBVModuleData@@@Z,0x00008878,pinharvest x1 (thunk)
 ??0FireWeaponPowerModuleData@@QAE@XZ,0x0001ABF9,pinharvest x1 (thunk)
-??0FireWeaponUpdateModuleData@@QAE@XZ,0x000118E7,pinharvest x1 (thunk)
 ??0FireWeaponWhenDamagedBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x02A379,module ctor (friend_newModuleInstance retail call target)
 ??0FireWeaponWhenDamagedBehaviorModuleData@@QAE@XZ,0x0003025B,derived-ICF
-??0FireWeaponWhenDeadBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x00008878,pinharvest x1 (thunk)
 ??0FireWeaponWhenDeadBehaviorModuleData@@QAE@XZ,0x00025EBE,derived-ICF
 ??0FirestormDynamicGeometryInfoUpdateModuleData@@QAE@XZ,0x0001235A
 ??0FirestormDynamicGeometryInfoUpdateModuleDataBase@@QAE@XZ,0x00048A3B,FirestormDynamicGeometryInfoUpdateModuleData base ctor
@@ -3243,14 +3226,11 @@ name,address,notes
 ??0Image@@QAE@XZ,0x0000548E,constructed by the MappedImage block right after operator new(0x34) and handed to the matched ImageCollection::addImage(Image *)
 ??0ImageCollection@@QAE@XZ,0x005D30E0,canonical Image.cpp object provider; GameClient init calls ILT 0x0002E433 then ImageCollection::load on TheMappedImageCollection; evidence=identity_evidence/0042F5A0-gameclient-init.md
 ??0ImmortalBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x00013750,link thunk to the ImmortalBody constructor; named from the ModuleFactory registration that pairs "ImmortalBody" with factory 0x0011F530
-??0InactiveBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x00008878,pinharvest x1 (thunk)
 ??0InactiveBodyBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,InactiveBody ctor base call
-??0InstantDeathBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0InstantDeathBehaviorBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,InstantDeathBehavior ctor base call
 ??0InstantDeathBehaviorModuleDataAllocator@@QAE@XZ,0x00029BFE,SlowDeathBehaviorModuleData fourth vector allocator constructor target from retail call
 ??0InstantDeathDieMuxData@@QAE@XZ,0x000071E4,Open-BFME5 TU-local retail call target for InstantDeathBehaviorModuleData ctor
 ??0JetAIUpdateModuleData@@QAE@XZ,0x000028AB,derived-ICF
-??0KeepObjectDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0Keyboard@@QAE@XZ,0x00049148,incremental-link thunk retail uses from DirectInputKeyboard ctor
 ??0KindOfMask@@QAE@HHH@Z,0x0000198D,two-index BitFlags-style ctor the ILT at 0x0000198D reaches; used building the bits-119/179 mask in Drawable::bfmeApplyIndicatorColor at 0x00418200
 ??0LANAPI@@QAE@XZ,0x0003ECC5,BFME LANAPI constructor called by HostDirectConnectGame
@@ -3318,7 +3298,6 @@ name,address,notes
 ??0MeshMatDescClass@@QAE@ABV0@@Z,0x0092C0D0,REL32 target of MeshModelClass copy ctor at 0x0094ECE0 and 0x0094ED1F
 ??0MeshMatDescClass@@QAE@XZ,0x0092A2B0
 ??0MeshModelClass@@QAE@ABV0@@Z,0x0094EC20,Open-BFME5 retail MeshModelClass copy constructor pin
-??0MessageStream@@QAE@XZ,0x000132B4,pinharvest x2 (thunk)
 ??0MinefieldBehaviorModuleData@@QAE@XZ,0x0002AE6E,ModuleFactory ILT thunk to 0x0036CDD0; the byte-verified retail caller encodes it
 ??0MissileAIUpdateModuleDataBase@@QAE@XZ,0x0003C556,MissileAIUpdateModuleData base ctor
 ??0MissileLauncherBuildingUpdateModuleData@@QAE@XZ,0x0003025B,derived-ICF
@@ -3331,7 +3310,6 @@ name,address,notes
 ??0ModelConditionSoundSelectorClientBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x0004AD86,route=0x00124A10; ModelConditionSoundSelectorClientBehavior constructor ILT routes to its dedicated vtable-setting body
 ??0ModelConditionSpecialAbilityUpdateModuleDataBase@@QAE@XZ,0x0003F503,ModelCondition SpecialAbilityUpdate base
 ??0ModelConditionUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x00025810,module ctor (friend_newModuleInstance retail call target)
-??0ModelConditionUpgradeModuleData@@QAE@XZ,0x00010C80,pinharvest x1 (thunk)
 ??0ModuleDataBase@@QAE@XZ,0x00036818,Open-BFME5 Porcupine base pin
 ??0ModuleDataBase_CombineHordeSpecialPowerModuleData@@QAE@XZ,0x00015C44,Open-BFME5 CombineHordeSpecialPowerModuleData base pin
 ??0ModuleDataBase_DefectorSpecialPowerModuleData@@QAE@XZ,0x00015C44,Open-BFME5 DefectorSpecialPowerModuleData base pin
@@ -3355,7 +3333,6 @@ name,address,notes
 ??0NetCommandWrapperListNode@@QAE@PAVNetWrapperCommandMsg@@@Z,0x0002D8C1,ILT thunk; real body 0xA76380
 ??0NetDestroyPlayerCommandMsg@@QAE@XZ,0x0002B904,pinharvest x1 (thunk)
 ??0NetDisconnectFrameCommandMsg@@QAE@XZ,0x0002F536,pinharvest x1 (thunk)
-??0NetDisconnectKeepAliveCommandMsg@@QAE@XZ,0x000132B4,pinharvest x2 (thunk)
 ??0NetDisconnectPlayerCommandMsg@@QAE@XZ,0x0002173D,ILT thunk; real body 0xA73C20
 ??0NetDisconnectScreenOffCommandMsg@@QAE@XZ,0x0000F8D0,pinharvest x1 (thunk)
 ??0NetDisconnectVoteCommandMsg@@QAE@XZ,0x0002B346,ILT thunk; real body 0xA73CD0
@@ -3378,8 +3355,6 @@ name,address,notes
 ??0Nugget@ModuleInfo@@QAE@ABU01@@Z,0x0004ABEC,retail ILT target of ModuleInfo Nugget copy-constructor call
 ??0OBBoxClass@@QAE@ABV0@@Z,0x00888400,Open-BFME5 OBBoxAPTContextStruct Box copy-ctor (ICF twin of 0x00931420)
 ??0OCLSpecialPower@@QAE@PAVThing@@PBVModuleData@@@Z,0x000332D5,link thunk to the OCLSpecialPower constructor; named from the ModuleFactory registration that pairs "OCLSpecialPower" with factory 0x001201B0
-??0OCLUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000EF5C,pinharvest x1 (thunk)
-??0OCLUpdateModuleData@@QAE@XZ,0x00001780,pinharvest x1 (thunk)
 ??0OCU_GrandBase@@QAE@XZ,0x0003D24E,ObjectCreationUpgrade ctor grandbase call; ILT thunk for body 0x002D9B80
 ??0OCU_MidGrand@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,ObjectCreationUpgrade ctor mid-base call; ILT thunk for ObjectModule ctor (body 0x00113C60)
 ??0OathbreakerBody@@QAE@PAVThing@@PBVModuleData@@@Z,0x00022CF0,link thunk to the OathbreakerBody constructor; named from the ModuleFactory registration that pairs "OathbreakerBody" with factory 0x0011FB60
@@ -3418,7 +3393,6 @@ name,address,notes
 ??0Obf00619E50@@QAE@PAH0@Z,0x00619E50,per-member callee of the 100-byte obfuscated hook wrappers in BigObfHookWrappers.cpp
 ??0Object@@QAE@PBVThingTemplate@@ABV?$BitFlags@$0FG@@@PAVTeam@@IH@Z,0x00047F5A,BFME Object constructor called by GameLogic::friend_createObject at 0x003830C0. The five-argument ABI and 0x3C4 allocation match retail 0x001D29A0.
 ??0ObjectCreationUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x000246B8,ObjectCreationUpgrade ctor for friend_new
-??0ObjectCreationUpgradeModuleData@@QAE@XZ,0x00010C80,pinharvest x1 (thunk)
 ??0ObjectHelper@@QAE@PAVThing@@PBVModuleData@@@Z,0x00021BE8,packet 001c0ea0 callee pin
 ??0ObjectModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,shared ObjectModule constructor ILT to 0x00113C60; called by named object-module constructors
 ??0ObjectRepulsorHelper@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000D062,constructor ILT to 0x001C11D0
@@ -3437,7 +3411,6 @@ name,address,notes
 ??0PSPlayerStats@@QAE@ABV0@@Z,0x0001C783,REL32 pin: callers reach the body at 0x6577D0 through this thunk
 ??0PSPlayerStats@@QAE@XZ,0x0003599A,pinharvest x1 (thunk)
 ??0PSRequest@@QAE@XZ,0x0065AB40,ZH PersistentStorageThread.h PSRequest layout: requestType(+0)=0 then ??0PSPlayerStats ILT 0x0003599A on the player member; five std::string ctors ILT 0x0004048A (cdkey nick password email results); reset@PSPlayerStats ILT 0x00010825; addDiscon +0x1f8 and addDesync +0x1f9 = 0; lastHouse +0x1fc = -1; callers score screen 0x004E6F21/0x004E7003/0x004E760D and 0x000A5D40; ILT 0x0002E38E
-??0ParkingPlaceBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000CDD8,pinharvest x1 (thunk)
 ??0Particle@@QAE@ABVBfmeParticleSystemHandle@@PBVParticleInfo@@@Z,0x0001485D,BFME particle constructor called by ParticleSystem::createParticle at 0x005D0040; the constructor stores the handle as its 0x4C member
 ??0ParticleBufferClass@@QAE@ABV0@@Z,0x00989A20
 ??0ParticleSystemManager@@QAE@XZ,0x000110FE,ILT to ParticleSystemManager ctor body 0x005CBF60; vtable group 0x0110FDCC and FXParticleSystemManager string 0x0110FE14 identify the class
@@ -3458,7 +3431,6 @@ name,address,notes
 ??0PeerRequest@@QAE@XZ,0x000171FC,ILT of PeerRequest ctor used by 0x0053AB90
 ??0PeerResponse@@QAE@ABV0@@Z,0x004FB2E0,PeerResponse copy ctor; callee address read from the deque push_back_aux REL32 at 0x648920
 ??0PhysicsBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003C3BC
-??0PhysicsBehaviorModuleData@@QAE@XZ,0x00007FF4,pinharvest x1 (thunk)
 ??0PickAndPlayInfo@@QAE@XZ,0x0000F164,BFME PickAndPlayInfo constructor; target call follows local DrawableList construction and precedes field population in three adjacent voice response helpers
 ??0PilotFindVehicleUpdateModuleData@@QAE@XZ,0x000261CA,ModuleFactory ILT thunk to 0x0020D580; the byte-verified retail caller encodes it
 ??0PivotClass@@QAE@ABU0@@Z,0x00972D70,derived from HTreeClass::Alter_Avatar_HTree
@@ -3479,7 +3451,6 @@ name,address,notes
 ??0ProductionEntry@@QAE@XZ,0x00047DFC,ProductionUpdate queueUpgrade entry constructor thunk
 ??0ProductionPrerequisite@@QAE@ABV0@@Z,0x00031B06,ProductionPrerequisite copy constructor via ILT thunk
 ??0ProductionPrerequisiteRetailCopy@@QAE@ABV0@@Z,0x00038550,ProductionPrerequisite construct shim callee at retail body 0x00783D50
-??0ProductionUpdateModuleData@@QAE@XZ,0x0000E9F8,pinharvest x1 (thunk)
 ??0ProjectileStreamUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001E902,pinharvest x1 (thunk)
 ??0ProneUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x000425DC,module ctor (friend_newModuleInstance retail call target)
 ??0ProneUpdateModuleData@@QAE@XZ,0x0002DABA,module-glue cascade callee (from retail call site)
@@ -3490,7 +3461,6 @@ name,address,notes
 ??0QueuedDownload@@QAE@ABV0@@Z,0x000451D3,"exact retail rel32 target of the byte-verified caller; replaces a harvested pin at 0x0001005F, which is the pair<const AsciiString,ArchivedFileInfo> constructor's body"
 ??0QuickMatchPreferences@@QAE@XZ,0x0002E802
 ??0QuitMenuHolder@@QAE@UFunctorBinding@@@Z,0x00015870,0x0056A2F0 assigned callback-holder constructor ILT
-??0RAMFile@@QAE@XZ,0x009E6990,pinharvest x1 (body)
 ??0ROFU_DeepBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,RainOfFireUpdate ModuleFactory body calls the shared ObjectModule constructor ILT
 ??0ROUMT_CopyBase@@QAE@ABV0@@Z,0x0001D435,RenderObjectUpdateModuleTemplate copy-ctor primary-base call; ILT thunk for CategoryModuleTemplate<2> copy ctor (body 0x005BF4A0)
 ??0ROUMT_OffsetBase@@QAE@ABV0@@Z,0x000310FC,RenderObjectUpdateModuleTemplate copy-ctor offset-base call; ILT thunk for RenderObjectUpdateModuleInfo copy ctor (body 0x005D92C0)
@@ -3503,7 +3473,6 @@ name,address,notes
 ??0RadarUpgradeModuleData@@QAE@XZ,0x00010C80,pinharvest x1 (thunk)
 ??0RadiusDecal@@QAE@XZ,0x00036DD1
 ??0RadiusDecalTemplate@@QAE@XZ,0x00029C71,Open-BFME5 DynamicShroud decal member constructor pin
-??0RadiusDecalUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000EF5C,pinharvest x1 (thunk)
 ??0RailedTransportAIUpdateModuleData@@QAE@XZ,0x0002AE6E,ModuleFactory ILT thunk to 0x0036CDD0; the byte-verified retail caller encodes it
 ??0RailedTransportDockUpdateModuleData@@QAE@XZ,0x0002C9D0,ModuleFactory ILT thunk to 0x00295500; the byte-verified retail caller encodes it
 ??0RainOfFireUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000A0E2,retail ModuleFactory cp081 constructor thunk
@@ -3536,7 +3505,6 @@ name,address,notes
 ??0RetailLayoutString@@QAE@XZ,0x00017BD9,BFME layout-string default constructor ILT read out of the eh vector constructor argument
 ??0RetailUpdateModuleDataBase@@QAE@XZ,0x00048A3B,UpdateModule factory base constructor target
 ??0RiderChangeContainBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x00049378,RiderChangeContain ctor base call
-??0RiderChangeContainModuleData@@QAE@XZ,0x00014619,pinharvest x1 (thunk)
 ??0RubbleRiseUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0002B0E9,retail ModuleFactory ordinal 0x88 ctor thunk
 ??0RubbleRiseUpdateModuleData@@QAE@XZ,0x00014DAD,retail ModuleFactory ordinal 0x88 data ctor thunk
 ??0RunOffMapBehaviorBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,RunOffMapBehavior ctor base call (shared ILT)
@@ -3847,16 +3815,13 @@ name,address,notes
 ??0SkirmishPreferences@@QAE@XZ,0x00047767,retail incremental-link constructor call target used by the Skirmish start callback
 ??0SkyboxTextureSet@@QAE@XZ,0x000B83B0,Open-BFME5 constructor new'd by parseSkyboxTextureSet; 0x18 bytes - vtable 0x01082BE4 at +0 then five zeroed dwords
 ??0SlaughterHordeContainBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x00037FAB,Open-BFME5 SlaughterHordeContain base constructor pin
-??0SlavedUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00001CDA,pinharvest x1 (thunk)
 ??0SlavedUpdateModuleData@@QAE@XZ,0x0003AE86,pinharvest x1 (thunk)
 ??0SlowDeathBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x000447FB,matched factory constructor thunk -> 0x00207B60
-??0SlowDeathBehaviorModuleData@@QAE@XZ,0x000186FB,pinharvest x1 (thunk)
 ??0SmartBombTargetHomingUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000EF5C,pinharvest x1 (thunk)
 ??0SmudgeManager@@QAE@XZ,0x000354E5,W3DSmudgeManager constructor base call ILT
 ??0SnapshotDupReplica@@QAE@XZ,0x007E86B0,"the 16-byte base ctor at 0x007E86B0 (vftable 0x01129358, zero at +4); functions.csv already records this spelling as that body's object symbol"
 ??0SortingIndexBufferClass@@QAE@G@Z,0x0091D270,constructor callee of Allocate_Sorting_Dynamic_Buffer at 0x0091D6B0
 ??0SortingVertexBufferClass@@QAE@G@Z,0x0091DFD0,object-symbol of matched ?d_0091dfd0@@YAXXZ; BoxDynamicVBAccess sorting allocate callee
-??0SpawnBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,0x00034711,pinharvest x1 (thunk)
 ??0SpawnBehaviorFourthBase@@QAE@XZ,0x0003D24E,SpawnBehavior fourth interface base constructor ILT
 ??0SpawnBehaviorModuleDataMemberC@@QAE@XZ,0x000071E4,Open-BFME5 constructor callee pin
 ??0SpawnBoneRow@@QAE@XZ,0x00045561,empty 16-byte row ctor ILT used by SpawnPointProductionExitUpdate::initializeBonePositions ehvec_ctor
@@ -3867,7 +3832,6 @@ name,address,notes
 ??0SpecialAbilityUpdateModuleData@@QAE@XZ,0x0003F503,route=0x002A5AA0; named SpecialAbilityUpdate factory 0x00114140 allocates 0x254 and calls this constructor route; LevelGrant and RousingSpeech use the same base
 ??0SpecialDisguiseUpdateBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x00013462,SpecialDisguiseUpdate ctor base call
 ??0SpecialDisguiseUpdateModuleDataBase@@QAE@XZ,0x0003F503,SpecialDisguiseUpdateModuleData ctor base
-??0SpecialPowerCompletionDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x00008878,pinharvest x1 (thunk)
 ??0SpecialPowerCompletionDieModuleData@@QAE@XZ,0x0000497B,pinharvest x1 (thunk)
 ??0SpecialPowerCreate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00005BFA,link thunk to the SpecialPowerCreate constructor; named from the ModuleFactory registration that pairs "SpecialPowerCreate" with factory 0x0011E780
 ??0SpecialPowerModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x00011E50,BFME constructor body called by special-power module constructors
@@ -3877,10 +3841,8 @@ name,address,notes
 ??0SphereEmissionVolumeModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z,0x0001EDA3,SphereEmissionVolumeModuleTemplate clone copy-ctor pin
 ??0SplitHordeSpecialPowerModuleData@@QAE@XZ,0x00014619,SplitHordeSpecialPower ModuleData ctor
 ??0SpyVisionSpecialPowerModuleData@@QAE@XZ,0x00025EBE,derived-ICF
-??0SpyVisionUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00004D36,pinharvest x1 (thunk)
 ??0SpyVisionUpdateModuleData@@QAE@XZ,0x00035E22,pinharvest x1 (thunk)
 ??0SpyVisionUpgradeMux@@QAE@XZ,0x0003D24E,SpyVisionUpdate UpgradeMux constructor ILT
-??0SquishCollide@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
 ??0SquishCollideModuleData@@QAE@XZ,0x00045737,SquishCollide ModuleData ctor
 ??0State@@QAE@PAVStateMachine@@VAsciiString@@@Z,0x000A19E0,hand-decoded from DozerPrimaryStateMachine ctor @0x2B7870 (DozerPrimaryIdleState/DozerPrimaryGoingHomeState sub-ctor calls, both overwrite [obj]=derived vtable right after); call site encodes thunk 0x35B2 (thunk_FUN_004a19e0) -- pinned to the real body
 ??0StateMachine@@QAE@PAVObject@@VAsciiString@@@Z,0x000A1BD0,hand-decoded from DozerPrimaryStateMachine ctor @0x2B7870+0x3C (base-class-init call, immediately followed by [esi]=derived vtable store); call site encodes thunk 0xF123 (thunk_FUN_004a1bd0) -- pinned to the real body
@@ -3888,7 +3850,6 @@ name,address,notes
 ??0StatusBitsUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000DFBC,module ctor (friend_newModuleInstance retail call target)
 ??0StatusBitsUpgradeModuleData@@QAE@XZ,0x000028AB,derived-ICF
 ??0StealthDetectorUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x036A0C,module ctor (friend_newModuleInstance retail call target)
-??0StealthUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00006780,pinharvest x1 (thunk)
 ??0StealthUpdateModuleData@@QAE@XZ,0x00020B58
 ??0StealthUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x00019939,module ctor (friend_newModuleInstance retail call target)
 ??0StickyBombUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00037619,derived-ICF
@@ -3987,13 +3948,11 @@ name,address,notes
 ??0Sub005CDC20@@QAE@ABV0@@Z,0x005CDC20,Y4 lane: restored pin a concurrent whole-file rewrite of targets/game/reverse/symbols.csv dropped; address is the one the Y3 lane encodes in its own address-derived name
 ??0Sub005CE420@@QAE@ABV0@@Z,0x005CE420,Y4 lane: restored pin a concurrent whole-file rewrite of targets/game/reverse/symbols.csv dropped; address is the one the Y3 lane encodes in its own address-derived name
 ??0Sub005CEB10@@QAE@ABV0@@Z,0x005CEB10,Y4 lane: restored pin a concurrent whole-file rewrite of targets/game/reverse/symbols.csv dropped; address is the one the Y3 lane encodes in its own address-derived name
-??0SubObjectsUpgradeModuleData@@QAE@XZ,0x0001ABF9,pinharvest x1 (thunk)
 ??0SubsystemInterface@@QAE@XZ,0x009A1A30
 ??0SubtitleEntryUnicodeBase@@QAE@ABVUnicodeString@@@Z,0x00888400,SubtitleEntry TU-local UnicodeString copy constructor alias
 ??0SupplyCenterCreate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003CF56,link thunk to the SupplyCenterCreate constructor; named from the ModuleFactory registration that pairs "SupplyCenterCreate" with factory 0x0011E3E0
 ??0SupplyCenterDockUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00021CE2,module ctor (friend_newModuleInstance retail call target)
 ??0SupplyCenterDockUpdateBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x00048EA5,SupplyCenterDockUpdate ctor base
-??0SupplyCenterDockUpdateModuleData@@QAE@XZ,0x000118E7,pinharvest x1 (thunk)
 ??0SupplyCenterProductionExitUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00027B06,module ctor (friend_newModuleInstance retail call target)
 ??0SupplyTruckStateMachine@@QAE@PAVObject@@@Z,0x00047C80,route=0x002C6430; one-argument constructor proven by caller and ret 4; identity_evidence/002C6430-supply-truck-constructor.md
 ??0SupplyWarehouseCreate@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003ECA7,link thunk to the SupplyWarehouseCreate constructor; named from the ModuleFactory registration that pairs "SupplyWarehouseCreate" with factory 0x0011E460
@@ -4058,7 +4017,6 @@ name,address,notes
 ??0TintDrawableFXNugget@@QAE@XZ,0x00429CC0,constructor run on the 0xD4-byte allocation in TintDrawableFXNugget::parse at 0x0042C740; the INI keyword table at 0x00CF2130 names that parse callback TintDrawable
 ??0TintEnvelope@@QAE@XZ,0x00412140,Drawable::colorFlash allocation call identifies the existing 71-byte TintEnvelope constructor body at this address
 ??0ToggleHiddenSpecialAbilityUpdateModuleData@@QAE@XZ,0x00039F6D,ToggleHiddenSpecialAbilityUpdate ModuleData ctor
-??0ToppleUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00006780,pinharvest x1 (thunk)
 ??0ToppleUpdateModuleData@@QAE@XZ,0x00010B2C,derived-ICF
 ??0TransitionDamageFX@@QAE@PAVThing@@PBVModuleData@@@Z,0x00002450,pinharvest x1 (thunk)
 ??0TransitionDamageFXShapeMemberBase005FEA50@@QAE@XZ,0x0003EA9A,WindModuleInfo constructor ILT callee of the 0x005FEA50 constructor
@@ -4084,10 +4042,7 @@ name,address,notes
 ??0UnicodeStringWN@@QAE@ABV0@@Z,0x00888400,pin
 ??0UnitCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z,0x00009AED,module ctor (friend_newModuleInstance retail call target)
 ??0UnpauseSpecialPowerUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x00048635,module ctor (friend_newModuleInstance retail call target)
-??0UnpauseSpecialPowerUpgradeModuleData@@QAE@XZ,0x00010C80,pinharvest x1 (thunk)
 ??0Upgrade@@QAE@PBVUpgradeTemplate@@@Z,0x00005BB4,Player::addUpgrade retail constructor call ILT
-??0UpgradeDie@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001D3AE,pinharvest x1 (thunk)
-??0UpgradeDieModuleData@@QAE@XZ,0x0000497B,pinharvest x1 (thunk)
 ??0UpgradeModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000C315,Open-BFME5 Upgrade module base call pin (ILT shared)
 ??0UpgradeModuleData@@QAE@XZ,0x00049AA3,pinharvest x1 (thunk)
 ??0UpgradeModuleDataSub@@QAE@XZ,0x0000F0A6,UpgradeModuleData subobject ctor ILT used by upgrade factories
@@ -4125,7 +4080,6 @@ name,address,notes
 ??0W3DHordeModelDrawModuleDataBase@@QAE@XZ,0x0000289C,Open-BFME5 W3DHorde module data base constructor ILT shared with the proven module-data family
 ??0W3DInGameUI@@QAE@XZ,0x0003CDB2
 ??0W3DLaserDraw@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000E61A,link thunk to the W3DLaserDraw constructor; named from the draw-module registration that pairs "W3DLaserDraw" with factory 0x006BF150
-??0W3DLaserDrawModuleData@@QAE@XZ,0x0001BE41,pinharvest x1 (thunk)
 ??0W3DLightDraw@@QAE@PAVThing@@PBVModuleData@@@Z,0x00034EDC,ILT thunk encoded by the W3DLightDraw factory at 0x006BFAD0; registration table pairs that factory with the W3DLightDraw name
 ??0W3DLightDrawModuleData@@QAE@XZ,0x00028D9E,module-data constructor called by W3DLightDraw::friend_newModuleData at 0x006BFB50
 ??0W3DModelDrawModuleData@@QAE@XZ,0x00025EBE,pinharvest x1 (thunk)
@@ -4154,11 +4108,8 @@ name,address,notes
 ??0W3DSnowManager@@QAE@XZ,0x000216C0
 ??0W3DStreakDraw@@QAE@PAVThing@@PBVModuleData@@@Z,0x00031804,link thunk to the W3DStreakDraw constructor; named from the draw-module registration that pairs "W3DStreakDraw" with factory 0x006BFCF0
 ??0W3DStreakDrawModuleData@@QAE@XZ,0x000302EC,module-data constructor called by W3DStreakDraw::friend_newModuleData at 0x006BFD70
-??0W3DSupplyDraw@@QAE@PAVThing@@PBVModuleData@@@Z,0x0001F659,pinharvest x1 (thunk)
-??0W3DSupplyDrawModuleData@@QAE@XZ,0x0001235A,pinharvest x1 (thunk)
 ??0W3DSupplyDrawModuleDataBase@@QAE@XZ,0x0000289C,Open-BFME5 the incremental-link thunk that constructor encodes
 ??0W3DTankDraw@@QAE@PAVThing@@PBVModuleData@@@Z,0x0000CC2F,"exact retail rel32 target of ?friend_newModuleInstance@W3DTankDraw@@SAPAVModule@@PAVThing@@PBVModuleData@@@Z, which is byte-verified everywhere else; replaces a pinharvest x1 guess at 0x00006C85 whose body 0x0026D670 is WeaponFireSpecialAbilityUpdate's own constructor"
-??0W3DTankDrawModuleData@@QAE@XZ,0x00018322,pinharvest x1 (thunk)
 ??0W3DTankDrawModuleDataBase@@QAE@XZ,0x0000289C,Open-BFME5 address-derived base whose constructor W3DTankDrawModuleData reaches through the incremental-link thunk at 0x0000289C
 ??0W3DTerrainBackground@@QAE@XZ,0x0004149D,FlatHeightMap 0xC4-element m_tiles vector constructor ILT
 ??0W3DTerrainVisual@@QAE@XZ,0x00024DC0
@@ -4184,7 +4135,6 @@ name,address,notes
 ??0WideStr@@QAE@ABV0@@Z,0x00888400,pin
 ??0Win32Mouse@@QAE@XZ,0x00042370,W3DMouse constructor base call through the incremental-link thunk
 ??0WindowTransitionINI@@QAE@XZ,0x00851230,TU-local BFME INI ABI declaration for GameWindowTransitionsHandler::load
-??0WorkerAIUpdateModuleData@@QAE@XZ,0x00024BFE,pinharvest x1 (thunk)
 ??0WriteLockClass@BoxDynamicVBAccessClass@@QAE@PAV1@@Z,0x0091F160,TU-local DynamicVB lock ABI for BoxRenderObjClass::render_box
 ??0WriteLockClass@DynamicIBAccessClass@@QAE@PAV1@@Z,0x0091D410,DynamicIB lock ABI for BoxRenderObjClass::render_box
 ??0WriteLockClass@VertexBufferClass@@QAE@PAV1@H@Z,0x0091DD70,REL32 callee pin
@@ -9292,7 +9242,6 @@ name,address,notes
 ??1QueueProductionExitUpdateModuleData@@MAE@XZ,0x000114BE,exact constructor 0x00124150 and dedicated vtable 0x00C8CFC0 establish the protected complete destructor called by wrapper 0x001259C0
 ??1QueuedDownload@@QAE@XZ,0x00044733
 ??1QuickMatchPreferences@@UAE@XZ,0x00010073
-??1RAMFile@@MAE@XZ,0x00029555,pinharvest x1 (thunk)
 ??1RTS3DScene@@UAE@XZ,0x0000A1F0,route=0x00713510; scalar deleting destructor retail call targets the matched RTS3DScene destructor through this ILT
 ??1RadarUpdate@@MAE@XZ,0x0000B037,vtable 0x00CC154C slots name RadarUpdate; protected complete destructor called by wrapper 0x002A02F0
 ??1RadarUpdateModuleData@@UAE@XZ,0x00041BF5,exact constructor 0x002A01C0 and dedicated vtable 0x00CC1428 establish the protected complete destructor called by wrapper 0x002A03A0;ilt-verified=T1-access(efp=3.26e-03)
@@ -13523,7 +13472,6 @@ name,address,notes
 ?OpenConnectionScreen@AptOnlineCustomMatch@@QAEX_N@Z,0x0000C955,route=0x00539110; EA AptOnlineCustomMatch::OpenConnectionScreen (ILT oracle CONFIRMED); guarded flag-forward callee; target read from the REL32 at 0x00539350 and 0x00539370
 ?Open_Chunk@ChunkLoadClass@@QAE_NXZ,0x009E1380
 ?Open_Micro_Chunk@ChunkLoadClass@@QAE_NXZ,0x009E17C0
-?Overlap_Test@CollisionMath@@SA?AW4OverlapType@1@ABVFrustumClass@@ABVAABoxClass@@@Z,0x008DB060,pinharvest x1 (body)
 ?Overlap_Test@CollisionMath@@SA?AW4OverlapType@1@ABVOBBoxClass@@ABVAABoxClass@@@Z,0x008E2310
 ?Owns_Device_Lock@DX8Wrapper@@SA_NXZ,0x009031A0,bool return at the 0x00382CE0 call site of the matched int body
 ?ParseAction@ScriptAction@@KAPAV1@AAVDataChunkInput@@PAUDataChunkInfo@@PAX@Z,0x0001720B,Open-BFME7: incremental-link thunk called by ParseActionDataChunk 0x00358FE0 and its ParseActionFalseDataChunk twin 0x00359030
@@ -13615,7 +13563,6 @@ name,address,notes
 ?Remap_Mesh@MaterialRemapperClass@@QAEXPBVMeshMatDescClass@@PAV2@@Z,0x0092F2C0,callee of the byte-proven clone_materials 0x96DDC0; same stack temp as ecx and args are the two CurMatDesc slots at +0x9c
 ?Remove@?$DLNodeClass@VThumbnailManagerClass@@@@QAEXXZ,0x00041763,pinharvest x4 (thunk)
 ?RemoveAt@?$CSimpleArray@PAXV?$CSimpleArrayEqualHelper@PAX@ATL@@@ATL@@QAEHH@Z,0x009F6883,ATL 7.1 CSimpleArray<HINSTANCE>::RemoveAt called by CAtlBaseModule::RemoveResourceInstance
-?Remove_All@?$SList@VTagBlockIndex@@@@UAEXXZ,0x0000B9CE,pinharvest x1 (thunk)
 ?Remove_Index@?$IndexClass@HPAUINIEntry@@@@QAE_NABH@Z,0x009E26A0
 ?Remove_Index@?$IndexClass@HPAUINISection@@@@QAE_NABH@Z,0x009E2730
 ?Remove_Polygon_Renderer@DX8TextureCategoryClass@@QAEXPAVDX8PolygonRendererClass@@@Z,0x00947D30
@@ -13642,7 +13589,6 @@ name,address,notes
 ?Render_Seg_Line@SegmentedLineClass@@IAEXAAVRenderInfoClass@@@Z,0x00950960
 ?Render_Streak_Line@StreakLineClass@@IAEXAAVRenderInfoClass@@@Z,0x00919AC0,"direct retail call from StreakLine Render 0091A600; existing matched StreakLineRender.cpp object-symbol and constructor-proven renderer154/countE0/F0/100 layout independently establish ABI; evidence=targets/game/reverse/identity_evidence/0091a600-streakline-render.md"
 ?Replace_Texture@MeshModelClass@@QAEXPAVTextureClass@@0@Z,0x00924C30,pinharvest x1 (body)
-?Replace_VertexMaterial@MeshModelClass@@QAEXPAVVertexMaterialClass@@0@Z,0x00924C30,pinharvest x1 (body)
 ?ReportError@@YAXPADH@Z,0x00879380,DoBitops retail error branches resolve to the benchmark error helper
 ?RequestGameLeave@LANAPI@@UAEXXZ,0x00687ce0,vtable-slot ??_7LANAPI@@6B@ slot 13 anchors=27
 ?RequestHasMap@LANAPI@@UAEXXZ,0x006861c0,vtable-slot ??_7LANAPI@@6B@ slot 15 anchors=27
@@ -80995,7 +80941,6 @@ name,address,notes
 ?clientSafeQuickDoesPathExist@Pathfinder@@QAE_NPAVObject@@PBVCoord3D@@1H@Z,0x0004A327,AISkirmishPlayer checkBridges vtable slot13 calls this pathfinder method with Object pointer unit and two coordinates plus zero; ILT routes 0x003EDF90 RET16
 ?clone@FxClone0042CDF0@@QAE?AVFxHandle0042CDF0@@PBD@Z,0x0042CDF0,Address-qualified clone body; caller 007766D7 via ILT 000234B6 passes name plus hidden return buffer and store in ECX; callee ret8 constructs returned ref handle to 44-byte FX list copy with count at28 and list at04; evidence=targets/game/reverse/identity_evidence/007764e0.md
 ?clone_materials@MeshModelClass@@IAEXABV1@@Z,0x0096DDC0,REL32 target of MeshModelClass copy ctor at 0x0094ED42
-?close@File@@UAEXXZ,0x000309CC,pinharvest x1 (thunk)
 ?close@GameWindow@@QAEX_N@Z,0x00027F2A,GameWindow close call from IMEManager closeCandidateList
 ?close@Open2LiveHandle@@QAEXXZ,0x009DB5A0,Open2 0x006407D0 and 0x00644950 handle close
 ?close@PalantirAptWindow@@QAEXH@Z,0x0002144A,AptPalantir OnClosed callback closes its registered APT window
@@ -84253,12 +84198,10 @@ name,address,notes
 ?getGoalObject@BfmeStateMachine@@QAEPAVBfmeTargetObject@@XZ,0x0000E570,BannerCarrier target predicate reads the source state machine goal object
 ?getGoalObject@StateMachine@@QAEPAVObject@@XZ,0x0000E570,retail AIEnterState::update call target
 ?getGoalObject@StateMachine@@QBEPBVObject@@XZ,0x000479BA,retail ExitConditions shouldExit const goal-object call target
-?getGridResolution@WaterRenderObjClass@@QAEXPAM00@Z,0x0001125C,pinharvest x1 (thunk)
 ?getGridTransform@WaterRenderObjClass@@QAEXPAVMatrix3D@@@Z,0x00019376,ILT thunk; real body 0xB9FB50
 ?getHandle@Rva0069A6F0Owner@@QAEHPAPAURva0069A6F0Playing@@@Z,0x00699E50,Miles playing-audio handle lookup; setReverb callee
 ?getHeightAboveTerrain@Thing@@QBEMXZ,0x00001C30,hit-decoded x8 (thunk)
 ?getHeightAboveTerrainOrWater@Rva0073A6C0Thing@@QBEMXZ,0x00005948,address-derived helper pin from the complete 0x0073A6C0 call and matched Thing body at 0x001324A0
-?getHeightAboveTerrainOrWater@Thing@@QBEMXZ,0x00001C30,pinharvest x1 (thunk)
 ?getHighestLayerForDestination@TerrainLogic@@QAE?AW4PathfindLayerEnum@@PBUCoord3D@@_N@Z,0x00006091,TerrainLogic::getHighestLayerForDestination ILT from groupEvacuate 0x00156690
 ?getID@AIGroup@@QAEIXZ,0x000131DD
 ?getID@Drawable@@QBE?AW4DrawableID@@XZ,0x00009B01
@@ -88333,7 +88276,6 @@ name,address,notes
 ?setGoalObject@StateMachine_2BC5D0@@QAEXPBX@Z,0x00035A1C,StateMachine goal-object setter ILT near-twin pin (const void* param spelling for 0x002BC5D0 run())
 ?setGoalPosition@StateMachine@@QAEXPBUCoord3D@@@Z,0x0000314D,Open-BFME5 ILT; called by ?onExit@AIMoveAndEvacuateState@@UAEXW4StateExitType@@@Z at 0x0017A340
 ?setGoalWaypoint@AIStateMachine@@QAEXPBVWaypoint@@@Z,0x00036192,BFME AIStateMachine::setGoalWaypoint ILT decoded from the four privateFollowWaypointPath call sites; body is matched at 0x0026EDC0
-?setGridChangeAttenuationFactors@WaterRenderObjClass@@QAEXMMMM@Z,0x000088F0,pinharvest x1 (thunk)
 ?setGridHeightClamps@WaterRenderObjClass@@QAEXMM@Z,0x0003387F
 ?setGridResolution@WaterRenderObjClass@@QAEXMMM@Z,0x0001125C,pinharvest x1 (thunk)
 ?setGridTransform@WaterRenderObjClass@@QAEXMMMM@Z,0x000088F0,pinharvest x1 (thunk)
