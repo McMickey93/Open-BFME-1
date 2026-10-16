@@ -3732,3 +3732,9 @@ game/GameEngine/Source/Common/bezier_segment.cpp|param|BezierSegment::BezierSegm
 game/GameEngine/Source/Common/bezier_segment.cpp|param|BezierSegment::BezierSegment#3|cp1,667981f1ca77f84f1cfbd2e7,gpt-6.1-sol,20261016061842-5aa19f,2026-10-16
 game/GameEngine/Source/Common/bezier_segment.cpp|param|BezierSegment::BezierSegment#3|cp2,b63aaa80f02aeb6a7884b8ac,gpt-6.1-sol,20261016061842-5aa19f,2026-10-16
 game/GameEngine/Source/Common/bezier_segment.cpp|param|BezierSegment::BezierSegment#3|cp3,ba918a756c10950c3ce5a353,gpt-6.1-sol,20261016061842-5aa19f,2026-10-16
+game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||length02,36fef6aab43d5f50fcd22639,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
+game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||text08,89c1ddbae9c88edb713ec095,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
+game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||flags04,847b6d79f0c5d5d97a3d4254,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
+game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||field0c,425cc1fb7d96c15b0a61e736,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
+game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||field4c,facebd3738ac59eae037d219,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
+game/Libraries/Source/Apt/Rva008BE2C0NodeWalk.cpp|member||field58,a179bc0ab129880d7ee1949b,gpt-6.1-sol,20261016061703-a82bc3,2026-10-16
