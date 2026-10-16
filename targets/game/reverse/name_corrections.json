@@ -20268,5 +20268,25 @@
   "after_sha256": "badcd5e9e132523ce69d96f6b9b8af3d09216ca4ea939c4653066ddfa9f8373d",
   "evidence": "targets/game/reverse/identity_evidence/0038c1e0-wave20-state-layout.md",
   "reason": "false pairing: the banked draft's AsciiString::format declaration is still AsciiString::format in the converted source (call 0x00888FF0); rva001A7A90 is a separate TerrainLogic placer reached through ILT 0x50C9 that the draft never named. No identity changed."
+ },
+ {
+  "old_path": "game/GameEngine/Source/Common/Thing/ThingTemplateGetAssetList.cpp",
+  "new_path": "game/GameEngine/Source/Common/Thing/ThingTemplateGetAssetList.cpp",
+  "old_name": "GetAssetList",
+  "new_name": "rva00143580",
+  "before_sha256": "0cfd5d477f0df8d223867294bafb8bb36c87ada60af7c35a1130a5ea8e2a79fa",
+  "after_sha256": "eaa86c724cac3cfa257cf978a93930255a2c5260eb3d40f35cfa577b15556c50",
+  "evidence": "targets/game/reverse/identity_evidence/00143580-ilt-contradiction.md",
+  "reason": "retail ILT 0x00004B92 (the thunk the converted 0x00144DC0 calls) contradicts the ThingTemplate::GetAssetList decoration and no tried spelling fits its window; the name was an analogy, so the 0x00143580 body keeps an address-derived name with unchanged class, access and signature"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "GetAssetList",
+  "new_name": "rva00143580",
+  "before_sha256": "9c2bc5f9e850cf02ff2a42a1c3187edfdb9742782b172311d9eeb5d52931efb4",
+  "after_sha256": "dc9aaf745682cf68c717962c376bbbe251ca40d1ceb507fbf08ec85753230a24",
+  "evidence": "targets/game/reverse/identity_evidence/00143580-ilt-contradiction.md",
+  "reason": "retail ILT 0x00004B92 (the thunk the converted 0x00144DC0 calls) contradicts the ThingTemplate::GetAssetList decoration and no tried spelling fits its window; the name was an analogy, so the 0x00143580 body keeps an address-derived name with unchanged class, access and signature"
  }
 ]

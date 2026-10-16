@@ -1,4 +1,9 @@
 // BFME ThingTemplate asset collection, retail RVA 0x00143580.
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_USE_STATIC_LIB
+// stlport
+
+#include <set>
+#include <vector>
 
 template <typename T>
 class StringBase
@@ -26,10 +31,29 @@ public:
 	}
 };
 
+struct Rva001408C0Target;
+
+typedef Rva001408C0Target *Rva001408C0Key;
+typedef _STL::set<Rva001408C0Key, _STL::less<Rva001408C0Key>,
+	_STL::allocator<Rva001408C0Key> > Rva001408C0Set;
+
 class AssetList
 {
 public:
 	AssetList &operator<<(const AsciiString &name);
+	AssetList &operator<<(const AssetList &other)
+	{
+		m_prototypes.insert(other.m_prototypes.begin(),
+			other.m_prototypes.end());
+		m_changed = true;
+		return *this;
+	}
+	bool empty() const { return m_prototypes.empty(); }
+
+private:
+	Rva001408C0Set m_prototypes;
+	unsigned int m_treeLayoutPad;
+	bool m_changed;
 };
 
 AsciiString operator+(AsciiString left, const char *right);
@@ -94,10 +118,24 @@ struct BfmeAssetBlockVector
 	BfmeAssetBlock *m_capacity;
 };
 
+class ThingTemplate;
+
+class ThingFactory
+{
+public:
+	ThingTemplate *findTemplate(const AsciiString &name);
+};
+
+extern ThingFactory *TheThingFactory;
+
 class ThingTemplate
 {
 public:
-	void GetAssetList(AssetList &assets, void *context) const;
+	// Retail reaches this collector through ILT 0x00004B92; the thunk table
+	// contradicts every GetAssetList decoration tried at that slot, so the
+	// body keeps its address (identity_evidence/00143580-ilt-contradiction.md).
+	void rva00143580(AssetList &assets, void *context) const;
+	void rva00144DC0(AssetList &assets, void *context);
 
 private:
 	char m_padding00[0x2c];
@@ -109,11 +147,16 @@ private:
 	BfmeModuleInfo m_drawModuleInfo;
 	BfmeModuleInfo m_clientUpdateModuleInfo;
 	BfmeModuleInfo m_clientBehaviorModuleInfo;
-	char m_padding2c4[0x34];
+	char m_padding2c4[0xc];
+	_STL::vector<AsciiString> m_buildVariations;
+	char m_padding2dc[0x1c];
 	BfmeAssetBlockVector m_assetBlocks;
+	char m_padding304[0x60];
+	AssetList m_assetCache[2];
 };
 
-void ThingTemplate::GetAssetList(AssetList &assets, void *context) const
+// ?rva00143580@ThingTemplate@@QBEXAAVAssetList@@PAX@Z
+void ThingTemplate::rva00143580(AssetList &assets, void *context) const
 {
 	BfmeModuleAssetListFunction collectModuleAssets =
 		(BfmeModuleAssetListFunction)j_0001d881;
@@ -142,4 +185,37 @@ void ThingTemplate::GetAssetList(AssetList &assets, void *context) const
 		if (commandSet)
 			((BfmeObj412 *)commandSet)->call(&assets, context);
 	}
+}
+
+// Retail 0x00144DC0 (177 bytes, ret 8): a cached form of the 0x00143580 collector. The
+// byte at *context selects one of two AssetList caches at +0x364 (20 bytes
+// each). An empty cache is filled from every build variation template
+// (vector<AsciiString> at +0x2D0, looked up through TheThingFactory), or from
+// this template when it has none; the cache is then merged into `assets` with
+// the inline AssetList::operator<<(const AssetList &) (the out-of-line copy is
+// 0x00141CD0). The method's real name is not proven, so it keeps the address.
+// ?rva00144DC0@ThingTemplate@@QAEXAAVAssetList@@PAX@Z
+void ThingTemplate::rva00144DC0(AssetList &assets, void *context)
+{
+	int index = *(bool *)context != 0;
+	if (!m_assetCache[index].empty())
+	{
+		assets << m_assetCache[index];
+		return;
+	}
+	_STL::vector<AsciiString>::const_iterator it = m_buildVariations.begin();
+	if (it != m_buildVariations.end())
+	{
+		do
+		{
+			const ThingTemplate *variation = TheThingFactory->findTemplate(*it);
+			if (variation)
+				variation->rva00143580(m_assetCache[index], context);
+		} while (++it != m_buildVariations.end());
+	}
+	else
+	{
+		rva00143580(m_assetCache[index], context);
+	}
+	assets << m_assetCache[index];
 }
