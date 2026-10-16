@@ -4972,3 +4972,6 @@ game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unkn
 game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12108,c695431bc17180c6ec13c31a,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
 game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown1210c,4182388900bdff8ac42d5c05,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
 game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12110,6bd7a27e1cf0431b0d114a35,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001B7200.cpp|type||Rva001B7200Locomotor,e3e086d4f60919605b2c7e15,gpt-6.1-sol,20261016072224-157019,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001B7200.cpp|member||m_coord04,aae2a4c19d00f449e190997f,gpt-6.1-sol,20261016072224-157019,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001B7200.cpp|member||m_int0A8,4d3b6eb1f7c63a8f6f9044cc,gpt-6.1-sol,20261016072224-157019,2026-10-16
