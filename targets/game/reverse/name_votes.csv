@@ -5273,3 +5273,12 @@ game/Libraries/Source/WWVegas/WWLib/RvaTreeFindGenP12pod009281E0.cpp|local|compa
 game/GameEngine/Source/Common/BfmeConv792.cpp|member||m_bfmeVft,5823301e298a0baf0ecdefba,gpt-6.1-sol,20261016075017-6bbfcc,2026-10-16
 game/GameEngine/Source/Common/BfmeConv792.cpp|function|BfmeThingDWH@|bfmeGoDWH,1c1611c3046b8fb80a7c05da,gpt-6.1-sol,20261016075017-6bbfcc,2026-10-16
 game/GameEngine/Source/Common/BfmeConv792.cpp|function||bfmeGoDWK,124889cbfcec751bbacceaef,gpt-6.1-sol,20261016075017-6bbfcc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|type||BfmeRefBase1137,4d43d0f234e428f81bbe8469,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|type||BfmeIface1137,d65d4dfdb478933995e01adf,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|type||BfmeA1137Release,25f4ffb104cccdbbba420904,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|member||m_bfme68,73cebf1904738ecf759ab2f9,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|member||m_bfme6c,bf2bcc8efa68e80282d21fec,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|function|BfmeA1137Release@|bfmeReleaseResources,33a064bd7dafbf096df6b089,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|local|BfmeA1137Release::bfmeReleaseResources|t,dc0b95cca5198ef567813e89,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|local|BfmeA1137Release::bfmeReleaseResources|u,fea7dbaf7e04847c8775cf38,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1137Release.cpp|local|BfmeA1137Release::bfmeReleaseResources|r,cbe9e36773a23e492af5ad7d,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
