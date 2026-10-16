@@ -3804,3 +3804,7 @@ game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AD10Find.cpp|local|Gen_00
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AD10Find.cpp|local|Gen_0021AD10::bfmeFind|c,be614a8009e8c968379a171a,gpt-6.1-sol,20261016062224-39e9a3,2026-10-16
 game/GameEngine/Source/Common/Bfme5TinyThree.cpp|member||m_bfmeFlags,321f53eb36c7d080b52d9877,gpt-6.1-sol,20261016062439-010a5d,2026-10-16
 game/GameEngine/Source/Common/Bfme5TinyThree.cpp|member||m_bfmeSign,6b1d9a3035bdadde14292b3e,gpt-6.1-sol,20261016062439-010a5d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1541.cpp|member||m_bfme20,d4e6cd90093daab6bb301917,gpt-6.1-sol,20261016062450-c2b4d8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1541.cpp|member||m_bfme28,afe4e817d8e3ac3bf7f8d7da,gpt-6.1-sol,20261016062450-c2b4d8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1541.cpp|local|BfmeThingVOQ::bfmeResetVOQ|v,ef7022bb38236c10c6831038,gpt-6.1-sol,20261016062450-c2b4d8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1541.cpp|local|BfmeThingVOQ::bfmeResetVOQ|p,50481c8e848f00b71c2ba4e5,gpt-6.1-sol,20261016062450-c2b4d8,2026-10-16
