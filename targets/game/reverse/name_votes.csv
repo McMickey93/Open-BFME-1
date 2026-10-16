@@ -4671,3 +4671,11 @@ game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|mem
 game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|member||at24,a3107435e1f81362f9983e33,gpt-6.1-sol,20261016070848-4e30e4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|member||at28,056dad544cc6e42ffbf07195,gpt-6.1-sol,20261016070848-4e30e4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|member||at2c,9c1f9fee770d46d268d76e09,gpt-6.1-sol,20261016070848-4e30e4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|type||Rva001BB0D0AI,6aa2622893b16a0a62d2d456,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|member||field130,643b520881e9484090488528,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|member||field134,ed59eae5c9e8a5af68537650,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|member||field138,59f01370ce05fbfdd08ae5db,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|member||field13c,9947fe3e08f2557c74fddd8f,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|member||field02c,64bf0cb24bf7e4a6a2635465,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|param|setModelConditionBit|f,a4c85ca9af01c0c2e152e54c,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Locomotor_rva001BB0D0.cpp|local|getTemplate|p,b202be4dc902b17810cea539,gpt-6.1-sol,20261016070858-c3e2c2,2026-10-16
