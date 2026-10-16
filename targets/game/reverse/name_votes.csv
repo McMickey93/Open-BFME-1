@@ -1519,3 +1519,6 @@ game/GameEngine/Source/Common/BfmeConv2081.cpp|local|BfmeHostXY::bfmeClearXY|q,b
 game/GameEngine/Source/Common/Thing/Thing_isKindOf.cpp|param|isKindOf|t,9b9e65d17746d76dffc37253,gpt-6.1-sol,20261016032440-07bcfd,2026-10-16
 game/GameEngine/Source/Common/Thing/Thing_isKindOf.cpp|local|Thing::getTemplate|tmpl,4d584f70ed3e8b1431a0fa79,gpt-6.1-sol,20261016032440-07bcfd,2026-10-16
 game/GameEngine/Source/Common/Thing/Thing_isKindOf.cpp|param|Thing::isKindOf|t,def40eae6964d7f72165f286,gpt-6.1-sol,20261016032440-07bcfd,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewZoomCameraOneFrame.cpp|param|Lerp|a,cfd8d488e57ace041b696d21,gpt-6.1-sol,20261016032453-a6c5a5,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewZoomCameraOneFrame.cpp|param|Lerp|b,86ac0f3384849e538b336c37,gpt-6.1-sol,20261016032453-a6c5a5,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewZoomCameraOneFrame.cpp|param|Lerp|t,248218ff89d4ee2186a009c2,gpt-6.1-sol,20261016032453-a6c5a5,2026-10-16
