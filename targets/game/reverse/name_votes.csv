@@ -5289,3 +5289,8 @@ game/GameEngine/Source/GameLogic/AI/PathfindCellPairMerge00406EC0.cpp|param|Pair
 game/GameEngine/Source/GameLogic/AI/PathfindCellPairMerge00406EC0.cpp|param|PairMerge00406EC0::merge|b,751f60bc35cebc175346b6c7,gpt-6.1-sol,20261016075636-f51726,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfindCellPairMerge00406EC0.cpp|local|PairMerge00406EC0::merge|t,7005eb4a198cabea032d8b40,gpt-6.1-sol,20261016075636-f51726,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfindCellPairMerge00406EC0.cpp|local|PairMerge00406EC0::merge|p,990b56338fce3240d8e4e327,gpt-6.1-sol,20261016075636-f51726,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1172.cpp|member||m_bfme2c,ba089d5dd34c475e7eda23fe,gpt-6.1-sol,20261016080026-d713b3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1172.cpp|member||m_bfme44,f3ecac0c294ed4bc6ec3813f,gpt-6.1-sol,20261016080026-d713b3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1172.cpp|member||m_bfme58,f1e52a951db15eca519d71e2,gpt-6.1-sol,20261016080026-d713b3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1172.cpp|member||m_bfme1e8,050f4e04337df0a9276d644c,gpt-6.1-sol,20261016080026-d713b3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1172.cpp|local|BfmeQ1172::bfmeGo1172|p,b80a79fa7777f2c65a22325f,gpt-6.1-sol,20261016080026-d713b3,2026-10-16
