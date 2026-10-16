@@ -19,7 +19,7 @@
 #include "GameEngine/Include/GameClient/Display.h"
 
 // Retail .data float read at 0x012BBB78 (160.0 in the shipped image).
-extern float g_Va012BBB78;
+float g_Va012BBB78 = 160.0f;
 
 class AptPalantir
 {
