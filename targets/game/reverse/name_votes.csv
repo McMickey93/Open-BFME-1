@@ -5837,3 +5837,6 @@ game/GameEngine/Source/GameLogic/Object/Update/Rva001F9C20Unknown.cpp|member||m_
 game/GameEngine/Source/Common/Rva001CCFC0OwnerApplyMask.cpp|type||Rva00087A80View,8df2ebdd23d23aa90e57d8cc,gpt-6.1-sol,20261016133118-dde0dc,2026-10-16
 game/GameEngine/Source/Common/Rva001CCFC0OwnerApplyMask.cpp|type||Rva001CCFC0TemplateView,afb88b946bc3686f9e0832f3,gpt-6.1-sol,20261016133118-dde0dc,2026-10-16
 game/GameEngine/Source/Common/Rva001CCFC0OwnerApplyMask.cpp|type||Rva001CCFC0Slot68View,a958d0ae9f4dc20152fc8056,gpt-6.1-sol,20261016133118-dde0dc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdateComputeQuickPath.cpp|param|Coord3D#2|c,9a55141c49bba9ee32fe7b20,gpt-6.1-sol,20261016133112-f2f112,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdateComputeQuickPath.cpp|param|isKindOf|t,c087f4a3250d901544a8c506,gpt-6.1-sol,20261016133112-f2f112,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdateComputeQuickPath.cpp|param|isKindOf#2|t,f33cba3ffe8033c5af450ff2,gpt-6.1-sol,20261016133112-f2f112,2026-10-16
