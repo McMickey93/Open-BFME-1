@@ -4944,3 +4944,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DDebrisDraw.cp
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DDebrisDraw.cpp|param|isAnimationComplete|r,49759fc3bb2edda97fb60417,gpt-6.1-sol,20261016072036-a17b45,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/SubObjectsUpgradeCtorThunk.cpp|member||m_field3c,06d299a7795da077ab62ea8a,gpt-6.1-sol,20261016072130-4155cc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/SubObjectsUpgradeCtorThunk.cpp|member||m_field1c,3cdaec24809a81e00e88911f,gpt-6.1-sol,20261016072130-4155cc,2026-10-16
+game/GameEngine/Source/Common/BfmeA1049_timedUpdate.cpp|member||m_bfmeP,26b233063f018e61b76f44b2,gpt-6.1-sol,20261016072119-21c6f8,2026-10-16
+game/GameEngine/Source/Common/BfmeA1049_timedUpdate.cpp|member||m_bfmeTime,fdcfd3c762e765988f3d1c0b,gpt-6.1-sol,20261016072119-21c6f8,2026-10-16
