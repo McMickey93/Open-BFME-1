@@ -4350,3 +4350,16 @@ game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorConstructor.cp
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContainAnyMemberHeldByAI.cpp|member||m_bfmeStatus,a36d599322bc41c6a660bb21,gpt-6.1-sol,20261016065836-836664,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContainAnyMemberHeldByAI.cpp|member||m_bfmeAI,c88b4823c7a3844944c1a51a,gpt-6.1-sol,20261016065836-836664,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContainAnyMemberHeldByAI.cpp|member||m_bfmeNext,75c9d4c2054d3dcceef7104e,gpt-6.1-sol,20261016065836-836664,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|type||Rva00745B10Info1AC,dabc51b2001bfe7da1204a2a,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_1ac,add53a034a6dedc099d2a427,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_208,cfd5bdc146c5e45166f3361c,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_byte228,c02cca82e6ee4d38aa81b1d6,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_22c,5452ad26a399fa3b48788167,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_byte254,a649dc5f62b5bf0623efe5aa,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_flag27D,3bc5029204a5fd8020f2a3ac,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23c0,5aec62247c08bd8bc253d1a1,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23c4,af8985168a7030e3e4be4290,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23c8,58d07938b5e53e3acc1d7ace,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23cc,46c9ed89ab68bbb2f09b5607,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23f8,144f6f0694a9f4bdccc037ec,gpt-6.1-sol,20261016065210-10a187,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_240c,ef9b18b3f54958f0f6855945,gpt-6.1-sol,20261016065210-10a187,2026-10-16
