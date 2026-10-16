@@ -3336,3 +3336,17 @@ game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodel
 game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_24,5f922b0157a64b1c09410749,gpt-6.1-sol,20261016060510-835b88,2026-10-16
 game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_28,20d2e588d1f946d8df2c8140,gpt-6.1-sol,20261016060510-835b88,2026-10-16
 game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_2C,297c7644b4c8aaaff8ec88b8,gpt-6.1-sol,20261016060510-835b88,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|type||Rva002DB880Contain,fbb4801f3a59003c7af1f96a,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_08,908a8b561c848325c6dd55f8,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_0c,91f1f5da1e1c8e14306bc8a7,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_14,a8d18b1ebe184f5f3db78d0a,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_1c,579b8fdc69b7976e1e6183c2,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_58,a1a6a8f360dcd6cba3f84456,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_68,5df7e8e743df2370256e2481,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_6c,0c3d5aa10814fe741f526525,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_70,ab75d5ed27e5f9ac7b6ec155,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_74,f7d9308f371ea6ef6f95dcf2,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_78,a48568e5f2c803b4fe130e68,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_7c,bddf96ecaef961d7a2471330,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|member||m_88,95695a14f5318ad1f508d365,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponEffects/DamageNugget.cpp|local|DamageNugget::generateDamageInfo|v,94c2583f4bdf656058101970,gpt-6.1-sol,20261016060517-9103f3,2026-10-16
