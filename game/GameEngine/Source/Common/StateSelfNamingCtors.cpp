@@ -76,7 +76,6 @@ public:
 
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F380State, AIInternalMoveToState, "AIDockApproachState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F490State, AIInternalMoveToState, "AIDockApproachState" )
-BFME_STATE_SELF_NAMING_CTOR( Rva0014F510State, AIInternalMoveToState, "AIDockMoveToEntryState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F590State, AIInternalMoveToState, "AIDockMoveToDockState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F610State, AIInternalMoveToState, "AIDockMoveToRallyState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva0014F690State, AIInternalMoveToState, "AIDockMoveToExitState" )
@@ -95,6 +94,16 @@ BFME_STATE_SELF_NAMING_CTOR( Rva002B77F0State, Rva000A19E0StateBase, "DozerPrima
 // (0x002C6430), which builds this state inline with the same literal, base and
 // vftable 0x010C9308; Zero Hour signature. identity_evidence/002c6100-supplytruck-wants-to-pickup-state.md
 class StateMachine;
+// 0x0014F510: stores vftable 0x01095CC0, whose slots are the matched
+// AIDockMoveToEntryState onEnter/update/onExit and whose ??_G (0x0014F550)
+// is AIDockMoveToEntryState's; the literal agrees.
+class AIDockMoveToEntryState : public AIInternalMoveToState
+{
+public:
+	AIDockMoveToEntryState( StateMachine *machine );
+};
+AIDockMoveToEntryState::AIDockMoveToEntryState( StateMachine *machine )
+	: AIInternalMoveToState( machine, AsciiString( "AIDockMoveToEntryState" ) ) {}
 class SupplyTruckWantsToPickUpOrDeliverBoxesState : public Rva000A19E0StateBase
 {
 public:

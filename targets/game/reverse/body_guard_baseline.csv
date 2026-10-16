@@ -235,7 +235,6 @@ dir32,0x01095A38,??_7AIDockMachine@@6B@,"retail 0x01095A38 is already recorded a
 dir32,0x01095B80,??_7AIDockApproachState@@6B@,"retail 0x01095B80 is already recorded as ??_7Rva0014F380State@@6B@; reference that name, not a new one"
 dir32,0x01095BF0,??_7AIDockWaitForClearanceState@@6B@,"retail 0x01095BF0 is already recorded as ??_7Rva0014F420State@@6B@; reference that name, not a new one"
 dir32,0x01095C68,??_7AIDockAdvancePositionState@@6B@,"retail 0x01095C68 is already recorded as ??_7Rva0014F490State@@6B@; reference that name, not a new one"
-dir32,0x01095CC0,??_7AIDockMoveToEntryState@@6B@,"retail 0x01095CC0 is already recorded as ??_7Rva0014F510State@@6B@; reference that name, not a new one"
 dir32,0x01095D38,??_7AIDockMoveToDockState@@6B@,"retail 0x01095D38 is already recorded as ??_7Rva0014F590State@@6B@; reference that name, not a new one"
 dir32,0x01095DB0,??_7AIDockMoveToRallyState@@6B@,"retail 0x01095DB0 is already recorded as ??_7Rva0014F610State@@6B@; reference that name, not a new one"
 dir32,0x01095E28,??_7AIDockMoveToExitState@@6B@,"retail 0x01095E28 is already recorded as ??_7Rva0014F690State@@6B@; reference that name, not a new one"
