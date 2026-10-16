@@ -1886,3 +1886,15 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModule
 game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value20,9fd51245fc6e7a0ee1285dfa,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value21,60051361c24db717ac8f5c7a,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value22,9b0ac5cfa2f2ecea76e7b413,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_byte08,0cbef2bd0a8b2b9b2cc85f2d,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_dword0C,c11f945c6a827bc0480e0cbf,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_dword10,812da85a51a6a413e2d6866c,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_string14,666b899f8e075373b965a242,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_ref18,518066eed0eeb6685b9295ae,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_ref1C,e6f355bdf22bce11742c6ed3,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_ref20,8a4cd4f3bce06c209fbd895c,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_ref24,e58c2fdf71fd8cf1b56a3132,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_vector28,05d08135e991e1bfa0965a7d,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_vector34,d87587fd6a6db514030b2ab5,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_dword40,8a8ea202f26494d986d65fbe,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GateOpenAndCloseBehaviorModuleDataCtorThunk.cpp|member||m_dword44,dc1a7ca64a0bebcc3df07176,gpt-6.1-sol,20261016040013-f245e1,2026-10-16
