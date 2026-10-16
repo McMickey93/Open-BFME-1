@@ -2965,3 +2965,7 @@ game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContainModuleData_cto
 game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContainModuleData_ctor_Thunk.cpp|member||m_byte20b,f69d28c4a58f7ea5a7d0ed0c,gpt-6.1-sol,20261016052654-f6092f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContainModuleData_ctor_Thunk.cpp|member||m_byte20c,c783409fe030b5fa45b6f6bd,gpt-6.1-sol,20261016052654-f6092f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContainModuleData_ctor_Thunk.cpp|member||m_byte20d,f5e7757fe9499d1be5346ef8,gpt-6.1-sol,20261016052654-f6092f,2026-10-16
+game/GameEngine/Source/Common/BfmeConv900.cpp|member||m_bfmeVal,157f62caf52c88f92ba0e256,gpt-6.1-sol,20261016054132-18e495,2026-10-16
+game/GameEngine/Source/Common/BfmeConv900.cpp|member||m_bfmeNext,44a485cf2e9eb11df92bb53d,gpt-6.1-sol,20261016054132-18e495,2026-10-16
+game/GameEngine/Source/Common/BfmeConv900.cpp|param|bfmeGoIC|n,a8628cf0c40ed55942216600,gpt-6.1-sol,20261016054132-18e495,2026-10-16
+game/GameEngine/Source/Common/BfmeConv900.cpp|param|bfmeGoIC|t,accca19bc819866af7c2e24b,gpt-6.1-sol,20261016054132-18e495,2026-10-16
