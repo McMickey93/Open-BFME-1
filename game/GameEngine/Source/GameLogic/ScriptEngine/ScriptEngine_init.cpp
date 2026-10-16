@@ -1,6 +1,9 @@
-// ?_bfme_initEngine@ScriptEngine@@UAEXXZ
-// partial score=0.0 date=2026-10-09
 // cl: /DNDEBUG /MD /EHsc
+//
+// ScriptEngine::init for BFME 1 (vtable slot 1 via ILT 0x0000A4CA). Layout of the
+// try/swap block follows the Open BFME 2 donor ScriptEngine_init.cpp; evidence in
+// targets/game/reverse/identity_evidence/00340B80-scriptengine-init.md.
+
 typedef void *HMODULE;
 typedef int (__stdcall *FARPROC)();
 extern "C" __declspec(dllimport) HMODULE __stdcall LoadLibraryA(const char *name);
@@ -108,8 +111,6 @@ private:
     double m_maxUpdateTime;
 };
 
-// Open BFME 2 donor: Code/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngine_init.cpp.
-// ?_bfme_initEngine@ScriptEngine@@UAEXXZ
 void ScriptEngine::_bfme_initEngine()
 {
     TheScriptActions = (ScriptActionsInterface *)new Gen_002F1B10;

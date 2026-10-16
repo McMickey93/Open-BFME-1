@@ -36958,8 +36958,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0033b430@@YAXXZ,,0x0033B430,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getNinetyThird@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
 ?d_0033c9e0@@YAXXZ,,0x0033C9E0,82,game/gen_asm/d_0032b730.asm,matched,gen-dump;ghidra=FUN_0073c9e0
 ?d_00340980@@YAXXZ,,0x00340980,149,game/gen_asm/d_002ed640.asm,matched,gen-dump;bounds=high
-?d_00340b80@@YAXXZ,,0x00340B80,272,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00740b80
-?d_00340c9e@@YAXXZ,,0x00340C9E,166,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00740c9e
 ?d_00346d60@@YAXXZ,,0x00346D60,1950,game/gen_asm/d_00340dc0.asm,matched,gen-dump;ghidra=FUN_00746d60
 ?d_00348430@@YAXXZ,,0x00348430,1924,game/gen_asm/d_002e22f0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00748430
 ?d_003492a0@@YAXXZ,,0x003492A0,928,game/gen_asm/d_003492a0.asm,matched,gen-dump;ghidra=FUN_007492a0
@@ -130197,7 +130195,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?rva0033D450@@YGPAXPAX@Z,,0x0033D450,33,game/GameEngine/Source/Common/AllocateThenInitialise.cpp,matched,33-byte __stdcall allocate-then-initialise returning the block; address-derived name
 ?rva0033D480@@YGPAXPAX@Z,,0x0033D480,33,game/GameEngine/Source/Common/AllocateThenInitialise.cpp,matched,33-byte __stdcall allocate-then-initialise returning the block; address-derived name
 ?rva0033D510@@YGPAXPAX@Z,,0x0033D510,33,game/GameEngine/Source/Common/AllocateThenInitialise.cpp,matched,33-byte __stdcall allocate-then-initialise returning the block; address-derived name
-?rva00340c90@@YAHXZ,,0x00340C90,6,game/GameEngine/Source/Common/Rva00340C90Const.cpp,matched,Open-BFME5: /O2 return constant 0x00740C96
 ?rva00344A00ZeroThirdForwarder@@YAXPAX00@Z,,0x00344A00,26,game/GameEngine/Source/Common/ConstantZeroForwarders.cpp,matched,masked-REL32 family; 26-byte zero-third forwarder; axis is the call target
 ?rva00347D30ZeroTailForwarder@@YAXPAX00@Z,,0x00347D30,28,game/GameEngine/Source/Common/ConstantZeroForwarders.cpp,matched,masked-REL32 family; 28-byte zero-tail forwarder; axis is the call target
 ?rva00349730@ScriptEngine@@QAEXPAVObject@@ABVAsciiString@@@Z,,0x00349730,613,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineRva00349730.cpp,matched,Native named-cache body with caller-proven Object and fallback-string ABI;identity_evidence/00349730-native-accessors.md;model=gpt-6.1-sol;host=fleet
@@ -172538,3 +172535,4 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?push_back@?$vector@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@QAEXABVAsciiString@@@Z,,0x000638C0,62,game/GameEngine/Source/Common/Audio/GameAudio.cpp,matched,ilt_oracle CONFIRMED at the pinned thunk; was a placeholder row;model=claude-opus-5.5;host=GreatFaram
 ?doCommandButtonAtPosition@Object@@QAEXPBVCommandButton@@PBVCoord3D@@W4CommandSourceType@@_N@Z,,0x001D1FA0,417,game/GameEngine/Source/GameLogic/Object/ObjectDoCommandButtonAtPosition.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/001d1fa0-docommandbuttonatposition-4arg.md;clean C++ from naked lift; BFME 4-arg class-keyed Coord3D form proven by ret 0x10 and ilt_oracle; sibling of doCommandButtonAtObject 0x001D1D10;model=claude-opus-5-5;host=app
 ?update@DozerActionPickActionPosState@@UAE?AW4StateReturnType@@XZ,,0x002B8E10,372,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DozerActionPickActionPosStateUpdate.cpp,matched,clean C++ from naked lift; ZH DozerAIUpdate.cpp body on BFME layouts (virtual setGoalObject slot 0x38; getDockPoint slot 0x44);model=claude-opus-5-5;host=app
+?_bfme_initEngine@ScriptEngine@@UAEXXZ,,0x00340B80,452,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngine_init.cpp,matched,ScriptEngine vtable slot 1 via ILT 0x0000A4CA; Open BFME 2 donor ScriptEngine_init.cpp; full extent absorbs inline catch 0x00340C90 and tail 0x00340C9E; catch const BfmeExcUA& matches retail attributes 9;model=claude-opus-5-5;host=app
