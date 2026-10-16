@@ -113,7 +113,7 @@ void GadgetListBoxSetTopVisibleEntry(GameWindow *, int);
 
 class Rva00573580Lookup {
 public:
-  AsciiString number(int);
+  AsciiString bfmeNumberedAI(int);
 };
 
 class BfmeAptScreenScoreScreen {
@@ -186,19 +186,19 @@ bool BfmeAptScreenScoreScreen::rva005778E0() {
                                 row, 2, true);
     int number0c = record->field0c;
     text.translate(
-        reinterpret_cast<Rva00573580Lookup *>(this)->number(number0c));
+        reinterpret_cast<Rva00573580Lookup *>(this)->bfmeNumberedAI(number0c));
     GadgetListBoxAddEntryText(m_persistentUnitsListBox, text, color, row, 3, true);
     int number3c = record->field3c;
     text.translate(
-        reinterpret_cast<Rva00573580Lookup *>(this)->number(number3c));
+        reinterpret_cast<Rva00573580Lookup *>(this)->bfmeNumberedAI(number3c));
     GadgetListBoxAddEntryText(m_persistentUnitsListBox, text, color, row, 4, true);
     int number40 = record->field40;
     text.translate(
-        reinterpret_cast<Rva00573580Lookup *>(this)->number(number40));
+        reinterpret_cast<Rva00573580Lookup *>(this)->bfmeNumberedAI(number40));
     GadgetListBoxAddEntryText(m_persistentUnitsListBox, text, color, row, 5, true);
     int number44 = record->field44;
     text.translate(
-        reinterpret_cast<Rva00573580Lookup *>(this)->number(number44));
+        reinterpret_cast<Rva00573580Lookup *>(this)->bfmeNumberedAI(number44));
     GadgetListBoxAddEntryText(m_persistentUnitsListBox, text, color, row, 6, true);
     GadgetListBoxSetItemData(m_persistentUnitsListBox, record, row, 0);
   }

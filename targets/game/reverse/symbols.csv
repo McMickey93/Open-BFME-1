@@ -86679,7 +86679,7 @@ name,address,notes
 ?notifyTarget@Glo012F4B98Type@@QAEXXZ,0x000371C3,Existing matched58962020B bit-guarded notify
 ?notifyTargetOfProbe@NAT@@IAEXPAVGameSlot@@@Z,0x00028D1C,probed call target (incremental-link thunk)
 ?nstrdup@@YAPADPBD@Z,0x009E6410
-?number@Rva00573580Lookup@@QAE?AVAsciiString@@H@Z,0x00573580,Opaque ABI view; 158B hidden AsciiString result plus int ret8; formatting and lookup body independently audited; evidence=identity_evidence/005778e0-edx-binding.md
+?bfmeNumberedAI@Rva00573580Lookup@@QAE?AVAsciiString@@H@Z,0x00573580,abi-view=?bfmeNumberedAI@BfmeTableAI@@QAE?AVAsciiStringAI@@H@Z;Opaque ABI view; 158B hidden AsciiString result plus int ret8; formatting and lookup body independently audited; evidence=identity_evidence/005778e0-edx-binding.md
 ?number_of_DX8_calls@@3IA,0x01340594,Canonical DX8Wrapper global DX8-call counter; the retail Set_Transform, Set_DX8_Light, and shader-state bodies increment this address
 ?obj@?1??getRva008876E0Singleton@@YAPAXXZ@4VRva008876E0Type@@A,0x01336E10,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x008876E0 calls; autopin
 ?obj@?1??getRva008877A0Singleton@@YAPAXXZ@4VRva008877A0Type@@A,0x01336E30,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x008877A0 calls; autopin
@@ -87062,7 +87062,7 @@ name,address,notes
 ?query@ExperienceLevelSystemQueryShim@@QAEPAXPAX@Z,0x0002603F,ILT call view for the ExperienceLevelSystem lookup at 0x0037F190
 ?query@Object@@QAE_NPAV1@H@Z,0x00047ED8,ILT to 0x001CF9F0 Object query used by Rva001DCC20Filter
 ?query@Q2FlagOwner@@QAE_NH@Z,0x00416FC0,byte-returning __thiscall predicate taking one index; every row of the 34-byte queried-index assignment family (Q2QueriedIndexAssignments.cpp) calls this one body; address-derived name; identity not recovered
-?query@Rva001B7E90Receiver@@QAEMPAVObject@@@Z,0x001B7E90,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B7E90
+?effectiveMaxSpeed@Rva001B7E90Receiver@@QAEMPAVObject@@@Z,0x001B7E90,abi-view=?effectiveMaxSpeed@BfmeSub1CC_EC3@@QAEMPAX@Z;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B7E90
 ?query@Rva002BCB60AerialPathfinder@@QAE_NPAVRva002BCB60Thing@@PAVRva002BCB60QueryObject@@MPAX@Z,0x00149010,parent raw ILT and complete selector call-site ABI verified; actual body target
 ?query@Rva0036ff70Module@@QAEHP6AHPAX0@Z0@Z,0x0004A73C,"Root disassembled full query36FF70/524 and callback36CFD0/145: callback returns full EAX0/1, caller tests EAX after two cdecl arguments. Corrected callback from bool to int, added typed address-derived symbol instead of casting a generated no-arg thunk, and corrected query pin signature. Root inspected Radar108520/152: two stack args, explicit AL0/1, ret8; corrected void to bool return. Replaced hardcoded CastleBehavior string address with real literal. Full286B target, all22 relocation sites, literal and secondary-object offsets independently verified; no emitted vtable."
 ?queryAt001CF980@Object@@QAEPAVRva001CF980Result@@XZ,0x001CF980,address-derived no-argument Object thiscall; full82B body selects this or Object+214 then tail-calls selected contain+1FC vslot68 and returns its pointer in EAX; caller null-checks it then calls result vslot1C4 with FXList pointer

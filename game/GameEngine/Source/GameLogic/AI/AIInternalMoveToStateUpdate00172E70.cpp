@@ -43,7 +43,7 @@ enum ModelConditionFlagType
 #pragma comment(linker, "/alternatename:?rva002774c0@AIUpdateInterface@@QAEMXZ=?j_000333ac@@YAXXZ")
 #pragma comment(linker, "/alternatename:?getLayer@Object@@QBEHXZ=?j_0003a391@@YAXXZ")
 #pragma comment(linker, "/alternatename:?bfmeCellTypeTwo@Pathfinder@@QAEHPBUCoord3D@@W4PathfindLayerEnum@@@Z=?j_0001c26f@@YAXXZ")
-#pragma comment(linker, "/alternatename:?query@Rva001B7E90Receiver@@QAEMPAVObject@@@Z=?j_000230ab@@YAXXZ")
+#pragma comment(linker, "/alternatename:?effectiveMaxSpeed@Rva001B7E90Receiver@@QAEMPAVObject@@@Z=?j_000230ab@@YAXXZ")
 #pragma comment(linker, "/alternatename:?getPreferredHeight@Locomotor@@QBEMXZ=?j_0002ecad@@YAXXZ")
 #pragma comment(linker, "/alternatename:?notifyModelConditionChanged@Object@@QAEXXZ=?j_0002191d@@YAXXZ")
 #pragma comment(linker, "/alternatename:?updateGoal@Pathfinder@@QAEXPAVObject@@PBUCoord3D@@W4PathfindLayerEnum@@PBDH@Z=?j_000294e2@@YAXXZ")
@@ -391,7 +391,7 @@ public:
 class Rva001B7E90Receiver
 {
 public:
-	Real query(Object *);
+	Real effectiveMaxSpeed(Object *);
 };
 
 class AI
@@ -560,7 +560,7 @@ StateReturnType AIInternalMoveToStateUpdateShim::update()
 					clearModelConditionState(obj, MODELCONDITION_RAPPELLING);
 			}
 
-			if (curLoco != 0 && curLoco->query(obj) == (Real)g_rva01075350)
+			if (curLoco != 0 && curLoco->effectiveMaxSpeed(obj) == (Real)g_rva01075350)
 				clearModelConditionState(obj, MODELCONDITION_MOVING);
 			else
 				setModelConditionState(obj, MODELCONDITION_MOVING);

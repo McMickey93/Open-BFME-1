@@ -71,7 +71,7 @@ public:
 class Rva001B7E90Receiver
 {
 public:
-	Real query(Object *obj);
+	Real effectiveMaxSpeed(Object *obj);
 };
 
 class AIUpdateInterface
@@ -230,7 +230,7 @@ void Rva001BC820Locomotor::locoUpdate_moveTowardsPosition(Object *obj,
 	if (locomotorGameLogic()->m_stamp <= m_stampLimit && desiredSpeed > m_maxSpeed)
 		desiredSpeed = m_maxSpeed;
 
-	Real cap = ((Rva001B7E90Receiver *)this)->query(obj);
+	Real cap = ((Rva001B7E90Receiver *)this)->effectiveMaxSpeed(obj);
 	if (desiredSpeed > cap)
 		desiredSpeed = cap;
 
