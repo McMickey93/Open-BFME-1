@@ -4171,3 +4171,10 @@ game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeat
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field1a5,c16de2009f6e3048795716c2,gpt-6.1-sol,20261016064126-043f77,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field1a6,baf78b92dc8fc816026313b8,gpt-6.1-sol,20261016064126-043f77,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|local|SlowDeathBehavior::beginSlowDeath|d,f51f7071644f382903438664,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|member||field38,e110e63c6ebeff988f6b9879,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|member||field1EC,1134e143edb8521bb5a1aedb,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|member||field3C,7d126724a3347e3ee9a5546b,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|member||fieldB0,0545186a62e19075c6cb74b1,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|member||fieldE8,4fc39e399ae7e2519bdd31c8,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|local|WeaponFireSpecialAbilityUpdate::triggerAbilityEffect|t,a231bd9a11c6e4346e4174f8,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|local|WeaponFireSpecialAbilityUpdate::triggerAbilityEffect|p,3c217ef2568081e7ecae0c20,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
