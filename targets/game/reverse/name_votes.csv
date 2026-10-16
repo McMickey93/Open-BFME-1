@@ -2900,3 +2900,5 @@ game/GameEngineDevice/Source/MilesAudioDevice/PlayingAudioConstructor.cpp|member
 game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|type||BfmeItemKV,5fcff39914c94bd7af049461,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
 game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeFirst,17c7970a91043a9df04a644a,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
 game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeSecond,c6a1b81b97412bc7495bfcf7,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
+game/GameEngine/Source/Common/Bfme5SmallAccessors.cpp|member||m_bfmeFieldB,34eabc89b0715c10fbb445b2,gpt-6.1-sol,20261016052843-4bd257,2026-10-16
+game/GameEngine/Source/Common/Bfme5SmallAccessors.cpp|function|Team@|bfmeFieldB,05e72b8eeb381033068c41da,gpt-6.1-sol,20261016052843-4bd257,2026-10-16
