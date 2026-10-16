@@ -38331,8 +38331,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c233c3@@YAXXZ,,0x00C233C3,24,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@010233c3
 ?d_00c25300@@YAXXZ,,0x00C25300,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01025300
 ?d_00c2712b@@YAXXZ,,0x00C2712B,11,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@0102712b
-?d_00c2797b@@YAXXZ,,0x00C2797B,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@0102797b
-?d_00c28aa0@@YAXXZ,,0x00C28AA0,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01028aa0
 ?d_00c29080@@YAXXZ,,0x00C29080,11,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01029080
 ?d_00c30733@@YAXXZ,,0x00C30733,17,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030733
 ?d_00c30dbc@@YAXXZ,,0x00C30DBC,23,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030dbc
@@ -172565,3 +172563,5 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?Rva00C61FB0Cleanup@@YAXXZ,,0x00C61FB0,17,game/Libraries/Source/WWVegas/WWDebug/wwmemlog.cpp,matched,gen-funclet;object-symbol=$L6221;parent=??0?$VectorClass@VActiveCategoryStackClass@@@@QAE@HPBVActiveCategoryStackClass@@@Z;retail 00AFF2F0 -> handler 00C61FCC -> FuncInfo 00E518C0 state0 judged by eh_state_pins;model=claude-opus-5-5;host=app
 ?Rva00C5CD10Cleanup@@YAXXZ,,0x00C5CD10,17,game/Libraries/Source/WWVegas/WW3D2/MaterialCollectorClass_ctor_Thunk.cpp,matched,gen-funclet;object-symbol=$L772;parent=?construct@TextureVectorBaseCtorShim@@QAEXHH@Z;retail 0092FBA0 -> handler 00C5CD2C -> FuncInfo 00E4BF14 state0 judged by eh_state_pins;placement array delete via <new> (ILT 00033D3E -> ??_V@YAXPAX0@Z 00139FD0);model=claude-opus-5-5;host=app
 ?Rva00C5D380Cleanup@@YAXXZ,,0x00C5D380,17,game/Libraries/Source/WWVegas/WW3D2/TextureStatisticsVector.cpp,matched,gen-funclet;object-symbol=$L1005;parent=??0?$VectorClass@UTextureStatisticsStruct@@@@QAE@IPBUTextureStatisticsStruct@@@Z;retail 009374A0 -> handler 00C5D39C -> FuncInfo 00E4C52C state0 judged by eh_state_pins;placement array delete via <new> (ILT 00033D3E -> ??_V@YAXPAX0@Z 00139FD0);model=claude-opus-5-5;host=app
+?Rva00C2797BCleanup@@YAXXZ,,0x00C2797B,25,game/GameEngine/Source/Common/BfmeWideCopyVY.cpp,matched,gen-funclet;object-symbol=$L413;parent=?bfmeDuplicateInto@Gen_0049A070@@QAE?AVRva00499F30Result@@XZ;retail 0049A1C0 -> handler 00C27994 -> FuncInfo 00E17E04 state0 judged by eh_state_pins;model=claude-opus-5-5;host=app
+?Rva00C28AA0Cleanup@@YAXXZ,,0x00C28AA0,25,game/GameEngine/Source/GameClient/GUI/ControlBar/UnitHelpText.cpp,matched,gen-funclet;object-symbol=$L424;parent=?slot04@Rva004B2300@@UAE?AVRva004B2470Handle@@XZ;retail 004B2470 -> handler 00C28AB9 -> FuncInfo 00E18DD8 state0 judged by eh_state_pins;model=claude-opus-5-5;host=app

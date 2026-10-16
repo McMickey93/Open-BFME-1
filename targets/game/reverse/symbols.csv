@@ -7407,6 +7407,8 @@ name,address,notes
 ??1Gen_uw_00022390@@QAE@XZ,0x00022390,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_000224d0@@QAE@XZ,0x000224D0,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Rva004C1510Handle@@QAE@XZ,0x000224D0,state-0 cleanup callee of matched Rva004C1B60Adapter::slot04 0x004C1AE0: its unwind funclet 0x00C290B0 destroys the returned handle through this ILT
+??1Rva00499F30Result@@QAE@XZ,0x000224D0,state-0 cleanup callee of matched Gen_0049A070::bfmeDuplicateInto 0x0049A1C0: its retail unwind funclet 0x00C2797B jumps to this ILT (-> 0x00499F30) to destroy the returned handle
+??1Rva004B2470Handle@@QAE@XZ,0x000224D0,state-0 cleanup callee of matched Rva004B2300::slot04 0x004B2470: its retail unwind funclet 0x00C28AA0 jumps to this ILT (-> 0x00499F30) to destroy the returned handle
 ??1Gen_uw_00022750@@QAE@XZ,0x00022750,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_0002306f@@QAE@XZ,0x0002306F,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00023335@@QAE@XZ,0x00023335,gen-uw-pin dtor target read from the retail funclet bytes
