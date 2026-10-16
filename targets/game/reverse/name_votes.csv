@@ -1774,3 +1774,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjConstructo
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjConstructor.cpp|member||m_2c5,b96a7f406e1937bd065c8031,gpt-6.1-sol,20261016034400-1820fc,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjConstructor.cpp|member||m_400,4a2098535da8b1ef07606195,gpt-6.1-sol,20261016034400-1820fc,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjConstructor.cpp|param|Boxed|v,57263fe8843197adf3f56c7d,gpt-6.1-sol,20261016034400-1820fc,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineQuickMatchConstructor.cpp|member||m_slot70,a1176cb91b2b14bc78159639,gpt-6.1-sol,20261016034429-12692e,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineQuickMatchConstructor.cpp|member||m_slot74,a2664df445358902834ac8a1,gpt-6.1-sol,20261016034429-12692e,2026-10-16
