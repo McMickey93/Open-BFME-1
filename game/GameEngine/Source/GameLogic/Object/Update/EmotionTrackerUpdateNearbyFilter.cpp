@@ -1,6 +1,10 @@
-// ??0Rva0028F2A0@@QAE@PAVEmotionTrackerUpdate@@@Z
-// partial score=1.0 date=2026-10-16
 // cl: /O2 /MD /EHsc /DNDEBUG /I.
+//
+// The object filter EmotionTrackerUpdate builds around its owner: it caches the
+// owner's controlling player and counts enemy and ally shroud-cell occupants at
+// the owner's position. The class is named after its retail vtable 0x010BE170,
+// the only table its constructor installs; its deleting destructor 0x0028F3B0 and
+// destructor 0x0028EE20 are still generated rows.
 class Player;
 #include <new>
 #define OBJECT_TU_MEMBERS Player *getControllingPlayer() const;
@@ -21,9 +25,9 @@ public:
  virtual int playerMask();
  Rva0028F2A0Base *m_next;
 };
-class Rva0028F2A0 :public Rva0028F2A0Base {
+class Rva010BE170 :public Rva0028F2A0Base {
 public:
- Rva0028F2A0(EmotionTrackerUpdate *);
+ Rva010BE170(EmotionTrackerUpdate *);
  virtual bool allow(Object *);
  virtual int playerMask();
  EmotionTrackerUpdate *m_module;
@@ -31,7 +35,7 @@ public:
  int m_enemyCount,m_allyCount;
  Object *m_cached;bool m_tested;
 };
-Rva0028F2A0::Rva0028F2A0(EmotionTrackerUpdate *m):m_module(m),m_cached(0),m_tested(false){
+Rva010BE170::Rva010BE170(EmotionTrackerUpdate *m):m_module(m),m_cached(0),m_tested(false){
  m_object=reinterpret_cast<Rva0028F2A0TrackerView *>(m)->m_object;
  m_enemyCount=0;m_allyCount=0;
  m_player=m_object?m_object->getControllingPlayer():0;
@@ -42,4 +46,3 @@ Rva0028F2A0::Rva0028F2A0(EmotionTrackerUpdate *m):m_module(m),m_cached(0),m_test
   m_allyCount=reinterpret_cast<Rva002EEDA0ShroudManager*>(TheShroudManager)->lookup(reinterpret_cast<const Coord3D *>(m_object->m_cachedPos),1,allies);
  }
 }
-void emitFilter0028F2A0(void *out,EmotionTrackerUpdate *m){new(out)Rva0028F2A0(m);}

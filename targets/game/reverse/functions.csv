@@ -36875,7 +36875,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_002850a0@@YAXXZ,,0x002850A0,479,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_006850a0
 ?d_0028cf30@@YAXXZ,,0x0028CF30,24,game/gen_asm/d_000d4500.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_0028f0c0@@YAXXZ,,0x0028F0C0,1,game/GameEngine/Source/Common/Rva0028F0E0Noop.cpp,matched,carved boundary contains only ret; no semantic identity evidence
-?d_0028f2a0@@YAXXZ,,0x0028F2A0,208,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_0068f2a0
 ?d_00290b90@@YAXXZ,,0x00290B90,536,game/gen_asm/d_0028fdf0.asm,matched,gen-dump;ghidra=FUN_00690b90
 ?d_00290e50@@YAXXZ,,0x00290E50,2052,game/gen_asm/d_002310f0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00690e50
 ?d_00295760@@YAXXZ,,0x00295760,654,game/gen_asm/d_00280010.asm,matched,gen-dump;bounds=high
@@ -172536,3 +172535,4 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ??1TurretState@@UAE@XZ,,0x0018D920,5,game/GameEngine/Source/GameLogic/AI/TurretStateDeletingDestructor.cpp,matched,implicit ~TurretState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00032BF5 ilt_oracle CONFIRMED exact and called by matched ??_GTurretState in the same TU;model=claude-opus-5-5;host=app
 ??1TurretAIRecenterTurretState@@UAE@XZ,,0x0018E610,5,game/GameEngine/Source/GameLogic/AI/TurretAIRecenterTurretStateDeletingDestructor.cpp,matched,implicit ~TurretAIRecenterTurretState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x000319C1 ilt_oracle CONFIRMED exact and called by matched ??_GTurretAIRecenterTurretState in the same TU;model=claude-opus-5-5;host=app
 ??1DozerPrimaryIdleState@@UAE@XZ,,0x002B8580,5,game/GameEngine/Source/GameLogic/AI/DozerPrimaryIdleStateDeletingDestructor.cpp,matched,implicit ~DozerPrimaryIdleState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0003E5EF ilt_oracle CONFIRMED exact and called by matched ??_GDozerPrimaryIdleState in the same TU;model=claude-opus-5-5;host=app
+??0Rva010BE170@@QAE@PAVEmotionTrackerUpdate@@@Z,,0x0028F2A0,208,game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateNearbyFilter.cpp,matched,constructor installing vtable 0x010BE170 (slot0 reaches deleting dtor 0x0028F3B0 via ILT 0x1AAB9); class named after its vtable; EmotionTrackerUpdate owner filter;model=claude-opus-5-5;host=app
