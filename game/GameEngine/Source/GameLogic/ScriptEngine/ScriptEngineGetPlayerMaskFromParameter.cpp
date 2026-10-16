@@ -71,7 +71,7 @@ public:
 class Parameter
 {
 public:
-	const AsciiString &getString() const { return m_string; }
+	friend class ScriptEngine;
 	unsigned int getCachedPlayerMask() const { return m_cachedPlayerMask; }
 	void setCachedPlayerMask(PlayerMaskType mask) { m_cachedPlayerMask = mask; }
 
@@ -135,7 +135,7 @@ PlayerMaskType ScriptEngine::unidentified_0034DB40(Parameter *parameter)
 			mask = player->getPlayerMask();
 		}
 	} else {
-		AsciiString playerName = parameter->getString();
+		AsciiString playerName = parameter->m_string;
 		Bool matchedSpecialName;
 		mask = ((BfmeScriptEngine_getPlayerMaskFromAsciiString *)TheScriptEngine)
 			->getPlayerMaskFromAsciiString(playerName, &matchedSpecialName);
