@@ -1,12 +1,15 @@
 // ?cachedPair@Rva005855A0Owner@@QAEXXZ
-// partial score=0.2814 date=2026-09-24
-// ?cachedPair@Rva005855A0Owner@@QAEXXZ
-// Open-BFME5: retail RVA 0x005855A0, 167 bytes.
-// The address-qualified owner is retained because no evidence identifies its
-// original class or method.  Retail calls the matched fallback, ESM runner,
-// and bfmeGo1077C callback, then caches the returned integer pair.
-
+// partial score=0.9042 date=2026-10-16
+// 167/167 bytes; identical code, only the float out local sits at the frame bottom (retail: top).
 // cl: /DNDEBUG /DWIN32 /MD /EHsc
+struct BfmeCoordESM
+{
+	BfmeCoordESM(float x, float y) { m_x = x; m_y = y; }
+	BfmeCoordESM(const BfmeCoordESM &other) throw() { m_x = other.m_x; m_y = other.m_y; }
+	~BfmeCoordESM() {}
+	float m_x;
+	float m_y;
+};
 
 struct Rva005855A0Pair
 {
@@ -14,14 +17,12 @@ struct Rva005855A0Pair
 	int second;
 };
 
-class Rva003C9470Key
-{
-};
+class Rva003C9470Key;
 
 struct Rva003C9470Output
 {
-	union { float x; unsigned int rawX; };
-	union { float y; unsigned int rawY; };
+	float x;
+	float y;
 };
 
 class Rva003C9470Owner
@@ -32,20 +33,13 @@ public:
 
 class Glo012F1028Type
 {
-	public:
+public:
 	char pad00[0x28];
 	Rva003C9470Owner *m_owner;
 };
 
 extern Glo012F1028Type *Glo012F1028;
 void bfmeGo1077C(int, float, float);
-
-class BfmePairESM
-{
-public:
-	int first;
-	int second;
-};
 
 class BfmeHostESM
 {
@@ -59,13 +53,11 @@ public:
 	virtual void slot18();
 	virtual void slot1C();
 	virtual void slot20();
-	virtual void slot24(BfmePairESM *request,
-		Rva005855A0Pair *result);
-	char bfmeRunESM(int first, int second, void **out);
+	virtual void slot24(BfmeCoordESM *coord, Rva005855A0Pair *result);
+	char bfmeRunESM(BfmeCoordESM coord, float *out);
 };
 
-class Gen_00609320;
-extern Gen_00609320 *g_bfmeStateDF;
+extern BfmeHostESM *g_bfmeStateDF;
 
 class Rva005855A0Owner
 {
@@ -80,17 +72,15 @@ private:
 
 void Rva005855A0Owner::cachedPair()
 {
-	Rva003C9470Output fallbackPair;
-	Glo012F1028->m_owner->fallback(
-		(Rva003C9470Key *)(*(char **)((char *)this + 8) + 4), &fallbackPair);
-
-	void *resultPointer;
-	BfmePairESM request = { (int)fallbackPair.rawX, (int)fallbackPair.rawY };
-	((BfmeHostESM *)g_bfmeStateDF)->bfmeRunESM(request.first, request.second, &resultPointer);
-
+	Rva003C9470Owner *owner = Glo012F1028->m_owner;
+	Rva003C9470Output position;
+	owner->fallback(
+		(Rva003C9470Key *)(*(char **)((char *)this + 8) + 4), &position);
+	BfmeCoordESM coord(position.x, position.y);
+	float out;
+	g_bfmeStateDF->bfmeRunESM(coord, &out);
 	Rva005855A0Pair result;
-	((BfmeHostESM *)g_bfmeStateDF)->slot24(&request, &result);
-
+	g_bfmeStateDF->slot24(&coord, &result);
 	if (result.first != m_cachedFirst || result.second != m_cachedSecond)
 	{
 		bfmeGo1077C(0, (float)result.first, (float)result.second);
