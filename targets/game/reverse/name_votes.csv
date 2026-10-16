@@ -2150,3 +2150,11 @@ game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorTh
 game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_20,6fb6bff448e69281b0f5ab90,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_24,8b9841bfdb85d793843e053e,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_28,50e401d1b61cd79995d174c6,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_word124,aa8a59f0d43b351ff6e4ce1e,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_real138,25fe9ec5fe9a20b9fb0126b2,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag14C,3356b2be7074dea992ec197e,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag150,f15e16d89266df12555cfe05,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag151,b892a4bf5c1b6319cd480fe1,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag152,a162595f1b204281b4ef2674,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag153,4264b065683294a3a18676da,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag154,88dfdafdbc7c79805a8820b0,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
