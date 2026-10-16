@@ -8,7 +8,7 @@
 struct MissionObjectiveState { bool m_visible, m_completed; };
 Xfer *Rva003C2830XferMissionObjectiveStateVector(Xfer *, std::vector<MissionObjectiveState> *);
 class Xfer;
-class BfmeHostBA { public: void bfmeSaveBA(Xfer *); };
+class BfmeHostBA { public: void xfer(Xfer *); };
 struct Record003C3D90 {
     char m_00[8]; int m_08; AsciiString m_0C,m_10; bool m_14;
 };
@@ -93,7 +93,7 @@ int Transfer003C3D90::load003C4160(Xfer *xfer) {
     *xfer==version;
     reset();
     reinterpret_cast<Rva003C1A50 *>(TheLivingWorldLogic)->run();
-    ((BfmeHostBA*)this)->bfmeSaveBA((Xfer*)xfer);
+    ((BfmeHostBA*)this)->xfer((Xfer*)xfer);
     int count; *xfer==count;
     for(int i=0;i<count;++i) {
         Rva003A5450 *item=new Rva003A5450;

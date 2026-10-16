@@ -736,3 +736,5 @@ game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,m_version,c
 game/GameEngine/Source/Common/BfmeConv1907.cpp|function|BfmeHostBA@|bfmeSaveBA,xfer,claude-opus+gpt-6.1-sol,agreed,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,m_version,claude-opus+gpt-6-astra+gpt-6.1-sol,blocked: game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp: LINKED loss or absent baseline: 785 -> 0,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1907.cpp|function|BfmeHostBA@|bfmeSaveBA,xfer,claude-opus+gpt-6.1-sol,blocked: game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp: LINKED loss or absent baseline: 785 -> 0,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,m_version,claude-opus+gpt-6-astra+gpt-6.1-sol,applied,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|function|BfmeHostBA@|bfmeSaveBA,xfer,claude-opus+gpt-6.1-sol,applied,2026-10-16

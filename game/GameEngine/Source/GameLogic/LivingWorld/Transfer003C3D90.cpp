@@ -8,7 +8,7 @@
 struct MissionObjectiveState { bool m_visible, m_completed; };
 Xfer *Rva003C2830XferMissionObjectiveStateVector(Xfer *, std::vector<MissionObjectiveState> *);
 class Xfer;
-class BfmeHostBA { public: void bfmeSaveBA(Xfer *); };
+class BfmeHostBA { public: void xfer(Xfer *); };
 // Retail 0x003C3480 is one body reached as both the free function d_003c3480
 // (Load003C4160's union-pointer call) and this member spelling; the alias
 // binds the member call to the same retail body.
@@ -87,7 +87,7 @@ void Transfer003C3D90::transfer(Xfer *xfer) {
     union { Xfer::Version version; unsigned padding; };
     version.data[0]=1; version.data[1]=3;
     *xfer==version;
-    ((BfmeHostBA*)this)->bfmeSaveBA((Xfer*)xfer);
+    ((BfmeHostBA*)this)->xfer((Xfer*)xfer);
     int count=m_0C.size();
     *xfer==count;
     for(int i=0;i<count;++i) m_0C[i]->DoXfer(*xfer);

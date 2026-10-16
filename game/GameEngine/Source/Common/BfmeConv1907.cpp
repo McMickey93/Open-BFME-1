@@ -1,7 +1,7 @@
 struct Version
 {
 	unsigned char m_bfmeFlagBA;
-	unsigned char m_bfmeLevelBA;
+	unsigned char m_version;
 };
 
 class Xfer
@@ -59,7 +59,7 @@ void xferBlob_0010CC40(Xfer *ag, void *dst);
 class BfmeHostBA
 {
 public:
-	void bfmeSaveBA(Xfer *ag);
+	void xfer(Xfer *ag);
 
 	unsigned char m_bfmeHeadBA[0x18];
 	unsigned char m_bfmeSlotABA[4];
@@ -81,12 +81,12 @@ public:
 	unsigned char m_upgradeMask[4];
 };
 
-void BfmeHostBA::bfmeSaveBA(Xfer *ag)
+void BfmeHostBA::xfer(Xfer *ag)
 {
 	Version info;
 
 	info.m_bfmeFlagBA = 1;
-	info.m_bfmeLevelBA = 4;
+	info.m_version = 4;
 	ag->bfmeFillBA(&info);
 
 	ag->bfmeWordBA(m_bfmeSlotABA);
@@ -98,15 +98,15 @@ void BfmeHostBA::bfmeSaveBA(Xfer *ag)
 	ag->bfmeByteBA(&m_bfmeSlotGBA);
 	Rva0010BDE0(reinterpret_cast<MidVirtualSlot90Receiver *>(ag), m_bfmeSlotHBA);
 
-	if (info.m_bfmeLevelBA >= 2)
+	if (info.m_version >= 2)
 	{
 		ag->bfmeWordBA(m_bfmeSlotJBA);
 		__identifier("?Rva000D7010XferScienceVector@@YAPAVXfer@@PAV1@PAV?$vector@W4ScienceType@@V?$allocator@W4ScienceType@@@_STL@@@_STL@@@Z")(ag, m_sciences);
 	}
 
-	if (info.m_bfmeLevelBA >= 3)
+	if (info.m_version >= 3)
 		xferBlob_0010CC40(ag, m_upgradeMask);
 
-	if (info.m_bfmeLevelBA >= 4)
+	if (info.m_version >= 4)
 		ag->bfmeLateBA(m_bfmeSlotKBA);
 }
