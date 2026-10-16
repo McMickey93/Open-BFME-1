@@ -122098,14 +122098,10 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00146b90@@YAXXZ,,0x00146B90,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005468a0
 ?j_0014aee0@@YAXXZ,,0x0014AEE0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0014bcf0@@YAXXZ,,0x0014BCF0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0054bb10
-?j_0014f410@@YAXXZ,,0x0014F410,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_0014f600@@YAXXZ,,0x0014F600,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_0014f700@@YAXXZ,,0x0014F700,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_00151b50@@YAXXZ,,0x00151B50,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005517a0
 ?j_0015b730@@YAXXZ,,0x0015B730,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
 ?j_0015bcf0@@YAXXZ,,0x0015BCF0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00578e10
 ?j_0015d080@@YAXXZ,,0x0015D080,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00572430
-?j_0015d180@@YAXXZ,,0x0015D180,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_0015d1c0@@YAXXZ,,0x0015D1C0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_0015f410@@YAXXZ,,0x0015F410,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_00160410@@YAXXZ,,0x00160410,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
@@ -172541,3 +172537,7 @@ _lua_pushcclosure,,0x009904E0,5,game/Libraries/Source/Lua/lapi.c,matched,vendore
 ??1?$List@PAUINISection@@@@UAE@XZ,,0x009E3880,5,game/Libraries/Source/WWVegas/WWLib/INISectionListDeletingDestructor.cpp,matched,listnode.h List<T> implicit dtor: bare jmp to GenericList::~GenericList; called by ??_G 0x009E3860; already pinned;model=claude-opus-5-5;host=app
 ??1OBBoxRenderObjClass@@UAE@XZ,,0x00957BB0,5,game/Libraries/Source/WWVegas/WW3D2/OBBoxRenderObjDeletingDestructor.cpp,matched,implicit virtual dtor: bare jmp to RenderObjClass::~RenderObjClass 0x0091FC10; called by ??_GOBBoxRenderObjClass 0x00957B90; already pinned;model=claude-opus-5-5;host=app
 ??1Null3DObjClass@@UAE@XZ,,0x00972980,5,game/Libraries/Source/WWVegas/WW3D2/Null3DObjClassDeletingDestructor.cpp,matched,implicit virtual dtor: bare jmp to RenderObjClass::~RenderObjClass 0x0091FC10; called by ??_GNull3DObjClass 0x00972960; already pinned;model=claude-opus-5-5;host=app
+??1AIDockApproachState@@UAE@XZ,,0x0014F410,5,game/GameEngine/Source/GameLogic/AI/AIDockStateDestructors.cpp,matched,complete dtor: tail jump to ~AIInternalMoveToState via ILT 0x4AAF7; ??_G 0x14F3E0 calls it via ILT 0x425C8 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
+??1AIDockMoveToDockState@@UAE@XZ,,0x0014F600,5,game/GameEngine/Source/GameLogic/AI/AIDockStateDestructors.cpp,matched,complete dtor: tail jump to ~AIInternalMoveToState via ILT 0x4AAF7; ??_G 0x14F5D0 calls it via ILT 0x11658 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
+??1AIDockMoveToExitState@@UAE@XZ,,0x0014F700,5,game/GameEngine/Source/GameLogic/AI/AIDockStateDestructors.cpp,matched,complete dtor: tail jump to ~AIInternalMoveToState via ILT 0x4AAF7; ??_G 0x14F6D0 calls it via ILT 0x15979 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
+??1AIGuardIdleState@@UAE@XZ,,0x0015D180,5,game/GameEngine/Source/GameLogic/AI/AIGuardIdleStateDestructor.cpp,matched,complete dtor: tail jump to ~State via ILT 0x16725; ??_G 0x15D150 calls it via ILT 0x48829 (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
