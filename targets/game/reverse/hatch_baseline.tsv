@@ -2032,7 +2032,6 @@ asm_bytes	game/masm_dumps/_sa5__onExit_TurretAIIdleScanState__UAEXW4StateExitTyp
 asm_bytes	game/masm_dumps/internalFindPath_Pathfinder_3F0340.asm	*	2347
 emit	game/GameEngine/Source/Common/Audio/AudioManager_isMusicAlreadyLoadedMethodThunk.cpp	*	456
 emit	game/GameEngine/Source/Common/INI/INI_getNextQuotedAsciiString_Thunk.cpp	*	401
-emit	game/GameEngine/Source/Common/INI/SidesList_removeSideMethodThunk.cpp	*	363
 emit	game/GameEngine/Source/Common/RTS/ActionManager.cpp	*	3094
 emit	game/GameEngine/Source/Common/RTS/GameLogicUpdateLoadProgressThunk.cpp	*	3751
 emit	game/GameEngine/Source/Common/RTS/Player_becomingLocalPlayerMethodThunk.cpp	*	748
@@ -18473,7 +18472,6 @@ object_symbol	targets/game/reverse/functions.csv	0x009009B0	1
 object_symbol	targets/game/reverse/functions.csv	0x009009F0	1
 object_symbol	targets/game/reverse/functions.csv	0x00903230	1
 object_symbol	targets/game/reverse/functions.csv	0x00903280	1
-object_symbol	targets/game/reverse/functions.csv	0x009036E0	1
 object_symbol	targets/game/reverse/functions.csv	0x009036F0	1
 object_symbol	targets/game/reverse/functions.csv	0x00905C30	1
 object_symbol	targets/game/reverse/functions.csv	0x00905FB0	1
@@ -18613,7 +18611,6 @@ object_symbol	targets/game/reverse/functions.csv	0x0092E890	1
 object_symbol	targets/game/reverse/functions.csv	0x0092EE50	1
 object_symbol	targets/game/reverse/functions.csv	0x0092EEC0	1
 object_symbol	targets/game/reverse/functions.csv	0x0092EF90	1
-object_symbol	targets/game/reverse/functions.csv	0x0092EFE0	1
 object_symbol	targets/game/reverse/functions.csv	0x0092F180	1
 object_symbol	targets/game/reverse/functions.csv	0x0092F620	1
 object_symbol	targets/game/reverse/functions.csv	0x0092F690	1
