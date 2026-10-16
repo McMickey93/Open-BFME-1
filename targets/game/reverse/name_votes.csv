@@ -2564,3 +2564,11 @@ game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipSepsW|c,5c
 game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipSepsW|s,6c6536be407340793d51b7ab,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipNonSepsW|c,9d78ee1a3b38598adb0fcc38,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipNonSepsW|s,67607bd65b63e91f70c1fc99,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeLength|s,b81fcae24805e21af4041f00,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|local|bfmeLength|d,775364ac16868190a0a1ec5e,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeStr|s,0e5118e6c5915f77e4add374,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|local|bfmeStr|d,1f712f3e8c4fd9b0ebb170d6,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat|s,4030fbe5ccd156b9797ad113,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat|v,b439ce77338b4e0a38cbf908,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat#2|s,31b56b1c255d18e5f461d650,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat#3|s,b3bab0ad2c12596b5b94fc38,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
