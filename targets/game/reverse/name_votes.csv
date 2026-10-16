@@ -1452,3 +1452,5 @@ game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMin|b
 game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMax|a,2dd840e0f58a774c59cbd8bb,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
 game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMax|b,ace7786c8e0e5a7ae9223ba0,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1947.cpp|local|BfmeHostEQW::bfmeGoEQW|s_bfmeKeyEQW,3a098d9d9d9d41c813a767f0,gpt-6.1-sol,20261016031736-8013e7,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1929.cpp|function|BfmeNodeCU@|bfmeCopyCU,8d9257c7107b344208c668f8,gpt-6.1-sol,20261016031744-1bcb64,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1929.cpp|local|BfmeNodeCU::bfmeCopyCU|p,280ec902072be4790c339775,gpt-6.1-sol,20261016031744-1bcb64,2026-10-16
