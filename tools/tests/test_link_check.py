@@ -978,16 +978,21 @@ class _Path(_Obj):
     pass
 
 
-def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, present=None, owners=None,
-                  census_owners=None, stale_objects=()):
+def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, ledger=None, built=None,
+                  owners=None, census_owners=None, stale_objects=(), since=frozenset(), inputs=None):
     """A census of `census_objects` with `census_facts` ({obj: (copies, strong)},
     copies [(name, digest, verdict)]); `current_facts` is what each object
-    holds now, judged with current truth. refresh() is replaced by a table
-    rewrite from current_facts; everything else is the real rule."""
+    holds now ({obj: (copies, strong[, references])}), judged with current
+    truth. `ledger` is the current ledger's link order (default: the census's
+    objects, then the new ones in current_facts), `built` the objects that
+    exist here (default all), `since` the files changed since the census and
+    `inputs` {obj: set of input files | None} (default {obj.cpp}). refresh()
+    is replaced by a table rewrite from current_facts; the rest is real."""
+    import build
     import link_census
     strong, comdat = collections.defaultdict(list), collections.defaultdict(list)
     for i, name in enumerate(census_objects):
-        copies, defined = census_facts.get(name, ([], []))
+        copies, defined = census_facts.get(name, ([], []))[:2]
         for sym in defined:
             strong[sym].append(i)
         for sym, digest, verdict in copies:
@@ -995,6 +1000,7 @@ def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, p
     ix = {"meta": {"date": "d", "commit": "c"}, "objects": list(census_objects), "strong": dict(strong),
           "comdat": dict(comdat), "blockers": {}, "bytes": {}, "common": {}, "common_schema": C.COMMON_SCHEMA,
           "selection": {"exceptions": {}, "owners": census_owners or {}}}
+
     class _Seen(list):
         pass
     refreshed = _Seen()
@@ -1008,29 +1014,45 @@ def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, p
             for table in ("strong", "comdat"):
                 for sym in list(index[table]):
                     index[table][sym] = [e for e in index[table][sym] if (e if table == "strong" else e[0]) != at]
-            copies, defined = current_facts[obj.name]
+            copies, defined = current_facts[obj.name][:2]
             for sym in defined:
                 index["strong"].setdefault(sym, []).append(at)
             for sym, digest, verdict in copies:
                 index["comdat"].setdefault(sym, []).append((at, digest, verdict))
 
     def facts_of(obj, truth=None, **kw):
-        copies, defined = current_facts[obj.name]
-        return ([(s, d, 4, v) for s, d, v in copies], list(defined), [], [])
-    present = [_Path(n) for n in (present if present is not None else census_objects)]
+        entry = current_facts[obj.name]
+        copies, defined = entry[:2]
+        refs = list(entry[2]) if len(entry) > 2 else []
+        return ([(s, d, 4, v) for s, d, v in copies], list(defined), refs, [])
+    ledger = list(ledger if ledger is not None
+                  else list(census_objects) + [n for n in current_facts if n not in census_objects])
+    built = set(ledger if built is None else built)
+    order = [_Path(n) for n in ledger]
+    present = [o for o in order if o.name in built]
+    missing = [o for o in order if o.name not in built]
+    inputs = inputs or {}
+    compiled = []
     monkeypatch.setattr(C, "refresh", fake_refresh)
     monkeypatch.setattr(link_census, "object_facts", facts_of)
     monkeypatch.setattr(link_census, "ledger_owners", lambda rows: owners or {})
-    monkeypatch.setattr(link_census, "_object_sources", lambda rows: {o: Path(o.name + ".cpp") for o in present})
-    monkeypatch.setattr(link_census, "objects", lambda rows: (present, []))
-    import build
-    compiled = []
+    monkeypatch.setattr(link_census, "_object_sources", lambda rows: {o: Path(o.name + ".cpp") for o in order})
+    monkeypatch.setattr(link_census, "objects", lambda rows: (present, missing))
+    monkeypatch.setattr(link_census, "link_order", lambda rows, data=(): order)
+    monkeypatch.setattr(link_census, "data_ledger", lambda: [])
+    monkeypatch.setattr(C, "changed_since", lambda commit: set(since))
+    monkeypatch.setattr(C, "object_inputs",
+                        lambda obj, sources, receipts: inputs.get(obj.name, {obj.name + ".cpp"}))
     monkeypatch.setattr(C, "_refresh_receipts", lambda: type("R", (), {"save": lambda self: None})())
-    monkeypatch.setattr(C, "_object_is_current", lambda obj, sources, receipts: obj.name not in stale_objects)
+    monkeypatch.setattr(C, "_object_is_current",
+                        lambda obj, sources, receipts: obj.name in built and obj.name not in stale_objects)
     monkeypatch.setattr(build, "compile_rows", lambda rows, need, input_proof=None: compiled.extend(need) or {})
     monkeypatch.setattr(link_census, "_refresh_missing_search_root_receipts", lambda *a: None)
     refreshed.compiled = compiled
     return ix, refreshed, facts_of
+
+
+ROWS = [{"name": "fixture"}]       # a non-empty ledger: the rule reads link order only then
 
 
 def _judge(ix, obj, facts_of):
@@ -1052,30 +1074,121 @@ def test_rule_c4c23b4869_renamed_stlport_names_meet_frozen_gen_copies(monkeypatc
            "bfmeconv1472.obj": ([(S, "dM", "retail")], [])}
     ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
     mine = _Path("bfmeconv1472.obj")
-    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
     assert S in changed and stale == set()
     assert sorted(refreshed) == ["bfmeconv1472.obj", "tgrid_004.obj", "zhstl_005.obj"]
     selected, unknown = _judge(ix, mine, facts_of)
     assert selected == [S] and unknown == []
 
 
-def test_rule_c4c23b4869_without_the_gen_objects_is_preview_unknown(monkeypatch):
-    """The same case in a worktree whose gen_small objects are missing or stale:
-    the definers cannot be refreshed -> LINKED PREVIEW UNKNOWN, never LINKS."""
+def test_rule_c4c23b4869_gen_objects_not_built_here_are_preview_unknown(monkeypatch):
+    """Round 3 F1: the same case in a worktree that never BUILT the gen
+    objects (still in the current ledger, so missing, not gone): their copies
+    stay and the name is LINKED PREVIEW UNKNOWN -- with no compile budget, or
+    when compiling them does not produce them. Never LINKS."""
     S = "??$find_if@stl@@YAXXZ"
     census = {"tgrid_004.obj": ([(S, "dT", None)], []), "zhstl_005.obj": ([(S, "dZ", None)], []),
               "bfmeconv1472.obj": ([], [])}
-    now = {"tgrid_004.obj": ([(S, "dT", None)], []), "zhstl_005.obj": ([(S, "dZ", None)], []),
+    now = {"tgrid_004.obj": ([(S, "dT", "wrong")], []), "zhstl_005.obj": ([(S, "dZ", "wrong")], []),
            "bfmeconv1472.obj": ([(S, "dM", "retail")], [])}
+    for limit in (0, 50):
+        ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, built={"bfmeconv1472.obj"})
+        mine = _Path("bfmeconv1472.obj")
+        changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS, compile_limit=limit)
+        assert S in changed and stale == {S}
+        assert len(ix["comdat"][S]) == 3                         # nothing dropped
+        assert _judge(ix, mine, facts_of) == ([], [S])
+        assert len(refreshed.compiled) == (2 if limit else 0)    # compiled within the budget first
+
+
+def test_rule_an_object_dropped_from_the_ledger_loses_its_definitions(monkeypatch):
+    """Only an object absent from the current ledger's link order is gone."""
+    S = "??$find_if@stl@@YAXXZ"
+    census = {"tgrid_004.obj": ([(S, "dT", None)], []), "zhstl_005.obj": ([(S, "dZ", None)], []),
+              "bfmeconv1472.obj": ([], [])}
+    now = {"zhstl_005.obj": ([(S, "dZ", "retail")], []), "bfmeconv1472.obj": ([(S, "dZ", "retail")], [])}
     ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now,
-                                    present=["zhstl_005.obj", "bfmeconv1472.obj"], stale_objects={"zhstl_005.obj"})
+                                            ledger=["zhstl_005.obj", "bfmeconv1472.obj"])
     mine = _Path("bfmeconv1472.obj")
-    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
-    assert stale == {S}
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
+    assert stale == set() and sorted(i for i, _, _ in ix["comdat"][S]) == [1, 2]   # tgrid (0) dropped
+    assert _judge(ix, mine, facts_of) == ([], [])
+
+
+def test_rule_another_definer_changed_since_the_census(monkeypatch):
+    """Round 3 F2: a.obj (not checked) changed its copy of S since the census
+    (a header inline edit, a // cl: flag, another commit). Its inputs changed
+    since the census commit, so S is changed, a.obj is refreshed and its now
+    wrong kept copy is a loss -- and with its inputs unknown, S changes too."""
+    S = "?s@@YAXXZ"
+    census = {"a.obj": ([(S, "dA", "retail")], []), "mine.obj": ([(S, "dA", "retail")], [])}
+    now = {"a.obj": ([(S, "dX", "wrong")], []), "mine.obj": ([(S, "dA", "retail")], [])}
+    for kwargs in ({"since": {"game/inline.h"}, "inputs": {"a.obj": {"a.cpp", "game/inline.h"}}},
+                   {"inputs": {"a.obj": None}}):
+        ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, **kwargs)
+        mine = _Path("mine.obj")
+        changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
+        assert changed == {S} and "a.obj" in refreshed
+        assert _judge(ix, mine, facts_of) == ([S], [])
+    # inputs that did not change: the census verdict stands, nothing re-read
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, since={"game/other.h"})
+    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, ROWS)
+    assert changed == set() and refreshed == ["mine.obj"]
+
+
+def test_rule_an_object_added_since_the_census_is_a_definer(monkeypatch):
+    """Round 3 F3: n.obj, added by another commit since the census and first in
+    link order, defines a wrong copy of S: it is placed, read and kept -> a
+    loss. Not readable here: every touched name is PREVIEW UNKNOWN."""
+    S = "?resize@?$vector@PAX@@QAEXI@Z"
+    census = {"a.obj": ([(S, "dA", "retail")], []), "mine.obj": ([], [], [S])}
+    now = {"n.obj": ([(S, "dN", "wrong")], []), "a.obj": ([(S, "dA", "retail")], []),
+           "mine.obj": ([], [], [S])}
+    ledger = ["n.obj", "a.obj", "mine.obj"]
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, ledger=ledger)
+    mine = _Path("mine.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
+    assert ix["objects"][0] == "n.obj" and S in changed
+    assert _judge(ix, mine, facts_of) == ([S], [])
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, ledger=ledger,
+                                            built={"a.obj", "mine.obj"})
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS, compile_limit=0)
+    assert ix["selection"]["unknown_definers"]
     assert _judge(ix, mine, facts_of) == ([], [S])
-    assert [p.name for p in refreshed.compiled] == ["zhstl_005.obj.cpp"]   # compiled first, still stale here
-    # tgrid_004.obj, gone from the current ledger, lost its definitions
-    assert ix["objects"].index("tgrid_004.obj") not in [i for i, _, _ in ix["comdat"][S]]
+
+
+def test_rule_a_changed_name_with_a_census_map_exception_is_stale(monkeypatch):
+    """Round 3 F4: the census /MAP holder was measured on other definers."""
+    S = "?s@@YAXXZ"
+    census = {"a.obj": ([(S, "dA", "wrong")], []), "b.obj": ([(S, "dB", "retail")], []), "mine.obj": ([], [])}
+    now = {**census, "mine.obj": ([(S, "dM", "wrong")], [])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
+    ix["selection"]["exceptions"] = {S: 1}
+    mine = _Path("mine.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
+    assert S in changed and S in stale
+    assert _judge(ix, mine, facts_of) == ([], [S])
+
+
+def test_refresh_a_missing_ledger_object_makes_its_census_names_stale(monkeypatch):
+    """Round 3 F5 (--refresh): gone.obj is in the ledger, defined S first
+    (wrong) in the census and failed to compile here: S is stale -> PREVIEW
+    UNKNOWN, never LINKS on a's retail copy."""
+    import build
+    S = "?s@@YAXXZ"
+    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([(S, "dA", 4, "retail")], [], [], [])},
+                      missing=["gone.obj"], after={"missing": [_Obj("gone.obj")]})
+    monkeypatch.setattr(build, "compile_rows",
+                        lambda rows, need, input_proof=None: (_ for _ in ()).throw(SystemExit("cl failed")))
+    ix["objects"] = ["gone.obj", "a.obj"]
+    ix["strong"] = {}
+    ix["comdat"] = {S: [(0, "dG", "wrong"), (1, "dA", "retail")]}
+    C.refresh_current(ix)
+    assert S in ix["selection"]["stale"]
+    fact = ([(S, "dA", 4, "retail")], [], [], [])
+    own = ix["objects"].index("a.obj")
+    unknown = []
+    assert C.wrong_selected(_Obj("a.obj"), fact, own, own, ix, unknown=unknown) == [] and unknown == [S]
 
 
 def test_rule_never_compiles_beyond_its_limit(monkeypatch):
@@ -1083,7 +1196,7 @@ def test_rule_never_compiles_beyond_its_limit(monkeypatch):
     census = {"a.obj": ([(S, "dA", None)], []), "mine.obj": ([], [])}
     now = {"a.obj": ([(S, "dA", None)], []), "mine.obj": ([(S, "dM", None)], [])}
     ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, stale_objects={"a.obj"})
-    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, [], compile_limit=0)
+    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, ROWS, compile_limit=0)
     assert stale == {S} and refreshed.compiled == []
 
 
@@ -1098,7 +1211,7 @@ def test_rule_e9c390b038_new_identical_copy_still_reports_the_gain(monkeypatch):
     now = {**others, "rva008c7950stacksubstring.obj": ([(D, "dE", None)], [])}
     ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
     mine = _Path("rva008c7950stacksubstring.obj")
-    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
     assert D in changed and stale == set() and len(refreshed) == 19
     assert _judge(ix, mine, facts_of) == ([], [])
 
@@ -1109,11 +1222,11 @@ def test_rule_unchanged_unknown_name_is_no_false_loss(monkeypatch):
     ownership did not change keeps the census verdict: no loss, no unknown."""
     U = "?unknown@@YAXXZ"
     census = {"a.obj": ([(U, "d1", None)], []), "b.obj": ([(U, "d2", None)], []),
-              "mine.obj": ([("?mine@@YAXXZ", "dm", None)], [])}
+              "mine.obj": ([("?mine@@YAXXZ", "dm", None)], [], [U])}
     now = dict(census)
     ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
     mine = _Path("mine.obj")
-    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
     assert changed == set() and refreshed == ["mine.obj"]
     assert _judge(ix, mine, facts_of) == ([], [])
 
@@ -1123,7 +1236,7 @@ def test_rule_an_ownership_change_alone_refreshes_the_definers(monkeypatch):
     census = {"a.obj": ([], [G]), "mine.obj": ([], [G])}
     ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, census,
                                             owners={G: {"mine.obj"}}, census_owners={G: {"a.obj"}})
-    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, [])
+    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, ROWS)
     assert changed == {G} and sorted(refreshed) == ["a.obj", "mine.obj"]
     assert ix["selection"]["owners"][G] == {"mine.obj"}
     # two exclusive definers, the kept (first, a.obj) is not the current owner's -> wrong
@@ -1138,3 +1251,81 @@ def test_report_preview_unknown_never_claims_a_gain(capsys):
     out = capsys.readouterr().out
     assert "LINKED PREVIEW UNKNOWN — selection census stale for: ?s@@YAXXZ" in out
     assert "LINKED 0 -> 0 bytes" in out and result["after_bytes"] == 0
+
+
+def test_rule_inputs_changed_but_copies_identical_keep_the_census_verdict(monkeypatch):
+    """A definer's header changed since the census but it still compiles to
+    the census's copy: once re-read, S's definers are exactly the census's,
+    so the census verdict (a non-blocking 'unknown') stands -- no PREVIEW
+    UNKNOWN for e9c390b038-like files whose shared names only look touched."""
+    S = "??1Rva8CD130String@@QAE@XZ"
+    census = {"a.obj": ([(S, "d1", None)], []), "b.obj": ([(S, "d2", None)], []),
+              "mine.obj": ([], [], [S])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, census,
+                                            since={"game/str.h"}, inputs={"a.obj": {"a.cpp", "game/str.h"}})
+    mine = _Path("mine.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
+    assert "a.obj" in refreshed and changed == set() and stale == set()
+    assert _judge(ix, mine, facts_of) == ([], [])
+
+
+# The pre-commit environment (project lead, 2026-10-16): a SPARSE worker
+# checkout where only the checked object is built, ANOTHER source defining a
+# touched name changed since the census, and a NEWLY INTRODUCED definer earlier
+# in link order. apply_selection_rule must never claim LINKS (or a positive
+# LINKED delta) there: PREVIEW UNKNOWN, or a loss it can prove.
+
+def _precommit_case(monkeypatch, *, sparse, modified, new_definer, limit=0):
+    S = "?shared@@YAXXZ"
+    census = {"b.obj": ([(S, "dB", "retail")], []), "mine.obj": ([(S, "dB", "retail")], [])}
+    now = {"b.obj": ([(S, "dX" if modified else "dB", "wrong" if modified else "retail")], []),
+           "mine.obj": ([(S, "dB", "retail")], [])}
+    ledger = ["b.obj", "mine.obj"]
+    if new_definer:
+        now["n.obj"] = ([(S, "dN", "wrong")], [])
+        ledger = ["n.obj"] + ledger
+    ix, refreshed, facts_of = _rule_fixture(
+        monkeypatch, list(census), census, now, ledger=ledger,
+        built={"mine.obj"} if sparse else None,
+        since={"game/b.cpp"} if modified else set(),
+        inputs={"b.obj": {"game/b.cpp"}})
+    ix["blockers"] = {"mine.cpp": {"linked": True}}
+    ix["bytes"] = {"mine.cpp": 100}
+    mine = _Path("mine.obj")
+    C.apply_selection_rule(ix, [mine], None, ROWS, compile_limit=limit)
+    selected, unknown = _judge(ix, mine, facts_of)
+    result = {k: [] for k in ("unresolved", "duplicates", "comdat", "addresses")}
+    result.update(selected=selected, preview_unknown=unknown)
+    linked = C.report("mine.cpp", mine, result, ix, 100)
+    return selected, unknown, linked, result["after_bytes"]
+
+
+@pytest.mark.parametrize("modified,new_definer", [(True, False), (False, True), (True, True)])
+def test_precommit_sparse_checkout_never_claims_links(monkeypatch, capsys, modified, new_definer):
+    selected, unknown, linked, after = _precommit_case(monkeypatch, sparse=True, modified=modified,
+                                                       new_definer=new_definer)
+    assert not linked and after <= 100 and (selected or unknown)
+    assert "LINKED PREVIEW UNKNOWN" in capsys.readouterr().out or selected
+
+
+@pytest.mark.parametrize("modified,new_definer", [(True, False), (False, True), (True, True)])
+def test_precommit_built_checkout_proves_the_loss(monkeypatch, modified, new_definer):
+    selected, unknown, linked, after = _precommit_case(monkeypatch, sparse=False, modified=modified,
+                                                       new_definer=new_definer)
+    assert selected == ["?shared@@YAXXZ"] and not linked and after == 0
+
+
+def test_precommit_sparse_checkout_with_nothing_changed_keeps_the_census_verdict(monkeypatch):
+    """Sparse alone: no definer, input or ownership changed since the census,
+    so the census verdict (here LINKS, 100 -> 100: no gain) stands."""
+    selected, unknown, linked, after = _precommit_case(monkeypatch, sparse=True, modified=False,
+                                                       new_definer=False)
+    assert (selected, unknown, linked, after) == ([], [], True, 100)
+
+
+def test_precommit_sparse_checkout_compiling_within_budget_proves_the_loss(monkeypatch):
+    """With a compile budget the fixture still cannot build (sparse stays
+    sparse): the answer stays PREVIEW UNKNOWN, never LINKS."""
+    selected, unknown, linked, after = _precommit_case(monkeypatch, sparse=True, modified=True,
+                                                       new_definer=True, limit=50)
+    assert not linked and (selected or unknown)
