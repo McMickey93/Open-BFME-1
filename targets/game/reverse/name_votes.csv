@@ -4337,3 +4337,9 @@ game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|ov
 game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|s,fd04a79fb67e5cf9755fbcae,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|p,b905a4e7772156dd8c1240da,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|d,443e1102d7248421cb0f9535,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|member||wait28,b940b269a88f593245a58d15,gpt-6.1-sol,20261016065531-693b39,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|member||wait2c,a2d45246b591472ce96c3e68,gpt-6.1-sol,20261016065531-693b39,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|member||wait30,e429b0525c896c2d29e045a9,gpt-6.1-sol,20261016065531-693b39,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|param|call2|a,716ee32a6dc35b06ff51d805,gpt-6.1-sol,20261016065531-693b39,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|param|call2|b,fead30fb55e10e3b12ef6015,gpt-6.1-sol,20261016065531-693b39,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00377740.cpp|local|Rva00377740Interface::Rva00377740|p,e9c06432e441aff867a322fd,gpt-6.1-sol,20261016065531-693b39,2026-10-16
