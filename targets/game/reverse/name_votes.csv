@@ -3206,3 +3206,5 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005FDC70Method.cpp|
 game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005FDC70Method.cpp|member||m_at1C,ec9e68b9e4168c99bc20b889,gpt-6.1-sol,20261016055310-e3ee1c,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/Small03eListNode.cpp|local|Rva00943DB0Box::insert|n,00818f0f46b6d0b7560a8dfd,gpt-6.1-sol,20261016055315-d19d5b,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/Small03eListNode.cpp|local|Rva00943DB0Box::insert|c,0e9d24a1a6035d0777625c2f,gpt-6.1-sol,20261016055315-d19d5b,2026-10-16
+game/GameEngine/Source/Common/Rva006E6A80.cpp|member||fe8,a7ea7fc4eccf6ce468deb903,gpt-6.1-sol,20261016060231-86db97,2026-10-16
+game/GameEngine/Source/Common/Rva006E6A80.cpp|member||ff0,728f2c892b9bd8234b815132,gpt-6.1-sol,20261016060231-86db97,2026-10-16
