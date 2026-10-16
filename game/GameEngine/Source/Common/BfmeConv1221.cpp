@@ -1,7 +1,7 @@
 // Open-BFME5 conversions.
 
 extern int g_bfmeLeft1221;
-extern unsigned int *g_bfmeNext1221;
+unsigned int *g_bfmeNext1221 = 0;
 
 extern "C" unsigned int bfmeReload1221(void);
 
