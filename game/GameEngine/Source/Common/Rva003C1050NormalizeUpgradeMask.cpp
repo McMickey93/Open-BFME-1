@@ -23,11 +23,6 @@ struct UpgradeMaskType
 		}
 		return total;
 	}
-
-	void clear(UnsignedInt bit)
-	{
-		m_bits[bit >> 5] &= ~(1u << (bit & 0x1f));
-	}
 };
 
 struct BfmeNodeND
@@ -77,8 +72,12 @@ void Rva003C1050::setMask(UpgradeMaskType mask)
 		if (!upgrade)
 			break;
 		if (!upgrade->m_flag11c || upgrade->m_field4)
-			mask.clear(upgrade->m_bit);
-		working.clear(upgrade->m_bit);
+		{
+			UnsignedInt bit = upgrade->m_bit;
+			mask.m_bits[bit >> 5] &= ~(1u << (bit & 0x1f));
+		}
+		UnsignedInt bit = upgrade->m_bit;
+		working.m_bits[bit >> 5] &= ~(1u << (bit & 0x1f));
 	}
 	m_mask = mask;
 }
