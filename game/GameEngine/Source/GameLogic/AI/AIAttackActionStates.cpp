@@ -32,8 +32,8 @@ class AIAttackAimAtTargetState : public State
 public:
 	AIAttackAimAtTargetState(StateMachine *machine, bool attackingObject, bool forceAttacking);
 
-public:
-	virtual ~AIAttackAimAtTargetState();
+	// Implicit destructor: retail 0x0017FE50 (own ILT 0x0000C0C7, ilt_oracle CONFIRMED
+	// exact) is a bare jmp to State::~State (ILT 0x00016725) with no vptr reset.
 
 private:
 	bool m_isAttackingObject;
@@ -61,8 +61,8 @@ class AIAttackFireWeaponState : public State
 public:
 	AIAttackFireWeaponState(StateMachine *machine, NotifyWeaponFiredInterface * notify);
 
-public:
-	virtual ~AIAttackFireWeaponState();
+	// Implicit destructor: retail 0x0017FF10 (own ILT 0x00028DD0, ilt_oracle CONFIRMED
+	// exact) is a bare jmp to State::~State (ILT 0x00016725) with no vptr reset.
 
 private:
 	NotifyWeaponFiredInterface * m_att;
