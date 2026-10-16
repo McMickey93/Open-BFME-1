@@ -43,13 +43,12 @@ public:
 	void bfmeForward(void *first, void *second);
 };
 
-class Rva0020AA00Target
+// The thunk at 0x00017A12 reaches the matched ThingTemplate row 0x00144DC0.
+class ThingTemplate
 {
 public:
-	void notify(int first, int second);
+	void rva00144DC0(AssetList &assets, void *context);
 };
-
-class ThingTemplate;
 
 class BfmeThingFactory
 {
@@ -116,16 +115,16 @@ void GenericObjectCreationNugget::GetAssetList(AssetList &assets, void *context)
 
 	if (!m_putInContainer.isEmpty())
 	{
-		Rva0020AA00Target *container = (Rva0020AA00Target *)((BfmeThingFactory *)TheThingFactory)->findTemplate(m_putInContainer);
+		ThingTemplate *container = (ThingTemplate *)((BfmeThingFactory *)TheThingFactory)->findTemplate(m_putInContainer);
 		if (container)
-			container->notify((int)&assets, (int)context);
+			container->rva00144DC0(assets, context);
 	}
 
 	for (AsciiString *name = m_names.m_begin; name != m_names.m_end; ++name)
 	{
-		Rva0020AA00Target *prototype = (Rva0020AA00Target *)((BfmeThingFactory *)TheThingFactory)->findTemplate(*name);
+		ThingTemplate *prototype = (ThingTemplate *)((BfmeThingFactory *)TheThingFactory)->findTemplate(*name);
 		if (prototype)
-			prototype->notify((int)&assets, (int)context);
+			prototype->rva00144DC0(assets, context);
 	}
 
 	if (m_particleSysName.m_data != 0 &&

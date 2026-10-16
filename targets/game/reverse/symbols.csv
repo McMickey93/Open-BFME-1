@@ -80273,7 +80273,7 @@ name,address,notes
 ?bfmeTwoEFFb@@YAXHPAX@Z,0x0001327D,pin
 ?bfmeTwoFDD@BfmeSubFDD@@QAEXPAXH@Z,0x0003926B,pin
 ?bfmeTwoGE@BfmeThingGE@@QAEXPAUBfmeSubGE@@PAH1@Z,0x0000D2BA,pin
-?bfmeTwoGH@BfmeResGH@@QAEXPAX0@Z,0x00017A12,pin
+?rva00144DC0@ThingTemplate@@QAEXAAVAssetList@@PAX@Z,0x00017A12,route=0x00144DC0; thunk j_00017a12 jumps to the matched row; asset-list callers 0x0020AA00 0x00234200 0x0077F570 and the BfmeConv809/821/897/898/917 bodies reach it here
 ?bfmeTwoLF@BfmeGlobLF@@QAE_NXZ,0x0003A5B7,pin
 ?bfmeTwoMD@BfmeObjMD@@QAEXXZ,0x0001A483,pin
 ?bfmeTwoNA@BfmeThingNA@@QAEXXZ,0x0003AFE4,pin
@@ -80344,12 +80344,10 @@ name,address,notes
 ?bfmeUseCH@BfmeTmpACH@@QAEXPAX@Z,0x0001EC40,pin
 ?bfmeUseDXI@BfmeGlobDXI@@QAEXH@Z,0x0004159C,pin
 ?bfmeUseDXJ@BfmeSubDXJ@@QAEXH@Z,0x00021468,pin
-?bfmeUseEFJ@BfmeResEFJ@@QAEXPAX0@Z,0x00017A12,pin
 ?bfmeUseEGE@BfmeResEGE@@QAEXH@Z,0x000032AB,pin
 ?bfmeUseFDE@BfmeThingFDE@@QAEXPAX@Z,0x0000A254,pin
 ?bfmeUseFEG@BfmeResFEG@@QAEXPAX@Z,0x00028641,pin
 ?bfmeUseFGE@BfmeResFGE@@QAEXPAX0@Z,0x0002E834,pin
-?bfmeUseFHH@BfmeResFHH@@QAEXPAX0@Z,0x00017A12,pin
 ?bfmeUseGI@BfmeSubGI@@QAEXPAX@Z,0x0002D2EF,pin
 ?bfmeUsePrimaryRank1294@BfmeGameLogic1294@@QAE_NXZ,0x0001D1C9,address-derived rank-selection predicate called by the 0x003A0860 retail body
 ?bfmeUseRB@@YGXPAUBfmeElemRB@@@Z,0x0001620C,pin
@@ -81407,7 +81405,6 @@ name,address,notes
 ?disconnectPlayer@ConnectionManager@@QAE?AW4PlayerLeaveCode@@H@Z,0x00028D5D,DisconnectManager::disconnectPlayer direct-call ILT thunk
 ?disconnectPlayer@DisconnectManager@@IAEXHPAVConnectionManager@@@Z,0x000201F3,DisconnectManager status update player removal through ILT to the existing 0x0066C040 body
 ?dismissAlert@AptPalantir@@QAEXXZ,0x0003C902,AptPalantir alert dismissal thunk
-?dispatch@BfmeCommandButtonDispatchILT@@QAEXPAX0@Z,0x00017A12,Command button callback dispatch incremental-link thunk used by the callback walk
 ?dispatch@BfmeRvaBA00View@@QAEXPAVBfmeRvaBA00Object@@H@Z,0x0002CE44,assigned-body helper for Rva0024BA00
 ?dispatch@BfmeRvaBB60View@@QAEXPAVBfmeRvaBB60Object@@H@Z,0x0002CE44,assigned-body helper for Rva0024BB60
 ?dispatch@BfmeTransitionMD@@QAE_NPAVAsciiString@@_N@Z,0x00048351,retail ILT target called by HotKeyTranslator::translateGameMessage; g_bfmeTransitionMD at 0x012F4C7C supplies the receiver
@@ -86577,7 +86574,6 @@ name,address,notes
 ?notify@Rva00156630Sub@@QAEXHH@Z,0x0000A5DD,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00156630 calls; autopin
 ?notify@Rva001567E0Sub@@QAEXHH@Z,0x0002B4F9,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x001567E0 calls; autopin
 ?notify@Rva00156A30Sub@@QAEXHH@Z,0x00031B01,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00156A30 calls; autopin
-?notify@Rva0020AA00Target@@QAEXHH@Z,0x00017A12,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x0020AA00 calls; autopin
 ?notify@Rva002CDF00Thing@@QAEXXZ,0x0002191D,ILT call at 0x002CDF21 reaches the matched condition-change notifier body at 0x001BE1C0
 ?notify@Rva00579160Manager@@QAEXXZ,0x000290D2,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00579160 calls; autopin
 ?notify@Rva00589690@@AAEXXZ,0x0003643A,Open-BFME5 fresh thiscall at ILT of set-byte+notify 0x00589690

@@ -12,14 +12,15 @@
 struct Rva0020AA00Target
 {
 public:
-	void notify(int a, int b);
-
 	unsigned char m_pad00[0xc8];
 };
 
+// The thunk at 0x00017A12 reaches the matched ThingTemplate row 0x00144DC0.
+class AssetList;
 class ThingTemplate : public Rva0020AA00Target
 {
 public:
+	void rva00144DC0(AssetList &assets, void *context);
 	unsigned int m_kindOf[3];
 };
 
@@ -122,10 +123,8 @@ void __cdecl Rva00234200Apply(Rva00234200Owner *owner, int a, int b)
 			{
 				notify = 1;
 			}
-			Rva0020AA00Target *target =
-				const_cast<Rva0020AA00Target *>(
-					static_cast<const Rva0020AA00Target *>(templateObject));
-			target->notify(a, (int)&notify);
+			const_cast<ThingTemplate *>(templateObject)->rva00144DC0(
+				*(AssetList *)a, &notify);
 		}
 		node = node->m_next;
 	}
@@ -143,6 +142,6 @@ void notifyAfterApply(Rva00234200Owner* owner, int a, int b)
 	for (int* it = owner->m_begin; it != owner->m_end; ++it) {
 		Rva0020AA00Target* t = localTheThingFactory()->lookup(*it);
 		if (t)
-			t->notify(a, b);
+			static_cast<ThingTemplate *>(t)->rva00144DC0(*(AssetList *)a, (void *)b);
 	}
 }

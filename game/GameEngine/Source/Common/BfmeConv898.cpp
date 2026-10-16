@@ -24,11 +24,18 @@ void BfmeThingGE::bfmeGoGE(BfmeSubGE *d)
 	bfmeTwoGE(d, &d->m_bfmeC, &m_bfmeC);
 }
 
+// The thunk at 0x00017A12 reaches the matched ThingTemplate row 0x00144DC0.
+class AssetList;
+class ThingTemplate
+{
+public:
+	void rva00144DC0(AssetList &assets, void *context);
+};
+
 class BfmeResGH
 {
 public:
 	void bfmeOneGH(void *a, void *b);
-	void bfmeTwoGH(void *a, void *b);
 };
 
 class BfmeThingGH
@@ -45,7 +52,7 @@ void BfmeThingGH::bfmeGoGH(void *a, void *b)
 	if (m_bfmeOne)
 		m_bfmeOne->bfmeOneGH(a, b);
 	if (m_bfmeTwo)
-		m_bfmeTwo->bfmeTwoGH(a, b);
+		reinterpret_cast<ThingTemplate *>(m_bfmeTwo)->rva00144DC0(*static_cast<AssetList *>(a), b);
 }
 
 class BfmeSubGI

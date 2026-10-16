@@ -55,11 +55,15 @@ public:
 	int m_command;
 };
 
-class BfmeCommandButtonDispatchILT
+// The thunk at 0x00017A12 reaches the matched ThingTemplate row 0x00144DC0.
+class AssetList;
+class ThingTemplate
 {
 public:
-	void dispatch(void *b, void *c);
+	void rva00144DC0(AssetList &assets, void *context);
 };
+
+class BfmeCommandButtonDispatchILT;
 
 class BfmeCommandButtonResolveILT
 {
@@ -117,7 +121,7 @@ void BfmeObj412::call(void *b, void *c)
 				BfmeCommandButtonDispatchILT *target =
 					((BfmeCommandButtonResolveILT *)button)->resolve();
 				if (target)
-					target->dispatch(b, c);
+					reinterpret_cast<ThingTemplate *>(target)->rva00144DC0(*static_cast<AssetList *>(b), c);
 				break;
 			}
 			default:

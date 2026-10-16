@@ -56,14 +56,10 @@ public:
 	bool m_changed;
 };
 
-class BfmeResGH
+class ThingTemplate
 {
 public:
-	void bfmeTwoGH(void *list, void *context);
-};
-
-class ThingTemplate : public BfmeResGH
-{
+	void rva00144DC0(AssetList &assets, void *context);
 };
 
 class ThingFactory;
@@ -126,7 +122,7 @@ void collectAssets0077F570(Record0077F570 *record, AssetList *list, void *contex
 	{
 		const ThingTemplate *found = localTheThingFactory()->findTemplate(record->m_bfmeTemplateName);
 		if (found)
-			const_cast<ThingTemplate *>(found)->bfmeTwoGH(list, context);
+			const_cast<ThingTemplate *>(found)->rva00144DC0(*list, context);
 	}
 
 	if (record->m_bfmePartC)

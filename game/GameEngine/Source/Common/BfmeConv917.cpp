@@ -2,11 +2,15 @@
 
 struct BfmeSubFHH;
 
-class BfmeResFHH
+// The thunk at 0x00017A12 reaches the matched ThingTemplate row 0x00144DC0.
+class AssetList;
+class ThingTemplate
 {
 public:
-	void bfmeUseFHH(void *a, void *b);
+	void rva00144DC0(AssetList &assets, void *context);
 };
+
+class BfmeResFHH;
 
 class BfmeGlobFHH
 {
@@ -48,5 +52,5 @@ void bfmeGo917F(BfmeArg917F *a, void *b, void *c)
 	BfmeResFHH *r = ((BfmeGlobFHH *)TheThingFactory)->bfmeLookFHH(k);
 	if (!r)
 		return;
-	r->bfmeUseFHH(b, c);
+	reinterpret_cast<ThingTemplate *>(r)->rva00144DC0(*static_cast<AssetList *>(b), c);
 }

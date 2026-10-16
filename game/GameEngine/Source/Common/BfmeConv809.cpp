@@ -3,11 +3,15 @@ class BfmeSubEFJ
 	unsigned char m_bfmeHead[4];
 };
 
-class BfmeResEFJ
+// The thunk at 0x00017A12 reaches the matched ThingTemplate row 0x00144DC0.
+class AssetList;
+class ThingTemplate
 {
 public:
-	void bfmeUseEFJ(void *a, void *b);
+	void rva00144DC0(AssetList &assets, void *context);
 };
+
+class BfmeResEFJ;
 
 class BfmeGlobEFJ
 {
@@ -32,7 +36,7 @@ void BfmeThingEFJa::bfmeGoEFJa(void *a, void *b)
 {
 	BfmeResEFJ *r = ((BfmeGlobEFJ *)TheThingFactory)->bfmeLookEFJ(&m_bfmeSub);
 	if (r)
-		r->bfmeUseEFJ(a, b);
+		reinterpret_cast<ThingTemplate *>(r)->rva00144DC0(*static_cast<AssetList *>(a), b);
 }
 
 struct BfmeThingEFJb
@@ -46,5 +50,5 @@ void BfmeThingEFJb::bfmeGoEFJb(void *a, void *b)
 {
 	BfmeResEFJ *r = ((BfmeGlobEFJ *)TheThingFactory)->bfmeLookEFJ(&m_bfmeSub);
 	if (r)
-		r->bfmeUseEFJ(a, b);
+		reinterpret_cast<ThingTemplate *>(r)->rva00144DC0(*static_cast<AssetList *>(a), b);
 }
