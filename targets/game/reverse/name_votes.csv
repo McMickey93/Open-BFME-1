@@ -4924,3 +4924,8 @@ game/GameEngine/Source/Common/TripleMemberCopies.cpp|local|Rva00138BA0Copy|n,eb0
 game/GameEngine/Source/Common/TripleMemberCopies.cpp|local|Rva00146B10Copy|n,184433809f0e617c8fbc7cfc,gpt-6.1-sol,20261016071841-8f4206,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1901.cpp|member||m_bfmeFlagAU,1ae2e6c0c3ccd3bd4ed9de10,gpt-6.1-sol,20261016071909-cebc09,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1901.cpp|member||m_bfmeLevelAU,7da1904b206d5b3ac1984475,gpt-6.1-sol,20261016071909-cebc09,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|type||ContainModule0014DAB0,1a5017d9b1d3be02157016fa,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|type||Rva00336C20FieldAddress,a6b3e2a4a1daa7c5b700d67e,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|type||TAiData0014DAB0,47d7187cfafc2e3ea1a117cc,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|param|bfmeGetFinalOverride|o,052f279871cd0a7b4c9fb85c,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|local|getTemplate|t,b5fb5b39a02d6b2cc33d7125,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
