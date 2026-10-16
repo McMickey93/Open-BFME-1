@@ -4946,3 +4946,7 @@ game/GameEngine/Source/GameLogic/Object/Upgrade/SubObjectsUpgradeCtorThunk.cpp|m
 game/GameEngine/Source/GameLogic/Object/Upgrade/SubObjectsUpgradeCtorThunk.cpp|member||m_field1c,3cdaec24809a81e00e88911f,gpt-6.1-sol,20261016072130-4155cc,2026-10-16
 game/GameEngine/Source/Common/BfmeA1049_timedUpdate.cpp|member||m_bfmeP,26b233063f018e61b76f44b2,gpt-6.1-sol,20261016072119-21c6f8,2026-10-16
 game/GameEngine/Source/Common/BfmeA1049_timedUpdate.cpp|member||m_bfmeTime,fdcfd3c762e765988f3d1c0b,gpt-6.1-sol,20261016072119-21c6f8,2026-10-16
+game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstFlagged|p,99e8f1fbdcfbe5aac126ae03,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
+game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstFlagged|e,6500359ecd9fe92f5dc1aeb4,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
+game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstMapped|p,6d39fca63e6d2985238ae4cf,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
+game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstMapped|e,62065f317f3c63c1845ef006,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
