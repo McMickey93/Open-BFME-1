@@ -592,7 +592,7 @@ def queue_landed(rva, row, who=None, root=None, deps=None):
         who = who or owner(root)
         entry = {"rva": f"0x{int(rva):08X}", "row": row.strip(), "owner": who,
                  "lease": current_lease(rva, who, root),
-                 "queued": now, "base": _local_master(root), "deps": deps, "deps_truncated": truncated,
+                 "queued": now, "base": _queue_base(root), "deps": deps, "deps_truncated": truncated,
                  "id": uuid.uuid4().hex}
         with _queue_lock(root) as path:
             # a checkout nobody settles must not grow the queue forever: entries
@@ -603,65 +603,67 @@ def queue_landed(rva, row, who=None, root=None, deps=None):
         print(f"claims: could not queue landed body {rva}: {error}", file=sys.stderr)
 
 
-def _local_master(root=None):
-    """This checkout's refs/remotes/origin/master (no fetch), or None."""
-    got = _git("rev-parse", "-q", "--verify", "refs/remotes/origin/master^{commit}", cwd=root)
-    return (got.stdout.strip() or None) if got.returncode == 0 else None
+def _queue_base(root=None):
+    """origin/master's tip, freshly fetched into the private MASTER_SEEN ref,
+    as the landing's base: everything published after it is newer than this
+    verification. A stale refs/remotes/origin/master left an earlier publish
+    of the same blob inside the window (review 2026-10-15 round 2). None when
+    origin cannot be read: the landing then needs the tip blob."""
+    try:
+        return _fetch_tip(root)
+    except Exception:  # noqa: BLE001 -- bookkeeping never fails a landing
+        return None
 
 
 # A landing commit is made after add_match verified it, so its committer date
 # is not before the queue time; rebasing only moves it later. Allow host skew.
 QUEUE_SKEW = 600
-_ZERO = "0" * 40
+# At most this many commits that touch the dependencies are inspected.
+HISTORY_LIMIT = 400
 
 
 def published_since_queued(entry, tip, root=None):
-    """Did one commit on origin/master, after the origin/master the landing was
-    verified against (entry["base"], recorded at queue time) and committed no
-    earlier than the queue time, hold EVERY dependency blob at once?
+    """Did one commit on origin/master's first-parent chain after the
+    landing's base (entry["base"], fetched at queue time), committed no
+    earlier than the queue time, have a REAL tree holding every dependency
+    blob at once?
 
     A worker who lands the next body of the same file (AGENTS.md "Work the
-    file") changes the source again, so the tip's blob no longer equals the one
-    an earlier landing verified, and that landing waited out its claim. A blob
-    published only before the base -- a local repair that restores an earlier
-    published version -- never counts (review 2026-10-15, round 1). Entries
-    queued without a base never take this path."""
+    file") changes the source again, so the tip's blob no longer equals the
+    one an earlier landing verified, and that landing waited out its claim.
+    Each candidate's own tree is read (`ls-tree`): replaying diffs over the
+    base tree invented states a `git pull` merge never had (round 2). The
+    base must be on the tip's first-parent chain. Entries queued without a
+    base never take this path."""
     base, deps = entry.get("base"), entry.get("deps") or {}
     if not base or not deps:
         return False
-    if _git("merge-base", "--is-ancestor", base, tip, cwd=root).returncode:
+    chain = _git("rev-list", "--first-parent", tip, cwd=root, timeout=120)
+    if chain.returncode or base not in set(chain.stdout.split()):
         return False
     paths = sorted(deps)
-    listed = _git("ls-tree", "-r", base, "--", *paths, cwd=root, timeout=120)
-    if listed.returncode:
-        return False
-    state = {}
-    for line in listed.stdout.splitlines():
-        meta, _, path = line.partition("\t")
-        state[path] = meta.split()[2]
-    logged = _git("log", "--reverse", "--first-parent", "-m", "--no-renames", "--raw", "--no-abbrev",
-                  "--format=%x00%H %ct", f"{base}..{tip}", "--", *paths, cwd=root, timeout=120)
+    earliest = entry.get("queued", 0) - QUEUE_SKEW
+    logged = _git("log", "--first-parent", "--format=%H %ct", f"-n{HISTORY_LIMIT}", f"{base}..{tip}",
+                  "--", *paths, cwd=root, timeout=120)
     if logged.returncode:
         return False
-    earliest = entry.get("queued", 0) - QUEUE_SKEW
-
-    def holds():
-        return all(state.get(path, "") == blob for path, blob in deps.items())
-    when = None
     for line in logged.stdout.splitlines():
-        if line.startswith("\0"):
-            if when is not None and when >= earliest and holds():
-                return True
-            try:
-                when = int(line[1:].split()[1])
-            except (IndexError, ValueError):
-                when = None
+        try:
+            commit, when = line.split()
+            if int(when) < earliest:
+                continue
+        except ValueError:
             continue
-        meta, _, path = line.partition("\t")
-        fields = meta.split()
-        if len(fields) >= 4 and path in deps:
-            state[path] = "" if fields[3] == _ZERO else fields[3]
-    return when is not None and when >= earliest and holds()
+        listed = _git("ls-tree", "-r", commit, "--", *paths, cwd=root, timeout=120)
+        if listed.returncode:
+            continue
+        tree = {}
+        for item in listed.stdout.splitlines():
+            meta, _, path = item.partition("\t")
+            tree[path] = meta.split()[2]
+        if all(tree.get(path, "") == blob for path, blob in deps.items()):
+            return True
+    return False
 
 
 def pending(root=None):
@@ -676,6 +678,11 @@ def _row_key(row):
 
 
 def _fetch_master(root=None):
+    """origin/master's sha after a fetch, or None (see _fetch_tip)."""
+    return _fetch_tip(root)
+
+
+def _fetch_tip(root=None):
     """origin/master's sha after a fetch, or None.
 
     Fetched into this worktree's private ref (MASTER_SEEN), never

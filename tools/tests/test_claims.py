@@ -812,3 +812,77 @@ def test_settling_never_moves_the_worktrees_origin_master(hosts):
     claims.release_landed()
     assert _git(a, "rev-parse", "refs/remotes/origin/master").strip() == before
     assert _git(a, "rev-parse", claims.MASTER_SEEN).strip() != before
+
+
+# Review 2026-10-15 round 2 (build/review_op4_r2/cl/tools/tests/test_review_r2.py).
+ROW_R2 = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+
+
+def test_stale_base_unpushed_restore_within_window(hosts):
+    """a fetched long ago (base = 'base'); peers then publish X and break it
+    to Y within the 600 s window. a restores X locally, never pushes."""
+    a = hosts("a")
+    _commit_ledger(a, [], "base")
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    b = hosts("b")
+    _git(b, "fetch", "-q", "origin")
+    _git(b, "reset", "-q", "--hard", "origin/master")
+    _commit_ledger(b, [ROW_R2], "b lands f", {"game/x.cpp": "void f() {}\n"})
+    _commit_ledger(b, [ROW_R2], "c breaks f", {"game/x.cpp": "void f() { int broken; }\n"})
+    _git(b, "push", "-q", "origin", "HEAD:refs/heads/master")
+    a = hosts("a")                                       # no fetch: stale origin/master
+    claims.claim([0x100])
+    _commit_ledger(a, [ROW_R2], "repair f (local only)", {"game/x.cpp": "void f() {}\n"})
+    claims.queue_landed(0x100, ROW_R2)
+    # the base is origin's tip fetched at queue time, not the stale tracking ref
+    assert claims.pending()[0]["base"] == _git(a, "rev-parse", claims.MASTER_SEEN).strip()
+    assert claims.pending()[0]["base"] != _git(a, "rev-parse", "origin/master").strip()
+    assert claims.release_landed() == ([], [0x100])
+
+
+def test_peer_republish_of_same_blob_releases_unpushed(hosts):
+    """Not necessarily wrong: a peer after base publishes exactly a's blob."""
+    a = hosts("a")
+    _commit_ledger(a, [ROW_R2], "f", {"game/x.cpp": "void f() { int broken; }\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.claim([0x100])
+    _commit_ledger(a, [ROW_R2], "repair (local)", {"game/x.cpp": "void f() {}\n"})
+    claims.queue_landed(0x100, ROW_R2)
+    b = hosts("b")
+    _git(b, "fetch", "-q", "origin"); _git(b, "reset", "-q", "--hard", "origin/master")
+    _commit_ledger(b, [ROW_R2], "peer same fix", {"game/x.cpp": "void f() {}\n"})
+    _commit_ledger(b, [ROW_R2], "peer next", {"game/x.cpp": "void f() {}\nvoid g(){}\n"})
+    _git(b, "push", "-q", "origin", "HEAD:refs/heads/master")
+    hosts("a")
+    claims.release_landed()         # either answer is defensible; it must not raise
+
+
+def test_pull_merge_puts_base_on_second_parent_and_replay_mixes_lineages(hosts):
+    """origin/master gets a `git pull` (no rebase) merge: first parent = a
+    peer's local commit L forked before a's base B; B is the second parent.
+    Replaying L's diff over B's tree invents a state ({x fixed, y=1}) no
+    origin commit ever had."""
+    a = hosts("a")
+    _commit_ledger(a, [ROW_R2], "root", {"game/y.h": "#define Y 0\n", "game/x.cpp": "void f() { int broken; }\n"})
+    root = _git(a, "rev-parse", "HEAD").strip()
+    _commit_ledger(a, [ROW_R2], "B: y=1", {"game/y.h": "#define Y 1\n"})
+    B = _git(a, "rev-parse", "HEAD").strip()
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")     # a's origin/master = B
+    claims.claim([0x100])
+    (a / "game/x.cpp").write_text("void f() {}\n")
+    blob_x = _git(a, "hash-object", "game/x.cpp").strip()
+    blob_y = _git(a, "rev-parse", "HEAD:game/y.h").strip()
+    claims.queue_landed(0x100, ROW_R2, deps={"game/x.cpp": blob_x, "game/y.h": blob_y})  # unpushed
+    _git(a, "checkout", "-q", "--", "game/x.cpp")
+    # peer: forked at root, fixes x (y still 0), pulls with merge, resolves y back to 0
+    b = hosts("b")
+    _git(b, "fetch", "-q", "origin")
+    _git(b, "checkout", "-q", "-b", "w", root)
+    _commit_ledger(b, [ROW_R2], "L: x fixed", {"game/x.cpp": "void f() {}\n"})
+    _git(b, "merge", "-q", "--no-edit", "-s", "ours", "origin/master")   # M: x fixed, y=0
+    _commit_ledger(b, [ROW_R2], "break x", {"game/x.cpp": "void f() { int b2; }\n"})
+    _git(b, "push", "-q", "origin", "HEAD:refs/heads/master")
+    for rev in ("HEAD~1", "HEAD~2"):
+        print(rev, _git(b, "ls-tree", "-r", rev, "--", "game").strip())
+    hosts("a")
+    assert claims.release_landed() == ([], [0x100])
