@@ -248,7 +248,6 @@ class ThingTemplate;
 class BfmeObjectTemplateView
 {
 public:
-	const ThingTemplate *getTemplate() const { return m_template; }
 
 	void *m_vptr;
 	OVERRIDE<ThingTemplate> m_template;
@@ -271,7 +270,7 @@ public:
 
 static inline const ThingTemplate *getTemplate(Object *obj)
 {
-	return ((BfmeObjectTemplateView *)obj)->getTemplate();
+	return ((BfmeObjectTemplateView *)obj)->m_template;
 }
 
 Bool Team::hasAnyBuildings(Bool bfmeFlag) const
