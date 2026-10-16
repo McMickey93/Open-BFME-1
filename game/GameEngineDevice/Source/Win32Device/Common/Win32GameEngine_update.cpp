@@ -26,6 +26,7 @@ public:
 	BFME_VSLOT(12)
 	BFME_VSLOT(13)
 	virtual bool getQuitting() = 0;
+	virtual void reset();
 };
 
 class Win32GameEngine
@@ -50,6 +51,7 @@ public:
 	virtual void serviceWindowsOS() = 0;
 	virtual bool isActive() = 0;
 	virtual void update();
+	virtual void reset();
 };
 
 class LANAPI
@@ -84,6 +86,13 @@ class GameLogic;
 extern GameLogic *TheGameLogic;
 extern void *ApplicationHWnd;
 DWORD TheMessageTime = 0;
+
+// Retail 0x006BAB50: ZH extend-base reset, a lone tail jump to GameEngine::reset.
+// This TU's Win32GameEngine view does not derive from its GameEngine view.
+void Win32GameEngine::reset(void)
+{
+	((GameEngine *)this)->GameEngine::reset();
+}
 
 void Win32GameEngine::update(void)
 {

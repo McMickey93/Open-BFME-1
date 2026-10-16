@@ -91076,3 +91076,15 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ??1SpecialPowerModuleData@@UAE@XZ,0x0001D7B4,ILT to the matched SpecialPowerModuleData destructor body 0x00258730; ilt_oracle CONFIRMED exact; the implicit destructors of six derived module data classes tail-jump here
 ??1SupplyTruckWantsToPickUpOrDeliverBoxesState@@UAE@XZ,0x00008355,ILT 0x00008355 -> 0x002C6A10 (matched implicit ~SupplyTruckWantsToPickUpOrDeliverBoxesState); called by ??_G 0x002C69E0 (vtable 0x010C9308 slot 0)
 ?findDozer@AIPlayer@@MAEPAVObject@@PBVCoord3D@@@Z,0x0002CA57,ILT to AIPlayer::findDozer body 0x00165A50 (ledger row spells Coord3D PBU); ilt_oracle CONFIRMED the class-keyed PBV name here; AISkirmishPlayer::findDozer 0x00168900 tail-jumps to it
+?reset@GameEngine@@UAEXXZ,0x000212C9,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?update@TerrainLogic@@UAEXXZ,0x0004568D,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?adjustTerrainLOD@BaseHeightMapRenderObjClass@@UAEXH@Z,0x0002BFFD,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?ReleaseResources@BaseHeightMapRenderObjClass@@UAEXXZ,0x0004297E,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?ReAcquireResources@BaseHeightMapRenderObjClass@@UAEXXZ,0x0003B179,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?reset@BaseHeightMapRenderObjClass@@UAEXXZ,0x00030C51,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?init@GameClient@@UAEXXZ,0x0004559D,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?update@GameClient@@UAEXXZ,0x00026BB6,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?reset@GameClient@@UAEXXZ,0x00008675,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?update@InGameUI@@UAEXXZ,0x0000750E,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?reset@InGameUI@@UAEXXZ,0x000015A5,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?init@GameWindowManager@@UAEXXZ,0x00021C79,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here

@@ -11,3 +11,15 @@ void Win32Mouse::init( void )
 	Mouse::init();
 	reinterpret_cast<unsigned char *>(this)[0x4DA0] = 1;
 }
+
+// ?reset@Win32Mouse@@UAEXXZ
+void Win32Mouse::reset( void )
+{
+	Mouse::reset();
+}
+
+// ?update@Win32Mouse@@UAEXXZ
+void Win32Mouse::update( void )
+{
+	Mouse::update();
+}

@@ -122972,13 +122972,10 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006baa80@@YAXXZ,,0x006BAA80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00039FB3
 ?j_006bab30@@YAXXZ,,0x006BAB30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000442F1
 ?j_006bab40@@YAXXZ,,0x006BAB40,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0046b700
-?j_006bab50@@YAXXZ,,0x006BAB50,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000212C9
 ?j_006baed0@@YAXXZ,,0x006BAED0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0078f080
 ?j_006baf90@@YAXXZ,,0x006BAF90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00528fa0
 ?j_006bb510@@YAXXZ,,0x006BB510,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002290D
 ?j_006bb520@@YAXXZ,,0x006BB520,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001CE45
-?j_006bc0c0@@YAXXZ,,0x006BC0C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009a4410
-?j_006bc0d0@@YAXXZ,,0x006BC0D0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003D7FD
 ?j_006bc580@@YAXXZ,,0x006BC580,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003A35A
 ?j_006bc590@@YAXXZ,,0x006BC590,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000066EF
 ?j_006bc5a0@@YAXXZ,,0x006BC5A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003EAB3
@@ -172541,3 +172538,6 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?update@Win32CDManager@@UAEXXZ,,0x006BA4A0,5,game/GameEngineDevice/Source/Win32Device/Common/Win32CDManager.cpp,matched,ZH extend-base forwarder (jmp CDManager::update); ilt_oracle CONFIRMED at ILT 0x6a91 in the Win32CDManager vtable;model=claude-opus-5-5;host=app
 ?reset@Win32CDManager@@UAEXXZ,,0x006BA4B0,5,game/GameEngineDevice/Source/Win32Device/Common/Win32CDManager.cpp,matched,ZH extend-base forwarder (jmp CDManager::reset); ilt_oracle CONFIRMED at ILT 0x47d0c in the Win32CDManager vtable;model=claude-opus-5-5;host=app
 ?refreshDrives@Win32CDManager@@UAEXXZ,,0x006BA530,5,game/GameEngineDevice/Source/Win32Device/Common/Win32CDManager.cpp,matched,ZH extend-base forwarder (jmp CDManager::refreshDrives); ilt_oracle CONFIRMED at ILT 0x3014d in the Win32CDManager vtable;model=claude-opus-5-5;host=app
+?reset@Win32GameEngine@@UAEXXZ,,0x006BAB50,5,game/GameEngineDevice/Source/Win32Device/Common/Win32GameEngine_update.cpp,matched,ZH extend-base forwarder (jmp GameEngine::reset ILT 0x212C9); ilt_oracle CONFIRMED at Win32GameEngine vtable ILT 0x18D81;model=claude-opus-5-5;host=app
+?reset@Win32Mouse@@UAEXXZ,,0x006BC0C0,5,game/GameEngineDevice/Source/Win32Device/GameClient/Win32Mouse_init.cpp,matched,ZH extend-base forwarder (jmp Mouse::reset ILT); ilt_oracle CONFIRMED at Win32Mouse vtable ILT 0x316D8;model=claude-opus-5-5;host=app
+?update@Win32Mouse@@UAEXXZ,,0x006BC0D0,5,game/GameEngineDevice/Source/Win32Device/GameClient/Win32Mouse_init.cpp,matched,ZH extend-base forwarder (jmp Mouse::update ILT); ilt_oracle CONFIRMED at Win32Mouse vtable ILT 0x39B76;model=claude-opus-5-5;host=app
