@@ -681,3 +681,44 @@ def test_fetch_never_touches_the_old_shared_mirror(hosts):
         "refs/claims-seen/00000100"]
     assert set(claims._read_local(a)) == {0x300}
 
+
+def test_a_landing_settles_after_a_later_edit_of_its_file(hosts):
+    # 2026-10-15 fleet: workers land the next body of the same file, so the
+    # tip's blob never matched an earlier landing's and it waited out its claim.
+    a = hosts("a")
+    _commit_ledger(a, [], "base")
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.claim([0x100])
+    row = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+    _commit_ledger(a, [row], "land f", {"game/x.cpp": "void f() {}\n"})
+    claims.queue_landed(0x100, row)
+    _commit_ledger(a, [row], "land g", {"game/x.cpp": "void f() {}\nvoid g() {}\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed() == ([0x100], [])
+    assert claims.active() == {} and claims.pending() == []
+
+
+def test_a_never_published_blob_still_waits(hosts):
+    a = hosts("a")
+    _commit_ledger(a, [], "base")
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.claim([0x100])
+    row = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+    (a / "game").mkdir(exist_ok=True)
+    (a / "game/x.cpp").write_text("void f() { /* local only */ }\n", encoding="utf-8")
+    claims.queue_landed(0x100, row)
+    _commit_ledger(a, [row], "land f", {"game/x.cpp": "void f() {}\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed() == ([], [0x100])
+    assert 0x100 in claims.active()
+
+
+def test_a_landed_entry_without_a_lease_settles_instead_of_waiting(hosts):
+    a = hosts("a")
+    row = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+    _commit_ledger(a, [row], "published", {"game/x.cpp": "void f() {}\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.queue_landed(0x100, row)                 # never claimed: no lease
+    assert claims.pending()[0].get("lease") in (None, "")
+    assert claims.release_landed() == ([], [])
+    assert claims.pending() == []

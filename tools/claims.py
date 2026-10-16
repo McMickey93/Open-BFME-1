@@ -703,6 +703,23 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
         for line in listed.stdout.splitlines():
             meta, _, path = line.partition("\t")
             published[path] = meta.split()[2]
+    # Every blob origin/master published for those paths since the oldest
+    # queued landing: a worker who lands the next body of the same file (the
+    # AGENTS.md unit of work) changes the source again, so the tip's blob
+    # never equals the one an earlier landing verified, and that landing
+    # waited out its claim. A verified blob origin/master published, and
+    # later superseded, was landed all the same.
+    history = set()
+    if wanted:
+        since = min((e.get("queued", 0) for e in queue), default=0) - 86400
+        logged = _git("log", "--raw", "--no-abbrev", "--format=", f"--since={int(since)}", tip,
+                      "--", *wanted, cwd=root, timeout=120)
+        if logged.returncode == 0:
+            for line in logged.stdout.splitlines():
+                meta, _, path = line.partition("\t")
+                fields = meta.split()
+                if len(fields) >= 4 and path in wanted:
+                    history.add((path, fields[3]))
 
     def landed(entry):
         deps = entry.get("deps")
@@ -711,7 +728,8 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
         # a source missing locally proves nothing about what was verified
         if not deps.get(entry["row"].split(",")[4]):
             return False
-        return all(published.get(path, "") == blob for path, blob in deps.items())
+        return all(published.get(path, "") == blob or (path, blob) in history
+                   for path, blob in deps.items())
     if sha:
         landed_rvas(sha, root, tip)        # raises unless the commit is on origin/master
     # The trailer IS the landing evidence: a ledger conversion names the body
@@ -738,9 +756,14 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
             keep.append(entry)
             waiting.append(rva)
             continue
-        if landed(entry) and entry.get("lease"):
+        is_landed = landed(entry)
+        if is_landed and entry.get("lease"):
             holder = entry.get("owner") or who or owner(root)
             by_owner.setdefault(holder, {}).setdefault(rva, set()).add(entry["lease"])
+        elif is_landed:
+            # landed, but queued without a claim lease: nothing to release,
+            # so it settles here instead of waiting out keep_days
+            pass
         else:
             unsettled.add(rva)
             if now - entry.get("queued", 0) < keep_days * 86400:
