@@ -4308,3 +4308,5 @@ game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|member||m_bfmeAt,725cc4ff
 game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|member||m_bfmeEnd,6467e6b71bdc9f483715798b,gpt-6.1-sol,20261016064611-63475f,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1226.cpp|function|BfmeA1226@|bfmeDump1226,1c452ecc133bdfc5fa9a635f,gpt-6.1-sol,20261016064616-7ccc2b,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1226.cpp|local|BfmeA1226::bfmeDump1226|e,2f2fd17341b09060a3dfd7a3,gpt-6.1-sol,20261016064616-7ccc2b,2026-10-16
+game/Libraries/Source/EA/Apt/Rva008A7B00KeyboardProperties.cpp|param|addPooled|v,5c4febe102f565de2142c711,gpt-6.1-sol,20261016063809-385975,2026-10-16
+game/Libraries/Source/EA/Apt/Rva008A7B00KeyboardProperties.cpp|local|pooledInteger|v,751a775d65c10afc71700d64,gpt-6.1-sol,20261016063809-385975,2026-10-16
