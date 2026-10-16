@@ -1433,13 +1433,12 @@ def _counts_as_identity(row):
     other placeholder or invented stand-in (ilt_oracle.tier): those are honest
     "unknown" names. A real decorated name does, row or pin alike.
     """
-    import ilt_oracle
     if pin_exemption(row):
         return False
     spelled = SELF_ADDRESSED.match(row["name"])
     if spelled and int(spelled.group(1), 16) == int(row["address"], 16):
         return False
-    return ilt_oracle.tier(row["name"]) == "real"
+    return not alias_spelling(row["name"])
 
 
 class Identities:
@@ -1499,7 +1498,7 @@ def _judge_pin(name, address, here, oracle):
     """(kind, why) when a pin NAME at ADDRESS conflicts with the names HERE
     (the other identities of the body it names), else None."""
     import ilt_oracle
-    real = ilt_oracle.tier(name) == "real"
+    real = not alias_spelling(name)
     if real:
         verdict, _p, why = oracle.check(name, address)
         if verdict == ilt_oracle.CONTRADICTED:
@@ -1510,7 +1509,7 @@ def _judge_pin(name, address, here, oracle):
         # The ILT window fits ~2.5e-4 of names, so a signature variant of the
         # real owner can be salted to fit. CONFIRMED wins only over names that
         # are no claim (placeholders) or that the same slot refutes.
-        rivals = sorted(o for o in here if ilt_oracle.tier(o) == "real"
+        rivals = sorted(o for o in here if not alias_spelling(o)
                         and oracle.check(o, address)[0] != ilt_oracle.CONTRADICTED)
         if not rivals:
             return None
@@ -1530,14 +1529,21 @@ def _show_walk(identities, address):
 def alias_spelling(name):
     """Is NAME an invented or placeholder spelling rather than a real one?
 
-    Exactly ilt_oracle.tier(name) != "real" -- the classification ilt_guard
-    already uses: "placeholder" is an address-derived or generated spelling
-    (`Rva`/`rva` + 6-8 hex digits, a run of 6+ hex characters with 3+ digits,
-    `?a_/?b_/?d_/?j_<hex>@@`, `dup_`, `Gen_`, `FUN_`, `sub_`, `tg_`, `$L`, `$S`);
-    "invented" is a Bfme* stand-in (`bfme`, any case, anywhere in the name).
+    ilt_oracle.tier applied to the function's OWN components only: its
+    qualified name (method and enclosing classes, a class's template arguments
+    included) as abi_view.qualified_prefix reads it, or the whole name when it
+    has no C++ qualification (`_foo@4`, `$L314`). "placeholder" is an
+    address-derived or generated spelling (`Rva`/`rva` + 6-8 hex digits, a run
+    of 6+ hex characters with 3+ digits, `?a_/?b_/?d_/?j_<hex>@@`, `sub_`/
+    `FUN_`/`dup_` + hex at a name boundary, `Gen_` at a boundary, `tg_`, `$L`,
+    `$S`); "invented" is a Bfme* stand-in (`bfme`, any case). A placeholder
+    PARAMETER type does not make a real Class::method an alias:
+    ?calculate@PartitionManagerImpl@@QAEXPAUGen009F5040Node@@PAH11@Z is a real
+    identity claim (coordinator's conservative policy, 2026-10-16).
     """
+    import abi_view
     import ilt_oracle
-    return ilt_oracle.tier(name) != "real"
+    return ilt_oracle.tier(abi_view.qualified_prefix(name) or name) != "real"
 
 
 def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=None):
@@ -1571,11 +1577,20 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=N
     renamed = {(r["name"], _rva(r, "target_rva")) for r in delta_.rows_removed
                if any(names_identity(a) for a in delta_._by["rows+"].get(_rva(r, "target_rva"), ()))}
 
+    # A base name that names a DIFFERENT body on the new side has moved (like a
+    # rename): the address it vacated is judged against the new state only.
+    new_bodies = collections.defaultdict(set)
+    for new_body, names in new_ids.names.items():
+        for name in names:
+            new_bodies[name].add(new_body)
+
     def union_at(body, excluding):
         out = new_ids.at(body, excluding)
         for name, sources in base_ids.names.get(body, {}).items():
             if excluding and name == excluding[0]:
                 sources = sources - {excluding[1]}
+            if new_bodies.get(name) and body not in new_bodies[name]:
+                continue
             if any(not (kind == "row" and (name, rva) in renamed) for kind, rva in sources):
                 out.add(name)
         return out
@@ -1680,47 +1695,49 @@ def added_overrides(base_ref, new_ref):
             for name, address, reason in OVERRIDE_RE.findall(added)]
 
 
-def base_identifier(name):
-    """The plain identifier a source file spells for a decorated NAME:
-    `?unregister@Manager@@...` -> unregister, `??1?$List@...` -> List,
-    `??0Foo@@...` -> Foo, `_foo` -> foo."""
-    found = re.match(r"\?(?:\?[0-9A-Z]|\?_[0-9A-Z])?(?:\?\$)?([A-Za-z_][A-Za-z0-9_]*)", name)
-    if found:
-        return found.group(1)
-    found = re.match(r"_*([A-Za-z][A-Za-z0-9_]*)", name)
-    return found.group(1) if found else None
+CALLER_NOT_EVIDENCE = ("game/gen_small/", "game/gen_asm/", "game/masm_dumps/")
 
 
 def verify_override(scanner, new_ref, name, address, reason):
     """None when an override's cited fact checks out, else why not.
 
-    The reason must cite `caller=0x<rva>`: the start of a matched functions.csv
-    row with a hand-written source (not generated) whose retail bytes call or
-    jump to ADDRESS (E8/E9 rel32) and whose source spells NAME's identifier --
-    a byte-verified caller that reaches this address under this name.
+    The reason must cite `caller=0x<rva>`: the start of exactly one matched,
+    hand-written C++ row (game/**.cpp, not gen_small/gen_asm/masm_dumps, no
+    gen- note) whose retail bytes call or jump to ADDRESS (E8/E9 rel32), and
+    whose COMPILED OBJECT, current with its source, carries at that site a
+    REL32 relocation naming exactly NAME -- one_identity.caller_names's test.
+    A word in the source (a comment, another class's member) proves nothing.
     """
+    import delta_sources
     cited = OVERRIDE_CALLER_RE.search(reason)
     if not cited:
         return "the reason cites no caller=0x<rva>"
     caller = int(cited.group(1), 16)
     rows = [r for r in (scanner.rows if scanner.rows is not None else build.load_all_function_rows())
             if r["status"] == "matched" and int(r["target_rva"], 16) == caller
-            and not r["source"].startswith(progress.GENERATED_ROOTS)]
+            and r["source"].startswith("game/") and r["source"].endswith(".cpp")
+            and not r["source"].startswith(CALLER_NOT_EVIDENCE)
+            and not progress.GEN_NOTE_RE.search(r["notes"] or "")]
     if len(rows) != 1:
-        return f"0x{caller:08X} is not the start of exactly one matched hand-written row"
+        return (f"0x{caller:08X} is not the start of exactly one matched hand-written C++ row "
+                "(generated, gen- noted and masm_dumps rows name whatever the ledger said)")
     row, size = rows[0], int(rows[0]["target_size"])
     code = build.read_target_bytes(caller, size)
     sites = [i for i in range(len(code) - 4) if code[i] in (0xE8, 0xE9)
              and caller + i + 5 + struct.unpack_from("<i", code, i + 1)[0] == address]
     if not sites:
         return f"{row['name']} (0x{caller:08X}, {size} bytes) has no E8/E9 to 0x{address:08X}"
-    word = base_identifier(name)
-    try:
-        text = _read_side(new_ref, row["source"])
-    except (OSError, SystemExit):
-        return f"cannot read the caller's source {row['source']}"
-    if not word or not re.search(rf"\b{re.escape(word)}\b", text):
-        return f"the caller's source {row['source']} never spells {word!r}"
+    obj = build.row_object(row)
+    if not obj.exists() or not delta_sources.object_is_current(ROOT / row["source"], obj):
+        return f"the caller's object for {row['source']} is missing or stale; build it first"
+    defined, rel32 = delta_sources.object_rel32(obj)
+    placed = defined.get(build.ledger_object_symbol(row))
+    if placed is None:
+        return f"{row['name']} is not defined in {obj.name}"
+    named = {rel32.get((placed[0], placed[1] + i + 1)) for i in sites}
+    if name not in named:
+        return (f"{row['name']}'s object names {sorted(n for n in named if n) or ['nothing']} at its "
+                f"call site(s) to 0x{address:08X}, not {name}")
     return None
 
 
@@ -1832,10 +1849,8 @@ def delta(base_ref, new_ref=":"):
                 print(f"    [{kind}] {name} 0x{address:08X}")
                 print(f"        {why}")
             print("    Pin the body the name really is, keep an address-derived name, or use an "
-                  "abi-view=/route= row the image admits. For proof the checks cannot see, add "
-                  "`pin-identity-override: <name> 0x<address> caller=0x<rva> <why>` to an "
-                  f"{EVIDENCE_REL}/ file in this commit, with an `Identity-Override: <name> "
-                  "0x<address>` trailer.")
+                  "abi-view=/route= row the image admits (tools/pin_consistency.py, \"WHAT THIS "
+                  "DOES NOT CATCH\").")
         print("    Existing debt never blocks; this diff ADDS the lines above. "
               "Do not record them anywhere to go green.")
         raise SystemExit(1)

@@ -73,6 +73,7 @@ PROTECTED = (
     # the advisory audit: its judge allowlist (judges.json), canaries and harness
     "tools/audit/*",
     "tools/ilt_oracle.py", "tools/ilt_guard.py", "targets/game/reverse/ilt_windows.tsv",
+    "tools/abi_view.py",
     # the hooks and CI that run all of the above
     ".githooks/*", ".github/workflows/*",
     # debt registers and exemption lists
@@ -329,13 +330,19 @@ def commit_paths(sha):
 def check_range(base, tip):
     commits = git("rev-list", "--reverse", f"{base}..{tip}", check=True).stdout.split()
     bad, grown = 0, []
+    undeclared = 0
     for sha in commits:
-        parent = (parents_of(sha) or ["4b825dc642cb6eb9a060e54bf8d69288fbee4904"])[0]
-        missing = undeclared_overrides(added_overrides(parent, sha),
+        # An override line counts only when it is new against EVERY parent, so
+        # a merge does not re-declare lines one side already carried.
+        added = None
+        for parent in parents_of(sha) or ["4b825dc642cb6eb9a060e54bf8d69288fbee4904"]:
+            mine = added_overrides(parent, sha)
+            added = mine if added is None else added & mine
+        missing = undeclared_overrides(added or set(),
                                        git("log", "-1", "--format=%B", sha, check=True).stdout)
         if missing:
             report_overrides(missing, f" in {sha[:10]}")
-            bad += 1
+            undeclared += 1
         paths = commit_paths(sha)
         hits = protected(paths)
         if not hits:
@@ -350,13 +357,17 @@ def check_range(base, tip):
         mine = growth(parents, sha, set(paths), set(paths) if why else set())
         grown += [(f"{path} in {sha[:10]}", items) for path, items in mine]
     report_growth(grown)
+    if undeclared:
+        print(f"pre-push: {undeclared} outgoing commit(s) add a pin-identity-override line without "
+              "its `Identity-Override: <name> 0x<address>` trailer (reword the commit).",
+              file=sys.stderr)
     if bad:
         print(f"pre-push: {bad} outgoing commit(s) change verifier code or a baseline "
               "without a Verifier-Change trailer.", file=sys.stderr)
         print(HOWTO.replace("(git commit --amend keeps your change; the push hook checks every commit.)",
                             "(reword the named commit: git commit --amend if it is the last one)"),
               file=sys.stderr)
-    return 1 if bad or grown else 0
+    return 1 if bad or grown or undeclared else 0
 
 
 def main(argv=None):

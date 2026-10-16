@@ -56,7 +56,12 @@ B_LO, B_HI, B_FIT = 38326, 38340, 38333        # research 24: table size range a
 SAFETY = 2.5                                     # measured 6.2e-4 false fits vs 2.5e-4 modelled (research 31)
 CONFIRMED, CONTRADICTED, UNTESTABLE = "CONFIRMED", "CONTRADICTED", "UNTESTABLE"
 
-PLACEHOLDER = re.compile(r"(Rva[0-9A-Fa-f]{6,8}|FUN_|sub_|Gen_|^\?[abdj]_[0-9A-Fa-f]+@@|dup_|^\?*tg_|^\$L|^\$S"
+# Generator tokens count only at a name boundary and, where they carry one, with
+# their address: `sub_`/`FUN_`/`dup_` + 6-8 hex digits, `Gen_` case-sensitive. A
+# real name merely containing the letters (?Update_Sub_Object_Transforms@...)
+# is not a placeholder (review 2026-10-16).
+PLACEHOLDER = re.compile(r"(Rva[0-9A-Fa-f]{6,8}|(?<![A-Za-z0-9])(?:FUN|sub|dup)_[0-9A-Fa-f]{6,8}"
+                         r"|(?<![A-Za-z0-9])(?-i:Gen_)|^\?[abdj]_[0-9A-Fa-f]+@@|^\?*tg_|^\$L|^\$S"
                          r"|^\?\?_?[0-9A-Z]?[a-z]?_[0-9a-f]{8}@@)", re.I)
 HEXRUN = re.compile(r"[0-9A-Fa-f]{6,}")
 INVENTED = re.compile(r"bfme", re.I)

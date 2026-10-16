@@ -124,6 +124,14 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
         git cat-file -e "$local_sha:$checker" && git diff --quiet "$local_sha" -- "$checker" \
             || fail "name checker differs from pushed snapshot: $checker; commit or revert its edits"
     done
+    # The identity checkers this hook runs below from the working tree: an
+    # uncommitted edit must not judge the push (present on either side).
+    for checker in tools/pin_consistency.py tools/ilt_oracle.py tools/abi_view.py; do
+        if [ -e "$checker" ] || git cat-file -e "$local_sha:$checker" 2>/dev/null; then
+            git cat-file -e "$local_sha:$checker" && git diff --quiet "$local_sha" -- "$checker" \
+                || fail "identity checker differs from pushed snapshot: $checker; commit or revert its edits"
+        fi
+    done
     python3 tools/name_regression.py "$base" "$local_sha" || fail "descriptive names regressed in outgoing range (see above)"
     # A move of every game TU cannot fit the normal bounded selector list.
     # Recheck the exact migration and whole image against the pushed snapshot.

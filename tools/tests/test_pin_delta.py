@@ -304,14 +304,88 @@ def test_r1_6_a_pin_inside_a_named_body_is_refused(tmp_path, rows, scanner, symb
         [("pin-inside-body", FAKE, BORDER_BODY + 0x10)]
 
 
-def test_r1_7_an_override_needs_a_verified_caller():
-    good = "caller=0x00C57408 its unwind funclet destroys the string through this body"
-    s = P.Scanner()
-    assert P.verify_override(s, None, "??1Rva8CD130String@@QAE@XZ", EASTRING_BODY, good) is None
-    assert "no caller" in P.verify_override(s, None, FAKE, EASTRING_BODY, "trust me, it is")
-    assert "never spells" in P.verify_override(s, None, FAKE, EASTRING_BODY, good)
-    assert "no E8/E9" in P.verify_override(s, None, "??1Rva8CD130String@@QAE@XZ",
-                                           EASTRING_BODY + 1, good)
+# 0x008AD8F0's object (built by this worktree's gate) calls 0x008AD750 at
+# 0x008AD909 through a REL32 naming exactly this symbol.
+BINDING_CALLER, BINDING_CALLEE = 0x008AD8F0, 0x008AD750
+BINDING_NAME = "?refresh@Rva008AD750StringBinding@@QAEXPAVRva8CD130Value@@@Z"
+
+
+def _binding_object_ready():
+    import delta_sources
+    row = next(r for r in build.load_all_function_rows()
+               if int(r["target_rva"], 16) == BINDING_CALLER and r["status"] == "matched")
+    obj = build.row_object(row)
+    return obj.exists() and delta_sources.object_is_current(build.ROOT / row["source"], obj)
+
+
+def test_r2_1_an_override_needs_the_callers_relocation(scanner):
+    """Review round 2: a word in the caller's source (a comment) once passed.
+    Only the caller's compiled object, naming the exact symbol at the call
+    site, proves the override."""
+    if not _binding_object_ready():
+        pytest.skip("0x008AD8F0's object is not built in this checkout")
+    why = "caller=0x008AD8F0 calls it under this name"
+    assert P.verify_override(scanner, None, BINDING_NAME, BINDING_CALLEE, why) is None
+    for other in (FAKE, "?refresh@Rva008AD750StringBinding@@QAEXPAVOther@@@Z",
+                  "??0Rva008AD750StringBinding@@QAE@XZ"):
+        assert "object names" in P.verify_override(scanner, None, other, BINDING_CALLEE, why)
+    assert "no E8/E9" in P.verify_override(scanner, None, BINDING_NAME, BINDING_CALLEE + 1, why)
+
+
+def test_r2_1_generated_noted_and_masm_callers_prove_nothing(scanner):
+    funclet = "caller=0x00C57408 its unwind funclet destroys the string"     # gen-funclet note
+    assert "hand-written C++" in P.verify_override(scanner, None, "??1Rva8CD130String@@QAE@XZ",
+                                                   EASTRING_BODY, funclet)
+    masm = next(r for r in build.load_all_function_rows()
+                if r["status"] == "matched" and r["source"].startswith("game/masm_dumps/"))
+    why = f"caller={masm['target_rva']} a hand-written dump"
+    assert "hand-written C++" in P.verify_override(scanner, None, FAKE, EASTRING_BODY, why)
+    assert "no caller" in P.verify_override(scanner, None, FAKE, EASTRING_BODY, "trust me, it is")
+
+
+def test_r2_1_a_stale_object_proves_nothing(scanner, monkeypatch):
+    import delta_sources
+    monkeypatch.setattr(delta_sources, "object_is_current", lambda source, obj: False)
+    why = "caller=0x008AD8F0 calls it under this name"
+    assert "missing or stale" in P.verify_override(scanner, None, BINDING_NAME, BINDING_CALLEE, why)
+
+
+def test_r2_2_alias_means_the_functions_own_components():
+    """Placeholder PARAMETER types do not make a real Class::method an alias,
+    and generator tokens count only at a boundary with their address."""
+    assert not P.alias_spelling("?calculate@PartitionManagerImpl@@QAEXPAUGen009F5040Node@@PAH11@Z")
+    assert not P.alias_spelling("?Update_Sub_Object_Transforms@RenderObjClass@@UAEXXZ")
+    assert ilt_oracle.tier("?Update_Sub_Object_Transforms@RenderObjClass@@UAEXXZ") == "real"
+    assert ilt_oracle.tier("?Set_Fun_Mode@Foo@@QAEXXZ") == "real"
+    assert ilt_oracle.tier("sub_00401000") == "placeholder"
+    assert ilt_oracle.tier("?x@@YAXPAUFoo_Gen_@@@Z") == "placeholder"   # Gen_ at a boundary
+    assert ilt_oracle.tier("?x@GenericThing@@QAEXXZ") == "real"
+    assert P.alias_spelling("??1?$pair@$$CBVAsciiString@@W4Rva001360E0Mapped@@@_STL@@QAE@XZ"), \
+        "a class's own template arguments are part of the class"
+
+
+def test_r2_3_the_identity_tools_are_protected_and_pinned_at_push():
+    import protected_paths
+    assert protected_paths.protected(["tools/abi_view.py", "tools/ilt_oracle.py",
+                                      "tools/pin_consistency.py"]) == \
+        ["tools/abi_view.py", "tools/ilt_oracle.py", "tools/pin_consistency.py"]
+    hook = (TOOLS.parent / ".githooks/pre-push").read_text()
+    loop = hook[hook.index("for checker in tools/pin_consistency.py"):]
+    loop = loop[:loop.index("done")]
+    assert "differs from pushed snapshot" in loop
+    for tool in ("pin_consistency.py", "ilt_oracle.py", "abi_view.py"):
+        assert f"tools/{tool}" in loop
+
+
+def test_r2_4_a_moved_identity_does_not_guard_the_address_it_left(tmp_path, rows, scanner,
+                                                                 symbols_text):
+    """The row moves to another address in the same commit; pinning the
+    vacated address is judged against the new state only."""
+    owner = _row_at(rows, EASTRING_BODY)
+    moved = dict(owner, target_rva="0x00891B90")
+    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+                      rows_added=[moved], pins_added=[pin(FAKE, EASTRING_BODY)])
+    assert ("pin-on-other-identity", FAKE, EASTRING_BODY) not in found
 
 
 def test_r1_7_an_override_is_exact_and_never_excuses_a_contradiction():
@@ -551,3 +625,34 @@ def test_b_the_default_alias_log_is_the_main_checkouts(monkeypatch):
     assert P.alias_log_path() == common.parent / "build/linkfleet/ds/pin_alias_cleanup.tsv"
     monkeypatch.setenv("BFME_PIN_ALIAS_LOG", "/tmp/elsewhere.tsv")
     assert P.alias_log_path() == Path("/tmp/elsewhere.tsv")
+
+
+def test_r2_5_a_merge_does_not_redeclare_a_parents_override(tmp_path, monkeypatch):
+    import protected_paths
+    repo = _evidence_repo(tmp_path, monkeypatch)
+    monkeypatch.chdir(repo)
+    base = _git(repo, "rev-parse", "HEAD").strip()
+    _git(repo, "checkout", "-q", "-b", "side")
+    (repo / P.EVIDENCE_REL / "b.md").write_text(
+        f"pin-identity-override: {FAKE} 0x00479040 caller=0x00C57408 the funclet calls it\n")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", f"side\n\nIdentity-Override: {FAKE} 0x00479040")
+    _git(repo, "checkout", "-q", "-")
+    (repo / "other.txt").write_text("x")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "main side")
+    _git(repo, "merge", "-q", "--no-ff", "-m", "merge without trailers", "side")
+    assert protected_paths.check_range(base, "HEAD") == 0
+
+
+def test_r2_5_a_missing_override_trailer_has_its_own_message(tmp_path, monkeypatch, capsys):
+    import protected_paths
+    repo = _evidence_repo(tmp_path, monkeypatch)
+    monkeypatch.chdir(repo)
+    (repo / P.EVIDENCE_REL / "b.md").write_text(
+        f"pin-identity-override: {FAKE} 0x00479040 caller=0x00C57408 the funclet calls it\n")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "no trailer")
+    assert protected_paths.check_range("HEAD~1", "HEAD") == 1
+    err = capsys.readouterr().err
+    assert "Identity-Override" in err and "Verifier-Change trailer" not in err
