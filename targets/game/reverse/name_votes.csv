@@ -4192,3 +4192,16 @@ game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorCompletion.
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorCompletion.cpp|member||field200,97e412e0082cbe34538a1f09,gpt-6.1-sol,20261016064146-de139f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorCompletion.cpp|member||field204,be977c925a42153903de88e7,gpt-6.1-sol,20261016064146-de139f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorCompletion.cpp|member||field04,42b8fed3c2d4ca25faae0855,gpt-6.1-sol,20261016064146-de139f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_scanDelay08,d4f94f8da1af789f20b36a19,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_mask0c,29acb6e779075f816e4dc3b2,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_range24,952e678391cfba1656e7371e,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_filter2c,dd0f92b0edf33936068ef2e9,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_entries30,fa3c1ca1688114e7e90dab54,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_flag3c,3ceb0e1c85f322a1d54264eb,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_flag3d,70a52a384d4568b948853a53,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|member||m_flag44,72a130c9452d7b19872e2322,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|Rva001DCBB0Filter|p,d2c3f611464a6362112ed9ae,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|PartitionFilterPlayerAffiliation|p,82e717cfe0b4c82b3c096522,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|Rva00265150RJFilter|p,7f9c414ba10b5a60205bc3e3,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|Rva00260180SelfFilter|p,2db1cb76cb6e97078b6d104d,gpt-6.1-sol,20261016064151-d38322,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateUpdate.cpp|param|PartitionFilterRelationship|p,c93aae4f4776302d8bd3c595,gpt-6.1-sol,20261016064151-d38322,2026-10-16
