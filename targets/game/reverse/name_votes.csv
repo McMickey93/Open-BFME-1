@@ -4791,3 +4791,7 @@ game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|m
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_xfer.cpp|member||m_field50,2a41fc15ac4b228120a43c5f,gpt-6.1-sol,20261016071604-a9488e,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_xfer.cpp|member||m_field5C,b94907a50ef4ca9d2bb02bc4,gpt-6.1-sol,20261016071604-a9488e,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_xfer.cpp|member||m_field78,045a3fa3baef6a8b10f0320a,gpt-6.1-sol,20261016071604-a9488e,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|member||m_bfmeNext,79d3b1eab6e3e0a3411e5479,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|local|getTemplate|tmpl,d718d5958d8930448e6b9fc4,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|param|Object::isKindOf|t,9010442d13f8690a83a754e6,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|local|AIGroup::recompute|p,b8a071e9c5d0548d8ae83998,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
