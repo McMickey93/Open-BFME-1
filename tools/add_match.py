@@ -344,6 +344,36 @@ def batch_verification_environment(request_path):
     return environment
 
 
+def emptied_generated_source(root, replaced, rows):
+    """The game/gen_small/ TU a repoint of REPLACED leaves owning nothing, or None.
+
+    build.verify_source_claims fails the full gate on any game/ .cpp with zero
+    matched rows (functions.csv or data_rows.csv), and the delta path never checks
+    a source that only LOST rows: 5c065afaba moved the last two rows out of
+    W3AtlConversionHolderCtors.cpp and every full gate went red until e6e493867a
+    deleted it. A frozen TU that owns nothing is deleted with the repoint that
+    emptied it. Rows of any other status still naming the file would point at a
+    missing source, so that case is refused before anything is written."""
+    source = replaced["source"]
+    if any(row is not replaced and row["source"] == source and row["status"] == "matched"
+           for row in rows):
+        return None
+    data_csv = Path(root) / "targets/game/reverse" / "data_rows.csv"
+    if data_csv.exists():
+        with data_csv.open(encoding="utf-8", newline="") as handle:
+            if any(row.get("source") == source and row.get("status") == "matched"
+                   for row in csv.DictReader(handle)):
+                return None
+    others = sorted(row["name"] for row in rows
+                    if row is not replaced and row["source"] == source)
+    if others:
+        fail(f"--replace-rva 0x{replaced['rva']:08X} moves the last matched row out of "
+             f"{source}, which must then be deleted, but {len(others)} unmatched row(s) "
+             f"still name it: {', '.join(others[:5])}",
+             "settle those rows first (repoint or retire them), then repoint this one")
+    return source
+
+
 def orphaned_caller_selectors(root, replaced):
     """Exact build selectors for matched rows whose call into REPLACED loses its target.
 
@@ -734,6 +764,7 @@ def main():
     rows = parse_ledger(raw)
     claims = [row for row in rows if row["name"] == name]
     replaced = None
+    emptied_tu = None   # a game/gen_small/ TU this repoint leaves with no matched row
     if args.replace_rva:
         if args.replace_existing:
             fail("--replace-rva and --replace-existing are alternatives: one keys "
@@ -825,6 +856,7 @@ def main():
                 problem = gen_dtor_successor_problem(root, replaced, name, rows)
                 if problem:
                     fail(problem)
+            emptied_tu = emptied_generated_source(root, replaced, rows)
     if args.replace_existing:
         if not claims:
             # 36 named __emit lifts carry a truncated decoration such as
@@ -994,6 +1026,15 @@ def main():
             restore()
             fail(f"{', '.join(definers)} also define(s) {name}: a generated copy could win "
                  "the link over the verified body — append and marker strip REVERTED")
+    if emptied_tu is not None:
+        # Last, after every check that reads the frozen TU or the census of it: the
+        # file now owns no matched row, and source claims fail on it until it goes.
+        emptied_path = root / emptied_tu
+        if emptied_path.exists():
+            emptied_path.unlink()
+            print(f"add_match: deleted {emptied_tu}: the repoint moved its last matched row "
+                  "out (source claims fail on an empty TU); stage the deletion with "
+                  f"`git rm --cached {emptied_tu}` or `git add -A {emptied_tu}`")
     print("add_match: verified OK — row is live")
     admit_compiler_label_alias(root, args.notes, rva, raw,
                                None if replaced is None else replaced["rva"])

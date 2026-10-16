@@ -561,3 +561,75 @@ def test_r2_6_renamed_gen_dtor_placeholder_is_out_of_scope(tmp_path, monkeypatch
     files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[row, SIBLING_ROW])
     refused(files)
     assert "out of scope" in capsys.readouterr().err
+
+
+# --- an emptied frozen TU is deleted with the repoint (source claims) -----------------
+
+def frozen_tu(tmp_path, tu=DTOR_TU):
+    path = tmp_path / tu
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"// frozen generated TU\r\n")
+    return path
+
+
+def test_last_row_repoint_deletes_the_emptied_tu(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW])
+    tu = frozen_tu(tmp_path)
+    add_match.main()
+    assert not tu.exists()
+    assert f"{REAL},,{RVA},84,{SOURCE_REL},matched," in files[0].read_text()
+    # nothing is left in the TU to re-verify
+    assert recorder.builds[0][1:] == [SOURCE_REL]
+
+
+def test_hand_written_last_row_deletes_its_tu(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(
+        tmp_path, monkeypatch, rows=[HAND_ROW], name=HAND_NEW, rva=HAND_RVA,
+        size="107", replace_rva=HAND_RVA,
+        source="game/GameEngine/Source/Common/T3AtlCImageCreateFromGdiplusBitmap.cpp",
+        extra=("--correct-identity", HAND_OLD, "--identity-evidence", PROOF),
+        proof=GOOD_PROOF)
+    tu = frozen_tu(tmp_path, HAND_TU)
+    add_match.main()
+    assert not tu.exists()
+
+
+def test_tu_with_a_remaining_row_is_kept(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW, SIBLING_ROW])
+    tu = frozen_tu(tmp_path)
+    add_match.main()
+    assert tu.exists()
+
+
+def test_tu_owning_a_matched_data_row_is_kept(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW])
+    tu = frozen_tu(tmp_path)
+    (tmp_path / "targets/game/reverse/data_rows.csv").write_text(
+        "name,address,address_kind,size,section,source,status,evidence,model\n"
+        f"?g@@3HA,0x01000000,va,4,.data,{DTOR_TU},matched,proof,m\n")
+    add_match.main()
+    assert tu.exists()
+
+
+def test_unmatched_row_still_naming_the_tu_is_refused(tmp_path, monkeypatch):
+    stale = f"?u@@YAXXZ,,0x00707F80,16,{DTOR_TU},unmatched,gen-dtor"
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW, stale])
+    tu = frozen_tu(tmp_path)
+    refused(files)
+    assert tu.exists()
+    assert recorder.builds == []
+
+
+def test_failed_verification_keeps_the_tu(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW], gate=1)
+    tu = frozen_tu(tmp_path)
+    refused(files)
+    assert tu.exists()
+
+
+def test_generated_copy_of_new_name_keeps_the_tu(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW],
+                                 definers=["game_gen_small_other.obj"])
+    tu = frozen_tu(tmp_path)
+    refused(files)
+    assert tu.exists()
