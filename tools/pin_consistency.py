@@ -1527,7 +1527,20 @@ def _show_walk(identities, address):
     return " -> ".join(f"0x{hop:08X}" for hop in identities.walk(address))
 
 
-def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle):
+def alias_spelling(name):
+    """Is NAME an invented or placeholder spelling rather than a real one?
+
+    Exactly ilt_oracle.tier(name) != "real" -- the classification ilt_guard
+    already uses: "placeholder" is an address-derived or generated spelling
+    (`Rva`/`rva` + 6-8 hex digits, a run of 6+ hex characters with 3+ digits,
+    `?a_/?b_/?d_/?j_<hex>@@`, `dup_`, `Gen_`, `FUN_`, `sub_`, `tg_`, `$L`, `$S`);
+    "invented" is a Bfme* stand-in (`bfme`, any case, anywhere in the name).
+    """
+    import ilt_oracle
+    return ilt_oracle.tier(name) != "real"
+
+
+def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=None):
     """[(kind, name, address, why)]: identity debt the diff ADDS.
 
     * an added pin that names a body already carrying another identity, judged
@@ -1539,8 +1552,12 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle):
     * an added pin landing strictly inside a matched body (no function starts
       there), unless it is a route= or abi-view= row;
     * an added route= or abi-view= pin the image does not admit;
-    * an existing pin the diff turns into a conflict it was not on the base
-      side (a renamed or re-pointed row, a pin losing its abi-view=);
+    * an existing pin with a REAL name the diff turns into a conflict it was
+      not on the base side (a renamed or re-pointed row, a pin losing its
+      abi-view=). The same for an alias spelling (alias_spelling: placeholder
+      or invented) only WARNS, appended to WARNINGS, so landing a real row on
+      a body its old stand-in pins still name does not block; those pins go
+      to the pin drain (project lead 2026-10-16, option b);
     * an added identity row on a body that already carries another identity.
     """
     import abi_view
@@ -1629,8 +1646,13 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle):
         before = None if pin_exemption(before_row) else _judge_pin(
             name, address, base_ids.at(base_ids.body_of(address), (name, ("pin", address))), oracle)
         if not before:
-            refused.append(("existing-pin-now-conflicts", name, address,
-                            f"walk {_show_walk(new_ids, address)}: {after[1]}"))
+            finding = ("existing-pin-now-conflicts", name, address,
+                       f"walk {_show_walk(new_ids, address)}: {after[1]}")
+            if alias_spelling(name) and after[0] == "pin-on-other-identity":
+                if warnings is not None:
+                    warnings.append(finding + (new_ids.body_of(address),))
+            else:
+                refused.append(finding)
 
     for name, address in sorted(delta_.added_identity_rows()):
         if name.startswith("?j_"):
@@ -1712,6 +1734,50 @@ def apply_overrides(conflicts, allowed):
     return left, applied
 
 
+ALIAS_LOG_FIELDS = ["name", "address", "body", "landing", "why"]
+
+
+def alias_log_path():
+    """BFME_PIN_ALIAS_LOG, else build/linkfleet/ds/pin_alias_cleanup.tsv in the
+    MAIN checkout (the git common dir's parent), so every worktree feeds the
+    one list the pin drain reads."""
+    import os
+    if os.environ.get("BFME_PIN_ALIAS_LOG"):
+        return Path(os.environ["BFME_PIN_ALIAS_LOG"])
+    common = Path(_git_text("rev-parse", "--path-format=absolute", "--git-common-dir").strip())
+    return common.parent / "build" / "linkfleet" / "ds" / "pin_alias_cleanup.tsv"
+
+
+def record_alias_cleanup(warnings, new_ref):
+    """Append (name, address, body, landing, why) for each alias warning, once
+    per (name, address, body). LANDING names the change that exposed it: the
+    commit, or `index@<HEAD sha>` / `worktree@<HEAD sha>` before it exists."""
+    path = alias_log_path()
+    if new_ref in (None, ":"):
+        head = _git_text("rev-parse", "--short=10", "HEAD", ok=(0, 128)).strip() or "none"
+        landing = f"{'index' if new_ref == ':' else 'worktree'}@{head}"
+    else:
+        landing = _git_text("rev-parse", "--short=10", new_ref).strip()
+    seen = set()
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines()[1:]:
+            parts = line.split("\t")
+            if len(parts) >= 3:
+                seen.add(tuple(parts[:3]))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fresh = not path.exists()
+    with path.open("a", encoding="utf-8", newline="") as out:
+        if fresh:
+            out.write("\t".join(ALIAS_LOG_FIELDS) + "\n")
+        for _kind, name, address, why, body in warnings:
+            key = (name, f"0x{address:08X}", f"0x{body:08X}")
+            if key in seen:
+                continue
+            seen.add(key)
+            out.write("\t".join(key + (landing, why.replace("\t", " "))) + "\n")
+    return path
+
+
 def delta(base_ref, new_ref=":"):
     """The delta gate. Prints its verdict; raises SystemExit(1) on new debt."""
     import time
@@ -1727,7 +1793,9 @@ def delta(base_ref, new_ref=":"):
         base_scanner = work.base_scanner(new_scanner)
         new_lists = candidate_lists(work.new_rows, work.new_symbols)
         debt, affected = new_candidate_debt(work, base_scanner, new_scanner, new_lists)
-        conflicts = new_identity_conflicts(work, new_scanner, base_scanner, ilt_oracle.oracle())
+        warnings = []
+        conflicts = new_identity_conflicts(work, new_scanner, base_scanner, ilt_oracle.oracle(),
+                                           warnings)
         if any(kind in OVERRIDABLE for kind, *_rest in conflicts):
             allowed = {}
             for name, address, reason in added_overrides(base_ref, new_ref):
@@ -1740,6 +1808,12 @@ def delta(base_ref, new_ref=":"):
     finally:
         work.close()
     took = time.monotonic() - started
+    for _kind, name, address, why, _body in warnings:
+        print(f"Pin delta: WARNING alias pin {name} 0x{address:08X} now names another "
+              f"identity's body ({why}); not blocking, listed for the pin drain")
+    if warnings:
+        log = record_alias_cleanup(warnings, new_ref)
+        print(f"Pin delta: {len(warnings)} alias pin(s) appended to {log}")
     for (kind, name, address, _why), reason in applied:
         print(f"Pin delta: override applied [{kind}] {name} 0x{address:08X}: {reason}")
     for name, address, why in rejected:

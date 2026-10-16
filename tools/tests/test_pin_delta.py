@@ -85,13 +85,13 @@ def fake_delta(tmp_path, rows, symbols_text, *, pins_added=(), pins_removed=(),
     return work
 
 
-def conflicts(tmp_path, rows, scanner, symbols_text, **diff):
+def conflicts(tmp_path, rows, scanner, symbols_text, warnings=None, **diff):
     work = fake_delta(tmp_path, rows, symbols_text, **diff)
     if diff.get("rows_added") or diff.get("rows_removed"):
         scanner = P.Scanner(work.new_rows)
     return [(kind, name, address) for kind, name, address, _why
             in P.new_identity_conflicts(work, scanner, work.base_scanner(scanner),
-                                        ilt_oracle.oracle())]
+                                        ilt_oracle.oracle(), warnings)]
 
 
 # -- identity: one address, many names --------------------------------------
@@ -237,16 +237,65 @@ def test_r1_5_a_rename_that_leaves_the_old_pin_behind_is_refused(tmp_path, rows,
     assert ("row-on-other-identity", "?method@Rva009F5370Vector@@QAEXXZ", COPY_BODY) in found
 
 
-def test_r1_5_losing_abi_view_makes_an_existing_pin_conflict(tmp_path, rows, scanner,
-                                                             symbols_text):
+def test_r1_5_losing_abi_view_on_an_alias_pin_only_warns(tmp_path, rows, scanner,
+                                                         symbols_text):
+    """VIEW_NAME is an address-derived spelling: once it is no view it names
+    another identity's body, which under option (b) warns and lists it for the
+    pin drain instead of blocking."""
     view = next(r for r in (P._norm(x, P.PIN_FIELDS) for x in
                             csv.DictReader(io.StringIO(symbols_text)))
                 if r["name"] == VIEW_NAME and int(r["address"], 16) == VIEW_PIN)
-    assert P.pin_exemption(view) == "view"
+    assert P.pin_exemption(view) == "view" and P.alias_spelling(VIEW_NAME)
     plain = dict(view, notes="no longer a view", _overflow="")
-    found = conflicts(tmp_path, rows, scanner, symbols_text, pins_removed=[view],
+    warnings = []
+    found = conflicts(tmp_path, rows, scanner, symbols_text, warnings, pins_removed=[view],
                       pins_added=[plain])
-    assert found == [("existing-pin-now-conflicts", VIEW_NAME, VIEW_PIN)]
+    assert found == []
+    assert [(k, n, a) for k, n, a, _w, _b in warnings] == \
+        [("existing-pin-now-conflicts", VIEW_NAME, VIEW_PIN)]
+
+
+# Option (b), project lead 2026-10-16: an existing ALIAS pin left on a body a
+# real row now names warns and is listed; a REAL-named one still blocks.
+
+def test_b_the_alias_predicate_is_the_ilt_tier():
+    aliases = ["?method@Rva008AD8F0@@QAEXPAX@Z", "?rva001C1EA0@Object@@QAEX_N@Z",
+               "?bfmeApply1236@BfmeB1236@@QAEXPAX@Z", "?BfmeGo921E@@YGXPAX@Z",
+               "?d_008ad8f0@@YAXXZ", "?dup_00499f30@@YAXXZ", "?j_00134af0@@YAXXZ",
+               "??1Gen_uw_000224d0@@QAE@XZ", "??0ArrayValue008B9C60@@QAE@XZ", "$L314"]
+    real = ["??1EAStringC@@QAE@XZ", "?winSetEnabledBorderColor@GameWindow@@QAEHHH@Z",
+            "??0TBuff@@QAE@PAVDrawable@@H@Z", PAIR_DTOR]
+    assert [n for n in aliases if not P.alias_spelling(n)] == []
+    assert [n for n in real if P.alias_spelling(n)] == []
+
+
+def test_b_a_row_landing_under_an_alias_pin_warns_and_is_logged(tmp_path, rows, scanner,
+                                                                symbols_text, monkeypatch):
+    """376d78b9c1: the real row lands on 0x008AD8F0 and ?bfmeApply1236 stays."""
+    body = 0x008AD8F0
+    owner = next(P._norm(r, P.FUNCTION_FIELDS) for r in rows if int(r["target_rva"], 16) == body)
+    alias = "?bfmeApply1236@BfmeB1236@@QAEXPAX@Z"
+    assert P.alias_spelling(alias)
+    placeholder = dict(owner, name="?d_008ad8f0@@YAXXZ", source="game/gen_asm/d_008a9710.asm",
+                       notes="gen-dump")
+    work = fake_delta(tmp_path, rows, symbols_text, rows_removed=[placeholder], rows_added=[])
+    work.new_rows = list(rows)                 # the new side is today's ledger
+    work.rows_added = [owner]
+    work._group()
+    warnings = []
+    found = P.new_identity_conflicts(work, scanner, work.base_scanner(scanner),
+                                     ilt_oracle.oracle(), warnings)
+    assert found == []
+    assert [(n, a, b) for _k, n, a, _w, b in warnings] == [(alias, body, body)]
+    log = tmp_path / "alias.tsv"
+    monkeypatch.setenv("BFME_PIN_ALIAS_LOG", str(log))
+    monkeypatch.setattr(P, "_git_text", lambda *a, **k: "376d78b9c1\n")
+    P.record_alias_cleanup(warnings, "376d78b9c1")
+    P.record_alias_cleanup(warnings, "376d78b9c1")
+    lines = log.read_text().splitlines()
+    assert lines[0].split("\t") == P.ALIAS_LOG_FIELDS
+    assert len(lines) == 2, "one line per (name, address, body), however often it is seen"
+    assert lines[1].split("\t")[:4] == [alias, "0x008AD8F0", "0x008AD8F0", "376d78b9c1"]
 
 
 def test_r1_6_a_pin_inside_a_named_body_is_refused(tmp_path, rows, scanner, symbols_text):
@@ -494,3 +543,11 @@ def test_r1_7_an_added_override_needs_its_trailer(tmp_path, monkeypatch):
     assert protected_paths.check_range("HEAD~1", "HEAD") == 1
     _git(repo, "commit", "-q", "--amend", "-m", f"t\n\nIdentity-Override: {FAKE} 0x479040")
     assert protected_paths.check_range("HEAD~1", "HEAD") == 0
+
+
+def test_b_the_default_alias_log_is_the_main_checkouts(monkeypatch):
+    monkeypatch.delenv("BFME_PIN_ALIAS_LOG", raising=False)
+    common = Path(P._git_text("rev-parse", "--path-format=absolute", "--git-common-dir").strip())
+    assert P.alias_log_path() == common.parent / "build/linkfleet/ds/pin_alias_cleanup.tsv"
+    monkeypatch.setenv("BFME_PIN_ALIAS_LOG", "/tmp/elsewhere.tsv")
+    assert P.alias_log_path() == Path("/tmp/elsewhere.tsv")
