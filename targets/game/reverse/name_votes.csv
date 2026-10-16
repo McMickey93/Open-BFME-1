@@ -4366,3 +4366,7 @@ game/GameEngine/Source/Common/BfmeConv901.cpp|local|BfmeThingJA::bfmeGoJA|h,97d0
 game/GameEngine/Source/Common/BfmeConv901.cpp|local|BfmeThingJA::bfmeGoJA|s,033383a751301c7cf0f69c16,gpt-6.1-sol,20261016070133-9be9d5,2026-10-16
 game/GameEngine/Source/Common/BfmeConv901.cpp|local|BfmeThingJA::bfmeGoJA|r,b86ff0c2225dd9d476231e12,gpt-6.1-sol,20261016070133-9be9d5,2026-10-16
 game/GameEngine/Source/Common/BfmeConv901.cpp|local|InGameUI::areSelectedObjectsControllable|l,fcd067a1d2c466f6cdc34dd7,gpt-6.1-sol,20261016070133-9be9d5,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewBuildCameraTransformBfme.cpp|member||m_bfmecc,3ec6ddbcda7cec1d26026cb4,gpt-6.1-sol,20261016065715-082fe8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewBuildCameraTransformBfme.cpp|member||m_field28,cbb5ce39af4e122e447c4319,gpt-6.1-sol,20261016065715-082fe8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewBuildCameraTransformBfme.cpp|member||m_field138,d2fbe0fa2f17cbb3a846ce6c,gpt-6.1-sol,20261016065715-082fe8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewBuildCameraTransformBfme.cpp|member||m_field1cc,8285cd9dc35a5abc43ef86bf,gpt-6.1-sol,20261016065715-082fe8,2026-10-16
