@@ -55770,3 +55770,4 @@ Rva003DC780	0x003DC780	105	blocked	Round2 selected small donor candidate immedia
 ?reset@FrameData@@QAEXXZ	0x00670220	5	landed	ZH FrameData::reset is init(); retail 5B jmp to init ILT 0x22340; ilt_oracle CONFIRMED reset@0x3BB6F and init@0x22340 t=10min model=claude-opus-5-5
 ?removeAllSequentialScripts@ScriptEngine@@QAEXPAVTeam@@@Z	0x0033E870	5	landed	ZH body notifyOfTeamDestruction(team); retail 5B jmp to ILT 0x42910 ilt_oracle CONFIRMED t=5min model=claude-opus-5-5
 ?getGameSpySlot@GameSpyStagingRoom@@QAEPAVGameSpyGameSlot@@H@Z	0x00637D10	5	landed	ZH body getSlot(index) with assert compiled out; retail 5B jmp to GameInfo::getSlot ILT 0x1EC18 ilt_oracle CONFIRMED t=4min model=claude-opus-5-5
+?CalcNewSize@@YAII@Z	0x0081EB70	5	landed	EA NoxCompress CalcNewSize body = LZHLCompressorCalcMaxBuf tail jmp; position between packet twins and DecompressMemory follows EA source order t=8min model=claude-opus-5-5

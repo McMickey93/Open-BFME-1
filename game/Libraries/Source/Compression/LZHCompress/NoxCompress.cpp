@@ -186,6 +186,14 @@ __declspec(noinline) int LZHLDecompress( LZHL_DHANDLE handle, UnsignedByte *dst,
 	return ( (LZHLDecompressor *)handle )->decompress( dst, dstSz, src, srcSz );
 }
 
+// Retail 0x0081EB70, between the two packet checks (0x0081EB30, 0x0081EB50)
+// and DecompressMemory as in EA NoxCompress.cpp: a tail jump to
+// LZHLCompressorCalcMaxBuf.
+UnsignedInt CalcNewSize(UnsignedInt rawSize)
+{
+	return LZHLCompressorCalcMaxBuf(rawSize);
+}
+
 Bool DecompressMemory(void *inBufferVoid, Int inSize, void *outBufferVoid, Int& outSize)
 {
 	UnsignedByte *inBuffer = (UnsignedByte *)inBufferVoid;

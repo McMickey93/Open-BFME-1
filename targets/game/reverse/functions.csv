@@ -123137,7 +123137,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00802c20@@YAXXZ,,0x00802C20,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00802A10
 ?j_00802c90@@YAXXZ,,0x00802C90,5,game/gen_small/gthunks_087.cpp,matched,gen-thunk;gap;target=0x00802A10
 ?j_00808b20@@YAXXZ,,0x00808B20,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x007E86C0
-?j_0081eb70@@YAXXZ,,0x0081EB70,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00823200
 ?j_0082ada0@@YAXXZ,,0x0082ADA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c81f30
 ?j_00845bc0@@YAXXZ,,0x00845BC0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c45a00
 ?j_00845bd0@@YAXXZ,,0x00845BD0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c45aa0
@@ -172541,3 +172540,4 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?getGameSpySlot@GameSpyStagingRoom@@QAEPAVGameSpyGameSlot@@H@Z,,0x00637D10,5,game/GameEngine/Source/GameNetwork/GameSpy/StagingRoomGameInfo.cpp,matched,ZH getGameSpySlot returns getSlot(index) (assert compiled out); retail tail jmp to GameInfo::getSlot ILT 0x0001EC18 (ilt_oracle CONFIRMED); own ILT 0x000061D6 CONFIRMED;model=claude-opus-5-5;host=app
 ??1SupplyTruckWantsToPickUpOrDeliverBoxesState@@UAE@XZ,,0x002C6A10,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/SupplyTruckWantsToPickUpOrDeliverBoxesStateDeletingDestructor.cpp,matched,implicit ~SupplyTruckWantsToPickUpOrDeliverBoxesState: bare jmp State::~State ILT 0x00016725; reached from ??_G 0x002C69E0 via ILT 0x00008355;model=claude-opus-5.5;host=GreatFaram
 ?j_00008355@@YAXXZ,,0x00008355,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=0x002C6A10;model=claude-opus-5.5;host=GreatFaram
+?CalcNewSize@@YAII@Z,,0x0081EB70,5,game/Libraries/Source/Compression/LZHCompress/NoxCompress.cpp,matched,EA NoxCompress CalcNewSize returns LZHLCompressorCalcMaxBuf(rawSize); retail tail jmp to 0x00823200 placed after CompressPacket/DecompressPacket twins 0x0081EB30/0x0081EB50 and before DecompressMemory 0x0081EB80 in EA source order;model=claude-opus-5-5;host=app
