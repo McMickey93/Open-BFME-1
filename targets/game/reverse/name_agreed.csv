@@ -665,3 +665,6 @@ game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|member||field28,m_length,claude-opus+gpt-6-astra+gpt-6.1-sol,agreed,2026-10-16
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|put|v,element,gpt-6.1-sol+grok,agreed,2026-10-16
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|set|v,element,gpt-6.1-sol+grok,agreed,2026-10-16
+game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|member||field28,m_length,claude-opus+gpt-6-astra+gpt-6.1-sol,applied,2026-10-16
+game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|put|v,element,gpt-6.1-sol+grok,applied,2026-10-16
+game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|set|v,element,gpt-6.1-sol+grok,applied,2026-10-16

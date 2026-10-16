@@ -28,30 +28,30 @@ class AptValue;
 class Rva008B9C90HeaderedDeleting : public Rva00899F00Base {
 public:
     unsigned *m_elements;
-    int m_capacity, field28;
+    int m_capacity, m_length;
     virtual ~Rva008B9C90HeaderedDeleting();
     Rva008B9C90HeaderedDeleting() : Rva00899F00Base(0x16,8) {
-        m_capacity=0; m_elements=0; field28=0;
+        m_capacity=0; m_elements=0; m_length=0;
     }
     static void *operator new(unsigned n) {
         void *raw=Rva008C5D70Alloc(n+8); void *p=(char *)raw+8;
         bfmePush((BfmeItemDX *)p);
         return p;
     }
-    __forceinline void put(int index, Value008B9CC0 *v) {
+    __forceinline void put(int index, Value008B9CC0 *element) {
         Value008B9CC0 *old=(Value008B9CC0 *)(m_elements[index]&~1u);
-        v->retain();
+        element->retain();
         if (old) old->release();
-        unsigned tagged=(unsigned)v;
-        if (v->slot14()==1) tagged|=1;
+        unsigned tagged=(unsigned)element;
+        if (element->slot14()==1) tagged|=1;
         m_elements[index]=tagged;
     }
-    __forceinline void set(int index, Value008B9CC0 *v) {
+    __forceinline void set(int index, Value008B9CC0 *element) {
         if (index>=0) {
             int next=index+1;
             ((BfmeN1242 *)this)->bfmeReserve1242(next);
-            put(index,v);
-            field28 = next > field28 ? next : field28;
+            put(index,element);
+            m_length = next > m_length ? next : m_length;
         }
     }
 };
@@ -67,16 +67,16 @@ void *aptArrayConcat(Value008B9CC0 *self,int count) {
     if (self->isType(0x16)) {
         Rva008B9C90HeaderedDeleting *source=(Rva008B9C90HeaderedDeleting *)self;
         Rva008B9C90HeaderedDeleting *out=new Rva008B9C90HeaderedDeleting;
-        for (int i=0;i<source->field28;++i)
-            out->set(out->field28,(Value008B9CC0 *)(source->m_elements[i]&~1u));
+        for (int i=0;i<source->m_length;++i)
+            out->set(out->m_length,(Value008B9CC0 *)(source->m_elements[i]&~1u));
         for (int j=0;j<count;++j) {
             Value008B9CC0 *v=reinterpret_cast<Value008B9CC0 *>(
                 Rva008AE770TheStack.m_rva01338750[Rva008AE770TheStack.field00-j-1]);
             if (v->isType(0x16)) {
                 Rva008B9C90HeaderedDeleting *array=(Rva008B9C90HeaderedDeleting *)v;
-                for (int k=0;k<array->field28;++k)
-                    out->set(out->field28,(Value008B9CC0 *)(array->m_elements[k]&~1u));
-            } else out->set(out->field28,v);
+                for (int k=0;k<array->m_length;++k)
+                    out->set(out->m_length,(Value008B9CC0 *)(array->m_elements[k]&~1u));
+            } else out->set(out->m_length,v);
         }
         return out;
     }
