@@ -16,7 +16,6 @@ private:
 	unsigned char m_body[0x28];
 };
 
-#pragma comment(linker, "/alternatename:??0Rva0094D1E0List@@QAE@HH@Z=?d_0094d1e0@@YAXXZ")
 #pragma comment(linker, "/alternatename:??1Rva0094D1E0List@@QAE@XZ=??1Gen_uwm_0094cdf0@@QAE@XZ")
 
 class TTreeType

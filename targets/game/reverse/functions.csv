@@ -38087,7 +38087,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00948bd0@@YAXXZ,,0x00948BD0,4397,game/gen_asm/d_00882630.asm,matched,gen-dump;carved start=ghidra-start end=ret+int3 callers=0;ghidra=FUN_00d48bd0
 ?d_00949f30@@YAXXZ,,0x00949F30,1008,game/gen_asm/d_00945e00.asm,matched,gen-dump;ghidra=FUN_00d49f30
 ?d_0094a320@@YAXXZ,,0x0094A320,1370,game/gen_asm/d_00882630.asm,matched,gen-dump;carved start=ghidra-start end=ret+int3 callers=0;ghidra=FUN_00d4a320
-?d_0094d1e0@@YAXXZ,,0x0094D1E0,101,game/gen_asm/d_00945e00.asm,matched,gen-dump;ghidra=FUN_00d4d1e0
 ?d_0094d250@@YAXXZ,,0x0094D250,253,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00d4d250
 ?d_0094d450@@YAXXZ,,0x0094D450,1111,game/gen_asm/d_00945e00.asm,matched,gen-dump;ghidra=FUN_00d4d450
 ?d_0094e1b0@@YAXXZ,,0x0094E1B0,253,game/Libraries/Source/WWVegas/WW3D2/ShareBufferClassVector3CopyConstructorThunk.cpp,matched,Open-BFME5 C++ ShareBufferClass Vector3 copy constructor;object-symbol=??0?$ShareBufferClass@VVector3@@@@QAE@ABV0@@Z
@@ -172541,3 +172540,4 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?ReleaseResources@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D40,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::ReleaseResources ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x1BD33;model=claude-opus-5-5;host=app
 ?ReAcquireResources@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D50,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::ReAcquireResources ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x10799;model=claude-opus-5-5;host=app
 ?reset@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D60,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::reset ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x2CBBF;model=claude-opus-5-5;host=app
+??0Rva0094D1E0List@@QAE@HH@Z,,0x0094D1E0,101,game/GameEngineDevice/Source/W3DDevice/GameClient/Rva0094D1E0List_ctor.cpp,matched,Rva0094D1E0List ctor: callers W3DTreeBuffer/W3DShrubBuffer ctors; STLport tree header self-link via __node_alloc<true 0>::_M_allocate(0x24); clamp to 0x800 unsigned; cursor at +0x14 = leftmost;model=claude-opus-5-5;host=app
