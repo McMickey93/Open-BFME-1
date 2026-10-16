@@ -160,3 +160,25 @@ void Rva00169FF0::storeWord(unsigned int value)
 {
     m_at40 = value;
 }
+
+// Native BFME getSound ABI from matched ThingTemplateSounds.cpp. The Zero
+// Hour header does not declare this method. No ThingTemplate layout is copied.
+class AudioEventRTS;
+class ThingTemplate
+{
+public:
+    const AudioEventRTS *getSound(int index) const;
+};
+
+// BFME 2 donor CallForwarders8B.cpp: one constant-argument member call.
+// Retail preserves this and returns getSound's pointer with slot 0x53.
+class Rva0016A010 : public ThingTemplate
+{
+public:
+    const AudioEventRTS *get() const;
+};
+
+const AudioEventRTS *Rva0016A010::get() const
+{
+    return getSound(0x53);
+}
