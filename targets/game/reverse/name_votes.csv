@@ -5143,3 +5143,12 @@ game/GameEngine/Source/Common/Bfme/Rva006D51B0Ctor.cpp|member||m_3C,05189a37f2b8
 game/GameEngine/Source/Common/Bfme/Rva006D51B0Ctor.cpp|member||m_40,f4aff75c2f0d8949037a9bcc,gpt-6.1-sol,20261016074018-97b016,2026-10-16
 game/GameEngine/Source/Common/Bfme/Rva006D51B0Ctor.cpp|member||m_44,915344e89f214d41f898474a,gpt-6.1-sol,20261016074018-97b016,2026-10-16
 game/GameEngine/Source/Common/Bfme/Rva006D51B0Ctor.cpp|member||m_bfmeName,d9caae356f95cd1fdfbf3193,gpt-6.1-sol,20261016074018-97b016,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|type||Rva002DCAE0Module,461459dc40db04c3bbe83cfd,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|type||Rva002DC8B0Call,8a4f02a9fbe406ac6aa2a6a5,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|member||m_flag58,cdec5c71e6bc75c1f00a76b0,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|member||m_flag59,d1583d9f9ba2e48dec6afd56,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|member||m_value5C,5e912336447d48946bd8f12f,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|member||m_value60,3e606d27f8f6cdbb0557adcb,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|member||m_value64,e1047bb3bfe84df3963d9f5f,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|function|Rva002DCBA0@|rva002DC8B0Apply,89c1d40141a6f11fd4b86292,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
+game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|function|Rva002DCBA0@|rva002DCAE0Slot5,ce7665c775a22e19ef17a78c,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
