@@ -1248,13 +1248,7 @@ void INI::initFromINIMulti( void *what, const MultiIniFieldParse& parseTableList
 }
 
 //-------------------------------------------------------------------------------------------------
-/*static*/ Int INI::scanInt(const char* token)
-{
-	Int value;
-	if (sscanf( token, "%d", &value ) != 1)
-		throw INI_INVALID_DATA;
-	return value;
-}
+// Retail scanInt is emitted by Weapon.cpp and ini_parsers.cpp.
 
 //-------------------------------------------------------------------------------------------------
 // Retail definition owned by ini_parsers.cpp.
