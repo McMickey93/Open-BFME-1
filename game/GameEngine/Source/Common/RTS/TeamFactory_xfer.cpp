@@ -105,8 +105,7 @@ public:
 
 class TeamPrototype : public Snapshot
 {
-public:
-	TeamPrototypeID getID() const { return m_id; }
+	friend class TeamFactory;
 
 private:
 	void *m_factory;
@@ -165,7 +164,7 @@ void TeamFactory::DoXfer(Xfer &xferRef)
 		for (it = m_prototypes.begin(); it != m_prototypes.end(); ++it)
 		{
 			teamPrototype = (*it).second;
-			teamPrototypeID = teamPrototype->getID();
+			teamPrototypeID = teamPrototype->m_id;
 			xfer->xferTeamID(&teamPrototypeID);
 			xfer->xferSnapshot(teamPrototype);
 		}
