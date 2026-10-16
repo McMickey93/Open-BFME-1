@@ -5555,3 +5555,5 @@ game/GameEngine/Source/GameNetwork/Rva007FF250Base64Decode.cpp|local|rva007FF250
 game/GameEngine/Source/GameNetwork/Rva007FF250Base64Decode.cpp|local|rva007FF250Decode|code1,01b789a76c228c8a03d0dbd2,gpt-6.1-sol,20261016122503-bc1f00,2026-10-16
 game/GameEngine/Source/GameNetwork/Rva007FF250Base64Decode.cpp|local|rva007FF250Decode|code2,913abe0ca600c23abb8eac4c,gpt-6.1-sol,20261016122503-bc1f00,2026-10-16
 game/GameEngine/Source/GameNetwork/Rva007FF250Base64Decode.cpp|local|rva007FF250Decode|code3,b243701ab44a721f57af9213,gpt-6.1-sol,20261016122503-bc1f00,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindZoneFlatten.cpp|local|flattenZones|zone1,36f1208d287711914f57641a,gpt-6.1-sol,20261016122510-a6d711,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindZoneFlatten.cpp|local|flattenZones|zone2,b34182b753a2b9063ebdf5ff,gpt-6.1-sol,20261016122510-a6d711,2026-10-16
