@@ -34,9 +34,9 @@ class BfmeItemDB;
 class BfmeValDB
 {
 public:
-	BfmeValDB(BfmeItemDB *item) { m_bfmeItemDB = item; }
+	BfmeValDB(BfmeItemDB *item) { m_worker = item; }
 
-	BfmeItemDB *m_bfmeItemDB;
+	BfmeItemDB *m_worker;
 };
 
 class BfmeNodeDB
