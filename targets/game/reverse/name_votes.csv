@@ -4185,3 +4185,6 @@ game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|mem
 game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|param|sub|p,1d215f17213107547470dc23,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|local|data|p,52e644a833d35c334d418a02,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|local|NearestPosition00206960::find|d,a8bf6b1734ac7a5bf0cd3637,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_updateInternal.cpp|member||m_e15,0473eeae637434f19fe4c115,gpt-6.1-sol,20261016064141-9d5ec7,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_updateInternal.cpp|member||m_field50,74a55fe37d062403877a5834,gpt-6.1-sol,20261016064141-9d5ec7,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_updateInternal.cpp|member||m_field54,f805879b2848eb878bc2d8b9,gpt-6.1-sol,20261016064141-9d5ec7,2026-10-16
