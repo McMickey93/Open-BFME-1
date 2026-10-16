@@ -14,7 +14,7 @@ struct Rva003CC940Point {
         : m_at00(other.m_at00), m_at04(other.m_at04), m_at08(other.m_at08) {}
 };
 
-class Rva003CC940 { public: Rva003CC940Point method(); };
+class LargeGroupAudioGridCell { public: Rva003CC940Point getPreferredAudioPosition(); };
 
 // ?copyPosition003CCB70@@YAXPAUCoord3D@@PBU1@@Z absent-from-retail
 // Copy X before the remaining two coordinate words.
@@ -87,7 +87,7 @@ void Rva003CC890::updatePosition()
 {
     if (m_event)
     {
-        Rva003CC940Point targetPoint = ((Rva003CC940 *)this)->method();
+        Rva003CC940Point targetPoint = ((LargeGroupAudioGridCell *)this)->getPreferredAudioPosition();
         const Coord3D &target = *(const Coord3D *)&targetPoint;
         Coord3D current;
         bool found;

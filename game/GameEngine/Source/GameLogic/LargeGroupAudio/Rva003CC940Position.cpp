@@ -1,4 +1,4 @@
-// ?method@Rva003CC940@@QAE?AURva003CC940Point@@XZ
+// ?getPreferredAudioPosition@LargeGroupAudioGridCell@@QAE?AURva003CC940Point@@XZ
 // cl: /DNDEBUG /MD /EHsc
 // Evidence: targets/game/reverse/identity_evidence/003cc940-exact-position.md
 struct Rva003CC940Point {
@@ -19,17 +19,17 @@ struct Rva003CC940Terrain {
 extern TerrainLogic *TheTerrainLogic;
 struct Rva003CC940Config { char m_at00[0xc]; float m_at0c; };
 struct Rva003CC940Node { char m_at00[0x30]; int m_at30; };
-class Rva003CC940 {
+class LargeGroupAudioGridCell {
 public:
-    Rva003CC940Point method();
+    Rva003CC940Point getPreferredAudioPosition();
     float m_at00, m_at04;
     Rva003CC940Config *m_at08;
     char m_at0c[4];
     Rva003CC940Node *m_at10[8];
 };
 
-// ?method@Rva003CC940@@QAE?AURva003CC940Point@@XZ
-Rva003CC940Point Rva003CC940::method()
+// ?getPreferredAudioPosition@LargeGroupAudioGridCell@@QAE?AURva003CC940Point@@XZ
+Rva003CC940Point LargeGroupAudioGridCell::getPreferredAudioPosition()
 {
     Rva003CC940Point point;
     point.m_at00 = m_at00;
