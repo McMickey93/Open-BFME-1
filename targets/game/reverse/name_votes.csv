@@ -5087,3 +5087,5 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BC310HeightPredica
 game/GameEngine/Source/Common/Rva001B49E0SetPosition.cpp|member||m_bfmeRow0,4a332a077d1fdf1fb6c62545,gpt-6.1-sol,20261016073705-37d1c8,2026-10-16
 game/GameEngine/Source/Common/Rva001B49E0SetPosition.cpp|member||m_bfmeRow1,204ee8ab2787cf0d7968812d,gpt-6.1-sol,20261016073705-37d1c8,2026-10-16
 game/GameEngine/Source/Common/Rva001B49E0SetPosition.cpp|member||m_bfmeRow2,f70911a6fb9958596107d6d0,gpt-6.1-sol,20261016073705-37d1c8,2026-10-16
+game/GameEngine/Source/GameClient/GUI/WindowManager_bfmeRva0046E170.cpp|member||m_at198,691844f4607e071824a0f3a0,gpt-6.1-sol,20261016073716-46b784,2026-10-16
+game/GameEngine/Source/GameClient/GUI/WindowManager_bfmeRva0046E170.cpp|function|WindowManager@|bfmeRva0046E170,3c0a86acd74b2bc6958ab9c4,gpt-6.1-sol,20261016073716-46b784,2026-10-16
