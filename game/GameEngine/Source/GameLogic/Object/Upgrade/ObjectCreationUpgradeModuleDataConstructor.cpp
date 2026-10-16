@@ -53,8 +53,8 @@ public:
 	int m_offsetY;
 	int m_offsetZ;
 	bool m_destroyWhenSold;
-	int m_94;
-	int m_98;
+	int m_deathAnimState;
+	int m_deathAnimTime;
 	int m_9c;
 	int m_fadeInTime;
 };
@@ -68,9 +68,9 @@ ObjectCreationUpgradeModuleData::ObjectCreationUpgradeModuleData()
 	m_offsetZ = 0;
 	m_destroyWhenSold = false;
 	m_fadeInTime = 0;
-	m_98 = 0;
+	m_deathAnimTime = 0;
 	m_9c = 0;
-	m_94 = -1;
+	m_deathAnimState = -1;
 }
 
 // ??1ObjectCreationUpgradeModuleData@@UAE@XZ
