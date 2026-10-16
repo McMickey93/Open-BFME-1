@@ -193,6 +193,10 @@ def ledger_rows(root=ROOT):
     for src, path, col in (("functions", rev / "functions.csv", "target_rva"), ("pins", rev / "symbols.csv", "address")):
         with open(path, encoding="utf-8", errors="replace", newline="") as f:
             for r in csv.DictReader(f):
+                # abi-view= pins are compilation views, never identities
+                # (tools/abi_view.py): no window, anchor or verdict reads them.
+                if src == "pins" and "abi-view=" in ",".join([r.get("notes") or ""] + (r.get(None) or [])):
+                    continue
                 try:
                     yield src, r["name"], int(r[col], 16), r
                 except (TypeError, ValueError):

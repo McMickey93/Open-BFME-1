@@ -387,6 +387,25 @@ def verify_routes(scanner, routes):
     return len(routes)
 
 
+def verify_views(pins_path=None):
+    """{(name, address)} of the abi-view= rows; any the image refuses fails the gate."""
+    import abi_view
+    rows = abi_view.view_rows(pins_path)
+    if not rows:
+        return set()
+    refused = abi_view.check(path=pins_path)
+    if refused:
+        print(f"ABI views: FAIL {len(refused)} inadmissible abi-view= row(s) in {shown(pins_path or build.SYMBOLS)}")
+        for name, address, canonical, why in refused[:12]:
+            print(f"    {name} 0x{address:08X} (abi-view={canonical})")
+            print(f"        {why}")
+        print("    abi-view= exempts a pin from identity checks, so it is accepted only when the "
+              "retail image proves the call target, the canonical body and the ABI. Fix the "
+              "note or the declaration, or delete the row -- do not widen the rule.")
+        raise SystemExit(1)
+    return {(name, address) for name, address, _canonical in rows}
+
+
 def names_identity(row):
     """Does this functions.csv row assert WHICH function lives at its address?
 
@@ -687,10 +706,16 @@ class Scanner:
         # Admissibility first: a route= row that the image refuses must fail
         # LOUDLY, never quietly buy the exemption it is asking for.
         routes = load_routes(pins_path)
-        verify_routes(self, routes)
+        # An abi-view= row is a compilation view, never an identity (approved by
+        # the project lead 2026-10-16; tools/abi_view.py): admitted only when the
+        # image proves it, and then out of one-name-one-body like a route. A row
+        # carrying both is judged as a view, since a view's target is named
+        # differently by definition.
+        views = verify_views(pins_path)
+        verify_routes(self, {k: v for k, v in routes.items() if k not in views})
         multi = 0
         for name in sorted(pins):
-            addresses = [a for a in pins[name] if (name, a) not in routes]
+            addresses = [a for a in pins[name] if (name, a) not in routes and (name, a) not in views]
             if len(addresses) < 2:
                 continue
             multi += 1
@@ -713,15 +738,17 @@ def candidate_lists():
     """
     lists = collections.defaultdict(list)
     routes = load_routes()
+    import abi_view
+    views = {(n, a) for n, a, _c in abi_view.view_rows()}
     for row in build.load_all_function_rows():
         rva = int(row["target_rva"], 16)
         if rva not in lists[row["name"]]:
             lists[row["name"]].append(rva)
     for name, addresses in load_pins().items():
         for address in addresses:
-            # A route is a candidate to the resolver and never an identity, so
-            # it is out of this report for the same reason it is out of scan().
-            if address not in lists[name] and (name, address) not in routes:
+            # A route or a view is a candidate to the resolver and never an
+            # identity, so it is out of this report as it is out of scan().
+            if address not in lists[name] and (name, address) not in routes and (name, address) not in views:
                 lists[name].append(address)
     return lists
 
