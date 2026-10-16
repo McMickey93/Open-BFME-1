@@ -5352,3 +5352,9 @@ game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|member
 game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|function|BfmeAptScreenSpellStore@|_bfme_onBttnClose,a04d84616861c6453395cf8a,gpt-6.1-sol,20261016080640-291930,2026-10-16
 game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|function|BfmeAptScreenSpellStore@|_bfme_onClosed,ec6a574529f7850a98a30e5f,gpt-6.1-sol,20261016080640-291930,2026-10-16
 game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|function|BfmeAptScreenSpellStore@|_bfme_onInitialized,b12df37c4e8b76c9254d9c99,gpt-6.1-sol,20261016080640-291930,2026-10-16
+game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|type||Rva004482E4Contain,849ec209e376de642d9033f5,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
+game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|member||at74,7b56662019c72a3351e4d32e,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
+game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|member||at1FC,8764ec9534116055c237ccf0,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
+game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|member||at104,083cd87342490bd38d165847,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
+game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|param|Thing::isKindOf|t,7f93c3e5dfd4a002146e812f,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
+game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|local|Thing::isKindOf|tmpl,58e1e0b83b9cfb08867ee35c,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
