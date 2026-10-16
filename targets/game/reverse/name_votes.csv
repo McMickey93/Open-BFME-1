@@ -2698,3 +2698,5 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeSiegeEngineContainModuleDat
 game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme0C,b345226c0078e7a8c0a79651,gpt-6.1-sol,20261016051850-f09630,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme10,8e95d9dd5e96315de9864041,gpt-6.1-sol,20261016051850-f09630,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme14,a6c52f95fab872fe1d09a528,gpt-6.1-sol,20261016051850-f09630,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeFlagBA,6effd3ac9dbe2e2c441e19c8,gpt-6.1-sol,20261016052033-d5ee3f,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,39b3e0a45854f434e35d5dc0,gpt-6.1-sol,20261016052033-d5ee3f,2026-10-16
