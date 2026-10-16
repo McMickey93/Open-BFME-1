@@ -726,3 +726,5 @@ game/GameEngine/Source/Common/S3FlagPairRefreshes.cpp|member||m_bfmeFirst,m_vers
 game/GameEngine/Source/Common/S3FlagPairRefreshes.cpp|member||m_bfmeSecond,m_currentVersion,claude-fable+claude-opus+gpt-6.1-sol,applied,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_flag0C,m_summaryEvent,gpt-6.1-sol+grok,agreed,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_flag0C,m_summaryEvent,gpt-6.1-sol+grok,applied,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_94,m_deathAnimState,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_98,m_deathAnimTime,gpt-6.1-sol+grok,agreed,2026-10-16
