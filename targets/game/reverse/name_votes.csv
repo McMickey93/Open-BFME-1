@@ -5696,3 +5696,16 @@ game/GameEngine/Source/Common/BfmeConv1430.cpp|param|bfmeIterNeVMG|b,1d23528874b
 game/GameEngine/Source/Common/BfmeConv1430.cpp|param|bfmeDerefVMG|a,054ab0b78475a952a1ed068a,gpt-6.1-sol,20261016123528-c3ea32,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1729.cpp|type||BfmeVecUC,77583646678a49a67292bc05,gpt-6.1-sol,20261016121535-9437fb,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1729.cpp|function|W3DTerrainVisual@|bfmeFwdUC,608dacfe3d1d21159ca290e1,gpt-6.1-sol,20261016121535-9437fb,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|function||decalAxesRva007AF7E0,179b0e84511b364beee489ce,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|function||minMax4Rva007AF710,f863c4e77b4817d2d608757f,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|a0,4bf4dc9fac5f450f4721638c,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|a1,d30c867d1dfedf0d70412a28,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|b0,7ca19868a6bc682c5036d9b4,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|b1,3c7bfce1d59ec71ff2140a0b,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|c0,6436d8c7ac7f2e9f44f8964d,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|c1,8ace9d2d46f344896d62c3c7,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|c2,ca4a8dbd920824198186e866,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|projectRangesRva007AF940|c3,ce55417b21911844ea40b368,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|param|exp7AF940Caller|a,4d7595aa0fedb43151d8993c,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|param|exp7AF940Caller|b,b29a63d51fa085f439d68324,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|exp7AF940Caller|u,5630ad75e6922da1a8585d39,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
