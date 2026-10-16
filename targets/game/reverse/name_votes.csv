@@ -4562,3 +4562,12 @@ game/GameEngine/Source/GameLogic/Object/Behavior/Rva00377D70DataCtor.cpp|member|
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00377D70DataCtor.cpp|member||field60,38f427a581aee8ca5526155e,gpt-6.1-sol,20261016070338-b457e8,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00377D70DataCtor.cpp|member||field6c,1ac84c18105171727b9116f0,gpt-6.1-sol,20261016070338-b457e8,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00377D70DataCtor.cpp|member||field78,3e87e4a0c9be17b2afeb7428,gpt-6.1-sol,20261016070338-b457e8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|type||Rva002C1480Contain,61d694cf2667e88bd7ac0a72,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_time6c,d516bf17b162f232fe722bfb,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_height70,e3f536c2d56bb7445584583f,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_fx80,33a66bb31f5611672e1029a5,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_data04,cb61c6b9d587da68f80ef4d9,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_machine30,3a7e2b9f8ea3b77037a04bcc,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_locomotor1cc,78ad14a3d8549c0ded07f50a,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_time3f4,48597ff42a08cc80de503b28,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_id3fc,64ccf54ac131bfbb449436c0,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
