@@ -5371,3 +5371,5 @@ game/GameEngine/Source/GameLogic/Object/Weapon_setClipPercentFull.cpp|member||m_
 game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorCtorThunk.cpp|member||m_f14,30cb1d6dc0d162b33c3d97c2,gpt-6.1-sol,20261016081222-372fd8,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorCtorThunk.cpp|member||m_f18,d9cc1afbfbbcace58ecd1fe8,gpt-6.1-sol,20261016081222-372fd8,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorCtorThunk.cpp|member||m_f1c,0ea9163035fbde74c83f6c8b,gpt-6.1-sol,20261016081222-372fd8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE3C0CameraRay.cpp|type||Rva006FE3C0ScreenPoint,e2d0ca5744c26a1b3a97e112,gpt-6.1-sol,20261016081229-7c2b31,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE3C0CameraRay.cpp|member||camera70,5f613c45de1a05bfae284798,gpt-6.1-sol,20261016081229-7c2b31,2026-10-16
