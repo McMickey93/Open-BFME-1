@@ -2555,3 +2555,4 @@ game/GameEngine/Source/GameLogic/Object/Update/SpecialEnemySenseUpdateModuleData
 game/GameEngine/Source/GameLogic/Object/Update/SpecialEnemySenseUpdateModuleDataCtorThunk.cpp|member||m_10,2723690d729954724899a9bd,gpt-6.1-sol,20261016051138-f8b138,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdateModuleDataConstructor.cpp|member||m_bfme0C,ee717c3587b3bd9381f8d864,gpt-6.1-sol,20261016051147-7d1fc4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdateModuleDataConstructor.cpp|member||m_bfmeFirst,87e3aaae6c1da574b945631d,gpt-6.1-sol,20261016051147-7d1fc4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/SlaughterHordeContainModuleDataCtorThunk.cpp|member||m_30c,230494dd80175a63c755d2d9,gpt-6.1-sol,20261016051203-53e479,2026-10-16
