@@ -4383,3 +4383,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cp
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23d8,15d0dd5ea10cd3fab194dcd2,gpt-6.1-sol,20261016065733-067db8,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_23f8,144f6f0694a9f4bdccc037ec,gpt-6.1-sol,20261016065733-067db8,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00745B10OwnerConstructor.cpp|member||m_240c,ef9b18b3f54958f0f6855945,gpt-6.1-sol,20261016065733-067db8,2026-10-16
+game/GameEngine/Source/Common/BfmeOneHundredThirty.cpp|member||m_bfme00,daa1dec49fbb58972b26289f,gpt-6.1-sol,20261016065727-d10c9c,2026-10-16
+game/GameEngine/Source/Common/BfmeOneHundredThirty.cpp|member||m_bfmecc,c50210d3372e5c1ef8b89d71,gpt-6.1-sol,20261016065727-d10c9c,2026-10-16
