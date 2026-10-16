@@ -4178,3 +4178,10 @@ game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_tr
 game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|member||fieldE8,4fc39e399ae7e2519bdd31c8,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|local|WeaponFireSpecialAbilityUpdate::triggerAbilityEffect|t,a231bd9a11c6e4346e4174f8,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/WeaponFireSpecialAbilityUpdate_triggerAbilityEffect.cpp|local|WeaponFireSpecialAbilityUpdate::triggerAbilityEffect|p,3c217ef2568081e7ecae0c20,gpt-6.1-sol,20261016064131-8dc6fe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|member||position38,17adefa5d796beca71aa5ffe,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|member||direction14,c695e12d940f33a2d889c999,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|member||begin04,6ce636a0b7edb5b5f0402afa,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|member||end08,005256bfeed12f7ebfa57d7a,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|param|sub|p,1d215f17213107547470dc23,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|local|data|p,52e644a833d35c334d418a02,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/NearestPosition00206960.cpp|local|NearestPosition00206960::find|d,a8bf6b1734ac7a5bf0cd3637,gpt-6.1-sol,20261016064136-a98f6f,2026-10-16
