@@ -2207,3 +2207,4 @@ game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|x0,38d1
 game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|y0,af8ca39f303f1be9cf51002c,gpt-6.1-sol,20261016042616-2c4593,2026-10-16
 game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|x1,db3d7d22f2821cac520c2bde,gpt-6.1-sol,20261016042616-2c4593,2026-10-16
 game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|y1,da6bf03158bd4bff8c338567,gpt-6.1-sol,20261016042616-2c4593,2026-10-16
+game/GameEngine/Source/GameClient/GUI/OnlineQuickMatchSaveOptions.cpp|function|BfmeAptScreenOnlineQuickMatch@|rva005585B0SaveOptions,e33aca24df3990e6ccc07476,gpt-6.1-sol,20261016042625-dfa63c,2026-10-16
