@@ -4727,3 +4727,5 @@ game/GameEngine/Source/Common/Bfme5SeventySeven.cpp|member||m_bfmeCells,a7ed4d13
 game/GameEngine/Source/Common/Bfme5SeventySeven.cpp|function|Gen_008F7CD0@|bfmeAt,6e7c6e9863155b0646778454,gpt-6.1-sol,20261016070612-1769f1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/EntEnragedUpdateCtorThunk.cpp|member||m_field14,dd0348d536f64b2bbabb7dcf,gpt-6.1-sol,20261016070644-abfa00,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/EntEnragedUpdateCtorThunk.cpp|member||m_field18,a423798cc2e4a76925dd8240,gpt-6.1-sol,20261016070644-abfa00,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2024.cpp|member||m_bfmeFrameTN,7ea03631054351a0e50ee005,gpt-6.1-sol,20261016070633-4db987,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2024.cpp|param|BfmeThingTN::bfmeSetTransformTN|m,53a78c0fce2f4056400aec6a,gpt-6.1-sol,20261016070633-4db987,2026-10-16
