@@ -2336,3 +2336,8 @@ game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor
 game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_flag10,8d4f84ff0c78a1e9097bbf8e,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_text14,aef0e58c619effeb9057268d,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_flag18,8b9180dbcf39c601a80c0d91,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_08,c33609226882630d9473dc76,gpt-6.1-sol,20261016044135-de6990,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_0C,dafd1c439d78a1cdaedf8532,gpt-6.1-sol,20261016044135-de6990,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_10,1b6cee7ea5a32809d1106f6a,gpt-6.1-sol,20261016044135-de6990,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_11,2425440d08e5ed42f4528f83,gpt-6.1-sol,20261016044135-de6990,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_14,be0d9f06db9faeb101d7ac49,gpt-6.1-sol,20261016044135-de6990,2026-10-16
