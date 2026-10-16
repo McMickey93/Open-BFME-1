@@ -2217,3 +2217,8 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|y0,2bd4647a88da93582411c117,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|x1,07c7ff3236ea9e8c1c38f861,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|y1,96f4e11926d65af90fa11414,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|type||Position001ABC90,35999b90313afa396a305bbf,gpt-6.1-sol,20261016042659-034023,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|type||Key001ABC90,9141deddd65dc969d8e3dcc7,gpt-6.1-sol,20261016042659-034023,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|type||Properties001ABC90,dfea2062b6639ba962872ee8,gpt-6.1-sol,20261016042659-034023,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|param|Position001ABC90|p,1a5a1752413e4f3705ffb848,gpt-6.1-sol,20261016042659-034023,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|local|Position001ABC90|a,1fafde87c10f3d44b7022713,gpt-6.1-sol,20261016042659-034023,2026-10-16
