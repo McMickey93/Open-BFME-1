@@ -4528,3 +4528,15 @@ game/GameEngine/Source/GameLogic/Object/Update/Rva00291F20Update.cpp|member||m_f
 game/GameEngine/Source/GameLogic/Object/Update/Rva00291F20Update.cpp|member||m_fx28,35d9dd53f496acc8ad5fceb4,gpt-6.1-sol,20261016065859-2ee158,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/Rva00291F20Update.cpp|member||m_fx2c,62eeeadec9e1466b2d4da3b7,gpt-6.1-sol,20261016065859-2ee158,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/Rva00291F20Update.cpp|function|Rva00291F20Self@|Rva00291F20,483dfb9dc79fdee009a2fe43,gpt-6.1-sol,20261016065859-2ee158,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|type||Rva001B80D0AI,d44c1f8c23394f3ca2cad322,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|type||Rva001B80D0Body,104a2dc2c1685a724a66856b,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|type||Rva001B80D0Template,4c2e9b79fb0365349c4d9618,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||positionZ40,e8934629f690dd5ef04375b6,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||objectId74,75f1ab8d357ba5c659a67496,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||valueC0,72f8a92803acdc3c348d52d3,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||body200,4b99bfdca96b2891913193d2,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||ai204,d33509c806b1630e3870bff4,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||scale14,b251f685eade2d45eb2caf4a,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||height44,d35cb978cad7c333a6e4abf4,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||velocity9c,8c42cd81208511d1326cacc0,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||angleDeltaA0,5464de9789780e0e4bdf4156,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
