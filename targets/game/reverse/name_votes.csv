@@ -1350,3 +1350,9 @@ game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|param|Coord3D::Co
 game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|param|Rva000FE640Subtract|v,5a48c710fb5114b5ce1841db,gpt-6.1-sol,20261016030503-130f31,2026-10-16
 game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|param|Rva000FE640Dot|v,52aaf04645ff049ec8f4a690,gpt-6.1-sol,20261016030503-130f31,2026-10-16
 game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|local|getTemplate|t,69d8683040048f4f31f424e6,gpt-6.1-sol,20261016030503-130f31,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|_M_create_node|v,aaa107b49cbe6c1a28aed1f2,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|local|_M_create_node|tmp,7e0d106a5802366ae072476f,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|run|y,7a2c8f81bf8c7bb1c78de7d2,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|run|v,d3f61c27717c16922cdc0537,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|BfmeRbTreeInsertRva0033F4B0|y,eb5204a40e863c7641bd01a4,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|BfmeRbTreeInsertRva0033F4B0|v,e95265cad115f56011e46c0e,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
