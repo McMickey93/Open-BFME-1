@@ -2074,3 +2074,6 @@ game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.c
 game/Libraries/Source/EA/Apt/ValuePredicates008C4940.cpp|function|ValuePredicates008C4940@|isType5_008C4960,4b20f5e5c4c399fad9aeea0b,gpt-6.1-sol,20261016041029-0d101e,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00733E30.cpp|type||Rva00733E30Record,eb012e55a880e3b9c7b5908b,gpt-6.1-sol,20261016041047-4582b1,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00733E30.cpp|type||Rva00733E30Owner,6e86dd2fd6e85d4d2c66819d,gpt-6.1-sol,20261016041047-4582b1,2026-10-16
+game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|function||Rva009F40A0DistanceSquared,6c35f13b1fa4353f7789872c,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
+game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|param|Rva009F40A0DistanceSquared|a,0c6afb0ef48899ebf9ad61a1,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
+game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|local|Rva009F40A0DistanceSquared|b,89ed7e395c60ed37b087ca60,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
