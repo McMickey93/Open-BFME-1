@@ -5494,3 +5494,6 @@ game/GameEngine/Source/Common/BfmeConv1780.cpp|type||BfmeOwnerGK,77c3f1204108096
 game/GameEngine/Source/Common/BfmeConv1780.cpp|member||m_bfmeSourceGK,abd547f12c85777cb5f865fd,gpt-6.1-sol,20261016083401-573822,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1780.cpp|member||m_bfmeAgentGK,f7bbdd1dca7a977368fca218,gpt-6.1-sol,20261016083401-573822,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1780.cpp|member||m_bfmeListGK,4c92a849ac81e78824a82e89,gpt-6.1-sol,20261016083401-573822,2026-10-16
+game/GameEngine/Source/GameClient/Rva004155A0NotifyArrays.cpp|type||Rva004155A0Primary,fe1bada62b2b51ba164ff586,gpt-6.1-sol,20261016083356-4f6b00,2026-10-16
+game/GameEngine/Source/GameClient/Rva004155A0NotifyArrays.cpp|type||Rva004155A0Owner,b4ea0595d16a413b3f2e72cd,gpt-6.1-sol,20261016083356-4f6b00,2026-10-16
+game/GameEngine/Source/GameClient/Rva004155A0NotifyArrays.cpp|local|Rva004155A0Owner::notifyArrays|p,0c702f923d4d01304388b778,gpt-6.1-sol,20261016083356-4f6b00,2026-10-16
