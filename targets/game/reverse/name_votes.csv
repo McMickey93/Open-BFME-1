@@ -1865,3 +1865,12 @@ game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataCtorT
 game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataCtorThunk.cpp|member||m_2f0,4a940c71e91a022c2117e7eb,gpt-6.1-sol,20261016035955-07a80b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataCtorThunk.cpp|member||m_2f1,15d00cac82d3f5a1ba6239ea,gpt-6.1-sol,20261016035955-07a80b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataCtorThunk.cpp|member||m_2f2,13a5d85b07ef7cd01a0f5caa,gpt-6.1-sol,20261016035955-07a80b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|type||BfmeEnvelope,45270409e2338c7df494a689,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme00,2fcf612ba3bba229ae0ba712,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme04,97d834c1000e0853fd9c5e7f,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme08,0a6298a519fa64db44f2f460,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme10,8ae604b7e6f61cfce8604dce,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme14,d5c7f4e14ab8996f0a767315,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme18,ed252b56ec54048b6d737f0a,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme1C,f7bb4e8423cd803e9b4149bc,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme20,aa28832d4ec4ad3256d1ef0e,gpt-6.1-sol,20261016040001-f36023,2026-10-16
