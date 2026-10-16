@@ -1682,3 +1682,8 @@ game/GameEngine/Source/Common/BfmeConv1279.cpp|member||m_bfme00,7f89a0584858a360
 game/GameEngine/Source/Common/BfmeConv1279.cpp|member||m_bfme04,d584e1a601d74627f39f0edc,gpt-6.1-sol,20261016033604-4ae0b1,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1279.cpp|member||m_bfme104,fab203a39fdbc72177e5ae69,gpt-6.1-sol,20261016033604-4ae0b1,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1279.cpp|param|BfmeA1279::BfmeA1279|a,f6a71ea28f0fca83fe14f9e9,gpt-6.1-sol,20261016033604-4ae0b1,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2064.cpp|member||m_bfmeBitGG,e452f2a5e5514ed87dc88d0a,gpt-6.1-sol,20261016033610-f0f6c6,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2064.cpp|member||m_bfmeSrcGG,8f55e3636cf53ddfb0cc62f3,gpt-6.1-sol,20261016033610-f0f6c6,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2064.cpp|function|BfmeMaskGG@|bfmeSetBitGG,867c43fc4df44123072bfb67,gpt-6.1-sol,20261016033610-f0f6c6,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2064.cpp|local|BfmeMaskGG::bfmeSetBitGG|t,57595a25b354be82b027f286,gpt-6.1-sol,20261016033610-f0f6c6,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2064.cpp|local|BfmeMaskGG::bfmeSetBitGG|s,a1810389d5df3937055ea7df,gpt-6.1-sol,20261016033610-f0f6c6,2026-10-16
