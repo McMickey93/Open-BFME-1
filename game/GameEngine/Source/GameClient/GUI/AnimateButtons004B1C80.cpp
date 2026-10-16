@@ -2,7 +2,7 @@
 // stlport
 // Retail RVA 0x004B1C80, 1021 bytes. The owning BFME class is not proved.
 // This address-derived view describes the observed button animation update.
-// name_oracle has no witnessed layout for AnimateButtons004B1C80 or Map004B1C80.
+// name_oracle has no witnessed layout for AnimateButtons004B1C80 or Rva004B12F0Map.
 //
 // The vector at +0x0C contains windows: each is passed to winIsHidden and
 // GadgetButtonGetData. +0x44 is the map also witnessed by the already-landed
@@ -98,9 +98,9 @@ typedef _STL::map<Rva004B1880Key, Rva004B1880Value> Rva004B1880Map;
 namespace _STL {
 template<> Rva004B1880Value &Rva004B1880Map::operator[](const Rva004B1880Key &key);
 }
-struct Map004B1C80 {
+struct Rva004B12F0Map {
  Node004B1C80 *field00; unsigned field04;
- Iterator004B1C80 find(const Rva004B00D0Element *const &key);
+ Iterator004B1C80 rva004B0530(const Rva004B00D0Element *const &key);
  __forceinline Counted004B1C80 &at(const Rva004B00D0Element *const &key) { return (Counted004B1C80 &)((Rva004B1880Map*)this)->operator[]((const Rva004B1880Key &)key); }
  unsigned erase(const Rva004B00D0Element *const &key);
  void clear() { if(field04) { ((BfmeListW*)this)->bfmeEraseFrom((BfmeNodeW*)field00->field04); field00->field08=field00; field00->field04=0; field00->field0c=field00; field04=0; } }
@@ -120,7 +120,7 @@ public:
  int field18,field1c,field20,field24,field28,field2c;
  unsigned field30,field34,field38;
  float field3c,field40;
- Map004B1C80 field44;
+ Rva004B12F0Map field44;
 };
 // Keep this float helper inline: spelling the calculation in update instead
 // schedules FSIN before the numerator multiplication. Named half/angle locals
@@ -167,7 +167,7 @@ void AnimateButtons004B1C80::update() {
     ButtonData004B1C80 *data=(ButtonData004B1C80*)GadgetButtonGetData((GameWindow*)window);
     if(data && data->field144>0) {
      Node004B1C80 *end=field44.field00;
-     Iterator004B1C80 found=field44.find(key);
+     Iterator004B1C80 found=field44.rva004B0530(key);
      if(found.p==end) {
       field44.at(key)=Counted004B1C80(new Gen_ctor_004b02a0);
       field08=true;

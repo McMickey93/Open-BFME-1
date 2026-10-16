@@ -81750,7 +81750,7 @@ name,address,notes
 ?erase@EnragedBehaviorRange@@QAEXPAX0@Z,0x00024C17,EnragedBehavior vector<AsciiString> clear passes its begin and end through this proven ILT to 0x00065960
 ?erase@FlammableUpdateModuleDataMemberB@@AAEXPAX0@Z,0x0002637D,FlammableUpdateModuleData FireFXList clear callee; named parser proves the twelve-byte vector at +0x24
 ?erase@IntPairTreeEraseShim@_STL@@QAEXPAU?$_Rb_tree_node@U?$pair@$$CBHI@_STL@@@2@@Z,0x000AA7B0,_STL int pair tree incremental-link thunk target through a TU-local forwarding shim
-?erase@Map004B1C80@@QAEIABQBVRva004B00D0Element@@@Z,0x004B12F0,opaque map ABI view for 0x004B1C80;target takes key reference and counts equal_range iterator span before erasing;returns count;ret4;retail caller uses ILT 0x000406F6
+?erase@Rva004B12F0Map@@QAEIABQBVRva004B00D0Element@@@Z,0x004B12F0,abi-view=?erase@?$_Rb_tree@HU?$pair@$$CBHUGen_t_004b12f0_p12cd@@@_STL@@U?$_Select1st@U?$pair@$$CBHUGen_t_004b12f0_p12cd@@@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHUGen_t_004b12f0_p12cd@@@_STL@@@2@@_STL@@QAEIABH@Z;opaque map ABI view for 0x004B1C80;target takes key reference and counts equal_range iterator span before erasing;returns count;ret4;retail caller uses ILT 0x000406F6
 ?erase@PassiveAreaEffectBehaviorModuleDataMemberA@@AAEXPAX0@Z,0x00024C17,PassiveAreaEffectBehaviorModuleData +0x14 owned-range clear callee proven by constructor and destructor layout
 ?erase@PlayerUpgradeRange@@QAEXPAX0@Z,0x00024C17,PlayerUpgrade vector<AsciiString> clear passes its begin and end through this proven ILT to 0x00065960
 ?erase@PrereqVector@@QAEPAXPAX0@Z,0x00010BB3,ThingTemplate parsePrerequisites vector range-erase helper (jmp thunk)
@@ -81907,7 +81907,7 @@ name,address,notes
 ?find@Gen009D7B80@@QBEPAUBfmeStringNode@@PBV?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@Z,0x009D7680,lookup body called by Gen009D7B80 operator[]
 ?find@HashMap008FF850@@QAE?AUHashIter008FF850@@ABH@Z,0x008FF560,STLport tree find ICF target of map unsigned-key peek wrapper 0x008FF850
 ?find@LightPointSystem@@QBEPAVLightPointLevel@@PAXPAVAsciiString@@@Z,0x00028AF6,link thunk the LightPointLevel parser at 0x0039CCF0 encodes; alias for the pointer-range search at 0x0039C1A0 that targets/game/reverse/symbols.csv already pins as findLightPointLevel; spelled as a system member here because retail keeps the system in ECX across the call
-?find@Map004B1C80@@QAE?AUIterator004B1C80@@ABQBVRva004B00D0Element@@@Z,0x004B0530,opaque map ABI view for 0x004B1C80;target independently walks unsigned node keys at +0x10 and returns iterator through hidden pointer;ret8;retail caller uses ILT 0x00046A10
+?rva004B0530@Rva004B12F0Map@@QAE?AUIterator004B1C80@@ABQBVRva004B00D0Element@@@Z,0x004B0530,abi-view=?dup_004b0530@@YAXXZ;opaque map ABI view for 0x004B1C80;target independently walks unsigned node keys at +0x10 and returns iterator through hidden pointer;ret8;retail caller uses ILT 0x00046A10
 ?find@MapCache@@QAEPAUMapCacheNode@@ABVAsciiString@@@Z,0x000263D7,isValidMap lookup thunk
 ?find@ModuleTemplateMap@@QBE?AUModuleTemplateMapIterator@@ABH@Z,0x0000C054,ILT thunk to the NameKey-keyed module template map find at 0x001265D0
 ?find@Object@@QAEPAXH@Z,0x00009C41,ILT 0x00009C41 launcher query from WeaponTemplate::shouldProjectileCollideWith burned check
