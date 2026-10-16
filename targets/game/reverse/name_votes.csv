@@ -3001,3 +3001,7 @@ game/GameEngine/Source/Common/Rva00477E20Walk.cpp|type||Rva00477E20,9ba633a0f3b2
 game/GameEngine/Source/Common/Rva00477E20Walk.cpp|member||m_200,1d8b4cfa8d9d34ddb7d27ffe,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
 game/GameEngine/Source/Common/Rva00477E20Walk.cpp|member||m_204,cd83f7d13ef09ee513982c40,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
 game/GameEngine/Source/Common/Rva00477E20Walk.cpp|local|Rva00477E20::walk|p,78140313d2eedae93bd45b25,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910Result,b070ee7c6f05e1d911035361,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910Nested,397635129acac886dcc12d82,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910Element,f81fee19995db560445c3d11,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeUpgradeImplementation.cpp|type||Rva002D9910State,98638d8e85edd57a0cd26455,gpt-6.1-sol,20261016053902-95a4bc,2026-10-16
