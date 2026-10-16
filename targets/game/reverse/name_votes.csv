@@ -4291,3 +4291,16 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|mem
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_2C,a2ff53d4b000b87997d7e543,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_30,ce439dca2a9d979287996cf0,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferConstructor.cpp|member||m_34,41f512d2aa694212bddd06ff,gpt-6.1-sol,20261016062935-59c71c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|type||Drawable00200420,2831894e9cb8bf2fcc5cb63b,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|type||Body00200420,7ea31d7a5215f28cb76b38ff,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|type||AI00200420,0d7cb3b33924db0ff076f76f,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||conditions250,d154921e1ab31d1f389f54b0,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||body200,1b3153ee8b17f33314ef9636,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||ai204,676895b3a50ae333afa96499,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||status344,90508364790c874295b1907f,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||counts08,32d833b3eddd6858ffddf081,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||thresholds14,127dc90d2ee1cea8721ca32e,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||flag20,d02afd8837b9f8605902a069,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||flag21,c59f51b89baae762424a057e,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||frame3C,7fa80fc27b5b0251dbc025c8,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||count10,fe61e9e855e60c5b1c61353f,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
