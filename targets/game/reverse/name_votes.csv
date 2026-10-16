@@ -1707,3 +1707,7 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowManag
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowManagerRva007B4940.cpp|local|W3DProjectedShadowManager::createShadowPairRva007B4940|texture2,719c4eb3a0357772a505a2d9,gpt-6.1-sol,20261016035435-57a8e3,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowManagerRva007B4940.cpp|local|W3DProjectedShadowManager::createShadowPairRva007B4940|at60,811d9c5c451691974c9e7286,gpt-6.1-sol,20261016035435-57a8e3,2026-10-16
 game/GameEngine/Source/GameClient/ShadowRva00459960.cpp|member||m_value3C,f9cbcfefa59a469bebf0a402,gpt-6.1-sol,20261016035435-5577cb,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Rva00784090AptItemBounds.cpp|local|Rva00785FD0Item::getRenderRegion|p,16fa8ad6c688eb2dbfb9aa86,gpt-6.1-sol,20261016035541-db918a,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Rva00784090AptItemBounds.cpp|local|Rva00785FD0Item::getRenderRegion|v0,d85ef724d8fce062aae84f5e,gpt-6.1-sol,20261016035541-db918a,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Rva00784090AptItemBounds.cpp|local|Rva00785FD0Item::getRenderRegion|v1,2213d2d65356c37a16616289,gpt-6.1-sol,20261016035541-db918a,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Rva00784090AptItemBounds.cpp|local|Rva00785FD0Item::getRenderRegion|v2,9a936fa04e5b6f5661349118,gpt-6.1-sol,20261016035541-db918a,2026-10-16
