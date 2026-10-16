@@ -1,70 +1,67 @@
 // ?shouldFireWeapon@FireWeaponCollide@@UAE_NXZ
-// partial score=0.88 date=2026-09-09
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
-// Retail-layout ABI shim for FireWeaponCollide::shouldFireWeapon.
+// partial score=0.8561 date=2026-10-16
+// ?shouldFireWeapon@FireWeaponCollide@@UAE_NXZ
+// cl: /O2 /DNDEBUG /DWIN32 /MD /EHsc
+typedef bool Bool;
 
-class BfmeFlagsZX
+class ObjectStatusMaskType
 {
 public:
-	void set(unsigned int word0, unsigned int word1, unsigned int word2)
-	{
-		m_words[0] = word0;
-		m_words[1] = word1;
-		m_words[2] = word2;
-	}
+	Bool testForAny(const ObjectStatusMaskType &that) const;
+	void set(unsigned int a, unsigned int b, unsigned int c) { w0 = a; w1 = b; w2 = c; }
+	unsigned int w0, w1, w2;
+};
 
-	bool bfmeAnyZX(const BfmeFlagsZX *other) const;
-	bool bfmeRequiredAnyZX(const BfmeFlagsZX *other) const;
+class Object
+{
+public:
+	const ObjectStatusMaskType &getStatusBits() const { return m_status; }
 
-	unsigned int m_words[3];
+private:
+	unsigned char m_unmodelled_000[0x90];
+	ObjectStatusMaskType m_status;
 };
 
 class FireWeaponCollideModuleData
 {
-private:
 	unsigned char m_prefix[0x0c];
 
 public:
-	BfmeFlagsZX m_requiredStatus;
-	BfmeFlagsZX m_forbiddenStatus;
-	bool m_fireOnce;
-};
-
-class FireWeaponCollideThing
-{
-public:
-	unsigned char m_prefix[0x90];
-	unsigned int m_status[3];
+	ObjectStatusMaskType m_requiredStatus;
+	ObjectStatusMaskType m_forbiddenStatus;
+	Bool m_fireOnce;
 };
 
 class FireWeaponCollide
 {
 public:
-	virtual bool shouldFireWeapon();
+	virtual Bool shouldFireWeapon();
+
+protected:
+	const FireWeaponCollideModuleData *getFireWeaponCollideModuleData() const { return m_moduleData; }
+	Object *getObject() const { return m_object; }
 
 private:
-	FireWeaponCollideModuleData *m_moduleData;
-	FireWeaponCollideThing *m_object;
+	const FireWeaponCollideModuleData *m_moduleData;
+	Object *m_object;
 	unsigned char m_between[0x0c];
-	bool m_everFired;
+	Bool m_everFired;
 };
 
-// ?shouldFireWeapon@FireWeaponCollide@@ present-unmatched
-bool FireWeaponCollide::shouldFireWeapon()
+// ?shouldFireWeapon@FireWeaponCollide@@UAE_NXZ
+Bool FireWeaponCollide::shouldFireWeapon()
 {
-	FireWeaponCollideModuleData *d = m_moduleData;
+	const FireWeaponCollideModuleData *d = getFireWeaponCollideModuleData();
 	FireWeaponCollide *volatile self = this;
-	unsigned int word0 = m_object->m_status[0];
-	unsigned int word1 = m_object->m_status[1];
-	unsigned int word2 = m_object->m_status[2];
-	BfmeFlagsZX status;
-	status.set(word0, word1, word2);
+	ObjectStatusMaskType status = getObject()->getStatusBits();
+	ObjectStatusMaskType tmp;
 
-	if (status.bfmeAnyZX(&d->m_forbiddenStatus))
+	tmp.set(status.w0, status.w1, status.w2);
+	if (tmp.testForAny(d->m_forbiddenStatus))
 		return false;
 
-	status.set(~word0, ~word1, (~word2) & 0x003fffff);
-	if (status.bfmeAnyZX(&d->m_requiredStatus))
+	tmp.set(~status.w0, ~status.w1, ~status.w2 & 0x003fffff);
+	if (tmp.testForAny(d->m_requiredStatus))
 		return false;
 
 	if (self->m_everFired && d->m_fireOnce)
