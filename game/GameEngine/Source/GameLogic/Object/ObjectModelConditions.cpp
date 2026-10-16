@@ -152,8 +152,25 @@ private:
 	WeaponSlotType m_curWeaponSlot;				// +0x27C
 };
 
+// The 7-index BitFlags<320> constructor at 0x001C5E90, under its ledger name.
+// The defaulted entry is the inline zero fill of the table's fourth slot.
+class BfmeD1166
+{
+public:
+	BfmeD1166() { for (int i = 0; i < 10; ++i) m_bitWords[i] = 0; }
+	BfmeD1166(int tag, unsigned int bitIndex1, unsigned int bitIndex2, unsigned int bitIndex3, unsigned int bitIndex4, unsigned int bitIndex5, unsigned int bitIndex6, unsigned int bitIndex7);
+	unsigned int m_bitWords[10];
+};
+
 // The per-slot clear mask, one 40-byte entry per weapon slot, at 0x012EF648.
-static const BitFlags<320> s_allWeaponFireFlags[WEAPONSLOT_COUNT] = {};
+// Its dynamic initializer (0x00C6B050, 131 bytes) builds three masks and zeroes
+// the fourth entry, 0x012EF6C0..0x012EF6E7, so the table spans four slots.
+static const BfmeD1166 s_allWeaponFireFlags[QUATERNARY_WEAPON + 1] =
+{
+	BfmeD1166(0, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x27, 0x74),
+	BfmeD1166(0, 0x2e, 0x2f, 0x30, 0x31, 0x32, 0x2d, 0x75),
+	BfmeD1166(0, 0x34, 0x35, 0x36, 0x37, 0x38, 0x33, 0x76),
+};
 
 // ?notifyModelConditionChanged@Object@@QAEXXZ
 //
@@ -202,6 +219,6 @@ void Object::setFiringConditionForCurrentWeapon() const
 	{
 		WeaponSlotType slot = m_curWeaponSlot;
 		BitFlags<320> flags = WeaponSet::getModelConditionForWeaponSlot(slot, WSF_FIRING);
-		self->clearAndSetModelConditionFlags(s_allWeaponFireFlags[slot], flags);
+		self->clearAndSetModelConditionFlags(*(const BitFlags<320> *)&s_allWeaponFireFlags[slot], flags);
 	}
 }
