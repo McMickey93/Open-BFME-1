@@ -3371,3 +3371,7 @@ game/GameEngine/Source/Common/Thing/BFMEFactoryModuleDataLaserUpdateCtor.cpp|mem
 game/GameEngine/Source/Common/Thing/BFMEFactoryModuleDataLaserUpdateCtor.cpp|member||m_unmodelled_08,3f8c451f535bd2031656222b,gpt-6.1-sol,20261016060639-d3799f,2026-10-16
 game/GameEngine/Source/Common/Thing/BFMEFactoryModuleDataLaserUpdateCtor.cpp|member||m_unmodelled_0C,95f22bf4cd46cd1aa279eee8,gpt-6.1-sol,20261016060639-d3799f,2026-10-16
 game/GameEngine/Source/Common/Thing/BFMEFactoryModuleDataLaserUpdateCtor.cpp|member||m_unmodelled_18,97bc33839c5402cd834e987a,gpt-6.1-sol,20261016060639-d3799f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field08,c86b765016876e6d0ee13fed,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field0C,65b45ddf0818717fbe959fa8,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field10,b320187803708fcfd3e090ec,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field14,13cd749d1bce4e2cdb140486,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
