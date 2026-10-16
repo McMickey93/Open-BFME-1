@@ -3387,3 +3387,6 @@ game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdate
 game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehaviorModuleDataMemberDestructor.cpp|member||m_bfmeHeader,1db840fe2905552938acdbc5,gpt-6.1-sol,20261016060718-380a86,2026-10-16
 game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehaviorModuleDataMemberDestructor.cpp|member||m_bfmeHandle,80775377a51da383e545539f,gpt-6.1-sol,20261016060718-380a86,2026-10-16
 game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehaviorModuleDataMemberDestructor.cpp|member||m_bfmeCount,7ad1dcde452da56c50f730c3,gpt-6.1-sol,20261016060718-380a86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeFriendNewModuleDataThunk.cpp|member||m_70,4f8ae4cf524e68d0c1a5d343,gpt-6.1-sol,20261016060723-033b19,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeFriendNewModuleDataThunk.cpp|member||m_71,b45b6816d09dcec3f04f01eb,gpt-6.1-sol,20261016060723-033b19,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeFriendNewModuleDataThunk.cpp|member||m_74,a3f88a0ac61620cd0ab650e6,gpt-6.1-sol,20261016060723-033b19,2026-10-16
