@@ -19,7 +19,7 @@ class Pathfinder
 	friend class Rva003EEB50;
 
 public:
-	UByte bfmeInnerE6E90(void *, void *, void *, void *, void *, void *,
+	UByte rva003DF580(void *, void *, void *, void *, void *, void *,
 		void **, Int);
 
 protected:

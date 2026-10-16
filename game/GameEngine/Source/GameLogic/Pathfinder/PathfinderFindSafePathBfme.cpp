@@ -197,7 +197,7 @@ public:
 		const LocomotorSet &locomotorSet, Bool isHuman, Bool centerInCell,
 		Int radius, const ICoord2D &startCellNdx, const Object *obj,
 		Int attackDistance);
-	Bool bfmeInnerE6E90(Object *obj, Int cellX, Int cellY,
+	Bool rva003DF580(Object *obj, Int cellX, Int cellY,
 		PathfindLayerEnum layer, Int radius, Bool centerInCell,
 		void **blocker, Int flags);
 	Path *buildActualPath(const Object *obj, Int surfaces,
@@ -221,7 +221,7 @@ protected:
 		Int cellY, PathfindLayerEnum layer, Int radius, Bool centerInCell)
 	{
 		void *blocker;
-		if (!bfmeInnerE6E90(const_cast<Object *>(obj), cellX, cellY, layer,
+		if (!rva003DF580(const_cast<Object *>(obj), cellX, cellY, layer,
 				radius, centerInCell, &blocker, 0))
 			return false;
 		return blocker == 0;

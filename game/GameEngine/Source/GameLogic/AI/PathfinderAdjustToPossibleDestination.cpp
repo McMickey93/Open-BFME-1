@@ -178,7 +178,7 @@ public:
 	}
 	Bool checkForPossible( const PathfindMovementProfile &profile, Int fromZone, Bool center,
 		Int cellX, Int cellY, PathfindLayerEnum layer, Coord3D *dest, Bool startingInObstacle );
-	Bool bfmeInnerE6E90( Object *obj, Int cellX, Int cellY, PathfindLayerEnum layer,
+	Bool rva003DF580( Object *obj, Int cellX, Int cellY, PathfindLayerEnum layer,
 		Int radius, Bool centerInCell, void **blocker, Int flags );
 	Bool bfmeWrapE6E90( Object *obj, Int cellX, Int cellY, PathfindLayerEnum layer,
 		Int radius, Bool centerInCell );
@@ -217,7 +217,7 @@ inline Bool Pathfinder::bfmeWrapE6E90Inline( Object *obj, Int cellX, Int cellY,
 	PathfindLayerEnum layer, Int radius, Bool centerInCell )
 {
 	void *blocker;
-	if (!bfmeInnerE6E90( obj, cellX, cellY, layer, radius, centerInCell, &blocker, 0 ))
+	if (!rva003DF580( obj, cellX, cellY, layer, radius, centerInCell, &blocker, 0 ))
 		return false;
 	return blocker == 0;
 }

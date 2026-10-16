@@ -78660,7 +78660,7 @@ name,address,notes
 ?bfmeInitialize@BfmeVector12DK@@QAEXHPBUBfmeAllocatorDK@@@Z,0x00028B28,vector storage initialization thunk
 ?bfmeInnerE6E90@Pathfinder@@QAEEPAX00000PAAPAXH@Z,0x00049F3F,ILT thunk to 0x003DF580 used by 0x003E6E90 wrapper
 ?bfmeInnerE6E90@Pathfinder@@QAEEPAX00000PAPAXH@Z,0x00049F3F,ILT thunk to 0x003DF580 used by 0x003E6E90 wrapper
-?bfmeInnerE6E90@Pathfinder@@QAE_NPAVObject@@HHW4PathfindLayerEnum@@H_NPAPAXH@Z,0x00049F3F,typed ABI view of the ILT to the 8-arg query; adjustToPossibleDestination 0x003EAC80 pushes object cellX cellY layer radius Bool center (full dword load) &blocker 0
+?rva003DF580@Pathfinder@@QAE_NPAVObject@@HHW4PathfindLayerEnum@@H_NPAPAXH@Z,0x00049F3F,abi-view=?d_003df580@@YAXXZ;typed ABI view of the ILT to the 8-arg query; adjustToPossibleDestination 0x003EAC80 pushes object cellX cellY layer radius Bool center (full dword load) &blocker 0
 ?bfmeInnerEQC@Rva003F0EC0Owner@@QAEH_NIPAXPBX2I0@Z,0x003EEB90,RVA003F0EC0 helper through ILT0001FA14; live ECX saved003EEBA3 and receiver+8 read003EEBCB; ret1C003EFE7E; args0/6 byte predicates; arg2 object pointer; args3/4 float addresses; args1/5 opaque dwords
 ?bfmeInnerEQK@@YAXHPAUBfmeVec3EQK@@0U1@HH@Z,0x00034AB8,pin
 ?bfmeInnerEQM@@YAXHPAUBfmeVec3EQK@@0U1@HH@Z,0x0000DF5D,pin
