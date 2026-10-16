@@ -1459,3 +1459,4 @@ game/GameEngine/Source/Common/Rva007E8980Guard.cpp|member||m_10,2c14ea39cd7c37ee
 game/GameEngine/Source/Common/Rva007E8980Guard.cpp|member||m_14,246a3bc8f8c81be927759a1e,gpt-6.1-sol,20261016031800-285043,2026-10-16
 game/GameEngine/Source/Common/Rva007E8980Guard.cpp|member||m_24,ff723eb6e2cfcfd093b08c47,gpt-6.1-sol,20261016031800-285043,2026-10-16
 game/GameEngine/Source/Common/Rva007E8980Guard.cpp|local|Rva007E8980::go|r,2c11395a42d9b390abcf20af,gpt-6.1-sol,20261016031800-285043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DynamicPortalBehaviourRva001F8E20.cpp|local|Rva001F8E20Owner::method|d,ef96681ac63f77fa0b294c6b,gpt-6.1-sol,20261016031807-6c59bf,2026-10-16
