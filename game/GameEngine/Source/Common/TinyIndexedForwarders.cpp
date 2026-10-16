@@ -194,3 +194,15 @@ const AudioEventRTS *Rva0016A020::get() const
 {
     return getSound(0x54);
 }
+
+// BFME 2 CallForwarders8B.cpp pattern; independently carved sound slot 0x55.
+class Rva0016A030 : public ThingTemplate
+{
+public:
+    const AudioEventRTS *get() const;
+};
+
+const AudioEventRTS *Rva0016A030::get() const
+{
+    return getSound(0x55);
+}
