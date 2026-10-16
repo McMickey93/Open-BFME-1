@@ -4310,3 +4310,4 @@ game/GameEngine/Source/Common/BfmeConv1226.cpp|function|BfmeA1226@|bfmeDump1226,
 game/GameEngine/Source/Common/BfmeConv1226.cpp|local|BfmeA1226::bfmeDump1226|e,2f2fd17341b09060a3dfd7a3,gpt-6.1-sol,20261016064616-7ccc2b,2026-10-16
 game/Libraries/Source/EA/Apt/Rva008A7B00KeyboardProperties.cpp|param|addPooled|v,5c4febe102f565de2142c711,gpt-6.1-sol,20261016063809-385975,2026-10-16
 game/Libraries/Source/EA/Apt/Rva008A7B00KeyboardProperties.cpp|local|pooledInteger|v,751a775d65c10afc71700d64,gpt-6.1-sol,20261016063809-385975,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineLoginRva00552C40.cpp|member||field98,712b9a48e3e3c8b021ddfb5c,gpt-6.1-sol,20261016063804-1a5574,2026-10-16
