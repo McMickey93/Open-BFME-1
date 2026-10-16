@@ -1,3 +1,4 @@
+// cl: /DNDEBUG /DWIN32 /MD /EHsc
 // Open-BFME5: the wide-text copy constructor at retail 0x0049A070, 87 bytes.
 //
 // The table store lands between the unwind state and the string copy, not at
@@ -25,6 +26,7 @@ public:
 };
 
 class Gen_0049A070;
+class Rva00499F30Result;
 
 __forceinline const BfmeWideVY &bfmeInstallVY(Gen_0049A070 *self,
 	const BfmeWideVY &value);
@@ -33,6 +35,7 @@ class Gen_0049A070 : public BfmeGuardVY
 {
 public:
 	Gen_0049A070(const Gen_0049A070 &other);
+	Rva00499F30Result bfmeDuplicateInto();
 
 	int *m_bfmeVtable;					// +0x00
 	BfmeWideVY m_bfmeText;					// +0x04
@@ -45,6 +48,22 @@ __forceinline const BfmeWideVY &bfmeInstallVY(Gen_0049A070 *self,
 	self->m_bfmeVtable = g_bfmeVtableVY;
 
 	return value;
+}
+
+
+// One-word owning result; 0x00499F30 deletes its pointee through virtual slot0.
+class Rva00499F30Pointee { public: virtual ~Rva00499F30Pointee(); };
+class Rva00499F30Result {
+public:
+ Rva00499F30Result(Gen_0049A070 *p) : m_ptr(p) {}
+ Rva00499F30Result(Rva00499F30Result &other):m_ptr(other.m_ptr) { other.m_ptr=0; }
+ ~Rva00499F30Result() { delete reinterpret_cast<Rva00499F30Pointee *>(m_ptr); }
+ Gen_0049A070 *m_ptr;
+};
+Rva00499F30Result Gen_0049A070::bfmeDuplicateInto()
+{
+ Rva00499F30Result temp(new Gen_0049A070(*this));
+ return temp;
 }
 
 // ??0Gen_0049A070@@QAE@ABV0@@Z
