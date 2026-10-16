@@ -5821,3 +5821,4 @@ game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsGarrisonedUnits.cp
 game/GameEngine/Source/Common/Rva0040D780Parse.cpp|local|bfmeParseD780|s,2737c0923463e356123097e9,gpt-6.1-sol,20261016131112-f595a6,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECFE0.cpp|local|W3DDisplay::rva006ECFE0|p,76477885b50bdd3e29e01334,gpt-6.1-sol,20261016131117-f3f379,2026-10-16
 game/GameEngine/Source/Common/BfmeConv894.cpp|local|BfmeThingFEG::bfmeGoFEG|r,3d5c12e9c4071a4ca2acd45b,gpt-6.1-sol,20261016131122-9ba749,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/BfmeShortVecWNCtor.cpp|local|BfmeShortVecWN::BfmeShortVecWN|p,9c2b3fc4c7f9ef466a0b6556,gpt-6.1-sol,20261016131127-b9e2a1,2026-10-16
