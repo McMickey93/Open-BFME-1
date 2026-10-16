@@ -4583,3 +4583,11 @@ game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestr
 game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_2b0,977ca61c0b4b886de07f1464,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HorseHordeContainModuleDataDestructorThunk.cpp|member||m_2bc,b474dc9a79c023138bda72b2,gpt-6.1-sol,20261016070349-d21dad,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/ToppleUpdateConstructors.cpp|member||m_20,1f41c6b66f02fdc4de1afde1,gpt-6.1-sol,20261016070205-4a9024,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|type||AI001FFFC0,1451272c7ab5223287a95e08,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field224,e2d4e530044be35f982a10f1,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field23c,715c885a771311b0f72673ab,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field38,6fedb57ee8fcf8812e732d72,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field44,5fa47e66f0fb7129a418bffc,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field204,63518a4f053ab197bce67fae,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||field208,83dbd8b13391c17cc0f02f84,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DeathFlight001FFFC0.cpp|member||fielda0,727a0a31427e3bb92b2d498d,gpt-6.1-sol,20261016070503-b498d5,2026-10-16
