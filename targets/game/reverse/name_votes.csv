@@ -2897,3 +2897,6 @@ game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bf
 game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_20,d8cb138cc76bac2f08ad6f1d,gpt-6.1-sol,20261016052525-36767e,2026-10-16
 game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_24,99251456798b0666f0ca7391,gpt-6.1-sol,20261016052525-36767e,2026-10-16
 game/GameEngineDevice/Source/MilesAudioDevice/PlayingAudioConstructor.cpp|member||m_value28,9a06271c5bd6ce074d424e6b,gpt-6.1-sol,20261016052531-5ed893,2026-10-16
+game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|type||BfmeItemKV,5fcff39914c94bd7af049461,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
+game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeFirst,17c7970a91043a9df04a644a,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
+game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeSecond,c6a1b81b97412bc7495bfcf7,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
