@@ -1260,3 +1260,7 @@ game/GameEngine/Source/GameClient/GUI/BfmeAptScreenOptionsReset.cpp|member||w2fc
 game/GameEngine/Source/GameClient/GUI/BfmeAptScreenOptionsReset.cpp|member||w300,86461454bad851efced40ea2,gpt-6.1-sol,20261016025013-c99b90,2026-10-16
 game/GameEngine/Source/GameClient/GUI/BfmeAptScreenOptionsReset.cpp|function|BfmeAptScreenOptions@|_bfme_reset,3a0418fc8fd9c9de8d29832a,gpt-6.1-sol,20261016025013-c99b90,2026-10-16
 game/GameEngine/Source/GameClient/GUI/BfmeAptScreenOptionsReset.cpp|local|BfmeAptScreenOptions::_bfme_reset|b06,164fcc574d4a1d58f431a079,gpt-6.1-sol,20261016025013-c99b90,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/GenerateLadderGameResultsPacket.cpp|local|compare|n,f14bb96a003d575e76abe21d,gpt-6.1-sol,20261016025144-8d4eea,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/GenerateLadderGameResultsPacket.cpp|local|compare|p,54fb2cba92037780ff8409c7,gpt-6.1-sol,20261016025144-8d4eea,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/GenerateLadderGameResultsPacket.cpp|local|GameSpyStagingRoom::generateLadderGameResultsPacket|p,dd1aaad6af7bd127937aff03,gpt-6.1-sol,20261016025144-8d4eea,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/GenerateLadderGameResultsPacket.cpp|local|GameSpyStagingRoom::generateLadderGameResultsPacket|tempStr,2b869aae0a87aa8a055efa27,gpt-6.1-sol,20261016025144-8d4eea,2026-10-16
