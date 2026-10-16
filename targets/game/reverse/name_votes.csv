@@ -4775,3 +4775,6 @@ game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInAre
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field48,5e9a659608283d0375c86d8e,gpt-6.1-sol,20261016071531-b44971,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field170d8,b6be86a74dc79d53d5868c35,gpt-6.1-sol,20261016071531-b44971,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|local|getTemplate|t,9e62cf6dde85061d6647b79b,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/OwnerNotify003C4740.cpp|member||m_D4,f0f89887676c02fdc3dc3337,gpt-6.1-sol,20261016071537-9cda1f,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/OwnerNotify003C4740.cpp|member||m_D8,5a8b7760bcfec06e25f83b3e,gpt-6.1-sol,20261016071537-9cda1f,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/OwnerNotify003C4740.cpp|function|Glo012F1028Type@|rva003C3F40,8d1d175e542d2bb5a3a20af6,gpt-6.1-sol,20261016071537-9cda1f,2026-10-16
