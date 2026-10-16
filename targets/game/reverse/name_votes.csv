@@ -5786,3 +5786,5 @@ game/GameEngine/Source/Common/Rva000D4360Owner.cpp|param|rva000D4360|arg0,f9fdaf
 game/GameEngine/Source/Common/INI/INIMapCache.cpp|local|INI::parseMapCacheDefinition|c,5588af729057563045682e35,gpt-6.1-sol,20261016130921-e1b82f,2026-10-16
 game/GameEngine/Source/GameLogic/Map/FootprintIterator001A1460.cpp|local|FootprintIterator001A1460::FootprintIterator001A1460|c,12756ae6d5c1093871f76710,gpt-6.1-sol,20261016130926-9c913e,2026-10-16
 game/GameEngine/Source/GameLogic/Map/FootprintIterator001A1460.cpp|local|FootprintIterator001A1460::FootprintIterator001A1460|s,081edef6c14d17768593feda,gpt-6.1-sol,20261016130926-9c913e,2026-10-16
+game/GameEngine/Source/Common/Small03hWordSwap.cpp|local|Rva009CC2C0Box::swap|v,b88da8e1407ad1a43c664d31,gpt-6.1-sol,20261016130932-99819a,2026-10-16
+game/GameEngine/Source/Common/Small03hWordSwap.cpp|local|Rva009CC2F0Box::swap|v,fe77f32a262c834d076ab838,gpt-6.1-sol,20261016130932-99819a,2026-10-16
