@@ -2,10 +2,11 @@
 // stlport
 //
 // Full 0x00418490..0x004185AC body reconstruction.  The Ghidra boundary is
-// 284 bytes.  Identity is caller-derived: the matched Drawable::drawIconUI
-// body at 0x00420AC0 reaches the named ILT ?drawBombed@Drawable@@AAEXXZ at
-// 0x0002F6E9, whose target is this body.  No stronger standalone direct
-// caller name was found.  The retail branch tests object status bits 4 and
+// 284 bytes.  This is Drawable::drawDisabled (formerly ledgered as
+// drawBombed): ilt_oracle confirms ?drawDisabled@Drawable@@AAEXXZ exactly
+// at ILT 0x0002F6E9, which drawIconUI (0x00420AC0) calls and which jumps
+// here, and the body drives icon slot 6, Zero Hour's ICON_DISABLED
+// (identity_evidence/00418490-draw-disabled-not-bombed.md).  The retail branch tests object status bits 4 and
 // 0x40; the true path creates/draws icon slot 6 and the false path destroys
 // and clears it.  The icon is placed from the health-bar region at +0x3C4
 // (lo.x, hi.y less the frame and bar heights) through an ICoord2D screen
@@ -60,7 +61,7 @@ public:
 
 private:
 	static Anim2DTemplate **s_animationTemplates;
-	void drawBombed();
+	void drawDisabled();
 };
 
 // Retail ILT102A8 reaches the matched 0x00410F10 lazy allocation body.
@@ -108,7 +109,7 @@ struct BfmeDrawableDrawBombedObjectFields
 	UnsignedInt m_status;
 };
 
-void Drawable::drawBombed()
+void Drawable::drawDisabled()
 {
 	BfmeDrawableDrawBombedFields *self = (BfmeDrawableDrawBombedFields *)this;
 	BfmeDrawableDrawBombedObjectFields *object =

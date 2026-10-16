@@ -81490,7 +81490,7 @@ name,address,notes
 ?method@Rva00410F90@@QAEXXZ,0x00022782,route=0x00410F90; drawIconUI icon group 3; no drawIconUI member name is CONFIRMED here
 ?drawAndRelease@W3DVolumetricShadowManager@@QAEXH@Z,0x00045B83,render helper ILT
 ?drawBackground@ControlBarSchemeManager@@QAEXUICoord2D@@@Z,0x0003788A,Root decoded25022->49D2E0 and3788A->4AD9C0; W3DControlBar.cpp755+ and ControlBarScheme.cpp4175+ establish matching background operations. Both symbols had no pins before addition.
-?drawDisabled@Drawable@@AAEXXZ,0x0002F6E9,thunk to 0x00418490; ilt_oracle CONFIRMED exact (drawBombed CONTRADICTED); drawIconUI icon group 1 second call
+?drawDisabled@Drawable@@AAEXXZ,0x0002F6E9,route=0x00418490; ilt_oracle CONFIRMED exact (drawBombed CONTRADICTED); drawIconUI icon group 1 second call
 ?drawButtonText@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z,0x00793EE0,W3DGadgetPushButtonDraw +0x0125 target call; named static helper in current/reference W3DPushButton.cpp; target body 0x00793EE0 is the retail text helper
 ?drawCaption@Drawable@@AAEXXZ,0x00022A11,BFME drawIconUI member ILT
 ?drawCheckBoxText@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z,0x0078FDE0,read out of W3DGadgetCheckBoxDraw call displacement; body is gen-dump d_0078fde0
