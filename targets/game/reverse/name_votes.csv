@@ -1706,3 +1706,4 @@ game/GameEngine/Source/Common/BfmeConv636.cpp|local|bfmeGoCRC|a,c994207b664472f7
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowManagerRva007B4940.cpp|local|W3DProjectedShadowManager::createShadowPairRva007B4940|texture1,efb1e708e4663b14fe72e584,gpt-6.1-sol,20261016035435-57a8e3,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowManagerRva007B4940.cpp|local|W3DProjectedShadowManager::createShadowPairRva007B4940|texture2,719c4eb3a0357772a505a2d9,gpt-6.1-sol,20261016035435-57a8e3,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowManagerRva007B4940.cpp|local|W3DProjectedShadowManager::createShadowPairRva007B4940|at60,811d9c5c451691974c9e7286,gpt-6.1-sol,20261016035435-57a8e3,2026-10-16
+game/GameEngine/Source/GameClient/ShadowRva00459960.cpp|member||m_value3C,f9cbcfefa59a469bebf0a402,gpt-6.1-sol,20261016035435-5577cb,2026-10-16
