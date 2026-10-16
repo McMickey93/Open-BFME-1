@@ -13,10 +13,13 @@ public:
 	UnsignedInt m_kindof;
 };
 
-class ThingFactory
+class ThingFactory;
+
+// The existing retail lookup body at RVA00137E80, reached via ILT00028560.
+class BfmeThingFactory
 {
 public:
-	ThingTemplate *findTemplateInternal( const AsciiString &name );
+	const ThingTemplate *findTemplate( const AsciiString &name );
 };
 
 extern ThingFactory *TheThingFactory;
@@ -106,7 +109,7 @@ void BfmeHordeContainRoster::rva0023B9F0( void )
 	Int count = 0;
 	for ( UnsignedInt i = 0; i < roster.size(); ++i )
 	{
-		const ThingTemplate *t = TheThingFactory->findTemplateInternal( roster[ i ]->m_bfmeName );
+		const ThingTemplate *t = reinterpret_cast<BfmeThingFactory *>(TheThingFactory)->findTemplate( roster[ i ]->m_bfmeName );
 		if ( t && ( t->m_kindof & 0x0800 ) )
 		{
 			total = count;
