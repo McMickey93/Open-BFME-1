@@ -254,6 +254,11 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
             || { rm -f "$wide_empty" "$wide_manifest"; \
                  fail "post-gate snapshot verification (see above)"; }
         rm -f "$wide_empty" "$wide_manifest"
+        # Last: the alias drain list hears of this push only now (pin_consistency).
+        if grep -q -e '"--publish-alias-log"' tools/pin_consistency.py 2>/dev/null; then
+            python3 tools/pin_consistency.py --publish-alias-log "$local_sha" \
+                || echo "pre-push: could not list this push's alias rows (not blocking)" >&2
+        fi
         echo "PRE-PUSH OK (full gate after wide dependency change)"
         continue
     fi
@@ -416,6 +421,11 @@ PY
             || { rm -f "$selector_in" "$selector_out" "$cache_manifest"; \
                  fail "verification evidence recording (see above)"; }
         rm -f "$selector_in" "$selector_out" "$cache_manifest"
+    fi
+    # Last: the alias drain list hears of this push only now (pin_consistency).
+    if grep -q -e '"--publish-alias-log"' tools/pin_consistency.py 2>/dev/null; then
+        python3 tools/pin_consistency.py --publish-alias-log "$local_sha" \
+            || echo "pre-push: could not list this push's alias rows (not blocking)" >&2
     fi
     echo "PRE-PUSH OK (${#verify[@]} outgoing verification selector(s) checked)"
 done <<< "$refs"

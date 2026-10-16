@@ -1425,6 +1425,23 @@ def _is_ilt_slot(oracle, rva):
     return rest == 0 and 0 <= slot < len(oracle.target)
 
 
+def _self_addressed(row):
+    spelled = SELF_ADDRESSED.match(row["name"])
+    return bool(spelled) and int(spelled.group(1), 16) == int(row["address"], 16)
+
+
+@functools.lru_cache(maxsize=None)
+def _pin_class(name, address, notes, overflow):
+    """'identity', 'alias' or None (route/view/self-addressed) for one pin; both
+    sides of a delta share most pins, so each is classified once."""
+    row = {"name": name, "address": f"0x{address:08X}", "notes": notes, "_overflow": overflow}
+    if _counts_as_identity(row):
+        return "identity"
+    if not pin_exemption(row) and not _self_addressed(row):
+        return "alias"
+    return None
+
+
 def _counts_as_identity(row):
     """Does this normalised pin assert WHICH function lives where it leads?
 
@@ -1438,7 +1455,7 @@ def _counts_as_identity(row):
     spelled = SELF_ADDRESSED.match(row["name"])
     if spelled and int(spelled.group(1), 16) == int(row["address"], 16):
         return False
-    return not alias_spelling(row["name"])
+    return not alias_spelling(row["name"], int(row["address"], 16))
 
 
 class Identities:
@@ -1450,20 +1467,35 @@ class Identities:
     string release body). Sources: matched, identity-naming functions.csv rows
     (`?j_` thunk rows excluded) and real-name symbols.csv pins (see
     _counts_as_identity) -- a pin-only name is as much a claim as a row.
+
+    Rows and pins with an ALIAS spelling (alias_spelling: placeholder or
+    invented, judged on the function's own components) are no identity: a
+    real name landing where only aliases stand is an identification, not a
+    second spelling. They are kept in `aliases` so the caller can list the
+    ones a real name displaces (option (a), pending the project lead's
+    approval; the coordinator's decision 2026-10-16).
     """
 
     def __init__(self, scanner, pin_rows, oracle):
         self.scanner, self.oracle = scanner, oracle
         self._walks = {}
         self.names = collections.defaultdict(lambda: collections.defaultdict(set))
+        self.aliases = collections.defaultdict(lambda: collections.defaultdict(set))
         for rva, names in scanner.identities.items():
             for name in names:
-                if not name.startswith("?j_"):
-                    self.names[self.body_of(rva)][name].add(("row", rva))
+                if name.startswith("?j_"):
+                    continue
+                table = self.aliases if alias_spelling(name, rva) else self.names
+                table[self.body_of(rva)][name].add(("row", rva))
         for row in pin_rows:
             address = int(row["address"], 16)
-            if scanner.image.in_text(address) and _counts_as_identity(row):
+            if not scanner.image.in_text(address):
+                continue
+            kind = _pin_class(row["name"], address, row["notes"], row.get("_overflow") or "")
+            if kind == "identity":
                 self.names[self.body_of(address)][row["name"]].add(("pin", address))
+            elif kind == "alias":
+                self.aliases[self.body_of(address)][row["name"]].add(("pin", address))
 
     def walk(self, address):
         """The hops from ADDRESS to the body it names (see the class docstring)."""
@@ -1498,7 +1530,7 @@ def _judge_pin(name, address, here, oracle):
     """(kind, why) when a pin NAME at ADDRESS conflicts with the names HERE
     (the other identities of the body it names), else None."""
     import ilt_oracle
-    real = not alias_spelling(name)
+    real = not alias_spelling(name, address)
     if real:
         verdict, _p, why = oracle.check(name, address)
         if verdict == ilt_oracle.CONTRADICTED:
@@ -1509,7 +1541,7 @@ def _judge_pin(name, address, here, oracle):
         # The ILT window fits ~2.5e-4 of names, so a signature variant of the
         # real owner can be salted to fit. CONFIRMED wins only over names that
         # are no claim (placeholders) or that the same slot refutes.
-        rivals = sorted(o for o in here if not alias_spelling(o)
+        rivals = sorted(o for o in here if not alias_spelling(o, address)
                         and oracle.check(o, address)[0] != ilt_oracle.CONTRADICTED)
         if not rivals:
             return None
@@ -1526,24 +1558,184 @@ def _show_walk(identities, address):
     return " -> ".join(f"0x{hop:08X}" for hop in identities.walk(address))
 
 
-def alias_spelling(name):
-    """Is NAME an invented or placeholder spelling rather than a real one?
+# An alias is a placeholder or invented spelling of the function's OWN class
+# or method token (the lead's confirmed policy, 2026-10-16): Rva/rva + 6-8 hex
+# (Rva8CD130String keeps its six), an address-shaped 0[01]xxxxxx run, the
+# ?a_/?b_/?d_/?dup_/?j_ + hex stand-ins, the generator prefixes Gen_/Gen<hex>/
+# FUN_/sub_/tg_ at a token start, $L/$S labels, and Bfme* inventions. A bare
+# hex-ish run (?InitDecade123Windows) is not one, nor is an anonymous
+# namespace scope (?A0x3f2a1b2c).
+_BOUNDARY = r"(?:^|(?<=[@?$])|(?<=[@?$][UV])|(?<=W4))"
+ALIAS_TOKEN = re.compile(r"[Rr]va[0-9A-Fa-f]{6,8}"
+                         r"|(?<![0-9A-Fa-f])0[01][0-9A-Fa-f]{6}|0[01][0-9A-Fa-f]{6}(?![0-9A-Fa-f])"
+                         + "|" + _BOUNDARY + r"(?:[abdj]|dup)_[0-9A-Fa-f]{5,8}"
+                         + "|" + _BOUNDARY + r"(?:Gen_|Gen[0-9A-Fa-f]{6}|FUN_|sub_|tg_)|^\$[LS]")
+INVENTED_TOKEN = re.compile(r"bfme", re.IGNORECASE)
+# Every alias rule needs one of these somewhere in the name (a 5+ hex run, a
+# generator or Bfme token, a $L/$S label): a cheap screen before the decode.
+ALIAS_HINT = re.compile(r"[0-9A-Fa-f]{5,}|bfme|Gen|FUN_|sub_|tg_|^\$[LS]", re.IGNORECASE)
+# A 5-8 digit hex run at the end of a token or before a capital letter
+# (Open2Rec3A4420, query1A6320, ParsePath8C4DA0, RvaA2160Offset8Getter) is
+# address-derived when its value is a known start: a functions.csv row, a
+# Ghidra function, an ILT slot, or the row's own RVA.
+HEX_TAIL = re.compile(r"[0-9A-Fa-f]{5,}(?=$|[A-Z@?$])")
 
-    ilt_oracle.tier applied to the function's OWN components only: its
-    qualified name (method and enclosing classes, a class's template arguments
-    included) as abi_view.qualified_prefix reads it, or the whole name when it
-    has no C++ qualification (`_foo@4`, `$L314`). "placeholder" is an
-    address-derived or generated spelling (`Rva`/`rva` + 6-8 hex digits, a run
-    of 6+ hex characters with 3+ digits, `?a_/?b_/?d_/?j_<hex>@@`, `sub_`/
-    `FUN_`/`dup_` + hex at a name boundary, `Gen_` at a boundary, `tg_`, `$L`,
-    `$S`); "invented" is a Bfme* stand-in (`bfme`, any case). A placeholder
-    PARAMETER type does not make a real Class::method an alias:
-    ?calculate@PartitionManagerImpl@@QAEXPAUGen009F5040Node@@PAH11@Z is a real
-    identity claim (coordinator's conservative policy, 2026-10-16).
-    """
-    import abi_view
+
+# The ledger rows the gate judges (set_alias_context), so the known-start set
+# and the vendored names follow the --new side, not whatever is checked out.
+_ALIAS_CONTEXT = {"row_starts": None, "vendored": frozenset()}
+# A D3D surface format spelled in a name (A32B32G32R32F, X8R8G8B8, R5G6B5,
+# G16R16): channel letters with bit counts, starting at a non-hex boundary.
+D3D_FORMAT = re.compile(r"(?<![0-9A-Fa-f])(?:[ARGBXLPUVWQ][0-9]{1,2}){2,}F?(?![0-9A-Fa-f])")
+
+
+def set_alias_context(rows, pin_rows=()):
+    """Judge alias spellings against these ledger rows (and pins): their starts
+    feed known_starts, and their vendored= names keep their real spellings."""
+    starts = set()
+    vendored = set()
+    for row in rows:
+        try:
+            starts.add(int(row["target_rva"], 16))
+        except (KeyError, TypeError, ValueError):
+            pass
+        if "vendored=" in (row.get("notes") or ""):
+            vendored.add(row["name"])
+    for row in pin_rows:
+        if "vendored=" in joined(row) if "_overflow" in row else "vendored=" in (row.get("notes") or ""):
+            vendored.add(row["name"])
+    _ALIAS_CONTEXT["row_starts"] = frozenset(starts)
+    _ALIAS_CONTEXT["vendored"] = frozenset(vendored)
+    _ALIAS_CONTEXT["known"] = None
+    alias_spelling.cache_clear()
+    _pin_class.cache_clear()
+
+
+def _fixed_starts():
+    """Ghidra function and ILT slot starts: fixed for the baseline, so cached on
+    disk keyed on those files' mtime and size."""
+    import pickle
     import ilt_oracle
-    return ilt_oracle.tier(abi_view.qualified_prefix(name) or name) != "real"
+    ghidra = ROOT / "targets/game/reverse/ghidra_functions.csv"
+    windows = ilt_oracle.WINDOWS
+    key = tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in (ghidra, windows))
+    cache = ROOT / "build" / ".cache" / "pin_known_starts.pickle"
+    if _FIXED.get("key") == key:
+        return _FIXED["starts"]
+    try:
+        with cache.open("rb") as handle:
+            stored = pickle.load(handle)
+        if stored.get("key") == key:
+            _FIXED.update(stored)
+            return stored["starts"]
+    except (OSError, EOFError, pickle.UnpicklingError, AttributeError):
+        pass
+    starts = set()
+    with ghidra.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            try:
+                starts.add(int(row["rva"], 16))
+            except (KeyError, TypeError, ValueError):
+                continue
+    oracle = ilt_oracle.oracle()
+    first = oracle.first_thunk - 0x400000
+    starts.update(first + 5 * slot for slot in range(len(oracle.target)))
+    stored = {"key": key, "starts": frozenset(starts)}
+    _FIXED.update(stored)
+    try:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        with cache.open("wb") as handle:
+            pickle.dump(stored, handle)
+    except OSError:
+        pass
+    return stored["starts"]
+
+
+_FIXED = {}
+
+
+def _row_starts():
+    if _ALIAS_CONTEXT["row_starts"] is None:
+        set_alias_context(build.load_all_function_rows())
+    return _ALIAS_CONTEXT["row_starts"]
+
+
+def known_starts():
+    """{rva} of every ledger row (the judged side's, set_alias_context), Ghidra
+    function and ILT slot."""
+    if _ALIAS_CONTEXT.get("known") is None:
+        _ALIAS_CONTEXT["known"] = _fixed_starts() | _row_starts()
+    return _ALIAS_CONTEXT["known"]
+
+
+def _address_tail(own, address):
+    starts = None
+    for match in HEX_TAIL.finditer(own):
+        # D3D format names (A32B32G32R32F, X8R8G8B8) are hex-shaped words.
+        if any(f.start() <= match.end() and match.start() <= f.end()
+               for f in D3D_FORMAT.finditer(own)):
+            continue
+        run = match.group(0)
+        for width in range(5, min(8, len(run)) + 1):
+            value = int(run[-width:], 16)
+            if value == address:
+                return True
+            if starts is None:
+                starts = known_starts()
+            if value in starts:
+                return True
+    return False
+
+
+def _vendored(name):
+    """Fallback outside a delta: is NAME a vendored row in the checkout's ledger?"""
+    _row_starts()
+    return name in _ALIAS_CONTEXT["vendored"]
+
+
+def own_components(name):
+    """The function's own method token plus its class scopes (a CLASS's template
+    arguments included, a member template's own arguments not), as text."""
+    import abi_view
+    prefix = abi_view.qualified_prefix(name)
+    try:
+        if name.startswith("??$"):
+            end = abi_view.Decode(name).template_name(3)
+            method = name[3:name.index("@", 3)]
+            scopes = prefix[end:] if prefix else name[end:name.index("@@", end)]
+            return method + "@" + scopes
+        if name.startswith("??"):
+            op = name[:4] if name[2] == "_" else name[:3]
+            scopes = prefix[len(op):] if prefix else name[len(op):name.index("@@", len(op))]
+            return op + "@" + scopes
+        if name.startswith("?"):
+            text = prefix or name[:name.index("@@") + 2]
+            return text[1:]
+    except (ValueError, IndexError):
+        pass
+    return name
+
+
+@functools.lru_cache(maxsize=None)
+def alias_spelling(name, address=None):
+    """Is NAME an alias: does the function's OWN class or method token carry a
+    placeholder or invented spelling (ALIAS_TOKEN / INVENTED_TOKEN, applied to
+    own_components)? A placeholder PARAMETER type, or a member template's own
+    argument, does not make a real Class::method an alias:
+    ?calculate@PartitionManagerImpl@@QAEXPAUGen009F5040Node@@PAH11@Z and
+    ??$InitializeAppWindows@URva0005F2B0@@@WinMainApp@@QAEXXZ are real claims;
+    ??1?$pair@$$CBVAsciiString@@W4Rva001360E0Mapped@@@_STL@@QAE@XZ is an alias
+    (its class's own argument is a placeholder)."""
+    if not ALIAS_HINT.search(name):
+        return False                    # no token any rule below could match: skip the decode
+    own = own_components(name)
+    if ALIAS_TOKEN.search(own) or INVENTED_TOKEN.search(own):
+        return True
+    # A vendored library's own name is real however hex-shaped (D3DX's
+    # CCodec_A32B32G32R32F); the known-start rule never reads it.
+    if name in _ALIAS_CONTEXT["vendored"] or (_ALIAS_CONTEXT["row_starts"] is None and _vendored(name)):
+        return False
+    return _address_tail(own, address)
 
 
 def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=None):
@@ -1595,6 +1787,65 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=N
                 out.add(name)
         return out
 
+    def displaced(name, address, body, refusal_kind, here):
+        """A real NAME lands where only alias rows/pins stand (no real identity:
+        the caller already judged that). Over an alias ROW it needs evidence:
+        retail's ILT CONFIRMS the name at ADDRESS, or the commit carries a
+        verified Identity-Override (the refusal kind is OVERRIDABLE); over
+        alias pins alone it passes, as alias pins never blocked. Every
+        alias other than NAME itself is listed for the drain (written only when
+        the whole verdict passes). Alias-on-alias passes: an alias name claims
+        no identity, so it displaces nothing. Aliases the same diff deleted or
+        demoted count as standing (only a row renamed in place has left).
+
+        KNOWN LIMIT: ILT CONFIRMED means the name fits its slot's window; a
+        wrong name fits with probability p_false, so a search of ~1/p_false
+        (tens of thousands of) spellings finds one that "confirms". The
+        CONFIRMED_P_MAX bound keeps out the widest windows only; a brute-forced
+        name still passes, and only review and the override's caller proof
+        stand against it."""
+        import ilt_oracle
+        if alias_spelling(name, address) or here:
+            return None                 # a real name already stands: nothing is displaced
+        aliases = [(alias, kind, at) for alias, sources in sorted(new_ids.aliases.get(body, {}).items())
+                   if alias != name for kind, at in sorted(sources)]
+        # Aliases the same diff deleted or demoted count too (judged against
+        # base and new together, as union_at does for real names): only a row
+        # renamed in place at its own address leaves the body.
+        gone = [(alias, kind, at) for alias, sources in sorted(base_ids.aliases.get(body, {}).items())
+                if alias != name for kind, at in sorted(sources)
+                if (alias, kind, at) not in aliases and not (kind == "row" and (alias, at) in renamed)]
+        if not aliases and not gone:
+            return None
+        if warnings is not None:
+            for alias, kind, at in aliases:
+                warnings.append((f"displaced-alias-{kind}", alias, at,
+                                 f"{name} now names body 0x{body:08X}; this alias {kind} still "
+                                 "spells it", body, name))
+        # Alias PINS never blocked (option b: they warn and go to the drain);
+        # evidence is demanded only where option (a) newly lets a real name
+        # land, over alias ROWS.
+        if not any(kind == "row" for _a, kind, _at in aliases + gone):
+            return None
+        verdict, p_false, _why = oracle.check(name, address)
+        # The window fits a wrong name with probability p_false; a search of
+        # ~1/p_false spellings will find one that fits (a known limit: the ILT
+        # is consistent with a name, never proof of it). Demanding p < 1e-3
+        # keeps the wide windows out; a brute-forced name still passes.
+        if verdict == ilt_oracle.CONFIRMED and p_false is not None and p_false < CONFIRMED_P_MAX:
+            return None
+        aliases = aliases + gone
+        return (refusal_kind, name, address,
+                f"only alias spellings name body 0x{body:08X} ("
+                + ", ".join(sorted({a for a, _k, _at in aliases})[:4])
+                + f"); a real name displaces them only when retail's ILT CONFIRMS it there with "
+                  f"p_false < {CONFIRMED_P_MAX:g} (here {verdict}"
+                + (f", p_false {p_false:.2e}" if p_false is not None else "")
+                + ") or with a verified Identity-Override: a `pin-identity-override: <name> "
+                  "0x<address> caller=0x<rva> <why>` line added to an identity_evidence/ file and an "
+                  "`Identity-Override: <name> 0x<address>` trailer, where the caller's object (built "
+                  "in this commit) carries a REL32 naming this exact symbol at its call to the address")
+
     removed_keys = {_key(r) for r in delta_.pins_removed}
     base_by_key = {_key(r): r for r in delta_.pins_removed}
     added_keys = set()
@@ -1632,10 +1883,15 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=N
         spelled = SELF_ADDRESSED.match(name)
         if spelled and int(spelled.group(1), 16) == address:
             continue
-        found = _judge_pin(name, address, union_at(body, (name, ("pin", address))), oracle)
+        here = union_at(body, (name, ("pin", address)))
+        found = _judge_pin(name, address, here, oracle)
         if found:
             refused.append((found[0], name, address,
                             f"walk {_show_walk(new_ids, address)}: {found[1]}"))
+        else:
+            refusal = displaced(name, address, body, "pin-on-other-identity", here)
+            if refusal:
+                refused.append(refusal)
 
     # Existing pins the diff re-points or re-labels: refuse only a conflict the
     # base side did not already have.
@@ -1663,9 +1919,10 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=N
         if not before:
             finding = ("existing-pin-now-conflicts", name, address,
                        f"walk {_show_walk(new_ids, address)}: {after[1]}")
-            if alias_spelling(name) and after[0] == "pin-on-other-identity":
+            if alias_spelling(name, address) and after[0] == "pin-on-other-identity":
                 if warnings is not None:
-                    warnings.append(finding + (new_ids.body_of(address),))
+                    trigger = sorted(new_ids.at(new_ids.body_of(address), (name, ("pin", address))))
+                    warnings.append(finding + (new_ids.body_of(address), trigger[0] if trigger else name))
             else:
                 refused.append(finding)
 
@@ -1677,7 +1934,14 @@ def new_identity_conflicts(delta_, new_scanner, base_scanner, oracle, warnings=N
         if here and name not in here:
             refused.append(("row-on-other-identity", name, address,
                             "the body already carries " + ", ".join(sorted(here))))
+        else:
+            refusal = displaced(name, address, body, "row-on-other-identity", here)
+            if refusal:
+                refused.append(refusal)
     return refused
+
+
+CONFIRMED_P_MAX = 1e-3          # displacing alias rows: the ILT fit must be narrower than this
 
 
 OVERRIDABLE = ("pin-on-other-identity", "row-on-other-identity", "existing-pin-now-conflicts")
@@ -1751,7 +2015,9 @@ def apply_overrides(conflicts, allowed):
     return left, applied
 
 
-ALIAS_LOG_FIELDS = ["name", "address", "body", "landing", "why"]
+ALIAS_LOG_FIELDS = ["name", "address", "body", "kind", "landing", "why"]
+# warnings carry (kind, name, address, why, body, trigger): trigger is the name
+# that displaced the alias, used to find the commit that introduced it.
 
 
 def alias_log_path():
@@ -1765,34 +2031,80 @@ def alias_log_path():
     return common.parent / "build" / "linkfleet" / "ds" / "pin_alias_cleanup.tsv"
 
 
-def record_alias_cleanup(warnings, new_ref):
-    """Append (name, address, body, landing, why) for each alias warning, once
-    per (name, address, body). LANDING names the change that exposed it: the
-    commit, or `index@<HEAD sha>` / `worktree@<HEAD sha>` before it exists."""
+def record_alias_cleanup(entries):
+    """Append (name, address, body, kind, landing, why) rows to the drain list,
+    once per (name, address, body), under an exclusive lock (several worktrees
+    push at once). ENTRIES are (kind, name, address, why, body, landing). Any
+    line still in the old five-column shape -- anywhere in the file -- gains its
+    kind column (unknown); a file without a final newline gets one first."""
+    import fcntl
     path = alias_log_path()
-    if new_ref in (None, ":"):
-        head = _git_text("rev-parse", "--short=10", "HEAD", ok=(0, 128)).strip() or "none"
-        landing = f"{'index' if new_ref == ':' else 'worktree'}@{head}"
-    else:
-        landing = _git_text("rev-parse", "--short=10", new_ref).strip()
-    seen = set()
-    if path.exists():
-        for line in path.read_text(encoding="utf-8").splitlines()[1:]:
-            parts = line.split("\t")
-            if len(parts) >= 3:
-                seen.add(tuple(parts[:3]))
     path.parent.mkdir(parents=True, exist_ok=True)
-    fresh = not path.exists()
-    with path.open("a", encoding="utf-8", newline="") as out:
-        if fresh:
-            out.write("\t".join(ALIAS_LOG_FIELDS) + "\n")
-        for _kind, name, address, why, body in warnings:
-            key = (name, f"0x{address:08X}", f"0x{body:08X}")
-            if key in seen:
-                continue
-            seen.add(key)
-            out.write("\t".join(key + (landing, why.replace("\t", " "))) + "\n")
+    header = "\t".join(ALIAS_LOG_FIELDS)
+    with open(path.with_name(path.name + ".lock"), "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        lines = path.read_text(encoding="utf-8").splitlines() if path.exists() else []
+        body = lines[1:] if lines and lines[0].startswith("name\t") else lines
+        migrated = []
+        for line in body:
+            parts = line.split("\t")
+            migrated.append("\t".join(parts[:3] + ["unknown"] + parts[3:]) if len(parts) == 5 else line)
+        wanted = "\n".join([header] + migrated) + "\n"
+        if not path.exists() or path.read_text(encoding="utf-8") != wanted:
+            temp = path.with_name(path.name + ".tmp")
+            temp.write_text(wanted, encoding="utf-8")
+            temp.replace(path)
+        seen = {tuple(line.split("\t")[:3]) for line in migrated}
+        with path.open("a", encoding="utf-8", newline="") as out:
+            for kind, name, address, why, body_rva, landing in entries:
+                key = (name, f"0x{address:08X}", f"0x{body_rva:08X}")
+                if key in seen:
+                    continue
+                seen.add(key)
+                out.write("\t".join(key + (kind, landing, why.replace("\t", " "))) + "\n")
     return path
+
+
+def pending_alias_path(sha):
+    return alias_log_path().parent / "pin_alias_pending" / f"{sha}.json"
+
+
+def stage_alias_cleanup(warnings, base_ref, new_ref):
+    """A passing verdict on a commit range parks its alias rows as PENDING; the
+    drain list gets them only from publish_alias_cleanup, which pre-push runs
+    after every other check passed, so a refused push lists nothing."""
+    import json
+    sha = _git_text("rev-parse", new_ref).strip()
+    path = pending_alias_path(sha)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"base": _git_text("rev-parse", base_ref).strip(), "tip": sha,
+                                "warnings": [list(w) for w in warnings]}), encoding="utf-8")
+    return path
+
+
+def introducing_commit(base, tip, trigger):
+    """The first commit in BASE..TIP whose ledger diff adds TRIGGER (the name
+    that displaced the alias), else TIP: the drain list names who introduced it."""
+    found = _git_text("log", "--reverse", "--format=%h", "--abbrev=10", f"-S{trigger}",
+                      f"{base}..{tip}", "--", FUNCTIONS_REL, SYMBOLS_REL, ok=(0, 128)).split()
+    return found[0] if found else _git_text("rev-parse", "--short=10", tip).strip()
+
+
+def publish_alias_cleanup(sha):
+    """pre-push, last step: move SHA's pending alias rows into the drain list."""
+    import json
+    sha = _git_text("rev-parse", sha).strip()
+    path = pending_alias_path(sha)
+    if not path.exists():
+        return 0
+    staged = json.loads(path.read_text(encoding="utf-8"))
+    entries = [(kind, name, address, why, body_rva,
+                introducing_commit(staged["base"], staged["tip"], trigger))
+               for kind, name, address, why, body_rva, trigger in staged["warnings"]]
+    log = record_alias_cleanup(entries)
+    path.unlink()
+    print(f"Pin delta: {len(entries)} alias row(s)/pin(s) listed in {log}")
+    return len(entries)
 
 
 def delta(base_ref, new_ref=":"):
@@ -1806,6 +2118,7 @@ def delta(base_ref, new_ref=":"):
         if not (work.rows_removed or work.rows_added or work.pins_removed or work.pins_added):
             print(f"Pin delta: OK (no functions.csv/symbols.csv change vs {base_ref})")
             return
+        set_alias_context(work.new_rows, work.new_pin_rows())
         new_scanner = Scanner(work.new_rows)
         base_scanner = work.base_scanner(new_scanner)
         new_lists = candidate_lists(work.new_rows, work.new_symbols)
@@ -1825,12 +2138,17 @@ def delta(base_ref, new_ref=":"):
     finally:
         work.close()
     took = time.monotonic() - started
-    for _kind, name, address, why, _body in warnings:
-        print(f"Pin delta: WARNING alias pin {name} 0x{address:08X} now names another "
-              f"identity's body ({why}); not blocking, listed for the pin drain")
-    if warnings:
-        log = record_alias_cleanup(warnings, new_ref)
-        print(f"Pin delta: {len(warnings)} alias pin(s) appended to {log}")
+    for kind, name, address, why, _body, _trigger in warnings:
+        what = kind.replace("displaced-", "") if kind.startswith("displaced-") else "alias pin"
+        print(f"Pin delta: WARNING {what} {name} 0x{address:08X}: {why}; not blocking, "
+              "listed for the pin drain")
+    if warnings and not (debt or conflicts) and new_ref not in (None, ":"):
+        # The drain list records what LANDED: a passing verdict on a commit is
+        # parked as pending; pre-push publishes it after its last check
+        # (--publish-alias-log), never for a refused verdict, an index, or a
+        # push some later check stopped.
+        staged = stage_alias_cleanup(warnings, base_ref, new_ref)
+        print(f"Pin delta: {len(warnings)} alias row(s)/pin(s) pending in {staged}")
     for (kind, name, address, _why), reason in applied:
         print(f"Pin delta: override applied [{kind}] {name} 0x{address:08X}: {reason}")
     for name, address, why in rejected:
@@ -1875,6 +2193,8 @@ def main(argv=None):
     parser.add_argument("--candidates", action="store_true",
                         help="apply the invariant to the resolver's REAL candidate list "
                              "(functions.csv rows + symbols.csv pins), not the pins alone")
+    parser.add_argument("--publish-alias-log", metavar="SHA",
+                        help="pre-push, last step: list SHA's pending alias rows in the drain list")
     parser.add_argument("--delta", metavar="BASE",
                         help="gate the diff BASE -> --new (default: the index): refuse NEW "
                              "candidate-list violations and pins/rows on another identity")
@@ -1890,6 +2210,9 @@ def main(argv=None):
         assert_shrink_only(args.assert_shrink_only, args.at)
         return 0
 
+    if args.publish_alias_log:
+        publish_alias_cleanup(args.publish_alias_log)
+        return 0
     if args.delta:
         delta(args.delta, None if args.new == "worktree" else args.new)
         return 0

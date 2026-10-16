@@ -37,9 +37,54 @@ FAKE = "?fake@Foo@@QAEXXZ"
 FREE_THUNK = 0x009F6C3A            # imports MSVCR71 free, not operator delete
 
 
+# The tests below judge diffs against the live ledger, but every address a test
+# reasons about is pinned to a fixed WORLD: its live rows and pins are dropped
+# and exactly these stand there instead, so a landing on master (a row at
+# 0x009E3880, the BattlePlan ctor, ...) cannot change what a test means.
+# Image facts (ILT slots and windows, retail bytes) stay real.
+GEN = dict(source="game/gen_small/thunks_036.cpp", notes="gen-thunk")
+WORLD_ROWS = {
+    0x00891B80: [("??1EAStringC@@QAE@XZ", 22, {})],                                  # EASTRING_BODY
+    0x00850600: [("??0INIException@@QAA@HPBDZZ", 103, {})],                          # OTHER_BODY
+    0x00479040: [("?winSetEnabledBorderColor@GameWindow@@QAEHHH@Z", 37, {})],       # BORDER_BODY
+    0x009E3880: [],                                                                   # INI_LIST_BODY
+    0x009F5370: [("??$_M_allocate_and_copy@PBUICoord2D@@@?$vector@UICoord2D@@V?$allocator@UICoord2D@@@"
+                  "_STL@@@_STL@@IAEPAUICoord2D@@IPBU2@0@Z", 96, {})],                # COPY_BODY
+    0x001C1EA0: [("?rva001C1EA0@Rva001C1EA0Object@@QAEX_N@Z", 64, {})],             # VIEW_PIN's body
+    0x008AD8F0: [("?method@Rva008AD8F0@@QAEXPAX@Z", 603, {})],
+    0x00285F10: [("??0BannerCarrierUpdate@@QAE@PAVThing@@PBVModuleData@@@Z", 164, {})],   # BP_BODY
+    0x000287C7: [("??RRva000287C7FactoryCtorThunk@@QAEXXZ", 5, {})],
+    0x0005F2B0: [("?Rva0005F2B0InitializeAppWindows@@YA_NPAXH_N@Z", 64, {})],       # UNT_BODY
+    0x00134AF0: [("?j_00134af0@@YAXXZ", 5, GEN)],                                    # PAIR_BODY
+    0x00887940: [("??1AsciiString@@QAE@XZ", 46, {}), ("??1UnicodeString@@QAE@XZ", 46, {})],  # RELEASE
+    0x003872F0: [],
+}
+WORLD_PINS = {
+    0x00891B80: [("??1Rva8CD130String@@QAE@XZ", "test")],
+    0x009E3880: [("??1?$List@PAUINISection@@@@UAE@XZ", "test")],
+    0x009F5370: [("??$_M_allocate_and_copy@PBUICoord2D@@@?$vector@UICoord2D@@V?$allocator@UICoord2D@@@"
+                  "_STL@@@_STL@@IAEPAUICoord2D@@IPBU2@0@Z", "test")],
+    0x0001E33F: [("?rva001C1EA0@Rva002E6B70Object@@QAEX_N@Z",
+                  "abi-view=?rva001C1EA0@Rva001C1EA0Object@@QAEX_N@Z;test")],
+    0x008AD8F0: [("?bfmeApply1236@BfmeB1236@@QAEXPAX@Z", "test")],
+    0x00285F10: [("?construct@AutoHealBehaviorModuleData@@AAEXXZ", "test"),
+                 ("?construct@AutoHealBehaviorModuleData@@QAEXXZ", "test"),
+                 ("?construct@Rva000287C7FactoryCtorTarget@@QAEXXZ", "test")],
+    0x000287C7: [("??0?$BFMEFactoryModuleData@VBattlePlanUpdateModuleData@@$0KA@@@QAE@XZ", "test")],
+    0x0005F2B0: [],
+    0x00018633: [("??1?$pair@$$CBVAsciiString@@PAVThingTemplate@@@_STL@@QAE@XZ", "test")],
+    0x0000FF10: [],
+    0x003872F0: [],
+    0x00036291: [],
+}
+
+
 @pytest.fixture(scope="module")
 def rows():
-    return build.load_all_function_rows()
+    live = [r for r in build.load_all_function_rows() if int(r["target_rva"], 16) not in WORLD_ROWS]
+    return live + [row(name, address, size, **extra)
+                   for address, claims in sorted(WORLD_ROWS.items())
+                   for name, size, extra in claims]
 
 
 @pytest.fixture(scope="module")
@@ -48,8 +93,26 @@ def scanner(rows):
 
 
 @pytest.fixture(scope="module")
+def live_scanner():
+    """The checkout's own ledger, for the override tests that need a built
+    caller object: those read real rows and skip when the object is absent."""
+    return P.Scanner()
+
+
+@pytest.fixture(scope="module")
 def symbols_text():
-    return build.SYMBOLS.read_text(encoding="utf-8")
+    lines = build.SYMBOLS.read_text(encoding="utf-8").splitlines(keepends=True)
+    kept = [lines[0]]
+    for line in lines[1:]:
+        try:
+            address = int(line.split(",", 2)[1], 16)
+        except (IndexError, ValueError):
+            address = None
+        if address not in WORLD_PINS:
+            kept.append(line if line.endswith("\n") else line + "\n")
+    kept += [f"{name},0x{address:08X},{notes}\n"
+             for address, pins in sorted(WORLD_PINS.items()) for name, notes in pins]
+    return "".join(kept)
 
 
 def pin(name, address, notes="test"):
@@ -87,7 +150,7 @@ def fake_delta(tmp_path, rows, symbols_text, *, pins_added=(), pins_removed=(),
 
 def conflicts(tmp_path, rows, scanner, symbols_text, warnings=None, **diff):
     work = fake_delta(tmp_path, rows, symbols_text, **diff)
-    if diff.get("rows_added") or diff.get("rows_removed"):
+    if scanner is None or diff.get("rows_added") or diff.get("rows_removed"):
         scanner = P.Scanner(work.new_rows)
     return [(kind, name, address) for kind, name, address, _why
             in P.new_identity_conflicts(work, scanner, work.base_scanner(scanner),
@@ -230,18 +293,26 @@ def test_r1_5_a_rename_that_leaves_the_old_pin_behind_is_refused(tmp_path, rows,
                                                                  symbols_text):
     owner = _row_at(rows, COPY_BODY)
     assert owner["name"] == COPY_NAME
+    other = "?copyOther@ICoord2DVector@@QAEXXZ"          # a real, different name
     found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
-                      rows_added=[dict(owner, name="?method@Rva009F5370Vector@@QAEXXZ")])
+                      rows_added=[dict(owner, name=other)])
     assert ("existing-pin-now-conflicts", COPY_NAME, COPY_BODY) in found
     # the renamed row is refused too: the left-behind real pin still names the body
-    assert ("row-on-other-identity", "?method@Rva009F5370Vector@@QAEXXZ", COPY_BODY) in found
+    assert ("row-on-other-identity", other, COPY_BODY) in found
+    # renaming to an alias spelling (option a) leaves the real pin the body's
+    # only identity, and the alias row landing beside it is refused
+    alias = "?method@Rva009F5370Vector@@QAEXXZ"
+    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+                      rows_added=[dict(owner, name=alias)])
+    assert found == [("row-on-other-identity", alias, COPY_BODY)]
 
 
 def test_r1_5_losing_abi_view_on_an_alias_pin_only_warns(tmp_path, rows, scanner,
                                                          symbols_text):
-    """VIEW_NAME is an address-derived spelling: once it is no view it names
-    another identity's body, which under option (b) warns and lists it for the
-    pin drain instead of blocking."""
+    """VIEW_NAME is an address-derived spelling, and so is its body's only row
+    (?rva001C1EA0@Rva001C1EA0Object): once it is no view, an alias pin on an
+    alias-named body is no conflict at all (option a); against a real name it
+    would warn, not block (option b)."""
     view = next(r for r in (P._norm(x, P.PIN_FIELDS) for x in
                             csv.DictReader(io.StringIO(symbols_text)))
                 if r["name"] == VIEW_NAME and int(r["address"], 16) == VIEW_PIN)
@@ -250,9 +321,7 @@ def test_r1_5_losing_abi_view_on_an_alias_pin_only_warns(tmp_path, rows, scanner
     warnings = []
     found = conflicts(tmp_path, rows, scanner, symbols_text, warnings, pins_removed=[view],
                       pins_added=[plain])
-    assert found == []
-    assert [(k, n, a) for k, n, a, _w, _b in warnings] == \
-        [("existing-pin-now-conflicts", VIEW_NAME, VIEW_PIN)]
+    assert found == [] and warnings == []
 
 
 # Option (b), project lead 2026-10-16: an existing ALIAS pin left on a body a
@@ -271,7 +340,8 @@ def test_b_the_alias_predicate_is_the_ilt_tier():
 
 def test_b_a_row_landing_under_an_alias_pin_warns_and_is_logged(tmp_path, rows, scanner,
                                                                 symbols_text, monkeypatch):
-    """376d78b9c1: the real row lands on 0x008AD8F0 and ?bfmeApply1236 stays."""
+    """376d78b9c1: ?method@Rva008AD8F0 lands on 0x008AD8F0 and ?bfmeApply1236
+    stays; both are aliases, so nothing conflicts; the log keeps one line per key."""
     body = 0x008AD8F0
     owner = next(P._norm(r, P.FUNCTION_FIELDS) for r in rows if int(r["target_rva"], 16) == body)
     alias = "?bfmeApply1236@BfmeB1236@@QAEXPAX@Z"
@@ -286,16 +356,19 @@ def test_b_a_row_landing_under_an_alias_pin_warns_and_is_logged(tmp_path, rows, 
     found = P.new_identity_conflicts(work, scanner, work.base_scanner(scanner),
                                      ilt_oracle.oracle(), warnings)
     assert found == []
-    assert [(n, a, b) for _k, n, a, _w, b in warnings] == [(alias, body, body)]
+    # option (a): the landing row ?method@Rva008AD8F0 is itself an alias
+    # spelling, so the alias pin beside it is no conflict and nothing is listed
+    assert warnings == []
+    entries = [("existing-pin-now-conflicts", alias, body, "walk: test", body, "376d78b9c1")]
     log = tmp_path / "alias.tsv"
     monkeypatch.setenv("BFME_PIN_ALIAS_LOG", str(log))
-    monkeypatch.setattr(P, "_git_text", lambda *a, **k: "376d78b9c1\n")
-    P.record_alias_cleanup(warnings, "376d78b9c1")
-    P.record_alias_cleanup(warnings, "376d78b9c1")
+    P.record_alias_cleanup(entries)
+    P.record_alias_cleanup(entries)
     lines = log.read_text().splitlines()
     assert lines[0].split("\t") == P.ALIAS_LOG_FIELDS
     assert len(lines) == 2, "one line per (name, address, body), however often it is seen"
-    assert lines[1].split("\t")[:4] == [alias, "0x008AD8F0", "0x008AD8F0", "376d78b9c1"]
+    assert lines[1].split("\t")[:5] == [alias, "0x008AD8F0", "0x008AD8F0",
+                                          "existing-pin-now-conflicts", "376d78b9c1"]
 
 
 def test_r1_6_a_pin_inside_a_named_body_is_refused(tmp_path, rows, scanner, symbols_text):
@@ -318,36 +391,36 @@ def _binding_object_ready():
     return obj.exists() and delta_sources.object_is_current(build.ROOT / row["source"], obj)
 
 
-def test_r2_1_an_override_needs_the_callers_relocation(scanner):
+def test_r2_1_an_override_needs_the_callers_relocation(live_scanner):
     """Review round 2: a word in the caller's source (a comment) once passed.
     Only the caller's compiled object, naming the exact symbol at the call
     site, proves the override."""
     if not _binding_object_ready():
         pytest.skip("0x008AD8F0's object is not built in this checkout")
     why = "caller=0x008AD8F0 calls it under this name"
-    assert P.verify_override(scanner, None, BINDING_NAME, BINDING_CALLEE, why) is None
+    assert P.verify_override(live_scanner, None, BINDING_NAME, BINDING_CALLEE, why) is None
     for other in (FAKE, "?refresh@Rva008AD750StringBinding@@QAEXPAVOther@@@Z",
                   "??0Rva008AD750StringBinding@@QAE@XZ"):
-        assert "object names" in P.verify_override(scanner, None, other, BINDING_CALLEE, why)
-    assert "no E8/E9" in P.verify_override(scanner, None, BINDING_NAME, BINDING_CALLEE + 1, why)
+        assert "object names" in P.verify_override(live_scanner, None, other, BINDING_CALLEE, why)
+    assert "no E8/E9" in P.verify_override(live_scanner, None, BINDING_NAME, BINDING_CALLEE + 1, why)
 
 
-def test_r2_1_generated_noted_and_masm_callers_prove_nothing(scanner):
+def test_r2_1_generated_noted_and_masm_callers_prove_nothing(live_scanner):
     funclet = "caller=0x00C57408 its unwind funclet destroys the string"     # gen-funclet note
-    assert "hand-written C++" in P.verify_override(scanner, None, "??1Rva8CD130String@@QAE@XZ",
+    assert "hand-written C++" in P.verify_override(live_scanner, None, "??1Rva8CD130String@@QAE@XZ",
                                                    EASTRING_BODY, funclet)
     masm = next(r for r in build.load_all_function_rows()
                 if r["status"] == "matched" and r["source"].startswith("game/masm_dumps/"))
     why = f"caller={masm['target_rva']} a hand-written dump"
-    assert "hand-written C++" in P.verify_override(scanner, None, FAKE, EASTRING_BODY, why)
-    assert "no caller" in P.verify_override(scanner, None, FAKE, EASTRING_BODY, "trust me, it is")
+    assert "hand-written C++" in P.verify_override(live_scanner, None, FAKE, EASTRING_BODY, why)
+    assert "no caller" in P.verify_override(live_scanner, None, FAKE, EASTRING_BODY, "trust me, it is")
 
 
-def test_r2_1_a_stale_object_proves_nothing(scanner, monkeypatch):
+def test_r2_1_a_stale_object_proves_nothing(live_scanner, monkeypatch):
     import delta_sources
     monkeypatch.setattr(delta_sources, "object_is_current", lambda source, obj: False)
     why = "caller=0x008AD8F0 calls it under this name"
-    assert "missing or stale" in P.verify_override(scanner, None, BINDING_NAME, BINDING_CALLEE, why)
+    assert "missing or stale" in P.verify_override(live_scanner, None, BINDING_NAME, BINDING_CALLEE, why)
 
 
 def test_r2_2_alias_means_the_functions_own_components():
@@ -383,9 +456,14 @@ def test_r2_4_a_moved_identity_does_not_guard_the_address_it_left(tmp_path, rows
     vacated address is judged against the new state only."""
     owner = _row_at(rows, EASTRING_BODY)
     moved = dict(owner, target_rva="0x00891B90")
-    found = conflicts(tmp_path, rows, scanner, symbols_text, rows_removed=[owner],
+    work = fake_delta(tmp_path, rows, symbols_text, rows_removed=[owner],
                       rows_added=[moved], pins_added=[pin(FAKE, EASTRING_BODY)])
-    assert ("pin-on-other-identity", FAKE, EASTRING_BODY) not in found
+    new_scanner = P.Scanner(work.new_rows)
+    found = P.new_identity_conflicts(work, new_scanner, work.base_scanner(new_scanner),
+                                     ilt_oracle.oracle())
+    # not refused for the moved real name; what stays behind is the alias pin
+    # ??1Rva8CD130String, and alias pins never block (option b)
+    assert found == []
 
 
 def test_r1_7_an_override_is_exact_and_never_excuses_a_contradiction():
@@ -656,3 +734,227 @@ def test_r2_5_a_missing_override_trailer_has_its_own_message(tmp_path, monkeypat
     assert protected_paths.check_range("HEAD~1", "HEAD") == 1
     err = capsys.readouterr().err
     assert "Identity-Override" in err and "Verifier-Change trailer" not in err
+
+
+# Option (a), pending the project lead's approval (coordinator, 2026-10-16):
+# alias-spelled ROWS are no identity either. The BattlePlan case: the real
+# ctor row lands on 0x00285F10, whose only other names are the alias row
+# ??RRva000287C7FactoryCtorThunk (ILT 0x000287C7) and alias pins.
+BP_CTOR, BP_BODY = "??0BattlePlanUpdateModuleData@@QAE@XZ", 0x00285F10
+BP_OLD = "??0BannerCarrierUpdate@@QAE@PAVThing@@PBVModuleData@@@Z"
+AUTOHEAL = ("?construct@AutoHealBehaviorModuleData@@AAEXXZ", "?construct@AutoHealBehaviorModuleData@@QAEXXZ")
+
+
+def _battleplan(rows, symbols_text, drop_autoheal_in_parent=True):
+    old = next(P._norm(r, P.FUNCTION_FIELDS) for r in rows
+               if int(r["target_rva"], 16) == BP_BODY and r["name"] == BP_OLD)
+    new = dict(old, name=BP_CTOR,
+               source="game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataConstructor.cpp",
+               notes="identity-correction=targets/game/reverse/identity_evidence/00285f10-battleplan-moduledata-ctor.md")
+    pins = [P._norm(r, P.PIN_FIELDS) for r in csv.DictReader(io.StringIO(symbols_text))]
+    autoheal = [p for p in pins if p["name"] in AUTOHEAL]
+    assert len(autoheal) == 2
+    text = "".join(l for l in symbols_text.splitlines(keepends=True)
+                   if not l.startswith(AUTOHEAL))
+    if drop_autoheal_in_parent:
+        return text, dict(rows_removed=[old], rows_added=[new])
+    return symbols_text, dict(rows_removed=[old], rows_added=[new], pins_removed=autoheal)
+
+
+def test_a_a_real_name_may_land_where_only_aliases_stand(tmp_path, rows, symbols_text):
+    """Commit 3 of the BattlePlan correction, with the wrong AutoHeal pins
+    already gone in its parent: no conflict, the displaced aliases are listed."""
+    text, diff = _battleplan(rows, symbols_text)
+    warnings = []
+    found = conflicts(tmp_path, rows, None, text, warnings, **diff)
+    assert found == []
+    shown = {(k, n) for k, n, *_rest in warnings}
+    assert ("displaced-alias-row", "??RRva000287C7FactoryCtorThunk@@QAEXXZ") in shown
+    assert ("displaced-alias-pin", "?construct@Rva000287C7FactoryCtorTarget@@QAEXXZ") in shown
+
+
+def test_a_removing_a_real_pin_in_the_same_commit_does_not_clear_the_way(tmp_path, rows,
+                                                                         symbols_text):
+    """The AutoHeal pins are real names: deleting them in the SAME commit as
+    the landing is still judged against base and new together (review r1 #4)."""
+    text, diff = _battleplan(rows, symbols_text, drop_autoheal_in_parent=False)
+    found = conflicts(tmp_path, rows, None, text, **diff)
+    assert found == [("row-on-other-identity", BP_CTOR, BP_BODY)]
+
+
+def test_a_a_real_second_spelling_is_still_refused(tmp_path, rows, scanner, symbols_text):
+    """Real-named rows and pins still count: a second real row on EAStringC's
+    body, and an alias row landing on a really named body, are refused."""
+    assert conflicts(tmp_path, rows, scanner, symbols_text,
+                     rows_added=[row(FAKE, EASTRING_BODY, 22)]) == \
+        [("row-on-other-identity", FAKE, EASTRING_BODY)]
+    alias = "?method@Rva00891B80Thing@@QAEXXZ"
+    assert P.alias_spelling(alias)
+    assert conflicts(tmp_path, rows, scanner, symbols_text,
+                     rows_added=[row(alias, EASTRING_BODY, 22)]) == \
+        [("row-on-other-identity", alias, EASTRING_BODY)]
+
+
+# Option (a) review round 1: a real name displaces alias-only identities only
+# with evidence (ILT CONFIRMED, or a verified override); alias-on-alias passes.
+UNT_BODY = 0x0005F2B0                      # no ILT slot: the oracle cannot judge here
+UNT_ALIAS = "?Rva0005F2B0InitializeAppWindows@@YA_NPAXH_N@Z"
+GUESS = "?InitializeAppWindowsGuess@@YA_NPAXH_N@Z"
+
+
+def test_a_r1_a_guessed_real_pin_on_an_untestable_alias_body_is_refused(tmp_path, rows, scanner,
+                                                                       symbols_text):
+    assert ilt_oracle.check(GUESS, UNT_BODY)[0] == ilt_oracle.UNTESTABLE
+    warnings = []
+    found = conflicts(tmp_path, rows, scanner, symbols_text, warnings,
+                      pins_added=[pin(GUESS, UNT_BODY)])
+    assert found == [("pin-on-other-identity", GUESS, UNT_BODY)]
+    assert ("displaced-alias-row", UNT_ALIAS) in {(k, n) for k, n, *_ in warnings}
+
+
+def test_a_r1_a_second_real_row_beside_an_alias_row_lists_it_and_is_refused(tmp_path, rows,
+                                                                            symbols_text):
+    """The alias row at the SAME address is displaced too (it was skipped)."""
+    size = next(int(r["target_size"]) for r in rows
+                if int(r["target_rva"], 16) == UNT_BODY and r["name"] == UNT_ALIAS)
+    warnings = []
+    found = conflicts(tmp_path, rows, None, symbols_text, warnings,
+                      rows_added=[row(GUESS, UNT_BODY, size)])
+    assert found == [("row-on-other-identity", GUESS, UNT_BODY)]
+    assert ("displaced-alias-row", UNT_ALIAS) in {(k, n) for k, n, *_ in warnings}
+
+
+def test_a_r1_alias_on_alias_passes(tmp_path, rows, scanner, symbols_text):
+    assert conflicts(tmp_path, rows, scanner, symbols_text, [],
+                     pins_added=[pin("?other@Rva0005F2B0X@@QAEXXZ", UNT_BODY)]) == []
+
+
+# Option (a) review round 2.
+
+def _unt_alias_row(rows):
+    return next(P._norm(r, P.FUNCTION_FIELDS) for r in rows
+                if int(r["target_rva"], 16) == UNT_BODY and r["name"] == UNT_ALIAS)
+
+
+def test_a_r2_1_deleting_the_alias_row_in_the_same_commit_does_not_clear_the_way(
+        tmp_path, rows, symbols_text):
+    alias = _unt_alias_row(rows)
+    found = conflicts(tmp_path, rows, None, symbols_text, [], rows_removed=[alias],
+                      pins_added=[pin(GUESS, UNT_BODY)])
+    assert found == [("pin-on-other-identity", GUESS, UNT_BODY)]
+
+
+def test_a_r2_1_demoting_the_alias_row_in_the_same_commit_does_not_clear_the_way(
+        tmp_path, rows, symbols_text):
+    alias = _unt_alias_row(rows)
+    found = conflicts(tmp_path, rows, None, symbols_text, [], rows_removed=[alias],
+                      rows_added=[dict(alias, status="failed")],
+                      pins_added=[pin(GUESS, UNT_BODY)])
+    assert found == [("pin-on-other-identity", GUESS, UNT_BODY)]
+
+
+def test_a_r2_2_alias_means_the_functions_own_class_or_method_token():
+    real = ["?InitDecade123Windows@@YAXXZ",
+            "??$InitializeAppWindows@URva0005F2B0@@@WinMainApp@@QAEXXZ",   # a member template's argument
+            "??$clamp@M@?A0x3f2a1b2c@@YAMMMM@Z",                             # anonymous namespace
+            "?calculate@PartitionManagerImpl@@QAEXPAUGen009F5040Node@@PAH11@Z"]
+    alias = ["??1?$pair@$$CBVAsciiString@@W4Rva001360E0Mapped@@@_STL@@QAE@XZ",  # class argument
+             "??1Rva8CD130String@@QAE@XZ", "??0ArrayValue008B9C60@@QAE@XZ",
+             "?handle@Gen00134AF0@@QAEXXZ", "??1Gen_uw_000224d0@@QAE@XZ"]
+    assert [n for n in real if P.alias_spelling(n)] == []
+    assert [n for n in alias if not P.alias_spelling(n)] == []
+
+
+def test_a_r2_3_a_wide_confirmed_window_does_not_displace(tmp_path, rows, symbols_text,
+                                                         monkeypatch):
+    """CONFIRMED at p_false >= CONFIRMED_P_MAX is not enough over an alias row."""
+    class Wide:
+        first_thunk, target = 0x401005, []
+
+        def check(self, name, address):
+            return ilt_oracle.CONFIRMED, 2e-3, "exact"
+    work = fake_delta(tmp_path, rows, symbols_text, pins_added=[pin(GUESS, UNT_BODY)])
+    scanner = P.Scanner(work.new_rows)
+    real_oracle = ilt_oracle.oracle()
+    wide = Wide()
+    wide.first_thunk, wide.target = real_oracle.first_thunk, real_oracle.target
+    found = P.new_identity_conflicts(work, scanner, work.base_scanner(scanner), wide)
+    assert [(k, n) for k, n, *_ in found] == [("pin-on-other-identity", GUESS)]
+    wide.check = lambda name, address: (ilt_oracle.CONFIRMED, 4e-4, "exact")
+    assert P.new_identity_conflicts(work, scanner, work.base_scanner(scanner), wide) == []
+
+
+def test_a_r2_4_the_drain_list_heals_its_shape(tmp_path, monkeypatch):
+    log = tmp_path / "alias.tsv"
+    monkeypatch.setenv("BFME_PIN_ALIAS_LOG", str(log))
+    header = "\t".join(P.ALIAS_LOG_FIELDS)
+    log.write_text(header + "\nold\t0x00000001\t0x00000001\tc0ffee\twhy five\n"
+                   "late\t0x00000002\t0x00000002\tc0ffee\tno final newline", encoding="utf-8")
+    P.record_alias_cleanup([("displaced-alias-row", "new", 3, "w", 3, "abc")])
+    lines = log.read_text().splitlines()
+    assert log.read_text().endswith("\n")
+    assert lines[1].split("\t")[3] == "unknown" and lines[2].split("\t")[3] == "unknown"
+    assert lines[3].split("\t")[:5] == ["new", "0x00000003", "0x00000003", "displaced-alias-row", "abc"]
+    assert all(len(line.split("\t")) == 6 for line in lines)
+
+
+def test_a_r2_5_pending_rows_reach_the_list_only_when_published(tmp_path, monkeypatch):
+    log = tmp_path / "alias.tsv"
+    monkeypatch.setenv("BFME_PIN_ALIAS_LOG", str(log))
+    monkeypatch.setattr(P, "_git_text", lambda *a, **k: "deadbeef00\n")
+    warning = ("displaced-alias-row", "?a@Rva00001000X@@QAEXXZ", 0x1000, "w", 0x1000, "?real@X@@QAEXXZ")
+    staged = P.stage_alias_cleanup([warning], "base", "tip")
+    assert staged.exists() and not log.exists(), "a verdict alone lists nothing"
+    monkeypatch.setattr(P, "introducing_commit", lambda base, tip, trigger: "c0ffee1234")
+    assert P.publish_alias_cleanup("tip") == 1
+    assert not staged.exists()
+    assert log.read_text().splitlines()[1].split("\t")[4] == "c0ffee1234"
+
+
+# Option (a) review round 3: the address-shaped run and address-derived tails.
+
+def test_a_r3_an_address_followed_by_a_hex_letter_or_after_a_type_code_is_an_alias():
+    for name in ("??0?$vector@UGen00261FC0Elem@@V?$allocator@UGen00261FC0Elem@@@_STL@@@_STL@@QAE@XZ",
+                 "?x@ShroudManagerImpl008FBA40Element@@QAEXXZ",
+                 "?x@Gen_005878D0FirstValue@@QAEXXZ",
+                 "?scriptPlayers002EE2D0Call11@@YGXH@Z"):
+        assert P.alias_spelling(name), name
+
+
+def test_a_r3_an_address_derived_tail_is_an_alias_only_at_a_known_start():
+    for name in ("?Open2Rec3A4420@@YAXXZ", "?query1A6320@TerrainLogic@@QAEXXZ",
+                 "?ParsePath8C4DA0@@YAXXZ", "?Completion215930@@YAXXZ",
+                 "??0Rva4048AString@@QAE@XZ", "?get@RvaA2160Offset8Getter@@QAEXXZ"):
+        assert P.alias_spelling(name), name
+    # a hex-ish tail that is no known start stays a real name ...
+    assert not P.alias_spelling("?InitDecade123Windows@@YAXXZ")
+    assert not P.alias_spelling("?Decade@X@@QAEXXZ")
+    # ... unless it spells the row's own address
+    assert P.alias_spelling("?Decade@X@@QAEXXZ", 0xDECADE)
+
+
+# Option (a) review round 4.
+
+def test_a_r4_a_vendored_or_d3d_format_name_stays_real(rows):
+    codec = "??0CCodec_A32B32G32R32F@D3DXTex@@QAE@PAUD3DX_BLT@@@Z"
+    try:
+        P.set_alias_context([dict(r, notes="") for r in rows])      # format rule alone
+        assert not P.alias_spelling(codec, 0x00A37705)
+        assert not P.alias_spelling("?f@X8R8G8B8Thing@@QAEXXZ")
+        P.set_alias_context([{"name": codec, "target_rva": "0x00A37705", "notes": "vendored=dx9"},
+                             {"name": "x", "target_rva": "0x00032B32", "notes": ""}])
+        assert not P.alias_spelling(codec, 0x00A37705), "a vendored name is never read as a tail"
+        assert P.alias_spelling("?x@Open2Rec32B32@@QAEXXZ"), "the same tail elsewhere is an alias"
+    finally:
+        P.set_alias_context(rows)
+
+
+def test_a_r4_known_starts_follow_the_judged_rows(rows):
+    try:
+        P.set_alias_context([{"name": "x", "target_rva": "0x00ABC12E", "notes": ""}])
+        assert 0x00ABC12E in P.known_starts()
+        assert P.alias_spelling("?Open2RecABC12E@@YAXXZ")
+        P.set_alias_context([])
+        assert 0x00ABC12E not in P.known_starts()
+    finally:
+        P.set_alias_context(rows)
