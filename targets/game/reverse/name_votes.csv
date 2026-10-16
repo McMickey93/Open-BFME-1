@@ -2572,3 +2572,10 @@ game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat|v,b439ce77338b4e0a38cbf908,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat#2|s,31b56b1c255d18e5f461d650,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemGetFileList.cpp|param|bfmeConcat#3|s,b3bab0ad2c12596b5b94fc38,gpt-6.1-sol,20261016050950-9d0945,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeLength|s,8214cbdc54f3d55e1c1a84ab,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeStr|s,27529a478648500ce27160ef,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeSet|s,4d3f0ebae77b28cb5d43f2eb,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeConcat|s,74759f4b4ad9ad7a6aeddc4f,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeConcat#2|s,a0a38cd9c0bba87144346ece,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|param|bfmeFind|s,14e8a9dfccacb5ac61c4db8f,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|local|bfmeFind|p,211021527d7bf80821d68d21,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
