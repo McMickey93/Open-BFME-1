@@ -3366,3 +3366,5 @@ game/GameEngine/Source/GameLogic/System/EmotionNugget.cpp|param|empty0037C030|s,
 game/GameEngine/Source/GameLogic/System/EmotionNugget.cpp|local|empty0037C030|p,9b69c8e2ce007c386d12be42,gpt-6.1-sol,20261016060806-5bea07,2026-10-16
 game/GameEngine/Source/GameLogic/System/EmotionNugget.cpp|param|text0037C030|s,ed0cca01ba9b5257a2632663,gpt-6.1-sol,20261016060806-5bea07,2026-10-16
 game/GameEngine/Source/GameLogic/System/EmotionNugget.cpp|local|text0037C030|p,81e9d38a094832a95f86c579,gpt-6.1-sol,20261016060806-5bea07,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponNuggetParse.cpp|local|parseAttributeModifierNugget|m,e62909eeffbb112a78f45db4,gpt-6.1-sol,20261016060812-b12d4a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponNuggetParse.cpp|local|parseWeaponOCLNugget|m,9c2f726b299a62a83debaa66,gpt-6.1-sol,20261016060812-b12d4a,2026-10-16
