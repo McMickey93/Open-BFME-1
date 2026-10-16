@@ -2401,3 +2401,10 @@ game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdat
 game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_258,5e53bd480244ace524d1aa90,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_259,0ac3e1d34fea11f43b93074a,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_25c,1d162afb8c5c3f057bc57508,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1d0,e0fcc4837fa085c4b1fd145d,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1d4,f2b39cc810985b1da8f90382,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1d8,a7b49218de8ac8e1017eb346,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1d9,0acbaa433ae2c7dfcf02e124,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1da,3e60610e203a9e57b3a48198,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1dc,d0923644a479a3489e061d14,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModuleDataCtorThunk.cpp|member||m_1e0,c9423155f2b94694ccdd08b4,gpt-6.1-sol,20261016044546-8ee147,2026-10-16
