@@ -3332,3 +3332,7 @@ game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word7c,c60f36
 game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word80,dbdb9ff427a267a5e1d3d3d6,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
 game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word88,63141282773d520a37ad45a8,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
 game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_vector8c,3327e6e50c887a35ebd71db4,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_20,761849975c650cca8cb7982c,gpt-6.1-sol,20261016060510-835b88,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_24,5f922b0157a64b1c09410749,gpt-6.1-sol,20261016060510-835b88,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_28,20d2e588d1f946d8df2c8140,gpt-6.1-sol,20261016060510-835b88,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplate_ctor.cpp|member||m_unmodelled_2C,297c7644b4c8aaaff8ec88b8,gpt-6.1-sol,20261016060510-835b88,2026-10-16
