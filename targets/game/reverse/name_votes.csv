@@ -3208,3 +3208,6 @@ game/Libraries/Source/WWVegas/WW3D2/Small03eListNode.cpp|local|Rva00943DB0Box::i
 game/Libraries/Source/WWVegas/WW3D2/Small03eListNode.cpp|local|Rva00943DB0Box::insert|c,0e9d24a1a6035d0777625c2f,gpt-6.1-sol,20261016055315-d19d5b,2026-10-16
 game/GameEngine/Source/Common/Rva006E6A80.cpp|member||fe8,a7ea7fc4eccf6ce468deb903,gpt-6.1-sol,20261016060231-86db97,2026-10-16
 game/GameEngine/Source/Common/Rva006E6A80.cpp|member||ff0,728f2c892b9bd8234b815132,gpt-6.1-sol,20261016060231-86db97,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredThirtyTwo.cpp|member||m_bfmeTag,b538618b9920cc9fd24de63b,gpt-6.1-sol,20261016060236-5a5aa6,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredThirtyTwo.cpp|member||m_bfmeNode,8c2c910020cf0b7e178fd163,gpt-6.1-sol,20261016060236-5a5aa6,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredThirtyTwo.cpp|member||m_bfmeFirst,da9fe1a3f502fb3ec6ff013c,gpt-6.1-sol,20261016060236-5a5aa6,2026-10-16
