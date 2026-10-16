@@ -5525,3 +5525,6 @@ game/GameEngine/Source/Common/Rva006FCC10NormalizedRange.cpp|function|Rva006FCCC
 game/GameEngine/Source/Common/Rva006FCC10NormalizedRange.cpp|function|Rva006FCCC0Owner@|rva006FCCC0,e7bc9ad5cbbc3b34937d7d9b,gpt-6.1-sol,20261016122140-a47e50,2026-10-16
 game/GameEngine/Source/Common/Rva006FCC10NormalizedRange.cpp|local|Rva006FCCC0Owner::rva006FCCC0|base0,b17e8868cb232ebc85cce866,gpt-6.1-sol,20261016122140-a47e50,2026-10-16
 game/GameEngine/Source/Common/Rva00575900Sort.cpp|local|Rva00575900|n,66efbc34a32502477f1d6710,gpt-6.1-sol,20261016122146-53232c,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicFindAxisAlignedBoundingRect.cpp|type||Rva001A66C0PolygonView,08599e19ff272d7dfb51bb5a,gpt-6.1-sol,20261016122005-d5c528,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicFindAxisAlignedBoundingRect.cpp|type||Rva001A66C0TerrainVisualView,8c0905174f5c03f092f9f6cd,gpt-6.1-sol,20261016122005-d5c528,2026-10-16
+game/GameEngine/Source/GameLogic/Map/TerrainLogicFindAxisAlignedBoundingRect.cpp|local|TerrainLogic::findAxisAlignedBoundingRect|v,e5e93c3990ec45769692e994,gpt-6.1-sol,20261016122005-d5c528,2026-10-16
