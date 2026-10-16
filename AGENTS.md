@@ -118,11 +118,11 @@ Convert to clean C++. Use MASM or inline asm only for a proven codegen blocker
 not a conversion, and the hooks refuse it. Ghidra boundaries, xrefs and vtables
 are identity evidence; decompiled C is not byte-match proof.
 
-Record each session's outcome with
+Record outcomes with
 `python3 tools/re_log.py record <symbol> <rva> <size> <status> <evidence>`, never
-by editing `re_attempts.log`: cite the real boundary, `t=<minutes>`, `model=`
-and, for a `partial` or long `blocked`, `blocker=<family>` (`tools/blockers.py`).
-Pass `--model` to `add_match.py` (fleet workers: `BFME_MODEL`).
+by hand (`add_match.py --model` records `landed`; fleet: `BFME_MODEL`): cite the
+boundary, `t=<minutes>`, `model=`, `blocker=<family>` (`tools/blockers.py`) for
+a `partial` or long `blocked`, and `blocked-on=0x<rva>` for unlanded blockers.
 
 Bank a near miss for the next agent:
 `partial '<what is wrong>' --stash <your .cpp> --score <0..1>`; with no body,
