@@ -2055,3 +2055,5 @@ game/GameEngine/Source/Common/Audio/AudioManagerInit.cpp|member||m_field44,d373e
 game/GameEngine/Source/Common/Audio/AudioManagerInit.cpp|member||m_bfmeB1012,011ea86b19278e5cda9ddcc1,gpt-6.1-sol,20261016040245-81b5c9,2026-10-16
 game/GameEngine/Source/Common/Q2TrailingZeroForwarders.cpp|local|compare|n,37345597f7cded09c4c82442,gpt-6.1-sol,20261016040245-377fb7,2026-10-16
 game/GameEngine/Source/Common/Q2TrailingZeroForwarders.cpp|local|compare|c,be00a470757ff4c8499cf548,gpt-6.1-sol,20261016040245-377fb7,2026-10-16
+game/GameEngine/Source/Common/S4AdjustHeapElem12Pod.cpp|member||m_bfmeName,940c00759c6f571b526bc271,gpt-6.1-sol,20261016040422-b533b2,2026-10-16
+game/GameEngine/Source/Common/S4AdjustHeapElem12Pod.cpp|member||m_bfmeKey,85d682d47d7d9af6fc6903d3,gpt-6.1-sol,20261016040422-b533b2,2026-10-16
