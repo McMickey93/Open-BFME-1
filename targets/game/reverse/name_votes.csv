@@ -4950,3 +4950,13 @@ game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstFlagged|
 game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstFlagged|e,6500359ecd9fe92f5dc1aeb4,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
 game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstMapped|p,6d39fca63e6d2985238ae4cf,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
 game/GameEngine/Source/Common/U4ElementScanLoops.cpp|local|U4Scan::firstMapped|e,62065f317f3c63c1845ef006,gpt-6.1-sol,20261016072124-5fa807,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|_M_create_node|v,e85ae92722b70ec0a1beb7af,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|local|_M_create_node|tmp,a882b796eb3347ad6ce0094c,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|run|x,8a9e09f7d876925d9be70705,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|run|y,64f8ce0056a5ce6961073aba,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|run|v,41cf52012b3bc1b3e79dfcad,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|run|w,71b494b71f1cd353b6c719f5,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|x,d2cfc92ef74155f478526b3b,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|y,10ff78fdbb9f95a61cc85aa1,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|v,7d8819a90cdba01fa162864f,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|w,45afc8d8f12529b288248e5e,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
