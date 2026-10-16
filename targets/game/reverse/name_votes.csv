@@ -4304,3 +4304,5 @@ game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|memb
 game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||flag21,c59f51b89baae762424a057e,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||frame3C,7fa80fc27b5b0251dbc025c8,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||count10,fe61e9e855e60c5b1c61353f,gpt-6.1-sol,20261016063404-0b816d,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|member||m_bfmeAt,725cc4ffd8dfd38b05023819,gpt-6.1-sol,20261016064611-63475f,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|member||m_bfmeEnd,6467e6b71bdc9f483715798b,gpt-6.1-sol,20261016064611-63475f,2026-10-16
