@@ -2242,3 +2242,5 @@ game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FCC8
 game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FCCA0,c02f486d87000d7a4d93b818,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/StealthDetectorUpdateConstructor.cpp|member||m_f14,77f08a686c8fb4bfff41bd2f,gpt-6.1-sol,20261016043136-92048d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/StealthDetectorUpdateConstructor.cpp|member||m_f18,ba66a89e17415fe7b93d1d7f,gpt-6.1-sol,20261016043136-92048d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/PointDefenseLaserUpdateCtorThunk.cpp|member||m_f14,e85de16710c57a55f8930fba,gpt-6.1-sol,20261016043143-740631,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/PointDefenseLaserUpdateCtorThunk.cpp|member||m_f18,6388d024a0d5ab5d724d5ecd,gpt-6.1-sol,20261016043143-740631,2026-10-16
