@@ -2379,3 +2379,6 @@ game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cp
 game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|member||m_04,8fbf37961174b4eff1301f4a,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|member||m_08,ac31c0dd9a03d9ff26c5c8dd,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|function||Rva003B88F0ParseAnimObjectUpdate,1b2e6f1419537422527d191f,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseFlashRegionsEvent.cpp|member||m_04,6263445d83e365cf39182e42,gpt-6.1-sol,20261016044852-79d65f,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseFlashRegionsEvent.cpp|member||m_flag08,f2056b7b82d7e74c06c2141f,gpt-6.1-sol,20261016044852-79d65f,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseFlashRegionsEvent.cpp|member||m_0C,2a1c9d97a898a7ab54874001,gpt-6.1-sol,20261016044852-79d65f,2026-10-16
