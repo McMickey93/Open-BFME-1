@@ -9,7 +9,8 @@
       ??_7C@@6B@ whose retail slots reach a matched non-generated ??_G/??_E
       row of class C) and recorded nowhere else, and OLD, decorated or as its
       bare identifier, occurs nowhere under game/ or inputs/reference/shims/ in
-      the index (a generated dump no functions.csv row builds does not count). Prints the trailer
+      the index (a generated dump no functions.csv row builds does not count,
+      nor a gen_asm PROC body no row builds, with its EXTERN). Prints the trailer
       `Dir32-Retire: OLD 0x<VA> for NEW`; --msg appends it to that message file.
       The commit-msg hook (tools/dir32_record_guard.py --commit-msg, as of HEAD)
       refuses a deletion without a matching trailer and re-checks both conditions.

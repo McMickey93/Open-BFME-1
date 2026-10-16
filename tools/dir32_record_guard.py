@@ -19,7 +19,8 @@ a hand-edited address moved every reference's expectation at once.
     retail slots reach a matched non-generated ??_G/??_E row of C) and
     recorded nowhere else, and OLD (decorated and bare) occurs nowhere under
     game/ or inputs/reference/shims/ except in a game/gen_asm|gen_small dump
-    no functions.csv row builds. Every deletion needs a trailer and every
+    no functions.csv row builds, or only inside gen_asm PROC bodies no row
+    builds (and their EXTERN line). Every deletion needs a trailer and every
     trailer a matching deletion.
   * An added line must be one the tool would accept for an unrecorded name:
     build.unrecorded_dir32_problem against the record as of the base
@@ -333,7 +334,67 @@ def source_mentions(name):
     dead = {p for p in hits if is_generated(p)}
     if dead:
         dead -= row_sources()
+    # A gen_asm dump that rows still build stops blocking only when every
+    # spelling of NAME in it sits inside PROC bodies no row builds any more
+    # (approved by the project lead 2026-10-16): the assembler still emits such
+    # a proc, but nothing links, verifies or DIR32-checks it. Its EXTERN line
+    # only serves those procs. Anything else, or a gen_small C++ dump, blocks.
+    dead |= {p for p in hits - dead if p.startswith("game/gen_asm/")
+             and only_in_unbuilt_procs(p, name, bare_identifier(name))}
     return sorted(hits - dead)
+
+
+PROC_RE = re.compile(r"^(\S+)[ \t]+PROC\b")
+
+
+def asm_procs(text):
+    """[(first line, last line, symbol)] of every `SYM PROC` .. `SYM ENDP` body,
+    1-based and inclusive."""
+    out, open_proc = [], None
+    for number, line in enumerate(text.splitlines(), 1):
+        if open_proc is None:
+            match = PROC_RE.match(line)
+            if match:
+                open_proc = (number, match.group(1))
+        elif re.match(rf"^{re.escape(open_proc[1])}[ \t]+ENDP\b", line):
+            out.append((open_proc[0], number, open_proc[1]))
+            open_proc = None
+    return out
+
+
+def built_symbols(path, tree=":"):
+    """Symbols functions.csv rows in TREE build from PATH (any status): each
+    row's name and its object-symbol=, if any."""
+    out = set()
+    for name, _rva, source, _status, notes in function_rows(tree):
+        if source == path:
+            out.add(name)
+            if object_symbol(notes):
+                out.add(object_symbol(notes))
+    return out
+
+
+def only_in_unbuilt_procs(path, name, bare=None, tree=":"):
+    """True when every line of the dump at PATH (as TREE holds it) spelling
+    NAME (decorated) or BARE (as a word) lies in a PROC body whose symbol no
+    functions.csv row builds from PATH, or is that name's own `EXTERN NAME:`
+    declaration; and at least one such proc exists."""
+    text = git_show_text(f"{tree}{path}")
+    if text is None:
+        return False
+    word = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(bare)}(?![A-Za-z0-9_])") if bare else None
+    procs, built, seen = asm_procs(text), built_symbols(path, tree), False
+    for number, line in enumerate(text.splitlines(), 1):
+        if name not in line and not (word and word.search(line)):
+            continue
+        inside = [sym for first, last, sym in procs if first <= number <= last]
+        if inside:
+            if inside[0] in built:
+                return False
+            seen = True
+        elif not re.match(rf"^[ \t]*EXTERN[ \t]+{re.escape(name)}:", line, re.IGNORECASE):
+            return False
+    return seen
 
 
 PLACEHOLDER_RE = re.compile(

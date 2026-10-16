@@ -487,3 +487,73 @@ def test_old_name_in_other_built_source_refused(tmp_path, monkeypatch, capsys):
                           {"game/b.cpp": "int x;\n", lib: f"\0{FN_OLD}\0"})
     assert retire(monkeypatch, repo, FN_OLD, FN_NEW) == 1
     assert lib in capsys.readouterr().err
+
+
+# --- OLD spelled only inside a gen_asm PROC no row builds (approved by the project lead 2026-10-16) ---
+
+LIVE = "?d_00001500@@YAXXZ,,0x00001500,8,game/gen_asm/d.asm,matched,gen-dump"
+
+
+def dump(dead_body=f"    dd {VT_OLD}\n", live_body="    db 0C3h\n", extern=True, outside=""):
+    return ((f"EXTERN {VT_OLD}:BYTE\n" if extern else "") + "_TEXT SEGMENT\n" + outside
+            + "?d_00001500@@YAXXZ PROC\n" + live_body + "?d_00001500@@YAXXZ ENDP\n"
+            + "?d_00001600@@YAXXZ PROC\n" + dead_body + "?d_00001600@@YAXXZ ENDP\n_TEXT ENDS\nEND\n")
+
+
+def test_old_only_in_an_unbuilt_proc_of_a_built_dump_allowed(tmp_path, monkeypatch):
+    # the TBuff case: the dump is still built for another proc, the vtable's
+    # only use is the replaced proc's body plus its EXTERN
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE], {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump()})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 0
+
+
+def test_old_in_a_proc_still_built_refused(tmp_path, monkeypatch, capsys):
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE],
+                          {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump(live_body=f"    dd {VT_OLD}\n")})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+    assert "still appears in game/gen_asm/d.asm" in capsys.readouterr().err
+
+
+def test_old_outside_any_proc_refused(tmp_path, monkeypatch, capsys):
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE],
+                          {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump(outside=f"    dd {VT_OLD}\n")})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+    assert "still appears in game/gen_asm/d.asm" in capsys.readouterr().err
+
+
+def test_old_in_a_proc_another_row_builds_refused(tmp_path, monkeypatch, capsys):
+    # the dead-looking proc is built under another name through object-symbol=
+    alias = "_Rva00001600,,0x00001600,8,game/gen_asm/d.asm,matched,object-symbol=?d_00001600@@YAXXZ"
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE, alias],
+                          {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump()})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+    assert "still appears in game/gen_asm/d.asm" in capsys.readouterr().err
+
+
+def test_old_in_an_unmatched_row_proc_refused(tmp_path, monkeypatch, capsys):
+    # any row (not only a matched one) that builds the proc keeps it live
+    row = "?d_00001600@@YAXXZ,,0x00001600,8,game/gen_asm/d.asm,partial,x"
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE, row],
+                          {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump()})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_bare_word_outside_procs_refused(tmp_path, monkeypatch, capsys):
+    # a bare spelling in a comment between procs is not inside a dead body
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE],
+                          {"game/b.cpp": "int x;\n",
+                           "game/gen_asm/d.asm": dump(outside="; Rva00001100Foo table\n")})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_gen_small_cpp_dump_still_built_refused(tmp_path, monkeypatch, capsys):
+    row = "?g@@YAXXZ,,0x00001600,8,game/gen_small/s.cpp,matched,x"
+    repo = make_code_repo(tmp_path, [DTOR_ROW, row],
+                          {"game/b.cpp": "int x;\n", "game/gen_small/s.cpp": f"// {VT_OLD}\nvoid g() {{}}\n"})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+    assert "still appears in game/gen_small/s.cpp" in capsys.readouterr().err
+
+
+def test_asm_procs_bounds():
+    text = "x\nA PROC\n db 0\nA ENDP\nB PROC NEAR\nB ENDP\nC PROC\n"
+    assert guard.asm_procs(text) == [(2, 4, "A"), (5, 6, "B")]
