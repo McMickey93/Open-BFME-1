@@ -1,12 +1,11 @@
 # Where names come from
 
-A byte match proves nothing about names: `m_pitchShift` compiles to the same bytes
-as `m_priority`, and no detector can see a wrong member name.
+A byte match proves nothing about names: `m_pitchShift` and `m_priority` compile
+to the same bytes.
 
 ## The rule
 
-A name that admits ignorance is fine: `Rva0026C320Owner` says nobody knows yet and
-greps out in a second. A plausible wrong name misleads every reader, and no gate
+A name that admits ignorance (`Rva0026C320Owner`) is fine and greps out in a second. A plausible wrong name misleads every reader, and no gate
 catches it.
 
 | The name claims | What checks it | What to write |
@@ -77,7 +76,6 @@ an offset the evidence already names.
   settles it.
 - `targets/game/reverse/name_oracle_baseline.csv` may only shrink. Never add a line
   to go green.
-- Conflicts spread by copy-paste; one decision can clear a finding in many files.
 - If your source conflicts with a shared witness you cannot settle, use an
   address-named partial layout view (e.g. `Rva0015C570GuardMachine`); never rewrite
   the witness to accept it.
@@ -145,6 +143,12 @@ real class's destructor body. That pin is the evidence the rule asks for. Open c
 - Renaming a class changes the mangled name of every member, so it is a large
   `functions.csv` edit. Do one class per commit, byte-verify every touched row, and
   require a green full gate.
+
+## ABI scaffolds
+
+A row whose source invents a class hierarchy only to steer codegen (e.g.
+`Va<addr>Subobject` bases) carries `abi-scaffold=yes;semantic-hierarchy=unresolved`;
+`check_csv` validates it; `progress.py` reports it apart.
 
 ## Traps
 

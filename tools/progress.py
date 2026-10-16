@@ -89,6 +89,16 @@ VENDORED_C_ROOTS = ("game/GameEngine/Source/GameNetwork/GameSpy/",)
 # generator cannot move the recovered figure by omitting its own marker.
 GENERATED_ROOTS = ("game/gen_small/", "game/gen_asm/")
 GEN_NOTE_RE = re.compile(r"(?:^|;)\s*gen-[a-z]|identity=generated\b")
+# Rows whose source invents a class hierarchy only to drive codegen
+# (check_csv.SCAFFOLD_KEYS; approved by the project lead 2026-10-16). They stay
+# matched and authored; the headline prints how much of the C++ figure they are.
+SCAFFOLD_NOTE_RE = re.compile(r"(?:^|;)\s*abi-scaffold=yes\s*(?:;|$)")
+
+
+def scaffold_split(matched, notes, text_start, text_size, naked_rows=()):
+    """real_split over the abi-scaffold rows only."""
+    return real_split(matched, notes, text_start, text_size, naked_rows,
+                      keep=lambda key, _source: bool(SCAFFOLD_NOTE_RE.search(notes[key])))
 # Provenance lanes, best evidence first. Overlapping claims on one byte resolve
 # to the earliest lane, so the lanes partition Total exact with no double count.
 SOURCE_LANES = ("authored", "vendored", "generated", "library", "dump")
@@ -700,7 +710,8 @@ def _line(label, value, denominator, delta, note):
     return (f"{label:<14} {value:>12,.0f} bytes ({percent(value, denominator):6.2f}%)  {delta}  <- {note}")
 
 
-def print_headline(padding, denominator, old_split, new_split, old_census, new_census):
+def print_headline(padding, denominator, old_split, new_split, old_census, new_census,
+                   old_scaffold=None, new_scaffold=None):
     """The README card's and the daily Discord post's three numbers, computed
     the same way, then what they are made of. Every figure counts 0xCC out,
     so the lines below add up to the lines above."""
@@ -712,6 +723,11 @@ def print_headline(padding, denominator, old_split, new_split, old_census, new_c
                 f"delta {format_delta(new_split['authored'], old_split['authored'], game)}"
                 if game == game_before else "delta n/a (the game's own code changed size)",
                 f"C++ we wrote, over the game's own code ({game:,} bytes: no library source or .lib)"))
+    if new_scaffold is not None:
+        was = old_scaffold["authored"] if old_scaffold else 0
+        print(f"{'':<14} {new_scaffold['authored']:>12,} bytes of that are ABI scaffolds "
+              f"(abi-scaffold=yes: invented class hierarchy, semantic hierarchy unresolved)"
+              f"  delta {format_delta(new_scaffold['authored'], was, game)}")
 
     def census_line(label, field, over_field, note):
         """One census figure over its denominator: `over_field` names the
@@ -846,7 +862,9 @@ def main():
     padding, denominator = real_code_denominator(text_start, text_size)
     old_notes, new_notes = notes_at(ref1), notes_at(ref2)
     print_headline(padding, denominator, real_split(old, old_notes, text_start, text_size, old_naked),
-                   real_split(new, new_notes, text_start, text_size, new_naked), census_at(ref1), census_at(ref2))
+                   real_split(new, new_notes, text_start, text_size, new_naked), census_at(ref1), census_at(ref2),
+                   scaffold_split(old, old_notes, text_start, text_size, old_naked),
+                   scaffold_split(new, new_notes, text_start, text_size, new_naked))
     print(static_data_line(static_data_at(ref2), data_denominator()))
     print_scorecard(ref1, label2, old_stats, new_stats)
     if args.details:

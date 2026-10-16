@@ -204,6 +204,38 @@ def check_row_extents(before, after, problems):
     problems.extend(row_extent.check(old, new, sizes, build.read_target_bytes, index))
 
 
+# ABI/codegen scaffold rows (approved by the project lead 2026-10-16): the
+# source invents a class hierarchy only to drive codegen (e.g. opaque
+# Va<addr>Subobject bases that pin vftable names to addresses). The tag pair
+# says so machine-readably; tools/progress.py reports such rows apart.
+SCAFFOLD_KEYS = {"abi-scaffold": {"yes"}, "semantic-hierarchy": {"unresolved"}}
+
+
+def notes_keys(notes):
+    """{key: value} for every `key=value` field of a ;-separated notes cell."""
+    out = {}
+    for field in notes.split(";"):
+        key, sep, value = field.strip().partition("=")
+        if sep and re.fullmatch(r"[a-z][a-z0-9-]*", key):
+            out.setdefault(key, value)
+    return out
+
+
+def scaffold_problems(notes, source, status):
+    """Why a row's abi-scaffold tags are malformed (empty list when fine)."""
+    keys = notes_keys(notes)
+    present = [k for k in SCAFFOLD_KEYS if k in keys]
+    if not present:
+        return []
+    out = [f"{k}={keys[k]} is not one of {sorted(SCAFFOLD_KEYS[k])}" for k in present
+           if keys[k] not in SCAFFOLD_KEYS[k]]
+    if len(present) != len(SCAFFOLD_KEYS):
+        out.append("abi-scaffold=yes and semantic-hierarchy=unresolved go together")
+    if status != "matched" or source.startswith(("game/gen_asm/", "game/gen_small/")):
+        out.append("an abi-scaffold tag belongs on a matched, hand-written row")
+    return out
+
+
 def check_functions(raw, problems, sources_ok, deleted=None):
     deleted = tombstones() if deleted is None else deleted
     if b"\r\n" not in raw[:200]:
@@ -280,6 +312,8 @@ def check_functions(raw, problems, sources_ok, deleted=None):
                             + DUP_FIX)
         seen_exact.add(key)
 
+        problems.extend(f"functions.csv line {i} ({name}): {why}"
+                        for why in scaffold_problems(_notes, source, status))
         rva = int(target_rva, 16)
         gen_row = _notes.lstrip().startswith("gen-")
         if rva in by_rva and by_rva[rva][0] != name:
