@@ -20308,5 +20308,15 @@
   "after_sha256": "8324a5a0460a226c6d24eb57918e45f4d6c486ee76db065f0b29ccd74db65d2f",
   "evidence": "targets/game/reverse/identity_evidence/0069c470-rva0069c300element-uninitialized-copy.md",
   "reason": "retail 0x003AA480 calls ILT 0x00033FF0 (construct 0x003A9110) not the _Construct<HideShowSubObjInfo> pin 0x0004A818 that matched vector push_back calls; the call uses the existing 0x00033FF0 pin name the sibling allocate-and-copy body already uses"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x008ad8f0.cpp",
+  "new_path": "game/Libraries/Source/EA/Apt/Rva008AD8F0TextBinding.cpp",
+  "old_name": "g_aptTextLayout01337870",
+  "new_name": "Rva008AD8F0LayoutCallback",
+  "before_sha256": "e95af579fa7111cf38dc186c0c094ef5948e00ff8a395e9286532372f6d2b3bf",
+  "after_sha256": "b161c0c02bf9b771ce4c6d6226d64c03853dcd496839922b4c94696768195b56",
+  "evidence": "targets/game/reverse/identity_evidence/008ad8f0-layout-flag-join.md",
+  "reason": "approved by the project lead 2026-10-16: false pairing. g_aptTextLayout01337870 was a bank-only TU-local alias of the host callback cell 0x01337870, which the matched data row ?g_bfmeSlot14VB@@3P6AXXZA owns; the landed 0x008AD8F0 body reads that owned name and casts it to the new function-pointer typedef Rva008AD8F0LayoutCallback, so no descriptive name is replaced by a placeholder"
  }
 ]

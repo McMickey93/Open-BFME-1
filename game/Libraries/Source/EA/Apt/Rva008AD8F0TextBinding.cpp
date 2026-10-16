@@ -1,8 +1,8 @@
-// ?bfmeApply1236@BfmeB1236@@QAEXPAX@Z
-// partial score=0.9834 date=2026-09-30
+// ?method@Rva008AD8F0@@QAEXPAX@Z
+// Retail 008AD8F0: complete 603-byte ECX receiver plus one pointer argument; RET4 at +258.
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 // RVA 008AD8F0 (603 B): lays out an Apt text binding through an inline binding method
-// that takes the character and the binding's source as parameters, fills the 0x70-byte
+// that takes the character and binding source as parameters and fills the 0x70-byte
 // host layout request, and re-anchors the character for centred and right alignment.
 
 struct BfmeStringData3AF0 { unsigned short m_refCount, m_length, m_capacity, m_unknown06; };
@@ -33,12 +33,12 @@ struct Rva008AD8F0Owner {
 };
 
 struct Rva008AD8F0Handle;
-extern Rva008AD8F0Handle g_aptTextNull012D5598;
+extern char g_bfmeSpecialBlock1286;
 
 class Rva008AD750StringBinding {
 public:
     void refresh(Rva8CD130Value *scope);
-    void layout(class BfmeB1236 *character, Rva008AD8F0Source *source, void *a);
+    bool layout(class Rva008AD8F0 *character, Rva008AD8F0Source *source, void *a);
     char m_gap00[0x0c];
     Rva008AD8F0Source *m_source0c;
     char m_gap10[8];
@@ -91,8 +91,9 @@ struct BfmeApplyRecord1236 {
     int m_ownerRect[4];
 };
 
-extern void (__cdecl *g_aptTextRelease01337874)(Rva008AD8F0Handle *handle, unsigned flags);
-extern Rva008AD8F0Handle *(__cdecl *g_aptTextLayout01337870)(BfmeApplyRecord1236 *request);
+extern void (__cdecl *g_bfmeFreePair1286)(void *handle, int flags);
+extern void (*g_bfmeSlot14VB)(void);
+typedef Rva008AD8F0Handle *(__cdecl *Rva008AD8F0LayoutCallback)(BfmeApplyRecord1236 *request);
 
 struct Rva008AD8F0Entry { char m_gap00[8]; const char *m_text08; };
 struct Rva008AD8F0Table { char m_gap00[0x10]; Rva008AD8F0Entry **m_entries; };
@@ -105,36 +106,35 @@ public:
     void bfmeSetAxis1289(int axis, float value, int enabled);
 };
 
-class BfmeB1236 {
+class Rva008AD8F0 {
 public:
-    void bfmeApply1236(void *a);
+    void method(void *a);
     char m_gap00[0x20];
     float m_position20;
     char m_gap24[0x50 - 0x24];
     Rva008AD750StringBinding *m_binding50;
 };
 
-// ?layout@Rva008AD750StringBinding@@QAEXPAVBfmeB1236@@PAURva008AD8F0Source@@PAX@Z absent-from-retail
-__forceinline void Rva008AD750StringBinding::layout(BfmeB1236 *character, Rva008AD8F0Source *source, void *a)
+// ?layout@Rva008AD750StringBinding@@QAEXPAVRva008AD8F0@@PAURva008AD8F0Source@@PAX@Z absent-from-retail
+__forceinline bool Rva008AD750StringBinding::layout(Rva008AD8F0 *character, Rva008AD8F0Source *source, void *a)
 {
     refresh((Rva8CD130Value *)a);
     if (m_flags6c & 1)
-        return;
-    if (m_handle20 && m_handle20 != &g_aptTextNull012D5598)
-        g_aptTextRelease01337874(m_handle20, m_flags6c);
+        return false;
+    if (m_handle20 && m_handle20 != reinterpret_cast<Rva008AD8F0Handle *>(&g_bfmeSpecialBlock1286))
+        g_bfmeFreePair1286(m_handle20, m_flags6c);
 
     char *movieText = ((BfmeApplyArgument1236 *)a)->m_node->m_movie->m_base04 + 8;
     BfmeStringData3AF0 *string = m_string18.m_data;
     if (string == &g_bfmeDefaultString1284) {
-        m_handle20 = &g_aptTextNull012D5598;
+        m_handle20 = reinterpret_cast<Rva008AD8F0Handle *>(&g_bfmeSpecialBlock1286);
         if (m_mode38 != 3) {
             m_right58 = m_left50 + 4.0f;
             m_bottom5c = m_top54 + 4.0f;
         }
         m_44 = 0;
         m_48 = 0;
-        m_flags6c = 1;
-        return;
+        return true;
     }
 
     BfmeApplyRecord1236 request;
@@ -178,7 +178,7 @@ __forceinline void Rva008AD750StringBinding::layout(BfmeB1236 *character, Rva008
         request.m_ownerRect[2] = owner->m_rect[2];
         request.m_ownerRect[3] = owner->m_rect[3];
     }
-    m_handle20 = g_aptTextLayout01337870(&request);
+    m_handle20 = ((Rva008AD8F0LayoutCallback)g_bfmeSlot14VB)(&request);
 
     int mode = m_mode38;
     if (mode != 3) {
@@ -200,12 +200,14 @@ __forceinline void Rva008AD750StringBinding::layout(BfmeB1236 *character, Rva008
     m_44 = request.m_40;
     m_48 = request.m_44;
     m_4c = request.m_20;
-    m_flags6c = 1;
+    return true;
 }
 
-// ?bfmeApply1236@BfmeB1236@@QAEXPAX@Z
-void BfmeB1236::bfmeApply1236(void *a)
+// ?method@Rva008AD8F0@@QAEXPAX@Z
+void Rva008AD8F0::method(void *a)
 {
     Rva008AD750StringBinding *binding = m_binding50;
-    binding->layout(this, binding->m_source0c, a);
+    // Keep the dirty-flag store at the caller join; early clean returns preserve all flag bits.
+    if (binding->layout(this, binding->m_source0c, a))
+        binding->m_flags6c = 1;
 }
