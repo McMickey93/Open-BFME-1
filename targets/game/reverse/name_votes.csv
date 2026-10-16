@@ -4795,3 +4795,6 @@ game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|member||m_bfmeNext,79d
 game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|local|getTemplate|tmpl,d718d5958d8930448e6b9fc4,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|param|Object::isKindOf|t,9010442d13f8690a83a754e6,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIGroup_recompute.cpp|local|AIGroup::recompute|p,b8a071e9c5d0548d8ae83998,gpt-6.1-sol,20261016071609-642dc5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberIndex00240F10.cpp|member||at03c,5ab96db91a978c9375358d0e,gpt-6.1-sol,20261016071615-26c12d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberIndex00240F10.cpp|member||at048,420140b28c63faf8cb54c8ec,gpt-6.1-sol,20261016071615-26c12d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberIndex00240F10.cpp|member||at054,907b50240e70ae32aa445cfa,gpt-6.1-sol,20261016071615-26c12d,2026-10-16
