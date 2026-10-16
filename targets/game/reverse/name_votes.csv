@@ -3763,3 +3763,5 @@ game/GameEngine/Source/Common/Bfme5EightyTwo.cpp|member||m_bfmeNext,0e375b287a26
 game/GameEngine/Source/Common/Bfme5EightyTwo.cpp|member||m_bfmeHead,5f2102017f19d2fd53f6e485,gpt-6.1-sol,20261016061811-090a0b,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderGroundCellsAlongLineRva003E2620.cpp|member||m_lowestBucket834,a664902ea97cf227b3011faa,gpt-6.1-sol,20261016061817-00c700,2026-10-16
 game/GameEngine/Source/Common/S3HandleCompareAssign.cpp|member||m_bfmeRefCount,49c8e142cf7ed9e71167a84f,gpt-6.1-sol,20261016061822-d7ae03,2026-10-16
+game/GameEngine/Source/Common/Bfme5ChainDisposals.cpp|member||m_bfmeNext,61675b7b57165ee823a6d54b,gpt-6.1-sol,20261016062042-cd6287,2026-10-16
+game/GameEngine/Source/Common/Bfme5ChainDisposals.cpp|member||m_bfmeField,96d1445260561a00b3d65793,gpt-6.1-sol,20261016062042-cd6287,2026-10-16
