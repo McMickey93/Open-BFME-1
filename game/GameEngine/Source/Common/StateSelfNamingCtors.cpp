@@ -91,7 +91,17 @@ BFME_STATE_SELF_NAMING_CTOR( Rva001719A0State, Rva000A19E0StateBase, "AIQuarrelS
 BFME_STATE_SELF_NAMING_CTOR( Rva0018ACA0State, Rva000A19E0StateBase, "AITNGuardIdleState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva00180050State, AIInternalMoveToState, "AICombineState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva002B77F0State, Rva000A19E0StateBase, "DozerPrimaryGoingHomeState" )
-BFME_STATE_SELF_NAMING_CTOR( Rva002C6100State, Rva000A19E0StateBase, "SupplyTruckWantsToPickUpOrDeliverBoxesState" )
+// 0x002C6100: identified by the matched SupplyTruckStateMachine constructor
+// (0x002C6430), which builds this state inline with the same literal, base and
+// vftable 0x010C9308; Zero Hour signature. identity_evidence/002c6100-supplytruck-wants-to-pickup-state.md
+class StateMachine;
+class SupplyTruckWantsToPickUpOrDeliverBoxesState : public Rva000A19E0StateBase
+{
+public:
+	SupplyTruckWantsToPickUpOrDeliverBoxesState( StateMachine *machine );
+};
+SupplyTruckWantsToPickUpOrDeliverBoxesState::SupplyTruckWantsToPickUpOrDeliverBoxesState( StateMachine *machine )
+	: Rva000A19E0StateBase( machine, AsciiString( "SupplyTruckWantsToPickUpOrDeliverBoxesState" ) ) {}
 BFME_STATE_SELF_NAMING_CTOR( Rva002C6170State, Rva000A19E0StateBase, "RegroupingState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva002C61F0State, Rva000A19E0StateBase, "DockingState" )
 BFME_STATE_SELF_NAMING_CTOR( Rva002C6260State, Rva000A19E0StateBase, "HarvestingState" )
