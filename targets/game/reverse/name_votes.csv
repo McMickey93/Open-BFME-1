@@ -5300,3 +5300,5 @@ game/GameEngine/Source/Common/Rva007751A0ParseS4.cpp|function||Rva007751A0ParseS
 game/GameEngine/Source/Common/Rva008F7EC0Sweep.cpp|member||m_1c,ecfbac6ca9ac39d11685edc2,gpt-6.1-sol,20261016080222-c3c9bc,2026-10-16
 game/GameEngine/Source/Common/Rva008F7EC0Sweep.cpp|member||m_20,798ef114f98fb404bfd4d602,gpt-6.1-sol,20261016080222-c3c9bc,2026-10-16
 game/GameEngine/Source/Common/Rva008F7EC0Sweep.cpp|local|Rva008F7EC0::method|p,aa9a8549091a385bc31b51a0,gpt-6.1-sol,20261016080222-c3c9bc,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_drawMoveHints.cpp|param|asciiText|s,2a9535e25620393e0f2fe8ae,gpt-6.1-sol,20261016080228-4919a4,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_drawMoveHints.cpp|local|W3DInGameUI::drawMoveHints|tmp,9951911df38461c995013b1e,gpt-6.1-sol,20261016080228-4919a4,2026-10-16
