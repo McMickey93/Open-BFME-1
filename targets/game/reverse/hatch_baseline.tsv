@@ -2106,7 +2106,6 @@ emit	game/GameEngine/Source/GameLogic/Object/PlayerGetBattlePlansActiveSpecificT
 emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/CashHackSpecialPower_doSpecialPowerAtObject_Thunk.cpp	*	439
 emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/DarknessSpecialPowerModuleDataDestructorThunk.cpp	*	426
 emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/DefectorSpecialPowerModuleData_dtor.cpp	*	263
-emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/PlayerHealSpecialPowerModuleDataDestructorThunk.cpp	*	379
 emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/StopSpecialPowerModuleDataDestructorThunk.cpp	*	426
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateDestructorThunk.cpp	*	843
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateDestructorThunk.cpp	*	2099
