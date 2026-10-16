@@ -5890,3 +5890,5 @@ game/Libraries/Source/WWVegas/WW3D2/DX8FVFCategoryContainerGenerateTextureCatego
 game/GameEngine/Source/GameClient/GlobalLanguage_onGameEngineExit.cpp|type||BfmeFindData,b3a583626e1d0ac2da94e163,gpt-6.1-sol,20261016142801-836a75,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/WW3DMakeScreenShot.cpp|type||Rva008FD930BitmapFileHeader,9c78ba2247edab542e1f1f4a,gpt-6.1-sol,20261016143349-8c0a9e,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/WW3DMakeScreenShot.cpp|type||Rva008FD930BitmapInfoHeader,45d453203187a35e3efbb85a,gpt-6.1-sol,20261016143349-8c0a9e,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2122.cpp|type||BfmeHostAAS,14c02307f4ce1180d36a93aa,gpt-6.1-sol,20261016144604-e7bddc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2122.cpp|member||m_bfme9F49AAS,b7e2a6e630eb50e3a1407003,gpt-6.1-sol,20261016144604-e7bddc,2026-10-16
