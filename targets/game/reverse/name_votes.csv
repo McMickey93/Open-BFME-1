@@ -2063,3 +2063,5 @@ game/GameEngine/Source/Common/S3FlagPairRefreshes.cpp|member||m_bfmeSub,1a7e7904
 game/GameEngine/Source/GameLogic/Object/SpecialPower/SpecialPowerModule_initiateIntentToDoSpecialPower.cpp|member||m_dword28,c971f382c4638b23444f2492,gpt-6.1-sol,20261016040422-86d861,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/SpecialPowerModule_initiateIntentToDoSpecialPower.cpp|local|SpecialPowerModule::initiateIntentToDoSpecialPower|u,3597ed6feda0d79b93f03932,gpt-6.1-sol,20261016040422-86d861,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/SpecialPowerModule_initiateIntentToDoSpecialPower.cpp|local|SpecialPowerModule::initiateIntentToDoSpecialPower|tmpl,dc973b281609142527982a18,gpt-6.1-sol,20261016040422-86d861,2026-10-16
+game/GameEngine/Source/Common/RTS/Player_newMap.cpp|local|BfmePlayerMapState::init|x,2f6332fca559fdfbfd0006f6,gpt-6.1-sol,20261016040715-397e2a,2026-10-16
+game/GameEngine/Source/Common/RTS/Player_newMap.cpp|local|BfmePlayerMapState::init|y,4777e38498e10cee56c19458,gpt-6.1-sol,20261016040715-397e2a,2026-10-16
