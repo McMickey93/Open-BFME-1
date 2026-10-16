@@ -5507,3 +5507,10 @@ game/GameEngine/Source/GameClient/System/ParticleSystemComputeParticleVelocity.c
 game/Libraries/Source/WWVegas/WWMath/Rva009F4070DistanceSquared.cpp|function||Rva009F4070DistanceSquared,f68dbc742c6fa38b8e36b495,gpt-6.1-sol,20261016121958-6c4567,2026-10-16
 game/Libraries/Source/WWVegas/WWMath/Rva009F4070DistanceSquared.cpp|param|Rva009F4070DistanceSquared|a,93d24c3714a93f3558edbecd,gpt-6.1-sol,20261016121958-6c4567,2026-10-16
 game/Libraries/Source/WWVegas/WWMath/Rva009F4070DistanceSquared.cpp|local|Rva009F4070DistanceSquared|b,522d68a076db3d11a227812f,gpt-6.1-sol,20261016121958-6c4567,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|member||m_bfmeBEM,023c65efb368a528208ef73c,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|member||m_bfmeCEM,5618043593978cce92093e19,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|member||m_bfmeBeginEM,d900a20b479d1caf63113e3d,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|member||m_bfmeEndEM,456de8184ba5b20c92ff6a7c,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|function|BfmeHostEM@|bfmeSmoothEM,07801781ac54c4ed518c252f,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|local|BfmeHostEM::bfmeSmoothEM|p,9c834038a476fbf8dd56a733,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2036.cpp|local|BfmeHostEM::bfmeSmoothEM|q,ec9e4eeea593a64384a0d337,gpt-6.1-sol,20261016121951-c7e072,2026-10-16
