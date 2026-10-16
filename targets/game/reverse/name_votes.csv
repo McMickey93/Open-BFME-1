@@ -2118,3 +2118,7 @@ game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDat
 game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x88,75dde3ffb4ce477e3e9eb1f2,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x8c,762f103699ba596c7207bf3e,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp|member||m_x8d,e536df25bd13fa54571e5695,gpt-6.1-sol,20261016041418-9d7010,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_field54,2453f7d5a6130a9d9b099a20,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_zero160,397d16175f4a2e2ad22e2197,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_field19c,f9dfbb6abc81a49ca455da42,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp|member||m_field1a0,613bd002e99b0fa2a0e470d4,gpt-6.1-sol,20261016041425-3a360d,2026-10-16
