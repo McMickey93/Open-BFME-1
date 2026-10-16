@@ -5736,3 +5736,5 @@ game/GameEngine/Source/GameClient/Rva00592640OwnerConstructor.cpp|param|Rva0058D
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateNearbyFilter.cpp|param|Rva010BE170::Rva010BE170|m,12b4ca53d9aaabdf6c9e2ed8,gpt-6.1-sol,20261016130551-dc4418,2026-10-16
 game/Libraries/Source/debug/debug_io_con.cpp|local|DebugIOCon::Execute|h,6a046fd655ce9d8f1689047d,gpt-6.1-sol,20261016130557-6ed9a9,2026-10-16
 game/GameEngine/Source/GameClient/System/CampaignManager_setCampaignAndMissionThunk.cpp|local|compare|c,7a60f58ab84e40ef0fbcd425,gpt-6.1-sol,20261016130602-85a82a,2026-10-16
+game/GameEngine/Source/Common/BfmeSlotState1289Init.cpp|local|BfmeSlotState1289::rva008AC790|c,e2bc5fbdec2d3120fc2607c4,gpt-6.1-sol,20261016130608-75bf59,2026-10-16
+game/GameEngine/Source/Common/BfmeSlotState1289Init.cpp|local|BfmeSlotState1289::rva008AC790|s,3af6f54d8c36598650fb6b88,gpt-6.1-sol,20261016130608-75bf59,2026-10-16
