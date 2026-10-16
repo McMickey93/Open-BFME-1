@@ -1496,3 +1496,14 @@ game/GameEngine/Source/Common/BfmeConv1974.cpp|param|BfmeHostESF::bfmeTestESF|a,
 game/GameEngine/Source/Common/BfmeConv1974.cpp|param|BfmeHostESF::bfmeTestESF|b,2b629572409fa516a61b4136,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1974.cpp|local|BfmeHostESF::bfmeTestESF|c,3977b211ff3dac6123ad8742,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1974.cpp|param|bfmeKindOkESF|c,8f448c694105d2e98cc88ac2,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|member||m_bfmeF0JS,85e6cba237571d7b6f355a4b,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|member||m_bfmeF4JS,943c74d3aad3afe3350b6f41,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|member||m_bfmeValJS,5a71c268153ef828417b7b32,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|member||m_bfme10JS,c4c22161ce8b8175c4f8dd1c,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|function|BfmeListJS@|bfmeSetJS,dc2fcdf52a1031b073d1974b,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|local|BfmeListJS::bfmeSetJS|h,1d643ec13d56af4709747b6e,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|local|BfmeListJS::bfmeSetJS|p,fa7f31beedf4f8ae612bfe3f,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|local|BfmeListJS::bfmeSetJS|e,1bda737afa5d90dd58a72756,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|local|BfmeListJS::bfmeSetJS|n,692d371e0b593945a9e4850c,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|local|BfmeListJS::bfmeSetJS|q,2e684b7ee1952ccb82ebc2ac,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2078.cpp|local|BfmeListJS::bfmeSetJS|nx2,ab3ebf8ee2bd30846bf4f595,gpt-6.1-sol,20261016032155-2f5218,2026-10-16
