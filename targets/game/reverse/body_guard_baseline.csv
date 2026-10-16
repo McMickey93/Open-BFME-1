@@ -1221,7 +1221,6 @@ static,0x006250A0,?parseOnlineChatColorDefinition@INI@@SAXPAV1@@Z,"+5 _GameSpyCo
 tail,0x00853B30,?load@INI@@QAE_NVBFMERetailAsciiString@@00HH@Z,"compiled=377 ledger=250 tail=127: 18 byte(s) differ from retail, first +287"
 tail,0x00C23607,?dup_00C23607@@YAXXZ,"compiled=32 ledger=24 tail=8: 3 byte(s) differ from retail, first +24"
 tail,0x00C409F0,?a_00c409f0@@YAXXZ,"compiled=16 ledger=8 tail=8: 2 byte(s) differ from retail, first +9"
-genalias,0x003AA480,??$__uninitialized_copy@PBUHideShowSubObjInfo@ModelConditionInfo@@PAU12@@_STL@@YAPAUHideShowSubObjInfo@ModelConditionInfo@@PBU12@0PAU12@ABU__false_type@0@@Z,masked call is not a retail twin; fix the callee or drop the gen-alias note
 genalias,0x000A7AA0,??$__uninitialized_copy@PBUParticleSysBoneInfo@@PAU1@@_STL@@YAPAUParticleSysBoneInfo@@PBU1@0PAU1@ABU__false_type@0@@Z,masked call is not a retail twin; fix the callee or drop the gen-alias note
 genalias,0x003AB7A0,??$__uninitialized_copy@PBUPrereqUnitRec@ProductionPrerequisite@@PAU12@@_STL@@YAPAUPrereqUnitRec@ProductionPrerequisite@@PBU12@0PAU12@ABU__false_type@0@@Z,masked call is not a retail twin; fix the callee or drop the gen-alias note
 genalias,0x003ABB40,??$__uninitialized_copy@PBVProductionPrerequisite@@PAV1@@_STL@@YAPAVProductionPrerequisite@@PBV1@0PAV1@ABU__false_type@0@@Z,masked call is not a retail twin; fix the callee or drop the gen-alias note

@@ -88,3 +88,7 @@ void Rva006A8210Entry::applyEntryList(int value, int index)
 		}
 	}
 }
+
+// retail 0x0069C470: the element-range copy the vector growth path uses; it
+// reaches the _Construct above through ILT 0x0004A818
+template Rva0069C300Element *_STL::__uninitialized_copy(const Rva0069C300Element *, const Rva0069C300Element *, Rva0069C300Element *, const _STL::__false_type &);

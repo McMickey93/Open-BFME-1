@@ -20298,5 +20298,15 @@
   "after_sha256": "dde90107001605c45577eac5c6d569b82b1a6f7517f00eec1523193bdb84142a",
   "evidence": "targets/game/reverse/identity_evidence/009305d0-vectorclass-shaderclass-ctor.md",
   "reason": "approved by the project lead 2026-10-16: false pairing. 0x00930D30 is slot 0 of the DynamicVectorClass<ShaderClass> vtable 0x0113C644, so its row moves from the deleted PtrRemapDynamicVectorDeletingDestructor.cpp (which only forced the wrong PtrRemapStruct instantiation) to matinfo.cpp; no PointerRemapClass name is renamed to BfmeHandleCX"
+ },
+ {
+  "old_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/HideShowSubObjInfoUninitializedCopyBody.cpp",
+  "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/HideShowSubObjInfoUninitializedCopyBody.cpp",
+  "old_name": "_Construct",
+  "new_name": "BfmeHideShowSubObjInfoConstruct",
+  "before_sha256": "3615780ac82493d5a828356248fd20b4db8c35bcd05d0ab107cb915e3c355452",
+  "after_sha256": "8324a5a0460a226c6d24eb57918e45f4d6c486ee76db065f0b29ccd74db65d2f",
+  "evidence": "targets/game/reverse/identity_evidence/0069c470-rva0069c300element-uninitialized-copy.md",
+  "reason": "retail 0x003AA480 calls ILT 0x00033FF0 (construct 0x003A9110) not the _Construct<HideShowSubObjInfo> pin 0x0004A818 that matched vector push_back calls; the call uses the existing 0x00033FF0 pin name the sibling allocate-and-copy body already uses"
  }
 ]

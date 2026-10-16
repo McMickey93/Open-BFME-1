@@ -3,7 +3,7 @@
 // __uninitialized_copy<const ModelConditionInfo::HideShowSubObjInfo *, ModelConditionInfo::HideShowSubObjInfo *>.
 // The sibling *UninitializedCopy*.cpp claims the 5-byte incremental-link thunk
 // at 0x000032A6 that reaches it; this TU carries the body it jumps to. The
-// per-element _Construct is DECLARED WITHOUT A BODY so it stays out of line,
+// per-element construct is DECLARED WITHOUT A BODY so it stays out of line,
 // exactly as retail calls it.
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include/W3DDevice/GameClient/Module/W3DModelDraw.h
@@ -26,13 +26,18 @@ struct __false_type
 template <class T1, class T2>
 void _Construct(T1 *destination, const T2 &value);
 
+// Retail calls ILT 0x00033FF0 (the 8-byte construct at 0x003A9110), the same
+// callee ModelConditionInfoHideShowSubObjInfoAllocateAndCopyBody.cpp reaches;
+// vector::push_back's _Construct is a different body (ILT 0x0004A818).
+void __cdecl BfmeHideShowSubObjInfoConstruct(void *destination, const ModelConditionInfo::HideShowSubObjInfo &value);
+
 template <class In, class Out>
 Out __uninitialized_copy(In first, In last, Out result, const __false_type &)
 {
 	Out current = result;
 	while (first != last)
 	{
-		_Construct(current, *first);
+		BfmeHideShowSubObjInfoConstruct(current, *first);
 		++first;
 		++current;
 	}
