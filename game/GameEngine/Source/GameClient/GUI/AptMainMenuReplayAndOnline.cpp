@@ -15,10 +15,9 @@ public:
 
 void showAptSaveLoad( void *arg0, int flags, const volatile char extra );
 
-// Retail 0x006304A0, reached through ILT 0x0004B664 and still an unconverted
-// dump row, so it is called by its address-derived ledger name.
-void d_006304a0( void );
-typedef void ( __cdecl *BfmeShowOnlineScreenFn )( int mode );
+// Retail 0x006304A0, reached through ILT 0x0004B664
+// (MainMenuUtilsStartPatchCheckBFME.cpp).
+void StartPatchCheck( bool checkingBeforeOnline );
 
 class BfmeAptScreenMainMenu
 {
@@ -38,5 +37,5 @@ void BfmeAptScreenMainMenu::_bfme_onlineButtonPressed( const char *name )
 {
 	(void)name;
 	( (Rva0051D590 *)this )->first();
-	( (BfmeShowOnlineScreenFn)&d_006304a0 )( 1 );
+	StartPatchCheck( true );
 }
