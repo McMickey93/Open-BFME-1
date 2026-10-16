@@ -58,7 +58,7 @@ class Gen0002857E;
 class Rva00691140Handle {
 public:
  Gen0002857E *m_rva006B5900Pointer;
- Rva00691140Handle &operator=(const Rva00691140Handle &other) { typedef Rva00691140Handle &(Rva00691140Handle::*Fn)(const Rva00691140Handle &); return (this->*member006B7E70<Fn>(j_0004066f))(other); }
+ Rva00691140Handle &operator=(const Rva00691140Handle &other); // retail 0x00691140 (Rva00690FF0Handle.cpp) via ILT 0x0004066F
 };
 class Rva006910F0Handle : public Rva00691140Handle {
 public:
