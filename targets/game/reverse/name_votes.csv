@@ -5748,3 +5748,4 @@ game/GameEngine/Source/Common/BfmeConv1494.cpp|local|bfmeGetParamVMZ|p,c3f9be503
 game/GameEngine/Source/Common/U2FixedSlotSearches.cpp|local|Rva00806400Owner::release|p,34074841121483616f78b0a7,gpt-6.1-sol,20261016130645-cc2501,2026-10-16
 game/GameEngine/Source/Common/U2FixedSlotSearches.cpp|local|Rva00806400Owner::setValue|p,bccff60ffcb4da4264fec530,gpt-6.1-sol,20261016130645-cc2501,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDrawAttachableSubModels.cpp|local|W3DModelDraw::rva00769720|d,69cbf2b60006385b72e5d383,gpt-6.1-sol,20261016130650-265a1c,2026-10-16
+game/Libraries/Source/subsystem/GameSpyLoginPreferences_addLogin.cpp|local|compare|c,fea58ee7f4c1160643035895,gpt-6.1-sol,20261016130656-d7148f,2026-10-16
