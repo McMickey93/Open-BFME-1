@@ -728,3 +728,4 @@ game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_
 game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_flag0C,m_summaryEvent,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_94,m_deathAnimState,gpt-6.1-sol+grok,agreed,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_98,m_deathAnimTime,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00370730CastleMemberState.cpp|member||m_localPlayer0c,m_localPlayer,claude-opus+gpt-6.1-sol,agreed,2026-10-16
