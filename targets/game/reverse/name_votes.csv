@@ -2213,3 +2213,7 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|n,73fe3ce00764269d778c1c55,gpt-6.1-sol,20261016042632-d82492,2026-10-16
 game/GameEngine/Source/GameClient/GUI/MainMenuSmallScaleDownTransition_draw.cpp|local|MainMenuSmallScaleDownTransition::draw|x1,2febc516bb73ea65cb87c53d,gpt-6.1-sol,20261016042646-75d941,2026-10-16
 game/GameEngine/Source/GameClient/GUI/MainMenuSmallScaleDownTransition_draw.cpp|local|MainMenuSmallScaleDownTransition::draw|y1,9c09122b05676a5c1c94b5a6,gpt-6.1-sol,20261016042646-75d941,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|x0,07f0c00ff4dcd0bc2b4b568c,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|y0,2bd4647a88da93582411c117,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|x1,07c7ff3236ea9e8c1c38f861,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawImage.cpp|param|W3DDisplay::drawImage|y1,96f4e11926d65af90fa11414,gpt-6.1-sol,20261016042652-eb6eac,2026-10-16
