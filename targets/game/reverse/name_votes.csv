@@ -5344,3 +5344,7 @@ game/GameEngine/Source/Common/Rva000ED2D0Ctor.cpp|member||m_38,90cec7a9f056871d9
 game/GameEngine/Source/Common/Rva000ED2D0Ctor.cpp|member||m_3C,6eb966254da4fb0f50fa1362,gpt-6.1-sol,20261016080444-745add,2026-10-16
 game/GameEngine/Source/Common/Rva000ED2D0Ctor.cpp|member||m_40,1f6e29cb75ee52717e8c7b85,gpt-6.1-sol,20261016080444-745add,2026-10-16
 game/GameEngine/Source/Common/Rva000ED2D0Ctor.cpp|member||m_44,e0094e54291ee9b79f3da13f,gpt-6.1-sol,20261016080444-745add,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_64,2ed0bdb75f656f23a6692b11,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_68,25255722e9dfc16489e1f0f2,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_6C,e44b4bb6bc0e11f23f9f538c,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_E8,7c4f129e1584065946a56034,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
