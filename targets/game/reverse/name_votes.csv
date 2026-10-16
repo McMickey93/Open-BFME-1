@@ -4164,3 +4164,10 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDo
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e1,d7e8d9a27d8da379c77002b4,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e2,00d502a3ac80b1bf7d26916c,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e3,36462069865ad8d97a025113,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field54,cb24dc3e0ca3a12e0fceddc5,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field128,b2b68b6e45d9e3d389063add,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field150,6a5c8563be4501149e53f74c,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field1a0,697079bd483133063009d39b,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field1a5,c16de2009f6e3048795716c2,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|member||field1a6,baf78b92dc8fc816026313b8,gpt-6.1-sol,20261016064126-043f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_beginSlowDeath.cpp|local|SlowDeathBehavior::beginSlowDeath|d,f51f7071644f382903438664,gpt-6.1-sol,20261016064126-043f77,2026-10-16
