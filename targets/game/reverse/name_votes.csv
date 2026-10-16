@@ -5308,3 +5308,15 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp|
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp|param|bfmeMin|b,c0974492fd8554b74ab4b6a3,gpt-6.1-sol,20261016080252-072596,2026-10-16
 game/GameEngine/Source/Common/Rva003BD700Ctor.cpp|type||Rva003BD700String,15217d1003936b999d108d3b,gpt-6.1-sol,20261016075851-0f4b88,2026-10-16
 game/GameEngine/Source/Common/Rva003BD700Ctor.cpp|param|Rva003BD700::Rva003BD700|s,351ee707cc16ffa71b7df177,gpt-6.1-sol,20261016075851-0f4b88,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeName,f8e51a9fe0f6b5e011854f03,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeSize,609c6c7662553a778cc58a40,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeBold,02883225ff1139ae55df6f0f,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeEnabled,3b6f6c0950c19532ea4117fc,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeFirst,18a557b264af8b204df37a51,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeColor,9073165dc3d8df55491ce67c,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeSecond,88785608ffc6fedc5f735081,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeThird,f6538f0b6f64dd17a1169a55,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeOffset,02d543ea792fe6e3ab59adad,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeItalic,d362ff52573cd97c838fbe24,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeDepth,7fd256358b9af4baf3f07144,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
+game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeVisible,b7fddf4938f2562f3cd303fc,gpt-6.1-sol,20261016075836-f52baf,2026-10-16
