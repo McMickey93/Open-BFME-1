@@ -5348,3 +5348,7 @@ game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member|
 game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_68,25255722e9dfc16489e1f0f2,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_6C,e44b4bb6bc0e11f23f9f538c,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Body/FreeLifeBodyConstructor.cpp|member||m_unmodelled_E8,7c4f129e1584065946a56034,gpt-6.1-sol,20261016080623-eb6f6a,2026-10-16
+game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|member||m_fields260,7cca507f00468788a42ff592,gpt-6.1-sol,20261016080640-291930,2026-10-16
+game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|function|BfmeAptScreenSpellStore@|_bfme_onBttnClose,a04d84616861c6453395cf8a,gpt-6.1-sol,20261016080640-291930,2026-10-16
+game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|function|BfmeAptScreenSpellStore@|_bfme_onClosed,ec6a574529f7850a98a30e5f,gpt-6.1-sol,20261016080640-291930,2026-10-16
+game/GameEngine/Source/GameClient/GUI/BfmeAptScreenSpellStoreOnClosed.cpp|function|BfmeAptScreenSpellStore@|_bfme_onInitialized,b12df37c4e8b76c9254d9c99,gpt-6.1-sol,20261016080640-291930,2026-10-16
