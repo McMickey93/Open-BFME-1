@@ -5878,3 +5878,6 @@ game/GameEngine/Source/Common/BfmeConv970.cpp|member||m_bfmeMark,168eac9038d63e1
 game/GameEngine/Source/Common/BfmeConv970.cpp|member||m_bfmeKind,601d98f27b6c26897b314141,gpt-6.1-sol,20261016135225-e41f46,2026-10-16
 game/GameEngine/Source/GameClient/Rva0041F070.cpp|type||Rva0041F070Envelope,92fb6b6f08d2c0789143b297,gpt-6.1-sol,20261016135230-b7cc0f,2026-10-16
 game/GameEngine/Source/GameClient/Rva0041F070.cpp|param|set|v,ec82c561b18eaf71dd66a9f3,gpt-6.1-sol,20261016135230-b7cc0f,2026-10-16
+game/GameEngine/Source/Common/RTS/TunnelTracker_onTunnelCreated.cpp|member||m_bfmeID,3c9f61201b0a3cfde5556cf7,gpt-6.1-sol,20261016135709-7417c0,2026-10-16
+game/GameEngine/Source/Common/RTS/TunnelTracker_onTunnelCreated.cpp|member||m_bfmeList,a7722d0d9eddafb99e174ae7,gpt-6.1-sol,20261016135709-7417c0,2026-10-16
+game/GameEngine/Source/Common/RTS/TunnelTracker_onTunnelCreated.cpp|member||m_bfmeCount,d256818ccf26b59a10a01d23,gpt-6.1-sol,20261016135709-7417c0,2026-10-16
