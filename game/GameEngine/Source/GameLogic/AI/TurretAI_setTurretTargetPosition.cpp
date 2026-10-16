@@ -88,11 +88,6 @@ public:
 	virtual void v34();
 	virtual void setGoalObject(Object *goalObject);
 
-	StateID getCurrentStateID() const
-	{
-		return m_curState ? m_curState->m_id : 999999;
-	}
-
 	Object *getGoalObject();
 	void setGoalPosition(const Coord3D *position);
 
@@ -158,7 +153,8 @@ void TurretAI::setTurretTargetPosition(const Coord3D *targetPosition)
 	m_target = targetPosition ? TARGET_POSITION : TARGET_NONE;
 	m_targetWasSetByIdleMood = 0;
 
-	StateID sid = m_turretStateMachine->getCurrentStateID();
+	StateID sid = m_turretStateMachine->m_curState ?
+		m_turretStateMachine->m_curState->m_id : 999999;
 	if (targetPosition)
 	{
 		if (sid != TURRETAI_AIM && sid != TURRETAI_FIRE)
