@@ -70,7 +70,9 @@ struct Gen_000a3bc0Node
 	Gen_000a3bc0Value m_bfmeValue;					// +0x10
 };
 
-typedef _STL::pair<const int, unsigned int> Gen_000aaaf0Value;
+// map<Int, AsciiString>'s node: it constructs through ILT 0x1C67A, the
+// AsciiString pair _Construct (identity_evidence/000a3c70-000ab1c0-...).
+typedef _STL::pair<const int, AsciiString> Gen_000aaaf0Value;
 
 struct Gen_000aaaf0Node
 {

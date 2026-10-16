@@ -75,14 +75,6 @@ private:
 	bool m_pendingFlag;
 };
 
-struct Gen_t_000a3c70_p4pod
-{
-	int a[1];
-};
-
-bool operator==(const Gen_t_000a3c70_p4pod&, const Gen_t_000a3c70_p4pod&);
-bool operator<(const Gen_t_000a3c70_p4pod&, const Gen_t_000a3c70_p4pod&);
-
 struct Gen_t_000ef440_k4
 {
 	int a[1];
@@ -135,7 +127,9 @@ private:
 	_STL::vector<CastleOwnedObject *> m_vectorE8;
 	_STL::set<Gen_t_000ef440_k4> m_setF4;
 	BFMERetailAsciiString m_string100;
-	_STL::map<int, Gen_t_000a3c70_p4pod> m_map108;
+	// Its destructor is retail 0x000A3C70, the map<Int, UnsignedInt> tree
+	// destructor (identity_evidence/000a3c70-000ab1c0-...).
+	_STL::map<int, unsigned int> m_map108;
 };
 
 // ??1CastleBehavior@@UAE@XZ

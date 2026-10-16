@@ -1,7 +1,7 @@
 // cl: /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
 // stlport
 
-// Open-BFME5: STLport _Rb_tree<K,V>::_M_copy, 15 bodies of 171 bytes.  Every
+// Open-BFME5: STLport _Rb_tree<K,V>::_M_copy, 14 bodies of 171 bytes.  Every
 // one carried only a machine byte-dump row; the same shape is already converted
 // at 0x000AAC70 and 0x005671E0.
 //
@@ -28,18 +28,7 @@
 
 typedef int Int;
 
-struct Rva000A3E50Value
-{
-	int m_body;
-};
-
-typedef _STL::map<Int, Rva000A3E50Value> Rva000A3E50Map;
-
-// retail 0x000A3E50
-void BfmeTreeCopyAnchor000A3E50( Rva000A3E50Map &out, const Rva000A3E50Map &in )
-{
-	out = in;
-}
+// 0x000A3E50 is map<Int, UnsignedInt>'s copy (IntUnsignedMapCopy.cpp).
 
 struct Rva000D3810Value
 {

@@ -89,7 +89,7 @@ extern void rva0004B510Target(void);
 #pragma comment(linker, "/alternatename:?rva000410ABTarget@@YAXXZ=?GadgetListBoxSetColors@@YAXPAVGameWindow@@HHHHHHHHHHHH@Z")
 #pragma comment(linker, "/alternatename:?rva000417EFTarget@@YAXXZ=??$__copy@PBVW3DAnimationInfo@@PAV1@H@_STL@@YAPAVW3DAnimationInfo@@PBV1@0PAV1@ABUrandom_access_iterator_tag@0@PAH@Z")
 #pragma comment(linker, "/alternatename:?rva00041F1FTarget@@YAXXZ=?_M_insert_overflow@?$vector@VProductionPrerequisite@@V?$allocator@VProductionPrerequisite@@@_STL@@@_STL@@IAEXPAVProductionPrerequisite@@ABV3@ABU__false_type@2@I_N@Z")
-#pragma comment(linker, "/alternatename:?rva00042BB3Target@@YAXXZ=?_M_copy@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@AAEPAU?$_Rb_tree_node@U?$pair@$$CBHI@_STL@@@2@PAU32@0@Z")
+#pragma comment(linker, "/alternatename:?rva00042BB3Target@@YAXXZ=?_M_copy@?$_Rb_tree@HU?$pair@$$CBHVAsciiString@@@_STL@@U?$_Select1st@U?$pair@$$CBHVAsciiString@@@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHVAsciiString@@@_STL@@@2@@_STL@@AAEPAU?$_Rb_tree_node@U?$pair@$$CBHVAsciiString@@@_STL@@@2@PAU32@0@Z")
 #pragma comment(linker, "/alternatename:?rva00043A9ATarget@@YAXXZ=??0BezierSegment@@QAE@XZ")
 #pragma comment(linker, "/alternatename:?rva00049431Target@@YAXXZ=?get@Rva000928E0Self@@QAEPAXXZ")
 #pragma comment(linker, "/alternatename:?rva0004A0B1Target@@YAXXZ=?_M_push_back_aux_v@?$deque@VGameResultsResponse@@V?$allocator@VGameResultsResponse@@@_STL@@@_STL@@IAEXABVGameResultsResponse@@@Z")
