@@ -1476,3 +1476,7 @@ game/GameEngine/Source/Common/BfmeConv2009.cpp|function|BfmeLexEAO@|bfmeSkipComm
 game/GameEngine/Source/Common/BfmeConv2009.cpp|local|BfmeLexEAO::bfmeSkipCommentEAO|p,2c4c7cd049dde8933a00bc03,gpt-6.1-sol,20261016032114-7161a6,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2009.cpp|local|BfmeLexEAO::bfmeSkipCommentEAO|q,301358e37970054dc79df387,gpt-6.1-sol,20261016032114-7161a6,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2009.cpp|local|BfmeLexEAO::bfmeSkipCommentEAO|c,35f1284b0fa07f2690c5363d,gpt-6.1-sol,20261016032114-7161a6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|param|Rva0021C8A0StatusGate::check|a,c6038cb5111360245951d8f2,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|param|Rva0021C8A0StatusGate::check|b,04034237765d7bfcb26479e5,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|local|Rva0021C8A0StatusGate::check|x,6873f43f070b9d36e3e4a592,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|local|Rva0021C8A0StatusGate::check|y,3174da54a5e23964adb96ec1,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
