@@ -3927,3 +3927,17 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FD990CameraCorners.cpp|m
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FD990CameraCorners.cpp|local|Rva006FD990CameraCorners::build|x,983faf2cd6c02c3f6b1ecc79,gpt-6.1-sol,20261016062955-6ee57a,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FD990CameraCorners.cpp|local|Rva006FD990CameraCorners::build|y,be5dbc7f90853a0c8dbe1626,gpt-6.1-sol,20261016062955-6ee57a,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredFive.cpp|function|BfmeThingQW@|bfmeFindQW,336d72c7adde6027c4cd0e67,claude-opus,20261016092803-064d8c,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at03c,6abc8d43108370ae039bec2d,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at090,ee3524878d4577e27e30eeec,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at091,7ab3492c5e2aa8903867b85f,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at092,f56c2b4543e6276aab5e44a2,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at093,782be90cf8d042d8588ee592,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at098,c2877ed6a4f3fb37f30eda6f,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at0b0,b7eb2ee1de682f6dfc69655d,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at11c,d6b2c5c1e586a46971f216ff,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at11e,698fb0dccd01cb3c846affea,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at11f,d02c1423ede37f6e8839c77c,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at120,c8e52c5dc4d80a76c049d128,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at128,d926cb1305197b3b498b8fba,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|member||at1ac,9e0af13ce96a4f2dd858d016,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
+game/GameEngine/Source/GameLogic/System/GameLogicReset.cpp|local|GameLogic::reset|p,a4579d28d3473e65a70bc1e5,gpt-6.1-sol,20261016062816-0357f6,2026-10-16
