@@ -368,6 +368,9 @@ class AerialPathfinder
 public:
 	Bool rva00148C70SeparationPush(Object *obj, const Coord3D *pos,
 		Real *worstOverlap, Coord3D *push);
+	Bool rva00149010Query(Object *obj, class BfmeObjGK *query, Real range,
+		Real lowering);
+	Bool rva00148800(class BfmeObjGK *query, Real range, Coord3D *result);
 };
 
 // ?rva00148C70SeparationPush@AerialPathfinder@@QAE_NPAVObject@@PBUCoord3D@@PAMPAU3@@Z
@@ -434,3 +437,76 @@ Bool AerialPathfinder::rva00148C70SeparationPush(Object *obj,
 
 	return clear;
 }
+
+// The query record the 0x00148800 range check reads; this body only tests its
+// ready flag at +0x24.
+class BfmeObjGK
+{
+public:
+	unsigned char m_pad00[0x24];
+	Bool m_ready;
+	Bool isReady() const { return m_ready; }
+};
+
+class TerrainLogic
+{
+public:
+	virtual void slot00();
+	virtual void slot04();
+	virtual void slot08();
+	virtual void slot0C();
+	virtual void slot10();
+	virtual void slot14();
+	virtual Real getGroundHeight(Real x, Real y, Coord3D *normal = NULL) const;
+};
+
+extern TerrainLogic *TheTerrainLogic;
+extern AerialPathfinder *TheAerialPathfinder;
+
+// The 0.5 at VA 0x01094A50 is a named constant of the AerialPathfinder bodies
+// (only 0x00149010, 0x00149130 and two later ones read it), not the shared
+// __real@3f000000 literal at 0x0107533C.
+extern const Real g_rva01094A50;
+
+// AerialPathfinder member at retail 0x00149010 (219 bytes, ret 0x10), called
+// on TheAerialPathfinder by the matched Giant Bird selector 0x002BC9C0. When
+// the object has an AI and the query record is ready, it takes the queried
+// position, lowers it by half of `lowering`, and succeeds only if that point
+// is above the ground and the separation pass (0x00148C70) finds no overlap;
+// a missing AI, an unready record or a failed range check also succeed.
+// Retail calls the 0x00148800 range check with ECX still holding `this`
+// (as the 0x002BC9C0 selector does with TheAerialPathfinder), so it is an
+// AerialPathfinder thiscall member here; the body never reads ECX.
+// The method's real name is not proven, so it keeps the address token.
+// ?rva00149010Query@AerialPathfinder@@QAE_NPAVObject@@PAVBfmeObjGK@@MM@Z
+Bool AerialPathfinder::rva00149010Query(Object *obj, BfmeObjGK *query,
+	Real range, Real lowering)
+{
+	if (obj->getAI() == NULL)
+		return true;
+	if (!query->isReady())
+		return true;
+
+	Coord3D pos;
+	if (!rva00148800(query, range, &pos))
+		return true;
+
+	pos.z -= lowering * g_rva01094A50;
+	Bool aboveGround = false;
+	Bool clear = false;
+	if (TheTerrainLogic->getGroundHeight(pos.x, pos.y) < pos.z)
+		aboveGround = true;
+
+	Real worstOverlap = 0.0f;
+	Coord3D push;
+	push.x = 0.0f;
+	push.y = 0.0f;
+	push.z = 0.0f;
+	if (TheAerialPathfinder->rva00148C70SeparationPush(obj, &pos, &worstOverlap, &push))
+		clear = true;
+
+	return (aboveGround == true && clear == true) ? true : false;
+}
+
+// ?g_rva01094A50@@3MB
+extern const Real g_rva01094A50 = 0.5f;
