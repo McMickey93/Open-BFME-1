@@ -5358,3 +5358,5 @@ game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|member
 game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|member||at104,083cd87342490bd38d165847,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
 game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|param|Thing::isKindOf|t,7f93c3e5dfd4a002146e812f,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
 game/GameEngine/Source/GameClient/InGameUI_SelectMatchingAcrossRegion.cpp|local|Thing::isKindOf|tmpl,58e1e0b83b9cfb08867ee35c,gpt-6.1-sol,20261016080743-6c3f5a,2026-10-16
+game/GameEngine/Source/Common/BfmeCombine1236.cpp|local|bfmeCombine1236|a,695f98f4f6ff283547dae34a,gpt-6.1-sol,20261016080806-2fda23,2026-10-16
+game/GameEngine/Source/Common/BfmeCombine1236.cpp|local|bfmeCombine1236|b,ebcc346a147b3e4a4e762efe,gpt-6.1-sol,20261016080806-2fda23,2026-10-16
