@@ -2269,3 +2269,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCto
 game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|function||Rva00589040Draw,1e6bddd0c0e9a19bbd3cf3e0,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|param|Rva00589040Draw|v1,740506fb26dc32c7f159616a,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Rva00589040Draw.cpp|param|Rva00589040Draw|v2,89bf7d683154c598207e6353,gpt-6.1-sol,20261016041528-8e10c7,2026-10-16
+game/GameEngine/Source/GameClient/GUI/AptPalantirHeroSelectorResetSlots.cpp|member||m_bfmeABC,a05080ed56045d0a65900bef,gpt-6.1-sol,20261016041533-e90af4,2026-10-16
+game/GameEngine/Source/GameClient/GUI/AptPalantirHeroSelectorResetSlots.cpp|function|AptPalantirHeroSelector@|rva0058d930,c382ac4123b5a6734dd2ebe0,gpt-6.1-sol,20261016041533-e90af4,2026-10-16
