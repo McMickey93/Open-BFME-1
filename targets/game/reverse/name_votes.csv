@@ -2248,3 +2248,7 @@ game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorConstructor.cpp|me
 game/GameEngine/Source/GameNetwork/LANAPIConstructor.cpp|member||m_bfme_0x34,7efec201f36e32502f017f7a,gpt-6.1-sol,20261016043200-fec085,2026-10-16
 game/GameEngine/Source/GameNetwork/LANAPIConstructor.cpp|member||m_bfme_0x60,819d4bbd0f8ba39679c8c396,gpt-6.1-sol,20261016043200-fec085,2026-10-16
 game/GameEngine/Source/GameNetwork/LANAPIConstructor.cpp|member||m_bfme_0x64,a7d141ae9c66726ede0bfe9d,gpt-6.1-sol,20261016043200-fec085,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_20,faf6624a133d16e9b1d39346,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_24,ed335129e483f0086f0b8283,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_28,a95cf7f47a3ae6d5991b1963,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
+game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_2C,3c2557bb67b08289cb688b41,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
