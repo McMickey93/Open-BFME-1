@@ -1487,3 +1487,6 @@ game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformX.cpp
 game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformX.cpp|local|Rotate_X|c,a58c06189de1ea3fc26da634,gpt-6.1-sol,20261016032134-d5317d,2026-10-16
 game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformX.cpp|local|Rotate_X|tmp1,72d0184ae010f1e3b301e2f7,gpt-6.1-sol,20261016032134-d5317d,2026-10-16
 game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformX.cpp|local|Rotate_X|tmp2,c0837752f030a47ae841c095,gpt-6.1-sol,20261016032134-d5317d,2026-10-16
+game/GameEngine/Source/Common/U4Blend00609600.cpp|local|U4Blend006095D0::blend3|a,e3581c81be46c161327aac79,gpt-6.1-sol,20261016032141-a80de8,2026-10-16
+game/GameEngine/Source/Common/U4Blend00609600.cpp|local|U4Blend006095D0::blend3|b,c243bfc0df9dfa68366d349d,gpt-6.1-sol,20261016032141-a80de8,2026-10-16
+game/GameEngine/Source/Common/U4Blend00609600.cpp|local|U4Blend006095D0::blend3|o,9bb4baff81c6b44e1b5c0c44,gpt-6.1-sol,20261016032141-a80de8,2026-10-16
