@@ -1269,7 +1269,6 @@ RTS2DScene::RTS2DScene()
 //=============================================================================
 /** Customized render for the 2d scene management */
 //=============================================================================
-// ?Customized_Render@RTS2DScene@@UAEXAAVRenderInfoClass@@@Z present-unmatched
 void RTS2DScene::Customized_Render( RenderInfoClass &rinfo )
 {
 
