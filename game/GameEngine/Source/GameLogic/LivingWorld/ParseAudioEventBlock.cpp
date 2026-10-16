@@ -59,13 +59,13 @@ public:
 class Rva003B7740
 {
 public:
-	Rva003B7740() : m_pad( 0 ), m_flag0C( false ) {}
+	Rva003B7740() : m_pad( 0 ), m_summaryEvent( false ) {}
 	virtual ~Rva003B7740() {}
 
 private:
 	void *m_pad;
 	BfmeReleaseHolder m_hold;
-	bool m_flag0C;
+	bool m_summaryEvent;
 };
 
 extern const FieldParse Rva003B7780FieldParseTable[];
