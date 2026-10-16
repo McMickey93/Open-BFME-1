@@ -4575,6 +4575,7 @@ name,address,notes
 ??1?$pair@$$CBVAsciiString@@PAVRva005C9B80Mapped@@@_STL@@QAE@XZ,0x00030FDF,pair destructor thunk called by the hash erase twin at 0x005C9B80
 ??1?$pair@$$CBVAsciiString@@PAVRva00692D50Mapped@@@_STL@@QAE@XZ,0x00046D9E,pair destructor thunk called by the hash erase twin at 0x00692D50
 ??1?$pair@$$CBVAsciiString@@PAVThingTemplate@@@_STL@@QAE@XZ,0x00018633,ThingFactory hash erase pair destructor called at 0x00136A00
+??1?$pair@$$CBVAsciiString@@W4Rva001360E0Mapped@@@_STL@@QAE@XZ,0x00018633,state-0 cleanup callee of matched hash_map<AsciiString Rva001360E0Mapped>::operator[] 0x00137750: its unwind funclet 0x00C032F0 (handler 00C03309 FuncInfo state0) jumps to this ILT; ILT chain reaches the tail-jumping COMDAT pair destructor
 ??1?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@QAE@XZ,0x00032FC4,callee pair destructor for the 0x000D6A50 AsciiString CommandButton table
 ??1?$pair@$$CBVAsciiString@@UAptTextRecord@@@_STL@@QAE@XZ,0x0000A277,AptTextRecord operator[] temporary-pair destructor ILT; jumps to 0x00467710
 ??1?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@QAE@XZ,0x000200FE
@@ -5984,6 +5985,7 @@ name,address,notes
 ??1Gen_dtor_00387850@@UAE@XZ,0x0004A133,gen-dtor class destructor
 ??1Gen_dtor_00387880@@UAE@XZ,0x0000FF10,gen-dtor class destructor
 ??1Gen_dtor_003878b0@@UAE@XZ,0x00026337,gen-dtor class destructor
+??1?$pair@$$CBVAsciiString@@W4Rva0038EE10Mapped@@@_STL@@QAE@XZ,0x00026337,state-0 cleanup callee of matched hash_map<AsciiString Rva0038EE10Mapped>::operator[] 0x00390750: its unwind funclet 0x00C1C120 jumps to this ILT; ILT chain reaches the tail-jumping COMDAT pair destructor
 ??1Gen_dtor_00388740@@UAE@XZ,0x0003289E,gen-dtor class destructor
 ??1Gen_dtor_0039b530@@UAE@XZ,0x0001D1AB,gen-dtor class destructor
 ??1Gen_dtor_0039c130@@UAE@XZ,0x00027606,gen-dtor class destructor
@@ -6099,6 +6101,7 @@ name,address,notes
 ??1Gen_dtor_0045e5e0@@UAE@XZ,0x00027DDB,gen-dtor class destructor
 ??1Gen_dtor_0045ece0@@UAE@XZ,0x00029573,gen-dtor class destructor
 ??1Gen_dtor_0045ed10@@UAE@XZ,0x00019231,gen-dtor class destructor
+??1?$pair@$$CBVAsciiString@@W4Rva004613F0Mapped@@@_STL@@QAE@XZ,0x00019231,state-0 cleanup callee of matched hash_map<AsciiString Rva004613F0Mapped>::operator[] 0x00461E00: its unwind funclet 0x00C24940 jumps to this ILT; ILT chain reaches the tail-jumping COMDAT pair destructor
 ??1Gen_dtor_0045ee60@@UAE@XZ,0x00036C3C,gen-dtor class destructor
 ??1Gen_dtor_0045eea0@@UAE@XZ,0x0000B3CF,gen-dtor class destructor
 ??1Gen_dtor_0045eee0@@UAE@XZ,0x00004CD7,gen-dtor class destructor
@@ -9464,6 +9467,7 @@ name,address,notes
 ??1Rva0045F0A0@@QAE@XZ,0x0045E6D0,matched for_each462710 and callback45F0A0 prove functor member+4; native destructor strictly verifies8B; evidence=c249b8-functor-dtor.md
 ??1Rva00461A00Mapped@@QAE@XZ,0x0045F190,retail parent461A00 EH state0 via ILT2C124; independent matched caller4628E0 at462909 reaches map461A00 and proves mapped counted pointer with count+4 deleting slot0; native destructor26B exact without relocations
 ??1Rva00469D20Value@@QAE@XZ,0x00014C68,address-derived value destructor alias for the erase cleanup call at retail 0x00469B10
+??1?$pair@$$CBVAsciiString@@W4Rva00469D20Mapped@@@_STL@@QAE@XZ,0x00014C68,state-0 cleanup callee of matched hash_map<AsciiString Rva00469D20Mapped>::operator[] 0x0046B660: its unwind funclet 0x00C25370 jumps to this ILT; ILT chain reaches the tail-jumping COMDAT pair destructor
 ??1Rva00469FC0Value@@QAE@XZ,0x00042C8F,address-derived value destructor alias for the erase cleanup call at retail 0x00469DB0
 ??1Rva0046AF20Mapped@@QAE@XZ,0x004673F0,matched map46B840 and registerPalantirCallback46C930 prove counted-pointer value; native destructor strict26B; evidence=c253d0-counted-dtor.md
 ??1Rva0046AF20Value@@QAE@XZ,0x000335FA,erase at 0x0046AD10 calls the same pair-destructor ILT for the address-proven Rva0046AF20 value layout

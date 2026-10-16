@@ -38296,7 +38296,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00bfc306@@YAXXZ,,0x00BFC306,11,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffc306
 ?d_00bfc3d8@@YAXXZ,,0x00BFC3D8,17,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffc3d8
 ?d_00bfe008@@YAXXZ,,0x00BFE008,11,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffe008
-?d_00c032f0@@YAXXZ,,0x00C032F0,25,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@010032f0
 ?d_00c04810@@YAXXZ,,0x00C04810,34,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@01004810
 ?d_00c04f50@@YAXXZ,,0x00C04F50,11,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@01004f50
 ?d_00c06b13@@YAXXZ,,0x00C06B13,11,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@01006b13
@@ -38349,7 +38348,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c19290@@YAXXZ,,0x00C19290,11,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@01019290
 ?d_00c1929b@@YAXXZ,,0x00C1929B,11,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@0101929b
 ?d_00c1c0f0@@YAXXZ,,0x00C1C0F0,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c0f0
-?d_00c1c120@@YAXXZ,,0x00C1C120,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c120
 ?d_00c1c540@@YAXXZ,,0x00C1C540,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c540
 ?d_00c1c559@@YAXXZ,,0x00C1C559,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c559
 ?d_00c1c939@@YAXXZ,,0x00C1C939,31,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c939
@@ -38371,9 +38369,7 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c23289@@YAXXZ,,0x00C23289,24,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01023289
 ?d_00c23357@@YAXXZ,,0x00C23357,24,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01023357
 ?d_00c233c3@@YAXXZ,,0x00C233C3,24,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@010233c3
-?d_00c24940@@YAXXZ,,0x00C24940,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01024940
 ?d_00c25300@@YAXXZ,,0x00C25300,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01025300
-?d_00c25370@@YAXXZ,,0x00C25370,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01025370
 ?d_00c2712b@@YAXXZ,,0x00C2712B,11,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@0102712b
 ?d_00c2797b@@YAXXZ,,0x00C2797B,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@0102797b
 ?d_00c28aa0@@YAXXZ,,0x00C28AA0,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01028aa0
@@ -172555,3 +172551,7 @@ _rva009B1ED0,,0x009B1ED0,701,game/GameEngine/Source/Common/Rva009B1ED0Filter.cpp
 ?method003D0440@Rva003D0190@@QAEXPAURva003D01F0Item@@@Z,,0x003D0440,224,game/GameEngine/Source/Common/Rva003D0190Ensure.cpp,matched,address-derived method of Rva003D0190: passes its own this to the matched Rva003D0190::ensure and Rva003CDDB0Range::method and walks four Rva003D2B80Child::lookup children at +0x10; ret 4;model=claude-opus-5-5;host=app
 ?rva00883B70@Rva008838F0Owner@@QAEPAIXZ,,0x00883B70,236,game/Libraries/Source/memorypool/memorypool_tracker.cpp,matched,address-derived Rva008838F0Owner method: same m_disabled/m_lock/m_buckets layout as the matched tracker lookup and isValidBlock; returns a HeapAlloc pair of count and live-node +0x10 words;model=claude-opus-5-5;host=app
 ?select@Rva00588AD0Selection@@QAEXH@Z,,0x00588AD0,282,game/GameEngine/Source/GameClient/GUI/Rva00588AD0Selection.cpp,matched,address-derived owner reached only through offset tail thunk Rva005896F0::invoke; calls GameWindow::winGetInstanceData and winGetWindowId plus ControlBar::hideBuildTooltipLayout and the Gui_PalantirCommandButton click sounds;model=claude-opus-5-5;host=app
+?Rva00C032F0Cleanup@@YAXXZ,,0x00C032F0,25,game/Libraries/Source/WWVegas/WWLib/RvaHashIndexAsciiString.cpp,matched,gen-funclet;object-symbol=$L18597;parent=??A?$hash_map@VAsciiString@@W4Rva001360E0Mapped@@U?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@W4Rva001360E0Mapped@@@_STL@@@6@@_STL@@QAEAAW4Rva001360E0Mapped@@ABVAsciiString@@@Z;retail 0x00137750 state0 native label of the matched parent (flag-guarded pair cleanup);model=claude-opus-5-5;host=app
+?Rva00C1C120Cleanup@@YAXXZ,,0x00C1C120,25,game/Libraries/Source/WWVegas/WWLib/RvaHashIndexAsciiString.cpp,matched,gen-funclet;object-symbol=$L18690;parent=??A?$hash_map@VAsciiString@@W4Rva0038EE10Mapped@@U?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@W4Rva0038EE10Mapped@@@_STL@@@6@@_STL@@QAEAAW4Rva0038EE10Mapped@@ABVAsciiString@@@Z;retail 0x00390750 state0 native label of the matched parent (flag-guarded pair cleanup);model=claude-opus-5-5;host=app
+?Rva00C24940Cleanup@@YAXXZ,,0x00C24940,25,game/Libraries/Source/WWVegas/WWLib/RvaHashIndexAsciiString.cpp,matched,gen-funclet;object-symbol=$L18783;parent=??A?$hash_map@VAsciiString@@W4Rva004613F0Mapped@@U?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@W4Rva004613F0Mapped@@@_STL@@@6@@_STL@@QAEAAW4Rva004613F0Mapped@@ABVAsciiString@@@Z;retail 0x00461E00 state0 native label of the matched parent (flag-guarded pair cleanup);model=claude-opus-5-5;host=app
+?Rva00C25370Cleanup@@YAXXZ,,0x00C25370,25,game/Libraries/Source/WWVegas/WWLib/RvaHashIndexAsciiString.cpp,matched,gen-funclet;object-symbol=$L18876;parent=??A?$hash_map@VAsciiString@@W4Rva00469D20Mapped@@U?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@W4Rva00469D20Mapped@@@_STL@@@6@@_STL@@QAEAAW4Rva00469D20Mapped@@ABVAsciiString@@@Z;retail 0x0046B660 state0 native label of the matched parent (flag-guarded pair cleanup);model=claude-opus-5-5;host=app
