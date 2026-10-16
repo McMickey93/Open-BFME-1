@@ -4809,3 +4809,6 @@ game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|mem
 game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|member||at24,164fed842add106173b61c07,gpt-6.1-sol,20261016071639-a3cd2f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingTrajectory00299400.cpp|member||at2c,de276a386578b781f5ef9a1f,gpt-6.1-sol,20261016071639-a3cd2f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectBuildObjectInfo.cpp|type||BfmeExperienceTrackerFields,b15cb643f4c409bdf60f3b9d,gpt-6.1-sol,20261016071645-c513eb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field204,451491d221f5e05833d8101f,gpt-6.1-sol,20261016071651-e64678,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field214,d12f82f0c52c48270ea3555b,gpt-6.1-sol,20261016071651-e64678,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field3c,9a69e2d454dd0d73c9ba683c,gpt-6.1-sol,20261016071651-e64678,2026-10-16
