@@ -3811,3 +3811,4 @@ game/GameEngine/Source/Common/BfmeConv1541.cpp|local|BfmeThingVOQ::bfmeResetVOQ|
 game/GameEngine/Source/GameClient/GameClientRva00431A60Frustum.cpp|member||m_dword2E8,248710403b8fec74a95e570f,gpt-6.1-sol,20261016062516-30e833,2026-10-16
 game/GameEngine/Source/Common/Bfme/Rva001B46B0NormalizedDeltaZ.cpp|param|Rva001B46B0|a,f9be1637e78d705b796484af,gpt-6.1-sol,20261016062527-9de623,2026-10-16
 game/GameEngine/Source/Common/Bfme/Rva001B46B0NormalizedDeltaZ.cpp|param|Rva001B46B0|b,6aaa01062500cf0969d7436c,gpt-6.1-sol,20261016062527-9de623,2026-10-16
+game/GameEngine/Source/Common/Glo012F1028Sub_bfmeFinish.cpp|member||m_s94,2f9c87c60343775323f0d3ee,gpt-6.1-sol,20261016062538-bf0001,2026-10-16
