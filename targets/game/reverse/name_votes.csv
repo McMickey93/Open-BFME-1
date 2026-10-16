@@ -4153,3 +4153,6 @@ game/GameEngine/Source/GameLogic/Object/Contain/AODHordeContainUpdateFormationMe
 game/GameEngine/Source/GameLogic/Object/Contain/AODHordeContainUpdateFormationMembers.cpp|param|Coord3D::Coord3D#3|o,12f11f453691ee08893b3ebd,gpt-6.1-sol,20261016063744-a3cc4a,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageStateCtor.cpp|member||m_field50,f5318253ada81ff3c2f6016d,gpt-6.1-sol,20261016064106-59b243,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageStateCtor.cpp|member||m_field54,00c909df990f119ec6248d51,gpt-6.1-sol,20261016064106-59b243,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp|member||m_84,6970a63537b6a1cdfea4c65d,gpt-6.1-sol,20261016064116-109cd8,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp|local|Transfer003C3D90::tail003C12A0|tmp,8ffd4d41a63eee47e021e5cd,gpt-6.1-sol,20261016064116-109cd8,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp|local|Transfer003C3D90::transfer|r,6c0efc5778cc5775560167eb,gpt-6.1-sol,20261016064116-109cd8,2026-10-16
