@@ -143,3 +143,20 @@ BFME_INDEX_FORWARDER( Rva005A7320, Gen0001BFD1, 0x51 )
 BFME_INDEX_FORWARDER( Rva005A7330, Gen0001BFD1, 0x52 )
 BFME_INDEX_FORWARDER( Rva006B03F0, Gen00044A62, 0x0 )
 BFME_INDEX_FORWARDER( Rva007C0510, Gen0003D172, 0x1 )
+
+// A word store in the same retail run as Rva0016A040. BFME 2 donor:
+// Code/GameEngine/Source/Common/Audio/AudioEventInfoPriority.cpp, 0x0041FDEE.
+// No caller proves this receiver or field identity, so retain its address.
+class Rva00169FF0
+{
+public:
+    void storeWord(unsigned int value);
+private:
+    char m_at00[0x40];
+    unsigned int m_at40;
+};
+
+void Rva00169FF0::storeWord(unsigned int value)
+{
+    m_at40 = value;
+}
