@@ -4347,3 +4347,6 @@ game/GameEngine/Source/Common/Bfme5ThreeMemberDtor.cpp|type||Gen_000F8A40,109544
 game/GameEngine/Source/Common/Bfme5ThreeMemberDtor.cpp|member||m_bfmeFirst,91f7eb9d4962b9f6bea013fa,gpt-6.1-sol,20261016065227-1febca,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorConstructor.cpp|param|SpawnUnitBehaviorBase|m,762f8cc263a3a19bb0b2c7ea,gpt-6.1-sol,20261016065537-71af86,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorConstructor.cpp|param|SpawnUnitBehavior::SpawnUnitBehavior|m,1cb567707a9e63bfc3e317ac,gpt-6.1-sol,20261016065537-71af86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainAnyMemberHeldByAI.cpp|member||m_bfmeStatus,a36d599322bc41c6a660bb21,gpt-6.1-sol,20261016065836-836664,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainAnyMemberHeldByAI.cpp|member||m_bfmeAI,c88b4823c7a3844944c1a51a,gpt-6.1-sol,20261016065836-836664,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContainAnyMemberHeldByAI.cpp|member||m_bfmeNext,75c9d4c2054d3dcceef7104e,gpt-6.1-sol,20261016065836-836664,2026-10-16
