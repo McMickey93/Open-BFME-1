@@ -10837,7 +10837,7 @@
   "before_sha256": "f7e5d09f1cbf930ac788454f477de0f8a34230a240809a07b39ad4de302464bb",
   "after_sha256": "d2b55bf8e53365558121bbc7b5b9e7ba359746f86886b4d7d44fffbbd6e4b1ec",
   "evidence": "targets/game/reverse/identity_evidence/00905140-gen-handle.md",
-  "reason": "The matched WaterRenderObjClass::ReAcquireResources source declares DX8Wrapper::Create_Render_Target as returning Gen_005D2040 and stores it in a Gen_005D2040 member. That signature refutes the bank\u2019s RefCountPtr<TextureClass> return."
+  "reason": "The matched WaterRenderObjClass::ReAcquireResources source declares DX8Wrapper::Create_Render_Target as returning Gen_005D2040 and stores it in a Gen_005D2040 member. That signature refutes the bank’s RefCountPtr<TextureClass> return."
  },
  {
   "old_path": "targets/game/reverse/attempts/0x00410f90.cpp",
@@ -20248,5 +20248,15 @@
   "after_sha256": "2bd84d5aeeb7fb44f9c20a7dc4e35fff7c32457d65eab4d4fcaca2975dc1d066",
   "evidence": "targets/game/reverse/identity_evidence/0014ec80-0014ef00-aidock-onenter-swap.md",
   "reason": "false pairing approved by the project lead 2026-10-15: the MoveToDock and MoveToExit onEnter bodies exchange classes in AIDock.cpp (bytes unchanged); the token aligner pairs the moved guard's if with the bfmeRetailSetAdjustsDestinationFalse call that moved the other way; no name is lost."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "find_last_not_of",
+  "new_name": "bfmeRFindChV42",
+  "before_sha256": "5a3413c3d690bbe0e4bf29f2845f95b1d2718c0cb9e9236b59407ec522d70c11",
+  "after_sha256": "15e17679412d151cb17b706aea92770571114a3b6c662ba4a6a0788f8fa96741",
+  "evidence": "targets/game/reverse/identity_evidence/0082e070-stlport-od-string-rfind-find-last-not-of-char.md",
+  "reason": "revert of c4c23b4869 approved by the project lead 2026-10-16: 0x0082E350 IS STLport basic_string<char>::find_last_not_of(char,size_type) (evidence kept), but the real-name row loses COMDAT selection to game/gen_small/tgrid_004.cpp and zhstl_005.cpp (whole-class basic_string<char>, earlier in link order), so the row parks on its BfmeConv1484 asm lift and placeholder name."
  }
 ]
