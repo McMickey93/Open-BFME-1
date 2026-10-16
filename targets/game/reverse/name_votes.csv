@@ -2375,3 +2375,7 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/ParseFXEvent.cpp|member||m_bfmeA,c853e438b4df9be52f334d37,gpt-6.1-sol,20261016044839-662f73,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/ParseFXEvent.cpp|member||m_bfmeB,9f045f272fabc2f8fa5d273f,gpt-6.1-sol,20261016044839-662f73,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/ParseFXEvent.cpp|member||m_bfmeC,0a980bd2cb7658e918a2255a,gpt-6.1-sol,20261016044839-662f73,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|member||m_00,886c5d28eefb738d670f4cc7,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|member||m_04,8fbf37961174b4eff1301f4a,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|member||m_08,ac31c0dd9a03d9ff26c5c8dd,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/Rva003B88F0ParseAnimObjectUpdate.cpp|function||Rva003B88F0ParseAnimObjectUpdate,1b2e6f1419537422527d191f,gpt-6.1-sol,20261016044845-1c2e85,2026-10-16
