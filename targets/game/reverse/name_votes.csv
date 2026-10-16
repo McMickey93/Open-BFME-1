@@ -4652,3 +4652,11 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.c
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_heightC0,fd8f9130ead8e930f89da42d,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_heightData1cc,bc99c307d1bf2f3660fd7f1e,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_goalPosition47c,1c19327bb23c77a5f941ecd4,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field204,451491d221f5e05833d8101f,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field214,d12f82f0c52c48270ea3555b,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field3c,9a69e2d454dd0d73c9ba683c,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field08,a0d64ce736553b501072d0cf,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field0c,29bd96690bd91f4c799b247b,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field15,01cc2940af7d014050a2bf22,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|param|setFlag|o,7602f69ac6e5d5ef351817e6,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|param|clearFlag|o,3661a6325a455914b2da5425,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
