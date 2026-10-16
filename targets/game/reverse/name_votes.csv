@@ -1446,3 +1446,8 @@ game/GameEngine/Source/GameLogic/Object/WeaponTemplate_bfmeRangeBase.cpp|functio
 game/GameEngine/Source/GameLogic/Object/WeaponTemplate_bfmeRangeBase.cpp|param|getField|f,35e95e2cf30f692f218cffd7,gpt-6.1-sol,20261016031707-0ae3bf,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva0018D4F0TurretStateUpdate.cpp|param|frameToSleepTime|frame1,a2ac479d3ab90369f81f7899,gpt-6.1-sol,20261016031717-260682,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva0018D4F0TurretStateUpdate.cpp|param|frameToSleepTime|frame2,02c115a033784053a7bd679f,gpt-6.1-sol,20261016031717-260682,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|function|GeometryInfo@|rva0087E190,11e4feffd884c8a3b1ec15b5,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMin|a,36fd828c7c88e34dde67a90a,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMin|b,71aa6ba6211d628b85a726e5,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMax|a,2dd840e0f58a774c59cbd8bb,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
+game/GameEngine/Source/Common/System/GeometryInfoRva0087E190.cpp|param|bfmeMax|b,ace7786c8e0e5a7ae9223ba0,gpt-6.1-sol,20261016031726-abc4c3,2026-10-16
