@@ -5797,3 +5797,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShroudCollectDirtyCells.cpp
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShroudCollectDirtyCells.cpp|local|W3DShroud::collectDirtyCells|b,4ac3ba3935432f1b42abe9fc,gpt-6.1-sol,20261016130957-8ce124,2026-10-16
 game/GameEngine/Source/Common/System/UnicodeString.cpp|local|UnicodeString::nextToken|tmp,c522cc124f016e784e9b03fc,gpt-6.1-sol,20261016131002-996bfd,2026-10-16
 game/Libraries/Source/collisionmanager/BfmeConv597.cpp|local|BfmeThingCGD::bfmeOneCGD|n,2df3c8bfa2bcf0a231a4289f,gpt-6.1-sol,20261016131007-a3562a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|getIndicatorColor|p,20fd5c9f43923ceaaff1d4d0,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|rva001C15F0NightColor|p,f5cf0c42af592f63226ef7dd,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|Object::rva001C15F0|r,c0a48d2b69d620e5aca038c1,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
