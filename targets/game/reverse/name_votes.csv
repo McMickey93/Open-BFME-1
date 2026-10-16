@@ -3384,3 +3384,6 @@ game/GameEngine/Source/GameLogic/Object/Behavior/FlightDeckBehaviorModuleDataCon
 game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdateModuleDataConstructorThunk.cpp|member||m_10,f54b1d6f35e00778c913acf0,gpt-6.1-sol,20261016060712-8d01ca,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdateModuleDataConstructorThunk.cpp|member||m_14,6e6106fc1928c3f256c74755,gpt-6.1-sol,20261016060712-8d01ca,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/SupplyCenterDockUpdateModuleDataConstructorThunk.cpp|member||m_18,7105561bd0831ecf6e9272f0,gpt-6.1-sol,20261016060712-8d01ca,2026-10-16
+game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehaviorModuleDataMemberDestructor.cpp|member||m_bfmeHeader,1db840fe2905552938acdbc5,gpt-6.1-sol,20261016060718-380a86,2026-10-16
+game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehaviorModuleDataMemberDestructor.cpp|member||m_bfmeHandle,80775377a51da383e545539f,gpt-6.1-sol,20261016060718-380a86,2026-10-16
+game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehaviorModuleDataMemberDestructor.cpp|member||m_bfmeCount,7ad1dcde452da56c50f730c3,gpt-6.1-sol,20261016060718-380a86,2026-10-16
