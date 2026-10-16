@@ -4132,3 +4132,7 @@ game/GameEngine/Source/GameLogic/Object/ObjectDestructor.cpp|local|Object::~Obje
 game/GameEngine/Source/GameLogic/Object/Behavior/Serialize0020C190.cpp|member||name20,2efe7195d341efd5207814de,gpt-6.1-sol,20261016063718-7cf5ff,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeMemberOrder00245420.cpp|member||ptr208,ff6d34c2ed445306bd8e424b,gpt-6.1-sol,20261016063723-c8ae40,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeMemberOrder00245420.cpp|member||data04,2fe8298f6712dd0319960c8d,gpt-6.1-sol,20261016063723-c8ae40,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||conditions250,d154921e1ab31d1f389f54b0,gpt-6.1-sol,20261016063729-0aedcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||body200,1b3153ee8b17f33314ef9636,gpt-6.1-sol,20261016063729-0aedcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||ai204,676895b3a50ae333afa96499,gpt-6.1-sol,20261016063729-0aedcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ReactionUpdate00200420.cpp|member||frame3C,7fa80fc27b5b0251dbc025c8,gpt-6.1-sol,20261016063729-0aedcb,2026-10-16
