@@ -1983,3 +1983,13 @@ game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_wo
 game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_member118,6067197b62a9b94d9f4b60ec,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
 game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_flag11c,301033ab2301b501611b1732,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
 game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_flag11d,207089bae18e70dc697df06c,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f10,62f5636589227006bccbdf1b,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f14,34aaa3c4eaa7827894ba0798,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f18,c76988c1da8c6cfdb0a68a26,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f20,f850d374982e542ad1c9cf45,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f2C,5275b99095de6fd91f9c0662,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f30,7e5a938ba5f1f7b9f5d8ac03,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f34,1b845e1dcc5d5011d0c44b1f,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f38,3cc3168d7d7f2f2710612e0e,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f40,363a783b631bb8dca230465d,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f44,0ee9e1229c55dc1dae43cedb,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
