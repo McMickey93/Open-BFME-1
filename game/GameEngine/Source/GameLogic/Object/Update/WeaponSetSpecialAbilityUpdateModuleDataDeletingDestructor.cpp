@@ -14,12 +14,14 @@ public:
 	virtual ~SpecialAbilityUpdateModuleData();
 };
 
+// The destructor is implicit: retail ~WeaponSetSpecialAbilityUpdateModuleData
+// at 0x0026DDC0 (own ILT 0x000466DC) is a bare tail jump to
+// SpecialAbilityUpdateModuleData::~SpecialAbilityUpdateModuleData (ILT
+// 0x0001980D) with no vptr reset, the shape VC7.1 gives an implicit virtual
+// destructor; both ILTs are ilt_oracle CONFIRMED exact.
 class WeaponSetSpecialAbilityUpdateModuleData : public SpecialAbilityUpdateModuleData
 {
-public:
-	__declspec(noinline) virtual ~WeaponSetSpecialAbilityUpdateModuleData();
 };
 
-WeaponSetSpecialAbilityUpdateModuleData::~WeaponSetSpecialAbilityUpdateModuleData()
-{
-}
+// Constructing one emits the vtable and with it the scalar-deleting destructor.
+void Force_WeaponSetSpecialAbilityUpdateModuleData_Vtable() { WeaponSetSpecialAbilityUpdateModuleData value; }

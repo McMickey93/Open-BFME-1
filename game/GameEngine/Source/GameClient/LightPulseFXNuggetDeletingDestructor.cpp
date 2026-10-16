@@ -5,10 +5,19 @@
 // through ILT 0x00029E0B to this 30-byte wrapper, whose complete destructor
 // route ILT 0x00034A9A reaches cleanup body 0x00427390.
 
-class LightPulseFXNugget
+// The destructor is implicit: retail ~LightPulseFXNugget at 0x00428F90 (own
+// ILT 0x00034A9A) is a bare tail jump to FXNugget::~FXNugget
+// (ILT 0x000033F0) with no vptr reset, the shape VC7.1 gives an implicit
+// virtual destructor; both ILTs are ilt_oracle CONFIRMED exact.
+
+class FXNugget
 {
 public:
-	virtual ~LightPulseFXNugget();
+	virtual ~FXNugget();
+};
+
+class LightPulseFXNugget : public FXNugget
+{
 private:
 	friend void forceLightPulseFXNuggetDeletingDestructor();
 };

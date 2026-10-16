@@ -122436,7 +122436,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0026cd50@@YAXXZ,,0x0026CD50,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F61D
 ?j_0026d3e0@@YAXXZ,,0x0026D3E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000C63F
 ?j_0026dce0@@YAXXZ,,0x0026DCE0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
-?j_0026ddc0@@YAXXZ,,0x0026DDC0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_006a5cc0
 ?j_0026e040@@YAXXZ,,0x0026E040,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000C63F
 ?j_0026e120@@YAXXZ,,0x0026E120,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_006a5cc0
 ?j_0026e466@@YAXXZ,,0x0026E466,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009F6E38
@@ -122665,7 +122664,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00426c50@@YAXXZ,,0x00426C50,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00026B4D
 ?j_00428010@@YAXXZ,,0x00428010,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_004283e0@@YAXXZ,,0x004283E0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_008282d0
-?j_00428f90@@YAXXZ,,0x00428F90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00827390
 ?j_00429a30@@YAXXZ,,0x00429A30,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00827390
 ?j_00429cb0@@YAXXZ,,0x00429CB0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00827390
 ?j_00429e20@@YAXXZ,,0x00429E20,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00827390
@@ -172541,3 +172539,5 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ??1HordeGarrisonContain@@UAE@XZ,,0x0021A2B0,5,game/GameEngine/Source/GameLogic/Object/Contain/HordeGarrisonContainDeletingDestructor.cpp,matched,implicit ~HordeGarrisonContain: bare jmp GarrisonContain::~GarrisonContain ILT 0x00037A24 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00038622 ilt_oracle CONFIRMED exact and called by matched ??_GHordeGarrisonContain in the same TU;model=claude-opus-5-5;host=app
 ??1AIAttackAimAtTargetState@@UAE@XZ,,0x0017FE50,5,game/GameEngine/Source/GameLogic/AI/AIAttackActionStates.cpp,matched,implicit ~AIAttackAimAtTargetState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x0000C0C7 ilt_oracle CONFIRMED exact and called by matched ??_GAIAttackAimAtTargetState in the same TU;model=claude-opus-5-5;host=app
 ??1AIAttackFireWeaponState@@UAE@XZ,,0x0017FF10,5,game/GameEngine/Source/GameLogic/AI/AIAttackActionStates.cpp,matched,implicit ~AIAttackFireWeaponState: bare jmp State::~State ILT 0x00016725 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00028DD0 ilt_oracle CONFIRMED exact and called by matched ??_GAIAttackFireWeaponState in the same TU;model=claude-opus-5-5;host=app
+??1WeaponSetSpecialAbilityUpdateModuleData@@UAE@XZ,,0x0026DDC0,5,game/GameEngine/Source/GameLogic/Object/Update/WeaponSetSpecialAbilityUpdateModuleDataDeletingDestructor.cpp,matched,implicit ~WeaponSetSpecialAbilityUpdateModuleData: bare jmp SpecialAbilityUpdateModuleData::~SpecialAbilityUpdateModuleData ILT 0x0001980D (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x000466DC ilt_oracle CONFIRMED exact and called by matched ??_GWeaponSetSpecialAbilityUpdateModuleData in the same TU;model=claude-opus-5-5;host=app
+??1LightPulseFXNugget@@UAE@XZ,,0x00428F90,5,game/GameEngine/Source/GameClient/LightPulseFXNuggetDeletingDestructor.cpp,matched,implicit ~LightPulseFXNugget: bare jmp FXNugget::~FXNugget ILT 0x000033F0 (ilt_oracle CONFIRMED exact) with no vptr reset; own ILT 0x00034A9A ilt_oracle CONFIRMED exact and called by matched ??_GLightPulseFXNugget in the same TU;model=claude-opus-5-5;host=app
