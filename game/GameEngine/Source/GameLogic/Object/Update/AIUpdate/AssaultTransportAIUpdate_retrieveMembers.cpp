@@ -53,10 +53,7 @@ public:
 		return m_ai;
 	}
 
-	Bool isContained() const
-	{
-		return m_containedBy != 0;
-	}
+	friend class AssaultTransportAIUpdate;
 
 private:
 	char m_pad00[0x204];
@@ -117,7 +114,7 @@ void AssaultTransportAIUpdate::retrieveMembers()
 	{
 		Object *member = TheGameLogic->findObjectByID(m_memberIDs[i]);
 		AIUpdateInterface *ai = member ? member->getAI() : 0;
-		if (member && ai && !member->isContained())
+		if (member && ai && member->m_containedBy == 0)
 		{
 			ai->aiEnter(getObject(), CMD_FROM_AI);
 		}
