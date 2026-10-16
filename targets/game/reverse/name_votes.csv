@@ -3797,3 +3797,6 @@ game/GameEngine/Source/Common/BfmeConv1380.cpp|local|bfmeGoVIX|g,d5023811519ac5d
 game/GameEngine/Source/Common/BfmeConv1380.cpp|param|BfmeThingVIY::bfmeGoVIY|m,0a04d60c23eda69bbf1228fa,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1380.cpp|local|BfmeThingVIY::bfmeGoVIY|g,32e7a0febcb7aa13321639f4,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1380.cpp|param|BfmeThingVIY::bfmeSubVIY|m,c0f892c4544705affc6b12b7,gpt-6.1-sol,20261016062209-b867f8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||radius08,f0a7deea271cb9af0080b54d,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||data04,e57a5bb7e92afc7244c548e8,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||ids24,fa5f428be1dd9db5776e17d7,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
