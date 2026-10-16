@@ -5270,3 +5270,6 @@ game/GameEngine/Source/Common/BfmeResourceMultiplierZC.cpp|function||bfmeMultipl
 game/Libraries/Source/WWVegas/WWLib/RvaTreeFindGenP12pod009281E0.cpp|param|compare_tail|a,e360ea49adbd9ca27a836e6b,gpt-6.1-sol,20261016075447-fe0143,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/RvaTreeFindGenP12pod009281E0.cpp|param|compare_tail|b,4bb9932a64122a6cee20c592,gpt-6.1-sol,20261016075447-fe0143,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/RvaTreeFindGenP12pod009281E0.cpp|local|compare_tail|a1,b6c3b3a123ebe5c83a99e1aa,gpt-6.1-sol,20261016075447-fe0143,2026-10-16
+game/GameEngine/Source/Common/BfmeConv792.cpp|member||m_bfmeVft,5823301e298a0baf0ecdefba,gpt-6.1-sol,20261016075017-6bbfcc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv792.cpp|function|BfmeThingDWH@|bfmeGoDWH,1c1611c3046b8fb80a7c05da,gpt-6.1-sol,20261016075017-6bbfcc,2026-10-16
+game/GameEngine/Source/Common/BfmeConv792.cpp|function||bfmeGoDWK,124889cbfcec751bbacceaef,gpt-6.1-sol,20261016075017-6bbfcc,2026-10-16
