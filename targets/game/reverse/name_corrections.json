@@ -20528,5 +20528,15 @@
   "after_sha256": "a81afc7204f03698ae07d259760c0c107f0f7a9ba1c033dc37764d510d5b60d0",
   "evidence": "targets/game/reverse/identity_evidence/rva002229e0-nearest-contained.md",
   "reason": "the bank's one-letter stand-in names carry no retail evidence; the owner is unproven, so the class and node take address-derived names and the pad the unmodelled convention"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00454760.cpp",
+  "new_path": "targets/game/reverse/attempts/0x00454760.cpp",
+  "old_name": "ThingNameRegistry",
+  "new_name": "Rva0088B70ThingRegistry",
+  "before_sha256": "fe5a90b8282f070cfdc79dfebab4c877c84d9d35eb37c7fa3ec79707a82153c5",
+  "after_sha256": "0c4d0c821d5af85d71a4b8f8c5fbcbbf80d2dd293a036359bc57ddea1597f057",
+  "evidence": "targets/game/reverse/identity_evidence/rva00454760-parse-object-chunk-bank.md",
+  "reason": "bank stand-in replaced by the view name the ILT 0x0002323B/0x00028560 pins already carry (matched reader 0x00088B70)"
  }
 ]

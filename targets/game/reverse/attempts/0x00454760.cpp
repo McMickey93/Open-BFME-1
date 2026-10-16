@@ -1,18 +1,21 @@
 // ?ParseObjectDataChunk@@YA_NAAVDataChunkInput@@PAUDataChunkInfo@@PAX@Z
-// partial score=0.5455 date=2026-10-12
-// Clean reconstruction of the BFME map-object chunk parser.
-//
-// The callback is registered by MapUtil::ParseObjectsDataChunk.  Retail uses
-// the name registry at 0x012EF1D8 to choose the dictionary-aware MapObject
-// constructor; the predicate is the same body recovered as
-// Rva00137E20ThingNameFilter::acceptsThingTemplateName.
-
+// partial score=0.9289 date=2026-10-16
 // cl: /DNDEBUG /MD /EHsc
+// Retail 0x00454760, the "Object" chunk callback MapUtil's
+// ParseObjectsDataChunk (0x00454A60) registers: Zero Hour MapUtil.cpp:129.
+// BFME checks acceptsThingTemplateName before resolving the template (as the
+// WorldHeightMap object reader at 0x00088B70 in MapObject.cpp does), dropped
+// the supply-position branch and deletes the object through its virtual
+// destructor. The callee views below reuse the names that reader proved.
 
 typedef bool Bool;
 typedef int Int;
 typedef float Real;
-typedef int NameKeyType;
+
+enum NameKeyType
+{
+	NAMEKEY_INVALID = 0
+};
 
 struct Coord3D
 {
@@ -24,35 +27,28 @@ struct Coord3D
 class AsciiString
 {
 public:
-	void *m_data;
-	AsciiString(const AsciiString &other);
 	~AsciiString();
+	void *m_data;
 };
 
 class Dict
 {
 public:
-	Dict(int count = 0)
+	enum DataType
 	{
-		construct(count);
-	}
+		DICT_BOOL = 0,
+		DICT_INT = 1
+	};
 
-	Dict(const Dict &other);
-	Dict &operator=(const Dict &other)
-	{
-		assignFrom(&other);
-		return *this;
-	}
+	Dict(Int numPairsToPreAllocate = 0);
 	~Dict()
 	{
 		releaseData();
 	}
-
-	int getType(NameKeyType key) const;
+	Dict &operator=(const Dict &src);
+	DataType getType(NameKeyType key) const;
 
 private:
-	void construct(int count);
-	void assignFrom(const Dict *other);
 	void releaseData();
 
 	void *m_data;
@@ -67,18 +63,10 @@ public:
 	Dict readDict();
 };
 
-class ThingTemplate
+struct DataChunkInfo
 {
-public:
-	unsigned char m_padding[0xd0];
-	unsigned int m_kindOf;
-};
-
-class ThingNameRegistry
-{
-public:
-	Bool acceptsThingTemplateName(const AsciiString &name);
-	const ThingTemplate *findTemplate(const AsciiString &name);
+	unsigned char m_unreconstructed_00[8];
+	unsigned short version;
 };
 
 class StaticNameKey
@@ -87,112 +75,172 @@ public:
 	NameKeyType key() const;
 };
 
-class WaypointMap
+extern StaticNameKey TheKey_waypointID;
+
+class ThingTemplate
 {
 public:
-	Coord3D &lookup(const AsciiString &name);
+	unsigned char m_unreconstructed_00[0xd0];
+	unsigned int m_kindOf;		///< retail +0xD0; 0x1000 is the tech-building bit
 };
 
-class Coord3DList
+// TU-local view of the template singleton (see MapObject.cpp).
+class Rva0088B70ThingRegistry
 {
 public:
-	void push_back(const Coord3D &value);
+	bool acceptsThingTemplateName(const AsciiString &name);
+	const ThingTemplate *findTemplate(const AsciiString &name);
+};
+
+class BfmeThingFactory;
+extern BfmeThingFactory *TheThingFactory;
+
+// Retail MapObject::getThingTemplate body 0x00087E80 (opaque ledger name).
+struct BfmeSlotJA;
+class BfmeThing932A
+{
+public:
+	BfmeSlotJA *bfmeGo932A();
+};
+
+class Vector3
+{
+public:
+	Vector3(Real x, Real y, Real z)
+	{
+		X = x;
+		Y = y;
+		Z = z;
+	}
+	Vector3(const Vector3 &v)
+	{
+		X = v.X;
+		Y = v.Y;
+		Z = v.Z;
+	}
+	Real X;
+	Real Y;
+	Real Z;
 };
 
 class MapObject
 {
 public:
-	virtual void deleteInstance(Bool keep);
-
-	MapObject(Coord3D location, const AsciiString &name, Real angle, Int flags,
-		const Dict *dict, const ThingTemplate *thing);
-
-	unsigned char m_padding[0x5c];
-
-	Dict *getProperties()
-	{
-		return reinterpret_cast<Dict *>(reinterpret_cast<char *>(this) + 0x24);
-	}
-
-	const ThingTemplate *getThingTemplate() const;
 	AsciiString getWaypointName();
-
-	void setIsWaypoint()
-	{
-		*(Int *)(reinterpret_cast<char *>(this) + 0x44) |= 4;
-	}
 };
 
-#pragma comment(linker, "/alternatename:?readReal@DataChunkInput@@QAEMXZ=?j_0002e5e1@@YAXXZ")
-#pragma comment(linker, "/alternatename:?readInt@DataChunkInput@@QAEHXZ=?j_0003a805@@YAXXZ")
-#pragma comment(linker, "/alternatename:?readAsciiString@DataChunkInput@@QAE?AVAsciiString@@XZ=?j_000041c9@@YAXXZ")
-#pragma comment(linker, "/alternatename:?construct@Dict@@AAEXH@Z=?j_00002ecd@@YAXXZ")
-#pragma comment(linker, "/alternatename:?assignFrom@Dict@@QAEXPBV1@@Z=?j_00045566@@YAXXZ")
-#pragma comment(linker, "/alternatename:?getType@Dict@@QBEHH@Z=?j_0001efd8@@YAXXZ")
-#pragma comment(linker, "/alternatename:?acceptsThingTemplateName@ThingNameRegistry@@QAE_NABVAsciiString@@@Z=?j_0002323b@@YAXXZ")
-#pragma comment(linker, "/alternatename:?findTemplate@ThingNameRegistry@@QAEPBVThingTemplate@@ABVAsciiString@@@Z=?j_00028560@@YAXXZ")
-#pragma comment(linker, "/alternatename:??0MapObject@@QAE@UCoord3D@@ABVAsciiString@@MHPBVDict@@PBVThingTemplate@@@Z=?j_0001230a@@YAXXZ")
-#pragma comment(linker, "/alternatename:?getThingTemplate@MapObject@@QBEPBVThingTemplate@@XZ=?j_00012814@@YAXXZ")
-#pragma comment(linker, "/alternatename:?getWaypointName@MapObject@@QAE?AVAsciiString@@XZ=?j_00010f05@@YAXXZ")
-#pragma comment(linker, "/alternatename:?lookup@WaypointMap@@QAEAAUCoord3D@@ABVAsciiString@@@Z=?j_0000cd97@@YAXXZ")
-#pragma comment(linker, "/alternatename:?push_back@Coord3DList@@QAEXABUCoord3D@@@Z=?j_0001127f@@YAXXZ")
+class Rva0041230aMapObject
+{
+public:
+	Rva0041230aMapObject(Vector3 loc, const AsciiString &name, Real angle, Int flags,
+		const Dict *props, const ThingTemplate *tmplate);
+	virtual ~Rva0041230aMapObject();
 
-#define TheThingNameRegistry (*(ThingNameRegistry **)0x012EF1D8)
-#define TheKey_waypointID (*(StaticNameKey *)0x012A77B0)
-#define TheWaypoints (*(WaypointMap **)0x012F1588)
-#define TheTechPositions (*(Coord3DList *)0x012F15A8)
+	Dict *getProperties() { return &m_properties; }
+	void setIsWaypoint() { m_runtimeFlags |= 0x04; }
+	AsciiString getWaypointName() { return reinterpret_cast<MapObject *>(this)->getWaypointName(); }
+	const ThingTemplate *getThingTemplate()
+	{
+		return reinterpret_cast<const ThingTemplate *>(reinterpret_cast<BfmeThing932A *>(this)->bfmeGo932A());
+	}
+
+	char m_pad0[0x24 - 4];
+	Dict m_properties;
+	char m_pad1[0x44 - 0x24 - sizeof(Dict)];
+	Int m_runtimeFlags;
+	char m_pad2[0x60 - 0x44 - sizeof(Int)];
+};
+
+namespace _STL
+{
+template <class T> class allocator
+{
+};
+template <class T1, class T2> struct pair
+{
+};
+template <class T, class Alloc> class list
+{
+public:
+	void push_back(const T &x);
+};
+template <class Key, class T, class Compare, class Alloc> class map
+{
+public:
+	T &operator[](const Key &k);
+};
+}
+
+// MapUtil's WaypointMap value and tech-position list element (retail
+// instantiations 0x000C0D00 and 0x00452280).
+struct Rva000C0D00Less
+{
+};
+struct Rva000C0D00Value
+{
+	Real x;
+	Real y;
+	Real z;
+};
+struct Rva00452280Element
+{
+	char m_body[12];
+};
+
+class WaypointMap : public _STL::map<AsciiString, Rva000C0D00Value, Rva000C0D00Less,
+	_STL::allocator<_STL::pair<const AsciiString, Rva000C0D00Value> > >
+{
+};
+
+// MapUtil file-scope m_waypoints and m_techPositions.
+extern WaypointMap *Rva012F1588;
+extern _STL::list<Rva00452280Element, _STL::allocator<Rva00452280Element> > Rva012F15A8;
+#define TheTechPositions Rva012F15A8
+
+#define K_OBJECTS_VERSION_2 2
 
 // ?ParseObjectDataChunk@@YA_NAAVDataChunkInput@@PAUDataChunkInfo@@PAX@Z
-struct DataChunkInfo
+Bool ParseObjectDataChunk(DataChunkInput &file, DataChunkInfo *info, void *userData)
 {
-	unsigned char m_padding[8];
-	unsigned short version;
-};
-
-Bool ParseObjectDataChunk(DataChunkInput &file, DataChunkInfo *info,
-	void *userData)
-{
-	Bool readDict = info->version >= 2;
+	Bool readDict = info->version >= K_OBJECTS_VERSION_2;
 
 	Coord3D loc;
 	loc.x = file.readReal();
 	loc.y = file.readReal();
 	loc.z = file.readReal();
-	if (info->version <= 2)
+	if (info->version <= K_OBJECTS_VERSION_2)
+	{
 		loc.z = 0;
+	}
 
 	Real angle = file.readReal();
 	Int flags = file.readInt();
 	AsciiString name = file.readAsciiString();
-	Dict dict;
+	Dict d;
 	if (readDict)
-		dict = file.readDict();
-
-	MapObject *object;
-	if (TheThingNameRegistry->acceptsThingTemplateName(name))
 	{
-		object = new MapObject(loc, name, angle, flags, &dict,
-			TheThingNameRegistry->findTemplate(name));
+		d = file.readDict();
 	}
+
+	Rva0088B70ThingRegistry *factory = reinterpret_cast<Rva0088B70ThingRegistry *>(TheThingFactory);
+	Rva0041230aMapObject *pThisOne;
+	if (factory->acceptsThingTemplateName(name))
+		pThisOne = new Rva0041230aMapObject(reinterpret_cast<const Vector3 &>(loc), name, angle, flags, &d,
+			reinterpret_cast<Rva0088B70ThingRegistry *>(TheThingFactory)->findTemplate(name));
 	else
+		pThisOne = new Rva0041230aMapObject(reinterpret_cast<const Vector3 &>(loc), name, angle, flags, &d, 0);
+
+	if (pThisOne->getProperties()->getType(TheKey_waypointID.key()) == Dict::DICT_INT)
 	{
-		object = new MapObject(loc, name, angle, flags, &dict,
-			(const ThingTemplate *)0);
+		pThisOne->setIsWaypoint();
+
+		(*Rva012F1588)[pThisOne->getWaypointName()] = reinterpret_cast<const Rva000C0D00Value &>(loc);
+	}
+	else if (pThisOne->getThingTemplate() && (pThisOne->getThingTemplate()->m_kindOf & 0x1000))
+	{
+		TheTechPositions.push_back(reinterpret_cast<const Rva00452280Element &>(loc));
 	}
 
-	if (object->getProperties()->getType(TheKey_waypointID.key()) == 1)
-	{
-		object->setIsWaypoint();
-		TheWaypoints->lookup(object->getWaypointName()) = loc;
-	}
-	else if (object->getThingTemplate() != 0 &&
-		(object->getThingTemplate()->m_kindOf & 0x1000) != 0)
-	{
-		TheTechPositions.push_back(loc);
-	}
-
-	if (object != 0)
-		object->deleteInstance(true);
-
-	return 1;
+	delete pThisOne;
+	return true;
 }
