@@ -2199,3 +2199,5 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleConstructor.
 game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleConstructor.cpp|member||m_flag58,a0ccc14de48eb2502035d2a8,gpt-6.1-sol,20261016042121-e026bf,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleConstructor.cpp|member||m_value5c,96c6c2dd434632bd7a882cd1,gpt-6.1-sol,20261016042121-e026bf,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleConstructor.cpp|member||m_value60,87012691658e7927bd05d2f8,gpt-6.1-sol,20261016042121-e026bf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorCtorModuleFactory.cpp|member||m_f14,763e567ebffed5f226c77d1b,gpt-6.1-sol,20261016042144-6f0130,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorCtorModuleFactory.cpp|member||m_f18,af4f8854aa633c6bb9e401f3,gpt-6.1-sol,20261016042144-6f0130,2026-10-16
