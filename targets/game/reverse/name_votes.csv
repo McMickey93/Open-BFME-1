@@ -3023,3 +3023,4 @@ game/GameEngine/Source/GameLogic/Object/Upgrade/LocomotorSetUpgradeUpgradeImplem
 game/GameEngine/Source/GameLogic/Object/Upgrade/LocomotorSetUpgradeUpgradeImplementation.cpp|local|LocomotorSetUpgrade::upgradeImplementation|z,aeb03f64eba5ac0c88b28566,gpt-6.1-sol,20261016054300-08e080,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/MaxHealthUpgradeUpgradeImplementation.cpp|type||Rva002D64D0Target,38da2d7f8cd8a7b12b3f2591,gpt-6.1-sol,20261016054248-0abb42,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/MaxHealthUpgradeUpgradeImplementation.cpp|type||Rva002D64D0Data,07482190ea2dfae0d15c55a3,gpt-6.1-sol,20261016054248-0abb42,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/CommandSetUpgradeUpgradeImplementation.cpp|type||BfmeOwnerXC,5f96a5cf25db5b3ed832c63a,gpt-6.1-sol,20261016054305-dcd979,2026-10-16
