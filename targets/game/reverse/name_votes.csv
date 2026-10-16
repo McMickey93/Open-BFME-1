@@ -2934,3 +2934,4 @@ game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|type||BfmeItemKV,5fcff3991
 game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeFirst,17c7970a91043a9df04a644a,gpt-6.1-sol,20261016053341-f8a5bc,2026-10-16
 game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeSecond,5f40451847907b47466fb53d,gpt-6.1-sol,20261016053341-f8a5bc,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/Rva0084DBStringAndCodePage.cpp|type||Rva0084D860CpInfo,9daf9d9c9d43afd33b9600c4,gpt-6.1-sol,20261016053456-024efc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/Rva002D3080Destructor.cpp|member||m_field2c,9b415cf9913ec234b2cc2e66,gpt-6.1-sol,20261016053503-2dab1a,2026-10-16
