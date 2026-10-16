@@ -5791,3 +5791,5 @@ game/GameEngine/Source/Common/Small03hWordSwap.cpp|local|Rva009CC2F0Box::swap|v,
 game/GameEngine/Source/Common/BfmeRectVNH_ctor.cpp|param|BfmeRectVNH::BfmeRectVNH|s,6d43d7680319d53e05edb9f4,gpt-6.1-sol,20261016130937-afb6dd,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/UpdateNumPlayersOnline.cpp|local|grabUByte|b,b681fdc04a1eb5b1fb026ce9,gpt-6.1-sol,20261016130942-b907d7,2026-10-16
 game/GameEngine/Source/Common/SmallGaps/Rva009A2BE0HashIterNext.cpp|local|Rva009A2BE0Iter::nextNode|n,b509b8cb6d0b8e7a7fea2ad6,gpt-6.1-sol,20261016130947-958305,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptScoreScreenConstructor.cpp|param|Rva00571780FunctorWrapper|b,30222565a7f86cb1160bda70,gpt-6.1-sol,20261016130952-0847f0,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptScoreScreenConstructor.cpp|param|Rva005717D0FunctorWrapper|b,f52779fa33ba7148946c0a20,gpt-6.1-sol,20261016130952-0847f0,2026-10-16
