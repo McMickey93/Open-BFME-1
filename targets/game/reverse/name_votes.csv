@@ -1279,3 +1279,10 @@ game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||
 game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|param|contains|p,25428fcd48c9b68091dedf16,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|local|DistanceUpdate003C5990::update|p,315cf38c7fcc372c198695d8,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
 game/GameEngine/Source/GameNetwork/V2FeslBrowserEvents.cpp|function||Rva007F79F0Callback,f98ae198f7f98a33573c1c61,gpt-6.1-sol,20261016025933-4627db,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|s,4337283099ee7bbd35b59f3c,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|b,c1b83cef00e75670e57de71b,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|g,9e5a0895344fad64103f5a50,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|r,363ba7dcee4d01f883528d09,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|v,cc2a34eb0484c66a05a72ec4,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|t,1c5e216faa6bf800c51234fb,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|q,b1ecb11ed1e6f857ebc045c8,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
