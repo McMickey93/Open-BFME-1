@@ -4816,3 +4816,9 @@ game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|member
 game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|member||adjust4c,b00b3373a9d121371d46e572,gpt-6.1-sol,20261016071658-41607a,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|local|getTemplate|t,1bab0c7f41d33b480ebd22e0,gpt-6.1-sol,20261016071658-41607a,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|param|setAdjustsDestination|b,b0becad163fd627ea777461a,gpt-6.1-sol,20261016071658-41607a,2026-10-16
+game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_1C,5ccd2203f7ed349c5130cb99,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
+game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_24,bc99abdcc933369644f6d29e,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
+game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_28,38dd051448c294041792911d,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
+game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_0C,4972c89457005fdd15dd73ec,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
+game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_10,1ef0f2f4ec275f467f486cda,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
+game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_14,946bfc83e6a512a0a6f5074a,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
