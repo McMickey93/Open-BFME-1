@@ -5382,3 +5382,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FDCB0CameraProjection.cp
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FDCB0CameraProjection.cpp|param|transform|m,4403c91ce549ca2fc1c3b8cc,gpt-6.1-sol,20261016081241-2a6aee,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FDCB0CameraProjection.cpp|local|Rva006FDCB0CameraProjection::update|t,d22f9c2b8ecb3433645e34c4,gpt-6.1-sol,20261016081241-2a6aee,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FDCB0CameraProjection.cpp|local|Rva006FDCB0CameraProjection::update|u,baa4008a411dee266fa51e19,gpt-6.1-sol,20261016081241-2a6aee,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StickyBombUpdateCtorThunk.cpp|member||m_f14,e3b9544f24cd79160ea6dd6e,gpt-6.1-sol,20261016081248-c026dc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StickyBombUpdateCtorThunk.cpp|member||m_f18,e06eb457a8375866d8039a88,gpt-6.1-sol,20261016081248-c026dc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StickyBombUpdateCtorThunk.cpp|member||m_f1c,d7d5f9c774da8411b2045844,gpt-6.1-sol,20261016081248-c026dc,2026-10-16
