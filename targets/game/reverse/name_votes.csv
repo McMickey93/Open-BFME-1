@@ -4830,3 +4830,7 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdateConditionCooldown0027BF60
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdateConditionCooldown0027BF60.cpp|member||m_bfmeAi,6caa91f8f643452a6bfa2c4a,gpt-6.1-sol,20261016072029-924b58,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdateConditionCooldown0027BF60.cpp|member||m_bfmeFrame,bffd8af895cdde508bcf140b,gpt-6.1-sol,20261016072029-924b58,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdateConditionCooldown0027BF60.cpp|member||m_bfmeNextAllowedFrame,224c57da12256c934cfec925,gpt-6.1-sol,20261016072029-924b58,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|type||TeamState00164750,c5669f0f6a4e33a45346d35a,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|member||m_active31,71571b1c5c2ee4798f2180d5,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|member||m_status1A4,2c7fb13fa76cf803acb036d3,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|member||m_state204,94d6d1d435b803329676a0f7,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
