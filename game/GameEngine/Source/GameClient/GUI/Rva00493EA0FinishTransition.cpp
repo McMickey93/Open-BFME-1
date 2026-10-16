@@ -7,11 +7,18 @@ struct Rva00493EA0Payload
 };
 
 class Rva00493F30TransitionState;
+class AsciiString;
+
+// ILT 0x00020C5C reaches the matched stream opener row 0x00494FA0.
+class Rva00494EC0EntryView
+{
+public:
+	void rva00494FA0(const AsciiString &name, unsigned int value);
+};
 
 class Rva00493EA0Controller
 {
 public:
-	void send(Rva00493EA0Payload *payload, unsigned int value);
 	void complete(Rva00493F30TransitionState *owner);
 	unsigned char m_padding[0x30];
 	unsigned int m_first;
@@ -39,7 +46,8 @@ void Rva00493EA0Controller::complete(Rva00493F30TransitionState *owner)
 	unsigned int first = owner->m_first;
 	m_first = first;
 	m_second = second;
-	send(&owner->m_payload, owner->m_payload.second);
+	((Rva00494EC0EntryView *)this)->rva00494FA0(
+		*(const AsciiString *)&owner->m_payload, owner->m_payload.second);
 }
 
 void Rva00493F30TransitionState::finishTransition(void)

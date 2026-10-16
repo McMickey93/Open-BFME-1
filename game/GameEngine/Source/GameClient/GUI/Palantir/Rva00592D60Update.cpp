@@ -24,7 +24,15 @@ public:
 	virtual void slot2();
 	virtual void slot3();
 	virtual void refresh();
-	void send( int value, int message );
+};
+
+class AsciiString;
+
+// ILT 0x00020C5C reaches the matched row 0x00494FA0.
+class Rva00494EC0EntryView
+{
+public:
+	void rva00494FA0( const AsciiString &name, unsigned int value );
 };
 
 class Rva00592D60Owner
@@ -53,5 +61,5 @@ void Rva00592D60Owner::update( int value, int state )
 	}
 
 	m_window->refresh();
-	m_window->send( value, 0x40 );
+	( (Rva00494EC0EntryView *)m_window )->rva00494FA0( *(const AsciiString *)value, 0x40 );
 }

@@ -88002,9 +88002,8 @@ name,address,notes
 ?send@BfmeSub2B8_112@@QAEXPAXH@Z,0x0000E700,pin
 ?send@ConnectionManagerSendFrameDataShim@@QAEXII@Z,0x00664D20,ConnectionManager sendFrameDataToPlayer incremental-link thunk target through a TU-local forwarding shim
 ?send@NATSendMangledPortShim@@QAEXGPAVGameSlot@@@Z,0x006718A0,NAT sendMangledPortNumberToTarget incremental-link thunk target through a TU-local forwarding shim
-?send@Rva00493EA0Controller@@QAEXPAURva00493EA0Payload@@I@Z,0x00020C5C,Rva00493EA0 controller send thunk
+?rva00494FA0@Rva00494EC0EntryView@@QAEXABVAsciiString@@I@Z,0x00020C5C,route=0x00494FA0; callers 0x00493EA0 and 0x00592D60 reach the matched row through this thunk
 ?send@Rva004A8F10Sink@@QAEHPAX_N1@Z,0x00044409,additive: retail call target of the red row ?dispatch@Rva004A8F10@@QAEHPAXH@Z
-?send@Rva00592D60Window@@QAEXHH@Z,0x00020C5C,address-derived window message thunk called by the 0x00592D60 update
 ?send@Rva008038F0Sender@@QAEXPAVBfmeC994@@@Z,0x008038F0,neutral direct-body member ABI; retail 0x00809100 and multiple matched FESL callers load the sender receiver into ECX; complete 123B body reads receiver +0x10 and forwards the message through virtual slot +0x0C; campaign=luna36h-20260907;lane=netpacket_next;model=gpt-5.6-sol-ultra
 ?send@TransportDoSendShim@@QAE_NXZ,0x006834B0,Transport doSend incremental-link thunk target through a TU-local forwarding shim
 ?sendChat@BFMEConnectionManager@@QAEXVUnicodeString@@H@Z,0x006675E0,Open-BFME5 Network::sendChat call target recovered from the vtable-slot body and its two-argument ret 8 call shape
