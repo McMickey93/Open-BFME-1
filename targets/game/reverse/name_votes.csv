@@ -4768,3 +4768,10 @@ game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecial
 game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeKeyHF,127560135482e7492da797bf,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeThingHF,6782dfe4c41ac2c3e6cf55cf,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeSlotHF,e196870eb201b74bccbf82e0,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|type||Rva0032BC80Prototype,ee9744974b1b68bd7e728282,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field08,7a58b15e8c90c2245acf059c,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field10,8a5f8a2e2231a8a0746675ca,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field44,75bf9a976dd6adc29b6d87dc,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field48,5e9a659608283d0375c86d8e,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|member||field170d8,b6be86a74dc79d53d5868c35,gpt-6.1-sol,20261016071531-b44971,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInArea.cpp|local|getTemplate|t,9e62cf6dde85061d6647b79b,gpt-6.1-sol,20261016071531-b44971,2026-10-16
