@@ -2132,3 +2132,6 @@ game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCto
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value24,ef86b131cce1fa1c30956d68,gpt-6.1-sol,20261016041432-a218df,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_value28,2a135cb1622eabffeaa6a0c2,gpt-6.1-sol,20261016041432-a218df,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/EmotionTrackerUpdateModuleDataCtorThunk.cpp|member||m_flag2C,cec9a5366603d7d26b717f42,gpt-6.1-sol,20261016041432-a218df,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/TaintSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_214,6433c5414b1ef9d68e8870bc,gpt-6.1-sol,20261016041439-37ba3d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/TaintSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_218,c24032d7831f9c36fa0d8157,gpt-6.1-sol,20261016041439-37ba3d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/TaintSpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_21C,b796613486dc3b0d90d7e680,gpt-6.1-sol,20261016041439-37ba3d,2026-10-16
