@@ -2081,3 +2081,6 @@ game/Libraries/Source/WWVegas/WW3D2/Rva00972A30AddPrototype.cpp|local|Create_Rva
 game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtorThunk.cpp|member||m_value1,4caeb11b44c9da499f244056,gpt-6.1-sol,20261016041345-4cc047,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtorThunk.cpp|member||m_field18,438815a8ab43542fea289944,gpt-6.1-sol,20261016041345-4cc047,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtorThunk.cpp|member||m_field1C,96fa2d77fb750141696b8810,gpt-6.1-sol,20261016041345-4cc047,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DominateEnemySpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_254,6a9aa1f3da8722f861f72be0,gpt-6.1-sol,20261016041357-42354e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DominateEnemySpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_258,b2e8bf20992e0433e76c3613,gpt-6.1-sol,20261016041357-42354e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DominateEnemySpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_25C,2c2ec5dfdf785cd6c0f119d3,gpt-6.1-sol,20261016041357-42354e,2026-10-16
