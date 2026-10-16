@@ -4900,3 +4900,5 @@ game/GameEngine/Source/Common/BfmeConv1517.cpp|local|BfmeThingVNQ::bfmeTotalVNQ|
 game/GameEngine/Source/Common/BfmeConv1517.cpp|local|BfmeThingVNQ::bfmeTotalVNQ|p,7c737e6d3a2873500c739fae,gpt-6.1-sol,20261016071347-846e00,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/InGamePopupMessage.cpp|local|InGamePopupMessageInit|tempString,cea88d453580ae7557cea4b1,gpt-6.1-sol,20261016071410-54570a,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Rva56E070StateSave.cpp|param|UnicodeString::UnicodeString#2|s,86e3e8b62b49af7ceaa6c124,gpt-6.1-sol,20261016071209-65ed32,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/WorldHeightMap_dtor.cpp|type||Rva0074DE60BoundaryPoint,e1fcea3e9f649a479ba88792,gpt-6.1-sol,20261016071341-e7145f,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/WorldHeightMap_dtor.cpp|type||Rva0074DE60RefCountClass,6cb3103c582e32d46c17fe43,gpt-6.1-sol,20261016071341-e7145f,2026-10-16
