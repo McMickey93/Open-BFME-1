@@ -2463,3 +2463,6 @@ game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataCons
 game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_10,24e2d91d1f3d31415dc22d16,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_14,d11a2f0f47aa7e4a49be6914,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorModuleDataConstructor.cpp|member||m_bfme1c,9da536f5d7257cee8ba20acb,gpt-6.1-sol,20261016045507-13508d,2026-10-16
+game/GameEngine/Source/Common/System/GeometryShapeCopyConstructor.cpp|member||m_unmodelled00c,66acdd2f2f053f3d64c2d273,gpt-6.1-sol,20261016050232-ed2947,2026-10-16
+game/GameEngine/Source/Common/System/GeometryShapeCopyConstructor.cpp|member||m_unmodelled10,2d6ffaf8c5a19e32dafdd8c1,gpt-6.1-sol,20261016050232-ed2947,2026-10-16
+game/GameEngine/Source/Common/System/GeometryShapeCopyConstructor.cpp|member||m_unmodelled14,86a70690d2b62c3ff0e29169,gpt-6.1-sol,20261016050232-ed2947,2026-10-16
