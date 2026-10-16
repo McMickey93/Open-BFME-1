@@ -1,5 +1,5 @@
 // ?d_001ca2e0@@YAXXZ
-// partial score=0.98 date=2026-09-07
+// partial score=0.8801 date=2026-09-07
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc-
 
 // The Object activation body at retail 0x001CA2E0. The constructor at
