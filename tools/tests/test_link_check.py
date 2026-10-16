@@ -144,6 +144,48 @@ def test_refresh_replaces_a_passed_objects_census_definitions(monkeypatch):
     assert not C.duplicate("f", 0, True, 0, ix)
 
 
+def _refresh_fixture(monkeypatch, tmp_path, stale):
+    import os
+    import time
+    import build
+    import link_census
+    ix = index(strong={"f": [0, 1]})
+    ix["meta"]["date"] = "2026-10-14 07:27"
+    census = time.mktime(time.strptime("2026-10-14 07:27", "%Y-%m-%d %H:%M"))   # local, as census writes it
+    sources = {name: tmp_path / name.replace(".obj", ".cpp") for name in ("a.obj", "b.obj", "c.obj")}
+    for name, stamp in (("a.obj", census - 60), ("b.obj", census + 3600)):
+        obj = tmp_path / name
+        obj.write_bytes(b"")
+        os.utime(obj, (stamp, stamp))
+    monkeypatch.setattr(link_census, "ledger", lambda: [{"source": str(s)} for s in sources.values()])
+    monkeypatch.setattr(build, "obj_path", lambda s, member=None: tmp_path / s.name.replace(".cpp", ".obj"))
+    monkeypatch.setattr(build, "stale_sources", lambda *a: [sources[n] for n in stale])
+    monkeypatch.setattr(build, "compile_rows",
+                        lambda rows, srcs: {s: tmp_path / s.name.replace(".cpp", ".obj") for s in srcs})
+    passed = []
+    monkeypatch.setattr(C, "refresh", lambda index_, objects, truth: passed.extend(o.name for o in objects))
+    C.refresh_stale(ix, None)
+    return passed
+
+
+def test_refresh_stale_replaces_objects_rebuilt_since_the_census(monkeypatch, tmp_path):
+    """Ported from Open-BFME-2 36cd4e5fff: an object another build rebuilt after
+    the census is not stale, but its census definitions are old: --refresh
+    replaces them all the same. One built before the census, or missing, is not."""
+    assert _refresh_fixture(monkeypatch, tmp_path, stale=()) == ["b.obj"]
+
+
+def test_refresh_stale_recompiles_stale_objects_once(monkeypatch, tmp_path):
+    assert _refresh_fixture(monkeypatch, tmp_path, stale=("c.obj", "b.obj")) == ["c.obj", "b.obj"]
+
+
+def test_built_since_fails_closed_on_an_unreadable_census_date(tmp_path):
+    obj = tmp_path / "x.obj"
+    obj.write_bytes(b"")
+    assert not C.built_since(obj, index())                   # meta date "d"
+    assert not C.built_since(tmp_path / "missing.obj", {"meta": {"date": "2026-10-14 07:27"}})
+
+
 def test_serve_fails_closed_when_freshness_cannot_be_read(tmp_path, monkeypatch):
     """No origin/master, or a census commit git cannot find: exit, never claim."""
     import claims

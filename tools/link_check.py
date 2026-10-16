@@ -37,6 +37,7 @@ files; the other 104 it calls blocked where the census does not, because it
 also counts names referenced only from a COMDAT copy link.exe discards.
 
   python3 tools/link_check.py game/path/File.cpp [...]   # check files
+  python3 tools/link_check.py --refresh game/path/File.cpp  # first replace stale census definitions
   python3 tools/link_check.py --next [--limit 30]         # names that unlock the most bytes
   python3 tools/link_check.py --publish                   # write targets/game/reverse/link_queue.csv
   python3 tools/link_check.py next [--no-claim]           # serve + claim the top open queue row
@@ -340,6 +341,40 @@ def _object_bytes(obj):
         return obj.read_bytes()
     except OSError as exc:
         raise link_census.MissingObject(f"{obj}: cannot read object ({exc})") from exc
+
+
+def refresh_stale(index, truth):
+    """--refresh: recompile every ledger source whose object is not current
+    (build.compile_rows, the census's own compile phase) and replace those
+    objects' census definitions with their new ones (refresh), so a fix
+    another commit made since the census is seen. Objects another build
+    already rebuilt since the census are current, so nothing recompiles
+    them, but the census still holds their old definitions: those are
+    replaced too (built_since). Ported from Open-BFME-2 d2646f378c and
+    36cd4e5fff."""
+    rows = link_census.ledger() or ()
+    sources = [s for s in dict.fromkeys(ROOT / r["source"] for r in rows)
+               if s.suffix.lower() != build.LIB_SUFFIX]
+    stale = build.stale_sources(sources, {s: build.obj_path(s) for s in sources}, build._pool_size())
+    outputs = build.compile_rows(rows, stale) if stale else {}
+    rebuilt = [obj for obj in (build.obj_path(s) for s in sources if s not in outputs)
+               if built_since(obj, index)]
+    refresh(index, [outputs[s] for s in stale if s in outputs] + rebuilt, truth)
+    if stale:
+        print(f"link_check: recompiled {len(stale):,} stale ledger object(s) and replaced their census definitions")
+    if rebuilt:
+        print(f"link_check: replaced the census definitions of {len(rebuilt):,} object(s) rebuilt since the census")
+
+
+def built_since(obj, index):
+    """Was `obj` written in or after the census's minute? BFME1's census
+    stamps meta date with time.strftime, i.e. host LOCAL time (Open-BFME-2
+    stamps UTC), so it is read back with mktime."""
+    try:
+        census = time.mktime(time.strptime(index["meta"]["date"], "%Y-%m-%d %H:%M"))
+        return obj.stat().st_mtime >= census
+    except (KeyError, ValueError, OSError, OverflowError):
+        return False
 
 
 def refresh(index, objects, truth):
@@ -1396,6 +1431,10 @@ def main(argv=None):
     ap.add_argument("--limit", type=int, default=30)
     ap.add_argument("--census-only", action="store_true",
                     help="check against the census's definitions of the given files, not their current objects")
+    ap.add_argument("--refresh", action="store_true",
+                    help="first recompile stale ledger objects (every one, in a worktree without a warm build) "
+                         "and replace the census definitions of every "
+                         "object rebuilt since the census, so fixes other files made since then are seen")
     ap.add_argument("--publish", metavar="CSV", nargs="?", const=str(QUEUE),
                     help=f"write the queue's top {QUEUE_LIMIT} rows (default {QUEUE.relative_to(ROOT).as_posix()})")
     args = ap.parse_args(argv)
@@ -1412,6 +1451,10 @@ def main(argv=None):
     require_common_index(index)
     ledger = link_census.ledger()
     truth = link_census.RetailTruth(ledger)
+    if args.refresh:
+        if args.census_only:
+            ap.error("--refresh and --census-only are opposites")
+        refresh_stale(index, truth)
     rows_of = collections.defaultdict(list)
     for row in ledger or ():
         rows_of[row["source"]].append(row)
