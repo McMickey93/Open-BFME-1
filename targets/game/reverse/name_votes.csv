@@ -4002,3 +4002,11 @@ game/GameEngine/Source/GameLogic/System/DamageInfoInputAssign.cpp|member||m_04,a
 game/GameEngine/Source/GameLogic/System/DamageInfoInputAssign.cpp|member||m_0c,c82d80306641c0bd0e76fb61,gpt-6.1-sol,20261016062928-caed80,2026-10-16
 game/GameEngine/Source/GameLogic/System/DamageInfoInputAssign.cpp|member||m_14,71c72825c3a7bf41d7a59868,gpt-6.1-sol,20261016062928-caed80,2026-10-16
 game/GameEngine/Source/GameLogic/System/DamageInfoInputAssign.cpp|member||m_18,cde1596f835b245a24d6bd57,gpt-6.1-sol,20261016062928-caed80,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061180,b9d353825911d7069ec531f7,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva000611A0,34d30c8c921f3246e5eabf0b,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva000611C0,9d9591322f4cff2769685529,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva000611E0,444ce00ec3b7ec644a4ee57f,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061200,fca9c2d26e0831a09a863e2b,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061220,bf780da37d24add27fba95b4,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061240,0a3a2505770cff49ce09d5bf,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061470,aaaa2c4149564ba051ae67c4,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
