@@ -121957,7 +121957,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_000650b0@@YAXXZ,,0x000650B0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00464e90
 ?j_00067530@@YAXXZ,,0x00067530,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000429F6
 ?j_000678a0@@YAXXZ,,0x000678A0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00467540
-?j_00067a20@@YAXXZ,,0x00067A20,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0002A059
 ?j_0006b3d0@@YAXXZ,,0x0006B3D0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=FUN_00dd88f0
 ?j_0006b3e0@@YAXXZ,,0x0006B3E0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x009D7460
 ?j_0006b3f0@@YAXXZ,,0x0006B3F0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x009D7DE0
@@ -121967,7 +121966,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00076d00@@YAXXZ,,0x00076D00,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00475f60
 ?j_00076d10@@YAXXZ,,0x00076D10,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00476000
 ?j_000774e0@@YAXXZ,,0x000774E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00476b00
-?j_00077fb0@@YAXXZ,,0x00077FB0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004775f0
 ?j_00078310@@YAXXZ,,0x00078310,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0004A3AE
 ?j_00078320@@YAXXZ,,0x00078320,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00477fc0
 ?j_00078450@@YAXXZ,,0x00078450,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00478060
@@ -121996,13 +121994,11 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_000a2410@@YAXXZ,,0x000A2410,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000a4b60@@YAXXZ,,0x000A4B60,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a3c70
 ?j_000a7700@@YAXXZ,,0x000A7700,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
-?j_000abb60@@YAXXZ,,0x000ABB60,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004ab020
 ?j_000b00e0@@YAXXZ,,0x000B00E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000b7c80@@YAXXZ,,0x000B7C80,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00006B45
 ?j_000b7f50@@YAXXZ,,0x000B7F50,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00031A93
 ?j_000b8720@@YAXXZ,,0x000B8720,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000103F7
 ?j_000be2f0@@YAXXZ,,0x000BE2F0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000FC86
-?j_000c3c30@@YAXXZ,,0x000C3C30,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0002AE23
 ?j_000c3c46@@YAXXZ,,0x000C3C46,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0003C8E9
 ?j_000c8e76@@YAXXZ,,0x000C8E76,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00045DC7
 ?j_000c8e86@@YAXXZ,,0x000C8E86,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000FDF8
@@ -122058,7 +122054,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_001244d0@@YAXXZ,,0x001244D0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0067e4e0
 ?j_00126750@@YAXXZ,,0x00126750,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00127a30@@YAXXZ,,0x00127A30,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005274a0
-?j_00127d90@@YAXXZ,,0x00127D90,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005272e0
 ?j_00129490@@YAXXZ,,0x00129490,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00528c50
 ?j_0012a710@@YAXXZ,,0x0012A710,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00529b20
 ?j_0012abb0@@YAXXZ,,0x0012ABB0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00529e90
@@ -122169,7 +122164,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_001c3b40@@YAXXZ,,0x001C3B40,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00022C5A
 ?j_001c4b20@@YAXXZ,,0x001C4B20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005c3c70
 ?j_001da710@@YAXXZ,,0x001DA710,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005d8370
-?j_001dc1b0@@YAXXZ,,0x001DC1B0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000395CC
 ?j_001de660@@YAXXZ,,0x001DE660,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005de5b0
 ?j_001de870@@YAXXZ,,0x001DE870,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_001e0ac6@@YAXXZ,,0x001E0AC6,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0001BD74
@@ -122199,7 +122193,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00205690@@YAXXZ,,0x00205690,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00015E0B
 ?j_002072c0@@YAXXZ,,0x002072C0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00015E0B
 ?j_002078a0@@YAXXZ,,0x002078A0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
-?j_0020adb0@@YAXXZ,,0x0020ADB0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0060acd0
 ?j_0020cc50@@YAXXZ,,0x0020CC50,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00015E0B
 ?j_0020d0d0@@YAXXZ,,0x0020D0D0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00015E0B
 ?j_0020d560@@YAXXZ,,0x0020D560,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00015E0B
@@ -122466,7 +122459,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002c75b0@@YAXXZ,,0x002C75B0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
 ?j_002c8310@@YAXXZ,,0x002C8310,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
 ?j_002c9456@@YAXXZ,,0x002C9456,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00026D50
-?j_002cd170@@YAXXZ,,0x002CD170,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000F5D8
 ?j_002cdb10@@YAXXZ,,0x002CDB10,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003C55B
 ?j_002cedf0@@YAXXZ,,0x002CEDF0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003C55B
 ?j_002cf1e0@@YAXXZ,,0x002CF1E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003C55B
@@ -122618,7 +122610,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0044f400@@YAXXZ,,0x0044F400,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d0d090
 ?j_00452e50@@YAXXZ,,0x00452E50,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000160C2
 ?j_00456850@@YAXXZ,,0x00456850,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003EE37
-?j_00459f60@@YAXXZ,,0x00459F60,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00025AAE
 ?j_0045d600@@YAXXZ,,0x0045D600,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0085d1c0
 ?j_0045e740@@YAXXZ,,0x0045E740,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0045e760@@YAXXZ,,0x0045E760,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
@@ -122735,7 +122726,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_005a7e10@@YAXXZ,,0x005A7E10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009a7d90
 ?j_005a9af0@@YAXXZ,,0x005A9AF0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009a8580
 ?j_005aa310@@YAXXZ,,0x005AA310,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009a9f90
-?j_005b37b0@@YAXXZ,,0x005B37B0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009b33b0
 ?j_005b7ea0@@YAXXZ,,0x005B7EA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009b7c40
 ?j_005bbe50@@YAXXZ,,0x005BBE50,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009bbc50
 ?j_005bbe90@@YAXXZ,,0x005BBE90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009bbcf0
@@ -122758,9 +122748,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_005cb020@@YAXXZ,,0x005CB020,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000107DA
 ?j_005cbc60@@YAXXZ,,0x005CBC60,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00010F28
 ?j_005d2c00@@YAXXZ,,0x005D2C00,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009d2900
-?j_005d4130@@YAXXZ,,0x005D4130,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041763
-?j_005d4140@@YAXXZ,,0x005D4140,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_0041ee2a
-?j_005d4150@@YAXXZ,,0x005D4150,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00441763
 ?j_005e2c60@@YAXXZ,,0x005E2C60,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009deb40
 ?j_005e4a80@@YAXXZ,,0x005E4A80,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009e23d0
 ?j_005e4cc0@@YAXXZ,,0x005E4CC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000124AE
@@ -122849,8 +122836,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0062a500@@YAXXZ,,0x0062A500,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a2a3a0
 ?j_00632750@@YAXXZ,,0x00632750,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a32070
 ?j_00632760@@YAXXZ,,0x00632760,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a32130
-?j_00634bd0@@YAXXZ,,0x00634BD0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a34060
-?j_00634be0@@YAXXZ,,0x00634BE0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a34190
 ?j_006354e0@@YAXXZ,,0x006354E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000052BD
 ?j_00635b90@@YAXXZ,,0x00635B90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a35920
 ?j_00636d30@@YAXXZ,,0x00636D30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041AEC
@@ -122859,9 +122844,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0063a8c0@@YAXXZ,,0x0063A8C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00be86c0
 ?j_0063d0d0@@YAXXZ,,0x0063D0D0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a3cba0
 ?j_0063d0e0@@YAXXZ,,0x0063D0E0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a3cc90
-?j_00641a20@@YAXXZ,,0x00641A20,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00024C35
-?j_00641c40@@YAXXZ,,0x00641C40,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a418e0
-?j_00641c50@@YAXXZ,,0x00641C50,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a41a30
 ?j_00646230@@YAXXZ,,0x00646230,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a45480
 ?j_006471f0@@YAXXZ,,0x006471F0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00034225
 ?j_0064bfb0@@YAXXZ,,0x0064BFB0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002D77C
@@ -122882,7 +122864,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00667f10@@YAXXZ,,0x00667F10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a67820
 ?j_00667f20@@YAXXZ,,0x00667F20,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000214A9
 ?j_00668d80@@YAXXZ,,0x00668D80,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a68990
-?j_00670620@@YAXXZ,,0x00670620,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a705c0
 ?j_00670ec0@@YAXXZ,,0x00670EC0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_008b2ca0
 ?j_00670f00@@YAXXZ,,0x00670F00,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_008b2ca0
 ?j_0068d4c0@@YAXXZ,,0x0068D4C0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001F4A6
@@ -122952,7 +122933,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00746176@@YAXXZ,,0x00746176,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041191
 ?j_00746186@@YAXXZ,,0x00746186,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00014A38
 ?j_00746190@@YAXXZ,,0x00746190,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b40cf0
-?j_0074e310@@YAXXZ,,0x0074E310,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00047041
 ?j_0074e690@@YAXXZ,,0x0074E690,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00012EFE
 ?j_0074e6a0@@YAXXZ,,0x0074E6A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00033BA9
 ?j_00750340@@YAXXZ,,0x00750340,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00004381
@@ -122970,7 +122950,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00759790@@YAXXZ,,0x00759790,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b5c940
 ?j_007597a0@@YAXXZ,,0x007597A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000DDFF
 ?j_007624f0@@YAXXZ,,0x007624F0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
-?j_00769470@@YAXXZ,,0x00769470,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b68330
 ?j_00769700@@YAXXZ,,0x00769700,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b684f0
 ?j_0076f7a0@@YAXXZ,,0x0076F7A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001CEEF
 ?j_0077d430@@YAXXZ,,0x0077D430,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00004381
@@ -172541,3 +172520,24 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?nearest@Rva002229E0Contain@@UAEPAVObject@@PBUCoord3D@@@Z,,0x002229E0,112,game/GameEngine/Source/GameLogic/Rva002229E0NearestContained.cpp,matched,ILT 0x0000CCA2 in eleven contain vtables (slot 56 of CaveContainIface3 and GarrisonContain OpenContainSecondaryBase<2>); same +0x18 object list as matched Rva222970FilteredDispatch; 2D nearest contained object; owner unproven;model=claude-opus-5-5;host=app
 ?drawableSideFlag@@YA_NPBVThing@@@Z,,0x00418600,178,game/GameEngine/Source/GameClient/DrawableDrawVeterancy.cpp,matched,file-local helper of Drawable::drawVeterancy 0x00420670 (its only caller) taking the Drawable in EAX; returns PlayerTemplate+0x118 of the template's default owning side; RET then INT3 at +0xB2 proves 178B;model=claude-opus-5-5;host=app
 ?drawVeterancy@Drawable@@AAEXXZ,,0x00420670,373,game/GameEngine/Source/GameClient/DrawableDrawVeterancy.cpp,matched,Drawable::drawVeterancy: matched drawIconUI dispatch calls it through ILT 0x00038AAA where ilt_oracle CONFIRMS ?drawVeterancy@Drawable@@AAEXXZ; RET +0x174 then INT3 proves 373B; KindOf 108/10 = HORDE/MONSTER from retail KindOf name table 0x012AA068;model=claude-opus-5-5;host=app
+?insert@?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@QAEXPAPAXIABQAX@Z,,0x00067A20,5,game/GameEngine/Source/GameClient/System/ParticleSys.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00067A20; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$set@VAsciiString@@U?$less@VAsciiString@@@_STL@@V?$allocator@VAsciiString@@@3@@_STL@@QAE@XZ,,0x00077FB0,5,game/GameEngine/Source/GameNetwork/GameSpy/PeerDefs.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00077FB0; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$map@JVLadderPref@@U?$less@J@_STL@@V?$allocator@U?$pair@$$CBJVLadderPref@@@_STL@@@3@@_STL@@QAE@XZ,,0x000ABB60,5,game/GameEngine/Source/Common/LadderPrefMapDestructor.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x000ABB60; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?findUpdateModule@Object@@QBEPAVUpdateModule@@W4NameKeyType@@@Z,,0x000C3C30,5,game/GameEngine/Source/GameLogic/Object/Object.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x000C3C30; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$map@W4NameKeyType@@VModuleTemplate@ModuleFactory@@U?$less@W4NameKeyType@@@_STL@@V?$allocator@U?$pair@$$CBW4NameKeyType@@VModuleTemplate@ModuleFactory@@@_STL@@@5@@_STL@@QAE@XZ,,0x00127D90,5,game/GameEngine/Source/Common/Thing/ModuleFactoryDestructor.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00127D90; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?insert@?$vector@HV?$allocator@H@_STL@@@_STL@@QAEXPAHIABH@Z,,0x001DC1B0,5,game/GameEngine/Source/GameLogic/Object/ObjectTypes.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x001DC1B0; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$list@HV?$allocator@H@_STL@@@_STL@@QAE@XZ,,0x0020ADB0,5,game/GameEngine/Source/GameLogic/Object/Contain/HordeContainDestructors.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x0020ADB0; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?insert@?$vector@W4ObjectID@@V?$allocator@W4ObjectID@@@_STL@@@_STL@@QAEXPAW4ObjectID@@IABW43@@Z,,0x002CD170,5,game/GameEngine/Source/Common/VectorObjectIDFillInsert.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x002CD170; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?insert@?$vector@MV?$allocator@M@_STL@@@_STL@@QAEXPAMIABM@Z,,0x00459F60,5,game/GameEngine/Source/GameClient/FloatVectorFillInsertThunk.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00459F60; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$map@VAsciiString@@VHotKey@@U?$less@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@4@@_STL@@QAE@XZ,,0x005B37B0,5,game/GameEngine/Source/GameClient/MessageStream/HotKey.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x005B37B0; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$DLNodeClass@USmudge@@@@QAE@XZ,,0x005D4130,5,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x005D4130; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$DLNodeClass@USmudgeSet@@@@QAE@XZ,,0x005D4140,5,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x005D4140; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1Smudge@@QAE@XZ,,0x005D4150,5,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x005D4150; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$map@HVGameSpyGroupRoom@@U?$less@H@_STL@@V?$allocator@U?$pair@$$CBHVGameSpyGroupRoom@@@_STL@@@3@@_STL@@QAE@XZ,,0x00634BD0,5,game/GameEngine/Source/GameNetwork/GameSpy/PeerDefs.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00634BD0; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$map@VAsciiString@@VPlayerInfo@@UAsciiComparator@@V?$allocator@U?$pair@$$CBVAsciiString@@VPlayerInfo@@@_STL@@@_STL@@@_STL@@QAE@XZ,,0x00634BE0,5,game/GameEngine/Source/GameNetwork/GameSpy/PeerDefs.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00634BE0; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?pop@?$queue@VGameResultsResponse@@V?$deque@VGameResultsResponse@@V?$allocator@VGameResultsResponse@@@_STL@@@_STL@@@_STL@@QAEXXZ,,0x00641A20,5,game/GameEngine/Source/GameNetwork/GameSpy/Thread/GameResultsThread.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00641A20; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$queue@VGameResultsRequest@@V?$deque@VGameResultsRequest@@V?$allocator@VGameResultsRequest@@@_STL@@@_STL@@@_STL@@QAE@XZ,,0x00641C40,5,game/GameEngine/Source/GameNetwork/GameSpy/Thread/GameResultsThread.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00641C40; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$queue@VGameResultsResponse@@V?$deque@VGameResultsResponse@@V?$allocator@VGameResultsResponse@@@_STL@@@_STL@@@_STL@@QAE@XZ,,0x00641C50,5,game/GameEngine/Source/GameNetwork/GameSpy/Thread/GameResultsThread.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00641C50; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?reset@FrameDataManager@@QAEXXZ,,0x00670620,5,game/GameEngine/Source/GameNetwork/FrameDataManager.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00670620; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+?insert@?$vector@EV?$allocator@E@_STL@@@_STL@@QAEXPAEIABE@Z,,0x0074E310,5,game/GameEngine/Source/GameLogic/Object/PartitionManager.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x0074E310; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app
+??1?$map@W4NameKeyType@@UPristineBoneInfo@@U?$less@W4NameKeyType@@@_STL@@V?$allocator@U?$pair@$$CBW4NameKeyType@@UPristineBoneInfo@@@_STL@@@4@@_STL@@QAE@XZ,,0x00769470,5,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDrawPristineBoneInfoMapDestructor.cpp,matched,5B forwarder; ilt_oracle CONFIRMED exact at 0x00769470; the callee's matched TU emits the byte-equal COMDAT with its relocation on the retail target;model=claude-opus-5-5;host=app

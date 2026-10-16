@@ -140,7 +140,6 @@ void FrameDataManager::init() {
 /**
  * Reset the state of all the frames.
  */
-// ?reset@FrameDataManager@@ present-unmatched
 void FrameDataManager::reset() {
 	init();
 }
