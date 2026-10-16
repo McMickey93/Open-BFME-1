@@ -4317,3 +4317,5 @@ game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|member||m_40,5a7a5da51715
 game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|local|Gen00522E00::apply0|p,db37f6226e2501c1fd3eef88,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
 game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|local|Gen00522E00::apply2|p,7af4d022c3a34c5eccbc072c,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
 game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|local|Gen00522E00::apply3|p,0cd6e1ab5c8869a24416a7b0,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1351.cpp|param|BfmeThingVFC::bfmeGoVFC|c,b32b2cd8ed023a293a2976cc,gpt-6.1-sol,20261016064631-17b5b0,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1351.cpp|local|BfmeThingVFC::bfmeGoVFC|r,50a9e3ef7a50c726f95a6614,gpt-6.1-sol,20261016064631-17b5b0,2026-10-16
