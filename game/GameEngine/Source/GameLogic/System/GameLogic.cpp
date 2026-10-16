@@ -5694,19 +5694,7 @@ GameLogic::ObjectTOCEntry *GameLogic::findTOCEntryById( UnsignedShort id )
 
 }  // end findTOCEntryById
 
-// ------------------------------------------------------------------------------------------------
-/** Add an object TOC entry */
-// ------------------------------------------------------------------------------------------------
-// ?addTOCEntry@GameLogic@@AAEXVAsciiString@@G@Z present-unmatched
-void GameLogic::addTOCEntry( AsciiString name, UnsignedShort id )
-{
-
-	ObjectTOCEntry tocEntry;
-	tocEntry.name = name;
-	tocEntry.id = id;
-	m_objectTOC.push_back( tocEntry );
-
-}  // end addTOCEntry
+// Retail addTOCEntry is defined in GameLogicAddTOCEntry.cpp.
 
 // ------------------------------------------------------------------------------------------------
 /** Xfer object table of contents */
