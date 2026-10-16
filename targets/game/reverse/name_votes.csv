@@ -4446,3 +4446,14 @@ game/GameEngine/Source/Common/BfmeConv1144.cpp|member||m_bfme1fc,174349cdfad31f4
 game/GameEngine/Source/Common/BfmeConv1144.cpp|member||m_bfmeb8c,cdc0a2106068c6f049387519,gpt-6.1-sol,20261016065826-1e2d42,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1144.cpp|member||m_bfme170c,d3bfc88ecf0cf99651ab4fd1,gpt-6.1-sol,20261016065826-1e2d42,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1144.cpp|function|BfmeA1144@|bfmeGo1144,b342632a2124b4a1100d1dc4,gpt-6.1-sol,20261016065826-1e2d42,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||byte_1a,6debd2c6f9c82081bae1f914,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||byte_22,a63a414cdc6f84aee94ee8b8,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||byte_23,4796e5a7840dda8a14429ec1,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||dword_24,6635262a6d2a2b294ed3f75c,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||dword_28,5b06fa0178b0d03010c537df,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||dword_2c,2983d51e9cf06ecb8441d7de,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||m_field28,da7837b1762e1dab43c06678,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||m_field38,2fac00db7bd50289b1e650ab,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||m_field45,89aca9b8976ce60a2b392d77,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||m_field46,69880b359f3e39bec70493f5,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
+game/GameEngine/Source/Common/GameLODManagerApplyStaticLODLevel.cpp|member||m_field47,352f7f7dbc011e4a0f668402,gpt-6.1-sol,20261016065913-bf05a7,2026-10-16
