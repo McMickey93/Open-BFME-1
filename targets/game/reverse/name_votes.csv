@@ -2462,3 +2462,4 @@ game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataCons
 game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_0c,b965575e92219116f484b0b7,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_10,24e2d91d1f3d31415dc22d16,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_14,d11a2f0f47aa7e4a49be6914,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SpawnUnitBehaviorModuleDataConstructor.cpp|member||m_bfme1c,9da536f5d7257cee8ba20acb,gpt-6.1-sol,20261016045507-13508d,2026-10-16
