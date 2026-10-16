@@ -1,19 +1,16 @@
-// ?killPendingCastleMember@Rva001FF060Behavior@@QAE_NXZ
-// partial score=0.9 date=2026-09-06
 // cl: /DNDEBUG /MD /EHsc
-// Open-BFME7: a castle-member behaviour method at 0x001FF060 (242 B).  The
-// module owns an object (+8) whose +0x7C holds the pending member's id and
-// +0x74 a second id; the module's flag byte at +0x30 selects the path.  With
-// the flag clear the owner's castle-member behaviour (finder 0x0036BB10) is
-// consulted: unless it is live (+0x14) not marked (+0x24) and reports the
-// pending object unavailable the pending object is looked up its relationship
-// to the owner must not be ENEMIES the 0x20000 model-condition bit is raised
-// (notifyModelConditionChanged) and it is killed with damage 8 death 0x16
-// (returns true; false when the object is missing or an enemy).  Otherwise
-// the pending object's AI update (+0x204) must answer virtual slot 96 and the
-// two ids must differ before the same condition-and-kill; the flag is then
-// cleared and true returned in every case of that path.  Address-derived
-// names.
+// GettingBuiltBehavior member at 0x001FF060 (242 B, ret at +0xF1 before int3
+// padding). Identity: GettingBuiltBehavior::update (0x001FF880, matched in
+// GettingBuiltBehavior_update.cpp) calls it on its own object through ILT
+// 0x00036449 and sets the same +0x30 flag this body tests and clears; it sits
+// between the GettingBuiltBehavior bodies 0x001FEC30 and ??_G 0x001FF190.
+// Meaning unproven, so the name keeps the address. With the flag clear the
+// owner's castle-member module (finder 0x0036BB10, check through ILT
+// 0x0004B015) is consulted; otherwise the pending object (+0x7C id) must answer
+// its AI update's slot 96 and differ from the +0x74 id. Either path raises
+// model-condition bit 241 (word 7 of the +0x110 flags, 0x20000; the same
+// test/set shape as AIMoveAndDeleteState_onEnter.cpp) and kills it with
+// damage 8 death 0x16.
 
 typedef bool Bool;
 
@@ -22,8 +19,6 @@ enum DamageType { DAMAGE_UNRESISTABLE_8 = 8 };
 enum DeathType { DEATH_0x16 = 0x16 };
 
 class Object;
-class Module;
-
 class Rva001FF060AIUpdate
 {
 public:
@@ -126,9 +121,27 @@ public:
 	virtual Bool isReadyForPendingMember( void );
 };
 
+struct ModelConditionFlags
+{
+	// Returns the masked word, not a bool: retail keeps the mask in a register
+	// for the test and the set that follows.
+	unsigned int test( int i ) const { return m_bits[i >> 5] & (1u << (i & 31)); }
+	void set( int i ) { m_bits[i >> 5] |= (1u << (i & 31)); }
+	unsigned int m_bits[10];
+};
+
 class Object
 {
 public:
+	void bfmeSetModelConditionState( int bit )
+	{
+		if (!m_modelConditionFlags.test( bit ))
+		{
+			m_modelConditionFlags.set( bit );
+			notifyModelConditionChanged();
+		}
+	}
+
 	Relationship getRelationship( const Object *other ) const;
 	void notifyModelConditionChanged( void );
 	void kill( DamageType damage, DeathType death );
@@ -137,11 +150,13 @@ public:
 	int m_secondId;
 	int m_unreconstructed78;
 	int m_pendingId;
-	char m_unreconstructed80[ 0x12C - 0x80 ];
-	unsigned int m_modelCondition12C;
-	char m_unreconstructed130[ 0x204 - 0x130 ];
+	char m_unreconstructed80[ 0x110 - 0x80 ];
+	ModelConditionFlags m_modelConditionFlags;
+	char m_unreconstructed138[ 0x204 - 0x138 ];
 	Rva001FF060AIUpdate *m_ai;
 };
+
+class Module;
 
 class CastleBehavior
 {
@@ -154,7 +169,7 @@ public:
 	unsigned char m_marked24;
 };
 
-CastleBehavior *rva0036BB10FindCastleMemberBehavior( const Object *object );
+Module *rva0036BB10FindCastleMemberBehavior( const Object *object );
 
 class GameLogic
 {
@@ -164,36 +179,31 @@ public:
 
 extern GameLogic *TheGameLogic;
 
-class Rva001FF060Behavior
+class GettingBuiltBehavior
 {
 public:
-	Bool killPendingCastleMember( void );
+	Bool rva001FF060( void );
 
 private:
 	char m_unreconstructed00[ 8 ];
-	Object *m_owner;
+	Object *m_object;
 	char m_unreconstructed0C[ 0x30 - 0x0C ];
-	unsigned char m_flag30;
+	Bool m_flag30;
 };
 
 static __forceinline void Rva001FF060ConditionAndKill( Object *target )
 {
-	unsigned int bit = 0x20000;
-	if( !( target->m_modelCondition12C & bit ) )
-	{
-		target->m_modelCondition12C |= bit;
-		target->notifyModelConditionChanged();
-	}
+	target->bfmeSetModelConditionState( 241 );
 	target->kill( DAMAGE_UNRESISTABLE_8, DEATH_0x16 );
 }
 
-// ?killPendingCastleMember@Rva001FF060Behavior@@QAE_NXZ
-Bool Rva001FF060Behavior::killPendingCastleMember( void )
+// ?rva001FF060@GettingBuiltBehavior@@QAE_NXZ
+Bool GettingBuiltBehavior::rva001FF060( void )
 {
-	Object *owner = m_owner;
+	Object *owner = m_object;
 	if( !m_flag30 )
 	{
-		CastleBehavior *castle = rva0036BB10FindCastleMemberBehavior( owner );
+		CastleBehavior *castle = (CastleBehavior *)rva0036BB10FindCastleMemberBehavior( owner );
 		if( !( castle && castle->m_live14 && !castle->m_marked24 && castle->isPendingObjectUnavailable() ) )
 		{
 			Object *target = TheGameLogic->findObjectByID( owner->m_pendingId );
@@ -209,13 +219,12 @@ Bool Rva001FF060Behavior::killPendingCastleMember( void )
 	if( target )
 	{
 		Rva001FF060AIUpdate *ai = target->m_ai;
-		if( !ai )
-			return true;
-		if( !ai->isReadyForPendingMember() )
-			return true;
-		if( owner->m_pendingId == owner->m_secondId )
-			return true;
-		Rva001FF060ConditionAndKill( target );
+		if( ai && ai->isReadyForPendingMember() && owner->m_pendingId != owner->m_secondId )
+		{
+			Rva001FF060ConditionAndKill( target );
+			m_flag30 = 0;
+		}
+		return true;
 	}
 	m_flag30 = 0;
 	return true;

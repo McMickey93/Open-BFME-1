@@ -20428,5 +20428,15 @@
   "after_sha256": "a48d1c053eb15d2dc2864285f5277320f3fb3f0d0de4295f0a85e9445d94a620",
   "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md",
   "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x001ff060.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorRva001FF060.cpp",
+  "old_name": "killPendingCastleMember",
+  "new_name": "rva001FF060",
+  "before_sha256": "d34c58c4e7cc1348205859ab5979f22ae269deb7306121e16749f070b776dd90",
+  "after_sha256": "c9ab88c8ec8c2da03024251dcf8270dba0416e02dc51a9afd4182b62c9c6c875",
+  "evidence": "targets/game/reverse/identity_evidence/rva001FF060-gettingbuilt.md",
+  "reason": "the banked attempt's guessed method name is CONTRADICTED by ilt_oracle at the body's only ILT 0x00036449; the matched caller GettingBuiltBehavior::update proves only the owning class, so the method keeps an address-derived name"
  }
 ]
