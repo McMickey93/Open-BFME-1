@@ -5172,3 +5172,14 @@ game/GameEngine/Source/Common/BfmeConv982.cpp|local|Rva007845D0::method|x,8f8706
 game/GameEngine/Source/Common/BfmeConv982.cpp|local|Rva007845D0::method|y,1dba58479412a6439f28fc73,gpt-6.1-sol,20261016074521-032a5e,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AttackHordeStateMachineCtor.cpp|type||Rva00171B40AIAttackFireWeaponState,4b2e311703c97b607867c521,gpt-6.1-sol,20261016074526-97c405,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AttackHordeStateMachineCtor.cpp|param|StateConditionInfo|t,13daafd82cf2f7d0238ae2f7,gpt-6.1-sol,20261016074526-97c405,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva000695C0Less|a,c4cd18aedc39020dde391bfd,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva000695C0Less|b,b5c42285035370b821250ed1,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva000699A0Less|a,0e1a898e05cb9e369148a496,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva000699A0Less|b,5e817ad4f122db3935b5efbf,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva00069AD0Less|a,bff862f383fc5ac615ad2b8c,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva00069AD0Less|b,d00ba2101b18af64cde87600,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva00069B50Less|a,02b8bb7b38d629e4b1ef6679,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva00069B50Less|b,4e20fec9538eccead4f0628c,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva00069520Swap|a,6339ac5629f9fc61e49fbad2,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|param|Rva00069520Swap|b,72105986de381798c608c419,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
+game/GameEngine/Source/Common/T3SmallLeafBodies.cpp|local|Rva00069520Swap|temp,90fa2efcead7fcb039f23374,gpt-6.1-sol,20261016074537-96b6b7,2026-10-16
