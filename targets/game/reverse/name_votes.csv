@@ -5758,3 +5758,5 @@ game/GameEngine/Source/Common/Rva008A0FF0ValueStackReleaseAll.cpp|local|Rva008A0
 game/GameEngine/Source/GameClient/System/DebugDisplay.cpp|param|DebugDisplay::setCursorPos|x,d50f0f2a916502c3fb8e21ac,gpt-6.1-sol,20261016130727-9a6eb8,2026-10-16
 game/GameEngine/Source/GameClient/System/DebugDisplay.cpp|param|DebugDisplay::setCursorPos|y,a12506160ccd60124299f483,gpt-6.1-sol,20261016130727-9a6eb8,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderAdjustToPossibleDestination.cpp|local|Pathfinder::adjustToPossibleDestination|zone2,eb8f1b91953c157edbcad3e1,gpt-6.1-sol,20261016130732-3afe23,2026-10-16
+game/GameEngine/Source/Common/T2IndexedArrayAccessors.cpp|local|T2OwnerA::find|p,0d9492a50f8de661f05215d6,gpt-6.1-sol,20261016130737-e9e5f3,2026-10-16
+game/GameEngine/Source/Common/T2IndexedArrayAccessors.cpp|local|T2OwnerC::find|p,bc85ba20d45693f3df8a17ef,gpt-6.1-sol,20261016130737-e9e5f3,2026-10-16
