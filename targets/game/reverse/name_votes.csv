@@ -4312,3 +4312,8 @@ game/Libraries/Source/EA/Apt/Rva008A7B00KeyboardProperties.cpp|param|addPooled|v
 game/Libraries/Source/EA/Apt/Rva008A7B00KeyboardProperties.cpp|local|pooledInteger|v,751a775d65c10afc71700d64,gpt-6.1-sol,20261016063809-385975,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineLoginRva00552C40.cpp|member||field98,712b9a48e3e3c8b021ddfb5c,gpt-6.1-sol,20261016063804-1a5574,2026-10-16
 game/GameEngine/Source/Common/Rva008802E0Overflow.cpp|local|BfmeVec2E::overflow|n,28edaa1180ff79beda97a9bc,gpt-6.1-sol,20261016063748-92e750,2026-10-16
+game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|member||m_3C,8ea328551694c33fef640cb1,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
+game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|member||m_40,5a7a5da517154ad182db08ff,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
+game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|local|Gen00522E00::apply0|p,db37f6226e2501c1fd3eef88,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
+game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|local|Gen00522E00::apply2|p,7af4d022c3a34c5eccbc072c,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
+game/GameEngine/Source/Common/Rva005222A0NoteCalls.cpp|local|Gen00522E00::apply3|p,0cd6e1ab5c8869a24416a7b0,gpt-6.1-sol,20261016063814-e5b74f,2026-10-16
