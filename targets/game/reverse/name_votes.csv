@@ -3869,3 +3869,13 @@ game/GameEngine/Source/Common/Bezier/BezierSegmentConstructionAndLength.cpp|para
 game/GameEngine/Source/Common/Bezier/BezierSegmentConstructionAndLength.cpp|param|Rva000B6D50BezierSegment::Rva000B6D50BezierSegment#3|cp1,e25edbbbff6e1945f5f91730,gpt-6.1-sol,20261016061931-1740c3,2026-10-16
 game/GameEngine/Source/Common/Bezier/BezierSegmentConstructionAndLength.cpp|param|Rva000B6D50BezierSegment::Rva000B6D50BezierSegment#3|cp2,71fd5afd4388c92fbd735300,gpt-6.1-sol,20261016061931-1740c3,2026-10-16
 game/GameEngine/Source/Common/Bezier/BezierSegmentConstructionAndLength.cpp|param|Rva000B6D50BezierSegment::Rva000B6D50BezierSegment#3|cp3,6bab1ff9fb93f004866d1d1d,gpt-6.1-sol,20261016061931-1740c3,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|function|BfmeThingCK@|bfmeSwapCK,c57d32b9b70fecd509244634,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|local|bfmeXchgCK|t,40c5bead73e6fe654913822b,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|local|bfmeXchgWCK|t,a857e51a3bd2fc4352aa6ea6,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|bfmeSwapCK|o,10fd1411b9e2c59c73064b79,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|bfmeSwapCK#2|o,abb0be4fcac0033873f3e39a,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|bfmeSwapCK#3|o,3c452edb22fb6971242cea7d,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|bfmeSwapCK#4|o,cce18bd2b60d097b8a34d4d8,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|bfmeSwapCK#5|o,6e4e6e14fdf01e34a5ba5e64,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|param|BfmeThingCK::bfmeSwapCK|o,ae3aba1abde994a365583b6e,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
+game/GameEngine/Source/Common/BfmeThingMemberwiseSwap.cpp|local|BfmeThingCK::bfmeSwapCK|t,149710e7db897507bd6e25fe,gpt-6.1-sol,20261016062259-fd0425,2026-10-16
