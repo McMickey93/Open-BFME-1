@@ -1462,3 +1462,4 @@ game/GameEngine/Source/Common/Rva007E8980Guard.cpp|local|Rva007E8980::go|r,2c113
 game/GameEngine/Source/GameLogic/Object/Behavior/DynamicPortalBehaviourRva001F8E20.cpp|local|Rva001F8E20Owner::method|d,ef96681ac63f77fa0b294c6b,gpt-6.1-sol,20261016031807-6c59bf,2026-10-16
 game/GameEngine/Source/Common/Rva0087EBB0Max.cpp|function||bfmeApplyEB,17f38979d1bcb0037dfa0b47,gpt-6.1-sol,20261016031813-f85a62,2026-10-16
 game/GameEngine/Source/Common/Rva0087EBB0Max.cpp|local|bfmeApplyEB|c,acf7327debf44d1878bbcb53,gpt-6.1-sol,20261016031813-f85a62,2026-10-16
+game/GameEngine/Source/Common/Rva002C4530Fetch.cpp|local|Rva002C4530Owner::update|temp,4a66468408d84077cb040893,gpt-6.1-sol,20261016031821-9d47e3,2026-10-16
