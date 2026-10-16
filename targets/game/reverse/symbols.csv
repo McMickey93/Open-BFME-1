@@ -16559,8 +16559,6 @@ name,address,notes
 ?apply@ControlBarSetDefaultConfigShim@@QAEXXZ,0x0049E090,ControlBar setDefaultControlBarConfig incremental-link thunk target through a TU-local forwarding shim
 ?apply@ControlBarSetLowConfigShim@@QAEXXZ,0x0049E120,ControlBar setLowControlBarConfig incremental-link thunk target through a TU-local forwarding shim
 ?apply@DrawableApplyPendingThunk@@QAEX_N@Z,0x0002D439,unique ILT view for Object selection notification; linker alternate name targets the generated thunk
-?apply@Gen00006D20@@QAEXPAVY1RangeWrapper@@@Z,0x00006D20,element callee of the 0x003D08F0 dispatch loop reached via incremental-link thunk; address-derived name
-?apply@Gen00025C75@@QAEXPAVY1RangeContext@@@Z,0x00025C75,element callee of the 0x003D09A0 dispatch loop reached via incremental-link thunk; address-derived name
 ?apply@Gen003C0110Result@@QAEXHHHHH@Z,0x003A58E0,five-argument member called on the lookup result by 0x003C0250; address-derived name
 ?apply@Gen003C0110Result@@QAEXPAX@Z,0x0002E898,ILT to apply body 0x003A47C0; callee of 0x003C0350
 ?apply@Gen003C0350Lookup@@QAEXPAX@Z,0x0002E898,ILT to apply body 0x003A47C0; callee of 0x003C0350
@@ -76994,7 +76992,6 @@ name,address,notes
 ?bfmeCall1WA@@YAPAXPAX00@Z,0x00835800,pin
 ?bfmeCall1WB@@YAPAXPAX0000@Z,0x00846320,pin
 ?bfmeCall2440@Team@@QAEXPAX0@Z,0x00045B60,ILT thunk to body 0x000F75B0
-?bfmeCall2@MemberUnknown006E85D0@@QAEXXZ,0x0002F7FC,thiscall address-adjust forward to existing thunk j_0002f7fc for landing 0x006E85D0
 ?bfmeCall2VW@@YAPAXPAX0000000@Z,0x00835230,pin
 ?bfmeCall2VW@@YAXPAX0000000@Z,0x00835230,pin
 ?bfmeCall2VX@@YAXPAX0000000@Z,0x00835AF0,pin
@@ -77601,7 +77598,6 @@ name,address,notes
 ?bfmeDoYR@BfmeSubYR@@QAEDPAX000H@Z,0x0087F2F0
 ?bfmeDoZA@BfmeOwnerZA@@QAEXPAX0HHHHPAMPAD@Z,0x0002B73D
 ?bfmeDoZD@BfmeCZD@@QAEXHHH@Z,0x0004A12E,pin
-?bfmeDoZN@@YGXPAXPAPAUBfmeNodeZN@@0@Z,0x0000CEC8
 ?bfmeDoZN@Rva0035E710Owner@@QAEXPAXPAPAUBfmeNodeZN@@0@Z,0x0035E5A0,RVA0035E710 helper; ILT0000CEC8 decodes here; ECX saved EBX0035E5B6 and receiver+0C/+18 accessed; three pointer stack args; opaque identity preserves bank label with corrected member ABI
 ?bfmeDone1038@BfmeB1038@@QAEXXZ,0x000142A9,pin
 ?bfmeDone1045@BfmeSub1045@@QAEXXZ,0x007E86C0,pin
@@ -78281,7 +78277,6 @@ name,address,notes
 ?bfmeFwdTwoSUA@BfmeThingSUA@@QAEXHD@Z,0x0082FB10,pin
 ?bfmeFwdTwoSVA@BfmeThingSVA@@QAEXHH@Z,0x008309C0,pin
 ?bfmeG1076@BfmeQ1076@@QAEXH@Z,0x0003936A,pin
-?bfmeG@BfmeList2F260@@QAEXHH@Z,0x0002818C,Open-BFME6 list method tail-called by Gen_0022F260 forwarder; body at 0x000688A5
 ?bfmeGen00029C35@Gen_00529B10@@QAEXH@Z,0x00029C35,address-derived helper; target read from the first REL32 in the guarded eight-index loop at 0x00529B10
 ?bfmeGen0002D38A@Gen_00529B10@@QAEXH@Z,0x0002D38A,address-derived helper; target read from the third REL32 in the guarded eight-index loop at 0x00529B10
 ?bfmeGen0002EA91@Gen_00529B10@@QAEXH_N@Z,0x0002EA91,address-derived helper; target read from the second REL32 in the guarded eight-index loop at 0x00529B10
@@ -78385,7 +78380,6 @@ name,address,notes
 ?bfmeGetVHE@BfmeMsgVHE@@QAEHPAXH@Z,0x007E8900,pin
 ?bfmeGetVJI@BfmeMsgVJI@@QAEHPBDH@Z,0x007E8900,pin
 ?bfmeGet_002197e0@BfmeChainResult@@QAEPAXXZ,0x00027746,Open-BFME5 ILT the lookup at 0x002197E0 tail-jumps through
-?bfmeGet_00219890@BfmeChainResult@@QAEPAXXZ,0x0002818C,Open-BFME5 ILT the lookup at 0x00219890 tail-jumps through
 ?bfmeGet_002198b0@BfmeChainResult@@QAEPAXXZ,0x00036165,Open-BFME5 ILT the lookup at 0x002198B0 tail-jumps through
 ?bfmeGet_002198d0@BfmeChainResult@@QAEPAXXZ,0x000456E2,Open-BFME5 ILT the lookup at 0x002198D0 tail-jumps through
 ?bfmeGhttpThink@@YAXXZ,0x0087AC30,HTTPThinkWrapper BFME tail-call target; canonical GameSpy ghttpThink body
@@ -79644,7 +79638,6 @@ name,address,notes
 ?bfmeSearchQW@@YAPADPAD0E@Z,0x0082DF70,pin
 ?bfmeSecondBK@BfmeTargetBK@@QAEXVAsciiStringBK@@@Z,0x00003B66,Open-BFME5 the second forward the setter at 0x00731800 makes
 ?bfmeSecondGK@BfmeSubGK@@QAEXPAVBfmeThingGK@@HPAVBfmeArgGK@@H@Z,0x0001F1D1,pin
-?bfmeSecondRK@BfmeThingRK@@QAEXXZ,0x00026044,pin
 ?bfmeSel1027@BfmeW1027@@QAEXH@Z,0x00002383,pin
 ?bfmeSelect6BE90@BfmeRecordHook6BE90@@QAEXPAUBfmeRecord6BE90@@HH@Z,0x000418E9,Open-BFME5 address-derived adjusted-this record selection call from 0x0076BE90
 ?bfmeSelect@BfmeElemW@@QAEXHH@Z,0x0001949D,Open-BFME5 the ICF thunk (to 0x0041949D) the clear at 0x004B1720 calls on each element with a pair of minus ones
@@ -84383,7 +84376,6 @@ name,address,notes
 ?getShroudStatusForPlayer@PartitionManager@@QBE?AW4CellShroudStatus@@HPBUCoord3D@@@Z,0x008F7430
 ?getShroudStatusForPlayer@ShroudManagerImpl@@QBE?AW4CellShroudStatus@@HHH@Z,0x008F94E0,cell status helper called by the four-corner prop shroud query at 0x008F95A0
 ?getShroudTexture@W3DShroud@@QAE?AVTextureHandle@@XZ,0x00013BBF,ILT thunk called by setShroudTex 0x00717E90 (+0x39); W3DShroud::getShroudTexture
-?getShroudedStatus@BfmeObjectShroudCall@@QBE?AW4ObjectShroudStatus@@H@Z,0x0002B81E,local BFME ABI call view routes the retail shroud query through its ILT
 ?getShroudedStatus@Object@@QBE?AW4ObjectShroudStatus@@H@Z,0x0002B81E,Object shroud-status ILT decoded from isObjectShroudedForAction retail callsite
 ?getShroudedStatus@PartitionData@@QAE?AW4ObjectShroudStatus@@H@Z,0x008F8110,Open-BFME5 tail-jmp callee of ?getShroudedStatus@Object@@QBE?AW4ObjectShroudStatus@@H@Z at 0x001C7B30; body range-checks the player index against 16 and indexes a per-player array at this+0x24
 ?getSideIconImage@PlayerTemplate@@QBEPBVImage@@XZ,0x0003FFEE,ILT of the real SideIconImage getter at 0x000E0B80
@@ -86081,7 +86073,6 @@ name,address,notes
 ?isIntroMoviePlaying@GameLogic@@QAE_NXZ,0x000349FA,ShowDiplomacy retail call at 0x004C3E1A through ILT
 ?isKindOf@BFMEActionThing@@QBE_NH@Z,0x0003251F,BFME Thing kind helper ILT decoded from ActionManager::canGetHealedAt
 ?isKindOf@BfmeOutOfWeaponRangeObject@@QBE_NW4KindOfType@@@Z,0x0003251F,outOfWeaponRangeObject retail kind test thunk
-?isKindOf@BfmeThingMethods@@QBE_NH@Z,0x0003251F,ILT-only ABI view; update 0x00184D50 calls on goal with three distinct kind values; resolved body 0x000A2CF0
 ?isKindOf@Drawable@@QBE_NH@Z,0x0003251F,addShadow Drawable type check via retail ILT
 ?isKindOf@Thing@@QBE_NW4KindOfType@@@Z,0x0003251F,REL32 pin from TunnelTracker::updateNemesis @0xF90D0
 ?isKindOfMulti@Thing@@QBE_NABV?$BitFlags@$0HO@@@0@Z,0x0003DCCB,ILT to Thing::isKindOfMulti 0x00132B20; Team::hasAnyBuildings BitFlags at 0x000F4A70 calls it
@@ -86999,7 +86990,6 @@ name,address,notes
 ?query@Object@@QAE_NPAV1@H@Z,0x00047ED8,ILT to 0x001CF9F0 Object query used by Rva001DCC20Filter
 ?query@Q2FlagOwner@@QAE_NH@Z,0x00416FC0,byte-returning __thiscall predicate taking one index; every row of the 34-byte queried-index assignment family (Q2QueriedIndexAssignments.cpp) calls this one body; address-derived name; identity not recovered
 ?effectiveMaxSpeed@Rva001B7E90Receiver@@QAEMPAVObject@@@Z,0x001B7E90,abi-view=?effectiveMaxSpeed@BfmeSub1CC_EC3@@QAEMPAX@Z;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B7E90
-?query@Rva002BCB60AerialPathfinder@@QAE_NPAVRva002BCB60Thing@@PAVRva002BCB60QueryObject@@MPAX@Z,0x00149010,parent raw ILT and complete selector call-site ABI verified; actual body target
 ?query@Rva0036ff70Module@@QAEHP6AHPAX0@Z0@Z,0x0004A73C,"Root disassembled full query36FF70/524 and callback36CFD0/145: callback returns full EAX0/1, caller tests EAX after two cdecl arguments. Corrected callback from bool to int, added typed address-derived symbol instead of casting a generated no-arg thunk, and corrected query pin signature. Root inspected Radar108520/152: two stack args, explicit AL0/1, ret8; corrected void to bool return. Replaced hardcoded CastleBehavior string address with real literal. Full286B target, all22 relocation sites, literal and secondary-object offsets independently verified; no emitted vtable."
 ?queryAt001CF980@Object@@QAEPAVRva001CF980Result@@XZ,0x001CF980,address-derived no-argument Object thiscall; full82B body selects this or Object+214 then tail-calls selected contain+1FC vslot68 and returns its pointer in EAX; caller null-checks it then calls result vslot1C4 with FXList pointer
 ?queryAt00880E60@BfmeTaintManager@@QAEHPBUCoord3D@@@Z,0x00880E60,0x002803F0 aligned calls +0x471 and +0x490 pass Object+0x38; wrapper loads implementation at this+0xC then tail-jumps 0x008814A0 whose independently matched bfmeValueAtWorld reads point x/y and returns int with ret4; address-retaining query identity
@@ -87928,7 +87918,6 @@ name,address,notes
 ?rva008AF650Implementation@@YAXHHH@Z,0x008AF650,Open-BFME5 cdecl implementation called by the 0x008C3E70 stdcall adapter
 ?rva008B2EA0Create@@YAPAVRva008B2EA0Node@@XZ,0x00892940,cdecl factory called by 0x008B2EA0
 ?rva008B66B0@Rva008B6880@@QAEHHHH@Z,0x008B66B0,opaque dependency of 008B6880; caller+1C..28 pushes fields38 34 30 with same ECX; callee+0A spills ECX +4/+19/+135 read three stack dwords and +1AD returns EAX +1B2 ret12
-?rva008C4A30@@YA_NPAVAptValue@@@Z,0x008C4A30,Opaque typed ASM bridge;008C6800 caller pushes AptValue pointer and performs cdecl cleanup;callee returns bool in AL
 ?rva008F7370@ShroudManager@@QAEXH@Z,0x008F7370,GameLogic::init +0x1D7 calls it on TheShroudManager with GlobalData+0xC6C; 8-byte body forwards this+0xC to 0x008F8C20 which ends ret 4
 ?rva008F7390@ShroudManager@@QAEXPBURegion3D@@M@Z,0x008F7390,GameLogic::init +0x1BF calls it on TheShroudManager with a zeroed local Region3D and GlobalData+0x1BC; 8-byte body forwards this+0xC to 0x008FBAD0 which ends ret 8
 ?rva008F73C0@PartitionManager@@QAEXPAURva00C9EE28Base@@@Z,0x008F73C0,8-byte thiscall forwarder (mov ecx [ecx+0xC]; jmp 0x008F8D00 which ret 4); Object::~Object 0x001D4010 calls it directly with ECX=TheShroudManager 0x012ED5BC (PartitionManager) and pushes Object+0x64; ZH ThePartitionManager->unRegisterObject(this) position; address-derived name
