@@ -4834,3 +4834,10 @@ game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|type||Te
 game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|member||m_active31,71571b1c5c2ee4798f2180d5,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|member||m_status1A4,2c7fb13fa76cf803acb036d3,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIPlayerRva00164750TeamUnitCost.cpp|member||m_state204,94d6d1d435b803329676a0f7,gpt-6.1-sol,20261016072036-40ab24,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|member||field140,5797ecbae20af060176e6d67,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|member||field074,6ff03a4ed0a88d8df52496cd,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|member||field204,bde6305d25f889dd143a4f65,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|member||field214,c3d6ee4ce3eabe604f941da8,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|local|parent|m,5f522baec3bfeadce6d14fa2,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|local|action|m,aa15e3b75d70fc567d0baa2a,gpt-6.1-sol,20261016072049-83440e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F0.cpp|param|MemberTarget002439F0::check|arg,61fcb948609b2de03974a4ab,gpt-6.1-sol,20261016072049-83440e,2026-10-16
