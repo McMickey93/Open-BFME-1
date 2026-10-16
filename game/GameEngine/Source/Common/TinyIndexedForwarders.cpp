@@ -206,3 +206,19 @@ const AudioEventRTS *Rva0016A030::get() const
 {
     return getSound(0x55);
 }
+
+// BFME 2 DispByteFieldGetters.cpp shape. Only AL is defined by retail;
+// retain the opaque receiver and independently witnessed displacement.
+class Rva0016A000
+{
+public:
+    unsigned char get() const;
+private:
+    char m_at00[0x29D];
+    unsigned char m_at29D;
+};
+
+unsigned char Rva0016A000::get() const
+{
+    return m_at29D;
+}
