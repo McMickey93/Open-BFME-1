@@ -5364,3 +5364,5 @@ game/GameEngine/Source/Common/Rva0087F520Fill.cpp|local|bfmeFillF5|d,7d200a995d3
 game/GameEngine/Source/Common/Rva0087F520Fill.cpp|local|bfmeFillF5|m,9815cf3bd51a338e3bc698ab,gpt-6.1-sol,20261016080857-9b3673,2026-10-16
 game/GameEngine/Source/GameLogic/Object/WeaponConstructor.cpp|member||m_unknown08,aa174a956975d7fc016da94d,gpt-6.1-sol,20261016081204-f96397,2026-10-16
 game/GameEngine/Source/GameLogic/Object/WeaponConstructor.cpp|param|Weapon::Weapon|tmpl,e7ee95b3bd4228b46f705d54,gpt-6.1-sol,20261016081204-f96397,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/Gen_t_00776240DefaultConstructor.cpp|type||Rva00776240Vector2CElement,e79b19bbcb771e8c1085a89f,gpt-6.1-sol,20261016081210-4e0579,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/Gen_t_00776240DefaultConstructor.cpp|member||m_vector2C,0c886dd9fddd6043abe62b85,gpt-6.1-sol,20261016081210-4e0579,2026-10-16
