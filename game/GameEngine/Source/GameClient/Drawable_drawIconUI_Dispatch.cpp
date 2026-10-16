@@ -2,6 +2,12 @@
 // entry points; the dispatch itself is the recovered clean C++ body.
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameClient/Drawable.h
+class Rva00410F90
+{
+public:
+	void method();
+};
+
 class Drawable
 {
 public:
@@ -35,16 +41,19 @@ void Drawable::drawIconUI(int group)
 		drawConstructPercent();
 		break;
 	case 1:
-		drawHealing();
-		drawBombed();
+		// ilt_oracle: 0x0003D514 drawEnthusiastic, 0x00038BAE drawAmmo and
+		// 0x00012E2C drawContained are CONFIRMED (exact).
 		drawEnthusiastic();
-		drawDemoralized();
+		drawBombed();
+		drawAmmo();
+		drawContained();
 		break;
 	case 2:
 		drawDisabled();
 		break;
 	case 3:
-		drawAmmo();
+		// ILT 0x00022782 reaches the address-named body 0x00410F90.
+		reinterpret_cast<Rva00410F90 *>(this)->method();
 		break;
 	case 4:
 		return;
