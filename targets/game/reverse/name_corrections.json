@@ -20498,5 +20498,35 @@
   "after_sha256": "4284aa6177668b3f18b1511762eabf6e7161125b9b47bbfd591c5d4dbad6fe23",
   "evidence": "targets/game/reverse/identity_evidence/00066780-damagefx-dodamagefx-address-owner.md",
   "reason": "tools/ilt_oracle.py contradicts DamageFX::doDamageFX at 0x00066780 (ILT slot 24901, p_false 7.18e-04); the body keeps its address owner Rva00066780DamageFX, the spelling the matched caller Rva0020F240Body::doDamageFX and the ILT 0x0001F65E pin already use."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x002229e0.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Rva002229E0NearestContained.cpp",
+  "old_name": "C",
+  "new_name": "Rva002229E0Contain",
+  "before_sha256": "41c741d217eb47860c48efb45d493a239b201a6c34b0419a84188fa7005a6fbe",
+  "after_sha256": "a81afc7204f03698ae07d259760c0c107f0f7a9ba1c033dc37764d510d5b60d0",
+  "evidence": "targets/game/reverse/identity_evidence/rva002229e0-nearest-contained.md",
+  "reason": "the bank's one-letter stand-in names carry no retail evidence; the owner is unproven, so the class and node take address-derived names and the pad the unmodelled convention"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x002229e0.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Rva002229E0NearestContained.cpp",
+  "old_name": "N",
+  "new_name": "Rva002229E0Node",
+  "before_sha256": "41c741d217eb47860c48efb45d493a239b201a6c34b0419a84188fa7005a6fbe",
+  "after_sha256": "a81afc7204f03698ae07d259760c0c107f0f7a9ba1c033dc37764d510d5b60d0",
+  "evidence": "targets/game/reverse/identity_evidence/rva002229e0-nearest-contained.md",
+  "reason": "the bank's one-letter stand-in names carry no retail evidence; the owner is unproven, so the class and node take address-derived names and the pad the unmodelled convention"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x002229e0.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Rva002229E0NearestContained.cpp",
+  "old_name": "gap",
+  "new_name": "m_unmodelled_04",
+  "before_sha256": "41c741d217eb47860c48efb45d493a239b201a6c34b0419a84188fa7005a6fbe",
+  "after_sha256": "a81afc7204f03698ae07d259760c0c107f0f7a9ba1c033dc37764d510d5b60d0",
+  "evidence": "targets/game/reverse/identity_evidence/rva002229e0-nearest-contained.md",
+  "reason": "the bank's one-letter stand-in names carry no retail evidence; the owner is unproven, so the class and node take address-derived names and the pad the unmodelled convention"
  }
 ]
