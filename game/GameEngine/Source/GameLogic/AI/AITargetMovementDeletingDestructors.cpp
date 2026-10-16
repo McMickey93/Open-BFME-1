@@ -33,10 +33,13 @@ private:
 // with no vptr reset, the shape VC7.1 gives an implicit virtual
 // destructor; every ILT named here is ilt_oracle CONFIRMED exact.
 
+enum StateExitType { EXIT_NORMAL, EXIT_RESET };
+
 class AIInternalMoveToState
 {
 public:
 	virtual ~AIInternalMoveToState();
+	virtual void onExit( StateExitType status );
 };
 
 class AIAttackMeleeHordeApproachTargetState : public AIInternalMoveToState
@@ -47,6 +50,8 @@ private:
 
 class AIAttackFireDuringApproachState : public AIInternalMoveToState
 {
+public:
+	virtual void onExit( StateExitType status );
 private:
 	friend void forceAIAttackFireDuringApproachStateDeletingDestructor();
 };
@@ -72,3 +77,11 @@ void forceAIAttackMeleeHordeApproachTargetStateDeletingDestructor() { AIAttackMe
 void forceAIAttackFireDuringApproachStateDeletingDestructor() { AIAttackFireDuringApproachState value; }
 void forceAIAttackMeleeSquishStateDeletingDestructor() { AIAttackMeleeSquishState value; }
 void forceAIAttackMeleeEngageStateDeletingDestructor() { AIAttackMeleeEngageState value; }
+
+// Extend-base onExit, a bare tail jump to AIInternalMoveToState::onExit (ILT
+// 0x00029311). Retail 0x00176A40 fills slot 5 of this class's vtable
+// 0x0109A640; ilt_oracle CONFIRMS the name at its ILT 0x000253B0.
+void AIAttackFireDuringApproachState::onExit( StateExitType status )
+{
+	AIInternalMoveToState::onExit( status );
+}
