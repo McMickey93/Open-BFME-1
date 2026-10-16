@@ -5845,3 +5845,5 @@ game/GameEngine/Source/Common/BfmeConv570.cpp|member||m_bfmeCur,99ae3b3961d8d1ea
 game/GameEngine/Source/Common/Bfme5FortyNine.cpp|member||m_bfmeValue,e08eb1e65451b5a40bf24bb4,gpt-6.1-sol,20261016133526-2c2755,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1895.cpp|member||m_bfmeIndexAH,7b0b50e7a05643b2a605e9ef,gpt-6.1-sol,20261016133539-1ba916,2026-10-16
 game/GameEngine/Source/Common/ConvertShortMapPathToLongMapPath.cpp|member||m_bfmeMapName008,93a8b9a55e7a8c958b30f7c7,gpt-6.1-sol,20261016133552-074824,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DRoadBuffer_drawRoads.cpp|member||m_flag38,62ad43bb506a98dc30020b72,gpt-6.1-sol,20261016133558-2158ed,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DRoadBuffer_drawRoads.cpp|member||m_flag44,7428033154b53b749d288a4c,gpt-6.1-sol,20261016133558-2158ed,2026-10-16
