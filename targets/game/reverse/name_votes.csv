@@ -3963,3 +3963,7 @@ game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineRva00347E60.cpp|member
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineRva00347E60.cpp|member||m_17636,2c3aa2f95e53713e1d0946dc,gpt-6.1-sol,20261016062826-f3ea04,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Locomotor_copyMatrixAndGo.cpp|param|BfmeSub1CC_EC3::copyMatrixAndGo|m,dd3eaf92dc17a3ece3be1fe0,gpt-6.1-sol,20261016062831-49e58d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Locomotor_copyMatrixAndGo.cpp|local|BfmeSub1CC_EC3::copyMatrixAndGo|t,766ce908925d2978cf352035,gpt-6.1-sol,20261016062831-49e58d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|member||position38,7c4375706850d06135a30a7b,gpt-6.1-sol,20261016062842-a95888,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|member||words110,19dd5bb807db094b7a07d418,gpt-6.1-sol,20261016062842-a95888,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|member||sinkRate34,caf8c671acc7b34b21b84039,gpt-6.1-sol,20261016062842-a95888,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|local|SlowDeathBehavior::update|d,b66a58ce5a760e389c37d031,gpt-6.1-sol,20261016062842-a95888,2026-10-16
