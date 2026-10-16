@@ -3744,3 +3744,12 @@ game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|S
 game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|c,333f51df62c7c81600416137,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
 game/GameEngine/Source/Common/Rva0035ED70Restore.cpp|member||m_20,30952c1f0a51dee61b5a2489,gpt-6.1-sol,20261016061719-996b42,2026-10-16
 game/GameEngine/Source/Common/Rva0035ED70Restore.cpp|member||m_24,6734355c16b2596d2e740573,gpt-6.1-sol,20261016061719-996b42,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeA,94f9deefa483179805e2afc2,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeB,5c3647c8696aeefe313fca38,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeC,f343505595473b2b1c7a7899,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeD,81de031fc4452cb3f773d7b5,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeE,55713bf13a74ef3a6dce18c1,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeF,443a2c2b10cb58efa394cac4,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeBonusMask,3f166716460dfbf2432bf525,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeBonuses,ae9a60eab169e4bf74622140,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_computeBonus.cpp|member||m_bfmeTemplate,f39b5b11bd8d7ead78088dc1,gpt-6.1-sol,20261016061724-bc0023,2026-10-16
