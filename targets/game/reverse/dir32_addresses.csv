@@ -1090,7 +1090,7 @@ name,va
 ??_7BattlePlanUpdate@@6BBehaviorModuleInterface@@@,0x010BBEC8
 ??_7BattlePlanUpdate@@6BObjectModule@@@,0x010BBF8C
 ??_7BattlePlanUpdate@@6BUpdateModule@@@,0x010BBEBC
-??_7BattlePlanUpdateModuleData@@6B@,0x010A5C78
+??_7BattlePlanUpdateModuleData@@6B@,0x010BBFC0
 ??_7BattlePlanUpdateModuleDataBase@@6B@,0x01073744
 ??_7BeaconClientUpdate@@6B@,0x01115248
 ??_7BeaconClientUpdateModuleData@@6B@,0x01115280
