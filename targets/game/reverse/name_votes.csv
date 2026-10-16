@@ -4074,3 +4074,10 @@ game/GameEngine/Source/GameLogic/AI/Rva003F8820Pathfinder.cpp|param|fast_float2l
 game/Libraries/Source/EA/Apt/Rva008B6C70AptPack.cpp|member||m_unknown50,b98df6832fc043b9903b6d60,gpt-6.1-sol,20261016063101-3d669c,2026-10-16
 game/Libraries/Source/EA/Apt/Rva008B6C70AptPack.cpp|member||m_unknown54,8af933c6481fd607e2f81bef,gpt-6.1-sol,20261016063101-3d669c,2026-10-16
 game/Libraries/Source/EA/Apt/Rva008B6C70AptPack.cpp|member||m_unknown58,c416cb381edbadc44b906caa,gpt-6.1-sol,20261016063101-3d669c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|member||ptr208,83672fb84999177a968b7065,gpt-6.1-sol,20261016063621-23c043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|param|Coord3D::Coord3D#2|p,cee37ae4860f0f4aef164cc8,gpt-6.1-sol,20261016063621-23c043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|param|Coord3D::Sub|p,1786193fc3dbaffb68932fef,gpt-6.1-sol,20261016063621-23c043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|local|Coord3D::length|v,4607c86156786eaff66e2f3d,gpt-6.1-sol,20261016063621-23c043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|param|Coord3D::add|p,57d839d3f4b04f376d8949b1,gpt-6.1-sol,20261016063621-23c043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|param|BfmePairDH#2|p,05addaf9314dda20fe2d740b,gpt-6.1-sol,20261016063621-23c043,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberMotion00230BF0.cpp|param|Record00230BF0#2|p,5b2e9520a07b691efec5bde6,gpt-6.1-sol,20261016063621-23c043,2026-10-16
