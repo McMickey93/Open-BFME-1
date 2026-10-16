@@ -5826,3 +5826,4 @@ game/GameEngine/Source/Common/Recorder.cpp|local|RecorderClass::getReplayDir|tmp
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawDebugStats006e8c20.cpp|local|W3DDisplay::drawDebugStats|p,b54e27d848b29c190ca3ae12,gpt-6.1-sol,20261016131138-d9e345,2026-10-16
 game/GameEngine/Source/Common/System/GeometryInfoRva0087E370.cpp|local|Rva0087E370::method|c,06166aaa1da7acbb95121d52,gpt-6.1-sol,20261016131143-c502d0,2026-10-16
 game/GameEngine/Source/Common/System/GeometryInfoRva0087E370.cpp|local|Rva0087E370::method|s,2a8a7616441e8626f5b95268,gpt-6.1-sol,20261016131143-c502d0,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1778.cpp|member||m_bfmeItemDB,fb3b432b40b17400f8ddb0f3,gpt-6.1-sol,20261016130027-36b8a5,2026-10-16
