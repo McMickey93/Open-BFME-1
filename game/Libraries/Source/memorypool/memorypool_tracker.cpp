@@ -35,6 +35,7 @@ public:
 	~Rva008838F0Owner();
 	int lookup(unsigned int key, void **dest, unsigned int limit);
 	bool isValidBlock(int type, void *block);
+	unsigned int *rva00883B70();
 	static void rva00883c0(void);
 
 private:
@@ -133,6 +134,51 @@ bool Rva008838F0Owner::isValidBlock(int type, void *block)
 	if (m_lock != 0)
 		LeaveCriticalSection(m_lock);
 	return true;
+}
+
+// Retail 0x00883B70 (236 bytes, plain ret) returns a heap-allocated pair: the
+// number of live nodes (negative free checkpoint) and an array of their +0x10
+// words.  No caller names it, so the method keeps its address.
+unsigned int *Rva008838F0Owner::rva00883B70()
+{
+	if (m_disabled)
+		return 0;
+	if (m_lock != 0)
+		EnterCriticalSection(m_lock);
+
+	unsigned int *result = (unsigned int *)HeapAlloc(GetProcessHeap(), 4, 8);
+	unsigned int count = 0;
+	Rva008838F0Node **bucket = m_buckets;
+	for (unsigned int n = 0x2b7b; n != 0; --n, ++bucket)
+	{
+		for (Rva008838F0Node *node = *bucket; node != 0; node = node->m_next)
+		{
+			if (node->m_freeCheckpoint < 0)
+				++count;
+		}
+	}
+	result[0] = count;
+
+	if (count > 0)
+	{
+		result[1] = (unsigned int)HeapAlloc(GetProcessHeap(), 4, count * 4);
+		unsigned int *out = (unsigned int *)result[1];
+		bucket = m_buckets;
+		for (unsigned int n = 0x2b7b; n != 0; --n, ++bucket)
+		{
+			for (Rva008838F0Node *node = *bucket; node != 0; node = node->m_next)
+			{
+				if (node->m_freeCheckpoint < 0)
+					*out++ = node->m_pad0c[1];
+			}
+		}
+	}
+	else
+		result[1] = 0;
+
+	if (m_lock != 0)
+		LeaveCriticalSection(m_lock);
+	return result;
 }
 
 struct Rva00883220Node

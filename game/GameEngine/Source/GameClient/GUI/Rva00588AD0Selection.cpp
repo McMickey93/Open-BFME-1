@@ -1,20 +1,25 @@
-// ?select@Rva00588AD0Selection@@QAEXH@Z
-// partial score=0.5567 date=2026-10-13
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/GameEngine/Source/GameClient
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 
-// The dump boundary and indexed record layout are known, but the owning class
-// is not. Keep the address in the type so this implementation makes no owner
-// identity claim.
+// Retail 0x00588AD0 (282 bytes, ret 4) handles a click on one of the
+// Palantir command-button records.  Its only caller is the offset tail thunk
+// Rva005896F0::invoke, so the owner and method keep address-derived names.
 
 typedef unsigned int WindowMsgData;
 
-#include "game_window.h"
+class GameWindow;
 
-// The retail helper at 0x00478CA0 is a thiscall getter: mov eax,[ecx+34]; ret.
-class Rva00478CA0Window
+class WinInstanceData
 {
 public:
-	int getId();
+	char m_pad[0x14];
+	GameWindow *m_owner;
+};
+
+class GameWindow
+{
+public:
+	WinInstanceData *winGetInstanceData();
+	int winGetWindowId();
 };
 
 class GameWindowManager
@@ -42,7 +47,7 @@ public:
 		WindowMsgData data1, WindowMsgData data2);
 };
 
-class Rva00579160Manager
+struct Rva00579160Manager
 {
 public:
 	char m_unmodelled[0x1b4];
@@ -59,8 +64,6 @@ extern Rva00579160Manager *Rva00579160TheManager;
 extern GameWindowManager *TheWindowManager;
 extern ControlBar *TheControlBar;
 extern void __cdecl bfmeNamedAudio0046F1A0(const char *name);
-extern const char Rva0110BA90[];
-extern const char Rva0110BAC0[];
 
 struct Rva00588AD0Record
 {
@@ -81,7 +84,6 @@ private:
 	Rva00588AD0Record m_records[1];
 };
 
-// Retail @ 0x00588AD0; the sole explicit argument is thiscall index.
 void Rva00588AD0Selection::select(int index)
 {
 	GameWindow *window = m_records[index].m_window;
@@ -98,7 +100,7 @@ void Rva00588AD0Selection::select(int index)
 		Rva00579160Manager *manager = Rva00579160TheManager;
 		if (manager->m_windowMode != 2 || (*(unsigned int *)(data + 0x18) & 0x80000000) == 0)
 		{
-			bfmeNamedAudio0046F1A0(Rva0110BA90);
+			bfmeNamedAudio0046F1A0("Gui_PalantirCommandButtonDisabledClick");
 			return;
 		}
 	}
@@ -108,27 +110,25 @@ void Rva00588AD0Selection::select(int index)
 		return;
 
 	TheControlBar->hideBuildTooltipLayout();
-	GameWindow *owner = *(GameWindow **)((char *)instance + 0x14);
 	int managerMode = Rva00579160TheManager->m_windowMode;
+	GameWindow *owner = instance->m_owner;
 	TheWindowManager->winSendSystemMsg(owner, 0x4008 + (managerMode == 2),
-		(WindowMsgData)window, (WindowMsgData)((Rva00478CA0Window *)window)->getId());
+		(WindowMsgData)window, (WindowMsgData)window->winGetWindowId());
 
-	// winSendSystemMsg is an unknown callback boundary. Retail reloads the
-	// record fields after it returns instead of trusting the pre-call values.
+	// winSendSystemMsg can change the records, so retail reloads them.
 	mode = m_records[index].m_mode;
 	if (mode == 4)
 	{
-		managerMode = Rva00579160TheManager->m_windowMode;
-		data = m_records[index].m_data;
-		const char *sound = Rva0110BA90;
-		if (managerMode == 2 && *(unsigned char *)(data + 0x158) != 0)
-			sound = Rva0110BAC0;
+		const char *sound;
+		if (Rva00579160TheManager->m_windowMode == 2 &&
+			*(unsigned char *)(m_records[index].m_data + 0x158) != 0)
+			sound = "Gui_PalantirCommandButtonClick";
 		else
-			sound = Rva0110BA90;
+			sound = "Gui_PalantirCommandButtonDisabledClick";
 		bfmeNamedAudio0046F1A0(sound);
 	}
 	else if (mode == 1 || mode == 2)
 	{
-		bfmeNamedAudio0046F1A0(Rva0110BAC0);
+		bfmeNamedAudio0046F1A0("Gui_PalantirCommandButtonClick");
 	}
 }
