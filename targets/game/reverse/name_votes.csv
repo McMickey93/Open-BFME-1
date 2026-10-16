@@ -3742,3 +3742,5 @@ game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|functio
 game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|a,d290894c47d55a7df0a60d16,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|b,3d55759c77947f16ff2a24a0,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/BfmeScriptCondAreaGate.cpp|param|ScriptConditions::bfmeAreaGate|c,333f51df62c7c81600416137,gpt-6.1-sol,20261016061714-a5ead6,2026-10-16
+game/GameEngine/Source/Common/Rva0035ED70Restore.cpp|member||m_20,30952c1f0a51dee61b5a2489,gpt-6.1-sol,20261016061719-996b42,2026-10-16
+game/GameEngine/Source/Common/Rva0035ED70Restore.cpp|member||m_24,6734355c16b2596d2e740573,gpt-6.1-sol,20261016061719-996b42,2026-10-16
