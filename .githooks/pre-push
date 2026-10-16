@@ -78,6 +78,19 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
     fi
 
     python3 tools/check_csv.py --ref "$local_sha" || fail "ledger integrity at $local_sha (see above)"
+    # dir32_addresses.csv: a recorded address moves only by an operator
+    # correction; every outgoing commit is judged, by the guard as of the base
+    # (the remote tip) when it knows --range, so an edit cannot approve itself.
+    if [ -n "$base" ]; then
+        if git cat-file -e "$base:tools/dir32_record_guard.py" 2>/dev/null \
+           && git show "$base:tools/dir32_record_guard.py" | grep -q -e '"--range"'; then
+            git show "$base:tools/dir32_record_guard.py" | python3 - --range "$base" "$local_sha" \
+                || fail "dir32_addresses.csv address moved without a valid operator correction (see above)"
+        elif [ -f tools/dir32_record_guard.py ]; then
+            python3 tools/dir32_record_guard.py --range "$base" "$local_sha" \
+                || fail "dir32_addresses.csv address moved without a valid operator correction (see above)"
+        fi
+    fi
     # --ref judges re_attempts.log only tip-vs-first-parent; a deletion in a
     # commit below the tip would pass it, so every outgoing commit is judged.
     if [ -n "$base" ]; then

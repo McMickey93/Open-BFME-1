@@ -26,8 +26,18 @@ a hand-edited address moved every reference's expectation at once.
     build.unrecorded_dir32_problem against the record as of the base
     revision, so the added lines cannot vouch for each other.
 
+  * An address may move only by an OPERATOR CORRECTION (approved by the
+    project lead 2026-10-16): trailer `Dir32-Operator-Correction: <name>
+    0x<oldVA> -> 0x<newVA> evidence=<path>`, one per commit, the record's only
+    change, a primary vtable the image proves at the new VA, and an evidence
+    file changed in the same commit citing both VAs, ctor=0x<rva> (stores the
+    table) and dtor=0x<rva> (its ??_G/??_E). pre-commit takes the claim from
+    BFME_DIR32_OPERATOR_CORRECTION='<name> 0x<old> -> 0x<new> evidence=<path>';
+    commit-msg and pre-push (--range, every outgoing commit) re-check the trailer.
+
 Usage: python3 tools/dir32_record_guard.py --staged [BASE]     (BASE defaults to HEAD)
        python3 tools/dir32_record_guard.py --commit-msg FILE     (deletions vs HEAD)
+       python3 tools/dir32_record_guard.py --range BASE TIP      (address moves, pre-push)
 
 The --commit-msg path imports nothing from the tree: the hook pipes it from HEAD.
 """
@@ -553,6 +563,186 @@ def retire_problems(old, new, message):
     return out
 
 
+# ---------------------------------------------------------------------------
+# Operator correction (approved by the project lead 2026-10-16): the one route
+# by which a recorded address may change. A misrecorded primary vtable line is
+# moved to the address retail proves, in a commit that does nothing else to
+# the record and carries the proof.
+# ---------------------------------------------------------------------------
+CORRECTION_RE = re.compile(
+    r"^Dir32-Operator-Correction:[ \t]*(\S+)[ \t]+0x([0-9A-Fa-f]{1,8})[ \t]+->[ \t]+"
+    r"0x([0-9A-Fa-f]{1,8})[ \t]+evidence=(\S+)[ \t]*$", re.MULTILINE)
+CORRECTION_ENV = "BFME_DIR32_OPERATOR_CORRECTION"
+CITE_RE = re.compile(r"\b(ctor|dtor)=0x([0-9A-Fa-f]{1,8})\b")
+
+
+def parse_corrections(message):
+    return [(m.group(1), int(m.group(2), 16), int(m.group(3), 16), m.group(4))
+            for m in CORRECTION_RE.finditer(message)]
+
+
+def function_extent(rva, tree):
+    """The size one functions.csv row gives the body at RVA, or None."""
+    sizes = set()
+    for line in (git_show_text(f"{tree}{FUNCTIONS}") or "").splitlines():
+        cols = line.split(",")
+        try:
+            if int(cols[2], 16) == rva:
+                sizes.add(int(cols[3]))
+        except (IndexError, ValueError):
+            continue
+    return sizes.pop() if len(sizes) == 1 else None
+
+
+def stores_table(code, va):
+    """CODE holds a `mov r/m32, imm32` (C7 /0) whose immediate is VA."""
+    imm = va.to_bytes(4, "little")
+    at = code.find(imm)
+    while at >= 0:
+        if any(at - back >= 0 and code[at - back] == 0xC7 for back in (2, 3, 4, 6, 7)):
+            return True
+        at = code.find(imm, at + 1)
+    return False
+
+
+def as_rva(value):
+    return value - IMAGE_BASE if value >= IMAGE_BASE else value
+
+
+def correction_problems(old, new, claims, tree, changed_paths):
+    """[] when CLAIMS (one Dir32-Operator-Correction) is exactly the commit's
+    change to the record and the retail image proves it, else why not.
+
+    * exactly one claim; the record's only change is that name's address, from
+      the claimed old VA to the claimed new VA (no line added or deleted, no
+      other address moved);
+    * the name is a primary vtable ??_7C@@6B@ and the new VA passes the
+      primary-vtable rule (function_owner_problem: a retail table start whose
+      slots reach a matched, non-generated ??_G/??_E row of exactly C), with no
+      other name recorded at the new VA;
+    * the evidence file is changed in this same commit and cites both VAs,
+      `ctor=0x<rva>` of a body whose retail bytes store the new VA
+      (`mov [reg], imm32`) and `dtor=0x<rva>` of a matched, non-generated
+      deleting destructor of C that the table reaches.
+    The old VA simply loses this name; other names recorded there are untouched.
+    """
+    out = []
+    moved = {n: (old[n], new[n]) for n in old.keys() & new.keys() if old[n] != new[n]}
+    if len(claims) != 1:
+        return [f"{len(claims)} Dir32-Operator-Correction trailers; one correction per commit"]
+    name, old_va, new_va, evidence = claims[0]
+    if old.keys() != new.keys():
+        out.append("a correction commit may not add or delete record lines")
+    if set(moved) != {name}:
+        out.append(f"the record's moved names are {sorted(moved) or 'none'}; a correction moves "
+                   f"exactly {name}")
+    elif moved[name] != (old_va, new_va):
+        out.append(f"{name} moves 0x{moved[name][0]:08X} -> 0x{moved[name][1]:08X}, the trailer says "
+                   f"0x{old_va:08X} -> 0x{new_va:08X}")
+    match = VTABLE_RE.match(name)
+    if not match or SECONDARY_VTABLE_RE.match(name):
+        out.append(f"{name} is not a primary vtable ??_7C@@6B@; only those have a correction route")
+        return out
+    cls = match.group(1)
+    others = sorted(n for n, va in new.items() if va == new_va and n != name)
+    if others:
+        out.append(f"0x{new_va:08X} is also recorded for {others[0]}")
+    rows = list(function_rows(tree))
+    recorded = {n: va for n, va in new.items() if n != name}
+    problem = function_owner_problem(name, new_va, tree=tree, recorded=recorded, rows=rows)
+    if problem:
+        out.append(f"0x{new_va:08X} is not proven {name}: {problem}")
+    if evidence not in changed_paths:
+        out.append(f"evidence {evidence} is not added or changed in this commit")
+        return out
+    text = git_show_text(f"{tree}{evidence}")
+    if text is None:
+        out.append(f"evidence {evidence} is not in the committed tree")
+        return out
+    upper = text.upper()
+    for label, va in (("old", old_va), ("new", new_va)):
+        if f"{va:08X}" not in upper:
+            out.append(f"evidence does not cite the {label} VA 0x{va:08X}")
+    cites = {}
+    for kind, value in CITE_RE.findall(text):
+        cites.setdefault(kind, []).append(as_rva(int(value, 16)))
+    ctors = cites.get("ctor", [])
+    if not ctors:
+        out.append("evidence cites no ctor=0x<rva> storing the table")
+    for rva in ctors:
+        size = function_extent(rva, tree)
+        code = read_retail(rva + IMAGE_BASE, size) if size else None
+        if not code:
+            out.append(f"ctor=0x{rva:08X} has no single functions.csv extent to read")
+        elif not stores_table(code, new_va):
+            out.append(f"ctor=0x{rva:08X} ({size} bytes) never stores 0x{new_va:08X}")
+    dtors = cites.get("dtor", [])
+    proving = {r for n, r, src, st, notes in rows
+               if is_dtor_of(n, cls) and authored_row(src, st, n, notes)}
+    reached = vtable_slot_targets(new_va, set(recorded.values()) | data_vas(tree))
+    if not dtors:
+        out.append(f"evidence cites no dtor=0x<rva> (the ??_G proof)")
+    for rva in dtors:
+        if rva not in proving:
+            out.append(f"dtor=0x{rva:08X} is not a matched, non-generated ??_G/??_E row of {cls}")
+        elif rva not in reached:
+            out.append(f"dtor=0x{rva:08X} is not reached by the table at 0x{new_va:08X}")
+    return out
+
+
+def env_corrections():
+    import os
+    value = os.environ.get(CORRECTION_ENV, "").strip()
+    return parse_corrections(f"Dir32-Operator-Correction: {value}") if value else []
+
+
+def changed_paths_of(*diff_args):
+    got = subprocess.run(["git", "diff", "--name-only", "--no-renames", *diff_args], cwd=root(),
+                         capture_output=True, text=True)
+    if got.returncode:
+        raise SystemExit(f"dir32_record_guard: git diff {' '.join(diff_args)} failed: {got.stderr.strip()}")
+    return set(got.stdout.split())
+
+
+def check_range(base, tip):
+    """pre-push: every first-parent commit in BASE..TIP that moves a recorded
+    address must carry a valid operator correction for exactly that move, and
+    every correction trailer must match a move."""
+    listed = subprocess.run(["git", "rev-list", "--reverse", "--first-parent", f"{base}..{tip}",
+                             "--", REL], cwd=root(), capture_output=True, text=True)
+    if listed.returncode:
+        raise SystemExit(f"dir32_record_guard: cannot list {base}..{tip}: {listed.stderr.strip()}")
+    commits = listed.stdout.split()
+    messages = subprocess.run(["git", "log", "--format=%H", "--grep", "^Dir32-Operator-Correction:",
+                               f"{base}..{tip}"], cwd=root(), capture_output=True, text=True)
+    commits += [c for c in messages.stdout.split() if c not in commits]
+    bad = 0
+    for sha in commits:
+        old = read_at(f"{sha}^:{REL}") or {}
+        new = read_at(f"{sha}:{REL}") or {}
+        message = subprocess.run(["git", "log", "-1", "--format=%B", sha], cwd=root(),
+                                 capture_output=True, text=True).stdout
+        claims = parse_corrections(message)
+        moved = [n for n in old.keys() & new.keys() if old[n] != new[n]]
+        if not claims and not moved:
+            continue
+        if not claims:
+            found = [f"{n}: recorded 0x{old[n]:08X} moved to 0x{new[n]:08X} without a "
+                     "Dir32-Operator-Correction" for n in sorted(moved)]
+        else:
+            found = correction_problems(old, new, claims, f"{sha}:",
+                                        changed_paths_of(f"{sha}^", sha))
+        if found:
+            bad += 1
+            print(f"dir32_record_guard: FAIL {sha[:10]}:", file=sys.stderr)
+            for line in found[:20]:
+                print("    " + line, file=sys.stderr)
+    if bad:
+        return 1
+    print(f"dir32_record_guard: OK (record moves in {base[:10]}..{tip[:10]} all corrected)")
+    return 0
+
+
 def check_commit_msg(message_file):
     if subprocess.run(["git", "rev-parse", "-q", "--verify", "MERGE_HEAD"], cwd=root(),
                       capture_output=True).returncode == 0:
@@ -561,6 +751,20 @@ def check_commit_msg(message_file):
     with open(message_file, encoding="utf-8", errors="replace") as handle:
         message = handle.read()
     old, new = old or {}, new or {}
+    claims = parse_corrections(message)
+    moved = [n for n in old.keys() & new.keys() if old[n] != new[n]]
+    if claims or moved:
+        found = (correction_problems(old, new, claims, ":", changed_paths_of("--cached", "HEAD"))
+                 if claims else [f"{n}: recorded address moved without a Dir32-Operator-Correction"
+                                 for n in sorted(moved)])
+        if found:
+            print(f"dir32_record_guard: FAIL operator correction of {REL}", file=sys.stderr)
+            for line in found[:20]:
+                print("    " + line, file=sys.stderr)
+            return 1
+        print(f"dir32_record_guard: OK (operator correction {claims[0][0]} "
+              f"0x{claims[0][1]:08X} -> 0x{claims[0][2]:08X})")
+        return 0
     if not (old.keys() - new.keys()) and not parse_trailers(message):
         return 0
     found = retire_problems(old, new, message)
@@ -573,13 +777,20 @@ def check_commit_msg(message_file):
     return 0
 
 
-def problems(old, new, symbol_map=None):
+def problems(old, new, symbol_map=None, corrections=()):
     import build
     out = []
-    for name in sorted(old.keys() & new.keys()):
-        if old[name] != new[name]:
-            out.append(f"{name}: recorded 0x{old[name]:08X} rewritten to 0x{new[name]:08X}; "
-                       f"retire the line instead ({TOOL})")
+    moved = [n for n in old.keys() & new.keys() if old[n] != new[n]]
+    if corrections and moved:
+        # pre-commit cannot see the message: the env claim is checked here and
+        # the trailer again by commit-msg and pre-push. A claim left in the
+        # environment of a commit that moves nothing is ignored, never a refusal.
+        return correction_problems(old, new, list(corrections), ":",
+                                   changed_paths_of("--cached", "HEAD"))
+    for name in sorted(moved):
+        out.append(f"{name}: recorded 0x{old[name]:08X} rewritten to 0x{new[name]:08X}; "
+                       f"retire the line instead ({TOOL}), or, for a misrecorded primary "
+                       "vtable, an operator correction (Dir32-Operator-Correction)")
     added = sorted(new.keys() - old.keys())
     if added:
         identities = build.dir32_identities(old)
@@ -595,13 +806,15 @@ def problems(old, new, symbol_map=None):
 def main(argv):
     if len(argv) == 2 and argv[0] == "--commit-msg":
         return check_commit_msg(argv[1])
+    if len(argv) == 3 and argv[0] == "--range":
+        return check_range(argv[1], argv[2])
     if not argv or argv[0] != "--staged":
         sys.exit(__doc__)
     base = argv[1] if len(argv) > 1 else "HEAD"
     old, new = read_at(f"{base}:{REL}"), read_at(f":{REL}")
     if new is None:
         sys.exit(f"dir32_record_guard: {REL} is not in the index")
-    found = problems(old or {}, new)
+    found = problems(old or {}, new, corrections=env_corrections())
     if found:
         print(f"dir32_record_guard: FAIL {len(found)} change(s) to {REL} the gate did not make")
         for line in found[:20]:
