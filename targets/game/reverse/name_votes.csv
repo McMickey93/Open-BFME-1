@@ -2372,3 +2372,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|member||at1c,5518e4fdc27417aa39ed1c55,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|function||bfmeTailCHG,04245b257e330ba288dc6316,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/FXEventParser007764E0.cpp|param|FxHandle0042CDF0#2|v,c390bbfe6a8f60ccc07a81cc,gpt-6.1-sol,20261016044832-67f43b,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/ParseFXEvent.cpp|member||m_bfmeA,c853e438b4df9be52f334d37,gpt-6.1-sol,20261016044839-662f73,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/ParseFXEvent.cpp|member||m_bfmeB,9f045f272fabc2f8fa5d273f,gpt-6.1-sol,20261016044839-662f73,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/ParseFXEvent.cpp|member||m_bfmeC,0a980bd2cb7658e918a2255a,gpt-6.1-sol,20261016044839-662f73,2026-10-16
