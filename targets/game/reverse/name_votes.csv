@@ -4055,3 +4055,6 @@ game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme9c,c1e64b351b209e02
 game/GameEngine/Source/GameLogic/AI/Rva00170BD0AIGuardState_onExit.cpp|type||Rva00170BD0GuardMachine,080796d7f43b638928175f66,gpt-6.1-sol,20261016062930-08012d,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva00170BD0AIGuardState_onExit.cpp|type||Rva00170BD0AIUpdate,c9d2a15a1e6a43f887b48b3d,gpt-6.1-sol,20261016062930-08012d,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva00170BD0AIGuardState_onExit.cpp|type||Rva00170BD0AIGuardState,b39171776b556eb99042686d,gpt-6.1-sol,20261016062930-08012d,2026-10-16
+game/GameEngine/Source/Common/BfmeVersionTextAL.cpp|member||m_bfmeMajorAL,8471272156c7aa7dad8b5ccc,gpt-6.1-sol,20261016063614-930020,2026-10-16
+game/GameEngine/Source/Common/BfmeVersionTextAL.cpp|member||m_bfmeMinorAL,5f7b3b1b7aeb46f210b12b6b,gpt-6.1-sol,20261016063614-930020,2026-10-16
+game/GameEngine/Source/Common/BfmeVersionTextAL.cpp|function|BfmeVersionAL@|bfmeVersionTextAL,aebbf872c7155be5823f9d94,gpt-6.1-sol,20261016063614-930020,2026-10-16
