@@ -2473,3 +2473,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferCollectDirtyCells.c
 game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateModuleDataCtorThunk.cpp|member||m_field254,01aba54d6e17dc8611eb6ca1,gpt-6.1-sol,20261016050411-a2c734,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateModuleDataCtorThunk.cpp|member||m_field258,0b097ef3e7009e76180bc655,gpt-6.1-sol,20261016050411-a2c734,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateModuleDataCtorThunk.cpp|member||m_field25c,e524b5bcf5b3611711fafdfd,gpt-6.1-sol,20261016050411-a2c734,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ToggleMountedSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_field254,2a5992226dd078d122e32bb7,gpt-6.1-sol,20261016050422-7574af,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ToggleMountedSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_byte258,2a0335823a53ad4565d004c5,gpt-6.1-sol,20261016050422-7574af,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ToggleMountedSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_byte259,eb05913b644252770efdc31a,gpt-6.1-sol,20261016050422-7574af,2026-10-16
