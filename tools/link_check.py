@@ -639,10 +639,52 @@ def command_moves(commit, sources):
     try:
         exec(compile(shown.stdout, census_build.__file__, "exec"), census_build.__dict__)
         return {Path(obj).name for obj, source in sources.items()
-                if Path(source).suffix.lower() in (".c", ".cpp")
+                if Path(source).suffix.lower() in (".c", ".cpp", ".asm")
                 and portable_command(census_build, source, obj) != portable_command(build, source, obj)}
     except (Exception, SystemExit):  # noqa: BLE001 -- unknown means unknown, never "unchanged"
         return None
+
+
+TRUTH_FILES = ("targets/game/reverse/functions.csv", "targets/game/reverse/data_rows.csv",
+               "targets/game/reverse/symbols.csv")
+_OBJECT_SYMBOL = re.compile(r"object-symbol=([^;,\s\"]+)")
+
+
+def _truth_rows(text):
+    """{name: frozenset of ledger lines naming it} for one ledger file's text:
+    its name column and any object-symbol= note."""
+    rows = collections.defaultdict(set)
+    for line in text.splitlines()[1:]:
+        line = line.rstrip("\r")
+        name = next(csv.reader([line]), [""])[0] if line else ""
+        for key in {name, *_OBJECT_SYMBOL.findall(line)}:
+            if key:
+                rows[key].add(line)
+    return rows
+
+
+def truth_changes(commit, since, names):
+    """Names among `names` whose functions.csv / data_rows.csv rows or
+    symbols.csv pins differ from the census commit's (round 6 F5: a row
+    re-homed in its own source, or a new pin, changes retail truth without
+    changing any object). All of `names` when the census ledger cannot be read."""
+    touched = [path for path in TRUTH_FILES if since is None or path in since]
+    if not touched:
+        return set()
+    if not commit:
+        return set(names)
+    found = set()
+    for path in touched:
+        shown = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=ROOT, capture_output=True, text=True)
+        try:
+            now_text = (ROOT / path).read_text(encoding="utf-8")
+        except OSError:
+            return set(names)
+        if shown.returncode:
+            return set(names)
+        old, new = _truth_rows(shown.stdout), _truth_rows(now_text)
+        found |= {name for name in names if old.get(name, set()) != new.get(name, set())}
+    return found
 
 
 MOVED_CACHE = link_census.OUT / "moved_cache.json"
@@ -725,38 +767,79 @@ def _moved_objects(commit, since, order, ledger_objects, census_objects, sources
 HOOK_DEADLINE = 120.0
 
 
+HOOK_INPUTS = ("game", "inputs", "tools", "build.sh", "build.cmd") + TRUTH_FILES
+_REPORTED = set()          # files report() has printed a verdict for (hook timeout must not contradict them)
+
+
+def _kill_children(pid=None):
+    """Kill every descendant process (a wine cl.exe still compiling)."""
+    if os.name == "nt":
+        return
+    pid = os.getpid() if pid is None else pid
+    listed = subprocess.run(["ps", "-o", "pid=", "--ppid", str(pid)], capture_output=True, text=True)
+    for child in listed.stdout.split():
+        try:
+            _kill_children(int(child))
+            os.kill(int(child), 9)
+        except (ValueError, OSError):
+            pass
+
+
+def hook_unstaged():
+    """Paths whose working-tree state differs from the index and can change a
+    preview: tracked edits under game/, inputs/, tools/, build scripts and the
+    three truth ledgers, and untracked files under game/ and inputs/ (a new
+    header can shadow one)."""
+    edited = [p for p in _git("diff", "--name-only", "-z", "--", *HOOK_INPUTS).split("\0") if p]
+    untracked = [p for p in _git("ls-files", "-z", "--others", "--exclude-standard", "--",
+                                 "game", "inputs").split("\0") if p]
+    return edited + untracked
+
+
 def hook_main(args):
     """--hook: the shared LINKED-claim rule under hook settings. Report only:
-    exit 0 whatever the verdict. Never takes the host build lock for
-    definers (compile_limit 0 unless --compile-limit says otherwise). The
-    staged state is what a commit records, so unstaged game/ edits make the
-    preview UNKNOWN; past the deadline every file is UNKNOWN (timeout).
-    Never LINKS on a guess, never a positive LINKED delta it did not prove."""
+    exit 0 whatever happens. Compiles the checked files when their objects
+    are stale (build.py's normal compile, which takes the host build lock),
+    but never a definer (compile_limit 0 unless --compile-limit says
+    otherwise). The staged state is what a commit records, so any unstaged
+    or untracked path that can change the answer (hook_unstaged) makes every
+    file UNKNOWN; so does any error. Past the deadline the files with no
+    verdict yet are UNKNOWN (timeout) and running compiles are killed. Never
+    LINKS on a guess, never a positive LINKED delta it did not prove."""
     import threading
     paths = list(args.paths)
-    unstaged = [p for p in _git("diff", "--name-only", "-z", "--", "game").split("\0") if p]
-    if unstaged:
-        for path in paths:
-            print(f"{path}: LINKED PREVIEW UNKNOWN (unstaged game/ edits differ from the staged state, "
-                  f"e.g. {unstaged[0]})")
-        return 0
+    deadline = HOOK_DEADLINE if args.deadline is None else args.deadline
+
+    def unknown(why, only=None):
+        for path in (only if only is not None else paths):
+            print(f"{path}: LINKED PREVIEW UNKNOWN ({why})", flush=True)
 
     def give_up():
-        for path in paths:
-            print(f"{path}: LINKED PREVIEW UNKNOWN (timeout after {deadline:.0f}s)", flush=True)
-        sys.stdout.flush()
-        os._exit(0)
-    deadline = HOOK_DEADLINE if args.deadline is None else args.deadline
+        try:
+            pending = [p for p in paths if repo_path(p, Path.cwd()) not in _REPORTED]
+            unknown(f"timeout after {deadline:.0f}s", pending)
+            _kill_children()
+        finally:
+            sys.stdout.flush()
+            os._exit(0)
     timer = threading.Timer(deadline, give_up)
     timer.daemon = True
-    timer.start()
     try:
-        forwarded = [*paths, "--compile-limit", str(0 if args.compile_limit is None else args.compile_limit)]
         if args.census_only:
-            forwarded.append("--census-only")
+            unknown("--census-only is refused under --hook: it ignores the staged objects")
+            return 0
+        unstaged = hook_unstaged()
+        if unstaged:
+            unknown(f"unstaged or untracked inputs differ from the staged state, e.g. {unstaged[0]}")
+            return 0
+        timer.start()
+        forwarded = [*paths, "--compile-limit", str(0 if args.compile_limit is None else args.compile_limit)]
         main(forwarded, hook=True)
-    except SystemExit as error:
-        print(f"link_check --hook: LINKED PREVIEW UNKNOWN ({error})")
+    except BaseException as error:  # noqa: BLE001 -- a report-only hook never fails the commit
+        if isinstance(error, KeyboardInterrupt):
+            raise
+        pending = [p for p in paths if repo_path(p, Path.cwd()) not in _REPORTED]
+        unknown(f"{type(error).__name__}: {str(error)[:200]}", pending)
     finally:
         timer.cancel()
     return 0
@@ -852,6 +935,8 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
                if definer_signature(index["objects"], index["strong"], index["comdat"], name) != before[name]
                or set(census_owners.get(name, ())) != set(owners_now.get(name, ()))
                or kept_definition(index, name) != census_kept[name]}
+    truth_moved = truth_changes(commit, since, touched)    # retail truth moved without any object
+    changed |= truth_moved
     owners = dict(census_owners)
     owners.update({name: set(owners_now.get(name, ())) for name in changed})
     selection["owners"] = owners
@@ -873,7 +958,7 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
     stale |= {name for name in changed if name in census_view["selection"].get("exceptions", {})}   # F4
     selection = index["selection"]
     selection["changed"], selection["stale"] = changed, stale
-    selection["census_kept"] = {name: census_kept.get(name) for name in changed}
+    selection["census_kept"] = {name: census_kept.get(name) for name in changed - truth_moved}
     selection["unknown_definers"] = bool(moved_unreadable) or scan_unknown
     if moved_unreadable:
         print(f"link_check: {len(moved_unreadable):,} ledger object(s) new or changed since the census cannot "
@@ -1510,6 +1595,8 @@ def report(source, obj, result, index, now_bytes):
     after = now_bytes if clean else (min(before, now_bytes) if not blocked else 0)
     result["after_bytes"] = after
     verdict = "LINKS" if clean else ("does not link" if blocked else "LINKED PREVIEW UNKNOWN")
+    if source:
+        _REPORTED.add(repo_path(source, ROOT))
     print(f"{source or obj.name}: {verdict}  "
           f"LINKED {before:,} -> {after:,} bytes (census {index['meta'].get('date', '?')} at "
           f"{index['meta'].get('commit', '?')}"
@@ -2097,9 +2184,10 @@ def main(argv=None, hook=False):
                          "instead of the census's definitions (refuses a dirty tree; an unprovable kept "
                          "definition counts as a blocker; ~minutes; never a census verdict)")
     ap.add_argument("--hook", action="store_true",
-                    help="report-only mode for a git hook: never compiles definers (--compile-limit 0), gives up "
-                         "after --deadline seconds with LINKED PREVIEW UNKNOWN (timeout), says LINKED PREVIEW "
-                         "UNKNOWN when unstaged game/ edits differ from the staged state, always exits 0")
+                    help="report-only mode for a git hook: compiles only the checked files (never a definer: "
+                         "--compile-limit 0), gives up after --deadline seconds with LINKED PREVIEW UNKNOWN "
+                         "(timeout), says LINKED PREVIEW UNKNOWN when unstaged or untracked inputs differ from the "
+                         "staged state or on any error, always exits 0")
     ap.add_argument("--deadline", type=float, default=None, metavar="S",
                     help=f"with --hook: wall-clock limit in seconds (default {HOOK_DEADLINE:.0f})")
     ap.add_argument("--compile-limit", type=int, default=None, metavar="N",
@@ -2115,6 +2203,11 @@ def main(argv=None, hook=False):
         ap.error("give sources, --next, --publish or `next`")
     if args.hook:
         return hook_main(args)
+    # BUILD_RECOMPILE_ONLY trusts every object it is not told to rebuild: a
+    # stale checked object would be judged as current; CL/_CL_ would change
+    # the compile itself (the pre-commit hook unsets all three)
+    for name in ("BUILD_RECOMPILE_ONLY", "CL", "_CL_"):
+        os.environ.pop(name, None)
     if args.deadline is not None:
         ap.error("--deadline needs --hook")
     started = time.time()

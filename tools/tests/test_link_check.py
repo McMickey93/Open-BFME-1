@@ -1376,7 +1376,7 @@ def test_hook_mode_reports_unknown_for_unstaged_edits_and_exits_zero(monkeypatch
     monkeypatch.setattr(C, "_git", lambda *a, **k: "game/x.cpp\0")
     monkeypatch.setattr(C, "load_index", lambda: pytest.fail("no preview when unstaged edits differ"))
     assert C.main(["--hook", "game/a.cpp"]) == 0
-    assert "game/a.cpp: LINKED PREVIEW UNKNOWN (unstaged game/ edits" in capsys.readouterr().out
+    assert "game/a.cpp: LINKED PREVIEW UNKNOWN (unstaged or untracked inputs differ" in capsys.readouterr().out
 
 
 def test_hook_mode_never_compiles_and_never_fails(monkeypatch, capsys):
