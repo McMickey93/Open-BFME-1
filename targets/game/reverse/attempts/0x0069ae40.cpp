@@ -1,64 +1,64 @@
-// ?bfmeCheckEQQ@@YGDPAUBfmeUnitEQQ@@@Z
-// partial score=0.5333 date=2026-10-03
-// Bank only: retail90B through RET4 at69AE97 thenINT3 at69AE9A.
-// An unsigned-address >0 comparison retains JBE using the first TEST flags:
-// 88B/38dif (quality0.5333), versus served86B/36dif (quality0.5111).
-// Retail still needs another TEST/JZ and false-before-true return blocks.
-// Integer >=1 emits91B/40dif; bool/char merge temporaries leave86B/36dif.
-// Inherited type/member names and the global binding need independent review
-// before promotion; no production identity is claimed by this experiment.
-typedef float Real;
+// ?validate@Rva006B9320Owner@@QAE_NPAURva006B9320Request@@@Z
+// partial score=0.6222 date=2026-10-16
+// ?validate@Rva006B9320Owner@@QAE_NPAURva006B9320Request@@@Z
+// cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD
+extern float g_bfmeElapsedScale;
 
-extern "C" void _ReadWriteBarrier(void);
-#pragma intrinsic(_ReadWriteBarrier)
-
-extern const Real BfmeShareThirdEQQ;
-
-struct BfmeOwnerEQQ
+struct Rva006B9320Field
 {
-	unsigned char m_bfmeHeadEQQ[0x41];
-	char m_bfmeReadyEQQ;
-	char m_bfmeDoneEQQ;
+	char m_pad00[0x54];
+	float m_field54;
 };
 
-struct BfmeBodyEQQ
+struct Rva006B9320Target
 {
-	unsigned char m_bfmeHeadEQQ[0x54];
-	Real m_bfmeHealthEQQ;
+	char m_pad00[0x41];
+	bool m_flag41;
+	bool m_flag42;
+	bool isFlag41() const { return this != 0 && m_flag41; }
+	bool isFlag42() const { return this == 0 || m_flag42; }
 };
 
-struct BfmeUnitEQQ
+struct Rva006B9320Request
 {
-	unsigned char m_bfmeHeadEQQ[4];
-	BfmeBodyEQQ *m_bfmeBodyEQQ;
-	unsigned char m_bfmeMidEQQ[4];
-	BfmeOwnerEQQ *volatile m_bfmeOwnerEQQ;
-	unsigned char m_bfmeTailEQQ[2];
-	char m_bfmeFlagAEQQ;
-	char m_bfmeFlagBEQQ;
-	char m_bfmeFlagCEQQ;
+	int m_action;
+	Rva006B9320Field *m_field;
+	void *m_payload;
+	Rva006B9320Target *m_target;
+	unsigned char m_flag10;
+	unsigned char m_flag11;
+	bool m_flag12;
+	bool m_flag13;
+	bool m_flag14;
 };
 
-char __stdcall bfmeCheckEQQ(BfmeUnitEQQ *unit)
+class Rva006B9320Owner
 {
-	if (!unit->m_bfmeFlagAEQQ && !unit->m_bfmeFlagBEQQ && !unit->m_bfmeFlagCEQQ)
-	{
-		BfmeBodyEQQ *body = unit->m_bfmeBodyEQQ;
-		if (body == 0 || !(body->m_bfmeHealthEQQ >= BfmeShareThirdEQQ))
-		{
-			BfmeOwnerEQQ *owner = unit->m_bfmeOwnerEQQ;
-			if (owner == 0)
-				return 1;
-			_ReadWriteBarrier();
-			if ((unsigned int)owner > 0 && owner->m_bfmeReadyEQQ)
-				return 1;
-			BfmeOwnerEQQ *other = unit->m_bfmeOwnerEQQ;
-			if (other == 0)
-				return 1;
-			_ReadWriteBarrier();
-			if (other != 0 && other->m_bfmeDoneEQQ)
-				return 1;
-		}
-	}
-	return 0;
+public:
+	bool validate(Rva006B9320Request *request);
+};
+
+static inline bool rva006B9320Flag41(const Rva006B9320Target *target)
+{
+	return target != 0 && target->m_flag41;
+}
+
+static inline bool rva006B9320Flag42(const Rva006B9320Target *target)
+{
+	return target == 0 || target->m_flag42;
+}
+
+bool Rva006B9320Owner::validate(Rva006B9320Request *request)
+{
+	if (request->m_flag12 || request->m_flag13 || request->m_flag14)
+		return false;
+	if (request->m_field && request->m_field->m_field54 >= g_bfmeElapsedScale)
+		return false;
+	if (request->m_target == 0)
+		return true;
+	if (request->m_target->isFlag41())
+		return true;
+	if (request->m_target->isFlag42())
+		return true;
+	return false;
 }
