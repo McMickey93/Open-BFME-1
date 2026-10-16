@@ -5113,3 +5113,12 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/AptDisplayStringAllocation
 game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/AptDisplayStringAllocation_ctor.cpp|param|UnicodeString::UnicodeString#2|s,f69207fc806c8a55d3cfbbb6,gpt-6.1-sol,20261016074029-d28919,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/AptDisplayStringAllocation_ctor.cpp|local|Rva00788290Allocation::Rva00788290Allocation|x,07786d0af19020048f8779dd,gpt-6.1-sol,20261016074029-d28919,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/AptDisplayStringAllocation_ctor.cpp|local|Rva00788290Allocation::Rva00788290Allocation|y,c0d12ca9d7bb8ada9623bb83,gpt-6.1-sol,20261016074029-d28919,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field001C,0d8275a42cd1e2302792091e,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field003C,fe5489b9f51d8817fd723576,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field0008,f6ef9046a102f1afcfea69dd,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field000C,cb63d1b5bd879f06af11d4bd,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field0010,ebdcd065c17d09e83c57465e,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field007C,22e5b1bea3239657a7959ace,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field0080,8d29caf21e32b7d7f58a584f,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field00A0,a7b3c80f0f521690fe20f702,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultDrawModuleDraw_005F31A0.cpp|member||m_field0004,8644468c51771c7fc88a81da,gpt-6.1-sol,20261016074012-8e8c9f,2026-10-16
