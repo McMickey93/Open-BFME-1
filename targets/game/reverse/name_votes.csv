@@ -5603,3 +5603,6 @@ game/GameEngine/Source/Common/U2CStringScans.cpp|local|Rva0084E030Buffer::squash
 game/GameEngine/Source/Common/U2CStringScans.cpp|local|Rva00850790Hash|h,77169cf5141ef4802544b2af,gpt-6.1-sol,20261016122902-258ef2,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/CreateScaledRenderObj00901F80.cpp|local|Create_Render_Obj|field1,198e622d0d0699bed58b80aa,gpt-6.1-sol,20261016122909-738dd1,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/CreateScaledRenderObj00901F80.cpp|local|Create_Render_Obj|field3,db8bb7d3a77e5aee77060f1d,gpt-6.1-sol,20261016122909-738dd1,2026-10-16
+game/GameEngine/Source/Common/Rva006995F0Attenuate.cpp|local|Rva006995F0Owner::attenuate|x,7928f3357a4b3a574e999868,gpt-6.1-sol,20261016122916-74e303,2026-10-16
+game/GameEngine/Source/Common/Rva006995F0Attenuate.cpp|local|Rva006995F0Owner::attenuate|y,040d1b259afe8d6aa0118b3f,gpt-6.1-sol,20261016122916-74e303,2026-10-16
+game/GameEngine/Source/Common/Rva006995F0Attenuate.cpp|local|Rva006995F0Owner::attenuate|z,e280af4bb01513907ffd6672,gpt-6.1-sol,20261016122916-74e303,2026-10-16
