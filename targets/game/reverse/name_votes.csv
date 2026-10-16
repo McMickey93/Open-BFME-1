@@ -5750,3 +5750,4 @@ game/GameEngine/Source/Common/U2FixedSlotSearches.cpp|local|Rva00806400Owner::se
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDrawAttachableSubModels.cpp|local|W3DModelDraw::rva00769720|d,69cbf2b60006385b72e5d383,gpt-6.1-sol,20261016130650-265a1c,2026-10-16
 game/Libraries/Source/subsystem/GameSpyLoginPreferences_addLogin.cpp|local|compare|c,fea58ee7f4c1160643035895,gpt-6.1-sol,20261016130656-d7148f,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva00150700PathReset.cpp|local|Rva00150700Owner::reset|p,6fee41740c598e6b85d5d827,gpt-6.1-sol,20261016130701-3a077d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/TransitionDamageFXRubbleNeighbors.cpp|local|TransitionDamageFX::rva002539F0|d,12d87095d7f3780c8d6f8742,gpt-6.1-sol,20261016130706-9f7c10,2026-10-16
