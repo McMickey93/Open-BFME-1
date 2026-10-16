@@ -4684,3 +4684,11 @@ game/GameEngine/Source/GameLogic/Object/Update/DetachableRiderUpdate.cpp|member|
 game/GameEngine/Source/GameLogic/Object/Update/DetachableRiderUpdate.cpp|member||m_bfmeActive,4456abd6745c38f572c173e4,gpt-6.1-sol,20261016070908-16a61d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/DetachableRiderUpdate.cpp|member||m_bfmeAlternate,c0270a631ed204dcb51d2eb6,gpt-6.1-sol,20261016070908-16a61d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/DetachableRiderUpdate.cpp|function|Gen_0028D8F0@|bfmeSelectCondition,7f71ca518f71ad4f85ce969e,gpt-6.1-sol,20261016070908-16a61d,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|type||Rva0034FE00Pod,c1af72df693821eb2b0a3820,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|type||Rva0034FE00,bce3ee19fd47192cf96dbd65,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|member||m_00,29e7abe49b812127591707ab,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|member||m_04,35b5ed16c4c826a446e8493c,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|member||m_08,582428dccb53fc324eb64363,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|member||m_0C,a040c20eef4d18ca8d6ca6dc,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|member||m_10,3fd4dc8c98b6fc10fba8df17,gpt-6.1-sol,20261016071009-11b374,2026-10-16
+game/GameEngine/Source/Common/Rva0034FE00Assign.cpp|member||m_14,f778aaa256e2f5d5ac558565,gpt-6.1-sol,20261016071009-11b374,2026-10-16
