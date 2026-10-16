@@ -5062,3 +5062,5 @@ game/GameEngine/Source/Common/Rva003D6690_layerHeight.cpp|member||m_at0C,4542004
 game/GameEngine/Source/Common/BfmeConv2211.cpp|type||Coord3D007AE900,0d80d78139876aed17a7fad5,gpt-6.1-sol,20261016073328-f1b426,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2211.cpp|local|Rva007AE900Body|tmp,8d1eb45c45738414e34639b5,gpt-6.1-sol,20261016073328-f1b426,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2211.cpp|local|Rva007AE900Body|h,3a8a29728ded11904be2766a,gpt-6.1-sol,20261016073328-f1b426,2026-10-16
+game/GameEngine/Source/GameLogic/Pathfinder/PathfinderRva003F5C70.cpp|param|adjustCoordToCell|x,404caa29b6387da629b4a193,gpt-6.1-sol,20261016073349-b249e4,2026-10-16
+game/GameEngine/Source/GameLogic/Pathfinder/PathfinderRva003F5C70.cpp|param|adjustCoordToCell|y,95111af3bbba7003a7daa702,gpt-6.1-sol,20261016073349-b249e4,2026-10-16
