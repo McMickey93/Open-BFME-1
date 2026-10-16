@@ -4329,3 +4329,11 @@ game/GameEngine/Source/Common/BfmeConv901.cpp|local|BfmeThingJA::bfmeGoJA|h,97d0
 game/GameEngine/Source/Common/BfmeConv901.cpp|local|BfmeThingJA::bfmeGoJA|s,033383a751301c7cf0f69c16,gpt-6.1-sol,20261016065222-2f1358,2026-10-16
 game/GameEngine/Source/Common/BfmeConv901.cpp|local|BfmeThingJA::bfmeGoJA|r,b86ff0c2225dd9d476231e12,gpt-6.1-sol,20261016065222-2f1358,2026-10-16
 game/GameEngine/Source/Common/BfmeConv901.cpp|local|InGameUI::areSelectedObjectsControllable|l,fcd067a1d2c466f6cdc34dd7,gpt-6.1-sol,20261016065222-2f1358,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|type||BfmeObjZC,2df4a38b45b2a904a405dca8,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|member||m_bfme482ZC,0b447519f49fd7ff1cf8b267,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|param|bfmeFinalZC|p,b902ddf2e0951e444bac3c4b,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|o,e24b5d73a36b2b3a2fb77ba3,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|ov1,8c6a3ffdd66d4021d12a0ac9,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|s,fd04a79fb67e5cf9755fbcae,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|p,b905a4e7772156dd8c1240da,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1872.cpp|local|BfmeHostZC::bfmeHeightZC|d,443e1102d7248421cb0f9535,gpt-6.1-sol,20261016063359-58e6f3,2026-10-16
