@@ -146,11 +146,13 @@ public:
 extern NameKeyGenerator *TheNameKeyGenerator;
 
 // ILT 0x0002FC7A records this helper's result as a MemoryPool pointer.
-class MemoryPool
+class MemoryPool;
+
+// Retail 0x001F8E20 (ILT 0x00034A0E), the matched Rva001F8E20Owner row.
+class Rva001F8E20Owner
 {
 public:
-	// Retail 0x001F8E20 (ILT 0x00034A0E).
-	void rva001F8E20(Coord3D *out);
+	void method(Coord3D *out);
 };
 
 MemoryPool *SiegeDeploySpecialPower_getPool(Object *object);
@@ -240,7 +242,7 @@ Bool Pathfinder::isAttackViewBlockedByObstacle(const Object *source, const Coord
 		if (tower && module && ((const Rva00266340 *)module)->is())
 		{
 			Coord3D offset;
-			tower->rva001F8E20(&offset);
+			((Rva001F8E20Owner *)tower)->method(&offset);
 			offset.sub(&goalPos);
 			if ((Real)fabs(offset.z) < 20.0f)
 			{
