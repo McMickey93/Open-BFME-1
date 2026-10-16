@@ -5778,3 +5778,4 @@ game/GameEngine/Source/GameLogic/Object/Behavior/InstantDeathBehavior.cpp|local|
 game/GameEngine/Source/GameLogic/System/TimingLog003851E0.cpp|local|TimingLog003851E0::start|n,9371f0724080939697213a14,gpt-6.1-sol,20261016130845-30b7c7,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderClassifyFence.cpp|local|Pathfinder::classifyFence|c,4bdbd3f671a2bf1cb2aba200,gpt-6.1-sol,20261016130850-6ecb20,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderClassifyFence.cpp|local|Pathfinder::classifyFence|s,39f4aaf846bfad65433feeb0,gpt-6.1-sol,20261016130850-6ecb20,2026-10-16
+game/GameEngine/Source/Common/INI/Rva000C1E50MapCacheDefinition.cpp|local|Rva000C1E50::parseMapCacheDefinition|c,ae588738b4f90edf4107fa24,gpt-6.1-sol,20261016130855-2b22d9,2026-10-16
