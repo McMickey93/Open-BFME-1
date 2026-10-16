@@ -4740,3 +4740,8 @@ game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_am
 game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_amount040,814ce6ccf56dbe144481bd7b,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|member||m_amount044,71e63f58ac478b6379a02eef,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/ObjectAttemptDamageHook.cpp|local|getFinalTemplate|tmpl,fdb5939db02885c3418017e0,gpt-6.1-sol,20261016071304-9f7de4,2026-10-16
+game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeNextOverride,ff03840f3581b00b9e129a91,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
+game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeIsOverride,7338473e1188a790c75f1859,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
+game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeName,c31bc43320bf7ffbed9b0e76,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
+game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeLevels,8cff0944a27cca279b526afc,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
+game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeLoadType,f3af128ec8f34616c80a67b6,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
