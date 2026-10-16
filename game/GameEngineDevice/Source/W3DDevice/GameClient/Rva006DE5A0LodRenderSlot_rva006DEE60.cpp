@@ -29,9 +29,17 @@
 
 class Drawable;
 
+// The 0x58-byte target is a TBuff: its constructor is the matched
+// TBuff::TBuff row at 0x006DB470.
+class TBuff
+{
+public:
+	TBuff( Drawable *draw, int index );
+	unsigned char m_data[ 0x58 ];
+};
+
 struct Rva006DE9B0Target
 {
-	Rva006DE9B0Target( Drawable *draw, int index );
 	unsigned char m_data[ 0x58 ];
 };
 
@@ -107,7 +115,7 @@ Rva006DE9B0Target *Rva006DE5A0LodRenderSlot::rva006DEE60( Drawable *draw, Rva006
 	if( targets.size() >= 1000 )
 		return 0;
 
-	Rva006DE9B0Target *target = new Rva006DE9B0Target( draw, index );
+	Rva006DE9B0Target *target = reinterpret_cast<Rva006DE9B0Target *>( new TBuff( draw, index ) );
 	{
 		Rva006DE9B0Key key = target;
 		targets.insert( key );

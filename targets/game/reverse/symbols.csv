@@ -3652,7 +3652,6 @@ name,address,notes
 ??0Rva006D5280TextureBase@@QAE@IIIIII@Z,0x0090CF90,pin near-twin reuses base texture constructor body
 ??0Rva006D6050TextureBase@@QAE@IIIIII@Z,0x0090CF90,base texture constructor used by Rva006D6050::init
 ??0Rva006D65B0ScorchHandle@@QAE@W4MipCountType@@@Z,0x006D65B0,address-derived typed one-pointer scorch texture handle constructor; EXScorch tag consumer and initHeightData call chain verify MipCountType ABI; campaign=luna36h-20260907;lane=shaders;model=gpt-5.6-sol-ultra
-??0Rva006DE9B0Target@@QAE@PAVDrawable@@H@Z,0x006DB470,address-derived constructor of the 0x58-byte target inserted into the Rva006DE9B0 sets: thiscall ret 8 storing a vftable then the Drawable (scale and position) and the index; called from 0x006DEE60 through ILT 0x00035274; the body row is still the gen-asm dump ?d_006db470 (vftable 0x0111E134 is TBuff-like, conversion blocked on EH state order)
 ??0Rva006DED60RoadBuffer@@QAE@XZ,0x006DED60,constructor identity from BaseHeightMap road-buffer allocation and matching reset call
 ??0Rva006DED60RoadRef@@QAE@XZ,0x0001F3B1,first road-buffer array element constructor used by retail EH vector construction
 ??0Rva006DED60RoadSet@@QAE@XZ,0x00029BE5,road-buffer set element constructor used by retail EH vector construction
@@ -88689,7 +88688,6 @@ name,address,notes
 ?untranslatedSlotPosition@@YAHHH@Z,0x000156D6,DisconnectScreen Kick handler maps its displayed slot back around the local-player gap before voting; ILT to 0x0066B3E0
 ?update002AD250@StealthUpdate@@QAEXXZ,0x000272AF,"Reviewed full238B2AD250 updates frame timers20/24/28, active2D and object status; neutral RVA name avoids invented idle callback identity"
 ?update0040E680@MovieOpen0040E3B0@@QAE_N_N@Z,0x0040E680,retail 0x0040F918 via ILT 0x3B44E; shared movie receiver; bool stack argument read low byte and AL return with ret4; address-derived identity
-?update006059F0@Node004092A0@@QAEXXZ,0x006059F0,retail 0x0040936B calls ILT 0x3765F which jumps to this body; target ECX receiver no stack args; opaque address identity
 ?update@AIAttackSquadState@@UAE?AW4StateReturnType@@XZ,0x00184d50,vtable-slot ??_7AIAttackSquadState@@6BMemoryPoolObject@@@ slot 6 anchors=1
 ?update@AIInternalMoveToState@@UAE?AW4StateReturnType@@XZ,0x000488F6
 ?update@AIInternalMoveToStateUpdateShim@@QAE?AW4StateReturnType@@XZ,0x00172E70,AIInternalMoveToState::update incremental-link thunk target through a TU-local forwarding shim

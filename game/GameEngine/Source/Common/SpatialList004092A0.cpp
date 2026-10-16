@@ -86,8 +86,9 @@ struct AnimationSoundClientBehaviorGlobalSetting
 extern AnimationSoundClientBehaviorGlobalSetting TheAnimationSoundClientBehaviorGlobalSetting;
 struct Node004092A0 {
  char bytes00[0x14]; Node004092A0 *next14, *prev18;
- void update006059F0();
 };
+// List nodes are AnimationSoundClientBehavior objects (row 0x006059F0).
+class AnimationSoundClientBehavior { public: void updateAnimationSounds(); };
 struct SpatialList004092A0 {
  char bytes00[8]; Node004092A0 *field08,*field0c,*field10,*field14; int field18;
  Position004092A0 position1c;
@@ -106,5 +107,5 @@ void SpatialList004092A0::update() {
  }
  if (!field10) position1c=*localAudio004092A0()->position();
  Node004092A0 *p=field08;
- while (p) { Node004092A0 *n=p->next14; p->update006059F0(); p=n; }
+ while (p) { Node004092A0 *n=p->next14; ((AnimationSoundClientBehavior *)p)->updateAnimationSounds(); p=n; }
 }
