@@ -122969,9 +122969,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006abcf0@@YAXXZ,,0x006ABCF0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00aaad10
 ?j_006b0840@@YAXXZ,,0x006B0840,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000AFC9
 ?j_006b0ca6@@YAXXZ,,0x006B0CA6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000AFC9
-?j_006ba4a0@@YAXXZ,,0x006BA4A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004A124
-?j_006ba4b0@@YAXXZ,,0x006BA4B0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002B9D6
-?j_006ba530@@YAXXZ,,0x006BA530,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000763F
 ?j_006baa80@@YAXXZ,,0x006BAA80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00039FB3
 ?j_006bab30@@YAXXZ,,0x006BAB30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000442F1
 ?j_006bab40@@YAXXZ,,0x006BAB40,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0046b700
@@ -172541,3 +172538,6 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?Flip_To_Primary@WW3D@@SAXXZ,,0x008FD2E0,5,game/Libraries/Source/WWVegas/WW3D2/ww3d.cpp,matched,ZH ww3d.cpp forwarder; retail body is a lone jmp to DX8Wrapper::Flip_To_Primary inside the WW3D block between matched Get_Window 0x008FD170 and Sync 0x008FD310 in ZH source order;model=claude-opus-5-5;host=app
 ?Set_Ext_Swap_Interval@WW3D@@SAXJ@Z,,0x008FD330,5,game/Libraries/Source/WWVegas/WW3D2/ww3d.cpp,matched,ZH ww3d.cpp forwarder; retail body is a lone jmp to DX8Wrapper::Set_Swap_Interval inside the WW3D block between matched Get_Window 0x008FD170 and Sync 0x008FD310 in ZH source order;model=claude-opus-5-5;host=app
 ?addToPriorityBuildList@Player@@QAEXABVAsciiString@@PAVCoord3D@@M@Z,,0x000CD970,226,game/GameEngine/Source/GameClient/Player_addToPriorityBuildList.cpp,matched,ZH Player::addToPriorityBuildList: BuildListInfo ctor callee 0x00194210 + m_pBuildList +0x1C0 as in matched addToBuildList; ILT oracle CONFIRMED unique decoration; markPriorityBuild +0x88; setNumRebuilds(1);model=claude-opus-5-5;host=app
+?update@Win32CDManager@@UAEXXZ,,0x006BA4A0,5,game/GameEngineDevice/Source/Win32Device/Common/Win32CDManager.cpp,matched,ZH extend-base forwarder (jmp CDManager::update); ilt_oracle CONFIRMED at ILT 0x6a91 in the Win32CDManager vtable;model=claude-opus-5-5;host=app
+?reset@Win32CDManager@@UAEXXZ,,0x006BA4B0,5,game/GameEngineDevice/Source/Win32Device/Common/Win32CDManager.cpp,matched,ZH extend-base forwarder (jmp CDManager::reset); ilt_oracle CONFIRMED at ILT 0x47d0c in the Win32CDManager vtable;model=claude-opus-5-5;host=app
+?refreshDrives@Win32CDManager@@UAEXXZ,,0x006BA530,5,game/GameEngineDevice/Source/Win32Device/Common/Win32CDManager.cpp,matched,ZH extend-base forwarder (jmp CDManager::refreshDrives); ilt_oracle CONFIRMED at ILT 0x3014d in the Win32CDManager vtable;model=claude-opus-5-5;host=app

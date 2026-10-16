@@ -285,7 +285,6 @@ void Win32CDManager::init( void )
 // Win32CDManager::update
 //============================================================================
 
-// ?update@Win32CDManager@@UAEXXZ present-unmatched
 void Win32CDManager::update( void )
 {
 	CDManager::update();
@@ -297,7 +296,6 @@ void Win32CDManager::update( void )
 // Win32CDManager::reset
 //============================================================================
 
-// ?reset@Win32CDManager@@UAEXXZ present-unmatched
 void Win32CDManager::reset( void )
 {
 	CDManager::reset();
@@ -318,7 +316,6 @@ CDDriveInterface* Win32CDManager::createDrive( void )
 // Win32CDManager::refreshDrives
 //============================================================================
 
-// ?refreshDrives@Win32CDManager@@UAEXXZ present-unmatched
 void Win32CDManager::refreshDrives( void )
 {
 	CDManager::refreshDrives();
