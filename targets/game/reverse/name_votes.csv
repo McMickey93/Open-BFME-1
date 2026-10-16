@@ -2902,3 +2902,5 @@ game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeFirst,17c797
 game/GameEngine/Source/Common/BfmeThingKV0016D780.cpp|member||m_bfmeSecond,c6a1b81b97412bc7495bfcf7,gpt-6.1-sol,20261016052843-6bd6c9,2026-10-16
 game/GameEngine/Source/Common/Bfme5SmallAccessors.cpp|member||m_bfmeFieldB,34eabc89b0715c10fbb445b2,gpt-6.1-sol,20261016052843-4bd257,2026-10-16
 game/GameEngine/Source/Common/Bfme5SmallAccessors.cpp|function|Team@|bfmeFieldB,05e72b8eeb381033068c41da,gpt-6.1-sol,20261016052843-4bd257,2026-10-16
+game/GameEngine/Source/Common/Bfme5ThirtyThree.cpp|member||m_bfmeOwner,38c96478da754328527fb306,gpt-6.1-sol,20261016052844-52fcf8,2026-10-16
+game/GameEngine/Source/Common/Bfme5ThirtyThree.cpp|member||m_bfmeFlags,9d3ce0b429e6dba42109f13d,gpt-6.1-sol,20261016052844-52fcf8,2026-10-16
