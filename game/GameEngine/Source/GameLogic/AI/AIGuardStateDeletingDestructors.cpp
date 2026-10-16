@@ -12,10 +12,18 @@ private:
 	friend void forceAIGuardOuterStateDeletingDestructor();
 };
 
-class AIGuardAttackAggressorState
+// The destructors are implicit: retail ~AIGuardAttackAggressorState at 0x0015E6B0 (own ILT 0x00016900) is each a bare tail jump to
+// State::~State (ILT 0x00016725) with no vptr reset, the shape VC7.1 gives an
+// implicit virtual destructor; every ILT here is ilt_oracle CONFIRMED exact.
+
+class State
 {
 public:
-	virtual ~AIGuardAttackAggressorState();
+	virtual ~State();
+};
+
+class AIGuardAttackAggressorState : public State
+{
 private:
 	friend void forceAIGuardAttackAggressorStateDeletingDestructor();
 };
