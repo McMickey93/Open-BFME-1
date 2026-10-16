@@ -65,10 +65,15 @@ GameSpyStagingRoom &GameSpyStagingRoom::operator=(const GameSpyStagingRoom &othe
 	GameInfo::operator=(other);
 	for (int i = 0; i < 8; i++)
 		m_GameSpySlot[i] = other.m_GameSpySlot[i];
-	m_gameName = other.m_gameName;
+	// Retail inlines the string assignments here: direct calls to
+	// StringBase<unsigned short>::set (0x00888530) and StringBase<char>::set
+	// (0x00887C90), not the out-of-line operator= copies at 0x000680A0 and
+	// 0x0005C500.
+	reinterpret_cast<StringBase<unsigned short> &>(m_gameName).set(
+		reinterpret_cast<const StringBase<unsigned short> &>(other.m_gameName));
 	m_id = other.m_id;
 	m_transport = other.m_transport;
-	m_localName = other.m_localName;
+	m_localName.set(other.m_localName);
 	m_requiresPassword = other.m_requiresPassword;
 	m_allowObservers = other.m_allowObservers;
 	m_version = other.m_version;
@@ -77,8 +82,8 @@ GameSpyStagingRoom &GameSpyStagingRoom::operator=(const GameSpyStagingRoom &othe
 	m_extra438 = other.m_extra438;
 	m_isQM = other.m_isQM;
 	m_extra440 = other.m_extra440;
-	m_ladderIP = other.m_ladderIP;
-	m_pingStr = other.m_pingStr;
+	m_ladderIP.set(other.m_ladderIP);
+	m_pingStr.set(other.m_pingStr);
 	m_pingInt = other.m_pingInt;
 	m_ladderPort = other.m_ladderPort;
 	m_reportedNumPlayers = other.m_reportedNumPlayers;
