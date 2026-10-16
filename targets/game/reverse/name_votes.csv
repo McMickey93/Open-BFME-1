@@ -5069,3 +5069,5 @@ game/GameEngine/Source/GameLogic/Object/BfmeConv1981.cpp|member||m_bfme26cETB,2d
 game/GameEngine/Source/GameLogic/Object/BfmeConv1981.cpp|member||m_bfme27cETB,19bf7e346021ea61ac3c061b,gpt-6.1-sol,20261016073354-ef00dc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/BfmeConv1981.cpp|function|BfmeHostETB@|bfmeApplyETB,5e2302304253054c26cc5be0,gpt-6.1-sol,20261016073354-ef00dc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/BfmeConv1981.cpp|param|BfmeHostETB::bfmeApplyETB|arg,11ee9db1b2197cb94820a380,gpt-6.1-sol,20261016073354-ef00dc,2026-10-16
+game/GameEngine/Source/Common/Rva006FD510MeshMatDescGetTexture.cpp|member||m_bfmeRefs,2e6c5a8dc0536e8d972e85fb,gpt-6.1-sol,20261016073448-e8003d,2026-10-16
+game/GameEngine/Source/Common/Rva006FD510MeshMatDescGetTexture.cpp|member||m_bfmeThing,9d0d395e8f758563947ecc98,gpt-6.1-sol,20261016073448-e8003d,2026-10-16
