@@ -3017,3 +3017,7 @@ game/GameEngine/Source/GameLogic/Object/Upgrade/ExperienceScalarUpgradeUpgradeIm
 game/GameEngine/Source/GameLogic/Object/Upgrade/ExperienceScalarUpgradeUpgradeImplementation.cpp|member||m_1c,a6035b01471c1133c9878278,gpt-6.1-sol,20261016054254-0504ad,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ExperienceScalarUpgradeUpgradeImplementation.cpp|member||m_70,b4ba606cdeb8c8ab91b83d77,gpt-6.1-sol,20261016054254-0504ad,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ExperienceScalarUpgradeUpgradeImplementation.cpp|local|ExperienceScalarUpgrade::upgradeImplementation|o,4fd01b12d14f4440e77c64f8,gpt-6.1-sol,20261016054254-0504ad,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LocomotorSetUpgradeUpgradeImplementation.cpp|type||BfmeZ1034,e814de96567b44bbeaaba7c3,gpt-6.1-sol,20261016054300-08e080,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LocomotorSetUpgradeUpgradeImplementation.cpp|member||m_bfmeZ,bbd9abd4ebbd660951148af7,gpt-6.1-sol,20261016054300-08e080,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LocomotorSetUpgradeUpgradeImplementation.cpp|member||m_bfmeFlag,dc448939616615d66cc528ce,gpt-6.1-sol,20261016054300-08e080,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/LocomotorSetUpgradeUpgradeImplementation.cpp|local|LocomotorSetUpgrade::upgradeImplementation|z,aeb03f64eba5ac0c88b28566,gpt-6.1-sol,20261016054300-08e080,2026-10-16
