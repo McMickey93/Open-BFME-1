@@ -2208,3 +2208,6 @@ game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|y0,af8c
 game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|x1,db3d7d22f2821cac520c2bde,gpt-6.1-sol,20261016042616-2c4593,2026-10-16
 game/GameEngine/Source/GameClient/GUI/FadeImage_draw.cpp|param|drawImage|y1,da6bf03158bd4bff8c338567,gpt-6.1-sol,20261016042616-2c4593,2026-10-16
 game/GameEngine/Source/GameClient/GUI/OnlineQuickMatchSaveOptions.cpp|function|BfmeAptScreenOnlineQuickMatch@|rva005585B0SaveOptions,e33aca24df3990e6ccc07476,gpt-6.1-sol,20261016042625-dfa63c,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|x,78211f45b67249605ee057ec,gpt-6.1-sol,20261016042632-d82492,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|p,e644ab34868b10a5e3e320f1,gpt-6.1-sol,20261016042632-d82492,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayDrawStrings006e8790.cpp|local|W3DDisplay::drawDisplayStrings|n,73fe3ce00764269d778c1c55,gpt-6.1-sol,20261016042632-d82492,2026-10-16
