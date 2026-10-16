@@ -1995,3 +1995,12 @@ game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||
 game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f44,0ee9e1229c55dc1dae43cedb,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/AudioLoopUpgradeCtorModuleFactory.cpp|member||m_f14,54e85f5c3e1592306361f159,gpt-6.1-sol,20261016040519-064690,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/AudioLoopUpgradeCtorModuleFactory.cpp|member||m_f18,f9aa8a43cb3d33f49a23dd03,gpt-6.1-sol,20261016040519-064690,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_00,1778d51ad1712868cb197434,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_04,8707aa67a65b8abac5f55b24,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_08,933d8ad96529640ec8a5dba1,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_10,ca28bb69e04b885f22a952ff,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_14,8743ae64edbbcb70e9c4dcb7,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_18,0e63f55a10165d6b87b31590,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_1c,551903d669c1ab1b300ae8ea,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_20,f66b16dfbfe91ddafe1714a6,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|local|Rva000B9EA0Parse::parse|s,717daf00fabe92833ed1b088,gpt-6.1-sol,20261016040833-11d270,2026-10-16
