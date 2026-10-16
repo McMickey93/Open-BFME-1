@@ -4419,3 +4419,14 @@ game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_29f,5a04369f1ba3ccd3c
 game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_2c0,9e610f48ae1fdf0711a3ec31,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
 game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_2c4,d882a7a0a50bc2662ba83467,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
 game/GameEngine/Source/Common/RTS/PlayerInit.cpp|member||m_344,341b78de47a64d4b44cc36ed,gpt-6.1-sol,20261016065809-e0e481,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|type||BfmeAiDataGS,489ca5e3424ac888a27a3e7a,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|type||BfmeArgGS,635dc3fe592a9d69a50b6036,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|type||BfmeStateGS,06465b146d63a23b3070c9e0,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfmeFrameGS,928aed58138d16d21969da62,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfmeValueGS,40225298ec0539af80a76d15,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfmeDataGS,869d5b61f17f49df8884c6a9,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfmeFlagGS,670c9083fefab7050fb5ae9b,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfme1cGS,9c1830e8992f94ed414dc951,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfme28GS,9cac002928eb49cc197acc64,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|member||m_bfme2cGS,e3d9f8e83da07190457f4ed8,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2070.cpp|param|BfmeStateGS::BfmeStateGS|a,909442ee826048a4db2a70f8,gpt-6.1-sol,20261016065856-1b90d3,2026-10-16
