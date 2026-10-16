@@ -2037,3 +2037,8 @@ game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModul
 game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field23C,9e2a8deea03162ef882ea611,gpt-6.1-sol,20261016041017-99645f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field240,4cdde84967b66e5a55c65d3a,gpt-6.1-sol,20261016041017-99645f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field244,5c71c2f834a20d5f7d3ef8d6,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field71,e6b38e0962e5706c8e08fb6d,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field74,a2cc6b32dc5019e81866eda2,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field78,04223adab3c56ee87b77864e,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field7c,15fe29ad66d70c0642486c52,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field80,93cbd1fc4570c1820b0894ab,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
