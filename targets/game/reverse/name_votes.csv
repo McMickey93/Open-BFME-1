@@ -5776,3 +5776,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapUpdateScorches.cp
 game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMapUpdateScorches.cpp|local|bfmeCeilD|d,8db2f4ffc05c8bf6863f2e1e,gpt-6.1-sol,20261016130834-f369da,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/InstantDeathBehavior.cpp|local|InstantDeathBehavior::onDie|d,ee79eab79f60ecb1c2a3fc04,gpt-6.1-sol,20261016130840-79806c,2026-10-16
 game/GameEngine/Source/GameLogic/System/TimingLog003851E0.cpp|local|TimingLog003851E0::start|n,9371f0724080939697213a14,gpt-6.1-sol,20261016130845-30b7c7,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderClassifyFence.cpp|local|Pathfinder::classifyFence|c,4bdbd3f671a2bf1cb2aba200,gpt-6.1-sol,20261016130850-6ecb20,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderClassifyFence.cpp|local|Pathfinder::classifyFence|s,39f4aaf846bfad65433feeb0,gpt-6.1-sol,20261016130850-6ecb20,2026-10-16
