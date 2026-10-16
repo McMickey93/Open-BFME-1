@@ -3769,3 +3769,4 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBu
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|member||m_input298,9fd27a54c1ee4b83bf4f8190,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|member||m_vector2B0,99a099eec4d6af8c826559d0,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva00245010RecordBuild.cpp|local|FormationBuild00245010::build|r,f0ad3060ad6cff204f6f6081,gpt-6.1-sol,20261016062054-a6a051,2026-10-16
+game/GameEngine/Source/Common/Rva008A4540.cpp|member||m_04,4a5281037602e7b600e1ffd7,gpt-6.1-sol,20261016062106-f57e79,2026-10-16
