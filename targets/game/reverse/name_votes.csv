@@ -5885,3 +5885,4 @@ game/GameEngine/Source/Common/RTS/TunnelTracker_getContainCount.cpp|member||m_bf
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContainReleaseMember.cpp|member||m_bfmeId,a4e0ea5e4ad8161637ae53bc,gpt-6.1-sol,20261016135724-734635,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContainReleaseMember.cpp|member||m_bfmeUpgradesCompleted,39698b8b886420ab45626b3f,gpt-6.1-sol,20261016135724-734635,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/BfmeSpecialPowerAllowanceStore_allows.cpp|member||m_bfmeNextOverride,1c4c87706c357f1cd8ae6482,gpt-6.1-sol,20261016135729-cdbaee,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1921.cpp|member||m_bfmeFlagsBX,8d7194df53853449b38326f8,gpt-6.1-sol,20261016135735-b5c7eb,2026-10-16
