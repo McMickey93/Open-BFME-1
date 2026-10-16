@@ -21,7 +21,7 @@
 //
 //   slot  0  0x009D26C0  scalar deleting destructor   (gen_small/dtors_010)
 //   slot  1  0x009D2480  open                         landed here
-//   slot  2  0x009D2540  close                        5-byte tail jump, see below
+//   slot  2  0x009D2540  close                        landed here
 //   slot  3  0x009D2550  read                         landed here
 //   slot  4  0x009D25A0  write                        landed here
 //   slot  5  0x009D25D0  seek                         landed here
@@ -243,14 +243,9 @@ LocalFile::~LocalFile()
 // Closes the current file if it is open. Must be called once per successful
 // LocalFile::open.
 //
-// Left unclaimed on purpose. The body is a bare tail jump to File::close, so it
-// compiles to the same five bytes an incremental-link thunk does, and the
-// address the vtable gives (slot 2, retail 0x009D2540) is already carried by
-// ?j_009d2540@@YAXXZ in game/gen_small/gthunks_086.cpp -- which does jump to
-// File::close at 0x009CB880, so the two claims are indistinguishable by bytes.
-// Repointing it would orphan that generated definition; the row is worth one
-// function and the retraction is a separate commit's work.
-// ?close@LocalFile@@UAEXXZ present-unmatched
+// The body is a bare tail jump to File::close (0x009CB880). The vtable at
+// 0x01143D38 gives it slot 2 (retail 0x009D2540), between open and read; the
+// same address fills Win32LocalFile's close slot, which does not override it.
 void LocalFile::close( void )
 {
 	File::close();

@@ -190,12 +190,10 @@ Bool StreamingArchiveFile::open( File *file )
 //=================================================================
 /**
 	* Closes the current file if it is open.
-// ?close@StreamingArchiveFile@@ present-unmatched
   * Must call StreamingArchiveFile::close() for each successful StreamingArchiveFile::open() call.
 	*/
 //=================================================================
 
-// ?close@StreamingArchiveFile@@ present-unmatched
 void StreamingArchiveFile::close( void )
 {
 	File::close();
