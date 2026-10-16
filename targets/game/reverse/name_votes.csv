@@ -1702,3 +1702,4 @@ game/GameEngine/Source/Common/BfmeConv1885.cpp|member||m_bfmeEndZS,9e68e5e77da5c
 game/GameEngine/Source/Common/BfmeConv1885.cpp|function|BfmeOwnerZS@|bfmeNotifyZS,4eacf3dbc697c8377750ed90,gpt-6.1-sol,20261016034005-05539c,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1885.cpp|local|BfmeOwnerZS::bfmeNotifyZS|p,248ce7cb618586db92b7a75f,gpt-6.1-sol,20261016034005-05539c,2026-10-16
 game/GameEngine/Source/Common/BfmeConv664.cpp|local|BfmeThingDDA::bfmeGoDDA|s,2535b451eea0e438f8bf5f1b,gpt-6.1-sol,20261016034012-fa6d67,2026-10-16
+game/GameEngine/Source/Common/BfmeConv636.cpp|local|bfmeGoCRC|a,c994207b664472f766c614c8,gpt-6.1-sol,20261016034019-1c56c8,2026-10-16
