@@ -27,9 +27,25 @@ protected:
 
 PUBLIC_STATE_MACHINE_DTOR(AttackMeleeStateMachine)
 PUBLIC_STATE_MACHINE_DTOR(AttackFireWhileMovingMachine)
-PUBLIC_STATE_MACHINE_DTOR(AttackHordeStateMachine)
 PUBLIC_STATE_MACHINE_DTOR(AttackFireWhileChargingMachine)
 PUBLIC_STATE_MACHINE_DTOR(BackAwayAndCowerStateMachine)
+
+// 0x0016E630 is AttackContesterStateMachine's scalar-deleting destructor: slot
+// zero of vtable 0x01097310 (installed by its constructor 0x00171B40, name
+// getter "AttackContesterStateMachine") reaches it; its destructor is protected
+// (ILT oracle confirms ??_G...@@MAE and ??1...@@MAE, ILT 0x0001BD65).
+class AttackContesterStateMachine : public StateMachine
+{
+	friend void forceAttackContesterStateMachineDeletingDestructor();
+
+protected:
+	virtual ~AttackContesterStateMachine();
+};
+
+void forceAttackContesterStateMachineDeletingDestructor()
+{
+	AttackContesterStateMachine value;
+}
 
 class AIAttackThenIdleStateMachine : public StateMachine
 {

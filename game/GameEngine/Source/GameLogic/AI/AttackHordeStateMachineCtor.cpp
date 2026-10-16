@@ -88,15 +88,23 @@ Rva00171B40AIWaitUntilFinishedFiringState::
 {
 }
 
-class Rva00171B40AttackHordeStateMachine : public StateMachine
+// AttackContesterStateMachine (identity_evidence/0x00171b40-contester-identity.md):
+// the factory's ATTACK_MACHINE_HORDE_CONTESTER case builds it as
+// "AIAttackContesterMachine"; the vtable this constructor installs, 0x01097310,
+// has the name getter 0x0016AC50 returning "AttackContesterStateMachine", and
+// its protected complete destructor is 0x0016AC40 (ILT oracle: MAE).
+class AttackContesterStateMachine : public StateMachine
 {
 public:
-	Rva00171B40AttackHordeStateMachine(
+	AttackContesterStateMachine(
 		Object *owner, AIAttackState *attack, AsciiString name );
+
+protected:
+	virtual ~AttackContesterStateMachine();
 };
 
-// ??0AttackHordeStateMachine@@QAE@PAVObject@@PAVAIAttackState@@VAsciiString@@@Z
-Rva00171B40AttackHordeStateMachine::Rva00171B40AttackHordeStateMachine(
+// ??0AttackContesterStateMachine@@QAE@PAVObject@@PAVAIAttackState@@VAsciiString@@@Z
+AttackContesterStateMachine::AttackContesterStateMachine(
 	Object *owner, AIAttackState *attack, AsciiString name )
 : StateMachine( owner, name, false )
 {

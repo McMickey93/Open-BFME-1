@@ -58,10 +58,10 @@ private:
 	char m_body[0x44];
 };
 
-class AttackHordeStateMachine
+class AttackContesterStateMachine
 {
 public:
-	AttackHordeStateMachine(Object *owner, AIAttackState *attack,
+	AttackContesterStateMachine(Object *owner, AIAttackState *attack,
 		AsciiString name);
 
 private:
@@ -139,7 +139,7 @@ void AIAttackState::createAttackMachine(Object *owner)
 	}
 	else if (m_attackMachineType == ATTACK_MACHINE_HORDE_CONTESTER)
 	{
-		m_attackMachine = new AttackHordeStateMachine(
+		m_attackMachine = new AttackContesterStateMachine(
 			owner, this, AsciiString("AIAttackContesterMachine"));
 	}
 	else if (m_attackMachineType == ATTACK_MACHINE_FIRE_WHILE_CHARGING)

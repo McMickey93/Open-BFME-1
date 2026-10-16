@@ -4770,7 +4770,7 @@ name,address,notes
 ??1AttachedModelFXNugget@@MAE@XZ,0x00008823,vtable 0x00CF3480 slots name AttachedModelFXNugget; protected complete destructor called by wrapper 0x00429B30
 ??1AttackFireWhileChargingMachine@@UAE@XZ,0x00019448,complete destructor ILT called by scalar wrapper 0x0016E660; exact constructor 0x001818D0 installs dedicated vtable 0x01097380
 ??1AttackFireWhileMovingMachine@@UAE@XZ,0x0002F8AB,complete destructor ILT called by scalar wrapper 0x0016E600; exact constructor 0x00181670 installs dedicated vtable 0x010972A0
-??1AttackHordeStateMachine@@UAE@XZ,0x0001BD65,complete destructor ILT called by scalar wrapper 0x0016E630; exact constructor 0x00171B40 installs dedicated vtable 0x01097310
+??1AttackContesterStateMachine@@MAE@XZ,0x0001BD65,protected complete destructor ILT called by scalar wrapper 0x0016E630; constructor 0x00171B40 installs dedicated vtable 0x01097310 whose name getter 0x0016AC50 returns AttackContesterStateMachine; ilt_oracle CONFIRMED MAE
 ??1AttackMeleeStateMachine@@UAE@XZ,0x0000F349,complete destructor ILT called by scalar wrapper 0x0016E5A0; exact constructor 0x00180EE0 installs dedicated vtable 0x010971D0
 ??1AttackNugget@@UAE@XZ,0x00013C2D,exact AttackNugget complete destructor ILT; constructor/vtable evidence routes this through body 0x001D6D80
 ??1AttributeHandleStandIn@@QAE@XZ,0x0039D550,Open-BFME5 handle-release dtor (global-pool index) from AttributeModifierAuraUpdateModuleData dtor call site
@@ -10609,7 +10609,7 @@ name,address,notes
 ??_7AttachedModelFXNugget@@6B@,0x00CF3480,vtable whose slots name AttachedModelFXNugget
 ??_7AttackFireWhileChargingMachine@@6B@,0x00C97380,exact constructor 0x001818D0 installs this dedicated vtable; slot zero ILT 0x0000DB5C reaches scalar wrapper 0x0016E660
 ??_7AttackFireWhileMovingMachine@@6B@,0x00C972A0,exact constructor 0x00181670 installs this dedicated vtable; slot zero ILT 0x0002135A reaches scalar wrapper 0x0016E600
-??_7AttackHordeStateMachine@@6B@,0x00C97310,exact constructor 0x00171B40 installs this dedicated vtable; slot zero ILT 0x0000131B reaches scalar wrapper 0x0016E630
+??_7AttackContesterStateMachine@@6B@,0x00C97310,AttackContesterStateMachine constructor 0x00171B40 installs this dedicated vtable; slot zero ILT 0x0000131B reaches scalar wrapper 0x0016E630; slot 2 name getter 0x0016AC50 returns AttackContesterStateMachine
 ??_7AttackMeleeStateMachine@@6B@,0x00C971D0,exact constructor 0x00180EE0 installs this dedicated vtable; slot zero ILT 0x0003F67A reaches scalar wrapper 0x0016E5A0
 ??_7AttackStateMachine@@6B@,0x00C97168,constructor 0x00180810 installs this table and slot 2 reaches matched name getter 0x0016AB10 returning AttackStateMachine
 ??_7AttributeModifierUpgrade@@6B@,0x00CCBCD4,vtable whose slots name AttributeModifierUpgrade

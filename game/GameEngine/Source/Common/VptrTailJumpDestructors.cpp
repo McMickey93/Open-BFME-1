@@ -244,7 +244,18 @@ BFME_VPTR_TAIL_JUMP_DTOR( Rva0016AB00TailDtor, StateMachine )
 BFME_VPTR_TAIL_JUMP_DTOR( Rva0016AB50TailDtor, StateMachine )
 BFME_VPTR_TAIL_JUMP_DTOR( Rva0016ABA0TailDtor, StateMachine )
 BFME_VPTR_TAIL_JUMP_DTOR( Rva0016ABF0TailDtor, StateMachine )
-BFME_VPTR_TAIL_JUMP_DTOR( Rva0016AC40TailDtor, StateMachine )
+// 0x0016AC40 is AttackContesterStateMachine's protected destructor: it installs
+// vftable 0x01097310, the one its constructor (0x00171B40) installs, whose name
+// getter 0x0016AC50 returns "AttackContesterStateMachine"; the matched
+// ??_GAttackContesterStateMachine (0x0016E630) reaches it via ILT 0x0001BD65.
+class AttackContesterStateMachine : public StateMachine
+{
+protected:
+	virtual ~AttackContesterStateMachine();
+};
+AttackContesterStateMachine::~AttackContesterStateMachine()
+{
+}
 BFME_VPTR_TAIL_JUMP_DTOR( Rva0016AC60TailDtor, StateMachine )
 BFME_VPTR_TAIL_JUMP_DTOR( Rva0016ACE0TailDtor, StateMachine )
 BFME_VPTR_TAIL_JUMP_DTOR( Rva0016B230TailDtor, StateMachine )
