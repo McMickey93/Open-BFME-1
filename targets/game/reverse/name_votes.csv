@@ -2341,3 +2341,10 @@ game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstruct
 game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_10,1b6cee7ea5a32809d1106f6a,gpt-6.1-sol,20261016044135-de6990,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_11,2425440d08e5ed42f4528f83,gpt-6.1-sol,20261016044135-de6990,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/LifetimeUpdateModuleDataConstructor.cpp|member||m_unmodelled_14,be0d9f06db9faeb101d7ac49,gpt-6.1-sol,20261016044135-de6990,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_08,66375b9da929f8474efad273,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_0C,53fbaa02fdd0e15978007b30,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_10,0f43f8ae3010211e5468a956,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_14,49885a5a7230ab88a60a90f6,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_18,c93820fb2013f9321e094417,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_1C,eac62df326b03280733c174f,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_20,5a9670019f409edc58f1753d,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
