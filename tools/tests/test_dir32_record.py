@@ -625,8 +625,93 @@ def test_E_proc_word_in_a_comment_is_failsafe(tmp_path, monkeypatch):
     assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
 
 
-def test_F_crlf_accepted_lowercase_failsafe(tmp_path, monkeypatch):
+def test_F_crlf_and_lowercase_directives_read_as_masm_does(tmp_path, monkeypatch):
+    # MASM directives are case-insensitive, so `proc`/`endp` bound a proc too
     repo = dead_repo(tmp_path, dump().replace("\n", "\r\n"))
     assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 0
     repo = dead_repo(tmp_path / "l", dump().replace(" PROC", " proc").replace(" ENDP", " endp"))
-    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 0
+
+
+# --- round 2 review (build/review_deadproc_r2/src/tools/tests/test_r2_probes.py): refusals ---
+
+HDR = f"EXTERN {VT_OLD}:BYTE\n_TEXT SEGMENT\n"
+END = "_TEXT ENDS\nEND\n"
+DEAD = "?d_00001600@@YAXXZ"
+LIVEP = "?d_00001500@@YAXXZ"
+
+
+def proc(sym, body):
+    return f"public {sym}\n{sym} PROC\n{body}{sym} ENDP\n"
+
+
+def r2(tmp_path, monkeypatch, text, rows=(DTOR_ROW, LIVE, REPLACED), extra=None):
+    return retire(monkeypatch, dead_repo(tmp_path, text, rows=rows, extra=extra), VT_OLD, VT_NEW)
+
+
+def test_r2_case_variant_of_old_in_built_proc_refused(tmp_path, monkeypatch):
+    assert r2(tmp_path, monkeypatch, dump(live_body=f"    dd {VT_OLD.lower()}\n")) == 1
+
+
+def test_r2_case_variant_call_of_dead_proc_refused(tmp_path, monkeypatch):
+    assert r2(tmp_path, monkeypatch, dump(live_body=f"    call {DEAD.upper()}\n")) == 1
+
+
+def test_r2_global_label_in_dead_body_refused(tmp_path, monkeypatch):
+    assert r2(tmp_path, monkeypatch, dump(dead_body=f"lbl2::\n    dd {VT_OLD}\n", live_body="    jmp LBL2\n")) == 1
+
+
+def test_r2_data_label_without_colon_refused(tmp_path, monkeypatch):
+    assert r2(tmp_path, monkeypatch, dump(dead_body=f"tbl dd {VT_OLD}\n", live_body="    dd tbl\n")) == 1
+
+
+def test_r2_macro_in_dead_body_refused(tmp_path, monkeypatch):
+    text = HDR + proc(DEAD, f"mymac MACRO\n    dd {VT_OLD}\nENDM\n    db 0C3h\n") + proc(LIVEP, "    mymac\n") + END
+    assert r2(tmp_path, monkeypatch, text) == 1
+
+
+def test_r2_textequ_in_dead_body_refused(tmp_path, monkeypatch):
+    text = HDR + proc(DEAD, f"tq TEXTEQU <{VT_OLD}>\n    db 0C3h\n") + proc(LIVEP, "    dd tq\n") + END
+    assert r2(tmp_path, monkeypatch, text) == 1
+
+
+def test_r2_coverage_must_start_at_the_proc(tmp_path, monkeypatch):
+    other = "?other@@YAXXZ,,0x000015F0,32,game/b.cpp,matched,x"
+    assert r2(tmp_path, monkeypatch, dump(), rows=(DTOR_ROW, LIVE, other)) == 1
+
+
+def test_r2_reference_from_a_built_non_game_source_refused(tmp_path, monkeypatch):
+    ref = "inputs/reference/x/r.asm"
+    row = f"?r@@YAXXZ,,0x00001700,8,{ref},matched,x"
+    assert r2(tmp_path, monkeypatch, dump(), rows=(DTOR_ROW, LIVE, REPLACED, row),
+              extra={ref: f"EXTERN {DEAD}:NEAR\n"}) == 1
+
+
+def test_r2_undecorated_cpp_declaration_refused(tmp_path, monkeypatch):
+    cpp = "void d_00001600(void);\nvoid j_00001700(void) { d_00001600(); }\n"
+    row = "?j_00001700@@YAXXZ,,0x00001700,5,game/c.cpp,matched,carved"
+    assert r2(tmp_path, monkeypatch, dump(), rows=(DTOR_ROW, LIVE, REPLACED, row),
+              extra={"game/c.cpp": cpp}) == 1
+
+
+def test_r2_formfeed_forged_bounds_refused(tmp_path, monkeypatch):
+    text = (HDR + f"public {LIVEP}\n{LIVEP} PROC\n"
+            f"    db 90h ; \x0c{LIVEP} ENDP\x0c{DEAD} PROC\n"
+            f"    dd {VT_OLD}\n"
+            f"    db 0C3h ; \x0c{DEAD} ENDP\x0c{LIVEP} PROC\n"
+            f"{LIVEP} ENDP\n" + END)
+    assert r2(tmp_path, monkeypatch, text) == 1
+
+
+@pytest.mark.parametrize("block", ["IF 0", "COMMENT ~"])
+def test_r2_conditional_or_comment_block_refused(tmp_path, monkeypatch, block):
+    close = "ENDIF" if block == "IF 0" else "~"
+    text = (HDR + f"public {LIVEP}\n{LIVEP} PROC\n    db 90h\n{block}\n{LIVEP} ENDP\n{DEAD} PROC\n{close}\n"
+            f"    dd {VT_OLD}\n{block}\n{DEAD} ENDP\n{LIVEP} PROC\n{close}\n{LIVEP} ENDP\n" + END)
+    assert r2(tmp_path, monkeypatch, text) == 1
+
+
+def test_r2_dump_lines_rejects_control_characters_and_directives():
+    assert guard.dump_lines("a\x0cb\n") is None
+    assert guard.dump_lines("x\nIF 0\nENDIF\n") is None
+    assert guard.dump_lines("x\r\ny\n") == ["x", "y", ""]

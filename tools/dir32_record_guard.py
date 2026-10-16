@@ -347,23 +347,43 @@ def source_mentions(name):
     return sorted(hits - dead)
 
 
-PROC_RE = re.compile(r"^(\S+)[ \t]+PROC\b")
-ADDRESS_PROC_RE = re.compile(r"^\?d_([0-9A-Fa-f]{8})@@")
-DEFINED_RE = re.compile(r"^[ \t]*([A-Za-z_$?@][\w$?@]*)[ \t]*(?::|[ \t]EQU\b|[ \t]LABEL\b|[ \t]*=)")
+PROC_RE = re.compile(r"^(\S+)[ \t]+PROC\b", re.IGNORECASE)
+ADDRESS_PROC_RE = re.compile(r"^\?d_([0-9A-Fa-f]{8})@@YAXXZ$")
+# The only lines tools/dump_apply.py writes inside a dump body: byte/word
+# literals, dwords (numbers or a symbol), and call/jmp to a symbol. A dead
+# body holding anything else (a label, EQU, TEXTEQU, MACRO, ...) could define
+# something a built proc uses, so it is not provably dead.
+DUMP_BODY_RE = re.compile(r"^[ \t]+(?:d[bw][ \t]+[0-9A-Fa-fhH, \t]+|dd[ \t]+[\w$?@+\- \t,]+"
+                          r"|(?:call|jmp)[ \t]+[\w$?@]+)[ \t]*$")
+# Conditional assembly, comments blocks, macros, text equates and includes
+# make the text MASM assembles differ from the lines read here (bounds can be
+# forged); a dump containing any of them is never exempted.
+UNSAFE_DUMP_RE = re.compile(r"(?im)^[ \t]*(?:[\w$?@]+[ \t]+)?(?:IF\w*|ELSE\w*|ENDIF|COMMENT|MACRO|ENDM|"
+                            r"INCLUDE\w*|TEXTEQU|EQU|CATSTR|SUBSTR|FOR|FORC|REPEAT|WHILE|PURGE)\b")
 _TOKEN_EDGE = r"[\w$?@]"
 
 
-def asm_procs(text):
+def dump_lines(text):
+    """The dump's lines as MASM reads them (split on \n only), or None when the
+    text holds a control character other than tab/CR or an unsafe directive."""
+    if re.search(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\x85  ]", text) or UNSAFE_DUMP_RE.search(text):
+        return None
+    return [line.rstrip("\r") for line in text.split("\n")]
+
+
+def asm_procs(lines):
     """[(first line, last line, symbol)] of every `SYM PROC` .. `SYM ENDP` body,
     1-based and inclusive; None when a PROC opens inside another or never
-    closes (the bounds are then unknown)."""
+    closes (the bounds are then unknown). LINES may be text (split on \n)."""
+    if isinstance(lines, str):
+        lines = [line.rstrip("\r") for line in lines.split("\n")]
     out, open_proc = [], None
-    for number, line in enumerate(text.splitlines(), 1):
+    for number, line in enumerate(lines, 1):
         match = PROC_RE.match(line)
         if open_proc is None:
             if match:
                 open_proc = (number, match.group(1))
-        elif re.match(rf"^{re.escape(open_proc[1])}[ \t]+ENDP\b", line):
+        elif re.match(rf"^{re.escape(open_proc[1])}[ \t]+ENDP\b", line, re.IGNORECASE):
             out.append((open_proc[0], number, open_proc[1]))
             open_proc = None
         elif match:
@@ -377,68 +397,84 @@ def built_symbols(path, tree=":"):
     out = set()
     for name, _rva, source, _status, notes in function_rows(tree):
         if source == path:
-            out.add(name)
+            out.add(name.lower())
             if object_symbol(notes):
-                out.add(object_symbol(notes))
+                out.add(object_symbol(notes).lower())
     return out
 
 
-def covered_by_authored_row(rva, tree=":"):
-    """True when a matched, non-generated functions.csv row in TREE covers RVA."""
-    text = git_show_text(f"{tree}{FUNCTIONS}") or ""
-    for row in csv.DictReader(text.splitlines()):
-        try:
-            start, size = int(row["target_rva"], 16), int(row["target_size"])
-        except (KeyError, TypeError, ValueError):
-            continue
-        if (start <= rva < start + size and row.get("status") == "matched"
-                and not is_generated(row.get("source") or "")):
-            return True
-    return False
+_AUTHORED_STARTS = {}
 
 
-def referenced_elsewhere(symbol, path, lines, first, last):
-    """True when SYMBOL is spelled in PATH outside lines FIRST..LAST (other than
-    its own PUBLIC line) or in any other indexed file under game/ or the shims."""
-    token = re.compile(rf"(?<!{_TOKEN_EDGE}){re.escape(symbol)}(?!{_TOKEN_EDGE})")
-    public = re.compile(rf"^[ \t]*PUBLIC[ \t]+{re.escape(symbol)}[ \t]*$", re.IGNORECASE)
+def authored_row_starts(tree=":"):
+    """RVAs where a matched, non-generated functions.csv row in TREE starts (cached)."""
+    blob = subprocess.run(["git", "rev-parse", f"{tree}{FUNCTIONS}"], cwd=root(),
+                          capture_output=True, text=True).stdout.strip()
+    key = (root(), blob)                     # the ledger content, not just its name
+    if key not in _AUTHORED_STARTS:
+        starts = set()
+        for _name, rva, source, status, _notes in function_rows(tree):
+            if status == "matched" and not is_generated(source):
+                starts.add(rva)
+        _AUTHORED_STARTS.clear()
+        _AUTHORED_STARTS[key] = starts
+    return _AUTHORED_STARTS[key]
+
+
+def referenced_elsewhere(symbols, path, lines, first, last):
+    """True when any of SYMBOLS (decorated or bare, case-insensitive: ml -Cx
+    resolves non-public names case-blind) is spelled in PATH outside lines
+    FIRST..LAST (other than its own PUBLIC line), or in any other indexed file
+    under game/, the shims, or a non-game source a functions.csv row builds."""
+    tokens = [re.compile(rf"(?<!{_TOKEN_EDGE}){re.escape(s)}(?!{_TOKEN_EDGE})", re.IGNORECASE) for s in symbols]
     for number, line in enumerate(lines, 1):
-        if not first <= number <= last and token.search(line) and not public.match(line):
-            return True
-    got = subprocess.run(["git", "grep", "--cached", "-l", "-F", "-e", symbol, "--", *SOURCE_ROOTS],
-                         cwd=root(), capture_output=True, text=True)
+        if first <= number <= last:
+            continue
+        for symbol, token in zip(symbols, tokens):
+            if token.search(line) and not re.match(rf"^[ \t]*PUBLIC[ \t]+{re.escape(symbol)}[ \t]*$",
+                                                   line, re.IGNORECASE):
+                return True
+    built = sorted(src for src in row_sources() if src and not src.startswith(SOURCE_ROOTS + VENDOR_ROOTS))
+    cmd = ["git", "grep", "--cached", "-l", "-i", "-w", "-F"]
+    for symbol in symbols:
+        cmd += ["-e", symbol]
+    got = subprocess.run(cmd + ["--", *SOURCE_ROOTS, *built], cwd=root(), capture_output=True, text=True)
     return any(p != path for p in got.stdout.splitlines() if p)
 
 
 def dead_proc(path, symbol, lines, first, last, built, tree=":"):
-    """A proc no row builds, that nothing references (by its own name or a
-    label it defines), whose retail address (?d_XXXXXXXX) a matched
-    hand-written row now covers."""
-    if symbol in built:
+    """A proc no row builds, whose body is only generator-written byte/call
+    lines, that nothing references by its decorated or bare name, and whose
+    retail address (?d_XXXXXXXX) is where a matched hand-written row starts."""
+    if symbol.lower() in built:
         return False
     match = ADDRESS_PROC_RE.match(symbol)
-    if not match or not covered_by_authored_row(int(match.group(1), 16), tree):
+    if not match or int(match.group(1), 16) not in authored_row_starts(tree):
         return False
-    labels = {symbol} | {m.group(1) for line in lines[first:last - 1] if (m := DEFINED_RE.match(line))}
-    return not any(referenced_elsewhere(label, path, lines, first, last) for label in labels)
+    if not all(DUMP_BODY_RE.match(line) or not line.strip() for line in lines[first:last - 1]):
+        return False
+    return not referenced_elsewhere([symbol, symbol[1:symbol.index("@")]], path, lines, first, last)
 
 
 def only_in_unbuilt_procs(path, name, bare=None, tree=":"):
     """True when every line of the dump at PATH (as TREE holds it) spelling
-    NAME (decorated) or BARE (as a word) lies in a dead PROC body (dead_proc),
-    or is that name's own `EXTERN NAME:` declaration; and at least one such
-    proc exists."""
+    NAME (decorated) or BARE (as a word), case-insensitively, lies in a dead
+    PROC body (dead_proc), or is that name's own `EXTERN NAME:` declaration;
+    and at least one such proc exists."""
     text = git_show_text(f"{tree}{path}")
     if text is None:
         return False
-    lines = text.splitlines()
-    procs = asm_procs(text)
+    lines = dump_lines(text)
+    if lines is None:
+        return False
+    procs = asm_procs(lines)
     if procs is None:
         return False
-    word = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(bare)}(?![A-Za-z0-9_])") if bare else None
+    decorated = re.compile(re.escape(name), re.IGNORECASE)
+    word = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(bare)}(?![A-Za-z0-9_])", re.IGNORECASE) if bare else None
     built, verdict, seen = built_symbols(path, tree), {}, False
     for number, line in enumerate(lines, 1):
-        if name not in line and not (word and word.search(line)):
+        if not decorated.search(line) and not (word and word.search(line)):
             continue
         inside = [(first, last, sym) for first, last, sym in procs if first <= number <= last]
         if inside:
