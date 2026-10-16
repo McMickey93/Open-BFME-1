@@ -253,3 +253,19 @@ void Rva00169FB0::storeWord(unsigned int value)
 {
     m_at3A4 = value;
 }
+
+// BFME 2 VtableSlotBodiesR3.cpp signed-word predicate shape. BFME 1
+// clears the upper return bytes, so this view returns an int 0 or 1.
+class Rva00169F50
+{
+public:
+    int isPositive() const;
+private:
+    char m_at00[0x1A0];
+    int m_at1A0;
+};
+
+int Rva00169F50::isPositive() const
+{
+    return m_at1A0 > 0;
+}
