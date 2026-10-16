@@ -29,12 +29,19 @@ PROOF = (f"# {NAME}\n\nRecorded 0x{OLD_VA:08X} is ReplenishUnitsBehaviorModuleDa
          f"Retail's ctor=0x{CTOR:08X} stores 0x{NEW_VA:08X}; slot 0 is the matched "
          f"deleting destructor dtor=0x{DTOR:08X}.\n")
 APPROVED_LINE = f"{NAME} 0x{OLD_VA:08X} -> 0x{NEW_VA:08X}  # approved by the project lead 2026-10-16\n"
-PARENT = "HEAD:"
+# The tree the correction was judged against: the guard commit, before the
+# identity fix (8f9a613c23) and the correction itself (d8769e2c75) landed.
+# Judging HEAD would test a record that is already corrected.
+PRE = "9334a049ab6c8fee39168c14793c467262f9445c"
+PARENT = f"{PRE}:"
 
 
 @pytest.fixture(scope="module")
 def record():
-    return G.read_at(f"HEAD:{G.REL}")
+    if subprocess.run(["git", "cat-file", "-e", f"{PRE}^{{commit}}"], cwd=TOOLS.parent,
+                      capture_output=True).returncode:
+        pytest.skip(f"{PRE[:10]} is not in this clone")
+    return G.read_at(f"{PARENT}{G.REL}")
 
 
 @pytest.fixture
@@ -191,6 +198,7 @@ def _repo(tmp_path, name):
 
 
 def test_pre_push_judges_every_commit(tmp_path, monkeypatch):
+    monkeypatch.setattr(G, "_IMAGE", {})
     repo = _repo(tmp_path, "r")
     path = repo / G.REL
     path.write_text(f"name,va\n{NAME},0x{OLD_VA:08X}\n")
@@ -213,6 +221,7 @@ def test_pre_push_judges_every_commit(tmp_path, monkeypatch):
 
 def test_commit_msg_refuses_a_move_without_a_trailer_and_a_trailer_without_a_move(
         tmp_path, monkeypatch):
+    monkeypatch.setattr(G, "_IMAGE", {})     # a temp repo has no image: keep its empty cache local
     repo = _repo(tmp_path, "c")
     path = repo / G.REL
     path.write_text(f"name,va\n{NAME},0x{OLD_VA:08X}\n")
@@ -230,6 +239,7 @@ def test_commit_msg_refuses_a_move_without_a_trailer_and_a_trailer_without_a_mov
 
 
 def test_r1_1_pre_push_rebuilds_every_tu_holding_a_moved_va(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(G, "_IMAGE", {})     # never a cache another test filled elsewhere
     G.read_retail(G.IMAGE_BASE, 0)          # the image, before leaving the real checkout
     repo = _repo(tmp_path, "s")
     (repo / G.FUNCTIONS).write_text(
