@@ -1289,3 +1289,8 @@ game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|q,b1ecb1
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferFillTaintSurface.cpp|local|TaintBuffer::fillTaintSurface|g,73525544e9c70bd05a9cb698,gpt-6.1-sol,20261016025955-4026bd,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferFillTaintSurface.cpp|local|TaintBuffer::fillTaintSurface|y,acf9b726bd4bbcf99f000d5e,gpt-6.1-sol,20261016025955-4026bd,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferFillTaintSurface.cpp|local|TaintBuffer::fillTaintSurface|x,5cdc89a9b11aad3cb4804345,gpt-6.1-sol,20261016025955-4026bd,2026-10-16
+game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072a0|a1,202ab82e3c7bb68ed1c3f131,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
+game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072a0|a2,eb07b42e87d84b3dce090b0b,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
+game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072a0|a3,319138b4595c734a739bfbfc,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
+game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072f0|a1,2046802829d7261bf561ce24,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
+game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072f0|a2,c03cf26fdbc8325b4ffc45e6,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
