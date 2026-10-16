@@ -1972,3 +1972,14 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/FXParticleSystem_Parti
 game/GameEngine/Source/GameClient/System/FXParticleSystem/FXParticleSystem_ParticleSystemInfo_CopyCtor_Thunk.cpp|member||m_byte81,d4dd0984676d133e3e66438d,gpt-6.1-sol,20261016040447-de52ce,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/FXParticleSystem_ParticleSystemInfo_CopyCtor_Thunk.cpp|member||m_byte82,64a8c7779fb9ffecdfaafb54,gpt-6.1-sol,20261016040447-de52ce,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/FXParticleSystem_ParticleSystemInfo_CopyCtor_Thunk.cpp|member||m_byte83,aa58d21a7c46caeea478388e,gpt-6.1-sol,20261016040447-de52ce,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_member08,33fc42e8fabe0509c74f8415,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_word0c,32fb90a1037c7606265f2553,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_member14,6b3aea9f1516e054a06b25b3,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_word20,38ba58b5484f24d76dba2a3c,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_member24,e08955a7011794bde8385ac4,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_word108,267454d3c5c2381a7bdf2d90,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_word10c,88f5796b4527f0c8d6c22b2e,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_word114,62a5a7cbf20811055e3ead79,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_member118,6067197b62a9b94d9f4b60ec,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_flag11c,301033ab2301b501611b1732,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
+game/GameEngine/Source/Common/System/UpgradeTemplateAssignThunk.cpp|member||m_flag11d,207089bae18e70dc697df06c,gpt-6.1-sol,20261016040456-47fa8d,2026-10-16
