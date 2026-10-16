@@ -29,6 +29,7 @@ class ScriptEngine
 {
 public:
 	void notifyOfTeamDestruction(Team *teamDestroyed);
+	void removeAllSequentialScripts(Team *team);
 	SequentialScript **cleanupSequentialScript(SequentialScript **it,
 		bool cleanDanglers)
 	{
@@ -77,4 +78,12 @@ void ScriptEngine::notifyOfTeamDestruction(Team *teamDestroyed)
 		m_callingTeam = 0;
 	if (m_conditionTeam == teamDestroyed)
 		m_conditionTeam = 0;
+}
+
+// Retail 0x0033E870: ZH forwards straight to notifyOfTeamDestruction, a
+// tail jump through its ILT 0x00042910.
+void ScriptEngine::removeAllSequentialScripts(Team *team)
+{
+	// this function will remove all pending scripts for this team, so just call it.
+	notifyOfTeamDestruction(team);
 }
