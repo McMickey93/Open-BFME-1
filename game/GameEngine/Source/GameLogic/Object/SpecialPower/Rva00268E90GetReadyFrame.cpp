@@ -33,11 +33,7 @@ private:
 class SpecialPowerTemplate : public Overridable
 {
 public:
-	bool isSharedNSync(void) const
-	{
-		SpecialPowerTemplate *self = const_cast<SpecialPowerTemplate *>(this);
-		return ((const SpecialPowerTemplate *)self->finalOverrideUnrolled())->m_sharedNSync;
-	}
+	friend class Rva00268E90Owner;
 
 private:
 	unsigned char m_unreconstructed_08[0x10d];
@@ -97,7 +93,8 @@ private:
 // ?getReadyFrame@Rva00268E90Owner@@UBEIXZ
 unsigned int Rva00268E90Owner::getReadyFrame(void) const
 {
-	if (getSpecialPowerTemplate()->isSharedNSync())
+	SpecialPowerTemplate *self = const_cast<SpecialPowerTemplate *>(getSpecialPowerTemplate());
+	if (((const SpecialPowerTemplate *)self->finalOverrideUnrolled())->m_sharedNSync)
 	{
 		const Object *object = getObject();
 		if (object)

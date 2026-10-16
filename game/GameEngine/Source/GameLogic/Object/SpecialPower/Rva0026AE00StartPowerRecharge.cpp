@@ -35,11 +35,7 @@ private:
 class SpecialPowerTemplate : public Overridable
 {
 public:
-	bool isSharedNSync(void) const
-	{
-		SpecialPowerTemplate *self = const_cast<SpecialPowerTemplate *>(this);
-		return ((const SpecialPowerTemplate *)self->finalOverrideUnrolled())->m_sharedNSync;
-	}
+	friend class Rva0026AE00SpecialPowerModule;
 
 	unsigned int getReloadTime(void) const;
 
@@ -126,7 +122,8 @@ void Rva0026AE00SpecialPowerModule::startPowerRecharge(void)
 	if (!player)
 		return;
 
-	if (modData->m_specialPowerTemplate->isSharedNSync())
+	SpecialPowerTemplate *self = const_cast<SpecialPowerTemplate *>(modData->m_specialPowerTemplate);
+	if (((const SpecialPowerTemplate *)self->finalOverrideUnrolled())->m_sharedNSync)
 	{
 		player->resetOrStartSpecialPowerReadyFrame(modData->m_specialPowerTemplate);
 	}
