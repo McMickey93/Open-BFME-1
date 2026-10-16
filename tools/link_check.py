@@ -37,7 +37,7 @@ files; the other 104 it calls blocked where the census does not, because it
 also counts names referenced only from a COMDAT copy link.exe discards.
 
   python3 tools/link_check.py game/path/File.cpp [...]   # check files
-  python3 tools/link_check.py --refresh game/path/File.cpp  # first replace stale census definitions
+  python3 tools/link_check.py --refresh game/path/File.cpp  # judge against current objects (clean tree)
   python3 tools/link_check.py --next [--limit 30]         # names that unlock the most bytes
   python3 tools/link_check.py --publish                   # write targets/game/reverse/link_queue.csv
   python3 tools/link_check.py next [--no-claim]           # serve + claim the top open queue row
@@ -343,38 +343,112 @@ def _object_bytes(obj):
         raise link_census.MissingObject(f"{obj}: cannot read object ({exc})") from exc
 
 
-def refresh_stale(index, truth):
-    """--refresh: recompile every ledger source whose object is not current
-    (build.compile_rows, the census's own compile phase) and replace those
-    objects' census definitions with their new ones (refresh), so a fix
-    another commit made since the census is seen. Objects another build
-    already rebuilt since the census are current, so nothing recompiles
-    them, but the census still holds their old definitions: those are
-    replaced too (built_since). Ported from Open-BFME-2 d2646f378c and
-    36cd4e5fff."""
-    rows = link_census.ledger() or ()
-    sources = [s for s in dict.fromkeys(ROOT / r["source"] for r in rows)
-               if s.suffix.lower() != build.LIB_SUFFIX]
-    stale = build.stale_sources(sources, {s: build.obj_path(s) for s in sources}, build._pool_size())
-    outputs = build.compile_rows(rows, stale) if stale else {}
-    rebuilt = [obj for obj in (build.obj_path(s) for s in sources if s not in outputs)
-               if built_since(obj, index)]
-    refresh(index, [outputs[s] for s in stale if s in outputs] + rebuilt, truth)
-    if stale:
-        print(f"link_check: recompiled {len(stale):,} stale ledger object(s) and replaced their census definitions")
-    if rebuilt:
-        print(f"link_check: replaced the census definitions of {len(rebuilt):,} object(s) rebuilt since the census")
+# --refresh compiles at most this many stale or missing objects unless
+# --refresh-compile says so: a worktree without a warm build has ~22,000 of
+# them (about 3 h under build.py's host-wide compile lock).
+REFRESH_COMPILE_LIMIT = 50
 
 
-def built_since(obj, index):
-    """Was `obj` written in or after the census's minute? BFME1's census
-    stamps meta date with time.strftime, i.e. host LOCAL time (Open-BFME-2
-    stamps UTC), so it is read back with mktime."""
-    try:
-        census = time.mktime(time.strptime(index["meta"]["date"], "%Y-%m-%d %H:%M"))
-        return obj.stat().st_mtime >= census
-    except (KeyError, ValueError, OSError, OverflowError):
-        return False
+def refresh_dirty(paths):
+    """Paths under game/, inputs/reference/ or the game ledgers that differ
+    from HEAD (staged, unstaged or untracked), other than the files being
+    checked: a refreshed index must describe one commit, not a mix."""
+    out = _git("status", "--porcelain=v1", "-z", "--untracked-files=all", "--",
+               "game", "inputs/reference", "targets/game/reverse", check=True)
+    dirty, entries = [], out.split("\0")
+    i = 0
+    while i < len(entries):
+        entry = entries[i]
+        i += 1
+        if len(entry) < 4:
+            continue
+        status, path = entry[:2], entry[3:]
+        if status[0] in "RC":
+            i += 1                      # -z: a rename's source path follows
+        if path not in paths:
+            dirty.append(path)
+    return sorted(dirty)
+
+
+def current_selection(old, objects, facts, owners):
+    """The census's /MAP holder exceptions remapped to the current object
+    order, kept only while a name's definers (object, kind, body digest) are
+    what the census measured; every other exception name is `unmeasured`.
+    (Open-BFME-2 link_check.current_selection.)"""
+    def signature(objects_, strong, comdat, name):
+        entries = [(objects_[i], "strong") for i in strong.get(name, ())]
+        entries += [(objects_[i], "comdat", digest) for i, digest, _ in comdat.get(name, ())]
+        return sorted(entries)
+    strong, comdat = collections.defaultdict(list), collections.defaultdict(list)
+    for i, (copies, defined, _, _) in enumerate(facts):
+        for name in defined:
+            strong[name].append(i)
+        for name, digest, _, verdict in copies:
+            comdat[name].append((i, digest, verdict))
+    positions = {name: i for i, name in enumerate(objects)}
+    exceptions, unmeasured = {}, set()
+    for name, holder in old["selection"].get("exceptions", {}).items():
+        if (old["strong"].get(name) or strong.get(name)
+                or signature(old["objects"], old["strong"], old["comdat"], name)
+                != signature(objects, strong, comdat, name)):
+            unmeasured.add(name)
+        else:
+            exceptions[name] = None if holder is None else positions[old["objects"][holder]]
+    selection = {**old["selection"], "exceptions": exceptions, "owners": dict(owners), "unmeasured": unmeasured}
+    return selection
+
+
+def refresh_current(index, truth, checked=(), allow_compile=False):
+    """--refresh: replace the census's definition tables with the CURRENT
+    ledger's objects, every one re-read and re-judged with current retail
+    truth (link_census.read_facts), in current link order: objects rebuilt
+    since the census, frozen objects whose COMDAT verdicts the census left
+    unjudged, data providers, sources added since the census, and no
+    definitions of sources the ledger dropped. Nothing is compared by mtime
+    (review 2026-10-15 round 1: the census stamps UTC on its runner).
+
+    Refuses (SystemExit) when files outside `checked` differ from HEAD, when
+    more than REFRESH_COMPILE_LIMIT objects are stale or missing and
+    `allow_compile` is not set, or when any object stays missing or stale.
+    The census's blockers and bytes (the "before" figures) are kept, and so
+    are its weak_* receipts: a refreshed index is a preview, never a census.
+    """
+    dirty = refresh_dirty({str(Path(p).as_posix()) for p in checked})
+    if dirty:
+        raise SystemExit(f"link_check --refresh: {len(dirty):,} file(s) outside the checked ones differ from "
+                         f"HEAD (e.g. {dirty[0]}); commit or park them first: a refreshed index must "
+                         "describe one commit")
+    # BUILD_RECOMPILE_ONLY trusts every object it is not told to rebuild
+    # (link_census --build pops it for the same reason).
+    os.environ.pop("BUILD_RECOMPILE_ONLY", None)
+    rows = link_census.ledger() or []
+    sources = link_census._object_sources(rows)
+    present, missing = link_census.objects(rows)
+    stale = link_census.stale_objects(present, sources)
+    need = sorted({sources[obj] for obj in list(missing) + list(stale) if obj in sources})
+    if len(need) > REFRESH_COMPILE_LIMIT and not allow_compile:
+        raise SystemExit(f"link_check --refresh: {len(need):,} ledger object(s) are stale or missing (limit "
+                         f"{REFRESH_COMPILE_LIMIT}); build them first (./build.sh) or pass --refresh-compile "
+                         "(a cold worktree compiles the whole tree, hours, under the host-wide build lock)")
+    if need:
+        build.compile_rows(rows, need)
+        present, missing = link_census.objects(rows)
+        stale = link_census.stale_objects(present, sources)
+        print(f"link_check: compiled {len(need):,} stale or missing ledger object(s)")
+    if missing or stale:
+        bad = sorted(obj.name for obj in list(missing) + list(stale))
+        raise SystemExit(f"link_check --refresh: {len(bad):,} object(s) still missing or stale "
+                         f"(e.g. {bad[0]}); nothing previewed")
+    link_census.verify_data_objects()
+    facts = link_census.read_facts(present, rows)
+    names = [obj.name for obj in present]
+    selection = current_selection(index, names, facts, link_census.ledger_owners(rows))
+    tables = index_tables(present, facts, selection)
+    for key in ("weak_inventory", "weak_root", "weak_truth"):
+        tables.pop(key, None)       # the census's /MAP receipts stay the census's
+    index.update(tables)
+    index["refreshed"] = True
+    print(f"link_check: refreshed all {len(present):,} current ledger object(s) against current retail truth")
 
 
 def refresh(index, objects, truth):
@@ -761,6 +835,11 @@ def wrong_selected(obj, fact, own, position, index, *, common_names=()):
     copies, defined, _, _ = fact
     selection = index["selection"]
     exceptions, owners, objects = selection["exceptions"], selection["owners"], index["objects"]
+    # A refreshed index (--refresh) re-judged every copy with current truth,
+    # so a choice it still cannot prove is reported, never passed; and a /MAP
+    # holder the census measured on other definers is unmeasured, not known.
+    strict = index.get("refreshed", False)
+    unmeasured = selection.get("unmeasured", set()) if strict else set()
     mine_copies = {name: (digest, verdict) for name, digest, _, verdict in copies}
     mine_strong = set(defined)
     found = []
@@ -776,6 +855,9 @@ def wrong_selected(obj, fact, own, position, index, *, common_names=()):
         definers = set(found_copies) | exclusive
         if not definers:
             continue
+        if name in unmeasured and len(definers) > 1:
+            found.append(name)
+            continue
         if name in exceptions:
             holder = exceptions[name]
             holder = holder if holder in definers else (min(definers) if holder is not None else None)
@@ -786,7 +868,7 @@ def wrong_selected(obj, fact, own, position, index, *, common_names=()):
             label[holder] if holder is not None else None,
             {label[i]: copy for i, copy in found_copies.items()}, set(label.values()),
             {label[i] for i in exclusive}, owners.get(name, set()))
-        if result == "wrong":
+        if result == "wrong" or (strict and result == "unknown"):
             found.append(name)
     return found
 
@@ -1432,9 +1514,12 @@ def main(argv=None):
     ap.add_argument("--census-only", action="store_true",
                     help="check against the census's definitions of the given files, not their current objects")
     ap.add_argument("--refresh", action="store_true",
-                    help="first recompile stale ledger objects (every one, in a worktree without a warm build) "
-                         "and replace the census definitions of every "
-                         "object rebuilt since the census, so fixes other files made since then are seen")
+                    help="judge against the CURRENT ledger's objects, all re-read with current retail truth, "
+                         "instead of the census's definitions (refuses a dirty tree; an unprovable kept "
+                         "definition counts as a blocker; ~minutes; never a census verdict)")
+    ap.add_argument("--refresh-compile", action="store_true",
+                    help=f"with --refresh: compile more than {REFRESH_COMPILE_LIMIT} stale or missing objects "
+                         "(a cold worktree: the whole tree)")
     ap.add_argument("--publish", metavar="CSV", nargs="?", const=str(QUEUE),
                     help=f"write the queue's top {QUEUE_LIMIT} rows (default {QUEUE.relative_to(ROOT).as_posix()})")
     args = ap.parse_args(argv)
@@ -1451,10 +1536,12 @@ def main(argv=None):
     require_common_index(index)
     ledger = link_census.ledger()
     truth = link_census.RetailTruth(ledger)
+    if args.refresh_compile and not args.refresh:
+        ap.error("--refresh-compile needs --refresh")
     if args.refresh:
         if args.census_only:
             ap.error("--refresh and --census-only are opposites")
-        refresh_stale(index, truth)
+        refresh_current(index, truth, args.paths, allow_compile=args.refresh_compile)
     rows_of = collections.defaultdict(list)
     for row in ledger or ():
         rows_of[row["source"]].append(row)
@@ -1491,7 +1578,8 @@ def main(argv=None):
             clean.append(False)
             continue
         clean.append(report(source, obj, result, index, now.get(source, 0)))
-        note_evaluated(rows_of.get(source, ()), index["meta"].get("commit", ""))
+        if not index.get("refreshed"):     # a refreshed preview is not the census's verdict
+            note_evaluated(rows_of.get(source, ()), index["meta"].get("commit", ""))
         entry = index["blockers"].get(source or "", {})
         before += index["bytes"].get(source, 0) if entry.get("linked") else 0
         after += now.get(source, 0) if clean[-1] else 0

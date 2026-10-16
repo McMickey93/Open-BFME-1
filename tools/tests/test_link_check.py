@@ -144,46 +144,136 @@ def test_refresh_replaces_a_passed_objects_census_definitions(monkeypatch):
     assert not C.duplicate("f", 0, True, 0, ix)
 
 
-def _refresh_fixture(monkeypatch, tmp_path, stale):
-    import os
-    import time
+class _Obj:
+    """A census object stand-in: a name, and a path-like for messages."""
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return self.name
+
+    def __hash__(self):
+        return hash(self.name)
+
+    def __eq__(self, other):
+        return getattr(other, "name", None) == self.name
+
+
+def _refreshable(monkeypatch, objects, facts, *, stale=(), missing=(), after=None, dirty=(), compiled=None):
+    """Patch link_census so refresh_current sees `objects` (current ledger,
+    link order) with `facts`; returns the census index it refreshes."""
+    import alias_guard
     import build
     import link_census
+    objs = [_Obj(n) for n in objects]
+    sources = {o: Path(f"game/{o.name.replace('.obj', '.cpp')}") for o in objs + [_Obj(n) for n in missing]}
+    state = {"present": objs, "missing": [_Obj(n) for n in missing], "stale": [_Obj(n) for n in stale]}
+
+    def compile_rows(rows, need):
+        (compiled if compiled is not None else []).append(sorted(str(n) for n in need))
+        if after is not None:
+            state.update(after)
+        return {}
+    monkeypatch.setattr(link_census, "ledger", lambda: [])
+    monkeypatch.setattr(link_census, "_object_sources", lambda rows: sources)
+    monkeypatch.setattr(link_census, "objects", lambda rows: (state["present"], state["missing"]))
+    monkeypatch.setattr(link_census, "stale_objects", lambda present, srcs, why=None: state["stale"])
+    monkeypatch.setattr(link_census, "verify_data_objects", lambda: None)
+    monkeypatch.setattr(link_census, "read_facts", lambda present, rows: [facts[o.name] for o in present])
+    monkeypatch.setattr(link_census, "ledger_owners", lambda rows: {})
+    monkeypatch.setattr(link_census, "common_definitions", lambda obj, **kw: {})
+    monkeypatch.setattr(alias_guard, "object_aliases", lambda obj: [])
+    monkeypatch.setattr(build, "compile_rows", compile_rows)
+    monkeypatch.setattr(C, "refresh_dirty", lambda paths: list(dirty))
     ix = index(strong={"f": [0, 1]})
-    ix["meta"]["date"] = "2026-10-14 07:27"
-    census = time.mktime(time.strptime("2026-10-14 07:27", "%Y-%m-%d %H:%M"))   # local, as census writes it
-    sources = {name: tmp_path / name.replace(".obj", ".cpp") for name in ("a.obj", "b.obj", "c.obj")}
-    for name, stamp in (("a.obj", census - 60), ("b.obj", census + 3600)):
-        obj = tmp_path / name
-        obj.write_bytes(b"")
-        os.utime(obj, (stamp, stamp))
-    monkeypatch.setattr(link_census, "ledger", lambda: [{"source": str(s)} for s in sources.values()])
-    monkeypatch.setattr(build, "obj_path", lambda s, member=None: tmp_path / s.name.replace(".cpp", ".obj"))
-    monkeypatch.setattr(build, "stale_sources", lambda *a: [sources[n] for n in stale])
-    monkeypatch.setattr(build, "compile_rows",
-                        lambda rows, srcs: {s: tmp_path / s.name.replace(".cpp", ".obj") for s in srcs})
-    passed = []
-    monkeypatch.setattr(C, "refresh", lambda index_, objects, truth: passed.extend(o.name for o in objects))
-    C.refresh_stale(ix, None)
-    return passed
+    ix["selection"] = {"exceptions": {}, "owners": {}}
+    return ix
 
 
-def test_refresh_stale_replaces_objects_rebuilt_since_the_census(monkeypatch, tmp_path):
-    """Ported from Open-BFME-2 36cd4e5fff: an object another build rebuilt after
-    the census is not stale, but its census definitions are old: --refresh
-    replaces them all the same. One built before the census, or missing, is not."""
-    assert _refresh_fixture(monkeypatch, tmp_path, stale=()) == ["b.obj"]
+def test_refresh_rejudges_every_current_object_without_mtimes(monkeypatch):
+    """Review 2026-10-15 round 1 (A, B, coverage): every current ledger object
+    is re-read and re-judged with current truth -- not only stale or recently
+    rebuilt ones -- so a frozen object's COMDAT verdict the census left None is
+    judged now; a source the ledger dropped (c.obj) leaves no definitions and a
+    source added since the census (d.obj) is in the tables."""
+    facts = {"a.obj": ([("g", "dGEN", 4, "wrong")], [], [], []),
+             "b.obj": ([("g", "dMINE", 4, "retail")], [], [], []),
+             "d.obj": ([], ["h"], [], [])}
+    ix = _refreshable(monkeypatch, ["a.obj", "b.obj", "d.obj"], facts)
+    C.refresh_current(ix, None)
+    assert ix["objects"] == ["a.obj", "b.obj", "d.obj"]
+    assert ix["strong"] == {"h": [2]} and ix["comdat"]["g"] == [(0, "dGEN", "wrong"), (1, "dMINE", "retail")]
+    assert ix["refreshed"] and "weak_inventory" not in ix          # census receipts never rewritten
 
 
-def test_refresh_stale_recompiles_stale_objects_once(monkeypatch, tmp_path):
-    assert _refresh_fixture(monkeypatch, tmp_path, stale=("c.obj", "b.obj")) == ["c.obj", "b.obj"]
+def test_refreshed_index_blocks_the_kept_copy_current_truth_rejects(monkeypatch):
+    """Review B: keep_rule kept the first copy dGEN; the census verdict was None
+    (judge_selected 'unknown' -> LINKS). Re-judged it is 'wrong' -> selected."""
+    facts = {"gen.obj": ([("g", "dGEN", 4, "wrong")], [], [], []),
+             "mine.obj": ([("g", "dMINE", 4, "retail")], [], [], [])}
+    ix = _refreshable(monkeypatch, ["gen.obj", "mine.obj"], facts)
+    C.refresh_current(ix, None)
+    fact = ([("g", "dMINE", 4, "retail")], [], [], [])
+    assert C.wrong_selected(_Obj("mine.obj"), fact, 1, 1, ix) == ["g"]
 
 
-def test_built_since_fails_closed_on_an_unreadable_census_date(tmp_path):
-    obj = tmp_path / "x.obj"
-    obj.write_bytes(b"")
-    assert not C.built_since(obj, index())                   # meta date "d"
-    assert not C.built_since(tmp_path / "missing.obj", {"meta": {"date": "2026-10-14 07:27"}})
+def test_an_unprovable_kept_definition_blocks_only_a_refreshed_preview(monkeypatch):
+    fact = ([("g", "dB", 4, None)], [], [], [])
+    census = index(comdat={"g": [(0, "dA", None), (1, "dB", None)]})
+    census["selection"] = {"exceptions": {}, "owners": {}}
+    assert C.wrong_selected(_Obj("b.obj"), fact, 1, 1, census) == []          # unchanged default
+    census["refreshed"] = True
+    assert C.wrong_selected(_Obj("b.obj"), fact, 1, 1, census) == ["g"]
+
+
+def test_refresh_refuses_a_big_compile_without_the_flag(monkeypatch):
+    many = [f"s{i}.obj" for i in range(C.REFRESH_COMPILE_LIMIT + 1)]
+    compiled = []
+    ix = _refreshable(monkeypatch, many, {n: ([], [], [], []) for n in many}, stale=many, compiled=compiled)
+    with pytest.raises(SystemExit, match="--refresh-compile"):
+        C.refresh_current(ix, None)
+    assert compiled == []
+    ix = _refreshable(monkeypatch, many, {n: ([], [], [], []) for n in many}, stale=many, compiled=compiled,
+                      after={"stale": []})
+    C.refresh_current(ix, None, allow_compile=True)
+    assert len(compiled) == 1 and len(compiled[0]) == len(many)
+
+
+def test_refresh_refuses_objects_still_missing_or_stale(monkeypatch):
+    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])}, missing=["gone.obj"],
+                      after={"missing": [_Obj("gone.obj")]})
+    with pytest.raises(SystemExit, match="still missing or stale"):
+        C.refresh_current(ix, None)
+
+
+def test_refresh_refuses_a_dirty_tree_outside_the_checked_files(monkeypatch):
+    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])}, dirty=["game/other.cpp"])
+    with pytest.raises(SystemExit, match="differ from HEAD"):
+        C.refresh_current(ix, None, checked=["game/a.cpp"])
+
+
+def test_refresh_dirty_ignores_only_the_checked_files(monkeypatch):
+    out = " M game/a.cpp\0?? game/new.cpp\0R  game/to.cpp\0game/from.cpp\0"
+    monkeypatch.setattr(C, "_git", lambda *a, **k: out)
+    assert C.refresh_dirty({"game/a.cpp"}) == ["game/new.cpp", "game/to.cpp"]
+
+
+def test_refresh_drops_build_recompile_only(monkeypatch):
+    monkeypatch.setenv("BUILD_RECOMPILE_ONLY", "x.cpp")
+    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])})
+    C.refresh_current(ix, None)
+    import os
+    assert "BUILD_RECOMPILE_ONLY" not in os.environ
+
+
+def test_refresh_keeps_measured_holders_and_blocks_unmeasured_ones(monkeypatch):
+    facts = {"a.obj": ([("g", "d1", 4, None)], [], [], []), "b.obj": ([("g", "d2", 4, None)], [], [], [])}
+    ix = _refreshable(monkeypatch, ["a.obj", "b.obj"], facts)
+    ix["strong"], ix["comdat"] = {}, {"g": [(0, "d1", None), (1, "d2-old", None)]}
+    ix["selection"]["exceptions"] = {"g": 1}
+    C.refresh_current(ix, None)
+    assert ix["selection"]["exceptions"] == {} and ix["selection"]["unmeasured"] == {"g"}
+    assert C.wrong_selected(_Obj("a.obj"), facts["a.obj"], 0, 0, ix) == ["g"]
 
 
 def test_serve_fails_closed_when_freshness_cannot_be_read(tmp_path, monkeypatch):
