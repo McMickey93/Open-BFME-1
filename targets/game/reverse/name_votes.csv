@@ -5282,3 +5282,5 @@ game/GameEngine/Source/Common/BfmeConv1137Release.cpp|function|BfmeA1137Release@
 game/GameEngine/Source/Common/BfmeConv1137Release.cpp|local|BfmeA1137Release::bfmeReleaseResources|t,dc0b95cca5198ef567813e89,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1137Release.cpp|local|BfmeA1137Release::bfmeReleaseResources|u,fea7dbaf7e04847c8775cf38,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1137Release.cpp|local|BfmeA1137Release::bfmeReleaseResources|r,cbe9e36773a23e492af5ad7d,gpt-6.1-sol,20261016075704-854a6e,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/Gen_t_00776240CopyConstructor.cpp|member||m_vector2C,acf1cd6608d28a9d7bf5cc70,gpt-6.1-sol,20261016075526-f07d66,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/Gen_t_00776240CopyConstructor.cpp|member||m_vector7C,5a75fe93184be692b4aa1a92,gpt-6.1-sol,20261016075526-f07d66,2026-10-16
