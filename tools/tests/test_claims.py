@@ -722,3 +722,77 @@ def test_a_landed_entry_without_a_lease_settles_instead_of_waiting(hosts):
     assert claims.pending()[0].get("lease") in (None, "")
     assert claims.release_landed() == ([], [])
     assert claims.pending() == []
+
+
+def test_unpushed_restore_of_an_earlier_published_blob_is_not_a_landing(hosts):
+    # review 2026-10-15 round 1 (build/review_op4_r1): restoring x.cpp to a
+    # version origin/master published BEFORE the landing's base, unpushed,
+    # must keep its claim.
+    a = hosts("a")
+    row = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+    _commit_ledger(a, [row], "f landed earlier", {"game/x.cpp": "void f() {}\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    _commit_ledger(a, [row], "someone breaks f", {"game/x.cpp": "void f() { int broken; }\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.claim([0x100])
+    _commit_ledger(a, [row], "repair f (local only)", {"game/x.cpp": "void f() {}\n"})
+    claims.queue_landed(0x100, row)
+    assert claims.release_landed() == ([], [0x100])
+
+
+def _set_pending(a, **fields):
+    import json
+    path = a / claims.PENDING
+    entries = [dict(json.loads(line), **fields) for line in path.read_text().splitlines() if line.strip()]
+    path.write_text("".join(json.dumps(e) + "\n" for e in entries))
+
+
+def _land_then_edit_again(a, files_land, files_next):
+    _commit_ledger(a, [], "base")
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.claim([0x100])
+    row = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+    _commit_ledger(a, [row], "land f", files_land)
+    claims.queue_landed(0x100, row)
+    _commit_ledger(a, [row], "land g", files_next)
+    return row
+
+
+def test_every_dependency_blob_must_be_published_in_one_commit(hosts):
+    # review round 1 should-fix: x.cpp's and y.h's verified blobs each reached
+    # origin/master, but never in the same tree, so that build never landed.
+    a = hosts("a")
+    _commit_ledger(a, [], "base")
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    claims.claim([0x100])
+    row = "?f@@YAXXZ,,0x00000100,16,game/x.cpp,matched,model=m"
+    _commit_ledger(a, [row], "x first", {"game/x.cpp": "void f() {}\n", "game/y.h": "#define Y 0\n"})
+    blob_x = _git(a, "rev-parse", "HEAD:game/x.cpp").strip()
+    _commit_ledger(a, [row], "y later", {"game/x.cpp": "void f() { }\n", "game/y.h": "#define Y 1\n"})
+    blob_y = _git(a, "rev-parse", "HEAD:game/y.h").strip()
+    _set_pending_base = _git(a, "rev-parse", "HEAD~2").strip()
+    claims.queue_landed(0x100, row, deps={"game/x.cpp": blob_x, "game/y.h": blob_y})
+    _set_pending(a, base=_set_pending_base)
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed() == ([], [0x100])
+    # the same blobs together in one later commit are a landing
+    _commit_ledger(a, [row], "together", {"game/x.cpp": "void f() {}\n"})
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed() == ([0x100], [])
+
+
+def test_a_commit_older_than_the_queue_time_is_not_the_landing(hosts):
+    import time
+    a = hosts("a")
+    _land_then_edit_again(a, {"game/x.cpp": "void f() {}\n"}, {"game/x.cpp": "void f() {}\nvoid g() {}\n"})
+    _set_pending(a, queued=int(time.time()) + 3 * claims.QUEUE_SKEW)
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed() == ([], [0x100])
+
+
+def test_an_entry_without_a_base_needs_the_tip_blob(hosts):
+    a = hosts("a")
+    _land_then_edit_again(a, {"game/x.cpp": "void f() {}\n"}, {"game/x.cpp": "void f() {}\nvoid g() {}\n"})
+    _set_pending(a, base=None)                      # queued before this change
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed() == ([], [0x100])

@@ -591,7 +591,7 @@ def queue_landed(rva, row, who=None, root=None, deps=None):
         who = who or owner(root)
         entry = {"rva": f"0x{int(rva):08X}", "row": row.strip(), "owner": who,
                  "lease": current_lease(rva, who, root),
-                 "queued": now, "deps": deps, "deps_truncated": truncated,
+                 "queued": now, "base": _local_master(root), "deps": deps, "deps_truncated": truncated,
                  "id": uuid.uuid4().hex}
         with _queue_lock(root) as path:
             # a checkout nobody settles must not grow the queue forever: entries
@@ -600,6 +600,67 @@ def queue_landed(rva, row, who=None, root=None, deps=None):
             _write_queue(path, keep + [entry])
     except Exception as error:  # noqa: BLE001
         print(f"claims: could not queue landed body {rva}: {error}", file=sys.stderr)
+
+
+def _local_master(root=None):
+    """This checkout's refs/remotes/origin/master (no fetch), or None."""
+    got = _git("rev-parse", "-q", "--verify", "refs/remotes/origin/master^{commit}", cwd=root)
+    return (got.stdout.strip() or None) if got.returncode == 0 else None
+
+
+# A landing commit is made after add_match verified it, so its committer date
+# is not before the queue time; rebasing only moves it later. Allow host skew.
+QUEUE_SKEW = 600
+_ZERO = "0" * 40
+
+
+def published_since_queued(entry, tip, root=None):
+    """Did one commit on origin/master, after the origin/master the landing was
+    verified against (entry["base"], recorded at queue time) and committed no
+    earlier than the queue time, hold EVERY dependency blob at once?
+
+    A worker who lands the next body of the same file (AGENTS.md "Work the
+    file") changes the source again, so the tip's blob no longer equals the one
+    an earlier landing verified, and that landing waited out its claim. A blob
+    published only before the base -- a local repair that restores an earlier
+    published version -- never counts (review 2026-10-15, round 1). Entries
+    queued without a base never take this path."""
+    base, deps = entry.get("base"), entry.get("deps") or {}
+    if not base or not deps:
+        return False
+    if _git("merge-base", "--is-ancestor", base, tip, cwd=root).returncode:
+        return False
+    paths = sorted(deps)
+    listed = _git("ls-tree", "-r", base, "--", *paths, cwd=root, timeout=120)
+    if listed.returncode:
+        return False
+    state = {}
+    for line in listed.stdout.splitlines():
+        meta, _, path = line.partition("\t")
+        state[path] = meta.split()[2]
+    logged = _git("log", "--reverse", "--first-parent", "-m", "--no-renames", "--raw", "--no-abbrev",
+                  "--format=%x00%H %ct", f"{base}..{tip}", "--", *paths, cwd=root, timeout=120)
+    if logged.returncode:
+        return False
+    earliest = entry.get("queued", 0) - QUEUE_SKEW
+
+    def holds():
+        return all(state.get(path, "") == blob for path, blob in deps.items())
+    when = None
+    for line in logged.stdout.splitlines():
+        if line.startswith("\0"):
+            if when is not None and when >= earliest and holds():
+                return True
+            try:
+                when = int(line[1:].split()[1])
+            except (IndexError, ValueError):
+                when = None
+            continue
+        meta, _, path = line.partition("\t")
+        fields = meta.split()
+        if len(fields) >= 4 and path in deps:
+            state[path] = "" if fields[3] == _ZERO else fields[3]
+    return when is not None and when >= earliest and holds()
 
 
 def pending(root=None):
@@ -703,24 +764,6 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
         for line in listed.stdout.splitlines():
             meta, _, path = line.partition("\t")
             published[path] = meta.split()[2]
-    # Every blob origin/master published for those paths since the oldest
-    # queued landing: a worker who lands the next body of the same file (the
-    # AGENTS.md unit of work) changes the source again, so the tip's blob
-    # never equals the one an earlier landing verified, and that landing
-    # waited out its claim. A verified blob origin/master published, and
-    # later superseded, was landed all the same.
-    history = set()
-    if wanted:
-        since = min((e.get("queued", 0) for e in queue), default=0) - 86400
-        logged = _git("log", "--raw", "--no-abbrev", "--format=", f"--since={int(since)}", tip,
-                      "--", *wanted, cwd=root, timeout=120)
-        if logged.returncode == 0:
-            for line in logged.stdout.splitlines():
-                meta, _, path = line.partition("\t")
-                fields = meta.split()
-                if len(fields) >= 4 and path in wanted:
-                    history.add((path, fields[3]))
-
     def landed(entry):
         deps = entry.get("deps")
         if entry.get("deps_truncated") or not deps or _row_key(entry.get("row", "")) not in rows:
@@ -728,8 +771,9 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
         # a source missing locally proves nothing about what was verified
         if not deps.get(entry["row"].split(",")[4]):
             return False
-        return all(published.get(path, "") == blob or (path, blob) in history
-                   for path, blob in deps.items())
+        if all(published.get(path, "") == blob for path, blob in deps.items()):
+            return True
+        return published_since_queued(entry, tip, root)
     if sha:
         landed_rvas(sha, root, tip)        # raises unless the commit is on origin/master
     # The trailer IS the landing evidence: a ledger conversion names the body
