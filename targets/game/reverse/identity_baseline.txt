@@ -36,7 +36,7 @@ multi_name.different = 0
 size_outlier.indicted = 1
 ctor_vtable.contradicted = 20
 ctor_vtable.unreadable = 0
-one_identity.surplus = 2136
+one_identity.surplus = 2135
 # Retail registration proves DynamicPortalBehaviour owns ctor 001F8B80 and factory 001156B0; four false aliases retired.
 # fcf825b4f7 retired the false FXNugget zero-store claim; the body still has aliases.
 # 4c8346b3c9 retired the GDIFileStream ctor over-claim at 0x00087A50 (a zero-store body).
@@ -2541,8 +2541,6 @@ null_reloc.max_unreadable = 1000
 @ one_identity.surplus 0x0092C310 ?Set_Name@MeshClass@@UAEXPBD@Z
 @ one_identity.surplus 0x0092C800 ?Rotate_AABox_Extent@Matrix3@@QAEXABVVector3@@PAV2@@Z
 @ one_identity.surplus 0x0092C800 ?Rotate_AABox_Extent@Matrix3x3@@QAEXABVVector3@@PAV2@@Z
-@ one_identity.surplus 0x009305D0 ??0?$VectorClass@UPtrRemapStruct@PointerRemapClass@@@@QAE@HPBUPtrRemapStruct@PointerRemapClass@@@Z
-@ one_identity.surplus 0x009305D0 ??0?$VectorClass@VShaderClass@@@@QAE@HPBVShaderClass@@@Z
 @ one_identity.surplus 0x0093CAC0 ?Delete@?$DynamicVectorClass@M@@QAE_NH@Z
 @ one_identity.surplus 0x0093CAC0 ?Delete@?$DynamicVectorClass@PAUtThreadInfoType@@@@QAE_NH@Z
 @ one_identity.surplus 0x0093CAC0 ?Delete@?$DynamicVectorClass@PAVFontCharsBuffer@@@@QAE_NH@Z
