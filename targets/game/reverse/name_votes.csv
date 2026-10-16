@@ -5027,3 +5027,4 @@ game/GameEngine/Source/Common/Rva0046F490DrawBoundsOverlay.cpp|member||m_templat
 game/GameEngine/Source/Common/Rva0046F490DrawBoundsOverlay.cpp|function||Rva0046F490DrawBoundsOverlay,02495a1889879ced17277623,gpt-6.1-sol,20261016072411-32e808,2026-10-16
 game/GameEngine/Source/Common/Rva0046F490DrawBoundsOverlay.cpp|param|Rva0046CA40Result|arg,107eb0a2a7171a3547b4f59b,gpt-6.1-sol,20261016072411-32e808,2026-10-16
 game/GameEngine/Source/Common/Rva0046F490DrawBoundsOverlay.cpp|local|Rva0046F490DrawBoundsOverlay|t,cfa5c3ac8b59f64313fa25ad,gpt-6.1-sol,20261016072411-32e808,2026-10-16
+game/GameEngine/Source/GameClient/GUI/AptMainMenuCredits.cpp|function|BfmeAptScreenMainMenu@|_bfme_credits,98cdfb1d4f9f4d10aabdb536,gpt-6.1-sol,20261016072435-549bb2,2026-10-16
