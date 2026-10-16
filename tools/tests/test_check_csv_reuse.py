@@ -45,7 +45,7 @@ def fake_state(tmp_path, monkeypatch):
         ).encode()
         states[mode] = {
             "functions": functions,
-            "sources": {source, attempt, f"game/gen_small/{mode or 'worktree'}.cpp"},
+            "sources": {source, attempt, f"game/gen_asm/{mode or 'worktree'}.asm"},
         }
 
     symbols = (check_csv.SYMBOLS_HEADER + "\r\n").encode()

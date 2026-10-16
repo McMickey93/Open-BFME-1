@@ -218,6 +218,10 @@ def main():
         accepted.append(c)
 
     sources = sorted({c["source"] for c in claims})
+    # game/gen_small/ TUs this batch leaves owning no matched row: deleted only
+    # after every source verifies (source claims and check_csv refuse an empty TU).
+    emptied = add_match.emptied_generated_sources(root, list(retire.values()), rows,
+                                                  adding=set(sources))
     if retire and not deleted_csv.exists():
         add_match.fail(f"no deletion ledger at {deleted_csv}",
                        "scaffold rows cannot be retired durably without tombstones")
@@ -305,6 +309,7 @@ def main():
         if not reverted:
             revert("interrupted or write failed")
         raise
+    add_match.delete_emptied_sources(root, emptied, tool="add_match_batch")
     print(f"add_match_batch: verified OK -- {len(claims)} row(s) live")
 
 

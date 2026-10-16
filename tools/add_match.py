@@ -344,34 +344,56 @@ def batch_verification_environment(request_path):
     return environment
 
 
-def emptied_generated_source(root, replaced, rows):
-    """The game/gen_small/ TU a repoint of REPLACED leaves owning nothing, or None.
+def emptied_generated_sources(root, retired, rows, adding=()):
+    """game/gen_small/ TUs that retiring the RETIRED rows leaves owning nothing.
 
-    build.verify_source_claims fails the full gate on any game/ .cpp with zero
-    matched rows (functions.csv or data_rows.csv), and the delta path never checks
-    a source that only LOST rows: 5c065afaba moved the last two rows out of
-    W3AtlConversionHolderCtors.cpp and every full gate went red until e6e493867a
-    deleted it. A frozen TU that owns nothing is deleted with the repoint that
-    emptied it. Rows of any other status still naming the file would point at a
-    missing source, so that case is refused before anything is written."""
-    source = replaced["source"]
-    if any(row is not replaced and row["source"] == source and row["status"] == "matched"
-           for row in rows):
-        return None
+    build.verify_source_claims and check_csv's orphan check refuse any game/ .cpp
+    with zero matched rows (functions.csv or data_rows.csv), and the delta path
+    never checks a source that only LOST rows: 5c065afaba moved the last two rows
+    out of W3AtlConversionHolderCtors.cpp and every full gate went red until
+    e6e493867a deleted it. A generated TU that owns nothing is deleted with the
+    --replace-rva (any kind: gen-dtor, hand-written, gen-shim, gen-tgrid,
+    gen-dump, gen-thunk) that emptied it; ADDING are the sources the same change
+    claims rows in. Rows of any other status, function or data, still naming the
+    file would point at a missing source, so that case is refused before anything
+    is written."""
+    retired_keys = {(row["name"], row["rva"]) for row in retired}
     data_csv = Path(root) / "targets/game/reverse" / "data_rows.csv"
+    data = []
     if data_csv.exists():
         with data_csv.open(encoding="utf-8", newline="") as handle:
-            if any(row.get("source") == source and row.get("status") == "matched"
-                   for row in csv.DictReader(handle)):
-                return None
-    others = sorted(row["name"] for row in rows
-                    if row is not replaced and row["source"] == source)
-    if others:
-        fail(f"--replace-rva 0x{replaced['rva']:08X} moves the last matched row out of "
-             f"{source}, which must then be deleted, but {len(others)} unmatched row(s) "
-             f"still name it: {', '.join(others[:5])}",
-             "settle those rows first (repoint or retire them), then repoint this one")
-    return source
+            data = list(csv.DictReader(handle))
+    emptied = []
+    for source in sorted({row["source"] for row in retired}):
+        if not source.casefold().startswith("game/gen_small/") or source in adding:
+            continue
+        remaining = [row for row in rows if row["source"] == source
+                     and (row["name"], row["rva"]) not in retired_keys]
+        data_rows_here = [row for row in data if row.get("source") == source]
+        if (any(row["status"] == "matched" for row in remaining) or
+                any(row.get("status") == "matched" for row in data_rows_here)):
+            continue
+        others = sorted([row["name"] for row in remaining] +
+                        [row.get("name", "?") for row in data_rows_here])
+        if others:
+            fail(f"--replace-rva moves the last matched row out of {source}, which must "
+                 f"then be deleted, but {len(others)} unmatched function/data row(s) "
+                 f"still name it: {', '.join(others[:5])}",
+                 "settle those rows first (repoint or retire them), then repoint this one")
+        emptied.append(source)
+    return emptied
+
+
+def delete_emptied_sources(root, emptied, tool="add_match"):
+    """Delete each emptied generated TU; say how to stage it and how to undo it."""
+    for rel in emptied:
+        path = Path(root) / rel
+        if path.exists():
+            path.unlink()
+            print(f"{tool}: deleted {rel}: this change moved its last matched row out "
+                  "(source claims and check_csv refuse a game/ .cpp that owns no row). "
+                  f"Stage it with `git rm --cached {rel}`; if you abandon this landing, "
+                  f"restore it with `git checkout -- {rel}`")
 
 
 def orphaned_caller_selectors(root, replaced):
@@ -764,7 +786,7 @@ def main():
     rows = parse_ledger(raw)
     claims = [row for row in rows if row["name"] == name]
     replaced = None
-    emptied_tu = None   # a game/gen_small/ TU this repoint leaves with no matched row
+    emptied_tus = []   # game/gen_small/ TUs this --replace-rva leaves with no matched row
     if args.replace_rva:
         if args.replace_existing:
             fail("--replace-rva and --replace-existing are alternatives: one keys "
@@ -856,7 +878,7 @@ def main():
                 problem = gen_dtor_successor_problem(root, replaced, name, rows)
                 if problem:
                     fail(problem)
-            emptied_tu = emptied_generated_source(root, replaced, rows)
+        emptied_tus = emptied_generated_sources(root, [replaced], rows, adding={source_rel})
     if args.replace_existing:
         if not claims:
             # 36 named __emit lifts carry a truncated decoration such as
@@ -1026,15 +1048,8 @@ def main():
             restore()
             fail(f"{', '.join(definers)} also define(s) {name}: a generated copy could win "
                  "the link over the verified body — append and marker strip REVERTED")
-    if emptied_tu is not None:
-        # Last, after every check that reads the frozen TU or the census of it: the
-        # file now owns no matched row, and source claims fail on it until it goes.
-        emptied_path = root / emptied_tu
-        if emptied_path.exists():
-            emptied_path.unlink()
-            print(f"add_match: deleted {emptied_tu}: the repoint moved its last matched row "
-                  "out (source claims fail on an empty TU); stage the deletion with "
-                  f"`git rm --cached {emptied_tu}` or `git add -A {emptied_tu}`")
+    # Last, after every check that reads the frozen TU or the census of it.
+    delete_emptied_sources(root, emptied_tus)
     print("add_match: verified OK — row is live")
     admit_compiler_label_alias(root, args.notes, rva, raw,
                                None if replaced is None else replaced["rva"])

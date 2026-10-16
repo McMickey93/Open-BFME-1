@@ -633,3 +633,59 @@ def test_generated_copy_of_new_name_keeps_the_tu(tmp_path, monkeypatch):
     tu = frozen_tu(tmp_path)
     refused(files)
     assert tu.exists()
+
+
+# --- review r1: every --replace-rva out of game/gen_small/ ---------------------------
+
+SHIM_TU = "game/gen_small/fam_018.cpp"
+SHIM_ROW = f"Gen_hashraw_00707e60,,{RVA},84,{SHIM_TU},matched,gen-shim;family=hashraw"
+
+
+@pytest.mark.parametrize("tu,row", [
+    (SHIM_TU, SHIM_ROW),
+    ("game/gen_small/tgrid_132.cpp",
+     f"tg_00707e60,,{RVA},84,game/gen_small/tgrid_132.cpp,matched,gen-tgrid;cell=1"),
+    ("game/gen_small/thunks_008.cpp",
+     f"?j_00707e60@@YAXXZ,,{RVA},84,game/gen_small/thunks_008.cpp,matched,gen-thunk;gap"),
+])
+def test_scaffold_last_row_takeover_deletes_its_tu(tmp_path, monkeypatch, tu, row):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[row])
+    path = frozen_tu(tmp_path, tu)
+    add_match.main()
+    assert tu not in files[0].read_text()
+    assert not path.exists()
+
+
+def test_scaffold_takeover_with_a_sibling_keeps_its_tu(tmp_path, monkeypatch):
+    sibling = f"Gen_hashraw_00707f00,,0x00707F00,84,{SHIM_TU},matched,gen-shim;family=hashraw"
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[SHIM_ROW, sibling])
+    path = frozen_tu(tmp_path, SHIM_TU)
+    add_match.main()
+    assert path.exists()
+
+
+def test_scaffold_takeover_failed_build_keeps_its_tu(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[SHIM_ROW], gate=1)
+    path = frozen_tu(tmp_path, SHIM_TU)
+    refused(files)
+    assert path.exists()
+
+
+def test_unmatched_data_row_naming_the_tu_is_refused(tmp_path, monkeypatch):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW])
+    tu = frozen_tu(tmp_path)
+    (tmp_path / "targets/game/reverse/data_rows.csv").write_text(
+        "name,address,address_kind,size,section,source,status,evidence,model\n"
+        f"?g@@3HA,0x01000000,va,4,.data,{DTOR_TU},unmatched,proof,m\n")
+    refused(files)
+    assert tu.exists()
+    assert recorder.builds == []
+
+
+def test_deletion_prints_stage_and_revert_hints(tmp_path, monkeypatch, capsys):
+    files, recorder, _ = arrange(tmp_path, monkeypatch, rows=[DTOR_ROW])
+    frozen_tu(tmp_path)
+    add_match.main()
+    out = capsys.readouterr().out
+    assert f"git rm --cached {DTOR_TU}" in out
+    assert f"git checkout -- {DTOR_TU}" in out

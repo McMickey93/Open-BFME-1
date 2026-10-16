@@ -242,3 +242,47 @@ def test_batch_rejects_an_outside_repo_source(tmp_path, monkeypatch):
         add_match_batch.main()
 
     assert (functions.read_bytes(), deleted.read_bytes(), sources[0].read_bytes()) == before
+
+
+def test_batch_deletes_a_gen_small_tu_it_empties_after_verifying(tmp_path, monkeypatch):
+    tu = "game/gen_small/fam_018.cpp"
+    functions, deleted, _ = arrange(
+        tmp_path, monkeypatch,
+        [dump("?j_00abcd00@@YAXXZ", "0x00ABCD00", 32, tu, "gen-thunk")],
+        [("?realBody@Thing@@QAEXXZ", "0x00ABCD00", "32", "game/Thing.cpp", "",
+          "0x00ABCD00")])
+    path = tmp_path / tu
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"// frozen\r\n")
+    add_match_batch.main()
+    assert not path.exists()
+
+
+def test_batch_keeps_the_tu_when_verification_fails(tmp_path, monkeypatch):
+    tu = "game/gen_small/fam_018.cpp"
+    functions, deleted, _ = arrange(
+        tmp_path, monkeypatch,
+        [dump("?j_00abcd00@@YAXXZ", "0x00ABCD00", 32, tu, "gen-thunk")],
+        [("?realBody@Thing@@QAEXXZ", "0x00ABCD00", "32", "game/Thing.cpp", "",
+          "0x00ABCD00")], outcomes=(1,))
+    path = tmp_path / tu
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"// frozen\r\n")
+    with pytest.raises(SystemExit):
+        add_match_batch.main()
+    assert path.exists()
+
+
+def test_batch_keeps_a_tu_with_a_remaining_row(tmp_path, monkeypatch):
+    tu = "game/gen_small/fam_018.cpp"
+    functions, deleted, _ = arrange(
+        tmp_path, monkeypatch,
+        [dump("?j_00abcd00@@YAXXZ", "0x00ABCD00", 32, tu, "gen-thunk"),
+         dump("?j_00abce00@@YAXXZ", "0x00ABCE00", 32, tu, "gen-thunk")],
+        [("?realBody@Thing@@QAEXXZ", "0x00ABCD00", "32", "game/Thing.cpp", "",
+          "0x00ABCD00")])
+    path = tmp_path / tu
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"// frozen\r\n")
+    add_match_batch.main()
+    assert path.exists()

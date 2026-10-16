@@ -332,6 +332,10 @@ def test_orphan_ratchet_refuses_one_more_than_baseline(tmp_path, monkeypatch):
     # ...and refused the moment it exceeds it, naming the file.
     problems = run([src, "game/GameEngine/Source/Common/Orphan.cpp"], 0)
     assert any("own no matched row" in p and "Orphan.cpp" in p for p in problems), problems
-    # Generated trees are machine output and never count as orphans.
-    assert run([src, "game/gen_asm/d_00401000.asm",
-                "game/gen_small/uw_gen_0.cpp"], 0) == []
+    # gen_asm dumps are .asm, never a game/*.cpp orphan.
+    assert run([src, "game/gen_asm/d_00401000.asm"], 0) == []
+    # A game/gen_small/ TU left with no matched row is an orphan too: a repoint
+    # that emptied one (5c065afaba) broke every full gate while this check, which
+    # skipped game/gen_small/, stayed green.
+    problems = run([src, "game/gen_small/uw_gen_0.cpp"], 0)
+    assert any("own no matched row" in p and "uw_gen_0.cpp" in p for p in problems), problems

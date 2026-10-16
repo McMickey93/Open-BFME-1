@@ -721,10 +721,12 @@ def check_orphans(spec, problems, *, functions_raw=None, sources_ok=None, data_r
         claimed.update(worldbuilder_claims(spec, sources_ok))
     except (ValueError, OSError, KeyError, subprocess.CalledProcessError) as error:
         problems.append(f"WorldBuilder source ownership is invalid: {error}")
+    # No generated-tree exemption: game/gen_asm/ dumps are .asm, and a game/gen_small/
+    # TU emptied by a repoint (5c065afaba) broke every full gate while this check,
+    # which skipped game/gen_small/, stayed green.
     orphans = sorted(
         path for path in sources_ok
         if path.startswith("game/") and path.endswith(".cpp")
-        and not path.startswith(("game/gen_asm/", "game/gen_small/"))
         and path not in claimed)
     if len(orphans) > ORPHAN_BASELINE:
         problems.append(
