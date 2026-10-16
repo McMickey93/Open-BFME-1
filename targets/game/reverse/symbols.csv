@@ -9773,7 +9773,6 @@ name,address,notes
 ??1Sub005CDBB0@@QAE@XZ,0x005CDBB0,second-base destructor called by the 89-byte multiple-inheritance destructors in BigChainBaseDtors.cpp
 ??1Sub005CDEF0@@QAE@XZ,0x005CDEF0,second-base destructor called by the 89-byte multiple-inheritance destructors in BigChainBaseDtors.cpp
 ??1Sub005CDF80@@QAE@XZ,0x005CDF80,second-base destructor called by the 89-byte multiple-inheritance destructors in BigChainBaseDtors.cpp
-??1SubObjectArrayClass@HLodDefClass@@QAE@XZ,0x00978A10,HLodDefClass destructor calls the SubObjectArray destructor body folded with its matched Reset implementation
 ??1SubObjectsUpgrade@@MAE@XZ,0x0000A466,vtable 0x00CCDFC4 slots name SubObjectsUpgrade; protected complete destructor called by wrapper 0x002D84B0
 ??1SubsystemInterface@@UAE@XZ,0x009A1A40,BFME base destructor stores the 0x01141640 vtable and releases its AsciiString name
 ??1SubtitleEntry@@MAE@XZ,0x0081D7B0,destructor body called by the retail scalar deleting wrapper

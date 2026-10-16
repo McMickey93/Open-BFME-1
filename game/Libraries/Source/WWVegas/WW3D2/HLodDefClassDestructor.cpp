@@ -8,7 +8,8 @@ public:
 	class SubObjectArrayClass
 	{
 	public:
-		~SubObjectArrayClass() throw();
+		~SubObjectArrayClass() { Reset(); }
+		__declspec(nothrow) void Reset();
 	};
 
 	~HLodDefClass();

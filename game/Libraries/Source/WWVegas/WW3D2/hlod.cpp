@@ -786,7 +786,7 @@ HLodDefClass::SubObjectArrayClass::SubObjectArrayClass(void) :
  *   1/26/00    gth : Created.                                                                 *
  *=============================================================================================*/
 // ?HLodDefClass::SubObjectArrayClass::~SubObjectArrayClass present-unmatched
-HLodDefClass::SubObjectArrayClass::~SubObjectArrayClass(void)
+inline HLodDefClass::SubObjectArrayClass::~SubObjectArrayClass(void)
 {
 	Reset();
 }
