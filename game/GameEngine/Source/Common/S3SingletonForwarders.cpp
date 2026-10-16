@@ -288,13 +288,6 @@ public:
 class UnicodeString;
 extern UnicodeString ctrl;		// 0x12f3afc
 extern UnicodeString shift;
-class Gen_00C70160Target
-{
-public:
-	void bfmeForward(void);					// retail 0x0003B304
-};
-
-extern Gen_00C70160Target TheBfmeObject_00C70160;		// 0x12f3dc4
 extern std::string lookAtPlayerName;
 namespace PopupReplayState { extern std::string replayPath; }
 extern std::string LastReplayFileName;
@@ -305,13 +298,6 @@ public:
 };
 
 extern std::list<PeerResponse> TheLobbyQueuedUTMs;
-class Gen_00C701B0Target
-{
-public:
-	void bfmeForward(void);					// retail 0x0003B304
-};
-
-extern Gen_00C701B0Target TheBfmeObject_00C701B0;		// 0x12f48c8
 class AsciiString
 {
 public:
@@ -321,13 +307,6 @@ public:
 extern AsciiString g_guiFxFile;		// 0x12f4978
 extern UnicodeString g_unicode12F498C;		// 0x12f498c
 extern AsciiString g_aptLivingWorldCachedName;		// 0x12f49a0
-class Gen_00C701F0Target
-{
-public:
-	void bfmeForward(void);					// retail 0x0000D828
-};
-
-extern Gen_00C701F0Target TheBfmeObject_00C701F0;		// 0x12f4b00
 class Gen_00C70500Target
 {
 public:
@@ -1043,11 +1022,7 @@ void bfmeForward_00C70150(void)
 {
 	shift.~UnicodeString();
 }
-// ?bfmeForward_00C70160@@YAXXZ
-void bfmeForward_00C70160(void)
-{
-	TheBfmeObject_00C70160.bfmeForward();
-}
+// 0x00C70160 is emitted with its global in StaticInit/Rva012F3DC4Global.cpp.
 // ?bfmeForward_00C70170@@YAXXZ
 void bfmeForward_00C70170(void)
 {
@@ -1068,11 +1043,7 @@ void bfmeForward_00C701A0(void)
 {
 	((Gen_00C701A0Target *)&TheLobbyQueuedUTMs)->bfmeForward();
 }
-// ?bfmeForward_00C701B0@@YAXXZ
-void bfmeForward_00C701B0(void)
-{
-	TheBfmeObject_00C701B0.bfmeForward();
-}
+// 0x00C701B0 is emitted with its global in StaticInit/Rva012F48C8Global.cpp.
 // ?bfmeForward_00C701C0@@YAXXZ
 void bfmeForward_00C701C0(void)
 {
@@ -1088,11 +1059,7 @@ void bfmeForward_00C701E0(void)
 {
 	g_aptLivingWorldCachedName.~AsciiString();
 }
-// ?bfmeForward_00C701F0@@YAXXZ
-void bfmeForward_00C701F0(void)
-{
-	TheBfmeObject_00C701F0.bfmeForward();
-}
+// 0x00C701F0 is emitted with its global in StaticInit/Rva012F4B00Global.cpp.
 // ?bfmeForward_00C70500@@YAXXZ
 void bfmeForward_00C70500(void)
 {
