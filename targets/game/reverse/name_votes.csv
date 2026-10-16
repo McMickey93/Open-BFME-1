@@ -3058,3 +3058,9 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThun
 game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field38,761ebe71bfc8c17a998e9c26,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field40,cb5cf1268300daa79811de90,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field44,cc345e2f4d2b5eb4d505ca2d,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f14,c2b277e952c60cf2a49d8853,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f18,00fbc3a8d36c572f2159ad01,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f1C,f009a4118c43b4ede673325f,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f20,75f0b29acb2612dada77b215,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f24,d84e0e7c0e5ed33dfcea38c9,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f28,5bdb766cc3132f9838414b74,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
