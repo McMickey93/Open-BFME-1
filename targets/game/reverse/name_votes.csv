@@ -5504,3 +5504,6 @@ game/GameEngine/Source/Common/MapObject.cpp|type||Rva0088B70ThingRegistry,81302a
 game/GameEngine/Source/Common/MapObject.cpp|function||Rva00088B70ReadMapObject,5bfe95aac6c9b748b1cfc580,gpt-6.1-sol,20261016121904-075de5,2026-10-16
 game/GameEngine/Source/Common/MapObject.cpp|local|Rva00088B70ReadMapObject|tmplate,7478964d130cd7d6cf8cbbbd,gpt-6.1-sol,20261016121904-075de5,2026-10-16
 game/GameEngine/Source/GameClient/System/ParticleSystemComputeParticleVelocity.cpp|member||m_valueAB4,8339559f47a71ff4dcdb2043,gpt-6.1-sol,20261016122011-5783c2,2026-10-16
+game/Libraries/Source/WWVegas/WWMath/Rva009F4070DistanceSquared.cpp|function||Rva009F4070DistanceSquared,f68dbc742c6fa38b8e36b495,gpt-6.1-sol,20261016121958-6c4567,2026-10-16
+game/Libraries/Source/WWVegas/WWMath/Rva009F4070DistanceSquared.cpp|param|Rva009F4070DistanceSquared|a,93d24c3714a93f3558edbecd,gpt-6.1-sol,20261016121958-6c4567,2026-10-16
+game/Libraries/Source/WWVegas/WWMath/Rva009F4070DistanceSquared.cpp|local|Rva009F4070DistanceSquared|b,522d68a076db3d11a227812f,gpt-6.1-sol,20261016121958-6c4567,2026-10-16
