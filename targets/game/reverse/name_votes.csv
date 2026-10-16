@@ -1266,3 +1266,5 @@ game/GameEngine/Source/GameNetwork/GameSpy/GenerateLadderGameResultsPacket.cpp|l
 game/GameEngine/Source/GameNetwork/GameSpy/GenerateLadderGameResultsPacket.cpp|local|GameSpyStagingRoom::generateLadderGameResultsPacket|tempStr,2b869aae0a87aa8a055efa27,gpt-6.1-sol,20261016025144-8d4eea,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/NetworkDirectConnectUpdateRemoteIPList.cpp|local|UpdateRemoteIPList|n1,96f9f9d573ddba7ce6196691,gpt-6.1-sol,20261016025154-921f10,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/NetworkDirectConnectUpdateRemoteIPList.cpp|local|UpdateRemoteIPList|temp,84000733eb0d56a5a334c26e,gpt-6.1-sol,20261016025154-921f10,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateSetStatus.cpp|param|clearCondition|o,24d0a3cb9e458d24eebd9623,gpt-6.1-sol,20261016025239-a219eb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateSetStatus.cpp|param|setCondition|o,d82ae3dabc380ad2baadc9fa,gpt-6.1-sol,20261016025239-a219eb,2026-10-16
