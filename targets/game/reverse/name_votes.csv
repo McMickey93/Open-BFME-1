@@ -3211,3 +3211,5 @@ game/GameEngine/Source/Common/Rva006E6A80.cpp|member||ff0,728f2c892b9bd8234b8151
 game/GameEngine/Source/Common/BfmeThreeHundredThirtyTwo.cpp|member||m_bfmeTag,b538618b9920cc9fd24de63b,gpt-6.1-sol,20261016060236-5a5aa6,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredThirtyTwo.cpp|member||m_bfmeNode,8c2c910020cf0b7e178fd163,gpt-6.1-sol,20261016060236-5a5aa6,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredThirtyTwo.cpp|member||m_bfmeFirst,da9fe1a3f502fb3ec6ff013c,gpt-6.1-sol,20261016060236-5a5aa6,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1383.cpp|param|BfmeThingVJE::bfmeGoVJE|m,f7143c3cc02f1cd35fd94198,gpt-6.1-sol,20261016060247-030efe,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1383.cpp|local|BfmeThingVJE::bfmeGoVJE|g,1a1affb7413a25f8904bebbe,gpt-6.1-sol,20261016060247-030efe,2026-10-16
