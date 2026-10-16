@@ -5892,3 +5892,13 @@ game/Libraries/Source/WWVegas/WW3D2/WW3DMakeScreenShot.cpp|type||Rva008FD930Bitm
 game/Libraries/Source/WWVegas/WW3D2/WW3DMakeScreenShot.cpp|type||Rva008FD930BitmapInfoHeader,45d453203187a35e3efbb85a,gpt-6.1-sol,20261016143349-8c0a9e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2122.cpp|type||BfmeHostAAS,14c02307f4ce1180d36a93aa,gpt-6.1-sol,20261016144604-e7bddc,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2122.cpp|member||m_bfme9F49AAS,b7e2a6e630eb50e3a1407003,gpt-6.1-sol,20261016144604-e7bddc,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeLength|s,76827e9e51ddb69f0e914529,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|local|bfmeLength|d,707fb0a7916dd8e095843897,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeStr|s,3cccfcbd58d5f0f4eda6d003,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|local|bfmeStr|d,d9ac19ce38619a1e12d8dd7c,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeSet|s,fd3a27a76a29dd1815d1fc8f,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeConcat|s,9e45a18882e962a7aff94638,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeConcat|v,04802ca34e5b4b803779250a,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeConcat#2|s,2aa23c604e165786f00c36bd,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|param|bfmeFind|s,560932da0c322262d4c50854,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
+game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystem.cpp|local|bfmeFind|p,061f1725c9c3c4aa384b3813,gpt-6.1-sol,20261016145108-81c1ae,2026-10-16
