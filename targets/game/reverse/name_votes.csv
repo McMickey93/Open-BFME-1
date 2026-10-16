@@ -5780,3 +5780,4 @@ game/GameEngine/Source/GameLogic/AI/PathfinderClassifyFence.cpp|local|Pathfinder
 game/GameEngine/Source/GameLogic/AI/PathfinderClassifyFence.cpp|local|Pathfinder::classifyFence|s,39f4aaf846bfad65433feeb0,gpt-6.1-sol,20261016130850-6ecb20,2026-10-16
 game/GameEngine/Source/Common/INI/Rva000C1E50MapCacheDefinition.cpp|local|Rva000C1E50::parseMapCacheDefinition|c,ae588738b4f90edf4107fa24,gpt-6.1-sol,20261016130855-2b22d9,2026-10-16
 game/GameEngine/Source/GameClient/GUI/OnlineHomeMessageOfTheDay.cpp|local|grabUByte|b,f42a672e374a3d89361aefd1,gpt-6.1-sol,20261016130901-346760,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.cpp|local|OneRingPenaltyUpdate::rva00299080|d,888a3800cd6dce09da51000d,gpt-6.1-sol,20261016130906-612d39,2026-10-16
