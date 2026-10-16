@@ -5610,3 +5610,8 @@ game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp
 game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|c,7743cc2b3f118a3328837e58,gpt-6.1-sol,20261016122923-544dba,2026-10-16
 game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|tmp1,0cf025a3d6a1f5c6ccda17db,gpt-6.1-sol,20261016122923-544dba,2026-10-16
 game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|tmp2,02235b8f880b237c4cfb77f8,gpt-6.1-sol,20261016122923-544dba,2026-10-16
+game/GameEngine/Source/Common/Rva0005DC70CompareWideLengths.cpp|function||Rva0005DC70CompareWideLengths,c90ac72d796a911e4d20f440,gpt-6.1-sol,20261016122929-09753b,2026-10-16
+game/GameEngine/Source/Common/Rva0005DC70CompareWideLengths.cpp|param|Rva0005DC70CompareWideLengths|s1,41d763d5e921e2ce980655e7,gpt-6.1-sol,20261016122929-09753b,2026-10-16
+game/GameEngine/Source/Common/Rva0005DC70CompareWideLengths.cpp|param|Rva0005DC70CompareWideLengths|s2,93a0d6376066cedb3f1418f3,gpt-6.1-sol,20261016122929-09753b,2026-10-16
+game/GameEngine/Source/Common/Rva0005DC70CompareWideLengths.cpp|local|Rva0005DC70CompareWideLengths|q,2aa28ee667580acaab3f19f5,gpt-6.1-sol,20261016122929-09753b,2026-10-16
+game/GameEngine/Source/Common/Rva0005DC70CompareWideLengths.cpp|local|Rva0005DC70CompareWideLengths|p,67f8343a8f2b0e0f452b0644,gpt-6.1-sol,20261016122929-09753b,2026-10-16
