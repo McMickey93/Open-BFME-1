@@ -2553,3 +2553,5 @@ game/GameEngine/Source/GameLogic/Object/Update/ProductionUpdateModuleDataCtor.cp
 game/GameEngine/Source/GameLogic/Object/Update/SpecialEnemySenseUpdateModuleDataCtorThunk.cpp|member||m_08,6615695a579a39e99915c242,gpt-6.1-sol,20261016051138-f8b138,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/SpecialEnemySenseUpdateModuleDataCtorThunk.cpp|member||m_0c,60120a07db7ba805ced4480f,gpt-6.1-sol,20261016051138-f8b138,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/SpecialEnemySenseUpdateModuleDataCtorThunk.cpp|member||m_10,2723690d729954724899a9bd,gpt-6.1-sol,20261016051138-f8b138,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdateModuleDataConstructor.cpp|member||m_bfme0C,ee717c3587b3bd9381f8d864,gpt-6.1-sol,20261016051147-7d1fc4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdateModuleDataConstructor.cpp|member||m_bfmeFirst,87e3aaae6c1da574b945631d,gpt-6.1-sol,20261016051147-7d1fc4,2026-10-16
