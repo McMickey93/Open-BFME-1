@@ -261,8 +261,10 @@ def final_ret(body):
 class Context:
     """The retail image, the function ledger and the pins, loaded once."""
 
-    def __init__(self, rows=None, data=None, sections=None, pins=None):
+    def __init__(self, rows=None, data=None, sections=None, pins=None, read_source=None):
         import build
+        self.read_source = read_source or (
+            lambda source: (build.ROOT / source).read_text(encoding="utf-8", errors="replace"))
         self.data = build.EXE.read_bytes() if data is None else data
         self.sections = build.pe_sections(self.data) if sections is None else sections
         text = next(s for s in self.sections if s["name"] == ".text")
@@ -407,6 +409,41 @@ def qualified_prefix(sym):
     return None
 
 
+ADDRESS_COMPONENT_RE = re.compile(r"[Rr]va([0-9A-Fa-f]{8})")
+ADDRESS_CLASS_RE = re.compile(r"Rva([0-9A-Fa-f]{8})(?:[A-Z]\w*)?")
+
+
+def name_parts(sym):
+    """(method, class) of a decoration: the function's own component and the
+    one that scopes it (special members' method is their ??<op> code)."""
+    prefix = qualified_prefix(sym)
+    if prefix is None:
+        return None, None
+    if sym.startswith("??$"):
+        return None, None
+    if sym.startswith("??"):
+        op = sym[:4] if sym[2] == "_" else sym[:3]
+        scope = prefix[len(op):].split("@")
+        return op, scope[0] or None
+    parts = prefix[1:].split("@")
+    return parts[0], (parts[1] or None) if len(parts) > 1 else None
+
+
+def address_derived(name, canonical, addresses):
+    """True when NAME is an address-derived view (AGENTS.md: RvaXXXXXXXX::method):
+    its method is exactly Rva<address>/rva<address>, or its class is
+    Rva<address>[Word] and its method is the canonical's own."""
+    wanted = set(addresses) | {a + 0x400000 for a in addresses}
+    method, owner = name_parts(name)
+    if method is None:
+        return False
+    found = ADDRESS_COMPONENT_RE.fullmatch(method)
+    if found and int(found.group(1), 16) in wanted:
+        return True
+    found = ADDRESS_CLASS_RE.fullmatch(owner or "")
+    return bool(found and int(found.group(1), 16) in wanted and method == name_parts(canonical)[0])
+
+
 def spells_address(name, addresses):
     """True when NAME spells one of ADDRESSES (RVA or VA) as a hex run."""
     wanted = set(addresses) | {a + 0x400000 for a in addresses}
@@ -427,18 +464,25 @@ def placeholder_canonical(ctx, row):
     from pathlib import Path as _P
     import build
     source = row.get("source") or ""
+    if source.lower().endswith((".asm", ".s")):
+        return True                          # a MASM dump declares nothing
     try:
-        text = (build.ROOT / source).read_text(encoding="utf-8", errors="replace")
+        text = ctx.read_source(source)
     except OSError:
-        return False
+        return True                          # unreadable: no proven declaration
     if "naked" not in text and "__emit" not in text and "_emit" not in text:
         return False
     key = (row["name"], row["target_rva"])
     return key in progress.naked_cpp_rows({key: (int(row["target_size"]), source)}, {source: text})
 
 
-def view_verdict(ctx, name, address, canonical):
+def view_verdict(ctx, name, address, canonical, notes=""):
     """None when the abi-view pin is admissible, else why not."""
+    import pin_consistency
+    if pin_consistency.ROUTE_RE.search(notes or ""):
+        # a view is judged here, never by the route= verdict: a route= on it
+        # would be trusted unverified by readers of route= (alias_guard, link_census)
+        return "a view row may not also carry route=; the view's own proof replaces it"
     if not ctx.low <= address < ctx.high:
         return f"0x{address:08X} is outside .text, so it is not a call target"
     body = ctx.resolve(address)
@@ -466,7 +510,7 @@ def view_verdict(ctx, name, address, canonical):
     # address it views.
     prefix = qualified_prefix(name)
     same_function = prefix is not None and prefix == qualified_prefix(canonical)
-    addressed = prefix is not None and spells_address(prefix, (address, body))  # in the name, not a type
+    addressed = address_derived(name, canonical, (address, body))
     if not (same_function or addressed):
         return (f"{name} names a function the canonical {canonical} does not; a view must be the "
                 "canonical's qualified name respelt or spell its address (name-correction candidate)")
@@ -513,17 +557,19 @@ def view_verdict(ctx, name, address, canonical):
             "(stack slots i=int/pointer f=float d=double q=int64 r=register; return v/i/f/q, R=register aggregate)")
 
 
-def view_rows(path=None):
-    """[(name, address, canonical)] for every abi-view= row of symbols.csv."""
+def view_rows(path=None, notes=False):
+    """[(name, address, canonical)] for every abi-view= row of symbols.csv
+    (with NOTES, a fourth field: the row's notes)."""
     out = []
     import build
     with (path or build.SYMBOLS).open("r", encoding="utf-8", newline="") as handle:
         for row in csv.reader(handle):
             if not row or row[0] == "name":
                 continue
-            found = ABI_VIEW_RE.search(",".join(row[2:]))
+            text = ",".join(row[2:])
+            found = ABI_VIEW_RE.search(text)
             if found:
-                out.append((row[0], int(row[1], 16), found.group(1).strip()))
+                out.append((row[0], int(row[1], 16), found.group(1).strip()) + ((text,) if notes else ()))
     return out
 
 
@@ -533,11 +579,11 @@ def is_view(notes):
 
 def check(ctx=None, path=None):
     """[(name, address, canonical, why)] for every inadmissible abi-view row."""
-    rows = view_rows(path)
+    rows = view_rows(path, notes=True)
     if not rows:
         return []
     ctx = ctx or Context(pins=load_pin_addresses(path))
-    return [(n, a, c, why) for n, a, c in rows if (why := view_verdict(ctx, n, a, c))]
+    return [(n, a, c, why) for n, a, c, t in rows if (why := view_verdict(ctx, n, a, c, t))]
 
 
 def canonical_for(ctx, name, address):
@@ -576,7 +622,7 @@ def migrate(write=False, path=None):
         name, address = row[0], int(row[1], 16)
         canonical, why = canonical_for(ctx, name, address)
         if canonical is not None:
-            why = view_verdict(ctx, name, address, canonical)
+            why = view_verdict(ctx, name, address, canonical, notes)
         if why:
             refused.append((name, address, why))
             continue

@@ -163,8 +163,10 @@ def load_real_pins():
     pins = set()
     with io.open(ROOT / "targets/game/reverse" / "symbols.csv", encoding="utf-8",
                  errors="replace") as fh:
+        import abi_view
         for i, row in enumerate(csv.reader(fh)):
-            if i == 0 or len(row) < 2 or ADDRESS_DERIVED.search(row[0]):
+            # an abi-view= pin is a compilation view, not a real name (tools/abi_view.py)
+            if i == 0 or len(row) < 2 or ADDRESS_DERIVED.search(row[0]) or abi_view.is_view(",".join(row[2:])):
                 continue
             try:
                 pins.add(int(row[1], 16))

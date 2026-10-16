@@ -22,8 +22,10 @@ for r in csv.DictReader(open(build.ROOT / 'targets/game/reverse/functions.csv', 
     if size is None and a == rva: size = int(r['target_size'] or 0)
 if not size: sys.exit("size unknown: pass it")
 pins = {}
+import abi_view
 for r in csv.reader(open(build.ROOT / 'targets/game/reverse/symbols.csv', newline='', encoding='utf-8', errors='replace')):
-    if len(r) > 1 and r[1].startswith('0x'):
+    # an abi-view= pin labels nothing: it is a compilation view (tools/abi_view.py)
+    if len(r) > 1 and r[1].startswith('0x') and not abi_view.is_view(','.join(r[2:])):
         try: pins.setdefault(int(r[1], 16), r[0])
         except ValueError: pass
 data = build.EXE.read_bytes(); secs = build.pe_sections(data)

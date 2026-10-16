@@ -2375,7 +2375,7 @@ name,address,notes
 ??0ArchivedDirectoryInfo@@QAE@XZ,0x009CA460,the only non-allocator call in ArchiveFileSystem::ArchiveFileSystem at 0x009CAA34; m_rootDirectory is the only member needing a constructor
 ??0ArchivedFileInfo@@QAE@XZ,0x009CC650,archive directory entry ctor
 ??0ArmorUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003582D,module ctor (friend_newModuleInstance retail call target)
-??0ArrayValue008B9C60@@QAE@XZ,0x008B9C60,abi-view=?bfmeGo1030C@BfmeC1030@@QAEPAV1@XZ;Constructor ABI view of existing bfmeGo1030C; body constructs kind22 base and zeroes 20 24 28 then installs vtable; caller008C8240 allocates44B and registers ctor unwind
+??0ArrayValue008B9C60@@QAE@XZ,0x008B9C60,Constructor ABI view of existing bfmeGo1030C; body constructs kind22 base and zeroes 20 24 28 then installs vtable; caller008C8240 allocates44B and registers ctor unwind
 ??0ArrowStormUpdateModuleDataBase@@QAE@XZ,0x0003F503,ArrowStormUpdateModuleData ctor base
 ??0AsciiString@@AAE@PBD@Z,0x00888BC0,probe: plain-class variant of the StringBase<char> const char* constructor
 ??0AsciiString@@QAE@ABV0@@Z,0x000416AF,Open-BFME7 ILT thunk of the out-of-line AsciiString copy (0x0005EE50) that the PlayerInfoMap hinted insert_unique at 0x00634650 calls after MSVC stops inlining the forwarder
@@ -3732,7 +3732,7 @@ name,address,notes
 ??0Rva008FEE70Proxy@@QAE@ABURva008FF500Allocator@@I@Z,0x008FEE70,independent11B RET8+INT3 body and exact constructor probe: ECX receiver; first reference unused; second dword stored at this+0; EAX returns this; caller008FF50B before32B allocation; address-derived ABI only
 ??0Rva00900FF0VecOfVec@@QAE@ABV0@@Z,0x008FFB80,vector copy constructor alias used by the Rva00900FF0 constructor
 ??0Rva00900FF0VecOfVec@@QAE@H@Z,0x008FFA50,vector constructor alias used by the Rva00900FF0 constructor
-??0Rva0090E390Subobject@@QAE@ABURva0090E830Argument@@I@Z,0x0090E390,abi-view=?dup_0090e390@@YAXXZ;retail INT3-delimited11B: ignored first reference; second stack dword to ECX+0; EAX returns receiver; RET8. Isolated C++ constructor exact11B/zero relocs; opaque ABI view.
+??0Rva0090E390Subobject@@QAE@ABURva0090E830Argument@@I@Z,0x0090E390,retail INT3-delimited11B: ignored first reference; second stack dword to ECX+0; EAX returns receiver; RET8. Isolated C++ constructor exact11B/zero relocs; opaque ABI view.
 ??0Rva0093D500Proxy@@QAE@ABURva0093E140Allocator@@I@Z,0x0093D500,independent11B RET8+INT3 and exact constructor probe; ECX receiver; first reference unused; second dword to this+0; EAX returns this; caller0093E14B before24B allocation; address-derived ABI only
 ??0Rva0093E4D0Element@@QAE@XZ,0x0093D1E0,8-byte vector element constructor from the retail vector-constructor call
 ??0Rva0094C200Proxy@@QAE@ABURva0094C4F0Allocator@@I@Z,0x0094C200,independent 11B RET8+INT3 body: ECX receiver; first reference slot unused; second dword stored at this+0; EAX returns this; called at0094C4FB before24B allocation; address-derived ABI only
@@ -3741,7 +3741,7 @@ name,address,notes
 ??0Rva00971730HierarchyReference@@QAE@ABVRva009EBCE0AssetReference@@@Z,0x00971730,hierarchy reference constructor from counted aggregate; raw73B calls HIER-checked assignment
 ??0Rva00971CE0AggregatePrototype@@QAE@PBDHH@Z,0x00971CE0,address-qualified ABI view of the 36-byte AGGR catalog prototype constructed by Register_Aggregate_Prototype
 ??0Rva0097ADF0Node@@QAE@XZ,0x00979690,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x0097ADF0 calls; autopin
-??0Rva009A3440Proxy@@QAE@ABURva009A3880Allocator@@I@Z,0x009A3440,abi-view=?dup_009a3440@@YAXXZ;retail INT3-delimited11B: ignored first reference; second dword stored at ECX+0; EAX returns this; RET8. Isolated C++ constructor probe exact11B zero relocs; address-derived ABI view only.
+??0Rva009A3440Proxy@@QAE@ABURva009A3880Allocator@@I@Z,0x009A3440,retail INT3-delimited11B: ignored first reference; second dword stored at ECX+0; EAX returns this; RET8. Isolated C++ constructor probe exact11B zero relocs; address-derived ABI view only.
 ??0Rva009A45A0CollisionData@@QAE@XZ,0x009A45A0,address-derived constructor for CollisionManager's 0xC070-byte owned implementation
 ??0Rva009CBC00AllocatorProxy@@QAE@PBXI@Z,0x009CBC00,address-derived typed alias for matched 11-byte proxy constructor; caller 0x009CBCC0 passes allocator pointer and zero with proxy this at owner+8
 ??0Rva009D8630BlockWriter@@QAE@XZ,0x009D8630,Retail getCRC 0x0038317B constructs the 0x40-byte base of the CRC writer; same constructor installs base vtable 0x01144090 before derived 0x01075B08
@@ -13651,8 +13651,8 @@ name,address,notes
 ?Rva001A78B0@Gen_t_001ac070_p48cd@@QAEXPAVXfer@@@Z,0x00033FFA,address-derived name for the ILT thunk at 0x00033FFA which jumps to the 329-byte body at 0x001A78B0; called by xferTerrainState at 0x001AD370+0x56C with ecx set to each 48-byte element of the vector at this+0x55C
 ?Rva001C0930FindNameIndex@@YAHPBD@Z,0x001C0930,address-derived full71B cdecl const-char name lookup over VA12A6918 returning signed index or minus1; caller2DECC0 via ILT190F1
 ?Rva001E21F0CopyConstruct@@YAXPAUCoord2D@@ABU1@@Z,0x00046AF1,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x003BADA0 calls; autopin
-?Rva001E33FSetBool@Rva002E6B70Object@@QAEX_N@Z,0x0001E33F,abi-view=?rva001C1EA0@Rva001C1EA0Object@@QAEX_N@Z;TU-local Object ABI view for ObjectSetEnragedState; ILT routes to retail body RVA 0x001C1EA0 whose EnragedBehavior literal identifies the state setter; public method spelling unrecovered
-?Rva001ED6CSetBool@Rva002E6A00Object@@QAEX_N@Z,0x0001ED6C,abi-view=?rva001CF8F0@Object@@QAEX_N@Z;TU-local Object ABI view for ObjectSetChanting; ILT routes to retail body RVA 0x001CF8F0; public method spelling unrecovered
+?Rva001E33FSetBool@Rva002E6B70Object@@QAEX_N@Z,0x0001E33F,TU-local Object ABI view for ObjectSetEnragedState; ILT routes to retail body RVA 0x001C1EA0 whose EnragedBehavior literal identifies the state setter; public method spelling unrecovered
+?Rva001ED6CSetBool@Rva002E6A00Object@@QAEX_N@Z,0x0001ED6C,TU-local Object ABI view for ObjectSetChanting; ILT routes to retail body RVA 0x001CF8F0; public method spelling unrecovered
 ?Rva00209130StatusNames@@3QBQBDB,0x012A6670,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00209130 calls; autopin
 ?Rva002098B0PhaseNames@@3QBQBDB,0x012AE110,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x002098B0 calls; autopin
 ?Rva0020AA00TheRegistry@@3PAURva0020AA00Registry@@A,0x012EF1D8,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x0020AA00 calls; autopin
@@ -76435,7 +76435,7 @@ name,address,notes
 ?beginPlayerLeave@BFMEConnectionManager@@QAEHE@Z,0x00667320,byte player ID proven by entry movzx edi byte [esp+0x28]; int result tested by Network::RelayCommandsToCommandList at 0x00682B69
 ?beginPlayerLeave@BFMEConnectionManager@@QAEHPAX@Z,0x00032957,ILT of beginPlayerLeave used by RelayCommandsToCommandList 0x00682B64
 ?beginPlayerLeave@BFMEConnectionManager@@QAEHPAX@Z,0x00667320,int-return alias of the matched QAEXPAX body; eax is PlayerLeaveCode (1=LOCAL)
-?behavior@Rva001BA1C0Handler@@QAEXPAVObject@@PBUCoord3D@@@Z,0x001BA1C0,abi-view=?d_001ba1c0@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BA1C0
+?behavior@Rva001BA1C0Handler@@QAEXPAVObject@@PBUCoord3D@@@Z,0x001BA1C0,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BA1C0
 ?behavior@Rva001BA1C0Handler@@QAEXPAXPAX@Z,0x0000FEBB,ILT thunk to the 1615B body at 0x001BA1C0; post-move behaviour handler reached from 0x001BC820
 ?behavior@Rva001BA1C0Handler@@QAE_NPAXPBUCoord3D@@@Z,0x0000FEBB,ILT thunk to the 1615B body at 0x001BA1C0; returns whether constant calling is required
 ?bfmeAEQT@BfmeSubEQT@@QAEDXZ,0x00028F74,pin
@@ -80619,7 +80619,7 @@ name,address,notes
 ?call@Rva000DF810@@QAEEPAVObject@@@Z,0x00003A85,retail ILT 0x00003A85 targets matched PlayerList::isLocalAlliedWith body 0x000DF810; thiscall Object* input and byte result
 ?call@Rva000FA800@@QAEPBVImage@@H@Z,0x0004A66F,retail ILT 0x0004A66F targets address-derived body 0x000FA800; caller passes index and reads EAX as Image*
 ?call@Rva001CAF20@@QAEPAURva004A5E30OverrideView@@XZ,0x0002BF85,retail ILT 0x0002BF85 targets body 0x001CAF20; caller reads AsciiString at returned EAX+0x2C; address-derived result view
-?call@Rva003E11E0@@QAEHPAVObject@@ABVLocomotorSet@@PBVCoord3D@@2@Z,0x003E11E0,abi-view=?checkPathCost@Pathfinder@@IAEHPAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z;RVA-derived call view; caller 0x003F6090+0x32A pushes four arguments and ECX; retail body uses ECX and returns EAX with ret16
+?call@Rva003E11E0@@QAEHPAVObject@@ABVLocomotorSet@@PBVCoord3D@@2@Z,0x003E11E0,RVA-derived call view; caller 0x003F6090+0x32A pushes four arguments and ECX; retail body uses ECX and returns EAX with ret16
 ?call@Rva003F4F70@@QAE_NPBUICoord2D@@HPAU2@PAX@Z,0x003F4F70,RVA-derived call view; matched 775-byte body; caller 0x003F6090+0x292 passes ECX and four stack arguments with AL and ret16
 ?call@Rva003F5340@@QAE_NPBUICoord2D@@HPAX@Z,0x003F5340,RVA-derived call view; matched 527-byte body; caller 0x003F6090+0x447 passes ECX and three stack arguments with AL and ret12
 ?call@Rva003F55E0@@QAE_NPBUICoord2D@@HPAU2@PAX@Z,0x00034E0A,additive: retail call target of the red row ?rva003f5c70@Pathfinder@@QAE_NPAVObject@@PAXPAUCoord3D@@@Z
@@ -86552,11 +86552,11 @@ name,address,notes
 ?method@Rva007710F0Owner@@QAEXPAX0@Z,0x0003A8D7,ILT to the 0x007710F0 body (gen-dump d_007710f0); the 0x00774060 forwarder calls ILT 0x0003A8D7 with this in ECX and two stack words; the target 0x007710F0 keeps this in EBP and returns with ret 8
 ?method@Rva00925860@@QAEXPAX0@Z,0x00925860,opaque target called by 0x0092C390 with thiscall ret 8
 ?methodRva007CBB70@Rva007CBB30@@QAEIXZ,0x007CBB70,"Address-derived derived MaterialPass helper; native caller007CBD90 passes original receiver inECX and consumes EAX; zero stackargs; mutatesfields40/44, reads38, RET+10D proves270B code extent. Separate16B switchtable at7CBC80 is outsideextent and unclaimed. See identity_evidence/007cbd90-materialpass-install.md; no semanticmembername asserted."
-?move@Rva001B9D00Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001B9D00,abi-view=?d_001b9d00@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B9D00
+?move@Rva001B9D00Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001B9D00,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B9D00
 ?move@Rva001B9D00Mover@@QAEXPAXHHH@Z,0x0002CC3C,ILT thunk to the 972B body at 0x001B9D00; appearance-switch mover reached from 0x001BC820
 ?move@Rva001BB0D0Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB0D0,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB0D0
 ?move@Rva001BB0D0Mover@@QAEXPAXHHH@Z,0x00032A29,ILT thunk to the 890B body at 0x001BB0D0; appearance-switch mover reached from 0x001BC820
-?move@Rva001BB530Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB530,abi-view=?d_001bb530@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB530; ret16 at +0x536
+?move@Rva001BB530Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB530,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB530; ret16 at +0x536
 ?move@Rva001BB530Mover@@QAEXPAXHHH@Z,0x00019F06,ILT thunk to the body at 0x001BB530; appearance-switch mover reached from 0x001BC820
 ?move@Rva001BBBC0Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BBBC0,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BBBC0
 ?move@Rva001BC510Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BC510,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BC510
@@ -86679,7 +86679,7 @@ name,address,notes
 ?notifyTarget@Glo012F4B98Type@@QAEXXZ,0x000371C3,Existing matched58962020B bit-guarded notify
 ?notifyTargetOfProbe@NAT@@IAEXPAVGameSlot@@@Z,0x00028D1C,probed call target (incremental-link thunk)
 ?nstrdup@@YAPADPBD@Z,0x009E6410
-?number@Rva00573580Lookup@@QAE?AVAsciiString@@H@Z,0x00573580,abi-view=?bfmeNumberedAI@BfmeTableAI@@QAE?AVAsciiStringAI@@H@Z;Opaque ABI view; 158B hidden AsciiString result plus int ret8; formatting and lookup body independently audited; evidence=identity_evidence/005778e0-edx-binding.md
+?number@Rva00573580Lookup@@QAE?AVAsciiString@@H@Z,0x00573580,Opaque ABI view; 158B hidden AsciiString result plus int ret8; formatting and lookup body independently audited; evidence=identity_evidence/005778e0-edx-binding.md
 ?number_of_DX8_calls@@3IA,0x01340594,Canonical DX8Wrapper global DX8-call counter; the retail Set_Transform, Set_DX8_Light, and shader-state bodies increment this address
 ?obj@?1??getRva008876E0Singleton@@YAPAXXZ@4VRva008876E0Type@@A,0x01336E10,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x008876E0 calls; autopin
 ?obj@?1??getRva008877A0Singleton@@YAPAXXZ@4VRva008877A0Type@@A,0x01336E30,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x008877A0 calls; autopin
@@ -87062,7 +87062,7 @@ name,address,notes
 ?query@ExperienceLevelSystemQueryShim@@QAEPAXPAX@Z,0x0002603F,ILT call view for the ExperienceLevelSystem lookup at 0x0037F190
 ?query@Object@@QAE_NPAV1@H@Z,0x00047ED8,ILT to 0x001CF9F0 Object query used by Rva001DCC20Filter
 ?query@Q2FlagOwner@@QAE_NH@Z,0x00416FC0,byte-returning __thiscall predicate taking one index; every row of the 34-byte queried-index assignment family (Q2QueriedIndexAssignments.cpp) calls this one body; address-derived name; identity not recovered
-?query@Rva001B7E90Receiver@@QAEMPAVObject@@@Z,0x001B7E90,abi-view=?effectiveMaxSpeed@BfmeSub1CC_EC3@@QAEMPAX@Z;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B7E90
+?query@Rva001B7E90Receiver@@QAEMPAVObject@@@Z,0x001B7E90,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B7E90
 ?query@Rva002BCB60AerialPathfinder@@QAE_NPAVRva002BCB60Thing@@PAVRva002BCB60QueryObject@@MPAX@Z,0x00149010,parent raw ILT and complete selector call-site ABI verified; actual body target
 ?query@Rva0036ff70Module@@QAEHP6AHPAX0@Z0@Z,0x0004A73C,"Root disassembled full query36FF70/524 and callback36CFD0/145: callback returns full EAX0/1, caller tests EAX after two cdecl arguments. Corrected callback from bool to int, added typed address-derived symbol instead of casting a generated no-arg thunk, and corrected query pin signature. Root inspected Radar108520/152: two stack args, explicit AL0/1, ret8; corrected void to bool return. Replaced hardcoded CastleBehavior string address with real literal. Full286B target, all22 relocation sites, literal and secondary-object offsets independently verified; no emitted vtable."
 ?queryAt001CF980@Object@@QAEPAVRva001CF980Result@@XZ,0x001CF980,address-derived no-argument Object thiscall; full82B body selects this or Object+214 then tail-calls selected contain+1FC vslot68 and returns its pointer in EAX; caller null-checks it then calls result vslot1C4 with FXList pointer
@@ -91122,7 +91122,7 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ?d_009f4900@@YAXXZ,0x009F4900,Address-only compatibility for the retired dump name; game/Libraries/Source/partitionmanager/Gen009F5040Handle.cpp still calls it; body is Gen009F5040::calculate_009F4900
 ??1ScopedMutex@@QAE@XZ,0x006915E0,Scoped mutex destructor; target unwind action 0x00C472B0 via ILT 0x0001E961; complete ownership cleanup and oracle confirmation; identity=targets/game/reverse/identity_evidence/00694230-statement-order.md
 ?create@Rva004588D0DecalTemplate@@QAEXURva0075BE60Position@@IHAAVRadiusDecal@@M@Z,0x0000D3E6,ILT to 0x004588D0; by-value position view for 0x0075BE60: body RET 28 reads a twelve-byte position then count color RadiusDecal reference and scale
-?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z,0x000421AE,abi-view=?bfmeGetPosition421AE@Object@@QAEPBUCoord3D@@PAU2@0@Z;ILT to 0x001C86B0; aggregate-return view for 0x0075BE60: body returns its first pointer argument with RET 8 and writes x/y/z there; caller passes its outgoing argument slot and a null second pointer
+?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z,0x000421AE,ILT to 0x001C86B0; aggregate-return view for 0x0075BE60: body returns its first pointer argument with RET 8 and writes x/y/z there; caller passes its outgoing argument slot and a null second pointer
 ?getDrawModules@Drawable@@QBEPAPBVDrawModule@@XZ,0x00411590,ILT 0x00040A8E reaches this body; confirmed const DrawModule pointer-array getter at Drawable+0x150; 0x006059F0 complete-call evidence in identity_evidence/0x006059f0-x87-close.md
 ??0Rva00605800Value@@QAE@ABVAsciiString@@M@Z,0x00605690,ILT 0x00040C28 reaches this body; TU value constructor copies string at +0 and raw float at +8 then clears counted ref and both masks; complete constructor and copy decoded in identity_evidence/0x006059f0-x87-close.md
 ??1Rva00605800Value@@QAE@XZ,0x00605080,ILT 0x000014D8 reaches this body; TU value destructor releases counted pointer at +4 then first string; complete body and unwind decoded in identity_evidence/0x006059f0-x87-close.md

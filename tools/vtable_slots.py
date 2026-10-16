@@ -36,7 +36,10 @@ def owner(rva):
     if i >= 0 and ranges[i][0] <= rva < ranges[i][0] + ranges[i][1]: return ranges[i]
 PH = re.compile(r'\?[dbja]_[0-9a-f]{8}@@|^\$L\d+|^\$CHOKE')
 pins = collections.defaultdict(list)
+import abi_view
 for r in csv.DictReader(open(ROOT / 'targets/game/reverse/symbols.csv', encoding='utf-8', errors='replace')):
+    # an abi-view= pin is a compilation view, not a slot's name (tools/abi_view.py)
+    if abi_view.is_view(','.join([r.get('notes') or ''] + (r.get(None) or []))): continue
     try: pins[int(r['address'], 16)].append(r['name'])
     except: pass
 def real_names(rva):

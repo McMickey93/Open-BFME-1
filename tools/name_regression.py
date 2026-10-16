@@ -982,11 +982,10 @@ def _without_short_rva_respellings(candidates, root, old):
             if spelled and int(spelled.group(1), 16) == address:
                 continue
             if text is None:
-                text = '\n'.join(line.split(',', 1)[0]
+                text = '\n'.join(row[0]
                                  for path in (FUNCTIONS, SYMBOLS, DATA_ROWS)
-                                 for line in (read(root, old, path) or '').splitlines()
-                                 if not (path == SYMBOLS and abi_view.is_view(line.split(',', 2)[2]
-                                                                               if line.count(',') >= 2 else '')))
+                                 for row in csv.reader(io.StringIO(read(root, old, path) or ''))
+                                 if row and not (path == SYMBOLS and abi_view.is_view(','.join(row[2:]))))
             if re.search(r'(?:(?<![A-Za-z0-9_])|(?<=[UVTW]))' + re.escape(f.new_name)
                          + r'(?![A-Za-z0-9_])', text):
                 continue

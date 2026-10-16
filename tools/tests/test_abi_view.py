@@ -55,7 +55,7 @@ CODE = {
     0x1400: bytes([0xC2, 0x04, 0x00]),       # never called
 }
 REAL = "?real@Foo@@QAEPAHPAHH@Z"             # thiscall, (int*, int) -> int*: ret 8
-VIEW = "?v@Rva00001200Bar@@QAEPAHPAHH@Z"     # an address-derived view of it
+VIEW = "?rva00001200@Bar@@QAEPAHPAHH@Z"     # an address-derived view of it
 CALLER = "?caller@@YAXXZ"
 CDECL = "?c@@YAXHH@Z"
 
@@ -73,7 +73,8 @@ def ctx():
         rows = rows + [row(CALLER, 0x1000, 0x20)]
         data = pe(code)
         import build
-        return abi_view.Context(rows=rows, data=data, sections=build.pe_sections(data), pins=pins or {})
+        return abi_view.Context(rows=rows, data=data, sections=build.pe_sections(data), pins=pins or {},
+                                read_source=lambda source: "int plain_cpp_source;\n")
     return make
 
 
@@ -120,24 +121,24 @@ def test_same_function_respelt_accepted(ctx):
 
 def test_hidden_return_equivalence_accepted(ctx):
     # (hidden Pos*, int) returning the pointer == (int*, int) -> int*
-    assert abi_view.view_verdict(ctx(), "?v@Rva00001200Bar@@QAE?AUPos@@H@Z", 0x1100, REAL) is None
+    assert abi_view.view_verdict(ctx(), "?rva00001200@Bar@@QAE?AUPos@@H@Z", 0x1100, REAL) is None
 
 
 def test_cdecl_view_accepted(ctx):
-    assert abi_view.view_verdict(ctx(), "?v@Rva00001300@@YAXHPAX@Z", 0x1300, CDECL) is None
+    assert abi_view.view_verdict(ctx(), "?rva00001300@@YAXHPAX@Z", 0x1300, CDECL) is None
     assert abi_view.view_verdict(ctx(), "?c@@YAXPAXH@Z", 0x1300, CDECL) is None
 
 
 @pytest.mark.parametrize("name,address,canonical,why", [
-    ("?v@Rva00001400Bar@@QAEXH@Z", 0x1400, "?other@@QAEXH@Z", "no decoded retail `call` reaches"),  # N2
+    ("?rva00001400@Bar@@QAEXH@Z", 0x1400, "?other@@QAEXH@Z", "no decoded retail `call` reaches"),  # N2
     (VIEW, 0x1100, "?wrong@@QAEXHH@Z", "which no matched row names"),
     (REAL, 0x1100, REAL, "names the pin itself"),
     (VIEW, 0x2100, REAL, "outside .text"),
-    ("?v@Rva00001200Bar@@YAPAHPAHH@Z", 0x1100, REAL, "calling conventions differ"),
-    ("?v@Rva00001200Bar@@QAEXH@Z", 0x1100, REAL, "no layout"),          # pops 4, retail 8
-    ("?v@Rva00001200Bar@@QAEXMH@Z", 0x1100, REAL, "no layout"),         # float where int*
-    ("?v@Rva00001200Bar@@QAENPAHH@Z", 0x1100, REAL, "no layout"),       # ST0 return vs EAX
-    ("?v@Rva00001200Bar@@QAEXVAsciiString@@H@Z", 0x1100, REAL, "does not decode"),
+    ("?rva00001200@Bar@@YAPAHPAHH@Z", 0x1100, REAL, "calling conventions differ"),
+    ("?rva00001200@Bar@@QAEXH@Z", 0x1100, REAL, "no layout"),          # pops 4, retail 8
+    ("?rva00001200@Bar@@QAEXMH@Z", 0x1100, REAL, "no layout"),         # float where int*
+    ("?rva00001200@Bar@@QAENPAHH@Z", 0x1100, REAL, "no layout"),       # ST0 return vs EAX
+    ("?rva00001200@Bar@@QAEXVAsciiString@@H@Z", 0x1100, REAL, "does not decode"),
     ("?c@@YAXHHH@Z", 0x1300, CDECL, "no layout"),                       # cdecl stack differs
     ("?c@@YA?AUPos@@H@Z", 0x1300, CDECL, "ambiguous"),                  # N3: cdecl aggregate on one side
     ("?v@Bar@@QAEPAHPAHH@Z", 0x1100, REAL, "name-correction candidate"),  # S1: a real-sounding name
@@ -165,13 +166,13 @@ def test_b1_view_pinned_to_two_bodies_refused(ctx):
 def test_placeholder_canonical_needs_an_address_name_and_checks_cleanup_only(ctx):
     rows = [row("?dup_00001200@@YAXXZ", 0x1200, 5), row(CDECL, 0x1300, 1)]
     dup = "?dup_00001200@@YAXXZ"
-    assert abi_view.view_verdict(ctx(rows), "?v@Rva00001200Bar@@QAEXHH@Z", 0x1100, dup) is None
-    assert "retail pops 8" in abi_view.view_verdict(ctx(rows), "?v@Rva00001200Bar@@QAEXH@Z", 0x1100, dup)
+    assert abi_view.view_verdict(ctx(rows), "?rva00001200@Bar@@QAEXHH@Z", 0x1100, dup) is None
+    assert "retail pops 8" in abi_view.view_verdict(ctx(rows), "?rva00001200@Bar@@QAEXH@Z", 0x1100, dup)
     # S4: a real-sounding view over a placeholder is refused
     assert "name-correction candidate" in abi_view.view_verdict(ctx(rows), "?draw@Render2D@@QAEXHH@Z", 0x1100, dup)
     gen = [row("?d_00001300@@YAXXZ", 0x1300, 1, source="game/gen_asm/d.asm", notes="gen-dump")]
     assert "__cdecl view cannot be checked" in abi_view.view_verdict(
-        ctx(gen), "?v@Rva00001300@@YAXH@Z", 0x1300, "?d_00001300@@YAXXZ")
+        ctx(gen), "?rva00001300@@YAXH@Z", 0x1300, "?d_00001300@@YAXXZ")
 
 
 def test_n1_resolve_stops_at_a_named_tail_jump(ctx):
@@ -184,6 +185,58 @@ def test_n1_resolve_stops_at_a_named_tail_jump(ctx):
 def test_unmatched_canonical_row_refused(ctx):
     rows = [row(REAL, 0x1200, 5, status="partial")]
     assert "which no matched row names" in abi_view.view_verdict(ctx(rows), VIEW, 0x1100, REAL)
+
+
+# --- round 2 ---
+
+def test_n1_view_carrying_route_refused(ctx):
+    assert "may not also carry route=" in abi_view.view_verdict(
+        ctx(), VIEW, 0x1100, REAL, "abi-view=x;route=0x00001200")
+    assert abi_view.view_verdict(ctx(), VIEW, 0x1100, REAL, "abi-view=x;why") is None
+
+
+@pytest.mark.parametrize("name,admitted", [
+    ("?rva00001200@Bar@@QAEPAHPAHH@Z", True),             # method is exactly rva<body>
+    ("?Rva00001100@Bar@@QAEPAHPAHH@Z", True),             # ... or Rva<pinned address>
+    ("?real@Rva00001200Bar@@QAEPAHPAHH@Z", True),         # Rva<addr><Word> class, canonical's method
+    ("?real@Rva00001200@@QAEPAHPAHH@Z", True),
+    ("?computeThreat1200@Bar@@QAEPAHPAHH@Z", False),      # guessed name + address
+    ("?computeThreat00001200@Bar@@QAEPAHPAHH@Z", False),
+    ("?computeThreat@Rva00001200Bar@@QAEPAHPAHH@Z", False),  # address class, invented method
+    ("?rva00001200x@Bar@@QAEPAHPAHH@Z", False),
+    ("?rva00009999@Bar@@QAEPAHPAHH@Z", False),            # another address
+    ("?v@Bar@@QAEPAHPAURva00001200Arg@@H@Z", False),      # address only in a parameter type
+])
+def test_n2_address_derived_names(ctx, name, admitted):
+    got = abi_view.view_verdict(ctx(), name, 0x1100, REAL)
+    assert (got is None) is admitted, got
+
+
+def test_n3_name_regression_parses_quoted_notes(monkeypatch):
+    import name_regression
+    text = ('name,address,notes\n'
+            '?quoted@@YAXXZ,0x00001200,"abi-view=?real@@YAXXZ;why, comma"\n')
+    # csv.reader sees the quoted notes field, so is_view recognises the view
+    import csv
+    import io
+    rows = list(csv.reader(io.StringIO(text)))
+    assert abi_view.is_view(",".join(rows[1][2:]))
+    assert "csv.reader(io.StringIO(read(root, old, path)" in (ROOT / "tools/name_regression.py").read_text()
+
+
+def test_n4_asm_and_unreadable_canonicals_are_placeholders(ctx):
+    c = ctx()
+
+    def unreadable(source):
+        raise OSError(source)
+    c.read_source = unreadable
+    assert abi_view.placeholder_canonical(c, row("?real@Foo@@QAEXHH@Z", 0x1200, 5, source="game/masm_dumps/x.asm"))
+    assert abi_view.placeholder_canonical(c, row("?real@Foo@@QAEXHH@Z", 0x1200, 5, source="game/no/such/file.cpp"))
+
+
+def test_n5_slot_and_label_readers_skip_views():
+    for path in ("tools/vtable_slots.py", "tools/dis_retail.py", "tools/family_scan.py"):
+        assert "abi_view.is_view(" in (ROOT / path).read_text(encoding="utf-8")
 
 
 # --- B2: one field test everywhere ---
@@ -238,15 +291,24 @@ needs_retail = pytest.mark.skipif(not REAL_EXE.exists(), reason="retail image no
 
 
 @needs_retail
-def test_efd7b316f7_position_view_validates():
+def test_efd7b316f7_position_view_is_a_name_correction_candidate():
+    # ABI-equivalent (hidden-return), but `position` on an Rva<addr> class is not
+    # the canonical's method (round-2 N2): listed for the lead, not admitted
     c = abi_view.Context()
-    assert abi_view.view_verdict(
+    assert "name-correction candidate" in abi_view.view_verdict(
         c, "?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z", 0x000421AE,
+        "?bfmeGetPosition421AE@Object@@QAEPBUCoord3D@@PAU2@0@Z")
+    assert abi_view.view_verdict(
+        c, "?bfmeGetPosition421AE@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z", 0x000421AE,
         "?bfmeGetPosition421AE@Object@@QAEPBUCoord3D@@PAU2@0@Z") is None
-    # its sibling passes a by-value Position: not machine-verifiable, so refused
-    assert "does not decode" in abi_view.view_verdict(
+    # its sibling is refused twice over: an invented method name, and a by-value
+    # Position the decoration cannot size
+    assert "name-correction candidate" in abi_view.view_verdict(
         c, "?create@Rva004588D0DecalTemplate@@QAEXURva0075BE60Position@@IHAAVRadiusDecal@@M@Z", 0x0000D3E6,
         "?createRadiusDecal@RadiusDecalTemplate@@QAEXMMMIHAAVRadiusDecal@@M@Z")
+    assert "does not decode" in abi_view.view_verdict(
+        c, "?createRadiusDecal@Rva004588D0DecalTemplate@@QAEXURva0075BE60Position@@IHAAVRadiusDecal@@M@Z",
+        0x0000D3E6, "?createRadiusDecal@RadiusDecalTemplate@@QAEXMMMIHAAVRadiusDecal@@M@Z")
 
 
 @needs_retail
@@ -257,19 +319,17 @@ def test_every_ledger_view_validates():
 @needs_retail
 def test_pin_consistency_fails_an_inadmissible_view(tmp_path, capsys):
     import pin_consistency
+    good = ("?worldToCell@Pathfinder@@QAE_NPBVCoord3D@@PAUICoord2D@@@Z,0x003D7EC0,"
+            "abi-view=?worldToCell@Pathfinder@@QAE_NPBUCoord3D@@PAUICoord2D@@@Z;x\n")
     path = tmp_path / "symbols.csv"
-    path.write_text("name,address,notes\n"
-                    "?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z,0x000421AE,"
-                    "abi-view=?bfmeGetPosition421AE@Object@@QAEPBUCoord3D@@PAU2@0@Z;x\n"
-                    "?bad@View@@QAEXH@Z,0x000421AE,abi-view=?bfmeGetPosition421AE@Object@@QAEPBUCoord3D@@PAU2@0@Z\n")
+    path.write_text("name,address,notes\n" + good +
+                    "?bad@View@@QAEXH@Z,0x003D7EC0,abi-view=?worldToCell@Pathfinder@@QAE_NPBUCoord3D@@PAUICoord2D@@@Z\n")
     with pytest.raises(SystemExit):
         pin_consistency.verify_views(path)
     assert "?bad@View@@QAEXH@Z" in capsys.readouterr().out
-    path.write_text("name,address,notes\n"
-                    "?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z,0x000421AE,"
-                    "abi-view=?bfmeGetPosition421AE@Object@@QAEPBUCoord3D@@PAU2@0@Z;x\n")
+    path.write_text("name,address,notes\n" + good)
     assert pin_consistency.verify_views(path) == {
-        ("?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z", 0x000421AE)}
+        ("?worldToCell@Pathfinder@@QAE_NPBVCoord3D@@PAUICoord2D@@@Z", 0x003D7EC0)}
 
 
 @needs_retail
