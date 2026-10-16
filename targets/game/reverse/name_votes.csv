@@ -2366,3 +2366,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|para
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|y0,15305985d9f6d15f74fe2b7a,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|x1,dbc9f0c29a9ff8879621d9e8,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|y1,71b4378dded0a2bf809ccd50,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngine/Source/Common/Rva001F9C60UpdateModuleRun.cpp|member||m_field74,45ce2b8487499d2a49bf8f43,gpt-6.1-sol,20261016044422-2b8c12,2026-10-16
+game/GameEngine/Source/Common/Rva001F9C60UpdateModuleRun.cpp|member||m_bfmePathCL,fee50cd098d403b4e603fe18,gpt-6.1-sol,20261016044422-2b8c12,2026-10-16
