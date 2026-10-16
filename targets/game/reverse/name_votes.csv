@@ -1305,3 +1305,8 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewCameraUpdateAlternateOn
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewPitchCameraOneFrame.cpp|param|Lerp|a,902b61d2b2b44b14cdbc7339,gpt-6.1-sol,20261016030116-90274c,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewPitchCameraOneFrame.cpp|param|Lerp|b,299c2e5ff5d04bc667e62e0b,gpt-6.1-sol,20261016030116-90274c,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/Render2DClassAddTri.cpp|param|convertPosition006e|v,771be72b60306851a94c3fd9,gpt-6.1-sol,20261016030116-bb9d76,2026-10-16
+game/Libraries/Source/Apt/Rva008AE2E0BoundsGetter.cpp|member||m_bfme10,1efb3aab791ded71d3653ac0,gpt-6.1-sol,20261016030116-3813bf,2026-10-16
+game/Libraries/Source/Apt/Rva008AE2E0BoundsGetter.cpp|member||m_bfme14,4365ef5ef50f236b44bea931,gpt-6.1-sol,20261016030116-3813bf,2026-10-16
+game/Libraries/Source/Apt/Rva008AE2E0BoundsGetter.cpp|local|Rva8BB1A0BoundsSource::getBounds|v10,650bfa0cd71103ca8c086e33,gpt-6.1-sol,20261016030116-3813bf,2026-10-16
+game/Libraries/Source/Apt/Rva008AE2E0BoundsGetter.cpp|local|Rva8BB1A0BoundsSource::getBounds|v14,34d8e3994e0d79937066d270,gpt-6.1-sol,20261016030116-3813bf,2026-10-16
+game/Libraries/Source/Apt/Rva008AE2E0BoundsGetter.cpp|local|Rva8BB1A0BoundsSource::getBounds|u,b0d1e1a539a7a70abbee3ec1,gpt-6.1-sol,20261016030116-3813bf,2026-10-16
