@@ -1562,3 +1562,8 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMa
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|v01,4c8b44d826ade188fb09d40d,gpt-6.1-sol,20261016032517-77a700,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|vM1,19d2022cc84981bad9f7dbba,gpt-6.1-sol,20261016032517-77a700,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|v10,9ccfd8790a462c153157ceee,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/Common/System/W3DRadarBlendBlip2x2.cpp|function||rva006C2DD0,8f2def9565a46706092e00bf,gpt-6.1-sol,20261016032524-96e0f3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/Common/System/W3DRadarBlendBlip2x2.cpp|local|rva006C2DD0|x0,ddf97a548376fe4fd00e5b82,gpt-6.1-sol,20261016032524-96e0f3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/Common/System/W3DRadarBlendBlip2x2.cpp|local|rva006C2DD0|x1,e9a4cd9505bf416dd9e25cd5,gpt-6.1-sol,20261016032524-96e0f3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/Common/System/W3DRadarBlendBlip2x2.cpp|local|rva006C2DD0|y0,5b5ee7e9f606a2e029ebfd8c,gpt-6.1-sol,20261016032524-96e0f3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/Common/System/W3DRadarBlendBlip2x2.cpp|local|rva006C2DD0|y1,dc286122befe9dde3781bd59,gpt-6.1-sol,20261016032524-96e0f3,2026-10-16
