@@ -5760,3 +5760,4 @@ game/GameEngine/Source/GameClient/System/DebugDisplay.cpp|param|DebugDisplay::se
 game/GameEngine/Source/GameLogic/AI/PathfinderAdjustToPossibleDestination.cpp|local|Pathfinder::adjustToPossibleDestination|zone2,eb8f1b91953c157edbcad3e1,gpt-6.1-sol,20261016130732-3afe23,2026-10-16
 game/GameEngine/Source/Common/T2IndexedArrayAccessors.cpp|local|T2OwnerA::find|p,0d9492a50f8de661f05215d6,gpt-6.1-sol,20261016130737-e9e5f3,2026-10-16
 game/GameEngine/Source/Common/T2IndexedArrayAccessors.cpp|local|T2OwnerC::find|p,bc85ba20d45693f3df8a17ef,gpt-6.1-sol,20261016130737-e9e5f3,2026-10-16
+game/GameEngine/Source/Common/System/ArchiveFileGetFileList.cpp|local|compare#2|c,39f0040d11469518d57cd985,gpt-6.1-sol,20261016130742-081de9,2026-10-16
