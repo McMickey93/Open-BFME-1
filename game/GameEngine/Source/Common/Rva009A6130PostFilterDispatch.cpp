@@ -39,7 +39,11 @@ void __cdecl Rva009AF320CopyPlanes(Rva009AF320Context *, int, int);
 void __cdecl Rva009B3800PlaneCopy(Rva009B3800Context *, int, int);
 
 struct Rva009A6130Context;
-void __cdecl Rva009A8C50(Rva009A6130Context *, unsigned char *);
+// 0x009A8C50 is still the dump row ?d_009a8c50@@YAXXZ; the calls name that row's
+// symbol through the cdecl signature (the pinned ?Rva009A8C50 has no definition).
+extern void d_009a8c50();
+#define Rva009A8C50 \
+	(reinterpret_cast<void (__cdecl *)(Rva009A6130Context *, unsigned char *)>(d_009a8c50))
 void __cdecl Rva009B2530(Rva009A6130Context *, unsigned char *, unsigned char *);
 void __cdecl Rva009B2A50(Rva009A6130Context *, unsigned char *, unsigned char *);
 
