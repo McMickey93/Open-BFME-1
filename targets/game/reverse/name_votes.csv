@@ -3789,3 +3789,5 @@ game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cp
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091B|r,cc39aed842a4dffd66e41197,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091C|n,72f7dfef12cb21100211a5e7,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091C|r,c6bf1c54a04a546028d7034c,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/Common/S3SeedPairsShort.cpp|member||m_bfmeFirst,cc832347ea02f391d0830ba9,gpt-6.1-sol,20261016062138-29dcd2,2026-10-16
+game/GameEngine/Source/Common/S3SeedPairsShort.cpp|member||m_bfmeSecond,e16c2b635fe1e80060621506,gpt-6.1-sol,20261016062138-29dcd2,2026-10-16
