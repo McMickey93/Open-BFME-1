@@ -1,270 +1,185 @@
 // cl: /DNDEBUG /MD /EHsc
 // readable body of ??0StealthUpdate@@: game/GameEngine/Source/GameLogic/Object/Update/StealthUpdate.cpp
-// Open-BFME5: lift MASM dump to standalone C++ thunk.
+//
+// Retail 0x002ACB70, 252 bytes (ret 8 at +0xF9). BFME keeps the Zero Hour
+// constructor order minus the pulse phase, the black-market frame and the
+// granted-by-special-power branch, and adds four flags at +0x2D..+0x30.
+
+#include <string.h>
 
 class Thing;
 class ModuleData;
-// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/StealthUpdate.h
-class StealthUpdate {
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/BitFlags.h
+template <int NUMBITS>
+class BitFlags
+{
 public:
-	StealthUpdate(Thing *, const ModuleData *);
+	enum BogusInitType { kInit = 0 };
+	BitFlags(BogusInitType, int bit)
+	{
+		memset(m_bits, 0, sizeof(m_bits));
+		m_bits[bit >> 5] |= 1u << (bit & 31);
+	}
+
+private:
+	unsigned int m_bits[(NUMBITS + 31) / 32];
+};
+
+typedef BitFlags<86> ObjectStatusMaskType;
+
+enum
+{
+	OBJECT_STATUS_CAN_STEALTH = 18
+};
+
+enum UpdateSleepTime
+{
+	UPDATE_SLEEP_NONE = 1
+};
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Object.h
+class Object
+{
+public:
+	void setStatus(const ObjectStatusMaskType &objectStatus, bool set = true);
+};
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/StealthUpdate.h
+struct StealthUpdateModuleData
+{
+	unsigned char m_pad00[0x08];
+	unsigned int m_stealthDelay;		///< +0x08
+	unsigned char m_pad0C[0x2C - 0x0C];
+	bool m_teamDisguised;			///< +0x2C
+	unsigned char m_pad2D[0x50 - 0x2D];
+	bool m_innateStealth;			///< +0x50
+};
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Module.h
+class ObjectModule
+{
+public:
+	ObjectModule(Thing *thing, const ModuleData *moduleData);
+	virtual ~ObjectModule();
+
+protected:
+	const ModuleData *m_moduleData;		///< +0x04
+	Object *m_object;			///< +0x08
+};
+
+class BehaviorModuleInterface { public: virtual void slot(); };
+class UpdateModuleInterface { public: virtual void slot(); };
+
+// The three subobjects' names are opaque and keep the address of the table
+// StealthUpdate installs in each (0x010C457C at +0x00, 0x010C44B8 at +0x0C,
+// 0x010C44AC at +0x10), so MSVC spells its vftables
+// ??_7StealthUpdate@@6BVa010C44B8Subobject@@@ and so on: retail proves which
+// table sits at which offset, not what BFME called the base that introduced
+// it (MSVC 7.1 derives that part of the name from the whole declared
+// hierarchy). novtable keeps the two interface subobjects from installing
+// tables of their own, so the inlined base stores stay
+// BehaviorModuleInterface's and UpdateModuleInterface's, as in retail.
+// Same pattern as AutoFindHealingUpdateConstructor.cpp.
+class Va010C457CSubobject : public ObjectModule
+{
+public:
+	Va010C457CSubobject(Thing *thing, const ModuleData *moduleData) : ObjectModule(thing, moduleData) {}
+};
+
+class __declspec(novtable) Va010C44B8Subobject : public BehaviorModuleInterface
+{
+};
+
+class __declspec(novtable) Va010C44ACSubobject : public UpdateModuleInterface
+{
+};
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/UpdateModule.h
+class UpdateModule : public Va010C457CSubobject,
+                     public Va010C44B8Subobject,
+                     public Va010C44ACSubobject
+{
+public:
+	UpdateModule(Thing *thing, const ModuleData *moduleData)
+		: Va010C457CSubobject(thing, moduleData),
+		  m_nextCallFrameAndPhase(0), m_indexInLogic(-1), m_updateState(-1)
+	{
+	}
+
+protected:
+	void setWakeFrame(Object *obj, UpdateSleepTime wakeDelay);
+	Object *getObject() const { return m_object; }
+
+private:
+	unsigned int m_nextCallFrameAndPhase;	///< +0x14
+	int m_indexInLogic;			///< +0x18
+	int m_updateState;			///< +0x1C
+};
+
+// Retail [0x012F0898] is EA's GameLogic *TheGameLogic; only the +0x3C frame
+// counter is read here, so the view is cast at the use.
+struct StealthUpdateGameLogicView
+{
+	unsigned char m_pad00[0x3C];
+	unsigned int m_frame;
+};
+class GameLogic;
+extern GameLogic *TheGameLogic;
+
+class StealthUpdate : public UpdateModule
+{
+public:
+	StealthUpdate(Thing *thing, const ModuleData *moduleData);
+
+private:
+	const StealthUpdateModuleData *getStealthUpdateModuleData() const
+	{
+		return (const StealthUpdateModuleData *)m_moduleData;
+	}
+
+	unsigned int m_stealthAllowedFrame;	///< +0x20
+	unsigned int m_detectionExpiresFrame;	///< +0x24
+	unsigned int m_unknown28;		///< +0x28
+	bool m_enabled;				///< +0x2C
+	bool m_unknown2D;
+	bool m_unknown2E;
+	bool m_unknown2F;
+	bool m_unknown30;
+	int m_disguiseAsPlayerIndex;		///< +0x34
+	const void *m_disguiseAsTemplate;	///< +0x38
+	unsigned int m_disguiseTransitionFrames;	///< +0x3C
+	bool m_disguiseHalfpointReached;	///< +0x40
+	bool m_transitioningToDisguise;		///< +0x41
+	bool m_disguised;			///< +0x42
+	bool m_xferRestoreDisguise;		///< +0x43
 };
 
 // ??0StealthUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
-__declspec(naked) StealthUpdate::StealthUpdate(Thing *, const ModuleData *)
+StealthUpdate::StealthUpdate(Thing *thing, const ModuleData *moduleData)
+	: UpdateModule(thing, moduleData)
 {
-	__asm {
-		__emit 0x6a
-		__emit 0xff
-		__emit 0x68
-		__emit 0x08
-		__emit 0x2d
-		__emit 0x01
-		__emit 0x01
-		__emit 0x64
-		__emit 0xa1
-		__emit 0x00
-		__emit 0x00
-		__emit 0x00
-		__emit 0x00
-		__emit 0x50
-		__emit 0x64
-		__emit 0x89
-		__emit 0x25
-		__emit 0x00
-		__emit 0x00
-		__emit 0x00
-		__emit 0x00
-		__emit 0x83
-		__emit 0xec
-		__emit 0x10
-		__emit 0x8b
-		__emit 0x44
-		__emit 0x24
-		__emit 0x24
-		__emit 0x53
-		__emit 0x56
-		__emit 0x8b
-		__emit 0xf1
-		__emit 0x8b
-		__emit 0x4c
-		__emit 0x24
-		__emit 0x28
-		__emit 0x50
-		__emit 0x51
-		__emit 0x8b
-		__emit 0xce
-		__emit 0x89
-		__emit 0x74
-		__emit 0x24
-		__emit 0x10
-		__emit 0xe8
-		__emit 0x43
-		__emit 0xa5
-		__emit 0xd6
-		__emit 0xff
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x0c
-		__emit 0xd0
-		__emit 0xc9
-		__emit 0x09
-		__emit 0x01
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x10
-		__emit 0xa0
-		__emit 0xcb
-		__emit 0x09
-		__emit 0x01
-		__emit 0x33
-		__emit 0xdb
-		__emit 0x89
-		__emit 0x5e
-		__emit 0x14
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x18
-		__emit 0xff
-		__emit 0xff
-		__emit 0xff
-		__emit 0xff
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x1c
-		__emit 0xff
-		__emit 0xff
-		__emit 0xff
-		__emit 0xff
-		__emit 0x8b
-		__emit 0x46
-		__emit 0x04
-		__emit 0xc7
-		__emit 0x06
-		__emit 0x7c
-		__emit 0x45
-		__emit 0x0c
-		__emit 0x01
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x0c
-		__emit 0xb8
-		__emit 0x44
-		__emit 0x0c
-		__emit 0x01
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x10
-		__emit 0xac
-		__emit 0x44
-		__emit 0x0c
-		__emit 0x01
-		__emit 0x8b
-		__emit 0x15
-		__emit 0x98
-		__emit 0x08
-		__emit 0x2f
-		__emit 0x01
-		__emit 0x8b
-		__emit 0x4a
-		__emit 0x3c
-		__emit 0x03
-		__emit 0x48
-		__emit 0x08
-		__emit 0x89
-		__emit 0x4e
-		__emit 0x20
-		__emit 0x38
-		__emit 0x58
-		__emit 0x2c
-		__emit 0x0f
-		__emit 0x94
-		__emit 0xc2
-		__emit 0x88
-		__emit 0x56
-		__emit 0x2c
-		__emit 0x89
-		__emit 0x5e
-		__emit 0x24
-		__emit 0x89
-		__emit 0x5e
-		__emit 0x28
-		__emit 0xc7
-		__emit 0x46
-		__emit 0x34
-		__emit 0xff
-		__emit 0xff
-		__emit 0xff
-		__emit 0xff
-		__emit 0x89
-		__emit 0x5e
-		__emit 0x38
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x41
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x42
-		__emit 0x89
-		__emit 0x5e
-		__emit 0x3c
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x40
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x2d
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x2e
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x2f
-		__emit 0xc6
-		__emit 0x46
-		__emit 0x30
-		__emit 0x01
-		__emit 0x38
-		__emit 0x58
-		__emit 0x50
-		__emit 0x89
-		__emit 0x5c
-		__emit 0x24
-		__emit 0x20
-		__emit 0x74
-		__emit 0x24
-		__emit 0x33
-		__emit 0xc9
-		__emit 0x8b
-		__emit 0xc1
-		__emit 0x89
-		__emit 0x4c
-		__emit 0x24
-		__emit 0x10
-		__emit 0x6a
-		__emit 0x01
-		__emit 0x8d
-		__emit 0x54
-		__emit 0x24
-		__emit 0x10
-		__emit 0x89
-		__emit 0x4c
-		__emit 0x24
-		__emit 0x18
-		__emit 0x8b
-		__emit 0x4e
-		__emit 0x08
-		__emit 0x0d
-		__emit 0x00
-		__emit 0x00
-		__emit 0x04
-		__emit 0x00
-		__emit 0x52
-		__emit 0x89
-		__emit 0x44
-		__emit 0x24
-		__emit 0x14
-		__emit 0xe8
-		__emit 0xa0
-		__emit 0x3b
-		__emit 0xd8
-		__emit 0xff
-		__emit 0x8b
-		__emit 0x46
-		__emit 0x08
-		__emit 0x6a
-		__emit 0x01
-		__emit 0x50
-		__emit 0x8b
-		__emit 0xce
-		__emit 0xe8
-		__emit 0x86
-		__emit 0x8b
-		__emit 0xd6
-		__emit 0xff
-		__emit 0x8b
-		__emit 0x4c
-		__emit 0x24
-		__emit 0x18
-		__emit 0x88
-		__emit 0x5e
-		__emit 0x43
-		__emit 0x8b
-		__emit 0xc6
-		__emit 0x5e
-		__emit 0x5b
-		__emit 0x64
-		__emit 0x89
-		__emit 0x0d
-		__emit 0x00
-		__emit 0x00
-		__emit 0x00
-		__emit 0x00
-		__emit 0x83
-		__emit 0xc4
-		__emit 0x1c
-		__emit 0xc2
-		__emit 0x08
-		__emit 0x00
-	}
+	const StealthUpdateModuleData *data = getStealthUpdateModuleData();
+
+	m_stealthAllowedFrame = ((StealthUpdateGameLogicView *)TheGameLogic)->m_frame + data->m_stealthDelay;
+	m_enabled = !data->m_teamDisguised;
+	m_detectionExpiresFrame = 0;
+	m_unknown28 = 0;
+	m_disguiseAsPlayerIndex = -1;
+	m_disguiseAsTemplate = 0;
+	m_transitioningToDisguise = false;
+	m_disguised = false;
+	m_disguiseTransitionFrames = 0;
+	m_disguiseHalfpointReached = false;
+	m_unknown2D = false;
+	m_unknown2E = false;
+	m_unknown2F = false;
+	m_unknown30 = true;
+
+	if (data->m_innateStealth)
+		getObject()->setStatus(ObjectStatusMaskType(ObjectStatusMaskType::kInit, OBJECT_STATUS_CAN_STEALTH));
+
+	setWakeFrame(getObject(), UPDATE_SLEEP_NONE);
+
+	m_xferRestoreDisguise = false;
 }
