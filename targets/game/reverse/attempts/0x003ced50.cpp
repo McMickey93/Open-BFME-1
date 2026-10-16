@@ -1,89 +1,93 @@
-// ??0LargeGroupAudioMap@@QAE@VAsciiStringVZ@@@Z
-// partial score=0.55 date=2026-09-08
-// LargeGroupAudioMap constructor, retail 0x003CED50.
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringinline
+// ??0LargeGroupAudioMap@@QAE@VAsciiString@@@Z
+// partial score=0.9724 date=2026-10-16
+// LargeGroupAudioMap(AsciiString) constructor, retail 0x003CED50 (290 bytes, ret 4).
+// Exact through +0xD0; only the fstp [esi+0x10] / mov eax,0x7fffffff pair is swapped.
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
+#include "ascii_string.h"
+#include <string.h>
 
-#include "StringInline.h"
+class SoundKeyPair;
 
-class LargeGroupAudioMap
+class SoundKeyVector
 {
 public:
-	virtual void slot00();
-	virtual void slot01();
-	virtual void slot02();
-	virtual void slot03();
-	virtual void slot04();
+	SoundKeyVector() : m_begin(0), m_end(0), m_capacity(0) {}
+	~SoundKeyVector();
 
+	SoundKeyPair **m_begin;
+	SoundKeyPair **m_end;
+	SoundKeyPair **m_capacity;
+};
+
+struct ConditionFlags
+{
+	ConditionFlags() { memset(m_value, 0, sizeof(m_value)); }
+	unsigned int m_value[10];
+};
+
+struct StatusBits
+{
+	StatusBits() { memset(m_value, 0, sizeof(m_value)); }
+	unsigned int m_value[3];
+};
+
+class BfmeSinkVUH;
+
+class BfmeBaseVUH
+{
+public:
+	BfmeBaseVUH() : m_owner(0), m_isOverride(0) {}
+	virtual ~BfmeBaseVUH();
+
+	BfmeSinkVUH *m_owner;
+	unsigned char m_isOverride;
+};
+
+static float g_largeGroupAudioSpeedScale = 0.2f;
+static const float g_largeGroupAudioSpeedUnit = 20.0f;
+
+struct SpeedCache
+{
+	void reset()
+	{
+		m_value[1] = -1.0f;
+		m_value[0] = -1.0f;
+		m_value[3] = -1.0f;
+		m_value[2] = -1.0f;
+	}
+	float m_value[4];
+};
+
+class LargeGroupAudioMap : public BfmeBaseVUH
+{
+public:
 	LargeGroupAudioMap(AsciiString name);
 	virtual ~LargeGroupAudioMap();
 
 private:
-	void *m_owner;
-	unsigned char m_isOverride;
-	unsigned char m_pad09[3];
 	float m_size;
 	float m_maximumAudioSpeed;
 	AsciiString m_soundName;
-	unsigned int m_sound[3];
-	unsigned int m_requiredModelConditions[10];
-	unsigned int m_excludedModelConditions[10];
-	unsigned int m_requiredObjectStatus[3];
-	unsigned int m_excludedObjectStatus[3];
+	SoundKeyVector m_sound;
+	ConditionFlags m_requiredModelConditions;
+	ConditionFlags m_excludedModelConditions;
+	StatusBits m_requiredObjectStatus;
+	StatusBits m_excludedObjectStatus;
 	int m_startThreshold;
 	int m_stopThreshold;
 	unsigned short m_handOffModeDuration;
 	unsigned char m_ignoreStealthedUnits;
-	unsigned char m_pad97;
-	float m_cachedSpeed[4];
+	SpeedCache m_cachedSpeed;
 };
 
 LargeGroupAudioMap::LargeGroupAudioMap(AsciiString name) :
 	m_soundName(name)
 {
-	m_owner = 0;
-	m_isOverride = 0;
-	m_sound[0] = 0;
-	m_sound[1] = 0;
-	m_sound[2] = 0;
-
-	m_requiredModelConditions[0] = 0;
-	m_requiredModelConditions[1] = 0;
-	m_requiredModelConditions[2] = 0;
-	m_requiredModelConditions[3] = 0;
-	m_requiredModelConditions[4] = 0;
-	m_requiredModelConditions[5] = 0;
-	m_requiredModelConditions[6] = 0;
-	m_requiredModelConditions[7] = 0;
-	m_requiredModelConditions[8] = 0;
-	m_requiredModelConditions[9] = 0;
-
-	m_excludedModelConditions[0] = 0;
-	m_excludedModelConditions[1] = 0;
-	m_excludedModelConditions[2] = 0;
-	m_excludedModelConditions[3] = 0;
-	m_excludedModelConditions[4] = 0;
-	m_excludedModelConditions[5] = 0;
-	m_excludedModelConditions[6] = 0;
-	m_excludedModelConditions[7] = 0;
-	m_excludedModelConditions[8] = 0;
-	m_excludedModelConditions[9] = 0;
-
-	m_requiredObjectStatus[0] = 0;
-	m_requiredObjectStatus[1] = 0;
-	m_requiredObjectStatus[2] = 0;
-	m_excludedObjectStatus[0] = 0;
-	m_excludedObjectStatus[1] = 0;
-	m_excludedObjectStatus[2] = 0;
-
-	m_cachedSpeed[0] = -1.0f;
-	m_cachedSpeed[1] = -1.0f;
-	m_cachedSpeed[2] = -1.0f;
-	m_cachedSpeed[3] = -1.0f;
+	m_cachedSpeed.reset();
 	m_startThreshold = 0x7fffffff;
 	m_stopThreshold = 0x7fffffff;
+	m_maximumAudioSpeed = g_largeGroupAudioSpeedScale * g_largeGroupAudioSpeedUnit;
+	m_size = 10000.0f;
 	m_handOffModeDuration = 10;
 	m_ignoreStealthedUnits = 1;
-	m_maximumAudioSpeed =
-		*(const float *)0x012B48F0 * *(const float *)0x010977E0;
-	m_size = 10000.0f;
 }
