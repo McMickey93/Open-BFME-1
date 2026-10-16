@@ -38486,13 +38486,10 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c5a960@@YAXXZ,,0x00C5A960,25,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105a960
 ?d_00c5a979@@YAXXZ,,0x00C5A979,25,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105a979
 ?d_00c5abc0@@YAXXZ,,0x00C5ABC0,11,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105abc0
-?d_00c5acb8@@YAXXZ,,0x00C5ACB8,25,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105acb8
-?d_00c5c1a8@@YAXXZ,,0x00C5C1A8,25,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105c1a8
 ?d_00c5fdfe@@YAXXZ,,0x00C5FDFE,8,game/gen_asm/d_00bf2738.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail callers=0
 ?d_00c5fe11@@YAXXZ,,0x00C5FE11,8,game/gen_asm/d_00bf2738.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail callers=0
 ?d_00c5fe2f@@YAXXZ,,0x00C5FE2F,8,game/gen_asm/d_00bf4ec3.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail refs=0
 ?d_00c5fe55@@YAXXZ,,0x00C5FE55,8,game/gen_asm/d_00bf4ec3.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail refs=0
-?d_00c61328@@YAXXZ,,0x00C61328,25,game/gen_asm/d_00c5dc18.asm,matched,gen-dump;ghidra=Unwind@01061328
 ?d_00c61819@@YAXXZ,,0x00C61819,25,game/gen_asm/d_00c5dc18.asm,matched,gen-dump;ghidra=Unwind@01061819
 ?d_00c61840@@YAXXZ,,0x00C61840,25,game/gen_asm/d_00c5dc18.asm,matched,gen-dump;ghidra=Unwind@01061840
 ?d_00c61859@@YAXXZ,,0x00C61859,25,game/gen_asm/d_00c5dc18.asm,matched,gen-dump;ghidra=Unwind@01061859
@@ -171413,22 +171410,22 @@ uw_00c6121b,,0x00C6121B,11,game/Libraries/Source/WWVegas/WWLib/registry.cpp,matc
 uw_00c61226,,0x00C61226,11,game/Libraries/Source/WWVegas/WWLib/registry.cpp,matched,gen-funclet;parent=?Load_Registry@RegistryClass@@SAXPBDPAD1@Z;object-symbol=$L7152
 uw_00c61240,,0x00C61240,11,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4999
 uw_00c61260,,0x00C61260,8,game/Libraries/Source/WWVegas/WWLib/registry.cpp,matched,gen-funclet;parent=?Deleta_All_Values@RegistryClass@@QAEXXZ;object-symbol=$L7818
-uw_00c61280,,0x00C61280,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=??0file_auto_ptr@@QAE@PAVFileFactoryClass@@PBD@Z;object-symbol=$L2829
-uw_00c612a0,,0x00C612A0,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_File@RawFileFactoryClass@@QAEPAVRawFileClass@@PBD@Z;object-symbol=$L2845
+uw_00c61280,,0x00C61280,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=??0file_auto_ptr@@QAE@PAVFileFactoryClass@@PBD@Z;object-symbol=$L2825;eh-state-pin $L2829->$L2825: retail unwind map (??0file_auto_ptr@@QAE@PAVFileFactoryClass@@PBD@Z states [0]) binds this address to $L2825;repin-model=claude-opus-5-5
+uw_00c612a0,,0x00C612A0,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_File@RawFileFactoryClass@@QAEPAVRawFileClass@@PBD@Z;object-symbol=$L2841;eh-state-pin $L2845->$L2841: retail unwind map (?Get_File@RawFileFactoryClass@@QAEPAVRawFileClass@@PBD@Z states [0]) binds this address to $L2841;repin-model=claude-opus-5-5
 uw_00c612c0,,0x00C612C0,8,game/gen_small/uw_gen_011.cpp,matched,gen-funclet;object-symbol=$L7545
 uw_00c612c8,,0x00C612C8,11,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L11578
 uw_00c612e0,,0x00C612E0,8,game/gen_small/uw_gen_011.cpp,matched,gen-funclet;object-symbol=$L7545
 uw_00c612e8,,0x00C612E8,11,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L11578
-uw_00c61300,,0x00C61300,8,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Set_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z;object-symbol=$L3285
+uw_00c61300,,0x00C61300,8,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Set_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z;object-symbol=$L3281;eh-state-pin $L3285->$L3281: retail unwind map (?Set_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z states [0]) binds this address to $L3281;repin-model=claude-opus-5-5
 uw_00c61320,,0x00C61320,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4909
-uw_00c61350,,0x00C61350,8,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_Sub_Directory@SimpleFileFactoryClass@@QBEXAAVStringClass@@@Z;object-symbol=$L3276
-uw_00c61370,,0x00C61370,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Prepend_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z;object-symbol=$L3296
+uw_00c61350,,0x00C61350,8,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_Sub_Directory@SimpleFileFactoryClass@@QBEXAAVStringClass@@@Z;object-symbol=$L3272;eh-state-pin $L3276->$L3272: retail unwind map (?Get_Sub_Directory@SimpleFileFactoryClass@@QBEXAAVStringClass@@@Z states [0]) binds this address to $L3272;repin-model=claude-opus-5-5
+uw_00c61370,,0x00C61370,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Prepend_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z;object-symbol=$L3292;eh-state-pin $L3296->$L3292: retail unwind map (?Prepend_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z states [0]) binds this address to $L3292;repin-model=claude-opus-5-5
 uw_00c6137b,,0x00C6137B,11,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L5296
-uw_00c61390,,0x00C61390,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Append_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z;object-symbol=$L3312
+uw_00c61390,,0x00C61390,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Append_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z;object-symbol=$L3308;eh-state-pin $L3312->$L3308: retail unwind map (?Append_Sub_Directory@SimpleFileFactoryClass@@QAEXPBD@Z states [0]) binds this address to $L3308;repin-model=claude-opus-5-5
 uw_00c613b0,,0x00C613B0,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4918
-uw_00c613b8,,0x00C613B8,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_File@SimpleFileFactoryClass@@UAEPAVFileClass@@PBD@Z;object-symbol=$L3365
+uw_00c613b8,,0x00C613B8,11,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_File@SimpleFileFactoryClass@@UAEPAVFileClass@@PBD@Z;object-symbol=$L3361;eh-state-pin $L3365->$L3361: retail unwind map (?Get_File@SimpleFileFactoryClass@@UAEPAVFileClass@@PBD@Z states [1]) binds this address to $L3361;repin-model=claude-opus-5-5
 uw_00c613c3,,0x00C613C3,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4909
-uw_00c613cb,,0x00C613CB,8,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_File@SimpleFileFactoryClass@@UAEPAVFileClass@@PBD@Z;object-symbol=$L3367
+uw_00c613cb,,0x00C613CB,8,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;parent=?Get_File@SimpleFileFactoryClass@@UAEPAVFileClass@@PBD@Z;object-symbol=$L3363;eh-state-pin $L3367->$L3363: retail unwind map (?Get_File@SimpleFileFactoryClass@@UAEPAVFileClass@@PBD@Z states [3]) binds this address to $L3363;repin-model=claude-opus-5-5
 uw_00c613d3,,0x00C613D3,8,game/gen_small/uw_gen_009.cpp,matched,gen-funclet;object-symbol=$L1446
 uw_00c613f0,,0x00C613F0,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4936
 uw_00c61410,,0x00C61410,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4909
@@ -172565,3 +172562,6 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?Rva00C57448Cleanup@@YAXXZ,,0x00C57448,25,game/Libraries/Source/EA/Apt/Rva00898F60UnderscoreFields.cpp,matched,gen-funclet;object-symbol=$L478;parent=?underscoreFields00898F60@Fields00898F60@@QAE?AVRva8CD130String@@XZ;retail 00898F60 unwind map judged by eh_state_pins;jmp 0x00891B80 string dtor;model=claude-opus-5-5;host=app
 ?rva00144DC0@ThingTemplate@@QAEXAAVAssetList@@PAX@Z,,0x00144DC0,177,game/GameEngine/Source/Common/Thing/ThingTemplateGetAssetList.cpp,matched,cached ThingTemplate asset list: build variations via TheThingFactory or GetAssetList on this then inline AssetList merge; GetAssetList reached through ILT 0x00004B92 (route pin); method name unproven;model=claude-opus-5-5;host=app
 ?rva00143580@ThingTemplate@@QBEXAAVAssetList@@PAX@Z,,0x00143580,339,game/GameEngine/Source/Common/Thing/ThingTemplateGetAssetList.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00143580-ilt-contradiction.md;address-derived: retail ILT 0x00004B92 contradicts the former GetAssetList decoration (identity_evidence/00143580-ilt-contradiction.md);model=claude-opus-5-5;host=app
+?Rva00C61328Cleanup@@YAXXZ,,0x00C61328,25,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,gen-funclet;object-symbol=$L3194;parent=??H@YA?AVStringClass@@PBDABV0@@Z;retail 009DD800 unwind map state 0 judged by eh_state_pins;jmp ILT 0x0001A41F (??1StringClass -> 0x0013A050);model=claude-opus-5-5;host=app
+?Rva00C5ACB8Cleanup@@YAXXZ,,0x00C5ACB8,25,game/Libraries/Source/WWVegas/WW3D2/TextureHandleGetName.cpp,matched,gen-funclet;object-symbol=$L1130;parent=?Get_Texture_Name@BfmeHandleCX@@QBE?AVStringClass@@XZ;retail 008FF5B0 unwind map state 0 judged by eh_state_pins;jmp ILT 0x0001A41F (??1StringClass -> 0x0013A050);model=claude-opus-5-5;host=app
+?Rva00C5C1A8Cleanup@@YAXXZ,,0x00C5C1A8,25,game/Libraries/Source/WWVegas/WW3D2/rendobj.cpp,matched,gen-funclet;object-symbol=$L23758;parent=?Filename_From_Asset_Name@@YA?AVStringClass@@PBD@Z;retail 00920770 unwind map state 0 judged by eh_state_pins;jmp ILT 0x0001A41F (??1StringClass -> 0x0013A050);model=claude-opus-5-5;host=app

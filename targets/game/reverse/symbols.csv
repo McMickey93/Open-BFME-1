@@ -9786,6 +9786,7 @@ name,address,notes
 ??1StringBaseYW@@IAE@XZ,0x00887940,pin
 ??1StringBaseZA@@IAE@XZ,0x00887940,pin
 ??1StringClass@@QAE@XZ,0x009DB7A0,RenderDeviceDescClass string-member destructor calls; ICF with StringClass::Free_String
+??1StringClass@@QAE@XZ,0x0001A41F,ILT to the 5-byte inline-dtor body 0x0013A050 (jmp Free_String 0x009DB7A0) next to matched ??0StringClass@@QAE@H_N@Z 0x0013A010; ilt_oracle CONFIRMED exact; unwind funclets 0x00C61328/0x00C5ACB8/0x00C5C1A8 of matched StringClass-returning parents jmp here
 ??1StructureBody@@MAE@XZ,0x00040D40,destructor ILT to 0x00214B50;ilt-verified=T1-access(efp=6.20e-03)
 ??1StructureBodyModuleData@@UAE@XZ,0x0000A781,public complete destructor ILT called by scalar wrapper 0x00129460; exact constructor 0x001293C0 installs dedicated vtable 0x0108ED20
 ??1StructureCollapseFXVector@@QAE@XZ,0x00022D3B,Open-BFME5 StructureCollapse FX vector destructor thunk
