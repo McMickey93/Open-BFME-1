@@ -2309,3 +2309,11 @@ game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCto
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_18,0c2b8bb26c956387ef0d9159,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_1c,928f6a4b6930972e20f21378,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_20,f71c4f0aa685e77e185dcdbf,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_64,fdd4c3a1791a9d28986c3d1a,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_68,4eded38f6b3b06cf9e35334e,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_6c,93d8a359c32a003329291eea,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_70,5077952e8d52e93ea2241dbe,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_74,09edbb602ec141556276259e,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_78,ee1e3cc29b81064c82b4c61b,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_7c,5de6d3590dfbe5aabb29849d,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdateModuleDataConstructor.cpp|member||m_80,4a1dfefee8540b0b320cf6d6,gpt-6.1-sol,20261016041931-a25df1,2026-10-16
