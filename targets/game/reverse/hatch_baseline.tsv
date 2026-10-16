@@ -2088,7 +2088,6 @@ emit	game/GameEngine/Source/GameLogic/Map/SidesListAddSideThunk.cpp	*	897
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/AutoAbilityBehaviorModuleDataDestructorThunk.cpp	*	1944
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorCtorThunk.cpp	*	661
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehavior_ctor_Thunk.cpp	*	395
-emit	game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorDestructorThunk.cpp	*	203
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorDestructorThunk.cpp	*	628
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorDestructorThunk.cpp	*	630
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_onDie_Thunk.cpp	*	842

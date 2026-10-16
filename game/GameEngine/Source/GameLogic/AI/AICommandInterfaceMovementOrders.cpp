@@ -54,7 +54,8 @@ enum AICommandType
 	AICMD_ATTACKMOVE_TO_POSITION = 0x0F,
 	AICMD_HUNT = 0x12,
 	AICMD_ENTER = 0x17,
-	AICMD_EVACUATE = 0x1B
+	AICMD_EVACUATE = 0x1B,
+	AICMD_RVA001F1370 = 0x31		// unidentified command; see rva001F1370 below
 };
 
 #include "../command_source_type.h"
@@ -99,6 +100,7 @@ public:
 	void aiEvacuate( bool exposeStealthUnits, CommandSourceType commandSource );
 	void aiAttackMoveToPosition( const Coord3D *position, int maxShotsToFire,
 		CommandSourceType commandSource );
+	void rva001F1370( int value, CommandSourceType commandSource );
 };
 
 void AICommandInterface::aiMoveToPosition( const Coord3D *position, CommandSourceType commandSource )
@@ -143,5 +145,16 @@ void AICommandInterface::aiAttackMoveToPosition( const Coord3D *position,
 	AICommandParms parms( AICMD_ATTACKMOVE_TO_POSITION, commandSource );
 	parms.m_pos = *position;
 	parms.m_intValue = maxShotsToFire;
+	aiDoCommand( &parms );
+}
+
+// Retail 0x001F1370 (ILT 0x0001336D): command 0x31 with one int in
+// m_intValue. The ledger's ~OathbreakersFadeAwayBehavior was refuted by its
+// ret 8; neither the BFME command nor the method is identified, so both keep
+// address-derived names (identity_evidence/001f1370-ai-int-command.md).
+void AICommandInterface::rva001F1370( int value, CommandSourceType commandSource )
+{
+	AICommandParms parms( AICMD_RVA001F1370, commandSource );
+	parms.m_intValue = value;
 	aiDoCommand( &parms );
 }
