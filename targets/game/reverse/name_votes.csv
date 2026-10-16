@@ -4220,3 +4220,6 @@ game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_elements28,ad26eb9122
 game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_node00,d6fe2c8957a3c81244cf4f4e,gpt-6.1-sol,20261016064528-24698a,2026-10-16
 game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_count818,824ced755982fcb7cd41d3d7,gpt-6.1-sol,20261016064528-24698a,2026-10-16
 game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_entries81c,badc181f446252dcd30ea9b0,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ConstructionRecovery00373B30.cpp|member||field0c,d5bc23bb3fb1d69e7b6433c5,gpt-6.1-sol,20261016064543-cc5850,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ConstructionRecovery00373B30.cpp|member||field1c,7e9b49cc71369486a012f71e,gpt-6.1-sol,20261016064543-cc5850,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ConstructionRecovery00373B30.cpp|local|Rva00373B30Receiver::update|t,5627214ce2c1f107dcc7da16,gpt-6.1-sol,20261016064543-cc5850,2026-10-16
