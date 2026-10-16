@@ -57,7 +57,7 @@ class Weapon;
 class BfmePathfinderMethods
 {
 public:
-	bool check(const Object *, const Coord3D *, const Weapon *, int);
+	bool rva003F5E20(const Object *, const Coord3D *, const Weapon *, int);
 };
 void j_00032b46();
 

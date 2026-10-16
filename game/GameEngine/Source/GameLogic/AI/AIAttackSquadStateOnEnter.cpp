@@ -230,10 +230,10 @@ extern AI *TheAI;
 class BfmePathfinderMethods
 {
 public:
-	bool check(const Object *source, const Coord3D *goal,
+	bool rva003F5E20(const Object *source, const Coord3D *goal,
 		const Weapon *weapon, int extra);
 };
-class BfmeAIUpdateMethods
+class Rva00272F70AIUpdateMethods
 {
 public:
 	Object *checkForCrateToPickup();
@@ -272,7 +272,7 @@ StateReturnType AIAttackSquadState::update()
 
 	if (goal != 0 && (goal->m_privateStatus & 1) == 0)
 	{
-		if (!((BfmePathfinderMethods *)TheAI->m_pathfinder)->check(owner,
+		if (!((BfmePathfinderMethods *)TheAI->m_pathfinder)->rva003F5E20(owner,
 			reinterpret_cast<const Coord3D *>(reinterpret_cast<const char *>(goal) + 0x38),
 			weapon, 0))
 			return STATE_FAILURE;
@@ -281,7 +281,7 @@ StateReturnType AIAttackSquadState::update()
 	if (owner->testStatus(0x25) && owner->m_containedBy != 0)
 		return STATE_SUCCESS;
 
-	Object *crate = ((BfmeAIUpdateMethods *)ai)->checkForCrateToPickup();
+	Object *crate = ((Rva00272F70AIUpdateMethods *)ai)->checkForCrateToPickup();
 	if (crate != 0)
 	{
 		this->m_attackSquadMachine->setGoalObject(crate);
