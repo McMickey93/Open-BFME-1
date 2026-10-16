@@ -1,7 +1,7 @@
 // cl: /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
 // stlport
 
-// Open-BFME5: STLport hashtable<V, AsciiString>::_M_find<AsciiString>, 24
+// Open-BFME5: STLport hashtable<V, AsciiString>::_M_find<AsciiString>, 23
 // bodies of 159 bytes.  Every one carried only a machine byte-dump row; the
 // same shape is already converted at 0x005C76A0 in
 // game/GameEngine/Source/Common/AsciiStringParticleHashFind.cpp.
@@ -506,26 +506,6 @@ typedef _STL::hashtable<Rva006931A0Value, AsciiString, rts::hash<AsciiString>,
 
 // retail 0x006931A0 -- find() is public, _M_find is not, so the public call emits it
 Bool BfmeHashFindAnchor006931A0(const AsciiStringKeyedHash006931A0 &table, const AsciiString &key )
-{
-	return table.find( key ) != table.end();
-}
-
-struct Rva006A7F80Value
-{
-	AsciiString m_key;
-};
-
-struct Rva006A7F80ExtractKey
-{
-	const AsciiString &operator()(const Rva006A7F80Value &entry ) const { return entry.m_key; }
-};
-
-typedef _STL::hashtable<Rva006A7F80Value, AsciiString, rts::hash<AsciiString>,
-	Rva006A7F80ExtractKey, _STL::equal_to<AsciiString>,
-	_STL::allocator<Rva006A7F80Value> > AsciiStringKeyedHash006A7F80;
-
-// retail 0x006A7F80 -- find() is public, _M_find is not, so the public call emits it
-Bool BfmeHashFindAnchor006A7F80(const AsciiStringKeyedHash006A7F80 &table, const AsciiString &key )
 {
 	return table.find( key ) != table.end();
 }

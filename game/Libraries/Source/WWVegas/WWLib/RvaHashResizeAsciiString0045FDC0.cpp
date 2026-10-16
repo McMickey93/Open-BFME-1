@@ -88,23 +88,24 @@ typedef _STL::hashtable<Rva00461250Value, AsciiString,
 
 template void Rva00461250Table::resize(unsigned int);
 
-struct Rva006A7AD0Value
+// retail 0x006A4E70: AudioManager::m_allAudioEventInfo, Zero Hour's AudioEventInfoHash
+// (ilt_oracle CONFIRMED at ILT 0x0001CBED; see AudioEventInfoHash.cpp).
+class AudioEventInfo;
+
+namespace rts
 {
-	AsciiString m_key;
-	Int m_mapped;
-};
-
-struct Rva006A7AD0ExtractKey
+template <class T>
+struct equal_to
 {
-	const AsciiString &operator()(const Rva006A7AD0Value &entry) const
-	{
-		return entry.m_key;
-	}
+	bool operator()(const T &left, const T &right) const { return left == right; }
 };
+}
 
-typedef _STL::hashtable<Rva006A7AD0Value, AsciiString,
-	rts::hash<AsciiString>, Rva006A7AD0ExtractKey,
-	_STL::equal_to<AsciiString>, _STL::allocator<Rva006A7AD0Value> >
-	Rva006A7AD0Table;
+typedef _STL::pair<const AsciiString, AudioEventInfo *> AudioEventInfoHashValue;
 
-template void Rva006A7AD0Table::resize(unsigned int);
+typedef _STL::hashtable<AudioEventInfoHashValue, AsciiString,
+	rts::hash<AsciiString>, _STL::_Select1st<AudioEventInfoHashValue>,
+	rts::equal_to<AsciiString>, _STL::allocator<AudioEventInfoHashValue> >
+	AudioEventInfoHashTable;
+
+template void AudioEventInfoHashTable::resize(unsigned int);

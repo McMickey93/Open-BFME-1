@@ -23,6 +23,12 @@ typedef long Long;
 namespace rts
 {
 template <class T>
+struct equal_to
+{
+	bool operator()(const T &left, const T &right) const { return left == right; }
+};
+
+template <class T>
 struct hash
 {
 	unsigned int operator()(T value) const;
@@ -92,13 +98,9 @@ public:
 	AudioEventInfo *m_info;
 };
 
-enum Rva006A7AD0Mapped
-{
-	Rva006A7AD0MappedZero = 0
-};
-
-typedef _STL::hash_map<AsciiString, Rva006A7AD0Mapped, rts::hash<AsciiString>,
-	_STL::equal_to<AsciiString> > Rva006A7AD0Map;
+// Zero Hour AudioEventInfoHash (GameAudio.h); see AudioEventInfoHash.cpp.
+typedef _STL::hash_map<AsciiString, AudioEventInfo *, rts::hash<AsciiString>,
+	rts::equal_to<AsciiString> > AudioEventInfoHash;
 
 struct Rva006AEA10Node
 {
@@ -114,15 +116,15 @@ public:
 
 private:
 	char m_pad04[0x6c];
-	Rva006A7AD0Map m_events;
-	char m_pad95c[0x95c - 0x70 - sizeof(Rva006A7AD0Map)];
+	AudioEventInfoHash m_events;
+	char m_pad95c[0x95c - 0x70 - sizeof(AudioEventInfoHash)];
 	void *m_mutex;
 };
 
 AudioEventInfoRef AudioManager::findAudioEventInfo(const AsciiString &eventName) const
 {
 	Rva006AEA10MutexGuard guard(m_mutex);
-	Rva006A7AD0Map::const_iterator it;
+	AudioEventInfoHash::const_iterator it;
 	it = m_events.find(eventName);
 	Rva006AEA10Node *node = *(Rva006AEA10Node **)&it;
 	if (node == 0)

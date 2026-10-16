@@ -1,7 +1,7 @@
 // cl: /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
 // stlport
 
-// Open-BFME5: STLport hash_map<AsciiString, V>::operator[] -- nine bodies of
+// Open-BFME5: STLport hash_map<AsciiString, V>::operator[] -- eight bodies of
 // 142 bytes that carried only a machine byte-dump row.
 //
 // The shape is STLport's own: find the key, and on a miss build a value_type
@@ -143,11 +143,3 @@ typedef _STL::hash_map<AsciiString, Rva00693020Mapped, rts::hash<AsciiString>,
 // retail 0x00693880, finding through 0x006931A0 and inserting through 0x00693020
 template Rva00693020Mapped &Rva00693020Map::operator[]( const AsciiString & );
 
-enum Rva006A7AD0Mapped { Rva006A7AD0MappedZero = 0 };
-
-typedef _STL::hash_map<AsciiString, Rva006A7AD0Mapped, rts::hash<AsciiString>,
-	_STL::equal_to<AsciiString>,
-	_STL::allocator<_STL::pair<const AsciiString, Rva006A7AD0Mapped> > > Rva006A7AD0Map;
-
-// retail 0x006AC440, finding through 0x006A7F80 and inserting through 0x006A7AD0
-template Rva006A7AD0Mapped &Rva006A7AD0Map::operator[]( const AsciiString & );

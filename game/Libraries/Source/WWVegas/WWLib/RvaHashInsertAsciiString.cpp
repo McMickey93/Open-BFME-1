@@ -1,7 +1,7 @@
 // cl: /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
 // stlport
 
-// Open-BFME5: STLport hashtable<V, AsciiString>::_M_insert, 22 bodies of 114
+// Open-BFME5: STLport hashtable<V, AsciiString>::_M_insert, 21 bodies of 114
 // bytes.  Every one carried only a machine byte-dump row.
 //
 // Four calls and the layout falls out of them.  resize for one more element
@@ -420,27 +420,6 @@ typedef _STL::hashtable<Rva00693020Value, AsciiString, rts::hash<AsciiString>,
 
 // retail 0x00693020
 void BfmeHashInsertAnchor00693020( AsciiStringIntHash00693020 &table, const Rva00693020Value &value )
-{
-	table._M_insert( value );
-}
-
-struct Rva006A7AD0Value
-{
-	AsciiString m_key;
-	int m_mapped;
-};
-
-struct Rva006A7AD0ExtractKey
-{
-	const AsciiString &operator()( const Rva006A7AD0Value &entry ) const { return entry.m_key; }
-};
-
-typedef _STL::hashtable<Rva006A7AD0Value, AsciiString, rts::hash<AsciiString>,
-	Rva006A7AD0ExtractKey, _STL::equal_to<AsciiString>,
-	_STL::allocator<Rva006A7AD0Value> > AsciiStringIntHash006A7AD0;
-
-// retail 0x006A7AD0
-void BfmeHashInsertAnchor006A7AD0( AsciiStringIntHash006A7AD0 &table, const Rva006A7AD0Value &value )
 {
 	table._M_insert( value );
 }

@@ -33,12 +33,15 @@ struct SelfPair
 };
 
 class AsciiString;
+class AudioEventInfo;
 struct BfmeHashFindAccess;
-namespace rts { template <class T> struct hash; }
+namespace rts { template <class T> struct hash; template <class T> struct equal_to; }
 namespace _STL
 {
 template <class T> struct equal_to;
 template <class T> class allocator;
+template <class First, class Second> struct pair;
+template <class Pair> struct _Select1st;
 template <class Value> struct _Hashtable_node;
 template <class Value, class Key, class Hash, class Extract, class Equal, class Allocator>
 class hashtable
@@ -57,6 +60,23 @@ struct BfmeHashFindAccess
             _STL::equal_to<AsciiString>, _STL::allocator<Value> > Table;
         return reinterpret_cast<const Table *>(owner)->_M_find(*static_cast<const AsciiString *>(argument));
     }
+
+    // AudioManager::m_allAudioEventInfo (Zero Hour AudioEventInfoHash: rts::equal_to,
+    // AudioEventInfo* mapped; identity_evidence/006ac440-audioeventinfo-hash-family.md)
+    static __forceinline void *findAudioEventInfo(void *owner, void *argument)
+    {
+        typedef _STL::pair<const AsciiString, AudioEventInfo *> Value;
+        typedef _STL::hashtable<Value, AsciiString, rts::hash<AsciiString>, _STL::_Select1st<Value>,
+            rts::equal_to<AsciiString>, _STL::allocator<Value> > Table;
+        return reinterpret_cast<const Table *>(owner)->_M_find(*static_cast<const AsciiString *>(argument));
+    }
+};
+
+class AudioEventInfoHashLookup
+{
+public:
+    __forceinline void *evaluate(void *argument)
+    { return BfmeHashFindAccess::findAudioEventInfo(this, argument); }
 };
 
 #define BFME_SELF_PAIR_HASH_CALLEE(ADDR) \
@@ -109,7 +129,6 @@ BFME_SELF_PAIR_HASH_CALLEE( 00613AE0 )
 BFME_SELF_PAIR_HASH_CALLEE( 00613BB0 )
 BFME_SELF_PAIR_HASH_CALLEE( 006931A0 )
 BFME_SELF_PAIR_CALLEE( 0069CBC0 )
-BFME_SELF_PAIR_HASH_CALLEE( 006A7F80 )
 BFME_SELF_PAIR_HASH_CALLEE( 006A8050 )
 BFME_SELF_PAIR_CALLEE( 009D76F0 )
 
@@ -165,11 +184,11 @@ BFME_SELF_PAIR_MAKER( Rva00693660Maker, Rva006931A0Lookup )
 BFME_SELF_PAIR_MAKER( Rva00693850Maker, Rva006931A0Lookup )
 BFME_SELF_PAIR_MAKER( Rva0069ED40Maker, Gen0069CBC0 )
 BFME_SELF_PAIR_MAKER( Rva006A0F50Maker, Gen0069CBC0 )
-BFME_SELF_PAIR_MAKER( Rva006AB600Maker, Rva006A7F80Lookup )
-BFME_SELF_PAIR_MAKER( Rva006AB630Maker, Rva006A7F80Lookup )
+BFME_SELF_PAIR_MAKER( Rva006AB600Maker, AudioEventInfoHashLookup )
+BFME_SELF_PAIR_MAKER( Rva006AB630Maker, AudioEventInfoHashLookup )
 BFME_SELF_PAIR_MAKER( Rva006AB680Maker, Rva006A8050Lookup )
-BFME_SELF_PAIR_MAKER( Rva006AC3E0Maker, Rva006A7F80Lookup )
-BFME_SELF_PAIR_MAKER( Rva006AC410Maker, Rva006A7F80Lookup )
+BFME_SELF_PAIR_MAKER( Rva006AC3E0Maker, AudioEventInfoHashLookup )
+BFME_SELF_PAIR_MAKER( Rva006AC410Maker, AudioEventInfoHashLookup )
 BFME_SELF_PAIR_MAKER( Rva006AC5A0Maker, Rva006A8050Lookup )
 BFME_SELF_PAIR_MAKER( Rva009D7A40Maker, Gen009D76F0 )
 BFME_SELF_PAIR_MAKER( Rva009D7860Maker, Gen009D76F0 )
