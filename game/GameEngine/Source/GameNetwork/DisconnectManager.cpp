@@ -347,8 +347,8 @@ void DisconnectManager::updateDisconnectStatus(ConnectionManager *conMgr) {
 
 							((BFMEConnectionManager *)conMgr)->sendDisconnectFrameCommand();
 							sendDisconnectCommand(i, conMgr);
-							disconnectPlayer(i, conMgr);
 							sendPlayerDestruct(i, conMgr);
+							disconnectPlayer(i, conMgr);
 						}
 					}
 				}
@@ -440,7 +440,7 @@ void DisconnectManager::processDisconnectKeepAlive(NetCommandMsg *msg, Connectio
 
 void DisconnectManager::processDisconnectPlayer(NetCommandMsg *msg, ConnectionManager *conMgr) {
 	NetDisconnectPlayerCommandMsg *cmdMsg = (NetDisconnectPlayerCommandMsg *)msg;
-	sendPlayerDestruct(cmdMsg->getDisconnectSlot(), conMgr);
+	disconnectPlayer(cmdMsg->getDisconnectSlot(), conMgr);
 
 	if ((m_pingsSent > 0)
 		&& (((Real)m_pingsRecieved / (Real)m_pingsSent) < 0.1f)) {

@@ -81403,7 +81403,7 @@ name,address,notes
 ?disabled@Gen_00609320@@QBE_NXZ,0x00048C4D,ILT to bfmeDisabled body 0x00609320; bool-shaped pin for test@Rva003BF540 @ 0x003BEAF0
 ?disconnectLocalPlayer@ConnectionManager@@QAEXXZ,0x006665E0,ZH twin exact: disconnectPlayer(i) (ILT 0x00028D5D -> 0x00666300) for every i != m_localSlot(+0x12028); sole caller Network::update 0x00682CA1 when Network+0xC==2 just before MSG_CLEAR_GAME_DATA 0x1D is appended; ILT 0x00029744
 ?disconnectPlayer@ConnectionManager@@QAE?AW4PlayerLeaveCode@@H@Z,0x00028D5D,DisconnectManager::disconnectPlayer direct-call ILT thunk
-?disconnectPlayer@DisconnectManager@@IAEXHPAVConnectionManager@@@Z,0x000201F3,DisconnectManager status update player removal through ILT to the existing 0x0066C040 body
+?disconnectPlayer@DisconnectManager@@IAEXHPAVConnectionManager@@@Z,0x0004B0B0,route=0x0066C040; ilt_oracle CONFIRMED exact; processDisconnectPlayer and updateDisconnectStatus (second call) reach the matched row through it
 ?dismissAlert@AptPalantir@@QAEXXZ,0x0003C902,AptPalantir alert dismissal thunk
 ?dispatch@BfmeRvaBA00View@@QAEXPAVBfmeRvaBA00Object@@H@Z,0x0002CE44,assigned-body helper for Rva0024BA00
 ?dispatch@BfmeRvaBB60View@@QAEXPAVBfmeRvaBB60Object@@H@Z,0x0002CE44,assigned-body helper for Rva0024BB60
@@ -88027,7 +88027,7 @@ name,address,notes
 ?sendMangledPortNumberToTarget@NAT@@IAEXGPAVGameSlot@@@Z,0x0002ACCA,ILT thunk; real body 0x6718A0
 ?sendMessage@LANAPI@@IAEXPAULANMessage@@I@Z,0x0002B599,route=0x00684CF0; matched LANAPISendPath body and request callers; evidence=targets/game/reverse/identity_evidence/0x00684cf0-lanapi-sendmessage.md
 ?sendNetCommandMsg@Connection@@QAEXPAVNetCommandMsg@@E@Z,0x00026D3C,ILT thunk for body 0x006624A0
-?sendPlayerDestruct@DisconnectManager@@IAEXHPAVConnectionManager@@@Z,0x0004B0B0,DisconnectManager status update destruction dispatch through ILT to the existing 0x0066B550 body
+?sendPlayerDestruct@DisconnectManager@@IAEXHPAVConnectionManager@@@Z,0x000201F3,route=0x0066B550; ilt_oracle CONFIRMED exact; updateDisconnectStatus (first call) reaches the matched row through it
 ?sendSignal@BfmeObjE65@@QAEXHH@Z,0x00014506,pin
 ?sendSpecial@AIGroup@@QAEXPBUCoord3D@@HHHH@Z,0x0001A6B3,ILT to 0x00157BE0 from tryGroupSpecial 0x001599A0
 ?sendToManglerFromPort@FirewallHelperClass@@QAE_NIGG_N@Z,0x00022C00
