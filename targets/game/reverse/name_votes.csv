@@ -2348,3 +2348,11 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawMod
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_18,c93820fb2013f9321e094417,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_1C,eac62df326b03280733c174f,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DStreakDrawModuleDataConstructor.cpp|member||m_unmodelled_20,5a9670019f409edc58f1753d,gpt-6.1-sol,20261016044142-4ce896,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field08,b66574419303ef0880cb1db6,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field0c,65bf9f71d8c7665271024da1,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field10,385382c539f373e84ab458bb,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field14,cd3844f4a34eb175e641f831,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field20,23be4695be4f71d66b41d826,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field24,b0fbba6e34df405bed2686b7,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field28,42e37a864af98bbeab3b314c,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field2c,93f7d2937d3bdb3df3ecb03c,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
