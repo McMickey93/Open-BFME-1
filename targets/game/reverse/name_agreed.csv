@@ -709,3 +709,7 @@ game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleD
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_invalidA4,m_preLandingEmotion,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_valueA8,m_preLandingEmotionRadius,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorFriendNewModuleDataThunk.cpp|member||m_bfme08,m_fadeOutTime,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b0c,m_useCloseRangeWhileMounted,claude-opus+gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_u10,m_minimumSwitchTime,claude-opus+gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b14,m_useHordeRangeWeapon,claude-opus+gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b15,m_useRealVictimRange,claude-opus+gpt-6.1-sol+grok,agreed,2026-10-16

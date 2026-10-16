@@ -1801,3 +1801,7 @@ game/GameEngine/Source/GameLogic/AI/TAiDataAssign.cpp|member||m_bfmeE4,c788b02c0
 game/GameEngine/Source/GameLogic/AI/TAiDataAssign.cpp|member||m_bfmeE8,1dd26175906af208df1918a1,gpt-6.1-sol,20261016035120-07e0df,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorFriendNewModuleDataThunk.cpp|member||m_bfmeVptr,a5d2fbe10c3d90cb71dfff4b,gpt-6.1-sol,20261016035646-6596a6,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/OathbreakersFadeAwayBehaviorFriendNewModuleDataThunk.cpp|member||m_bfme08,46435ebd5d8c90657423b51d,gpt-6.1-sol,20261016035646-6596a6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b0c,20759681e066dff97e60a88f,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_u10,68cf9e97eaf24644b4b39984,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b14,8016dc7d461d5adb2d8172de,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b15,b725acd313de0e69d93b73a3,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
