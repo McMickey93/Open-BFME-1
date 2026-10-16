@@ -4066,3 +4066,8 @@ game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.
 game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||entries24,c3731b5df8d65cd0472f66f5,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||initialized30,599c68520f9b824e895f1ed6,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|function|SiegeDockingBehavior@|initializeBones00206CB0,f33a7ca5e14569a2e452c8ad,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/AI/Rva003F8820Pathfinder.cpp|member||m_at858,7b4a56cde205cc926498214d,gpt-6.1-sol,20261016063554-9fc298,2026-10-16
+game/GameEngine/Source/GameLogic/AI/Rva003F8820Pathfinder.cpp|param|Coord3D#2|o,00c99bbc09c3dbeb506d8a7e,gpt-6.1-sol,20261016063554-9fc298,2026-10-16
+game/GameEngine/Source/GameLogic/AI/Rva003F8820Pathfinder.cpp|param|fast_float_floor|f,7c59b533eb433e4ba817b0be,gpt-6.1-sol,20261016063554-9fc298,2026-10-16
+game/GameEngine/Source/GameLogic/AI/Rva003F8820Pathfinder.cpp|param|fast_float_ceil|f,2a57270b37dd0e5e14707d9f,gpt-6.1-sol,20261016063554-9fc298,2026-10-16
+game/GameEngine/Source/GameLogic/AI/Rva003F8820Pathfinder.cpp|param|fast_float2long_round|f,0c982a3338ebb318a5261fa5,gpt-6.1-sol,20261016063554-9fc298,2026-10-16
