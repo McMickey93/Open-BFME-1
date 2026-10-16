@@ -492,6 +492,8 @@ def test_old_name_in_other_built_source_refused(tmp_path, monkeypatch, capsys):
 # --- OLD spelled only inside a gen_asm PROC no row builds (approved by the project lead 2026-10-16) ---
 
 LIVE = "?d_00001500@@YAXXZ,,0x00001500,8,game/gen_asm/d.asm,matched,gen-dump"
+# the hand-written row that replaced the dead proc's body at 0x1600
+REPLACED = "?real@@YAXXZ,,0x00001600,8,game/b.cpp,matched,x"
 
 
 def dump(dead_body=f"    dd {VT_OLD}\n", live_body="    db 0C3h\n", extern=True, outside=""):
@@ -503,7 +505,8 @@ def dump(dead_body=f"    dd {VT_OLD}\n", live_body="    db 0C3h\n", extern=True,
 def test_old_only_in_an_unbuilt_proc_of_a_built_dump_allowed(tmp_path, monkeypatch):
     # the TBuff case: the dump is still built for another proc, the vtable's
     # only use is the replaced proc's body plus its EXTERN
-    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE], {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump()})
+    repo = make_code_repo(tmp_path, [DTOR_ROW, LIVE, REPLACED],
+                          {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": dump()})
     assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 0
 
 
@@ -555,5 +558,75 @@ def test_gen_small_cpp_dump_still_built_refused(tmp_path, monkeypatch, capsys):
 
 
 def test_asm_procs_bounds():
-    text = "x\nA PROC\n db 0\nA ENDP\nB PROC NEAR\nB ENDP\nC PROC\n"
+    text = "x\nA PROC\n db 0\nA ENDP\nB PROC NEAR\nB ENDP\n"
     assert guard.asm_procs(text) == [(2, 4, "A"), (5, 6, "B")]
+    # bounds unknown: unclosed, or a PROC opening inside another
+    assert guard.asm_procs(text + "C PROC\n") is None
+    assert guard.asm_procs("A PROC\nB PROC\nB ENDP\nA ENDP\n") is None
+
+
+# --- round 1 review (build/review_deadproc_r1): each hole now refuses ---
+
+DEAD_ROW = "?d_00001600@@YAXXZ,,0x00001600,8,game/gen_asm/d.asm,matched,gen-dump"
+
+
+def dead_repo(tmp_path, text, rows=(DTOR_ROW, LIVE, REPLACED), extra=None):
+    files = {"game/b.cpp": "int x;\n", "game/gen_asm/d.asm": text}
+    files.update(extra or {})
+    return make_code_repo(tmp_path, list(rows), files)
+
+
+def test_A_dead_proc_called_from_a_built_proc_refused(tmp_path, monkeypatch):
+    repo = dead_repo(tmp_path, dump(live_body="    call ?d_00001600@@YAXXZ\n"))
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_A_dead_proc_called_from_another_dump_refused(tmp_path, monkeypatch):
+    repo = dead_repo(tmp_path, dump(), extra={"game/gen_asm/e.asm": "EXTERN ?d_00001600@@YAXXZ:NEAR\n"})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_B_row_deleted_without_a_replacement_refused(tmp_path, monkeypatch):
+    # the seat drops ?d_00001600's row and lands nothing at 0x1600
+    repo = dead_repo(tmp_path, dump(), rows=(DTOR_ROW, LIVE))
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+    # a generated replacement covers nothing either
+    gen = "?g@@YAXXZ,,0x00001600,8,game/gen_small/g.cpp,matched,gen-x"
+    repo = dead_repo(tmp_path / "g", dump(), rows=(DTOR_ROW, LIVE, gen),
+                     extra={"game/gen_small/g.cpp": "void g() {}\n"})
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_B_proc_without_an_address_name_refused(tmp_path, monkeypatch):
+    text = dump().replace("?d_00001600@@YAXXZ", "?helper@@YAXXZ")
+    repo = dead_repo(tmp_path, text)
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+@pytest.mark.parametrize("dead_body,live_body", [
+    (f"lbl EQU {VT_OLD}\n", "    dd lbl\n"),               # an EQU a built proc uses
+    (f"lbl2:\n    dd {VT_OLD}\n", "    jmp lbl2\n"),        # a label a built proc jumps to
+    (f"lbl3 LABEL BYTE\n    dd {VT_OLD}\n", "    dd lbl3\n"),  # a LABEL a built proc reads
+])
+def test_C_G_label_defined_in_the_dead_body_used_elsewhere_refused(tmp_path, monkeypatch, dead_body, live_body):
+    repo = dead_repo(tmp_path, dump(dead_body=dead_body, live_body=live_body))
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_D_nested_procs_refused(tmp_path, monkeypatch):
+    text = (f"EXTERN {VT_OLD}:BYTE\n_TEXT SEGMENT\n?d_00001600@@YAXXZ PROC\n?d_00001500@@YAXXZ PROC\n"
+            f"    dd {VT_OLD}\n?d_00001500@@YAXXZ ENDP\n?d_00001600@@YAXXZ ENDP\n_TEXT ENDS\nEND\n")
+    repo = dead_repo(tmp_path, text)
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_E_proc_word_in_a_comment_is_failsafe(tmp_path, monkeypatch):
+    repo = dead_repo(tmp_path, dump(outside="; PROC\n"))
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1
+
+
+def test_F_crlf_accepted_lowercase_failsafe(tmp_path, monkeypatch):
+    repo = dead_repo(tmp_path, dump().replace("\n", "\r\n"))
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 0
+    repo = dead_repo(tmp_path / "l", dump().replace(" PROC", " proc").replace(" ENDP", " endp"))
+    assert retire(monkeypatch, repo, VT_OLD, VT_NEW) == 1

@@ -335,9 +335,12 @@ def source_mentions(name):
     if dead:
         dead -= row_sources()
     # A gen_asm dump that rows still build stops blocking only when every
-    # spelling of NAME in it sits inside PROC bodies no row builds any more
-    # (approved by the project lead 2026-10-16): the assembler still emits such
-    # a proc, but nothing links, verifies or DIR32-checks it. Its EXTERN line
+    # spelling of NAME in it sits inside PROC bodies that are dead (approved by
+    # the project lead 2026-10-16): no row builds the proc, nothing anywhere
+    # references it or a label it defines, and a matched hand-written row
+    # covers its retail address. The assembler still emits such a proc into
+    # the linked object (the .asm is assembled whole, its segments are not
+    # COMDATs), but no code reaches it and no gate verifies it. Its EXTERN line
     # only serves those procs. Anything else, or a gen_small C++ dump, blocks.
     dead |= {p for p in hits - dead if p.startswith("game/gen_asm/")
              and only_in_unbuilt_procs(p, name, bare_identifier(name))}
@@ -345,21 +348,27 @@ def source_mentions(name):
 
 
 PROC_RE = re.compile(r"^(\S+)[ \t]+PROC\b")
+ADDRESS_PROC_RE = re.compile(r"^\?d_([0-9A-Fa-f]{8})@@")
+DEFINED_RE = re.compile(r"^[ \t]*([A-Za-z_$?@][\w$?@]*)[ \t]*(?::|[ \t]EQU\b|[ \t]LABEL\b|[ \t]*=)")
+_TOKEN_EDGE = r"[\w$?@]"
 
 
 def asm_procs(text):
     """[(first line, last line, symbol)] of every `SYM PROC` .. `SYM ENDP` body,
-    1-based and inclusive."""
+    1-based and inclusive; None when a PROC opens inside another or never
+    closes (the bounds are then unknown)."""
     out, open_proc = [], None
     for number, line in enumerate(text.splitlines(), 1):
+        match = PROC_RE.match(line)
         if open_proc is None:
-            match = PROC_RE.match(line)
             if match:
                 open_proc = (number, match.group(1))
         elif re.match(rf"^{re.escape(open_proc[1])}[ \t]+ENDP\b", line):
             out.append((open_proc[0], number, open_proc[1]))
             open_proc = None
-    return out
+        elif match:
+            return None
+    return None if open_proc else out
 
 
 def built_symbols(path, tree=":"):
@@ -374,22 +383,69 @@ def built_symbols(path, tree=":"):
     return out
 
 
+def covered_by_authored_row(rva, tree=":"):
+    """True when a matched, non-generated functions.csv row in TREE covers RVA."""
+    text = git_show_text(f"{tree}{FUNCTIONS}") or ""
+    for row in csv.DictReader(text.splitlines()):
+        try:
+            start, size = int(row["target_rva"], 16), int(row["target_size"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if (start <= rva < start + size and row.get("status") == "matched"
+                and not is_generated(row.get("source") or "")):
+            return True
+    return False
+
+
+def referenced_elsewhere(symbol, path, lines, first, last):
+    """True when SYMBOL is spelled in PATH outside lines FIRST..LAST (other than
+    its own PUBLIC line) or in any other indexed file under game/ or the shims."""
+    token = re.compile(rf"(?<!{_TOKEN_EDGE}){re.escape(symbol)}(?!{_TOKEN_EDGE})")
+    public = re.compile(rf"^[ \t]*PUBLIC[ \t]+{re.escape(symbol)}[ \t]*$", re.IGNORECASE)
+    for number, line in enumerate(lines, 1):
+        if not first <= number <= last and token.search(line) and not public.match(line):
+            return True
+    got = subprocess.run(["git", "grep", "--cached", "-l", "-F", "-e", symbol, "--", *SOURCE_ROOTS],
+                         cwd=root(), capture_output=True, text=True)
+    return any(p != path for p in got.stdout.splitlines() if p)
+
+
+def dead_proc(path, symbol, lines, first, last, built, tree=":"):
+    """A proc no row builds, that nothing references (by its own name or a
+    label it defines), whose retail address (?d_XXXXXXXX) a matched
+    hand-written row now covers."""
+    if symbol in built:
+        return False
+    match = ADDRESS_PROC_RE.match(symbol)
+    if not match or not covered_by_authored_row(int(match.group(1), 16), tree):
+        return False
+    labels = {symbol} | {m.group(1) for line in lines[first:last - 1] if (m := DEFINED_RE.match(line))}
+    return not any(referenced_elsewhere(label, path, lines, first, last) for label in labels)
+
+
 def only_in_unbuilt_procs(path, name, bare=None, tree=":"):
     """True when every line of the dump at PATH (as TREE holds it) spelling
-    NAME (decorated) or BARE (as a word) lies in a PROC body whose symbol no
-    functions.csv row builds from PATH, or is that name's own `EXTERN NAME:`
-    declaration; and at least one such proc exists."""
+    NAME (decorated) or BARE (as a word) lies in a dead PROC body (dead_proc),
+    or is that name's own `EXTERN NAME:` declaration; and at least one such
+    proc exists."""
     text = git_show_text(f"{tree}{path}")
     if text is None:
         return False
+    lines = text.splitlines()
+    procs = asm_procs(text)
+    if procs is None:
+        return False
     word = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(bare)}(?![A-Za-z0-9_])") if bare else None
-    procs, built, seen = asm_procs(text), built_symbols(path, tree), False
-    for number, line in enumerate(text.splitlines(), 1):
+    built, verdict, seen = built_symbols(path, tree), {}, False
+    for number, line in enumerate(lines, 1):
         if name not in line and not (word and word.search(line)):
             continue
-        inside = [sym for first, last, sym in procs if first <= number <= last]
+        inside = [(first, last, sym) for first, last, sym in procs if first <= number <= last]
         if inside:
-            if inside[0] in built:
+            first, last, sym = inside[0]
+            if sym not in verdict:
+                verdict[sym] = dead_proc(path, sym, lines, first, last, built, tree)
+            if not verdict[sym]:
                 return False
             seen = True
         elif not re.match(rf"^[ \t]*EXTERN[ \t]+{re.escape(name)}:", line, re.IGNORECASE):
