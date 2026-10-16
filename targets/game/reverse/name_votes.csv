@@ -5559,3 +5559,7 @@ game/GameEngine/Source/GameLogic/AI/PathfindZoneFlatten.cpp|local|flattenZones|z
 game/GameEngine/Source/GameLogic/AI/PathfindZoneFlatten.cpp|local|flattenZones|zone2,b34182b753a2b9063ebdf5ff,gpt-6.1-sol,20261016122510-a6d711,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/CylinderEmissionCallback.cpp|local|Rva005F93F0CylinderCallbackView::Rva005F93F0CylinderCallback|x,0a7634e2d98d8a5d6c975d0f,gpt-6.1-sol,20261016122518-114c89,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/CylinderEmissionCallback.cpp|local|Rva005F93F0CylinderCallbackView::Rva005F93F0CylinderCallback|y,270cb655f5ce22cdd6ec09a3,gpt-6.1-sol,20261016122518-114c89,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7680.cpp|local|Pathfinder::iterateCellsAlongLine|xinc2,5e2fab1116bb96ce5e5f7e38,gpt-6.1-sol,20261016122616-6b3279,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7680.cpp|local|Pathfinder::iterateCellsAlongLine|yinc2,c8cb58b921cbcc30cafe6e77,gpt-6.1-sol,20261016122616-6b3279,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7680.cpp|local|Pathfinder::iterateCellsAlongLine|x,e272cd5d6fe7d308d03c9238,gpt-6.1-sol,20261016122616-6b3279,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7680.cpp|local|Pathfinder::iterateCellsAlongLine|y,d8269060387553f9dbb8b47b,gpt-6.1-sol,20261016122616-6b3279,2026-10-16
