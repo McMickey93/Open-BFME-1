@@ -5368,3 +5368,6 @@ game/Libraries/Source/WWVegas/WWLib/Gen_t_00776240DefaultConstructor.cpp|type||R
 game/Libraries/Source/WWVegas/WWLib/Gen_t_00776240DefaultConstructor.cpp|member||m_vector2C,0c886dd9fddd6043abe62b85,gpt-6.1-sol,20261016081210-4e0579,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_setClipPercentFull.cpp|type||Rva001E9E60ContainView,cb149445b499a90276b8c03b,gpt-6.1-sol,20261016081216-e91bc2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_setClipPercentFull.cpp|member||m_objectID08,c1d24d5783ac1c5bc43c2b31,gpt-6.1-sol,20261016081216-e91bc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorCtorThunk.cpp|member||m_f14,30cb1d6dc0d162b33c3d97c2,gpt-6.1-sol,20261016081222-372fd8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorCtorThunk.cpp|member||m_f18,d9cc1afbfbbcace58ecd1fe8,gpt-6.1-sol,20261016081222-372fd8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorCtorThunk.cpp|member||m_f1c,0ea9163035fbde74c83f6c8b,gpt-6.1-sol,20261016081222-372fd8,2026-10-16
