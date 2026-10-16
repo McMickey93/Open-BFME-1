@@ -75,7 +75,7 @@ extern void rva0004B510Target(void);
 #pragma comment(linker, "/alternatename:?rva0002C3D6Target@@YAXXZ=?get@Rva00784A40@@QBEPAXXZ")
 #pragma comment(linker, "/alternatename:?rva0002F5B3Target@@YAXXZ=?b_00784AA0@@YAXXZ")
 #pragma comment(linker, "/alternatename:?rva0002F95ATarget@@YAXXZ=?findUpgrade@UpgradeCenter@@QBEPBVUpgradeTemplate@@ABVAsciiString@@@Z")
-#pragma comment(linker, "/alternatename:?rva0003025BTarget@@YAXXZ=??0BattlePlanUpdateModuleData@@QAE@XZ")
+#pragma comment(linker, "/alternatename:?rva0003025BTarget@@YAXXZ=??0ReplenishUnitsBehaviorModuleData@@QAE@XZ")
 #pragma comment(linker, "/alternatename:?rva0003059ETarget@@YAXXZ=?_M_insert_overflow@?$vector@VPlayerTemplate@@V?$allocator@VPlayerTemplate@@@_STL@@@_STL@@IAEXPAVPlayerTemplate@@ABV3@ABU__false_type@2@I_N@Z")
 #pragma comment(linker, "/alternatename:?rva000328C6Target@@YAXXZ=??0FireWeaponWhenDeadBehavior@@QAE@PAVThing@@PBVModuleData@@@Z")
 #pragma comment(linker, "/alternatename:?rva00034711Target@@YAXXZ=??0StructureToppleUpdate@@QAE@PAVThing@@PBVModuleData@@@Z")

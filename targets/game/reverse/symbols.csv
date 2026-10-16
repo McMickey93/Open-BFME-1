@@ -2462,7 +2462,6 @@ name,address,notes
 ??0BaseY005E7360@@QAE@PAVOwnerY005E7360@@@Z,0x005EEA60,ctor of the base subobject constructed inline by the 102-byte adjusted-owner new family (Q4NewInlineCtorAdjusted.cpp); address-derived name; identity not recovered
 ??0BaseY005E7620@@QAE@PAVOwnerY005E7620@@@Z,0x005FFBB0,ctor of the base subobject constructed inline by the 102-byte adjusted-owner new family (Q4NewInlineCtorAdjusted.cpp); address-derived name; identity not recovered
 ??0Rva005EA080@@QAE@PAVOwnerY005E7940@@@Z,0x006009B0,second ctor of class Rva005EA080: stamps its dir32 vftables (identity_evidence/006009b0-rva005ea080-owner-ctor.md); called by HostY005E7940::create in Q4NewInlineCtorAdjusted.cpp
-??0BattlePlanUpdateModuleData@@QAE@XZ,0x0003025B
 ??0BeaconClientUpdateModuleData@@QAE@XZ,0x000286C3,module-glue cascade callee (from retail call site)
 ??0BehaviorModule@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,exact retail rel32 target of the six module constructors that call it; the body at 0x00113C60 is retail's ICF fold with ??0ObjectModule@@QAE@PAVThing@@PBVModuleData@@@Z
 ??0BezierSegment@@QAE@XZ,0x00043A9A
