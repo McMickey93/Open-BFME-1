@@ -4058,3 +4058,11 @@ game/GameEngine/Source/GameLogic/AI/Rva00170BD0AIGuardState_onExit.cpp|type||Rva
 game/GameEngine/Source/Common/BfmeVersionTextAL.cpp|member||m_bfmeMajorAL,8471272156c7aa7dad8b5ccc,gpt-6.1-sol,20261016063614-930020,2026-10-16
 game/GameEngine/Source/Common/BfmeVersionTextAL.cpp|member||m_bfmeMinorAL,5f7b3b1b7aeb46f210b12b6b,gpt-6.1-sol,20261016063614-930020,2026-10-16
 game/GameEngine/Source/Common/BfmeVersionTextAL.cpp|function|BfmeVersionAL@|bfmeVersionTextAL,aebbf872c7155be5823f9d94,gpt-6.1-sol,20261016063614-930020,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||index00,e0ad2016c80a20b1b551b9ce,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||type04,eb3cc5f9aea11f541703587f,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||position08,f0b8808e3f43fcffc48e4174,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||direction14,c0258324e4f01af603d02279,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||objectID20,8fefa054c0073e97ec3363e0,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||entries24,c3731b5df8d65cd0472f66f5,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|member||initialized30,599c68520f9b824e895f1ed6,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingInitialize00206CB0.cpp|function|SiegeDockingBehavior@|initializeBones00206CB0,f33a7ca5e14569a2e452c8ad,gpt-6.1-sol,20261016063559-9f83f3,2026-10-16
