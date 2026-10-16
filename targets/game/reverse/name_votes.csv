@@ -2068,3 +2068,6 @@ game/GameEngine/Source/Common/RTS/Player_newMap.cpp|local|BfmePlayerMapState::in
 game/GameEngine/Source/Common/INI/INIMultiplayer.cpp|local|MultiplayerSettings::newMultiplayerColorDefinition|tmp,dac7d78d05dc3426784d53f7,gpt-6.1-sol,20261016040722-f2c6df,2026-10-16
 game/GameEngine/Source/Common/INI/INIMultiplayer.cpp|local|INI::parseMultiplayerColorDefinition|c,69465a22ad46ea92631e86e2,gpt-6.1-sol,20261016040722-f2c6df,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_flag0C,3a3f92d555f8b4e30fe7138e,gpt-6.1-sol,20261016040729-42b30f,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.cpp|param|constructPeerResponse|p,d76e915593d832d52ac15f69,gpt-6.1-sol,20261016040737-bd8bdd,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.cpp|param|destroyPeerResponse|p,85f0d9655082bcbb89b662fd,gpt-6.1-sol,20261016040737-bd8bdd,2026-10-16
+game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.cpp|local|playerInfoCallback|t,7cd79de5cf070224f4228b2a,gpt-6.1-sol,20261016040737-bd8bdd,2026-10-16
