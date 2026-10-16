@@ -14,7 +14,8 @@
 //
 // Field shape, independently: the field-parse proc this body pushes
 // (0x0042AEF5 -> 0x00201B90) carries the one-entry table at 0x010A502C,
-// { "FadeOutTime", 0x004324DE }, and that field proc is an x87 float parser.
+// { "FadeOutTime", 0x004324DE, NULL, 8 }. ILT 0x000324DE jumps to
+// INI::parseDurationUnsignedInt at RVA 0x000B9C60.
 // The factory at 0x00125D70 allocates 0x20 bytes and instead pushes 0x0040A727 -> 0x0020D260,
 // whose table (0x010A6FE8) is { "UnitName", ... } -- SpawnUnitBehavior.
 
@@ -26,10 +27,8 @@ void *__cdecl operator new(unsigned int);
 class MultiIniFieldParse;
 
 // 12-byte ModuleData: retail vftable 0x0108D748 plus two dwords.  The body's
-// only INI field is the float "FadeOutTime" (field proc 0x004324DE is an x87
-// float parser), but the ctor value retail stores at +0x08 is the immediate
-// 1, not 1.0f (0x3F800000), so the member is written as the dword it is and
-// is deliberately not named after the field.
+// only INI field is the duration "FadeOutTime" at +0x08. The parser stores
+// whole logic frames, consistent with the constructor's immediate value 1.
 class OathbreakersFadeAwayBehaviorModuleData
 {
 public:
