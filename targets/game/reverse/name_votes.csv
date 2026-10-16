@@ -4660,3 +4660,7 @@ game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member|
 game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field15,01cc2940af7d014050a2bf22,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|param|setFlag|o,7602f69ac6e5d5ef351817e6,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|param|clearFlag|o,3661a6325a455914b2da5425,gpt-6.1-sol,20261016070735-8e7bd9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at3c,e59509323901fe5efd8fec38,gpt-6.1-sol,20261016070843-cbfa70,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at20,77929eec7c27587e34f735bf,gpt-6.1-sol,20261016070843-cbfa70,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at04,9781ca108c7d97603dc23cf1,gpt-6.1-sol,20261016070843-cbfa70,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StealthCleanup00299250.cpp|member||at24,bc31500e270d6d74f06cc0d1,gpt-6.1-sol,20261016070843-cbfa70,2026-10-16
