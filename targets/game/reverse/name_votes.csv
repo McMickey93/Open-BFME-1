@@ -1744,3 +1744,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DSnowManagerRender.cpp|type|
 game/GameEngine/Source/GameLogic/Object/Behavior/CastleBehaviorRva00371B00.cpp|local|Thing::getTemplate|tmpl,389f9e50d17f68e20ec21ae9,gpt-6.1-sol,20261016035842-bf5ab9,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredSixtyFive.cpp|member||m_bfmeVft,a72ab5e3deef2b66b8c4e7db,gpt-6.1-sol,20261016040047-3e8365,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredSixtyFive.cpp|function|BfmeThingVH@|bfmeKillVH,a466031511b3d6139e5935a3,gpt-6.1-sol,20261016040047-3e8365,2026-10-16
+game/GameEngine/Source/Common/RTS/ActionManagerCanEnterObject.cpp|local|BFMEActionManager::canEnterObject|m,0a6f04b11b149fdc5515b6c3,gpt-6.1-sol,20261016040153-0e1cdf,2026-10-16
