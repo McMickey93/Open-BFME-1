@@ -159,6 +159,9 @@ class _Obj:
         return getattr(other, "name", None) == self.name
 
 
+tmp_receipts = Path(__import__("tempfile").mkdtemp()) / "refresh_inputs.json"
+
+
 def _refreshable(monkeypatch, objects, facts, *, stale=(), missing=(), after=None, dirty=(), compiled=None):
     """Patch link_census so refresh_current sees `objects` (current ledger,
     link order) with `facts`; returns the census index it refreshes."""
@@ -169,7 +172,8 @@ def _refreshable(monkeypatch, objects, facts, *, stale=(), missing=(), after=Non
     sources = {o: Path(f"game/{o.name.replace('.obj', '.cpp')}") for o in objs + [_Obj(n) for n in missing]}
     state = {"present": objs, "missing": [_Obj(n) for n in missing], "stale": [_Obj(n) for n in stale]}
 
-    def compile_rows(rows, need):
+    def compile_rows(rows, need, input_proof=None):
+        assert input_proof is not None          # the refresh's own receipts prove the inputs
         (compiled if compiled is not None else []).append(sorted(str(n) for n in need))
         if after is not None:
             state.update(after)
@@ -181,10 +185,15 @@ def _refreshable(monkeypatch, objects, facts, *, stale=(), missing=(), after=Non
     monkeypatch.setattr(link_census, "verify_data_objects", lambda: None)
     monkeypatch.setattr(link_census, "read_facts", lambda present, rows: [facts[o.name] for o in present])
     monkeypatch.setattr(link_census, "ledger_owners", lambda rows: {})
+    monkeypatch.setattr(link_census, "rejudge_weak_facts",
+                        lambda present, facts, rows, kept, owners: pytest.fail("no verified /MAP receipt"))
     monkeypatch.setattr(link_census, "common_definitions", lambda obj, **kw: {})
     monkeypatch.setattr(alias_guard, "object_aliases", lambda obj: [])
     monkeypatch.setattr(build, "compile_rows", compile_rows)
     monkeypatch.setattr(C, "refresh_dirty", lambda paths: list(dirty))
+    monkeypatch.setattr(link_census, "_refresh_missing_search_root_receipts", lambda rows, out, receipts: None)
+    monkeypatch.setattr(link_census, "_INPUT_RECEIPTS", None)
+    monkeypatch.setattr(C, "REFRESH_RECEIPTS", tmp_receipts)
     ix = index(strong={"f": [0, 1]})
     ix["selection"] = {"exceptions": {}, "owners": {}}
     return ix
@@ -200,7 +209,7 @@ def test_refresh_rejudges_every_current_object_without_mtimes(monkeypatch):
              "b.obj": ([("g", "dMINE", 4, "retail")], [], [], []),
              "d.obj": ([], ["h"], [], [])}
     ix = _refreshable(monkeypatch, ["a.obj", "b.obj", "d.obj"], facts)
-    C.refresh_current(ix, None)
+    C.refresh_current(ix)
     assert ix["objects"] == ["a.obj", "b.obj", "d.obj"]
     assert ix["strong"] == {"h": [2]} and ix["comdat"]["g"] == [(0, "dGEN", "wrong"), (1, "dMINE", "retail")]
     assert ix["refreshed"] and "weak_inventory" not in ix          # census receipts never rewritten
@@ -212,18 +221,42 @@ def test_refreshed_index_blocks_the_kept_copy_current_truth_rejects(monkeypatch)
     facts = {"gen.obj": ([("g", "dGEN", 4, "wrong")], [], [], []),
              "mine.obj": ([("g", "dMINE", 4, "retail")], [], [], [])}
     ix = _refreshable(monkeypatch, ["gen.obj", "mine.obj"], facts)
-    C.refresh_current(ix, None)
+    C.refresh_current(ix)
     fact = ([("g", "dMINE", 4, "retail")], [], [], [])
     assert C.wrong_selected(_Obj("mine.obj"), fact, 1, 1, ix) == ["g"]
 
 
-def test_an_unprovable_kept_definition_blocks_only_a_refreshed_preview(monkeypatch):
+def test_an_unprovable_kept_definition_is_preview_unknown_only_where_its_definers_changed(monkeypatch):
+    """Review round 2 (1) + the 2026-10-16 LINKED rule: 5,084 names judge
+    'unknown' in today's census; one whose definers did not change keeps the
+    census's non-blocking result (no false loss); a changed one is LINKED
+    PREVIEW UNKNOWN, never a pass and never a proven loss."""
     fact = ([("g", "dB", 4, None)], [], [], [])
     census = index(comdat={"g": [(0, "dA", None), (1, "dB", None)]})
     census["selection"] = {"exceptions": {}, "owners": {}}
-    assert C.wrong_selected(_Obj("b.obj"), fact, 1, 1, census) == []          # unchanged default
-    census["refreshed"] = True
-    assert C.wrong_selected(_Obj("b.obj"), fact, 1, 1, census) == ["g"]
+    unknown = []
+    assert C.wrong_selected(_Obj("b.obj"), fact, 1, 1, census, unknown=unknown) == [] and unknown == []
+    census["selection"]["changed"] = {"g"}
+    assert C.wrong_selected(_Obj("b.obj"), fact, 1, 1, census, unknown=unknown) == [] and unknown == ["g"]
+
+
+def test_changed_definers_compares_object_kind_and_digest():
+    old = index(strong={"s": [0]}, comdat={"g": [(0, "dA", None), (1, "dB", None)], "k": [(2, "dK", None)]})
+    new = {"objects": ["a.obj", "b.obj", "c.obj"], "strong": {"s": [0]},
+           "comdat": {"g": [(0, "dA", "wrong"), (1, "dB2", None)], "k": [(2, "dK", "retail")]}}
+    assert C.changed_definers(old, new) == {"g"}       # a verdict alone is no change
+
+
+def test_refresh_runs_the_census_weak_rejudge_on_its_map_holders(monkeypatch):
+    import link_census
+    facts = {"a.obj": ([], [], [], []), "b.obj": ([], [], [], [])}
+    ix = _refreshable(monkeypatch, ["a.obj", "b.obj"], facts)
+    seen = []
+    monkeypatch.setattr(C, "census_kept", lambda selection: {"w": "a.obj"})
+    monkeypatch.setattr(link_census, "rejudge_weak_facts",
+                        lambda present, f, rows, kept, owners: seen.append(kept) or f)
+    C.refresh_current(ix)
+    assert seen == [{"w": "a.obj"}]
 
 
 def test_refresh_refuses_a_big_compile_without_the_flag(monkeypatch):
@@ -231,37 +264,54 @@ def test_refresh_refuses_a_big_compile_without_the_flag(monkeypatch):
     compiled = []
     ix = _refreshable(monkeypatch, many, {n: ([], [], [], []) for n in many}, stale=many, compiled=compiled)
     with pytest.raises(SystemExit, match="--refresh-compile"):
-        C.refresh_current(ix, None)
+        C.refresh_current(ix)
     assert compiled == []
     ix = _refreshable(monkeypatch, many, {n: ([], [], [], []) for n in many}, stale=many, compiled=compiled,
                       after={"stale": []})
-    C.refresh_current(ix, None, allow_compile=True)
+    C.refresh_current(ix, allow_compile=True)
     assert len(compiled) == 1 and len(compiled[0]) == len(many)
 
 
-def test_refresh_refuses_objects_still_missing_or_stale(monkeypatch):
-    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])}, missing=["gone.obj"],
+def test_refresh_refuses_objects_still_stale(monkeypatch):
+    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])}, stale=["a.obj"],
+                      after={"stale": [_Obj("a.obj")]})
+    with pytest.raises(SystemExit, match="still stale"):
+        C.refresh_current(ix)
+
+
+def test_refresh_previews_without_objects_still_missing_as_the_census_does(monkeypatch, capsys):
+    """Review round 2 (3): one failed ledger compile must not make --refresh always refuse."""
+    import build
+    ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], ["h"], [], [])}, missing=["gone.obj"],
                       after={"missing": [_Obj("gone.obj")]})
-    with pytest.raises(SystemExit, match="still missing or stale"):
-        C.refresh_current(ix, None)
+
+    def failing(rows, need, input_proof=None):
+        raise SystemExit("cl.exe failed on game/gone.cpp")
+    monkeypatch.setattr(build, "compile_rows", failing)
+    C.refresh_current(ix)
+    assert ix["objects"] == ["a.obj"] and "1 ledger object(s) missing" in capsys.readouterr().err
 
 
 def test_refresh_refuses_a_dirty_tree_outside_the_checked_files(monkeypatch):
     ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])}, dirty=["game/other.cpp"])
     with pytest.raises(SystemExit, match="differ from HEAD"):
-        C.refresh_current(ix, None, checked=["game/a.cpp"])
+        C.refresh_current(ix, checked=["game/a.cpp"])
 
 
 def test_refresh_dirty_ignores_only_the_checked_files(monkeypatch):
-    out = " M game/a.cpp\0?? game/new.cpp\0R  game/to.cpp\0game/from.cpp\0"
-    monkeypatch.setattr(C, "_git", lambda *a, **k: out)
-    assert C.refresh_dirty({"game/a.cpp"}) == ["game/new.cpp", "game/to.cpp"]
+    out = " M game/a.cpp\0?? game/new.cpp\0R  game/to.cpp\0game/from.cpp\0 R game/wt.cpp\0game/wfrom.cpp\0"
+    calls = []
+    monkeypatch.setattr(C, "_git", lambda *a, **k: calls.append(a) or out)
+    assert C.refresh_dirty({str(C.ROOT / "game/a.cpp")}) == ["game/new.cpp", "game/to.cpp", "game/wt.cpp"]
+    assert C.refresh_dirty({"./game/a.cpp", "game/new.cpp"}) == ["game/to.cpp", "game/wt.cpp"]
+    # the ledgers are not part of the check: add_match/re_log edit them between previews
+    assert "targets/game/reverse" not in calls[0]
 
 
 def test_refresh_drops_build_recompile_only(monkeypatch):
     monkeypatch.setenv("BUILD_RECOMPILE_ONLY", "x.cpp")
     ix = _refreshable(monkeypatch, ["a.obj"], {"a.obj": ([], [], [], [])})
-    C.refresh_current(ix, None)
+    C.refresh_current(ix)
     import os
     assert "BUILD_RECOMPILE_ONLY" not in os.environ
 
@@ -271,9 +321,10 @@ def test_refresh_keeps_measured_holders_and_blocks_unmeasured_ones(monkeypatch):
     ix = _refreshable(monkeypatch, ["a.obj", "b.obj"], facts)
     ix["strong"], ix["comdat"] = {}, {"g": [(0, "d1", None), (1, "d2-old", None)]}
     ix["selection"]["exceptions"] = {"g": 1}
-    C.refresh_current(ix, None)
-    assert ix["selection"]["exceptions"] == {} and ix["selection"]["unmeasured"] == {"g"}
-    assert C.wrong_selected(_Obj("a.obj"), facts["a.obj"], 0, 0, ix) == ["g"]
+    C.refresh_current(ix)
+    assert ix["selection"]["exceptions"] == {} and ix["selection"]["stale"] == {"g"}
+    unknown = []
+    assert C.wrong_selected(_Obj("a.obj"), facts["a.obj"], 0, 0, ix, unknown=unknown) == [] and unknown == ["g"]
 
 
 def test_serve_fails_closed_when_freshness_cannot_be_read(tmp_path, monkeypatch):
@@ -301,6 +352,7 @@ def _preview(monkeypatch, tmp_path, names):
     monkeypatch.setattr(link_census, "ledger", lambda: None)
     monkeypatch.setattr(link_census, "RetailTruth", lambda _: None)
     monkeypatch.setattr(C, "refresh", lambda *a: None)
+    monkeypatch.setattr(C, "apply_selection_rule", lambda *a, **k: (set(), set()))
     monkeypatch.setattr(C, "source_bytes", lambda sources: {s: 100 for s in sources})
     monkeypatch.setattr(C, "check_object", lambda *a: {k: [] for k in
                         ("unresolved", "duplicates", "comdat", "addresses", "selected")})
@@ -918,3 +970,171 @@ def test_census_only_refreshes_every_new_file_so_new_files_see_each_other(monkey
     assert C.main(["--census-only", "n1.cpp", "n2.cpp"]) == 0
     out = capsys.readouterr().out
     assert "unresolved" not in out and "2 of 2 link cleanly" in out
+
+
+# The LINKED-claim rule (project lead 2026-10-16): apply_selection_rule.
+
+class _Path(_Obj):
+    pass
+
+
+def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, present=None, owners=None,
+                  census_owners=None, stale_objects=()):
+    """A census of `census_objects` with `census_facts` ({obj: (copies, strong)},
+    copies [(name, digest, verdict)]); `current_facts` is what each object
+    holds now, judged with current truth. refresh() is replaced by a table
+    rewrite from current_facts; everything else is the real rule."""
+    import link_census
+    strong, comdat = collections.defaultdict(list), collections.defaultdict(list)
+    for i, name in enumerate(census_objects):
+        copies, defined = census_facts.get(name, ([], []))
+        for sym in defined:
+            strong[sym].append(i)
+        for sym, digest, verdict in copies:
+            comdat[sym].append((i, digest, verdict))
+    ix = {"meta": {"date": "d", "commit": "c"}, "objects": list(census_objects), "strong": dict(strong),
+          "comdat": dict(comdat), "blockers": {}, "bytes": {}, "common": {}, "common_schema": C.COMMON_SCHEMA,
+          "selection": {"exceptions": {}, "owners": census_owners or {}}}
+    class _Seen(list):
+        pass
+    refreshed = _Seen()
+
+    def fake_refresh(index, objects, truth):
+        for obj in objects:
+            refreshed.append(obj.name)
+            if obj.name not in index["objects"]:
+                index["objects"].append(obj.name)
+            at = index["objects"].index(obj.name)
+            for table in ("strong", "comdat"):
+                for sym in list(index[table]):
+                    index[table][sym] = [e for e in index[table][sym] if (e if table == "strong" else e[0]) != at]
+            copies, defined = current_facts[obj.name]
+            for sym in defined:
+                index["strong"].setdefault(sym, []).append(at)
+            for sym, digest, verdict in copies:
+                index["comdat"].setdefault(sym, []).append((at, digest, verdict))
+
+    def facts_of(obj, truth=None, **kw):
+        copies, defined = current_facts[obj.name]
+        return ([(s, d, 4, v) for s, d, v in copies], list(defined), [], [])
+    present = [_Path(n) for n in (present if present is not None else census_objects)]
+    monkeypatch.setattr(C, "refresh", fake_refresh)
+    monkeypatch.setattr(link_census, "object_facts", facts_of)
+    monkeypatch.setattr(link_census, "ledger_owners", lambda rows: owners or {})
+    monkeypatch.setattr(link_census, "_object_sources", lambda rows: {o: Path(o.name + ".cpp") for o in present})
+    monkeypatch.setattr(link_census, "objects", lambda rows: (present, []))
+    import build
+    compiled = []
+    monkeypatch.setattr(C, "_refresh_receipts", lambda: type("R", (), {"save": lambda self: None})())
+    monkeypatch.setattr(C, "_object_is_current", lambda obj, sources, receipts: obj.name not in stale_objects)
+    monkeypatch.setattr(build, "compile_rows", lambda rows, need, input_proof=None: compiled.extend(need) or {})
+    monkeypatch.setattr(link_census, "_refresh_missing_search_root_receipts", lambda *a: None)
+    refreshed.compiled = compiled
+    return ix, refreshed, facts_of
+
+
+def _judge(ix, obj, facts_of):
+    fact = facts_of(obj)
+    own = ix["objects"].index(obj.name)
+    unknown = []
+    return C.wrong_selected(obj, fact, own, own, ix, unknown=unknown), unknown
+
+
+def test_rule_c4c23b4869_renamed_stlport_names_meet_frozen_gen_copies(monkeypatch):
+    """c4c23b4869: BfmeConv14xx renamed to real STLport names that
+    game/gen_small/tgrid_004.cpp and zhstl_005.cpp already define (frozen
+    copies the census left unjudged). Every definer is refreshed with current
+    truth: the kept first copy (tgrid's) is not retail's -> a loss, never LINKS."""
+    S = "??$find_if@V?$reverse_iterator@PBD@_STL@@U?$_Neq_char_bound@U?$char_traits@D@_STL@@@2@@_STL@@YA@Z"
+    census = {"tgrid_004.obj": ([(S, "dT", None)], []), "zhstl_005.obj": ([(S, "dZ", None)], []),
+              "bfmeconv1472.obj": ([("?old_asm_lift@@YAXXZ", "dL", None)], [])}
+    now = {"tgrid_004.obj": ([(S, "dT", "wrong")], []), "zhstl_005.obj": ([(S, "dZ", "wrong")], []),
+           "bfmeconv1472.obj": ([(S, "dM", "retail")], [])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
+    mine = _Path("bfmeconv1472.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    assert S in changed and stale == set()
+    assert sorted(refreshed) == ["bfmeconv1472.obj", "tgrid_004.obj", "zhstl_005.obj"]
+    selected, unknown = _judge(ix, mine, facts_of)
+    assert selected == [S] and unknown == []
+
+
+def test_rule_c4c23b4869_without_the_gen_objects_is_preview_unknown(monkeypatch):
+    """The same case in a worktree whose gen_small objects are missing or stale:
+    the definers cannot be refreshed -> LINKED PREVIEW UNKNOWN, never LINKS."""
+    S = "??$find_if@stl@@YAXXZ"
+    census = {"tgrid_004.obj": ([(S, "dT", None)], []), "zhstl_005.obj": ([(S, "dZ", None)], []),
+              "bfmeconv1472.obj": ([], [])}
+    now = {"tgrid_004.obj": ([(S, "dT", None)], []), "zhstl_005.obj": ([(S, "dZ", None)], []),
+           "bfmeconv1472.obj": ([(S, "dM", "retail")], [])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now,
+                                    present=["zhstl_005.obj", "bfmeconv1472.obj"], stale_objects={"zhstl_005.obj"})
+    mine = _Path("bfmeconv1472.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    assert stale == {S}
+    assert _judge(ix, mine, facts_of) == ([], [S])
+    assert [p.name for p in refreshed.compiled] == ["zhstl_005.obj.cpp"]   # compiled first, still stale here
+    # tgrid_004.obj, gone from the current ledger, lost its definitions
+    assert ix["objects"].index("tgrid_004.obj") not in [i for i, _, _ in ix["comdat"][S]]
+
+
+def test_rule_never_compiles_beyond_its_limit(monkeypatch):
+    S = "?s@@YAXXZ"
+    census = {"a.obj": ([(S, "dA", None)], []), "mine.obj": ([], [])}
+    now = {"a.obj": ([(S, "dA", None)], []), "mine.obj": ([(S, "dM", None)], [])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now, stale_objects={"a.obj"})
+    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, [], compile_limit=0)
+    assert stale == {S} and refreshed.compiled == []
+
+
+def test_rule_e9c390b038_new_identical_copy_still_reports_the_gain(monkeypatch):
+    """e9c390b038: the respelled EAStringC TU newly emits ??1EAStringC, a COMDAT
+    18 other TUs define with the same body. The name changed (a new definer),
+    every definer is refreshed, the copies agree: nothing to choose, so the
+    file LINKS and its +587 stands."""
+    D = "??1EAStringC@@QAE@XZ"
+    others = {f"eastr{i}.obj": ([(D, "dE", None)], []) for i in range(18)}
+    census = {**others, "rva008c7950stacksubstring.obj": ([], [])}
+    now = {**others, "rva008c7950stacksubstring.obj": ([(D, "dE", None)], [])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
+    mine = _Path("rva008c7950stacksubstring.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    assert D in changed and stale == set() and len(refreshed) == 19
+    assert _judge(ix, mine, facts_of) == ([], [])
+
+
+def test_rule_unchanged_unknown_name_is_no_false_loss(monkeypatch):
+    """A name the census already judged 'unknown' (two differing copies, no
+    retail address) that the checked file references but whose definers and
+    ownership did not change keeps the census verdict: no loss, no unknown."""
+    U = "?unknown@@YAXXZ"
+    census = {"a.obj": ([(U, "d1", None)], []), "b.obj": ([(U, "d2", None)], []),
+              "mine.obj": ([("?mine@@YAXXZ", "dm", None)], [])}
+    now = dict(census)
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, now)
+    mine = _Path("mine.obj")
+    changed, stale = C.apply_selection_rule(ix, [mine], None, [])
+    assert changed == set() and refreshed == ["mine.obj"]
+    assert _judge(ix, mine, facts_of) == ([], [])
+
+
+def test_rule_an_ownership_change_alone_refreshes_the_definers(monkeypatch):
+    G = "?owned@@YAXXZ"
+    census = {"a.obj": ([], [G]), "mine.obj": ([], [G])}
+    ix, refreshed, facts_of = _rule_fixture(monkeypatch, list(census), census, census,
+                                            owners={G: {"mine.obj"}}, census_owners={G: {"a.obj"}})
+    changed, stale = C.apply_selection_rule(ix, [_Path("mine.obj")], None, [])
+    assert changed == {G} and sorted(refreshed) == ["a.obj", "mine.obj"]
+    assert ix["selection"]["owners"][G] == {"mine.obj"}
+    # two exclusive definers, the kept (first, a.obj) is not the current owner's -> wrong
+    assert _judge(ix, _Path("mine.obj"), facts_of) == ([G], [])
+
+
+def test_report_preview_unknown_never_claims_a_gain(capsys):
+    ix = index(blockers={"x.cpp": {"linked": False}})
+    result = {k: [] for k in ("unresolved", "duplicates", "comdat", "addresses", "selected")}
+    result["preview_unknown"] = ["?s@@YAXXZ"]
+    assert C.report("x.cpp", _Obj("x.obj"), result, ix, 587) is False
+    out = capsys.readouterr().out
+    assert "LINKED PREVIEW UNKNOWN — selection census stale for: ?s@@YAXXZ" in out
+    assert "LINKED 0 -> 0 bytes" in out and result["after_bytes"] == 0
