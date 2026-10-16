@@ -20478,5 +20478,25 @@
   "after_sha256": "3d867483d32214c135cdb53e2d3066bf51edbb949515bba88f520ebdd152495a",
   "evidence": "targets/game/reverse/identity_evidence/rva00205440-runoffmap.md",
   "reason": "padding member renamed to the project's unmodelled-bytes convention"
+ },
+ {
+  "old_path": "game/GameEngine/Source/Common/DamageFX_doDamageFX.cpp",
+  "new_path": "game/GameEngine/Source/Common/DamageFX_doDamageFX.cpp",
+  "old_name": "DamageFX",
+  "new_name": "Rva00066780DamageFX",
+  "before_sha256": "104145e5d64a3d43688ae0262e32eb1bdba55eda964d2a8f714811b46eb2a2be",
+  "after_sha256": "65db081eefbf51284d810b1cc23f66f1e68fb534d14317f6e6d9757643ffc942",
+  "evidence": "targets/game/reverse/identity_evidence/00066780-damagefx-dodamagefx-address-owner.md",
+  "reason": "tools/ilt_oracle.py contradicts DamageFX::doDamageFX at 0x00066780 (ILT slot 24901, p_false 7.18e-04); the body keeps its address owner Rva00066780DamageFX, the spelling the matched caller Rva0020F240Body::doDamageFX and the ILT 0x0001F65E pin already use."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "DamageFX",
+  "new_name": "Rva00066780DamageFX",
+  "before_sha256": "8a44f4ae0a0331e152267e78e3ac2c5f308525565d49b2df201b764cfcab6c9b",
+  "after_sha256": "4284aa6177668b3f18b1511762eabf6e7161125b9b47bbfd591c5d4dbad6fe23",
+  "evidence": "targets/game/reverse/identity_evidence/00066780-damagefx-dodamagefx-address-owner.md",
+  "reason": "tools/ilt_oracle.py contradicts DamageFX::doDamageFX at 0x00066780 (ILT slot 24901, p_false 7.18e-04); the body keeps its address owner Rva00066780DamageFX, the spelling the matched caller Rva0020F240Body::doDamageFX and the ILT 0x0001F65E pin already use."
  }
 ]

@@ -204,7 +204,6 @@ functions	0x00065E10	?clear@?$BitFlags@$0IA@@@QAEXXZ
 functions	0x00066500	?__copy_trivial_backward@_STL@@YAPAXPBX0PAX@Z
 functions	0x00066600	?isLevelSpecific@AudioEventInfo@@UBE_NXZ
 functions	0x000666E0	?__copy_trivial@_STL@@YAPAXPBX0PAX@Z
-functions	0x00066780	?doDamageFX@DamageFX@@QBE_NW4DamageType@@MPBVObject@@1@Z
 functions	0x00066DD0	?_M_delete_node@?$hashtable@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@PBVGameWindow@@UhashConstGameWindowPtr@WindowVideoManager@@U?$_Select1st@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@2@U?$equal_to@PBVGameWindow@@@2@V?$allocator@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@2@@_STL@@AAEXPAU?$_Hashtable_node@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@2@@Z
 functions	0x000670B0	?_M_next_size@?$hashtable@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@@_STL@@ABEII@Z
 functions	0x00068A60	?capacity@?$vector@UCoord3D@@V?$allocator@UCoord3D@@@_STL@@@_STL@@QBEIXZ

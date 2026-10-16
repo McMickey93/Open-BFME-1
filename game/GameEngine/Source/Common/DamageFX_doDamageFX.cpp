@@ -1,5 +1,7 @@
 // cl: /DNDEBUG /MD /EHsc
 // BFME DamageFX::doDamageFX, retail 0x00066780, returns whether an effect exists.
+// tools/ilt_oracle.py contradicts the DamageFX::doDamageFX decoration at this
+// address, so the class keeps the address (the caller's Rva00066780DamageFX).
 // The ActiveBody caller at 0x0020F240 passes the damage type, amount, source, and
 // victim, then tests AL. The four-level DFX records use a 0x40-byte type stride.
 
@@ -22,7 +24,7 @@ public:
 
 extern const float g_rva01075350;
 
-class DamageFX
+class Rva00066780DamageFX
 {
 	struct DFX
 	{
@@ -38,7 +40,7 @@ public:
 	Bool doDamageFX(DamageType t, Real damageAmount, const Object *source, const Object *victim) const;
 };
 
-Bool DamageFX::doDamageFX(DamageType t, Real damageAmount, const Object *source, const Object *victim) const
+Bool Rva00066780DamageFX::doDamageFX(DamageType t, Real damageAmount, const Object *source, const Object *victim) const
 {
 	const FXList *fx = 0;
 
