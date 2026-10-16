@@ -4249,3 +4249,11 @@ game/GameEngine/Source/Common/BfmeConv1005.cpp|local|BfmeE1005::bfmeGoF1005|h,97
 game/GameEngine/Source/Common/BfmeConv1005.cpp|local|BfmeE1005::bfmeGoF1005|u,da6d2b548e9b050551492882,gpt-6.1-sol,20261016064604-c04630,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1005.cpp|local|BfmeE1005::bfmeGoF1005|g,31a2f652d44d97d430c2f5d7,gpt-6.1-sol,20261016064604-c04630,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1005.cpp|local|BfmeE1005::bfmeGoF1005|m,2553b90049e755d60c49e14c,gpt-6.1-sol,20261016064604-c04630,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|member||field00,586ef4f912f1f5ed89d19312,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|v,a6b58c2eb2d4d9668d21d61f,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|v2,9ce03df9eb329a79dd53a005,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|v3,6516bfd662d158d533e53fab,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|v4,3a8b2470bd1418271b398258,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|v5,74221bfcde88143a82972e5c,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|v6,77742ffb780b75ba925a4b04,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
+game/Libraries/Source/Apt/Rva008AE7C0CreateChannels.cpp|local|aptCreateChannels008AE7C0|s,d6446d502bf6479464324304,gpt-6.1-sol,20261016064609-e439dc,2026-10-16
