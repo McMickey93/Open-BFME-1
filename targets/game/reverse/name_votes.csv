@@ -4960,3 +4960,15 @@ game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTr
 game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|y,10ff78fdbb9f95a61cc85aa1,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|v,7d8819a90cdba01fa162864f,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F5A0.cpp|param|BfmeRbTreeInsertRva0033F5A0|w,45afc8d8f12529b288248e5e,gpt-6.1-sol,20261016072136-92d50b,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12050,e1b3e34608c89adae1799e92,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12054,03b9ac705c028c317ea25fcd,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown1205c,32a7ed08b06a3d624d32bd92,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12060,d59d524da0404a20fc7194f5,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12080,d76ac88d8a4d95c359196381,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown120a0,e01f4174350da73a4723007d,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown120e0,b921f594784bccdfae61bab6,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown120e4,4181a3294a87c6d80d62079d,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12104,1a269ffe95e7ebc064db2746,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12108,c695431bc17180c6ec13c31a,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown1210c,4182388900bdff8ac42d5c05,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
+game/GameEngine/Source/GameNetwork/ConnectionManagerConstructor.cpp|member||unknown12110,6bd7a27e1cf0431b0d114a35,gpt-6.1-sol,20261016072244-f0ef5d,2026-10-16
