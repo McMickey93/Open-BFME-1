@@ -2452,3 +2452,9 @@ game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.
 game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_x86,10daa2c23e2408a50174a25f,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_xa0,68c855f3ad7384dc9aa305ec,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_xa4,bfd5bbb006d33564390a80ba,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_value70,636edd9611a297bba98d668b,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_flagC4,726ebea03b57fb74d650a254,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_flagC5,3a77a32212428e78983f3140,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_valueC8,f1a0296035df24940ac9f752,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_valueD0,3cc068d14cee565cad41ea7d,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_valueD4,13e220300d139304a124ae24,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
