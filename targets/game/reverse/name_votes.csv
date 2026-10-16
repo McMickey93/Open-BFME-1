@@ -5170,3 +5170,5 @@ game/GameEngine/Source/Common/BfmeConv982.cpp|local|Rva007845D0::method|w,4df1c9
 game/GameEngine/Source/Common/BfmeConv982.cpp|local|Rva007845D0::method|h,3d8c1db5df6ac3d3823f6b09,gpt-6.1-sol,20261016074521-032a5e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv982.cpp|local|Rva007845D0::method|x,8f870640ccf90f68ebaed87a,gpt-6.1-sol,20261016074521-032a5e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv982.cpp|local|Rva007845D0::method|y,1dba58479412a6439f28fc73,gpt-6.1-sol,20261016074521-032a5e,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AttackHordeStateMachineCtor.cpp|type||Rva00171B40AIAttackFireWeaponState,4b2e311703c97b607867c521,gpt-6.1-sol,20261016074526-97c405,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AttackHordeStateMachineCtor.cpp|param|StateConditionInfo|t,13daafd82cf2f7d0238ae2f7,gpt-6.1-sol,20261016074526-97c405,2026-10-16
