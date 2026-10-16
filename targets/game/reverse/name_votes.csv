@@ -3136,3 +3136,6 @@ game/GameEngine/Source/Common/Thing/ThingTemplateConstructor.cpp|member||m_dword
 game/GameEngine/Source/GameLogic/Object/Behavior/OverchargeBehaviorCtorThunk.cpp|member||m_f14,b2aadc08ab305b458b0d3378,gpt-6.1-sol,20261016055601-352610,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/OverchargeBehaviorCtorThunk.cpp|member||m_f18,788705b4b563ef6e63cb47d7,gpt-6.1-sol,20261016055601-352610,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/OverchargeBehaviorCtorThunk.cpp|member||m_f1c,d41005d7589530b342149ef9,gpt-6.1-sol,20261016055601-352610,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateConstructor.cpp|member||m_f14,713f0d6486c0ec9351c96ddf,gpt-6.1-sol,20261016055610-723ffe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateConstructor.cpp|member||m_f18,a4228ec88352cd0ff59e47bb,gpt-6.1-sol,20261016055610-723ffe,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateConstructor.cpp|member||m_f1c,2785ae99c8a10fcf3ee431df,gpt-6.1-sol,20261016055610-723ffe,2026-10-16
