@@ -4985,3 +4985,7 @@ game/GameEngine/Source/GameLogic/Pathfinder/PathfinderFindSafePathBfme.cpp|membe
 game/GameEngine/Source/GameLogic/Pathfinder/PathfinderFindSafePathBfme.cpp|member||m_bfmeSlots,ac26ebb4586e556148e4e558,gpt-6.1-sol,20261016072512-3ae3d7,2026-10-16
 game/GameEngine/Source/GameLogic/Pathfinder/PathfinderFindSafePathBfme.cpp|member||m_bfmeCursor,6d43746197eeb2b7100ad9b0,gpt-6.1-sol,20261016072512-3ae3d7,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldManagerDestructor.cpp|local|Release_Ref|n,9267e69a7ee29bffdcbfd3d9,gpt-6.1-sol,20261016072518-f28ab9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f14,516c5d4af219aae705021380,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f18,5757a0062400f283b3ccfcf1,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f24,afeee7885f419d2b7907eff0,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f2c,7d7e9b05c4cfe8f83ceadd43,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
