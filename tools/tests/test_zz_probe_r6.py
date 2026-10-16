@@ -99,6 +99,8 @@ def test_direct_truth_change(monkeypatch, tmp_path, case):
 def test_dir32_change(monkeypatch, tmp_path):
     D = "?gData@@3HA"
     path = "targets/game/reverse/dir32_addresses.csv"
+    # a real dir32 diff (round 8: it used to pass only because `git show` failed)
+    _ledger(monkeypatch, tmp_path, f"name,va\n{D},0x01000000\n", f"name,va\n{D},0x01000004\n", path)
     census = {"b.obj": ([(Y, "dB", "retail")], [], [D]), "c.obj": ([], [], [Y, D])}
     now = {"b.obj": ([(Y, "dB", "wrong")], [], [D]), "c.obj": ([], [], [Y, D])}
     linked, sel, unk, refreshed = _run(monkeypatch, census, now, ["b.obj", "c.obj"], {path})

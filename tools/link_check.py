@@ -658,9 +658,18 @@ def command_moves(commit, sources):
         return None
 
 
-TRUTH_FILES = ("targets/game/reverse/functions.csv", "targets/game/reverse/data_rows.csv",
-               "targets/game/reverse/symbols.csv", "targets/game/reverse/dir32_addresses.csv",
-               "targets/game/reverse/reloc_names.csv")
+# Truth inputs (link_census.RetailTruth, alias/route verdicts): which column
+# names a row, which holds its address, and that address's space.
+TRUTH_LAYOUT = {
+    "targets/game/reverse/functions.csv": (0, 2, "rva"),
+    "targets/game/reverse/symbols.csv": (0, 1, "rva"),
+    "targets/game/reverse/reloc_names.csv": (0, 1, "rva"),
+    "targets/game/reverse/data_rows.csv": (0, 1, "va"),
+    "targets/game/reverse/dir32_addresses.csv": (0, 1, "va"),
+    "targets/game/reverse/ghidra_functions.csv": (None, 0, "rva"),      # route_verdict boundaries
+    "targets/game/reverse/derived_boundaries.csv": (None, 0, "rva"),
+}
+TRUTH_FILES = tuple(TRUTH_LAYOUT)
 _OBJECT_SYMBOL = re.compile(r"object-symbol=([^;,\s\"]+)")
 _ANON = re.compile(r"\?A0x[0-9a-fA-F]{8}@")
 
@@ -671,17 +680,27 @@ def _anon(text):
     return _ANON.sub("?A0x@", text)
 
 
-def _truth_rows(text):
-    """{name: frozenset of ledger lines naming it} for one ledger file's text:
-    its name column and any object-symbol= note."""
-    rows = collections.defaultdict(set)
+def _truth_rows(text, layout=(0, None, None)):
+    """({name: frozenset of lines naming it}, {(space, address): set of lines})
+    for one truth file's text. A row names its name column and any
+    object-symbol= note; anonymous-namespace hashes are normalised."""
+    name_col, address_col, space = layout
+    by_name, by_address = collections.defaultdict(set), collections.defaultdict(set)
     for line in text.splitlines()[1:]:
         line = _anon(line.rstrip("\r"))
-        name = next(csv.reader([line]), [""])[0] if line else ""
-        for key in {name, *_OBJECT_SYMBOL.findall(line)}:
-            if key:
-                rows[key].add(line)
-    return rows
+        if not line:
+            continue
+        fields = next(csv.reader([line]), [])
+        if name_col is not None and len(fields) > name_col:
+            for key in {fields[name_col], *_OBJECT_SYMBOL.findall(line)}:
+                if key:
+                    by_name[key].add(line)
+        if address_col is not None and len(fields) > address_col:
+            try:
+                by_address[(space, int(fields[address_col], 16))].add(line)
+            except ValueError:
+                pass
+    return by_name, by_address
 
 
 class AllNames(frozenset):
@@ -696,19 +715,39 @@ class AllNames(frozenset):
 
 
 def truth_changes(commit, since, names=None):
-    """Names whose rows in a truth ledger (functions.csv, data_rows.csv,
-    symbols.csv pins, dir32_addresses.csv, reloc_names.csv; name column and
-    object-symbol= notes, anonymous-namespace hashes normalised) differ from
-    the census commit's. Retail truth moves without any object changing:
-    a row re-homed in its own source, a new pin (round 6 F5). Restricted to
-    `names` when given; with names=None, every such name (the full diff).
-    AllNames() when the census ledger cannot be read."""
+    """Names whose retail truth may have moved since the census commit:
+    (1) a row naming them differs in a truth file (functions.csv, symbols.csv
+        pins, reloc_names.csv, data_rows.csv, dir32_addresses.csv; name
+        column and object-symbol= notes; anonymous-namespace hashes
+        normalised) -- a row re-homed in its own source, a new pin;
+    (2) any row was added or removed at an ADDRESS one of their rows holds,
+        then or now, in any truth file, including the boundary files
+        ghidra_functions.csv and derived_boundaries.csv: retiring a
+        co-claimant turns a shared "unknown" into "wrong" (round 8 HIGH 2).
+    Restricted to `names` when given; names=None gives the full set.
+    AllNames() when a truth file the census had cannot be read."""
     touched = [path for path in TRUTH_FILES if since is None or path in since]
     if not touched:
         return set()
     if not commit:
         return set(names) if names is not None else AllNames()
-    found = set()
+    key = (str(ROOT), commit, tuple(touched))
+    if key not in _TRUTH_MEMO:
+        _TRUTH_MEMO[key] = _truth_diff(commit, touched)
+    changed_names = _TRUTH_MEMO[key]
+    if isinstance(changed_names, AllNames):
+        return set(names) if names is not None else changed_names
+    if names is None:
+        return changed_names
+    return {name for name in names if _anon(name) in changed_names}
+
+
+_TRUTH_MEMO = {}
+
+
+def _truth_diff(commit, touched):
+    """truth_changes' full answer for the truth files in `touched`."""
+    changed_names, changed_addresses = set(), set()
     for path in touched:
         shown = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=ROOT, capture_output=True, text=True)
         try:
@@ -717,14 +756,34 @@ def truth_changes(commit, since, names=None):
             now_text = None
         if shown.returncode or now_text is None:
             if (ROOT / path).exists() or shown.returncode == 0:
-                return set(names) if names is not None else AllNames()
+                return AllNames()
             continue                    # absent then and now
-        old, new = _truth_rows(shown.stdout), _truth_rows(now_text)
-        if names is None:
-            found |= {name for name in set(old) | set(new) if old.get(name, set()) != new.get(name, set())}
-        else:
-            found |= {name for name in names if old.get(_anon(name), set()) != new.get(_anon(name), set())}
-    return found
+        old_names, old_addresses = _truth_rows(shown.stdout, TRUTH_LAYOUT[path])
+        new_names, new_addresses = _truth_rows(now_text, TRUTH_LAYOUT[path])
+        changed_names |= {n for n in set(old_names) | set(new_names) if old_names.get(n) != new_names.get(n)}
+        changed_addresses |= {a for a in set(old_addresses) | set(new_addresses)
+                              if old_addresses.get(a) != new_addresses.get(a)}
+    if changed_addresses:
+        # every name with a row at a changed address, then or now
+        for path, (name_col, address_col, space) in TRUTH_LAYOUT.items():
+            if name_col is None:
+                continue
+            texts = []
+            shown = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=ROOT, capture_output=True, text=True)
+            if shown.returncode == 0:
+                texts.append(shown.stdout)
+            try:
+                texts.append((ROOT / path).read_text(encoding="utf-8"))
+            except OSError:
+                pass
+            for text in texts:
+                _, by_address = _truth_rows(text, TRUTH_LAYOUT[path])
+                for address in changed_addresses & set(by_address):
+                    for line in by_address[address]:
+                        fields = next(csv.reader([line]), [])
+                        changed_names.update(k for k in {fields[name_col] if len(fields) > name_col else "",
+                                                         *_OBJECT_SYMBOL.findall(line)} if k)
+    return changed_names
 
 
 MOVED_CACHE = link_census.OUT / "moved_cache.json"
@@ -985,8 +1044,12 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
     # its body references (a call's target row, a pin, a dir32 entry). Without
     # per-copy reference lists, a truth change to any name the checked objects
     # or the kept copies' objects reference changes every touched shared name.
+    # every touched name whose kept copy lies outside the checked objects,
+    # whatever its definer count (a /Gy single copy is judged too), and every
+    # shared one (round 8 HIGH 1)
     shared = {name for name in touched
-              if len(definer_signature(index["objects"], index["strong"], index["comdat"], name)) > 1}
+              if len(definer_signature(index["objects"], index["strong"], index["comdat"], name)) > 1
+              or (kept_definition(index, name) or (None,))[0] not in checked | {None}}
     if shared and truth_moved is not None:
         all_moved = truth_changes(commit, since, None)
         if all_moved:

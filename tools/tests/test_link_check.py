@@ -1045,6 +1045,7 @@ def _rule_fixture(monkeypatch, census_objects, census_facts, current_facts, *, l
     monkeypatch.setattr(link_census, "link_order", lambda rows, data=(): order)
     monkeypatch.setattr(link_census, "data_ledger", lambda: [])
     monkeypatch.setattr(C, "changed_since", lambda commit: _since(since))
+    monkeypatch.setattr(C, "_TRUTH_MEMO", {}, raising=False)
     monkeypatch.setattr(C, "MOVED_CACHE", Path(__import__("tempfile").mkdtemp()) / "moved_cache.json")
     monkeypatch.setattr(C, "object_inputs",
                         lambda obj, sources, receipts: inputs.get(obj.name, {obj.name + ".cpp"}))

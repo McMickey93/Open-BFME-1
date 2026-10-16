@@ -71,6 +71,7 @@ def test_truth_changes_reads_rows_pins_and_object_symbols(monkeypatch, tmp_path)
     old = "name,address,notes\n?a@@YAXXZ,0x1,x\n?b@@YAXXZ,0x2,y\n"
     new = "name,address,notes\n?a@@YAXXZ,0x1,x\n?b@@YAXXZ,0x3,y\n?c@@YAXXZ,0x4,z\n"
     monkeypatch.setattr(C, "ROOT", tmp_path)
+    monkeypatch.setattr(C, "_TRUTH_MEMO", {})
     (tmp_path / "targets/game/reverse").mkdir(parents=True)
     (tmp_path / "targets/game/reverse/symbols.csv").write_text(new)
     monkeypatch.setattr(C.subprocess, "run",
@@ -79,6 +80,7 @@ def test_truth_changes_reads_rows_pins_and_object_symbols(monkeypatch, tmp_path)
     assert C.truth_changes("c", since, {"?a@@YAXXZ", "?b@@YAXXZ", "?c@@YAXXZ"}) == {"?b@@YAXXZ", "?c@@YAXXZ"}
     assert C.truth_changes("c", set(), {"?b@@YAXXZ"}) == set()           # no ledger file changed
     monkeypatch.setattr(C.subprocess, "run", lambda cmd, *a, **k: subprocess.CompletedProcess(cmd, 128, "", "x"))
+    monkeypatch.setattr(C, "_TRUTH_MEMO", {})                             # memoised per process and commit
     assert C.truth_changes("c", since, {"?a@@YAXXZ"}) == {"?a@@YAXXZ"}   # unreadable census: all changed
 
 
