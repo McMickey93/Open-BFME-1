@@ -46,6 +46,9 @@ UNOWNED_HEADER = ("# DIR32 references to names no ledger identity backs, already
                   "# origin/master. Written only by tools/gate_baseline.py --record-unowned; shrink-only.\n"
                   "# One '<base va>\\t<symbol>' per line.\n")
 UNOWNED_FAIL_RE = re.compile(r"^DIR32 consistency: FAIL \d+ unrecorded name")
+# build.py writes build/dir32_inconsistent.txt only when it prints this line; any other
+# DIR32 red (an unrecorded name) leaves the file from an earlier run behind.
+INCONSISTENT_FAIL_RE = re.compile(r"^DIR32 consistency: FAIL \d+ NEW inconsistent")
 FAIL_RE = re.compile(r"^  FAIL (?P<name>.+) \((?P<source>[^()]*)\)$")
 FUNCTIONS_RE = re.compile(r"^Functions: (OK|FAIL) ")
 FULL_GATE_RE = re.compile(r"^FULL GATE: FAIL \S+ \d+ red: (?P<checks>.+)$")
@@ -61,6 +64,10 @@ def run_gate():
     env.setdefault("BUILD_POOL", env.get("BUILD_POOL", "4"))
     env["PYTHONUNBUFFERED"] = "1"
     output = []
+    # The DIR32 reports describe ONE gate run; a file left by an earlier run would be
+    # read as this run's (a fixed symbol reported NEW, or a red read off a stale file).
+    for report in (DIR32_REPORT, UNOWNED_REPORT):
+        report.unlink(missing_ok=True)
     # Wine services can inherit stdout/stderr and outlive the direct gate
     # child. A pipe reader would wait for their EOF even after a final verdict.
     # Separate regular-file handles let us forward progress and stop on the
@@ -202,6 +209,11 @@ def check(output, baseline, dir32_baseline=None, dir32_report=None, returncode=N
         print("gate_baseline: red with no known-red list: " + ", ".join(untracked))
         failed = True
     if dir32_baseline is not None:
+        if ("dir32 consistency" in checks and dir32_report is None
+                and any(UNOWNED_FAIL_RE.match(line) for line in output.splitlines())):
+            print("gate_baseline: DIR32 consistency is red on unrecorded name(s) no ledger identity "
+                  f"backs (see {UNOWNED_REPORT.relative_to(ROOT).as_posix()}); no known-red list covers them")
+            return 1
         if "dir32 consistency" in checks and dir32_report is None:
             print(f"gate_baseline: DIR32 consistency is red but {DIR32_REPORT.relative_to(ROOT).as_posix()} was not written")
             return 1
@@ -280,8 +292,10 @@ def validate_file(path):
 
 
 def read_dir32_report(output):
-    """The report build.py writes when DIR32 consistency fails; None when the gate did not fail it."""
-    if "dir32 consistency" not in red_checks(output) or not DIR32_REPORT.exists():
+    """The report build.py writes when DIR32 consistency fails on inconsistent symbols;
+    None when this transcript does not show that failure (the file may be stale)."""
+    if ("dir32 consistency" not in red_checks(output) or not DIR32_REPORT.exists()
+            or not any(INCONSISTENT_FAIL_RE.match(line) for line in output.splitlines())):
         return None
     return DIR32_REPORT.read_text(encoding="utf-8")
 

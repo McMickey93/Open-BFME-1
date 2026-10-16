@@ -247,3 +247,34 @@ sys.exit(int(sys.argv[6]))
         while not done.exists() and time.monotonic() < deadline:
             time.sleep(0.01)
     assert done.exists()
+
+
+GATE_RED_UNOWNED = (GATE_OK_SHAPE.replace(
+    "DIR32 consistency: FAIL 3 NEW inconsistent symbol(s)\n",
+    "DIR32 consistency: FAIL 1 unrecorded name(s) no ledger identity backs\n")
+    + "\nFULL GATE: FAIL — 3 red: functions, dir32 consistency, no-op patch (unrunnable)\n")
+
+
+def test_a_stale_inconsistent_report_is_not_read_for_an_unowned_red(monkeypatch, tmp_path):
+    stale = tmp_path / "dir32_inconsistent.txt"
+    stale.write_text("__real@3eb33333\t0x10a6568,0x10c0904\n")
+    monkeypatch.setattr(gb, "DIR32_REPORT", stale)
+    assert gb.read_dir32_report(GATE_RED_UNOWNED) is None
+    assert gb.read_dir32_report(GATE_RED_DIR32) is not None
+
+
+def test_an_unowned_dir32_red_fails_and_says_so():
+    code, out = run(gb.check, GATE_RED_UNOWNED, KNOWN_ROWS, [], None)
+    assert code == 1 and "unrecorded name" in out and "NEW DIR32" not in out
+
+
+def test_run_gate_clears_reports_left_by_an_earlier_run(monkeypatch, tmp_path):
+    inconsistent, unowned = tmp_path / "a.txt", tmp_path / "b.txt"
+    inconsistent.write_text("stale\n")
+    unowned.write_text("stale\n")
+    monkeypatch.setattr(gb, "DIR32_REPORT", inconsistent)
+    monkeypatch.setattr(gb, "UNOWNED_REPORT", unowned)
+    monkeypatch.setattr(gb, "gate_command", lambda: [sys.executable, "-c", "print('Functions: OK 1/1')"])
+    with redirect_stdout(io.StringIO()):
+        gb.run_gate()
+    assert not inconsistent.exists() and not unowned.exists()
