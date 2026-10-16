@@ -119,14 +119,14 @@ public:
 class Rva001B9D00Mover
 {
 public:
-	void move(Object *obj, const Coord3D *goalPos, Real onPathDistToGoal,
+	void rva001B9D00(Object *obj, const Coord3D *goalPos, Real onPathDistToGoal,
 		Real desiredSpeed);
 };
 
 class Rva001BB530Mover
 {
 public:
-	void move(Object *obj, const Coord3D *goalPos, Real onPathDistToGoal,
+	void rva001BB530(Object *obj, const Coord3D *goalPos, Real onPathDistToGoal,
 		Real desiredSpeed);
 };
 
@@ -147,7 +147,7 @@ public:
 class Rva001BA1C0Handler
 {
 public:
-	void behavior(Object *obj, const Coord3D *goalPos);
+	void rva001BA1C0(Object *obj, const Coord3D *goalPos);
 };
 
 class Rva001BBBC0Mover
@@ -270,11 +270,11 @@ void Rva001BC820Locomotor::locoUpdate_moveTowardsPosition(Object *obj,
 		case 0:
 		case 4:
 		case 7:
-			((Rva001B9D00Mover *)this)->move(obj, &goalPos,
+			((Rva001B9D00Mover *)this)->rva001B9D00(obj, &goalPos,
 				onPathDistToGoal, desiredSpeed);
 			break;
 		case 6:
-			((Rva001BB530Mover *)this)->move(obj, &goalPos,
+			((Rva001BB530Mover *)this)->rva001BB530(obj, &goalPos,
 				onPathDistToGoal, desiredSpeed);
 			break;
 		case 2:
@@ -314,7 +314,7 @@ void Rva001BC820Locomotor::locoUpdate_moveTowardsPosition(Object *obj,
 	// contributes no machine-code instruction.
 	_ReadWriteBarrier();
 	if (!(tail && ((Rva001B3FE0 *)tail)->test()))
-		((Rva001BA1C0Handler *)this)->behavior(obj, &goalPos);
+		((Rva001BA1C0Handler *)this)->rva001BA1C0(obj, &goalPos);
 
 	((Thing *)obj)->rva00132200(&m_savedTransform);
 	m_moving = 0;

@@ -76435,7 +76435,7 @@ name,address,notes
 ?beginPlayerLeave@BFMEConnectionManager@@QAEHE@Z,0x00667320,byte player ID proven by entry movzx edi byte [esp+0x28]; int result tested by Network::RelayCommandsToCommandList at 0x00682B69
 ?beginPlayerLeave@BFMEConnectionManager@@QAEHPAX@Z,0x00032957,ILT of beginPlayerLeave used by RelayCommandsToCommandList 0x00682B64
 ?beginPlayerLeave@BFMEConnectionManager@@QAEHPAX@Z,0x00667320,int-return alias of the matched QAEXPAX body; eax is PlayerLeaveCode (1=LOCAL)
-?behavior@Rva001BA1C0Handler@@QAEXPAVObject@@PBUCoord3D@@@Z,0x001BA1C0,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BA1C0
+?rva001BA1C0@Rva001BA1C0Handler@@QAEXPAVObject@@PBUCoord3D@@@Z,0x001BA1C0,abi-view=?d_001ba1c0@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BA1C0
 ?behavior@Rva001BA1C0Handler@@QAEXPAXPAX@Z,0x0000FEBB,ILT thunk to the 1615B body at 0x001BA1C0; post-move behaviour handler reached from 0x001BC820
 ?behavior@Rva001BA1C0Handler@@QAE_NPAXPBUCoord3D@@@Z,0x0000FEBB,ILT thunk to the 1615B body at 0x001BA1C0; returns whether constant calling is required
 ?bfmeAEQT@BfmeSubEQT@@QAEDXZ,0x00028F74,pin
@@ -86552,11 +86552,11 @@ name,address,notes
 ?method@Rva007710F0Owner@@QAEXPAX0@Z,0x0003A8D7,ILT to the 0x007710F0 body (gen-dump d_007710f0); the 0x00774060 forwarder calls ILT 0x0003A8D7 with this in ECX and two stack words; the target 0x007710F0 keeps this in EBP and returns with ret 8
 ?method@Rva00925860@@QAEXPAX0@Z,0x00925860,opaque target called by 0x0092C390 with thiscall ret 8
 ?methodRva007CBB70@Rva007CBB30@@QAEIXZ,0x007CBB70,"Address-derived derived MaterialPass helper; native caller007CBD90 passes original receiver inECX and consumes EAX; zero stackargs; mutatesfields40/44, reads38, RET+10D proves270B code extent. Separate16B switchtable at7CBC80 is outsideextent and unclaimed. See identity_evidence/007cbd90-materialpass-install.md; no semanticmembername asserted."
-?move@Rva001B9D00Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001B9D00,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B9D00
+?rva001B9D00@Rva001B9D00Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001B9D00,abi-view=?d_001b9d00@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B9D00
 ?move@Rva001B9D00Mover@@QAEXPAXHHH@Z,0x0002CC3C,ILT thunk to the 972B body at 0x001B9D00; appearance-switch mover reached from 0x001BC820
 ?move@Rva001BB0D0Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB0D0,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB0D0
 ?move@Rva001BB0D0Mover@@QAEXPAXHHH@Z,0x00032A29,ILT thunk to the 890B body at 0x001BB0D0; appearance-switch mover reached from 0x001BC820
-?move@Rva001BB530Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB530,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB530; ret16 at +0x536
+?rva001BB530@Rva001BB530Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB530,abi-view=?d_001bb530@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB530; ret16 at +0x536
 ?move@Rva001BB530Mover@@QAEXPAXHHH@Z,0x00019F06,ILT thunk to the body at 0x001BB530; appearance-switch mover reached from 0x001BC820
 ?move@Rva001BBBC0Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BBBC0,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BBBC0
 ?move@Rva001BC510Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BC510,RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BC510
