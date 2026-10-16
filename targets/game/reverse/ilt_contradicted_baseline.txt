@@ -9009,7 +9009,6 @@ pins	0x0049CE00	?processCommandTransitionUI@ControlBar@@IAE?AW4CBCommandStatus@@
 pins	0x0049E090	?apply@ControlBarSetDefaultConfigShim@@QAEXXZ
 pins	0x0049E120	?apply@ControlBarSetLowConfigShim@@QAEXXZ
 pins	0x004A0140	?allocate_and_copy@ObjectPointerAllocateAndCopyShim@_STL@@QAEPAPAVObject@@IPBQAV3@0@Z
-pins	0x004A5950	?update@ControlBar@@QAEXXZ
 pins	0x004B6D40	?run@GadgetListBoxSetColorsShim@@SAXPAVGameWindow@@HHHHHHHHHHHH@Z
 pins	0x004C1320	?doRepopulateBuildTooltipLayout@ControlBar@@QAEXXZ
 pins	0x004C4530	??$__find_if@V?$reverse_iterator@PBD@_STL@@U?$_Eq_char_bound@V?$char_traits@D@_STL@@@2@@_STL@@YA?AV?$reverse_iterator@PBD@0@V10@0U?$_Eq_char_bound@V?$char_traits@D@_STL@@@0@ABUrandom_access_iterator_tag@0@@Z

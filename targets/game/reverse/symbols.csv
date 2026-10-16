@@ -88686,7 +88686,6 @@ name,address,notes
 ?update@BfmeRva491F0View@@QAEXPAXH@Z,0x0002CE44,assigned-body helper for Rva002491F0
 ?update@BfmeShadowBufferEntry@@QAEXXZ,0x00021030,buffer build update helper via retail ILT
 ?update@BfmeThingDTK@@QAEXXZ,0x00168270,address-derived update using the existing BfmeThingDTK helper pin
-?update@ControlBar@@QAEXXZ,0x004A5950,ControlBar::update body reached through retail ILT 0x0003672D
 ?update@CreditsManager@@UAEXXZ,0x0040ce30,vtable-slot ??_7CreditsManager@@6B@ slot 5 anchors=2
 ?update@DistanceUpdate003C5990@@QAEXPAUDistanceNode003C5990@@H@Z,0x003C5990,Address-derived ABI spelling for raw flag stack slot; call 003C5D4F pushes unmodified fourth argument; assigned exact body consumes only its low byte at 003C59C0; both int and bool ABI slots are four bytes
 ?update@DockUpdate@@UAE?AW4UpdateSleepTime@@XZ,0x002ccec0,vtable-slot ??_7DockUpdate@@6BUpdateModule@@@ slot 0 anchors=1
@@ -91092,3 +91091,4 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ?continuePreparation@SpecialAbilityUpdate@@MAE_NXZ,0x0002FE05,ILT to the SpecialAbilityUpdate::continuePreparation body 0x002A71E0 (ledger row spelled IAE; ilt_oracle CONTRADICTS IAE and CONFIRMS this protected-virtual MAE spelling exact); GloriousCharge/RousingSpeech extend-base overrides tail-jump here
 ??1GameResultsThreadBase@@UAE@XZ,0x009DB530,GameResultsThread.cpp layout stand-in for the 0x50-byte BFME ThreadClass; ~GameResultsThreadClass 0x00640180 tail-jumps to this body (as BFMENetworkThreadBase)
 ?rva0037F220@ExperienceLevelSystem@@QAE?AURva0037F220Iterator@@U2@@Z,0x00041295,ILT to the matched rva0037F220 body 0x0037F220 (address-derived name; ilt_oracle cannot place it); retail Drawable::drawVeterancy 0x00420670 calls it here with the result built in the outgoing argument slot
+?updateContextCommand@ControlBar@@IAEXXZ,0x004A5950,body of ControlBar::updateContextCommand (ilt_oracle CONFIRMS this spelling at its ILT 0x0003672D); ControlBar::init and ControlBar Rva0049E5A0 call it after reloading m_commandWindows

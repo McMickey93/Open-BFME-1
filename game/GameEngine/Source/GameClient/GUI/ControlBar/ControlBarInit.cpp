@@ -222,9 +222,9 @@ class ControlBar
   public:
     virtual void init();
     void setControlCommand(GameWindow *, const CommandButton *);
-    void update();
 
   protected:
+    void updateContextCommand();
     CommandButton *findNonConstCommandButton(const AsciiString &);
     void switchToContext(ControlBarContext, Drawable *);
     static const Image *m_rankVeteranIcon, *m_rankEliteIcon, *m_rankHeroicIcon;
@@ -462,7 +462,7 @@ void ControlBar::init()
         ((Rva004A9980 *)this)->call();
         memcpy(field100, field1A0, sizeof(field100));
         field2EC = 1;
-        update();
+        updateContextCommand();
         switchToContext(CB_CONTEXT_NONE, 0);
     }
 }

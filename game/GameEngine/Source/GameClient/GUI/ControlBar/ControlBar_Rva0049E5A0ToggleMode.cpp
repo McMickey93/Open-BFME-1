@@ -68,7 +68,9 @@ class ControlBar
 {
 public:
 	Int Rva0049E5A0();
-	void update();
+
+protected:
+	void updateContextCommand();
 
 private:
 	unsigned char m_pad00[0x100];
@@ -112,6 +114,6 @@ Int ControlBar::Rva0049E5A0()
 			memcpy(m_commandWindows, m_defaultWindows, 0x50);
 	}
 
-	update();
+	updateContextCommand();
 	return m_mode;
 }
