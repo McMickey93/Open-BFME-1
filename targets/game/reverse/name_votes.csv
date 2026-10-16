@@ -3566,3 +3566,7 @@ game/GameEngine/Source/Common/Rva00477E60Walk.cpp|member||m_200,2649a74320d4cfb2
 game/GameEngine/Source/Common/Rva00477E60Walk.cpp|member||m_204,8bca922d8e3b2eedf4698f16,gpt-6.1-sol,20261016061433-1c269e,2026-10-16
 game/GameEngine/Source/Common/Rva00477E60Walk.cpp|local|Rva00477E60::walk|p,50f28fa5f2bb00f5935b5fa8,gpt-6.1-sol,20261016061433-1c269e,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1973.cpp|member||m_bfmeIdESK,864e8dc35b867952de1714a0,gpt-6.1-sol,20261016061444-54c673,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|member||m_altCrusherLevel49b,22913d5be5d0c43edd1c5e9d,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|member||m_squishable1f4,3a7c3d3290ef406e0fc62224,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|local|Object::canCrushOrSquish|d,3a35ef2959f7e0886600d8de,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/ObjectCanCrushOrSquish.cpp|local|Object::canCrushOrSquish|f,49ac2d8f25ce0eb8da27b232,gpt-6.1-sol,20261016061454-66e8b1,2026-10-16
