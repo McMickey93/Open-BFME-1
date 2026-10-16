@@ -1573,3 +1573,10 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/MapObjectFastAssignUniqueIDs.c
 game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D79C0.cpp|local|Pathfinder::iterateCellsAlongLine|xinc2,7a78d6bfab9f9b57ded5518e,gpt-6.1-sol,20261016032540-4b5d9a,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D79C0.cpp|local|Pathfinder::iterateCellsAlongLine|yinc2,571f61bae28e957ba2a4db5f,gpt-6.1-sol,20261016032540-4b5d9a,2026-10-16
 game/GameEngine/Source/GameNetwork/Rva008030C0FeslPoolInit.cpp|local|Rva00803080::initPool|p,f37972eefa7950db4918f564,gpt-6.1-sol,20261016032908-836884,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|member||m_bfmeVfptr,803e6991d54ce6d972bc2b07,gpt-6.1-sol,20261016032915-943507,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|member||m_bfmeVfptr2,a370b450641b4d14e07b2e59,gpt-6.1-sol,20261016032915-943507,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|member||m_bfmeArr,cdfb40a2d5b75b7f8c398cec,gpt-6.1-sol,20261016032915-943507,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|function|Rva00800B70Owner@|bfmeGo,ba1b69c692c4a1fa3cb6b425,gpt-6.1-sol,20261016032915-943507,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|local|Rva00800B70Owner::bfmeGo|z,ea64f1f6cf1f2f13ce6f6c9b,gpt-6.1-sol,20261016032915-943507,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|local|Rva00800B70Owner::bfmeGo|p,b783ab48da96640ab3d60f24,gpt-6.1-sol,20261016032915-943507,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva00800B70FeslDtor.cpp|local|Rva00800B70Owner::bfmeGo|n,065159618da7862e8c919172,gpt-6.1-sol,20261016032915-943507,2026-10-16
