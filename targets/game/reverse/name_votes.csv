@@ -5476,3 +5476,6 @@ game/GameEngine/Source/Common/BfmeConv962.cpp|function|BfmeInit962@|bfmeInit962,
 game/GameEngine/Source/Common/BfmeConv1999.cpp|member||m_bfmeValueEVI,dd9e7194ab9016e3453d63f0,gpt-6.1-sol,20261016082815-490ed6,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1999.cpp|member||m_bfmeLimitEVI,86ea0e0c165c3b669a3f3f07,gpt-6.1-sol,20261016082815-490ed6,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1999.cpp|member||m_bfmeSinkEVI,e19289597eb0165641f622f7,gpt-6.1-sol,20261016082815-490ed6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WallUpgradeUpdateCtorThunk.cpp|member||m_f14,8ad37fb9fbbd2526dacde18d,gpt-6.1-sol,20261016083058-53d695,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WallUpgradeUpdateCtorThunk.cpp|member||m_f18,e81e2f01d685effae036f217,gpt-6.1-sol,20261016083058-53d695,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/WallUpgradeUpdateCtorThunk.cpp|member||m_f1c,ba800b165819e890483fff27,gpt-6.1-sol,20261016083058-53d695,2026-10-16
