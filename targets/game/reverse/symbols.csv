@@ -7580,6 +7580,7 @@ name,address,notes
 ??1Gen_uw_00032d03@@QAE@XZ,0x00032D03,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00032d85@@QAE@XZ,0x00032D85,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00032fc4@@QAE@XZ,0x00032FC4,gen-uw-pin dtor target read from the retail funclet bytes
+??1?$pair@$$CBVAsciiString@@W4Rva000D6C60Mapped@@@_STL@@QAE@XZ,0x00032FC4,state-0 cleanup callee of matched hash_map<AsciiString Rva000D6C60Mapped>::operator[] 0x000D9870: its unwind funclet 0x00BF9D20 jumps to this ILT; ILT chain reaches the tail-jumping COMDAT pair destructor
 ??1Gen_uw_000336c7@@QAE@XZ,0x000336C7,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_0003372b@@QAE@XZ,0x0003372B,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00033a23@@QAE@XZ,0x00033A23,gen-uw-pin dtor target read from the retail funclet bytes
