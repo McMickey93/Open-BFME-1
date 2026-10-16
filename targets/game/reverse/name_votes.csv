@@ -2560,3 +2560,7 @@ game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipSeps|c,07ce
 game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipSeps|s,04955834819dc5783e395eec,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipNonSeps|c,f5cc7db0792fc16dc0da3c4d,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipNonSeps|s,f6cf85fdc66eaf651b769e3c,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipSepsW|c,5cd7c34033da5582bf0180be,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipSepsW|s,6c6536be407340793d51b7ab,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipNonSepsW|c,9d78ee1a3b38598adb0fcc38,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSepsW.cpp|local|skipNonSepsW|s,67607bd65b63e91f70c1fc99,gpt-6.1-sol,20261016050944-05dd44,2026-10-16
