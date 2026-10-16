@@ -5081,3 +5081,6 @@ game/Libraries/Source/EA/Apt/Rva008930C0AptLookup.cpp|member||m_bfme54,1a38da949
 game/Libraries/Source/EA/Apt/Rva008930C0AptLookup.cpp|member||m_bfme58,b5ed1bc04ed2b4dac2da1e05,gpt-6.1-sol,20261016073553-9646dd,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7440.cpp|local|Rva003D7440Pathfinder::iterateCellsAlongLine003D7440|x,ef0cb4ab2d35e2bf20a8e148,gpt-6.1-sol,20261016073608-853fec,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfinderIterateCellsAlongLineRva003D7440.cpp|local|Rva003D7440Pathfinder::iterateCellsAlongLine003D7440|y,99d9d6d60b47ff3152252876,gpt-6.1-sol,20261016073608-853fec,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BC310HeightPredicate.cpp|type||Rva002BC310Data,5cdcf8eece5c7114699edc1d,gpt-6.1-sol,20261016073614-dec115,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BC310HeightPredicate.cpp|member||m_heightLimit40,ac76a1f92b3571d569039307,gpt-6.1-sol,20261016073614-dec115,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BC310HeightPredicate.cpp|member||m_height44,86c8a8781c034366fb346aa2,gpt-6.1-sol,20261016073614-dec115,2026-10-16
