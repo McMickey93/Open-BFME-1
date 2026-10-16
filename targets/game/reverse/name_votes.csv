@@ -1286,3 +1286,6 @@ game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|r,363ba7
 game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|v,cc2a34eb0484c66a05a72ec4,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
 game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|t,1c5e216faa6bf800c51234fb,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
 game/GameEngine/Source/Common/PackShroudPixel.cpp|local|packShroudPixel|q,b1ecb11ed1e6f857ebc045c8,gpt-6.1-sol,20261016030001-4882b8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferFillTaintSurface.cpp|local|TaintBuffer::fillTaintSurface|g,73525544e9c70bd05a9cb698,gpt-6.1-sol,20261016025955-4026bd,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferFillTaintSurface.cpp|local|TaintBuffer::fillTaintSurface|y,acf9b726bd4bbcf99f000d5e,gpt-6.1-sol,20261016025955-4026bd,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferFillTaintSurface.cpp|local|TaintBuffer::fillTaintSurface|x,5cdc89a9b11aad3cb4804345,gpt-6.1-sol,20261016025955-4026bd,2026-10-16
