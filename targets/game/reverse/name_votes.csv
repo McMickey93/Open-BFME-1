@@ -4994,3 +4994,5 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|type||Pathfinder00243EA0,2dddcc8cba78fa2e04b31688,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|member||field140,1254d6e2948bcd7d2de7159b,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|member||field1D8,129f158b876aec8a7f210291,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FlammableUpdateConstructorThunk.cpp|member||m_f14,5b7eaf8a7389a493677962c1,gpt-6.1-sol,20261016072537-c89acb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FlammableUpdateConstructorThunk.cpp|member||m_f18,24a51640f1862038c22f1944,gpt-6.1-sol,20261016072537-c89acb,2026-10-16
