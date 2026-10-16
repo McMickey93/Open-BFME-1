@@ -2145,3 +2145,8 @@ game/GameEngine/Source/GameLogic/Object/SpecialPower/SiegeDeploySpecialPowerModu
 game/GameEngine/Source/GameLogic/Object/Damage/ReflectDamageModuleDataConstructor.cpp|member||m_unmodelled_08,f918d246a1697593dfa0893d,gpt-6.1-sol,20261016041501-9a1fb0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Damage/ReflectDamageModuleDataConstructor.cpp|member||m_unmodelled_0C,4e2e3e871aeb9adce13d8807,gpt-6.1-sol,20261016041501-9a1fb0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Damage/ReflectDamageModuleDataConstructor.cpp|member||m_unmodelled_10,fe66bb79c692b09751790caa,gpt-6.1-sol,20261016041501-9a1fb0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_18,c4856f2c2b2f17a6d06ac93c,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_1C,71cd22e3f9d753315418aa27,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_20,6fb6bff448e69281b0f5ab90,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_24,8b9841bfdb85d793843e053e,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/EnragedBehaviorModuleDataCtorThunk.cpp|member||m_unmodelled_28,50e401d1b61cd79995d174c6,gpt-6.1-sol,20261016041507-1ad539,2026-10-16
