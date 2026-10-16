@@ -5302,3 +5302,7 @@ game/GameEngine/Source/Common/Rva008F7EC0Sweep.cpp|member||m_20,798ef114f98fb404
 game/GameEngine/Source/Common/Rva008F7EC0Sweep.cpp|local|Rva008F7EC0::method|p,aa9a8549091a385bc31b51a0,gpt-6.1-sol,20261016080222-c3c9bc,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_drawMoveHints.cpp|param|asciiText|s,2a9535e25620393e0f2fe8ae,gpt-6.1-sol,20261016080228-4919a4,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_drawMoveHints.cpp|local|W3DInGameUI::drawMoveHints|tmp,9951911df38461c995013b1e,gpt-6.1-sol,20261016080228-4919a4,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp|param|bfmeMax|a,621bd05e3656f543d0d7ba95,gpt-6.1-sol,20261016080252-072596,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp|param|bfmeMax|b,d612e75237ecced2b4dd3040,gpt-6.1-sol,20261016080252-072596,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp|param|bfmeMin|a,5f9770161bb5e20ba7c6bbb3,gpt-6.1-sol,20261016080252-072596,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp|param|bfmeMin|b,c0974492fd8554b74ab4b6a3,gpt-6.1-sol,20261016080252-072596,2026-10-16
