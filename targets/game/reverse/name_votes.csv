@@ -4571,3 +4571,4 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRele
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_locomotor1cc,78ad14a3d8549c0ded07f50a,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_time3f4,48597ff42a08cc80de503b28,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002C1480PassengerRelease.cpp|member||m_id3fc,64ccf54ac131bfbb449436c0,gpt-6.1-sol,20261016070344-9a1b4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Body/ActiveBody_setCorrectDamageState.cpp|member||m_field34,55278dd0c16af1c1c1f4340f,gpt-6.1-sol,20261016065955-dae516,2026-10-16
