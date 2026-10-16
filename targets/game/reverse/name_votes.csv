@@ -3390,3 +3390,6 @@ game/GameEngine/Source/GameClient/Drawable/Behavior/AnimationSoundClientBehavior
 game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeFriendNewModuleDataThunk.cpp|member||m_70,4f8ae4cf524e68d0c1a5d343,gpt-6.1-sol,20261016060723-033b19,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeFriendNewModuleDataThunk.cpp|member||m_71,b45b6816d09dcec3f04f01eb,gpt-6.1-sol,20261016060723-033b19,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeFriendNewModuleDataThunk.cpp|member||m_74,a3f88a0ac61620cd0ab650e6,gpt-6.1-sol,20261016060723-033b19,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeModuleData.cpp|member||m_70,276669054a4479001300bcb8,gpt-6.1-sol,20261016060729-86521f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeModuleData.cpp|member||m_74,fafebcf4e4aeed3de787f973,gpt-6.1-sol,20261016060729-86521f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/UnpauseSpecialPowerUpgradeModuleData.cpp|local|UnpauseSpecialPowerUpgradeModuleData::UnpauseSpecialPowerUpgradeModuleData|v,f0b8220611fd69cbb8a19aaf,gpt-6.1-sol,20261016060729-86521f,2026-10-16
