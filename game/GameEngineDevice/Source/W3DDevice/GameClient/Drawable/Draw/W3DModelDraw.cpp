@@ -4416,7 +4416,7 @@ struct Rva0075BE60Position : Coord3D
 class Rva001C86B0Object
 {
 public:
-	Rva0075BE60Position position(Coord3D *normal);
+	Rva0075BE60Position bfmeGetPosition421AE(Coord3D *normal);
 };
 
 class Rva004588D0DecalTemplate
@@ -4454,6 +4454,6 @@ void Rva0075BE60::rva0075BE60(unsigned selected, int color)
 			return;
 	}
 	float scale = m_holder ? m_holder->scale : 0.0f;
-	m_template.create(reinterpret_cast<Rva001C86B0Object *>(object)->position(0), selected, color,
+	m_template.create(reinterpret_cast<Rva001C86B0Object *>(object)->bfmeGetPosition421AE(0), selected, color,
 		*reinterpret_cast<RadiusDecal *>(m_decal), scale);
 }
