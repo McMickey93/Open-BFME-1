@@ -3899,3 +3899,7 @@ game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|Pathfi
 game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeGetWaypoint,a37e286191b2fee27f2358f7,gpt-6.1-sol,20261016062409-edc145,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeHasWaypoints,54ae2fa74b1ebc82c956ba6c,gpt-6.1-sol,20261016062409-edc145,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfindZoneBlockQueries.cpp|function|PathfindZoneManager@|bfmeInteractsWithBridge,a9e7a548847193381d350940,gpt-6.1-sol,20261016062409-edc145,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|type||Rva006F7DA0TreeBuffer,933b79107e09f1877bf078fa,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|param|Vector3|x,3f500f17a4d91a72d5c3f4f6,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|param|Vector3|y,b9b4290d70d85c7b85d14d1b,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|param|Vector3|z,e193899ac7722cc26867c8c1,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
