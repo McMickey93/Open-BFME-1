@@ -5398,3 +5398,9 @@ game/GameEngine/Source/Common/Rva0020DEE0VirtualMode.cpp|member||m_14,e12596a1df
 game/GameEngine/Source/Common/Rva0020DEE0VirtualMode.cpp|member||m_18,0ae28ec1fa4de0a98bf8977d,gpt-6.1-sol,20261016081339-ac23ad,2026-10-16
 game/GameEngine/Source/Common/Rva006F8340Init.cpp|type||Rva006F8340String,6cd26dc8eaebc78db926b2a6,gpt-6.1-sol,20261016081400-07ebf1,2026-10-16
 game/GameEngine/Source/Common/Rva006F8340Init.cpp|member||m_88,b69308950bbf522100925ee7,gpt-6.1-sol,20261016081400-07ebf1,2026-10-16
+game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|member||m_18,c43750437a1a3cdea0547d38,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
+game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|member||m_field04,88d70987ac67b74c619f07cd,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
+game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|finalTemplate|p,99197ad8d7ce0ec1700fc218,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
+game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|t,f8a2c801078549769755e36d,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
+game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|p,d880ccc804c76fe09ea64815,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
+game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|d,42eaad227e301a7b375fc2fd,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
