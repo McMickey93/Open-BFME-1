@@ -2004,3 +2004,7 @@ game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_18,0e63f
 game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_1c,551903d669c1ab1b300ae8ea,gpt-6.1-sol,20261016040833-11d270,2026-10-16
 game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|member||m_20,f66b16dfbfe91ddafe1714a6,gpt-6.1-sol,20261016040833-11d270,2026-10-16
 game/GameEngine/Source/Common/INI/INIOpacityEnvelopeParse.cpp|local|Rva000B9EA0Parse::parse|s,717daf00fabe92833ed1b088,gpt-6.1-sol,20261016040833-11d270,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|member||field0C,17c54ffc517a7ae38b593437,gpt-6.1-sol,20261016040847-31c302,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|member||field24,e43af653dbaf8e9ed6ee7b91,gpt-6.1-sol,20261016040847-31c302,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|member||field58,84eb662363fa6fc2e7de1d0a,gpt-6.1-sol,20261016040847-31c302,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|function|Rva005F6B60Owner@|selectModelNameAt005F6B60,cb19b3f5199db371f305e272,gpt-6.1-sol,20261016040847-31c302,2026-10-16
