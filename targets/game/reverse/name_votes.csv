@@ -3919,3 +3919,7 @@ game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|ty
 game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|type||Rva0029C380,62e76b0c5ebbb8d86e8c9c43,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|member||m_key08,ece44093c0073a2365d9fbc4,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/Rva0029C380BuildableStatus.cpp|function|Rva0029C380@|m0029C380,0aebd005ebde470c50a6bb3d,gpt-6.1-sol,20261016062759-a290aa,2026-10-16
+game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmeNext,0c93ada61a8e265d11dfb4f9,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
+game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmePrev,11f6e5eb6d3b531bc54f6d56,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
+game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmeHead,ad0e49cd8eb8bb11d5bb2dee,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
+game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmeList,04e4074cbeb82b07f8f5476a,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
