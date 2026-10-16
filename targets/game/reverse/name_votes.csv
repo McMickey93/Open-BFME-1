@@ -2078,3 +2078,6 @@ game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|function||Rv
 game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|param|Rva009F40A0DistanceSquared|a,0c6afb0ef48899ebf9ad61a1,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
 game/Libraries/Source/WWVegas/WWMath/Rva009F40A0DistanceSquared.cpp|local|Rva009F40A0DistanceSquared|b,89ed7e395c60ed37b087ca60,gpt-6.1-sol,20261016041247-1a7ba8,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/Rva00972A30AddPrototype.cpp|local|Create_Rva00972880_Prototype|p,9b071d2964517af04d128059,gpt-6.1-sol,20261016041258-c763d2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtorThunk.cpp|member||m_value1,4caeb11b44c9da499f244056,gpt-6.1-sol,20261016041345-4cc047,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtorThunk.cpp|member||m_field18,438815a8ab43542fea289944,gpt-6.1-sol,20261016041345-4cc047,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtorThunk.cpp|member||m_field1C,96fa2d77fb750141696b8810,gpt-6.1-sol,20261016041345-4cc047,2026-10-16
