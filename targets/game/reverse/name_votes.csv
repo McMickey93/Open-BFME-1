@@ -2320,3 +2320,5 @@ game/GameEngine/Source/GameLogic/Object/Update/FirestormDynamicGeometryInfoUpdat
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_94,fb1a7d013d1df968d71420ee,gpt-6.1-sol,20261016042247-57a60b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_98,54d1529796594a71f743b200,gpt-6.1-sol,20261016042247-57a60b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp|member||m_9c,c2d83c4c29c9ed3adda6214a,gpt-6.1-sol,20261016042247-57a60b,2026-10-16
+game/GameEngine/Source/Common/Rva001B74A0Ctor.cpp|member||m_08,844c2afdf7bbec8cdfe34e58,gpt-6.1-sol,20261016042350-90a68e,2026-10-16
+game/GameEngine/Source/Common/Rva001B74A0Ctor.cpp|member||m_0C,e3e814ea48d7541efe538a9b,gpt-6.1-sol,20261016042350-90a68e,2026-10-16
