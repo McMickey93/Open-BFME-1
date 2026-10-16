@@ -55,6 +55,13 @@ void FrameData::init()
 }
 
 /**
+ * Reset this thing.
+ */
+void FrameData::reset() {
+	init();
+}
+
+/**
  * Set the command count for this frame
  */
 void FrameData::setFrameCommandCount(UnsignedInt frameCommandCount) {
@@ -151,7 +158,7 @@ FrameDataReturnType FrameData::allCommandsReady(Bool debugSpewage) {
 		}
 		// Retail calls the init body at 0x00670170 here (ILT 0x00022340), not
 		// the separate reset body at 0x00670220. BFME's reset() forwards to
-		// init() and is inline, so the reference's reset() lands on init.
+		// init(), so the reference's reset() lands on init.
 		init();
 		return FRAMEDATA_RESEND;
 	}
