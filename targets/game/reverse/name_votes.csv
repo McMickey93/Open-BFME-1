@@ -2016,3 +2016,10 @@ game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDat
 game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_value0C,d87031511c6970ec1d9ca991,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_value10,1119eec3e8b70804f2ffa8c0,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_value14,a0d1205e6784b28dded4b7f7,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_f210,a6df30ab416677f82e31c158,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_f214,77a67edd47060a44925ffe5b,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_dword204,47d362e1c57cdc455992de5c,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_dword208,b979cc4021c90cfd13c65583,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_dword20c,ac798abde482b2dee448584b,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_pair210,b85ee4d8ee5ab698a5d6da00,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/ClearanceTestingSlowDeathBehaviorModuleDataConstructor.cpp|member||m_pair218,d57c56a9e871053e5f3cb6e1,gpt-6.1-sol,20261016040959-48fe2c,2026-10-16
