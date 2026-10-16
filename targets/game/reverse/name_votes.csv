@@ -1356,3 +1356,5 @@ game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|run|y,7a
 game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|run|v,d3f61c27717c16922cdc0537,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|BfmeRbTreeInsertRva0033F4B0|y,eb5204a40e863c7641bd01a4,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
 game/Libraries/Source/WWVegas/WWLib/RvaTreeMInsertRva0033F4B0.cpp|param|BfmeRbTreeInsertRva0033F4B0|v,e95265cad115f56011e46c0e,gpt-6.1-sol,20261016030512-a0e299,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindLayerXfer.cpp|local|PathfindLayer::xfer|x,0dbf8bdff127772d8ed86020,gpt-6.1-sol,20261016030521-af3ff7,2026-10-16
+game/GameEngine/Source/GameLogic/AI/PathfindLayerXfer.cpp|local|PathfindLayer::xfer|y,04d8334b9f489c2d4c34d476,gpt-6.1-sol,20261016030521-af3ff7,2026-10-16
