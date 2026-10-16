@@ -1490,3 +1490,9 @@ game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformX.cpp
 game/GameEngine/Source/Common/U4Blend00609600.cpp|local|U4Blend006095D0::blend3|a,e3581c81be46c161327aac79,gpt-6.1-sol,20261016032141-a80de8,2026-10-16
 game/GameEngine/Source/Common/U4Blend00609600.cpp|local|U4Blend006095D0::blend3|b,c243bfc0df9dfa68366d349d,gpt-6.1-sol,20261016032141-a80de8,2026-10-16
 game/GameEngine/Source/Common/U4Blend00609600.cpp|local|U4Blend006095D0::blend3|o,9bb4baff81c6b44e1b5c0c44,gpt-6.1-sol,20261016032141-a80de8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1974.cpp|member||m_bfmeAESF,4498351b4621a9b589ebaef5,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1974.cpp|member||m_bfmeBESF,ba59f50abc839327b6c3e8ff,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1974.cpp|param|BfmeHostESF::bfmeTestESF|a,8741b571ec15cc4c2ae7c60b,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1974.cpp|param|BfmeHostESF::bfmeTestESF|b,2b629572409fa516a61b4136,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1974.cpp|local|BfmeHostESF::bfmeTestESF|c,3977b211ff3dac6123ad8742,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1974.cpp|param|bfmeKindOkESF|c,8f448c694105d2e98cc88ac2,gpt-6.1-sol,20261016032149-6f6b65,2026-10-16
