@@ -70,7 +70,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NS = "refs/claims/"
-SEEN = "refs/claims-seen/"          # local mirror; never pushed
+# Git keeps refs/worktree/ private to the current checkout. Ordinary refs are
+# shared by every linked worktree: concurrent claim fetches then race their
+# expected-old-SHA updates and report an available origin as unreachable.
+# Only the fetched snapshots are private; refs/claims/ on origin still fences
+# every worker against the same authoritative claim. (Ported from Open-BFME-2
+# 542acb66c4; the old shared refs/claims-seen/ mirror is no longer read.)
+SEEN = "refs/worktree/claims-seen/"  # local mirror; never pushed
 TTL_HOURS = float(os.environ.get("BFME_CLAIM_TTL_HOURS", "4"))
 REMOTE = os.environ.get("BFME_CLAIM_REMOTE", "origin")
 PENDING = Path("build") / "claims" / "landed_pending.jsonl"
@@ -112,6 +118,26 @@ class ClaimResult(tuple):
         return self[1]
 
 
+def _git_env(cwd):
+    """Use the explicit checkout, including from a hook or rebase exec.
+
+    Git exports repository-local paths to hooks and rebase commands. They
+    override cwd/-C, so a claim command could otherwise read or write the
+    parent's refs, index or object store. Configuration and authentication
+    are kept. Discovery never starts above `cwd` (GIT_CEILING_DIRECTORIES,
+    see _git). Ported from Open-BFME-2 637d0387d7."""
+    env = dict(os.environ)
+    for name in (
+        "GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE",
+        "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+        "GIT_GRAFT_FILE", "GIT_SHALLOW_FILE", "GIT_PREFIX",
+        "GIT_INTERNAL_SUPER_PREFIX", "GIT_IMPLICIT_WORK_TREE",
+    ):
+        env.pop(name, None)
+    env["GIT_CEILING_DIRECTORIES"] = str(Path(cwd).resolve().parent)
+    return env
+
+
 def _git(*args, cwd=None, input_text=None, timeout=60):
     cwd = cwd or ROOT
     hooks = Path(cwd) / ".githooks"
@@ -124,7 +150,7 @@ def _git(*args, cwd=None, input_text=None, timeout=60):
     # inherits that checkout's origin, and a "no remote" test created real
     # claims on Open-BFME-1 (review 2026-09-29). Every caller passes a
     # checkout root, so discovery may start there and nowhere else.
-    env = dict(os.environ, GIT_CEILING_DIRECTORIES=str(Path(cwd).resolve().parent))
+    env = _git_env(cwd)
     try:
         return subprocess.run(["git", *extra, *args], cwd=cwd, capture_output=True, text=True,
                               input=input_text, timeout=timeout, env=env)
@@ -221,8 +247,11 @@ def configured(root=None):
 
 
 def fetch(root=None):
-    """Mirror origin's claims locally (refs/claims-seen/*); False on failure."""
-    got = _git("fetch", "-q", "--prune", "--no-tags", REMOTE, f"+{NS}*:{SEEN}*", cwd=root, timeout=120)
+    """Mirror origin's claims in this worktree's private refs (SEEN); False on failure."""
+    # A claim marker has no submodule inputs: an inherited submodule.recurse
+    # setting must not make this coordination fetch touch other remotes.
+    got = _git("fetch", "-q", "--prune", "--no-tags", "--recurse-submodules=no",
+               REMOTE, f"+{NS}*:{SEEN}*", cwd=root, timeout=120)
     return got.returncode == 0
 
 

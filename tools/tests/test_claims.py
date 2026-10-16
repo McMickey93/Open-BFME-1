@@ -50,6 +50,78 @@ def test_a_claim_is_exclusive_across_hosts(hosts):
     assert claims.active()[0x300]["owner"] == "b"
 
 
+def _seen(root):
+    """The claim snapshot refs a checkout holds, without fetching."""
+    return set(claims._read_local(root))
+
+
+def test_fetch_snapshots_are_private_to_each_worktree(hosts, tmp_path):
+    # Ported from Open-BFME-2 542acb66c4: a shared refs/claims-seen/ mirror let
+    # one worktree's fetch move another's refs (racing expected-old-SHA updates).
+    primary = hosts("a")
+    _git(primary, "commit", "-q", "--allow-empty", "-m", "worktree fixture")
+    sibling = tmp_path / "sibling"
+    _git(primary, "worktree", "add", "-q", "--detach", str(sibling), "HEAD")
+    hosts("b")
+    assert claims.claim([0x100]) == ([0x100], [])
+    assert claims.fetch(primary) and _seen(primary) == {0x100}
+    assert claims.fetch(sibling) and _seen(sibling) == {0x100}
+    assert claims.claim([0x200]) == ([0x200], [])
+    assert claims.fetch(primary) and _seen(primary) == {0x100, 0x200}
+    assert _seen(sibling) == {0x100}                     # untouched by the primary's fetch
+    assert claims.fetch(sibling) and _seen(sibling) == {0x100, 0x200}
+    assert claims.release([0x100]) == [0x100]
+    assert claims.fetch(primary) and _seen(primary) == {0x200}
+    assert _seen(sibling) == {0x100, 0x200}
+    assert claims.fetch(sibling) and _seen(sibling) == {0x200}
+
+
+def test_worktrees_still_contend_for_the_same_remote_claim(hosts, tmp_path):
+    primary = hosts("a")
+    _git(primary, "commit", "-q", "--allow-empty", "-m", "worktree fixture")
+    sibling = tmp_path / "sibling"
+    _git(primary, "worktree", "add", "-q", "--detach", str(sibling), "HEAD")
+    assert claims.claim([0x100], root=primary, who="primary") == ([0x100], [])
+    assert claims.claim([0x100], root=sibling, who="sibling") == ([], [0x100])
+    claims.active.cache_clear()
+    assert claims.active(sibling)[0x100]["owner"] == "primary"
+
+
+def test_claim_fetch_does_not_fetch_submodules(hosts, tmp_path):
+    primary = hosts("a")
+    dependency = tmp_path / "dependency"
+    dependency.mkdir()
+    _git(dependency, "init", "-q")
+    _git(dependency, "-c", "user.name=fixture", "-c", "user.email=fixture@example.com",
+         "commit", "-q", "--allow-empty", "-m", "dependency fixture")
+    _git(primary, "-c", "protocol.file.allow=always", "submodule", "add", "-q",
+         str(dependency), "dependency")
+    _git(primary, "commit", "-q", "-m", "submodule fixture")
+    assert claims.claim([0x100]) == ([0x100], [])
+    _git(primary, "config", "submodule.recurse", "true")
+    _git(primary / "dependency", "remote", "set-url", "origin", str(tmp_path / "missing.git"))
+    assert claims.fetch(primary)
+    assert _seen(primary) == {0x100}
+
+
+def test_hook_environment_does_not_redirect_claim_git(hosts, tmp_path, monkeypatch):
+    # Ported from Open-BFME-2 637d0387d7: hooks and rebase execs export GIT_DIR
+    # and friends, which override cwd. A claim command run from another
+    # repository's hook must still act on the checkout it was given.
+    a = hosts("a")
+    other = tmp_path / "other"
+    _git(tmp_path, "init", "-q", str(other))
+    for name, value in {"GIT_DIR": str(other / ".git"), "GIT_WORK_TREE": str(other),
+                        "GIT_INDEX_FILE": str(other / ".git/index"),
+                        "GIT_COMMON_DIR": str(other / ".git")}.items():
+        monkeypatch.setenv(name, value)
+    assert claims.claim([0x100]) == ([0x100], [])
+    assert claims.fetch(a) and _seen(a) == {0x100}
+    assert subprocess.run(["git", "for-each-ref", "refs/"], cwd=other, env={
+        k: v for k, v in __import__("os").environ.items() if not k.startswith("GIT_")},
+        capture_output=True, text=True).stdout == ""
+
+
 def test_only_the_owner_releases(hosts):
     hosts("a")
     claims.claim([0x100])
