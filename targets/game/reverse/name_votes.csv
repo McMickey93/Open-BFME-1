@@ -4783,3 +4783,8 @@ game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|typ
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|member||flag31e,38e8aa6931daf8305e2baaac,gpt-6.1-sol,20261016071553-32f525,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|member||m_field3C,ffbdcf5b535a8ed68bb17067,gpt-6.1-sol,20261016071553-32f525,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|member||position5c,9d933626d642f33a5a9aca2a,gpt-6.1-sol,20261016071553-32f525,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|type||Rva001B80D0AI,d44c1f8c23394f3ca2cad322,gpt-6.1-sol,20261016071558-c9088b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|type||Rva001B80D0Body,104a2dc2c1685a724a66856b,gpt-6.1-sol,20261016071558-c9088b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||objectId74,75f1ab8d357ba5c659a67496,gpt-6.1-sol,20261016071558-c9088b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||body200,4b99bfdca96b2891913193d2,gpt-6.1-sol,20261016071558-c9088b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||ai204,d33509c806b1630e3870bff4,gpt-6.1-sol,20261016071558-c9088b,2026-10-16
