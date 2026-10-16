@@ -1373,3 +1373,6 @@ game/GameEngine/Source/Common/BfmeConv912.cpp|local|bfmeGo912B|p,5e640e2c3864e77
 game/GameEngine/Source/Common/BfmeConv912.cpp|local|RAMFile::readEntireAndClose|s,ea14fe25c9b2f06d8d585555,gpt-6.1-sol,20261016030807-54d42b,2026-10-16
 game/GameEngine/Source/GameNetwork/GameSpy/GameSpyInfo_getPingValue.cpp|local|grabHexInt|tmp,47e0b2bacaf6656160c78486,gpt-6.1-sol,20261016030815-2e4299,2026-10-16
 game/GameEngine/Source/GameNetwork/GameSpy/GameSpyInfo_getPingValue.cpp|local|grabHexInt|b,b79be082dcd95bdc2a088b23,gpt-6.1-sol,20261016030815-2e4299,2026-10-16
+game/Libraries/Source/EA/Apt/AptString/EAStringCTrimRight.cpp|function|EAStringC@|rva0089F530,b05e0dd0e57a458c6e7a2d82,gpt-6.1-sol,20261016030822-be7208,2026-10-16
+game/Libraries/Source/EA/Apt/AptString/EAStringCTrimRight.cpp|local|EAStringC::rva0089F530|p,8fb2e5e4ee310d6c553a1ceb,gpt-6.1-sol,20261016030822-be7208,2026-10-16
+game/Libraries/Source/EA/Apt/AptString/EAStringCTrimRight.cpp|local|EAStringC::rva0089F530|c,62e7573167b0540b57f582f9,gpt-6.1-sol,20261016030822-be7208,2026-10-16
