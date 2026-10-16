@@ -780,3 +780,4 @@ game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme81,m_jitterLightnin
 game/GameEngine/Source/Common/BfmeConv1134.cpp|member||m_bfme9c,m_lightningFX,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2137.cpp|member||m_bfmePtrXT,m_texture,gpt-6.1-sol+grok,agreed,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2137.cpp|member||m_bfmePtrXT,m_texture,gpt-6.1-sol+grok,applied,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1729.cpp|type||BfmeVecUC,Coord3D,gpt-6.1-sol+grok,agreed,2026-10-16
