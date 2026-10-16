@@ -5323,3 +5323,6 @@ game/GameEngine/Source/Common/BfmeLayoutCtorWD.cpp|member||m_bfmeVisible,b7fddf4
 game/GameEngine/Source/Common/BfmeThreeHundredTwentyThree.cpp|member||m_bfmeOne,c0e92c6720b994e748035b52,gpt-6.1-sol,20261016080413-b022f7,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredTwentyThree.cpp|member||m_bfmeTwo,7cda7b87ca91060552d95b1e,gpt-6.1-sol,20261016080413-b022f7,2026-10-16
 game/GameEngine/Source/Common/BfmeThreeHundredTwentyThree.cpp|member||m_bfmeCount,c9c0002561e38fc255016a15,gpt-6.1-sol,20261016080413-b022f7,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineHomePeerResponses.cpp|member||field00,41c655756d1fa1d67a63464b,gpt-6.1-sol,20261016080419-3a2010,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineHomePeerResponses.cpp|member||field04,ff452bf096f1fec4cc8c8b9b,gpt-6.1-sol,20261016080419-3a2010,2026-10-16
+game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/OnlineHomePeerResponses.cpp|param|UnicodeString::UnicodeString#2|s,cabdef3022feccf831b0cd55,gpt-6.1-sol,20261016080419-3a2010,2026-10-16
