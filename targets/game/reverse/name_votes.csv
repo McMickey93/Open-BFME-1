@@ -5851,3 +5851,9 @@ game/GameEngineDevice/Source/W3DDevice/GameLogic/W3DTerrainLogicExtent.cpp|membe
 game/GameEngine/Source/Common/SmallGaps/Rva006D23C0ResetGrid.cpp|member||m_38,6c8cf97aab4bf6efb5eec345,gpt-6.1-sol,20261016133818-7f6526,2026-10-16
 game/GameEngine/Source/Common/SmallGaps/Rva006D23C0ResetGrid.cpp|member||m_44,e3101cb23c7bf0178561fd68,gpt-6.1-sol,20261016133818-7f6526,2026-10-16
 game/GameEngine/Source/Common/SmallGaps/Rva006D23C0ResetGrid.cpp|member||m_buffer3094,7c8f426feac4ba3cbfab74b4,gpt-6.1-sol,20261016133818-7f6526,2026-10-16
+game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|type||BfmeStateRC,612e535f6b172f621f0095e0,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
+game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|member||m_bfmeKindRC,15256b71b72d528cc34da333,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
+game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|member||m_bfmeHolderRC,c677a221d2a69f145d5856a9,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
+game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|member||m_bfmeStateRC,6fd0da1d3397c6db3dd8d0b5,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
+game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|local|BfmeOwnerRC::Rva0041EFD0|a,75b8c08f57dbfeae8053e07e,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
+game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|local|BfmeOwnerRC::Rva0041EFD0|b,fd5dcbb0cd373cbcbab2aa9d,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
