@@ -5788,3 +5788,4 @@ game/GameEngine/Source/GameLogic/Map/FootprintIterator001A1460.cpp|local|Footpri
 game/GameEngine/Source/GameLogic/Map/FootprintIterator001A1460.cpp|local|FootprintIterator001A1460::FootprintIterator001A1460|s,081edef6c14d17768593feda,gpt-6.1-sol,20261016130926-9c913e,2026-10-16
 game/GameEngine/Source/Common/Small03hWordSwap.cpp|local|Rva009CC2C0Box::swap|v,b88da8e1407ad1a43c664d31,gpt-6.1-sol,20261016130932-99819a,2026-10-16
 game/GameEngine/Source/Common/Small03hWordSwap.cpp|local|Rva009CC2F0Box::swap|v,fe77f32a262c834d076ab838,gpt-6.1-sol,20261016130932-99819a,2026-10-16
+game/GameEngine/Source/Common/BfmeRectVNH_ctor.cpp|param|BfmeRectVNH::BfmeRectVNH|s,6d43d7680319d53e05edb9f4,gpt-6.1-sol,20261016130937-afb6dd,2026-10-16
