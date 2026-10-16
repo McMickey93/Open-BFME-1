@@ -5435,3 +5435,4 @@ game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|member||m_bfme
 game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|param|BfmeHostEZ::bfmeConsiderEZ|n,89e7a084faabfc09d928ba3e,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
 game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|param|BfmeHostEZ::bfmeConsiderEZ|p,3ee08e22b4dbfc7f38107f5e,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
 game/GameEngine/Source/GameLogic/AI/BfmeHostEZ_bfmeConsiderEZ.cpp|local|BfmeHostEZ::bfmeConsiderEZ|d2,37d79564d9518840f91a74e7,gpt-6.1-sol,20261016082042-a7be48,2026-10-16
+game/GameEngine/Source/GameLogic/Map/BfmeHostBJXfer.cpp|param|BfmeHostBJ::xfer|x,a32c11c945786c78ff244879,gpt-6.1-sol,20261016082036-28cbc7,2026-10-16
