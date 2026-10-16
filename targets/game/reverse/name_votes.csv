@@ -3812,3 +3812,6 @@ game/GameEngine/Source/GameClient/GameClientRva00431A60Frustum.cpp|member||m_dwo
 game/GameEngine/Source/Common/Bfme/Rva001B46B0NormalizedDeltaZ.cpp|param|Rva001B46B0|a,f9be1637e78d705b796484af,gpt-6.1-sol,20261016062527-9de623,2026-10-16
 game/GameEngine/Source/Common/Bfme/Rva001B46B0NormalizedDeltaZ.cpp|param|Rva001B46B0|b,6aaa01062500cf0969d7436c,gpt-6.1-sol,20261016062527-9de623,2026-10-16
 game/GameEngine/Source/Common/Glo012F1028Sub_bfmeFinish.cpp|member||m_s94,2f9c87c60343775323f0d3ee,gpt-6.1-sol,20261016062538-bf0001,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LeafletDropBehaviorCtorThunk.cpp|member||m_f14,61920d617642a0136a8f54e5,gpt-6.1-sol,20261016062544-0cb4b6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LeafletDropBehaviorCtorThunk.cpp|member||m_f18,38177e2c682267e642a03f2d,gpt-6.1-sol,20261016062544-0cb4b6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/LeafletDropBehaviorCtorThunk.cpp|member||m_f1c,870f8d33f7a318b23bf193bb,gpt-6.1-sol,20261016062544-0cb4b6,2026-10-16
