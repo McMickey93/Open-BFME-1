@@ -38275,7 +38275,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00bfc3d8@@YAXXZ,,0x00BFC3D8,17,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffc3d8
 ?d_00bfe008@@YAXXZ,,0x00BFE008,11,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffe008
 ?d_00c04810@@YAXXZ,,0x00C04810,34,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@01004810
-?d_00c04f50@@YAXXZ,,0x00C04F50,11,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@01004f50
 ?d_00c06b13@@YAXXZ,,0x00C06B13,11,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@01006b13
 ?d_00c06ca0@@YAXXZ,,0x00C06CA0,19,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@01006ca0
 ?d_00c07a18@@YAXXZ,,0x00C07A18,39,game/gen_asm/d_00bf4ec3.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail refs=0
@@ -38309,7 +38308,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c102b0@@YAXXZ,,0x00C102B0,11,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@010102b0
 ?d_00c10480@@YAXXZ,,0x00C10480,11,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@01010480
 ?d_00c10768@@YAXXZ,,0x00C10768,22,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@01010768
-?d_00c132f6@@YAXXZ,,0x00C132F6,24,game/gen_asm/d_00c06477.asm,matched,gen-dump;ghidra=Unwind@010132f6
 ?d_00c1879a@@YAXXZ,,0x00C1879A,25,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@0101879a
 ?d_00c187b3@@YAXXZ,,0x00C187B3,27,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@010187b3
 ?d_00c18814@@YAXXZ,,0x00C18814,27,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@01018814
@@ -38335,7 +38333,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c1f8b9@@YAXXZ,,0x00C1F8B9,31,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101f8b9
 ?d_00c1f973@@YAXXZ,,0x00C1F973,17,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101f973
 ?d_00c1fd60@@YAXXZ,,0x00C1FD60,11,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101fd60
-?d_00c200c0@@YAXXZ,,0x00C200C0,11,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@010200c0
 ?d_00c20b7b@@YAXXZ,,0x00C20B7B,22,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01020b7b
 ?d_00c217d0@@YAXXZ,,0x00C217D0,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@010217d0
 ?d_00c217f4@@YAXXZ,,0x00C217F4,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@010217f4
@@ -38363,9 +38360,7 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c3dc08@@YAXXZ,,0x00C3DC08,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103dc08
 ?d_00c3e7d7@@YAXXZ,,0x00C3E7D7,24,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103e7d7
 ?d_00c3e998@@YAXXZ,,0x00C3E998,39,game/gen_asm/d_00bf4ec3.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail refs=0
-?d_00c3e9d8@@YAXXZ,,0x00C3E9D8,24,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103e9d8
 ?d_00c3f560@@YAXXZ,,0x00C3F560,25,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103f560
-?d_00c40678@@YAXXZ,,0x00C40678,17,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01040678
 ?d_00c40760@@YAXXZ,,0x00C40760,8,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01040760
 ?d_00c43f90@@YAXXZ,,0x00C43F90,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01043f90
 ?d_00c43f9b@@YAXXZ,,0x00C43F9B,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01043f9b
@@ -38394,7 +38389,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c4f3bf@@YAXXZ,,0x00C4F3BF,34,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@0104f3bf
 ?d_00c4fa1b@@YAXXZ,,0x00C4FA1B,24,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@0104fa1b
 ?d_00c4fa95@@YAXXZ,,0x00C4FA95,24,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@0104fa95
-?d_00c4fefc@@YAXXZ,,0x00C4FEFC,17,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@0104fefc
 ?d_00c5002b@@YAXXZ,,0x00C5002B,34,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@0105002b
 ?d_00c5028b@@YAXXZ,,0x00C5028B,24,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@0105028b
 ?d_00c50305@@YAXXZ,,0x00C50305,24,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01050305
@@ -172566,3 +172560,9 @@ _rva009B1ED0,,0x009B1ED0,701,game/GameEngine/Source/Common/Rva009B1ED0Filter.cpp
 ?bfmeDuplicateInto@Gen_0049A070@@QAE?AVRva00499F30Result@@XZ,,0x0049A1C0,99,game/GameEngine/Source/Common/BfmeWideCopyVY.cpp,matched,Owning clone of matched Gen_0049A070; transferring nonconst handle copy; evidence=identity_evidence/0049a1c0-transferring-result.md;model=gpt-6.1-sol;host=GreatFaram
 ?aptWeekday30At008B6B40@@YAPAVAptInteger@@PAXH@Z,,0x008B6B40,31,game/Libraries/Source/EA/Apt/Rva008B6B40AptPack.cpp,matched,Apt weekday callback registered by matched 0x008B73B0; thiscall to matched Rva008B6880::rva008B66B0 with self as receiver;model=claude-opus-5-5;host=Chartreuse
 ?aptWeekday50At008B6C70@@YAPAVAptInteger@@PAXH@Z,,0x008B6C70,31,game/Libraries/Source/EA/Apt/Rva008B6C70AptPack.cpp,matched,Apt weekday callback registered by matched 0x008B73B0; thiscall to matched Rva008B6880::rva008B66B0 with self as receiver over fields +0x50..+0x58;model=claude-opus-5-5;host=Chartreuse
+?Rva00C04F50Cleanup@@YAXXZ,,0x00C04F50,11,game/GameEngine/Source/GameLogic/AI/AIGroupGroupAttackObjectPrivate.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L13907;parent=?attack00155DA0@AIGroupGroupAttackObjectPrivateShim@@QAEX_NPAVObject@@HW4CommandSourceType@@@Z;retail parent 0x00155DA0 unwind map native label;model=claude-opus-5-5;host=app
+?Rva00C132F6Cleanup@@YAXXZ,,0x00C132F6,24,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DozerAIUpdateDestructorThunk.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L478;parent=??1DozerAIUpdate@@UAE@XZ;retail parent 0x002B6640 unwind map native label;model=claude-opus-5-5;host=app
+?Rva00C200C0Cleanup@@YAXXZ,,0x00C200C0,11,game/GameEngine/Source/GameClient/Rva0040AC30Owner.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L5931;parent=?method@Rva0040AC30Owner@@QAEPAVBfme5MaterialPass@@HH@Z;retail parent 0x0040AC30 unwind map native label;model=claude-opus-5-5;host=app
+?Rva00C3E9D8Cleanup@@YAXXZ,,0x00C3E9D8,24,game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldManagerDestructor.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L11787;parent=??1LivingWorldManager@@UAE@XZ;retail parent 0x00617FB0 unwind map native label;model=claude-opus-5-5;host=app
+?Rva00C40678Cleanup@@YAXXZ,,0x00C40678,17,game/GameEngine/Source/GameNetwork/GameSpy/MainMenuUtils.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L53135;parent=?Rva0062FA20@@YAXHVAsciiString@@@Z;retail parent 0x0062FA20 unwind map native label;model=claude-opus-5-5;host=app
+?Rva00C4FEFCCleanup@@YAXXZ,,0x00C4FEFC,17,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/Rva00776AC0ModelTransfer.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L11815;parent=?rva00776AC0@Rva00776AC0Owner@@QAEXPAVXfer@@@Z;retail parent 0x00776AC0 unwind map native label;model=claude-opus-5-5;host=app
