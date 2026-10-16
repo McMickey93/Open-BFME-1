@@ -3890,3 +3890,8 @@ game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeOwner,fd0129ef1f
 game/GameEngine/Source/Common/Bfme5PruningSum.cpp|member||m_bfmeList,66bc0e72699baa5b2e8e312c,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
 game/GameEngine/Source/Common/Bfme5PruningSum.cpp|function|Gen_00250F50@|bfmeSum,bf2a49caebf316a8e7b36de4,gpt-6.1-sol,20261016062314-615e0d,2026-10-16
 game/GameEngine/Source/Common/BfmeConv519.cpp|member||m_bfmeFlags,b11a8b062ad4698795e4e97a,gpt-6.1-sol,20261016062319-f9a879,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|type||BfmeMediumScaleUpWindow,fb376cccc495e7cdd80c560f,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|x,077e1c4e702498af0795f14f,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|y,a0f61809c6bfa61d730e653b,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|x1,286873c6f7981c1e78bd91d6,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
+game/GameEngine/Source/GameClient/GUI/MainMenuMediumScaleUpTransition_draw.cpp|local|MainMenuMediumScaleUpTransition::draw|y1,6d9997b6b62ad8497d8c5f6a,gpt-6.1-sol,20261016062404-0dd6c8,2026-10-16
