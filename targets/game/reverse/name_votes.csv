@@ -2556,3 +2556,7 @@ game/GameEngine/Source/GameLogic/Object/Update/SpecialEnemySenseUpdateModuleData
 game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdateModuleDataConstructor.cpp|member||m_bfme0C,ee717c3587b3bd9381f8d864,gpt-6.1-sol,20261016051147-7d1fc4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdateModuleDataConstructor.cpp|member||m_bfmeFirst,87e3aaae6c1da574b945631d,gpt-6.1-sol,20261016051147-7d1fc4,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/SlaughterHordeContainModuleDataCtorThunk.cpp|member||m_30c,230494dd80175a63c755d2d9,gpt-6.1-sol,20261016051203-53e479,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipSeps|c,07ce4c75339736bb9be528b1,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipSeps|s,04955834819dc5783e395eec,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipNonSeps|c,f5cc7db0792fc16dc0da3c4d,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
+game/Libraries/Source/WWVegas/WWLib/StringBaseSkipSeps.cpp|local|skipNonSeps|s,f6cf85fdc66eaf651b769e3c,gpt-6.1-sol,20261016050939-87a83f,2026-10-16
