@@ -5871,3 +5871,6 @@ game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0018AC
 game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp|type||Rva0018AD60State,226f397aa757f792be34500e,gpt-6.1-sol,20261016134302-7691c3,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjGenerateVertexBuffer.cpp|type||BfmeRetailVertexBuffer,4f9db53fb79812b1a7441247,gpt-6.1-sol,20261016134341-c47c3d,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjGenerateVertexBuffer.cpp|type||BfmeSeaPatchVertex,a763b219226223896c3aaf7e,gpt-6.1-sol,20261016134341-c47c3d,2026-10-16
+game/GameEngine/Source/Common/Rva00412140Ctor.cpp|member||m_34,7e63aeb97e1735bcfe9ea008,gpt-6.1-sol,20261016135219-0bae2b,2026-10-16
+game/GameEngine/Source/Common/Rva00412140Ctor.cpp|member||m_38,93c6b5e63ce9343fc9dc21fb,gpt-6.1-sol,20261016135219-0bae2b,2026-10-16
+game/GameEngine/Source/Common/Rva00412140Ctor.cpp|member||m_39,20013f2b63951be7bf254aa3,gpt-6.1-sol,20261016135219-0bae2b,2026-10-16
