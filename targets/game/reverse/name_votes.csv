@@ -1805,3 +1805,5 @@ game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataCon
 game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_u10,68cf9e97eaf24644b4b39984,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b14,8016dc7d461d5adb2d8172de,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b15,b725acd313de0e69d93b73a3,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RainOfFireUpdateModuleDataCtorThunk.cpp|member||m_28,f9de62143e1c4adeea21cdf7,gpt-6.1-sol,20261016035721-129ad0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RainOfFireUpdateModuleDataCtorThunk.cpp|member||m_2c,bab4b2948f752c86bf0a2a39,gpt-6.1-sol,20261016035721-129ad0,2026-10-16
