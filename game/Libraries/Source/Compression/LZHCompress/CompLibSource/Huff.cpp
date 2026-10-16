@@ -34,9 +34,8 @@ HuffStat::HuffStat()
     memset( stat, 0, sizeof(HUFFINT) * NHUFFSYMBOLS );
     }
 
-// ??1HuffStat@@QAE@XZ present-unmatched -- ten bytes (`delete[]` through the
-// vector-deleting stub), which retail holds in at least eleven places and none
-// of them is attributable to this TU.
+// Retail 0x00825D70: its direct callers are the unwind funclets of the
+// LZHLEncoderStat/LZHLDecoderStat constructors and destructors.
 HuffStat::~HuffStat()
     {
     delete [] stat;
