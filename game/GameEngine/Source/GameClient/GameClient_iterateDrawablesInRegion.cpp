@@ -21,7 +21,7 @@ class Drawable
 {
 public:
 	const Coord3D *getPosition() const;
-	Drawable *getNextDrawable() const { return m_nextDrawable; }
+	friend class GameClient;
 
 private:
 	unsigned char m_pad[0x104];
@@ -48,7 +48,7 @@ void GameClient::iterateDrawablesInRegion(Region3D *region, GameClientFuncPtr us
 
 	for (draw = m_drawableList; draw; draw = nextDrawable)
 	{
-		nextDrawable = draw->getNextDrawable();
+		nextDrawable = draw->m_nextDrawable;
 
 		const Coord3D *p = draw->getPosition();
 		float x = p->x;
