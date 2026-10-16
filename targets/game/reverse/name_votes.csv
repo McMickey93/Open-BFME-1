@@ -2393,3 +2393,7 @@ game/GameEngine/Source/Common/WideBuildFieldParseMore.cpp|param|Rva00378170::bui
 game/GameEngine/Source/Common/WideBuildFieldParseMore.cpp|param|Rva00753A80::buildFieldParse|p,3f137fa9182a9b1477088aa8,gpt-6.1-sol,20261016044911-556fca,2026-10-16
 game/Libraries/Source/EA/Apt/ParsePath8C4DA0.cpp|function||ParsePath8C4DA0,1c99bd694b3b90f773a5e75c,gpt-6.1-sol,20261016044916-9ace38,2026-10-16
 game/Libraries/Source/EA/Apt/ParsePath8C4DA0.cpp|local|~BfmeStrVKI|p,6fb6af8960e8e99a8b921d85,gpt-6.1-sol,20261016044916-9ace38,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_210,ee2ed9b9d414a461f72b3259,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_214,6820731e497c8a3ec9bfaa2e,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_218,f25899c1d62b50b1a926e25c,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_21c,5e11a9d40fd8c2fd593048d6,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
