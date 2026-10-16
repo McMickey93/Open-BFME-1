@@ -5782,3 +5782,4 @@ game/GameEngine/Source/Common/INI/Rva000C1E50MapCacheDefinition.cpp|local|Rva000
 game/GameEngine/Source/GameClient/GUI/OnlineHomeMessageOfTheDay.cpp|local|grabUByte|b,f42a672e374a3d89361aefd1,gpt-6.1-sol,20261016130901-346760,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.cpp|local|OneRingPenaltyUpdate::rva00299080|d,888a3800cd6dce09da51000d,gpt-6.1-sol,20261016130906-612d39,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehavior_update.cpp|local|BezierProjectileBehavior::update|d,5aab4479b3eb710f2ab8e8a6,gpt-6.1-sol,20261016130911-1fb0f9,2026-10-16
+game/GameEngine/Source/Common/Rva000D4360Owner.cpp|param|rva000D4360|arg0,f9fdaf9b50e0c0752689d2ad,gpt-6.1-sol,20261016130916-baa830,2026-10-16
