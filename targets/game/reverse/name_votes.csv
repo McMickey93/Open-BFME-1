@@ -4648,3 +4648,7 @@ game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecial
 game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeListHF,3d4f9496b476c656d361fb4a,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeThingHF,6782dfe4c41ac2c3e6cf55cf,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeSlotHF,e196870eb201b74bccbf82e0,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_height40,d0315056f3d006be8a3c4a81,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_heightC0,fd8f9130ead8e930f89da42d,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_heightData1cc,bc99c307d1bf2f3660fd7f1e,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/Rva002BCB60GoalRouting.cpp|member||m_goalPosition47c,1c19327bb23c77a5f941ecd4,gpt-6.1-sol,20261016070730-fd73a4,2026-10-16
