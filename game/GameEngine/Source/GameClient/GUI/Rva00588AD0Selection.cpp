@@ -60,7 +60,8 @@ public:
 	void hideBuildTooltipLayout();
 };
 
-extern Rva00579160Manager *Rva00579160TheManager;
+class WindowManager;
+extern WindowManager *g_rva012F19E8WindowManager;
 extern GameWindowManager *TheWindowManager;
 extern ControlBar *TheControlBar;
 extern void __cdecl bfmeNamedAudio0046F1A0(const char *name);
@@ -97,7 +98,7 @@ void Rva00588AD0Selection::select(int index)
 	int mode = m_records[index].m_mode;
 	if (mode == 1 || mode == 2)
 	{
-		Rva00579160Manager *manager = Rva00579160TheManager;
+		Rva00579160Manager *manager = reinterpret_cast<Rva00579160Manager *>(g_rva012F19E8WindowManager);
 		if (manager->m_windowMode != 2 || (*(unsigned int *)(data + 0x18) & 0x80000000) == 0)
 		{
 			bfmeNamedAudio0046F1A0("Gui_PalantirCommandButtonDisabledClick");
@@ -110,7 +111,7 @@ void Rva00588AD0Selection::select(int index)
 		return;
 
 	TheControlBar->hideBuildTooltipLayout();
-	int managerMode = Rva00579160TheManager->m_windowMode;
+	int managerMode = reinterpret_cast<Rva00579160Manager *>(g_rva012F19E8WindowManager)->m_windowMode;
 	GameWindow *owner = instance->m_owner;
 	TheWindowManager->winSendSystemMsg(owner, 0x4008 + (managerMode == 2),
 		(WindowMsgData)window, (WindowMsgData)window->winGetWindowId());
@@ -120,7 +121,7 @@ void Rva00588AD0Selection::select(int index)
 	if (mode == 4)
 	{
 		const char *sound;
-		if (Rva00579160TheManager->m_windowMode == 2 &&
+		if (reinterpret_cast<Rva00579160Manager *>(g_rva012F19E8WindowManager)->m_windowMode == 2 &&
 			*(unsigned char *)(m_records[index].m_data + 0x158) != 0)
 			sound = "Gui_PalantirCommandButtonClick";
 		else
