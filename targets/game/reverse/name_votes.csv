@@ -4635,3 +4635,9 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva002458B0Formatio
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva002458B0FormationPosition.cpp|member||m_at120,89ebc26ec634a21466453020,gpt-6.1-sol,20261016070710-cd11aa,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva002458B0FormationPosition.cpp|member||m_vector12c,e38917435eb3aebde8984340,gpt-6.1-sol,20261016070710-cd11aa,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/Rva002458B0FormationPosition.cpp|member||m_byte1fc,03802ca1f89fefee166d3a2c,gpt-6.1-sol,20261016070710-cd11aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|type||BfmeExperienceCounters,a0bde08576df58b17bd8d719,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|member||m_bfmeContain,56d774242148e18553b30532,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|member||m_bfmeUpgrades,e177bf5ebe7ef1244eb4ee41,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|member||m_bfmeDieFrame,4cbde3b60d3aa0db67c6dcfc,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|member||m_bfmeFrame,dcd3725973a2421a8c7db1eb,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|local|Rva0023B7A0HordeContainView::rva0023B7A0|tmpl,cb52c461da6e971275d274a5,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
