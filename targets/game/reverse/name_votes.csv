@@ -2042,3 +2042,6 @@ game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModul
 game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field78,04223adab3c56ee87b77864e,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field7c,15fe29ad66d70c0642486c52,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModuleDataCtorThunk.cpp|member||m_field80,93cbd1fc4570c1820b0894ab,gpt-6.1-sol,20261016041023-e01dc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorThunk.cpp|member||m_14,c2bada55f3bbac156d057425,gpt-6.1-sol,20261016041035-596db1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorThunk.cpp|member||m_18,0e4113b8a2237745c58c11c2,gpt-6.1-sol,20261016041035-596db1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorThunk.cpp|member||m_1c,0fc14fe528c5d53f092c3964,gpt-6.1-sol,20261016041035-596db1,2026-10-16
