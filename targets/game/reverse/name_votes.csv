@@ -5585,3 +5585,7 @@ game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|member||m_bfmeStr,7162
 game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|member||m_bfmeNext,9d7b6404dd6233613d989d85,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
 game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|local|Bfme5AttachNodeA::bfmeAttach|h,fc9a044ba4ad0b3856d3ef3a,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
 game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|local|Bfme5AttachNodeB::bfmeAttach|h,8bd82d76737fc17d3f0181d0,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
+game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|A,680177d85a3f948855348029,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
+game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|R0,844012c45e16fb71c8ef4494,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
+game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|tmp,57933eb773dd65e4264aa6cb,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
+game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|v,19380a14dd34e037935b405f,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
