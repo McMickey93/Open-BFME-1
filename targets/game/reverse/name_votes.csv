@@ -2429,3 +2429,13 @@ game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataC
 game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_28,e88641907acdf06141e48426,gpt-6.1-sol,20261016044559-126f60,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|member||m_29,487cd5c11fa7d7f4621879c3,gpt-6.1-sol,20261016044559-126f60,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/CastleMemberBehaviorModuleDataCtor.cpp|local|CastleMemberBehaviorModuleData::CastleMemberBehaviorModuleData|n,0c1e352fc2a0207f64e40b6b,gpt-6.1-sol,20261016044559-126f60,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData0,e7922f971ceb1d882a3f87ec,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData1,fdb734fefbae68594ae8dbca,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData2,cc67fc52e99bc3abdc712a3a,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData3,0551813211e97e5d2f7012fc,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData4,9b02a7f3853eb9425962e30f,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData5,48e6ca5d6636651dd9b36993,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData6,9614b0fcfeb4213d07c973fd,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData7,60180ad1bfdf64472673e1db,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData8,462771f80cf7db7b62b10a37,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/StructureCollapseUpdateModuleDataCtorThunk.cpp|member||m_dieData9,278dc5144f9e984ff1da915e,gpt-6.1-sol,20261016045003-71e2b8,2026-10-16
