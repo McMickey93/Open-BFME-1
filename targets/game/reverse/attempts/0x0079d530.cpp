@@ -1,5 +1,5 @@
 // ?rva0079D530@AptPalantir@@QAEXXZ
-// partial score=0.8096 date=2026-10-13
+// partial score=0.9407 date=2026-10-16
 // ?rva0079D530@AptPalantir@@QAEXXZ
 struct FloatPairBase0079D530 {float x,y;};
 class BfmeVec2CY : public FloatPairBase0079D530 { public:
@@ -84,7 +84,7 @@ void AptPalantir::rva0079D530(){
     // Apply the polar offset to the inner and outer quads.
     BfmeVec2CY offset;offset.x=(float)cos(middle)*distance;offset.y=(float)sin(middle)*distance;
     m_coords544[i].x+=offset.x;m_coords544[i].y+=offset.y;
-    m_coords564[i].x-=offset.x;m_coords564[i].y-=offset.y;
+    m_coords564[i].x-=(float)cos(middle)*distance;m_coords564[i].y-=offset.y;
    }
   }
   prev=&point;
