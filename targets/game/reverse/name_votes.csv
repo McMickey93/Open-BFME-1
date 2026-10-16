@@ -4010,3 +4010,6 @@ game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva0006120
 game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061220,bf780da37d24add27fba95b4,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
 game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061240,0a3a2505770cff49ce09d5bf,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
 game/GameEngine/Source/Common/R2GlobalOptionFlagSetters.cpp|function||Rva00061470,aaaa2c4149564ba051ae67c4,gpt-6.1-sol,20261016062805-d851e5,2026-10-16
+game/GameEngine/Source/Common/Rva00199180Destructor.cpp|local|Rva00199180Owner::~Rva00199180Owner|n,0bd55d7b261bc7420d59508d,gpt-6.1-sol,20261016063123-26a50b,2026-10-16
+game/GameEngine/Source/Common/Rva00199180Destructor.cpp|local|Rva00199180Owner::~Rva00199180Owner|p,aeddd561aed19a7cf879283c,gpt-6.1-sol,20261016063123-26a50b,2026-10-16
+game/GameEngine/Source/Common/Rva00199180Destructor.cpp|local|Rva00199180Owner::~Rva00199180Owner|e,862fb04b23fc7a21429108f8,gpt-6.1-sol,20261016063123-26a50b,2026-10-16
