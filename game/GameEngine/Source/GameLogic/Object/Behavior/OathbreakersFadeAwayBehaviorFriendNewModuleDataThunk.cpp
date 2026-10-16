@@ -35,7 +35,7 @@ class OathbreakersFadeAwayBehaviorModuleData
 public:
 	void *m_bfmeVptr;
 	int m_bfme04;
-	int m_bfme08;
+	int m_fadeOutTime;
 };
 
 // Retail's module-data factories reach INI through initFromINIMultiProc
@@ -73,7 +73,7 @@ ModuleData *OathbreakersFadeAwayBehavior::friend_newModuleData(INI *ini)
 
 	if (data) {
 		data->m_bfmeVptr = &g_bfmeRva0108D748ParseVtable;
-		data->m_bfme08 = 1;
+		data->m_fadeOutTime = 1;
 		moduleData = data;
 	} else {
 		moduleData = 0;
