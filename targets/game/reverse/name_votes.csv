@@ -3500,3 +3500,5 @@ game/Libraries/Source/taintmanager/taintmanager_impl.cpp|local|Gen_008812D0::bfm
 game/Libraries/Source/taintmanager/taintmanager_impl.cpp|local|bfmeRasterCircleFC|d,7502bc338633c8050d77bbb8,gpt-6.1-sol,20261016060957-d459db,2026-10-16
 game/Libraries/Source/taintmanager/taintmanager_impl.cpp|local|BfmeTaintManager::bfmeApplyCircleWorld|y,612e69b3036f2a67b500ddcd,gpt-6.1-sol,20261016060957-d459db,2026-10-16
 game/Libraries/Source/taintmanager/taintmanager_impl.cpp|local|BfmeTaintManager::bfmeApplyCircleWorld|x,bbc19e485732f7653e1cd9ab,gpt-6.1-sol,20261016060957-d459db,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemUpdate.cpp|member||m_boolA91,ffb2c106c3f515a918f13c86,gpt-6.1-sol,20261016060905-692b53,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemUpdate.cpp|member||m_bool3B0,93780fbaaedb247c6bc186cb,gpt-6.1-sol,20261016060905-692b53,2026-10-16
