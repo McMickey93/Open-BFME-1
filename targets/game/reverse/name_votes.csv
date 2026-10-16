@@ -1325,3 +1325,15 @@ game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|local|isType|f,2d4c6b93c501
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|put|v,dc6eb0b88998f6b5f3a51720,gpt-6.1-sol,20261016030246-6bc80e,2026-10-16
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|set|v,6761dba7afe897265a24ebbe,gpt-6.1-sol,20261016030246-6bc80e,2026-10-16
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|local|aptArrayConcat|v,81b34cea29f82e19fb87ff00,gpt-6.1-sol,20261016030246-6bc80e,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|param|Rva006D7EA0TransformVector|A,87855d0e77354a8fa67032e2,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0TransformVector|tmp,a95ea3d6044a338b678e3b88,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0TransformVector|v,8ff325f119b79169bd38d285,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0TransformVector|x,3bf498e3005d72eb5c7416dc,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0TransformVector|y,cd18d6653f58f7b98818ec5a,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0TransformVector|z,207ba10fc30f4838cc0f9533,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|param|Rva006D7EA0RotateVector|A,5436d8a8e38dae1ef019dac6,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|tmp,549ec6f1bbb939fd13c1bc0e,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|v,d2638fcf667c5724cb8e4a81,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|x,c6d74a41263083449c3b3af3,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|y,9348d81502f809a51abe1d1a,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|z,2e3e3577755e77b1dd66f3b0,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
