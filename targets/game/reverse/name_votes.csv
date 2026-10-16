@@ -2971,3 +2971,4 @@ game/GameEngine/Source/Common/BfmeConv900.cpp|param|bfmeGoIC|n,a8628cf0c40ed5594
 game/GameEngine/Source/Common/BfmeConv900.cpp|param|bfmeGoIC|t,accca19bc819866af7c2e24b,gpt-6.1-sol,20261016054132-18e495,2026-10-16
 game/GameEngine/Source/Common/BfmeConv574.cpp|member||m_bfmeMid,babe0fd458031537a00b14a6,gpt-6.1-sol,20261016054153-be51b7,2026-10-16
 game/GameEngine/Source/Common/BfmeConv574.cpp|member||m_bfmeOwner,b4530338d97c953ab7475995,gpt-6.1-sol,20261016054153-be51b7,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredFifty.cpp|member||m_bfmeVft,2d60d22c4e3dbf8ba216c32a,gpt-6.1-sol,20261016054206-8c5f33,2026-10-16
