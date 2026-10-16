@@ -668,14 +668,16 @@ def test_claim_command_exit_code_survives_a_settlement_failure(hosts, monkeypatc
     assert {0x100, 0x700} <= set(claims.active())
 
 
-def test_fetch_prunes_the_old_shared_mirror(hosts):
-    # review 2026-10-15 round 1: refs/claims-seen/* from before 53a0bc2eb4 were left behind
+def test_fetch_never_touches_the_old_shared_mirror(hosts):
+    # review 2026-10-15 round 2: checkouts on pre-53a0bc2eb4 claims.py read
+    # refs/claims-seen/ as their live mirror; pruning it broke their leases.
     a = hosts("a")
     _git(a, "commit", "-q", "--allow-empty", "-m", "fixture")
     head = _git(a, "rev-parse", "HEAD").strip()
     _git(a, "update-ref", "refs/claims-seen/00000100", head)
-    _git(a, "update-ref", "refs/claims-seen/00000200", head)
-    claims._PRUNED.clear()
     assert claims.claim([0x300]) == ([0x300], [])
-    assert _git(a, "for-each-ref", "refs/claims-seen/") == ""
+    assert claims.fetch(a)
+    assert _git(a, "for-each-ref", "--format=%(refname)", "refs/claims-seen/").split() == [
+        "refs/claims-seen/00000100"]
     assert set(claims._read_local(a)) == {0x300}
+
