@@ -9,12 +9,14 @@
 class StringClass
 {
 public:
-	StringClass(const char *string, bool hint_temporary = false)
+	// Only the hint-less form: the bool overload's COMDAT must come from the
+	// _MBCS wwstring.h TUs (retail 0x007AF3A0), not this strlen copy.
+	StringClass(const char *string)
 		: m_Buffer(m_EmptyString)
 	{
 		int len = string ? (int)strlen(string) : 0;
-		if (hint_temporary || len > 0)
-			Get_String(len + 1, hint_temporary);
+		if (len > 0)
+			Get_String(len + 1, false);
 		*this = string;
 	}
 	~StringClass() { Free_String(); }
