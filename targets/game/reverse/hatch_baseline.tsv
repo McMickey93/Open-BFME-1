@@ -2109,7 +2109,6 @@ emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/DefectorSpecialPowerMo
 emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/StopSpecialPowerModuleDataDestructorThunk.cpp	*	426
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateDestructorThunk.cpp	*	843
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateDestructorThunk.cpp	*	2099
-emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DozerActionPickActionPosState_update_Thunk.cpp	*	372
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/TransportAIUpdateDestructorThunk.cpp	*	2099
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateDestructorThunk.cpp	*	2099
 emit	game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WorkerAIUpdate_getModuleNameKey_Thunk.cpp	*	155
