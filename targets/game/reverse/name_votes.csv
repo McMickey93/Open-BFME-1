@@ -2851,3 +2851,12 @@ game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThu
 game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x78,101fc38a219cde0b3e557972,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x7c,54813c8d8f497867f9b8fa40,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x8d,deb6b65aae85ef305d83036f,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|type||Rva000441CAModuleDataBase,7cd2942edaa52bedffd5cced,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value54,934d3da77903a383f48a135f,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value58,06db4225edccd2a702cac1b5,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value5C,4095b3e63fd26881e4aa5d09,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value60,4cc1930c0d0368fc84a839eb,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value64,00e504e5df531fcec21dbc1c,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value68,698c1c424f8dc395a01e3329,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value6C,e854e12d9e85fd8d52bad638,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_flag70,7b9673b6b27cb460fc4d5d56,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
