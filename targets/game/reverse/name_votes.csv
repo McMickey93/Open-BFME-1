@@ -5479,3 +5479,13 @@ game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeZero,6a9d4c0ba7fe0b7
 game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeArg,04be0a0b5f808ae98265914a,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
 game/GameEngine/Source/Common/BfmeConv962.cpp|member||m_bfmeStamp,a036c030ae950becc646b547,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
 game/GameEngine/Source/Common/BfmeConv962.cpp|function|BfmeInit962@|bfmeInit962,0bf6ce73d63e0d41598b83a3,gpt-6.1-sol,20261016083220-09ec6d,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|type||Contain007629F0,a352703aba2b0f94dfb46cbd,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|type||Data007629F0,e7961b597abef8e09f5728a7,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||flags38,4beda972f8ce4096077d57b7,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||data04,d8df1b547adb3c30c953cff3,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||drawable08,7a68ebd9aec9e5ae411f5d9d,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||parentID88,274e7b1d67ba030797b82a60,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||bone98,a760507cc7dcf27c8058d790,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||matrix234,019bcb8c573942d3251ab24b,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||blend264,ce52ce9c8d7e2def59510b53,gpt-6.1-sol,20261016083234-d49289,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/AttachmentTransform007629F0.cpp|member||frame268,2a5a2399e11f6da072842962,gpt-6.1-sol,20261016083234-d49289,2026-10-16
