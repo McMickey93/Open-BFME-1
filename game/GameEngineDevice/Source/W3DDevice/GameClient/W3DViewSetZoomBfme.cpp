@@ -1,8 +1,13 @@
 // ?setZoom@W3DView@@UAEXM@Z
-// Retail 0x00742E60. BFME blocks camera changes while the game client or a
-// camera movement owns the view, then clamps zoom through the view's limits.
+// Retail 0x00742F70 (retail's ILT confirms the name; see
+// identity_evidence/w3dview-setzoom-setheight-swap.md). Like
+// setHeightAboveGround (0x00742E60), BFME refuses the change while the game
+// client blocks camera changes on a zoom-limited view or a camera movement
+// owns the view; unlike Zero Hour it clamps only a zoom-limited view, the
+// minimum test reading the argument and the maximum test the stored zoom.
 // cl: /DNDEBUG /MD /EHsc
 
+typedef bool Bool;
 typedef float Real;
 
 class GameClient
@@ -11,14 +16,7 @@ private:
 	unsigned char m_padding0000[0xBC];
 
 public:
-	unsigned char m_cameraChangeBlocked;
-};
-
-class BfmeZoomLimits
-{
-public:
-	virtual Real getMinimum();
-	virtual Real getMaximum();
+	Bool m_cameraChangeBlocked;
 };
 
 extern GameClient *TheGameClient;
@@ -29,24 +27,25 @@ public:
 	virtual void setZoom(Real zoom);
 
 private:
-	unsigned char m_padding0004[0x3C];
+	unsigned char m_padding0004[0x34 - 0x04];
+	Real m_maxZoom;
+	Real m_minZoom;
 	Real m_zoom;
-	unsigned char m_zoomLimited;
+	unsigned char m_padding0040[0x44 - 0x40];
+	Bool m_zoomLimited;
 	unsigned char m_padding0045[0x1DC - 0x45];
-	unsigned char m_rotatingCamera;
+	Bool m_doingMoveCameraOnWaypointPath;
 	unsigned char m_padding01DD[0x204 - 0x1DD];
-	unsigned char m_doingCameraUpdate;
+	Bool m_zoomingCamera;
 	unsigned char m_padding0205[0x228 - 0x205];
-	unsigned char m_doingZoomCamera;
+	Bool m_doingZoomCamera;
 	unsigned char m_padding0229[0x27C - 0x229];
-	unsigned char m_cameraMovementAlternate;
-	unsigned char m_cameraMovementFinished;
+	Bool m_cameraMovementAlternate;
+	Bool m_cameraMovementFinished;
 	unsigned char m_padding027E[0x2354 - 0x27E];
 	int m_cameraMovementMode;
 	unsigned char m_padding2358[0x240C - 0x2358];
-	unsigned char m_cameraHasMovedSinceRequest;
-	unsigned char m_padding240D[0x24B8 - 0x240D];
-	BfmeZoomLimits m_zoomLimits;
+	Bool m_cameraConstraintValid;
 
 	void setCameraTransform();
 };
@@ -57,9 +56,9 @@ void W3DView::setZoom(Real zoom)
 		return;
 	if (m_cameraMovementMode != 0)
 		return;
-	if (m_rotatingCamera)
+	if (m_doingMoveCameraOnWaypointPath)
 		return;
-	if (m_doingCameraUpdate)
+	if (m_zoomingCamera)
 		return;
 	if (m_doingZoomCamera)
 		return;
@@ -69,19 +68,16 @@ void W3DView::setZoom(Real zoom)
 		return;
 
 	m_zoom = zoom;
-	if (m_zoomLimited)
-	{
-		if (m_zoom < m_zoomLimits.getMinimum())
-			m_zoom = m_zoomLimits.getMinimum();
-		if (m_zoom > m_zoomLimits.getMaximum())
-			m_zoom = m_zoomLimits.getMaximum();
-	}
+	if (m_zoomLimited && m_zoom < m_minZoom)
+		m_zoom = m_minZoom;
+	if (m_zoomLimited && m_zoom > m_maxZoom)
+		m_zoom = m_maxZoom;
 
-	m_rotatingCamera = 0;
-	m_doingCameraUpdate = 0;
-	m_doingZoomCamera = 0;
-	m_cameraMovementAlternate = 0;
-	m_cameraMovementFinished = 0;
-	m_cameraHasMovedSinceRequest = 0;
+	m_doingMoveCameraOnWaypointPath = false;
+	m_zoomingCamera = false;
+	m_doingZoomCamera = false;
+	m_cameraMovementAlternate = false;
+	m_cameraMovementFinished = false;
+	m_cameraConstraintValid = false;
 	setCameraTransform();
 }

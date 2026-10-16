@@ -1348,34 +1348,9 @@ void W3DView::setAngleAndPitchToDefault( void )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-// ?setHeightAboveGround@W3DView@@ present-unmatched
-void W3DView::setHeightAboveGround(Real z)
-{
-	m_heightAboveGround = z;
+// Retail W3DView::setHeightAboveGround (0x00742E60) is implemented in W3DViewSetHeightAboveGroundBfme.cpp.
 
-  // if our zoom is limited, we will stay within a predefined distance from the terrain
-	if( m_zoomLimited )
-	{
-
-		if (m_heightAboveGround < m_minHeightAboveGround)
-			m_heightAboveGround = m_minHeightAboveGround;
-
-		if (m_heightAboveGround > m_maxHeightAboveGround)
-			m_heightAboveGround = m_maxHeightAboveGround;
-
-	}  // end if
-
-	m_doingMoveCameraOnWaypointPath = false;
-	m_CameraArrivedAtWaypointOnPathFlag = false;
-	m_doingRotateCamera = false;
-	m_doingPitchCamera = false;
-	m_doingZoomCamera = false;
-	m_doingScriptedCameraLock = false;
-	m_cameraConstraintValid = false; // recalc it.
-	setCameraTransform();
-}
-
-// Retail W3DView::setZoom (0x00742E60) is implemented in W3DViewSetZoomBfme.cpp.
+// Retail W3DView::setZoom (0x00742F70) is implemented in W3DViewSetZoomBfme.cpp.
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
