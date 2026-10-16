@@ -5567,3 +5567,8 @@ game/GameEngine/Source/GameNetwork/Connection_sendNetCommandMsg.cpp|local|Connec
 game/GameEngine/Source/GameNetwork/Connection_sendNetCommandMsg.cpp|local|Connection::sendNetCommandMsg|p,f3fed8688567a91222932527,gpt-6.1-sol,20261016122624-b0b63a,2026-10-16
 game/GameEngine/Source/GameNetwork/Connection_sendNetCommandMsg.cpp|local|Connection::sendNetCommandMsg|ref1,726be4540f194323c0ee9db1,gpt-6.1-sol,20261016122624-b0b63a,2026-10-16
 game/GameEngine/Source/GameNetwork/Connection_sendNetCommandMsg.cpp|local|Connection::sendNetCommandMsg|ref2,43c1b8c99e080ca77ec2e457,gpt-6.1-sol,20261016122624-b0b63a,2026-10-16
+game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|member||m_enabledImage0,3ca298014ff189e88b478bab,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
+game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|ScoreScaleUpTransition::draw|x,680be5554d2461274358deb4,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
+game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|ScoreScaleUpTransition::draw|y,25be64ae2164de156ebc89ee,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
+game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|ScoreScaleUpTransition::draw|x1,b9ba9739f646de7739096afd,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
+game/GameEngine/Source/GameClient/GUI/ScoreScaleUpTransition_draw.cpp|local|ScoreScaleUpTransition::draw|y1,2a2262bd3e27844012bf4efc,gpt-6.1-sol,20261016122632-c9312f,2026-10-16
