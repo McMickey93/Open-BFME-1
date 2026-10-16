@@ -586,7 +586,6 @@ void WorkerAIUpdate::exitingSupplyTruckState()
 // Retail WorkerAIUpdate::canAcceptNewRepair (0x002C99C0) is implemented in WorkerAIUpdate_canAcceptNewRepair.cpp.
 
 //----------------------------------------------------------------------------------------
-// ?privateIdle@WorkerAIUpdate@@MAEXW4CommandSourceType@@@Z present-unmatched
 void WorkerAIUpdate::privateIdle(CommandSourceType cmdSource)
 {
 // Leaving this commented out to show that although the regular supply truck does this, the

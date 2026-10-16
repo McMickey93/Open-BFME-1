@@ -34,3 +34,10 @@ public:
 W3DFunctionLexicon::W3DFunctionLexicon( void )
 {
 }
+
+// Retail 0x006C0650: extend-base reset, a lone tail jump to FunctionLexicon::reset
+// (ILT 0x000097A0); ilt_oracle CONFIRMED the name at the vtable ILT 0x0002ABB7.
+void W3DFunctionLexicon::reset( void )
+{
+	FunctionLexicon::reset();
+}

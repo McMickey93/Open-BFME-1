@@ -122469,7 +122469,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002b21d0@@YAXXZ,,0x002B21D0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00015E0B
 ?j_002b2b20@@YAXXZ,,0x002B2B20,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004A9F3
 ?j_002b2fd0@@YAXXZ,,0x002B2FD0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
-?j_002b4470@@YAXXZ,,0x002B4470,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00678720
 ?j_002b4640@@YAXXZ,,0x002B4640,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
 ?j_002b5380@@YAXXZ,,0x002B5380,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
 ?j_002b6a80@@YAXXZ,,0x002B6A80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
@@ -122481,7 +122480,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002bc090@@YAXXZ,,0x002BC090,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000433F6
 ?j_002bc230@@YAXXZ,,0x002BC230,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0066e8f0
 ?j_002bc240@@YAXXZ,,0x002BC240,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00022A66
-?j_002bc3a0@@YAXXZ,,0x002BC3A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000289B1
 ?j_002bc3b0@@YAXXZ,,0x002BC3B0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00021DFF
 ?j_002bc3d0@@YAXXZ,,0x002BC3D0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_006714d0
 ?j_002bc6e0@@YAXXZ,,0x002BC6E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
@@ -122504,7 +122502,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002c6cb0@@YAXXZ,,0x002C6CB0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_002c70c0@@YAXXZ,,0x002C70C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0067a5e0
 ?j_002c75b0@@YAXXZ,,0x002C75B0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
-?j_002c7e90@@YAXXZ,,0x002C7E90,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002270F
 ?j_002c8310@@YAXXZ,,0x002C8310,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
 ?j_002c9456@@YAXXZ,,0x002C9456,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00026D50
 ?j_002cd170@@YAXXZ,,0x002CD170,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000F5D8
@@ -122975,7 +122972,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006bc590@@YAXXZ,,0x006BC590,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000066EF
 ?j_006bc5a0@@YAXXZ,,0x006BC5A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003EAB3
 ?j_006bc5b0@@YAXXZ,,0x006BC5B0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002E4A6
-?j_006c0650@@YAXXZ,,0x006C0650,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00505360
 ?j_006c0660@@YAXXZ,,0x006C0660,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004205F
 ?j_006d12d0@@YAXXZ,,0x006D12D0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009DBF60
 ?j_006d12e0@@YAXXZ,,0x006D12E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009DC100
@@ -172541,3 +172537,7 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?killRidersWhoAreNotFreeToExit@RiderChangeContain@@MAEXXZ,,0x0022A100,5,game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContain.cpp,matched,ZH extend-base forwarder (jmp TransportContain::killRidersWhoAreNotFreeToExit ILT); ilt_oracle CONFIRMED at RiderChangeContain vtable ILT 0x37E2A;model=claude-opus-5-5;host=app
 ?onCapture@RiderChangeContain@@UAEXPAVPlayer@@0@Z,,0x0022A140,5,game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContain.cpp,matched,ZH extend-base forwarder (jmp TransportContain::onCapture ILT); ilt_oracle CONFIRMED at RiderChangeContain vtable ILT 0x3FCDD;model=claude-opus-5-5;host=app
 ?rva003A44A0@Gen003BDE80Element@@QAEX_N@Z,,0x003A44A0,165,game/GameEngine/Source/Common/Rva003A44A0ElementItems.cpp,matched,pinned ILT 0x00020509 name; matched callers Gen003BDE80Element::process / bfmeGoBOC / load003C4160; bfmeRunESM height at +0x0C then item vector +0x48 slot 7 then slot 3;model=claude-opus-5-5;host=app
+?privateIdle@WorkerAIUpdate@@MAEXW4CommandSourceType@@@Z,,0x002C7E90,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WorkerAIUpdate.cpp,matched,ZH extend-base forwarder (jmp AIUpdateInterface::privateIdle ILT 0x2270F); ilt_oracle CONFIRMED at WorkerAIUpdate vtable ILT 0x2E7DF;model=claude-opus-5-5;host=app
+?isIdle@AssaultTransportAIUpdate@@UBE_NXZ,,0x002B4470,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdate.cpp,matched,ZH extend-base forwarder (jmp AIUpdateInterface::isIdle ILT 0x42BE); ilt_oracle CONFIRMED at AssaultTransportAIUpdate vtable ILT 0x2522F;model=claude-opus-5-5;host=app
+?chooseLocomotorSet@GiantBirdAIUpdate@@UAE_NW4LocomotorSetType@@@Z,,0x002BC3A0,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/GiantBirdAIUpdate_privateFollowPathAppend.cpp,matched,extend-base forwarder (jmp AIUpdateInterface::chooseLocomotorSet ILT 0x289B1); ilt_oracle CONFIRMED at GiantBirdAIUpdate vtable ILT 0x111C1;model=claude-opus-5-5;host=app
+?reset@W3DFunctionLexicon@@UAEXXZ,,0x006C0650,5,game/GameEngineDevice/Source/W3DDevice/Common/System/W3DFunctionLexicon.cpp,matched,ZH extend-base forwarder (jmp FunctionLexicon::reset ILT 0x97A0); ilt_oracle CONFIRMED at W3DFunctionLexicon vtable ILT 0x2ABB7;model=claude-opus-5-5;host=app

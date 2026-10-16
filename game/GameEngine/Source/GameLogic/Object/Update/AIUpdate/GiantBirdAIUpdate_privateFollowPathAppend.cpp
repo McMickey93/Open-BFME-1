@@ -126,6 +126,7 @@ private:
 };
 
 class Object;
+enum LocomotorSetType { LOCOMOTORSET_NORMAL };
 
 class AIUpdateInterface
 {
@@ -162,6 +163,7 @@ public:
 	virtual void slot70() = 0;
 	virtual void privateFollowPathAppend(const Coord3D *position,
 		CommandSourceType commandSource) = 0;
+	virtual Bool chooseLocomotorSet(LocomotorSetType wst);	// ILT 0x000289B1
 
 	AIStateMachine *getStateMachine()
 	{
@@ -172,6 +174,8 @@ public:
 
 class GiantBirdAIUpdate : public AIUpdateInterface
 {
+public:
+	virtual Bool chooseLocomotorSet(LocomotorSetType wst);
 	protected:
 	virtual void privateFollowPathAppend(const Coord3D *position,
 		CommandSourceType commandSource);
@@ -226,4 +230,11 @@ void GiantBirdAIUpdate::privateFollowPathAppend(const Coord3D *position,
 		path.initialize(1, *position);
 		privateFollowPath(&path, 0, commandSource, false);
 	}
+}
+
+// Retail 0x002BC3A0: extend-base override, a lone tail jump to the
+// AIUpdateInterface implementation (ilt_oracle CONFIRMED at ILT 0x000111C1).
+Bool GiantBirdAIUpdate::chooseLocomotorSet(LocomotorSetType wst)
+{
+	return AIUpdateInterface::chooseLocomotorSet(wst);
 }

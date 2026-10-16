@@ -91092,3 +91092,7 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ?killRidersWhoAreNotFreeToExit@TransportContain@@MAEXXZ,0x000418C1,ilt_oracle CONFIRMED at this ILT; RiderChangeContain extend-base forwarder tail-jumps here
 ?onCapture@TransportContain@@UAEXPAVPlayer@@0@Z,0x00005524,ilt_oracle CONFIRMED at this ILT; RiderChangeContain extend-base forwarder tail-jumps here
 ?d_003a44a0@@YAXXZ,0x003A44A0,Address-only compatibility for withdrawn dump; native Gen003BDE80Element::rva003A44A0 body (game/GameEngine/Source/Common/Rva003A44A0ElementItems.cpp); matched Gen003BDE80Element::process and Transfer003C3D90::load003C4160 still call this name
+?isIdle@AIUpdateInterface@@UBE_NXZ,0x000042BE,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?privateIdle@AIUpdateInterface@@MAEXW4CommandSourceType@@@Z,0x0002270F,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?chooseLocomotorSet@AIUpdateInterface@@UAE_NW4LocomotorSetType@@@Z,0x000289B1,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?reset@FunctionLexicon@@UAEXXZ,0x000097A0,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here

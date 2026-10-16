@@ -102,7 +102,6 @@ void AssaultTransportAIUpdate::beginAssault( const Object *designatedTarget ) co
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?isIdle@AssaultTransportAIUpdate@@ present-unmatched
 Bool AssaultTransportAIUpdate::isIdle() const
 {
 	return AIUpdateInterface::isIdle();
