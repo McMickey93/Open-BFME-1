@@ -2326,3 +2326,8 @@ game/GameEngine/Source/GameClient/GUI/MpGameSetup.cpp|function|MpGameSetup@|bfme
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00370730CastleMemberState.cpp|member||m_localPlayer0c,a39aa246cf688584990fc0da,gpt-6.1-sol,20261016042350-aa8bcc,2026-10-16
 game/GameEngine/Source/Common/Bfme5ListMemberDtors.cpp|member||m_bfmeNode,a99a7386de2a13221fd4e230,gpt-6.1-sol,20261016042350-497f4b,2026-10-16
 game/GameEngine/Source/Common/Bfme5ListMemberDtors.cpp|member||m_bfmeList,04105b28cc1f2bf17c7e383b,gpt-6.1-sol,20261016042350-497f4b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_210,1f7330a0992fd9151dcf08d8,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_214,f7a0da3bb0649f7ad9a43803,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_218,fb2e501f9f7cf0d96d970b82,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_21c,d19e1dbec679f73168917dc8,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_220,c58835172d739575fb7e1f53,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
