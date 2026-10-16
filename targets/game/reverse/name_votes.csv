@@ -3802,3 +3802,5 @@ game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect0020249
 game/GameEngine/Source/GameLogic/Object/Behavior/PassiveAreaEffectCollect00202490.cpp|member||ids24,fa5f428be1dd9db5776e17d7,gpt-6.1-sol,20261016062219-bbb0a5,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AD10Find.cpp|local|Gen_0021AD10::bfmeFind|n,6b3b72330b80ede63bb3c401,gpt-6.1-sol,20261016062224-39e9a3,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AD10Find.cpp|local|Gen_0021AD10::bfmeFind|c,be614a8009e8c968379a171a,gpt-6.1-sol,20261016062224-39e9a3,2026-10-16
+game/GameEngine/Source/Common/Bfme5TinyThree.cpp|member||m_bfmeFlags,321f53eb36c7d080b52d9877,gpt-6.1-sol,20261016062439-010a5d,2026-10-16
+game/GameEngine/Source/Common/Bfme5TinyThree.cpp|member||m_bfmeSign,6b1d9a3035bdadde14292b3e,gpt-6.1-sol,20261016062439-010a5d,2026-10-16
