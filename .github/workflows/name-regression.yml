@@ -13,6 +13,7 @@ on:
       - 'targets/game/reverse/name_corrections.json'
       - 'tools/name_regression.py'
       - 'tools/name_history.py'
+      - 'tools/abi_view.py'
       - 'tools/layout_history.py'
       - '.github/workflows/name-regression.yml'
   pull_request:
@@ -26,6 +27,7 @@ on:
       - 'targets/game/reverse/name_corrections.json'
       - 'tools/name_regression.py'
       - 'tools/name_history.py'
+      - 'tools/abi_view.py'
       - 'tools/layout_history.py'
       - '.github/workflows/name-regression.yml'
 
@@ -47,6 +49,7 @@ jobs:
             tools/name_regression.py
             tools/name_oracle.py
             tools/layout_history.py
+            tools/abi_view.py
           sparse-checkout-cone-mode: false
       - name: Check pushed commits
         if: github.event_name == 'push'
