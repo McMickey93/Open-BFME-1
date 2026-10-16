@@ -122980,16 +122980,11 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006bc590@@YAXXZ,,0x006BC590,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000066EF
 ?j_006bc5a0@@YAXXZ,,0x006BC5A0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003EAB3
 ?j_006bc5b0@@YAXXZ,,0x006BC5B0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002E4A6
-?j_006be180@@YAXXZ,,0x006BE180,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004568D
 ?j_006c0650@@YAXXZ,,0x006C0650,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00505360
 ?j_006c0660@@YAXXZ,,0x006C0660,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004205F
 ?j_006d12d0@@YAXXZ,,0x006D12D0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009DBF60
 ?j_006d12e0@@YAXXZ,,0x006D12E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009DC100
 ?j_006d12f0@@YAXXZ,,0x006D12F0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x009DC170
-?j_006d1d30@@YAXXZ,,0x006D1D30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002BFFD
-?j_006d1d40@@YAXXZ,,0x006D1D40,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004297E
-?j_006d1d50@@YAXXZ,,0x006D1D50,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003B179
-?j_006d1d60@@YAXXZ,,0x006D1D60,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00030C51
 ?j_006d25d6@@YAXXZ,,0x006D25D6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004822F
 ?j_006d51a0@@YAXXZ,,0x006D51A0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d0d090
 ?j_006d5380@@YAXXZ,,0x006D5380,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00d0d090
@@ -172541,3 +172536,8 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?reset@Win32GameEngine@@UAEXXZ,,0x006BAB50,5,game/GameEngineDevice/Source/Win32Device/Common/Win32GameEngine_update.cpp,matched,ZH extend-base forwarder (jmp GameEngine::reset ILT 0x212C9); ilt_oracle CONFIRMED at Win32GameEngine vtable ILT 0x18D81;model=claude-opus-5-5;host=app
 ?reset@Win32Mouse@@UAEXXZ,,0x006BC0C0,5,game/GameEngineDevice/Source/Win32Device/GameClient/Win32Mouse_init.cpp,matched,ZH extend-base forwarder (jmp Mouse::reset ILT); ilt_oracle CONFIRMED at Win32Mouse vtable ILT 0x316D8;model=claude-opus-5-5;host=app
 ?update@Win32Mouse@@UAEXXZ,,0x006BC0D0,5,game/GameEngineDevice/Source/Win32Device/GameClient/Win32Mouse_init.cpp,matched,ZH extend-base forwarder (jmp Mouse::update ILT); ilt_oracle CONFIRMED at Win32Mouse vtable ILT 0x39B76;model=claude-opus-5-5;host=app
+?update@W3DTerrainLogic@@UAEXXZ,,0x006BE180,5,game/GameEngineDevice/Source/W3DDevice/GameLogic/W3DTerrainLogic_initReset_Thunk.cpp,matched,ZH extend-base forwarder (jmp TerrainLogic::update ILT 0x4568D); ilt_oracle CONFIRMED at W3DTerrainLogic vtable ILT 0x45E53;model=claude-opus-5-5;host=app
+?adjustTerrainLOD@FlatHeightMapRenderObjClass@@UAEXH@Z,,0x006D1D30,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::adjustTerrainLOD ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x1E083;model=claude-opus-5-5;host=app
+?ReleaseResources@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D40,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::ReleaseResources ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x1BD33;model=claude-opus-5-5;host=app
+?ReAcquireResources@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D50,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::ReAcquireResources ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x10799;model=claude-opus-5-5;host=app
+?reset@FlatHeightMapRenderObjClass@@UAEXXZ,,0x006D1D60,5,game/GameEngineDevice/Source/W3DDevice/GameClient/FlatHeightMap.cpp,matched,ZH extend-base forwarder (jmp BaseHeightMapRenderObjClass::reset ILT); ilt_oracle CONFIRMED at FlatHeightMapRenderObjClass vtable ILT 0x2CBBF;model=claude-opus-5-5;host=app

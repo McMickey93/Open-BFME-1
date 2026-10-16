@@ -19,6 +19,7 @@ class TerrainLogic
 public:
 	virtual void init(void);						///< ILT 0x00027994
 	virtual void reset(void);						///< ILT 0x0001B707
+	virtual void update(void);						///< ILT 0x0004568D
 
 protected:
 	char m_unreconstructed_04[0x0c - 4];
@@ -37,6 +38,7 @@ class W3DTerrainLogic : public TerrainLogic
 public:
 	virtual void init(void);
 	virtual void reset(void);
+	virtual void update(void);
 
 private:
 	int m_mapDX;									///< retail this+0x000c
@@ -71,3 +73,10 @@ void W3DTerrainLogic::reset( void )
 	m_mapMaxZ = 1;
 	WorldHeightMap::freeListOfMapObjects();
 }  // end reset
+
+//-------------------------------------------------------------------------------------------------
+// ?update@W3DTerrainLogic@@UAEXXZ (retail 0x006BE180)
+void W3DTerrainLogic::update( void )
+{
+	TerrainLogic::update();
+}  // end update

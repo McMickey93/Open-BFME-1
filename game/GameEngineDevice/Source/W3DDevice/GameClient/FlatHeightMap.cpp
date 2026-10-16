@@ -184,7 +184,6 @@ m_updateState(STATE_IDLE)
 /** Adjust the terrain Level Of Detail.  If adj > 0 , increases LOD 1 step, if 
 adj < 0 decreases it one step, if adj==0, then just sets up for the current LOD */
 //=============================================================================
-// ?adjustTerrainLOD@FlatHeightMapRenderObjClass@@ present-unmatched
 void FlatHeightMapRenderObjClass::adjustTerrainLOD(Int adj) 
 {
 	BaseHeightMapRenderObjClass::adjustTerrainLOD(adj);
@@ -195,7 +194,6 @@ void FlatHeightMapRenderObjClass::adjustTerrainLOD(Int adj)
 //=============================================================================
 /** Releases all w3d assets, to prepare for Reset device call. */
 //=============================================================================
-// ?ReleaseResources@FlatHeightMapRenderObjClass@@ present-unmatched
 void FlatHeightMapRenderObjClass::ReleaseResources(void)
 {
 	BaseHeightMapRenderObjClass::ReleaseResources();
@@ -206,37 +204,9 @@ void FlatHeightMapRenderObjClass::ReleaseResources(void)
 //=============================================================================
 /** Reallocates all W3D assets after a reset.. */
 //=============================================================================
-// ?ReAcquireResources@FlatHeightMapRenderObjClass@@ present-unmatched
 void FlatHeightMapRenderObjClass::ReAcquireResources(void)
 {
-	if (m_map) {
-		Int width = (m_map->getXExtent()+CELLS_PER_TILE-2)/CELLS_PER_TILE;
-		Int height = (m_map->getYExtent()+CELLS_PER_TILE-2)/CELLS_PER_TILE;
-		Int i, j;
-		Int numTiles = width*height;
-		m_tiles = new W3DTerrainBackground[numTiles];
-		m_numTiles = numTiles;
-		m_tilesWidth = width;
-		m_tilesHeight = height;
-		for	(i=0; i<m_tilesWidth; i++) {
-			for (j=0; j<m_tilesHeight; j++) {
-				W3DTerrainBackground *tile = m_tiles+j*m_tilesWidth+i;
-				tile->allocateTerrainBuffers(m_map, i*CELLS_PER_TILE, j*CELLS_PER_TILE, CELLS_PER_TILE);
-				tile->setFlip(m_map);
-			}
-		}
-		IRegion2D range;
-		range.lo.x = 0;
-		range.lo.y = 0;
-		range.hi.x = m_map->getXExtent();
-		range.hi.y = m_map->getYExtent();
-		for	(i=0; i<m_tilesWidth; i++) {
-			for (j=0; j<m_tilesHeight; j++) {
-				W3DTerrainBackground *tile = m_tiles+j*m_tilesWidth+i;
-				tile->doPartialUpdate(range, m_map, true);
-			}
-		}
-	}
+	// BFME (retail 0x006D1D50) dropped ZH's tile rebuild: a lone tail jump to the base.
 	BaseHeightMapRenderObjClass::ReAcquireResources();
 
 }
@@ -247,7 +217,6 @@ void FlatHeightMapRenderObjClass::ReAcquireResources(void)
 //=============================================================================
 /** Updates the macro noise/lightmap texture (pass 3) */
 //=============================================================================
-// ?reset@FlatHeightMapRenderObjClass@@ present-unmatched
 void FlatHeightMapRenderObjClass::reset(void)
 {
 	BaseHeightMapRenderObjClass::reset();
