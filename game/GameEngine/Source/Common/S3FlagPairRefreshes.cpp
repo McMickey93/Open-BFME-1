@@ -19,8 +19,8 @@
 
 struct BfmeFlagPair
 {
-	bool m_bfmeFirst;						// +0x00
-	bool m_bfmeSecond;						// +0x01
+	bool m_version;						// +0x00
+	bool m_currentVersion;						// +0x01
 };
 
 class BfmeFlagTarget
@@ -94,8 +94,8 @@ void Gen_005ee5a0::bfmeRefresh(BfmeFlagTarget *target)
 {
 	BfmeFlagPair flags;
 
-	flags.m_bfmeFirst = true;
-	flags.m_bfmeSecond = true;
+	flags.m_version = true;
+	flags.m_currentVersion = true;
 
 	target->bfmeApply(&flags);
 
@@ -108,8 +108,8 @@ void Gen_005ef8b0::bfmeRefresh(BfmeFlagTarget *target)
 {
 	BfmeFlagPair flags;
 
-	flags.m_bfmeFirst = true;
-	flags.m_bfmeSecond = true;
+	flags.m_version = true;
+	flags.m_currentVersion = true;
 
 	target->bfmeApply(&flags);
 
@@ -122,8 +122,8 @@ void Gen_005fe880::bfmeRefresh(BfmeFlagTarget *target)
 {
 	BfmeFlagPair flags;
 
-	flags.m_bfmeFirst = true;
-	flags.m_bfmeSecond = true;
+	flags.m_version = true;
+	flags.m_currentVersion = true;
 
 	target->bfmeApply(&flags);
 
@@ -136,8 +136,8 @@ void Gen_005ff8d0::bfmeRefresh(BfmeFlagTarget *target)
 {
 	BfmeFlagPair flags;
 
-	flags.m_bfmeFirst = true;
-	flags.m_bfmeSecond = true;
+	flags.m_version = true;
+	flags.m_currentVersion = true;
 
 	target->bfmeApply(&flags);
 
@@ -150,8 +150,8 @@ void Gen_00600710::bfmeRefresh(BfmeFlagTarget *target)
 {
 	BfmeFlagPair flags;
 
-	flags.m_bfmeFirst = true;
-	flags.m_bfmeSecond = true;
+	flags.m_version = true;
+	flags.m_currentVersion = true;
 
 	target->bfmeApply(&flags);
 
