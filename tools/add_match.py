@@ -521,6 +521,34 @@ def landing_recorded(text, name, rva, size, source_rel):
             and fields[4].startswith(f"{LANDED_BY} source={source_rel} "))
 
 
+def drop_uncommitted_landing(root, log, text, rva):
+    """A same-session re-landing at RVA (--replace-existing at a new size, a
+    --replace-rva rename) supersedes this session's own earlier add_match
+    `landed` line: drop such a line that HEAD's log does not hold yet, so the
+    commit carries one landing, not an orphan check_csv would refuse."""
+    committed = subprocess.run(["git", "-C", str(root), "show",
+                                "HEAD:targets/game/reverse/re_attempts.log"], capture_output=True)
+    held = set(committed.stdout.decode("utf-8", "replace").splitlines()) if committed.returncode == 0 else set()
+    kept, dropped = [], 0
+    for line in text.splitlines(keepends=True):
+        fields = line.rstrip("\r\n").split("\t")
+        try:
+            mine = (len(fields) >= 5 and fields[3] == "landed" and fields[4].startswith(LANDED_BY + " ")
+                    and int(fields[1], 16) == rva)
+        except ValueError:
+            mine = False
+        if mine and line.rstrip("\r\n") not in held:
+            dropped += 1
+            continue
+        kept.append(line)
+    if not dropped:
+        return text
+    new_text = "".join(kept)
+    ledger_io.atomic_write_bytes(log, new_text.encode("utf-8"))
+    print(f"add_match: replaced this session's uncommitted `landed` line for 0x{rva:08X}")
+    return new_text
+
+
 def landing_evidence(rva, size, source_rel, notes):
     """The `landed` row's evidence: who landed what, at which extent, with the
     ledger notes (model=, identity-correction=, ...) as the evidence trail."""
@@ -543,6 +571,7 @@ def record_landing(root, name, rva, size, source_rel, notes, *, text=None):
     if not log.exists():
         return None
     text = log.read_text(encoding="utf-8", errors="replace") if text is None else text
+    text = drop_uncommitted_landing(root, log, text, rva)
     if landing_recorded(text, name, rva, size, source_rel):
         print(f"add_match: `landed` for {name} @ 0x{rva:08X} already in re_attempts.log")
         return text
@@ -573,7 +602,7 @@ def report_waiting(rva, path=None, root=None):
     rows = None
     if named and root is not None:
         rows = eligibility.load_rows(Path(root) / "targets/game/reverse" / "functions.csv")
-    released = eligibility.released_rvas(path, rows=rows) if named else {}
+    released = eligibility.released_rvas(path, rows=rows, root=root) if named else {}
     for at, fields in named:
         state = ("released: served as untried again" if at in released
                  else "still waits on another blocked-on= body")

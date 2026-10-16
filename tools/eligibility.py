@@ -161,20 +161,42 @@ def deferred(rva, latest, path=None):
     return latest.get(rva) in re_log.DEFERRED_STATUSES and rva not in released_rvas(path)
 
 
-def landing_row(row):
-    """A matched row that proves a body LANDED for blocked-on= purposes: it
-    names an identity (pin_consistency.names_identity: not generated, no gen-
-    note, not ?dup_) and is none of the placeholders that only hold bytes --
-    no ?d_/?dup_/?j_ name, no dump row, no named naked/__emit lift."""
-    import pin_consistency
-    return (pin_consistency.names_identity(row) and not is_anonymous(row.get("name"))
-            and not is_dump_row(row) and not is_lift_row(row))
-
-
-def landed_identities(rows=None):
-    """{rva} with a landing_row at exactly that address."""
-    rows = load_rows() if rows is None else rows
-    return {rva_of(row) for row in rows if landing_row(row)}
+def landed_at(rvas, rows=None, root=None):
+    """{rva} of RVAS with a row that proves the body LANDED for blocked-on=:
+    matched, hand-written (not under progress.GENERATED_ROOTS, no gen- note,
+    not a gen-dump scaffold, not .asm/.s), not an ILT `?j_` thunk, and not a
+    named naked/__emit lift (progress.naked_cpp_rows over just these rows'
+    sources). A real-source ?dup_/?d_ row counts: it is C++ for that body.
+    Only the asked RVAS are read, so this costs one filtered ledger read;
+    ROOT (default the repo) is where their sources are read for the lift test."""
+    import progress
+    wanted = set(rvas)
+    if not wanted:
+        return set()
+    rows = load_rows(rvas=wanted) if rows is None else [r for r in rows if rva_of(r) in wanted]
+    candidates = {}
+    for row in rows:
+        source = row.get("source") or ""
+        if (row.get("status") != "matched" or source.startswith(progress.GENERATED_ROOTS)
+                or progress.GEN_NOTE_RE.search(row.get("notes") or "")
+                or build.is_scaffold_row(row)
+                or Path(source).suffix.lower() in progress.ASM_SUFFIXES
+                or (row.get("name") or "").startswith("?j_")):
+            continue
+        try:
+            candidates[(row["name"], row["target_rva"])] = (int(row["target_size"]), source)
+        except (TypeError, ValueError):
+            continue
+    cpp = {key: value for key, value in candidates.items()
+           if Path(value[1]).suffix.lower() in progress.CPP_SUFFIXES}
+    texts = {}
+    for _size, source in cpp.values():
+        try:
+            texts[source] = (Path(root or ROOT) / source).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue          # an unreadable source cannot be shown to be a lift
+    naked = set(progress.naked_cpp_rows(cpp, texts)) if texts else set()
+    return {int(key[1], 16) for key in candidates if key not in naked}
 
 
 def _stamp(path):
@@ -188,15 +210,15 @@ def _stamp(path):
 _RELEASED = {}
 
 
-def released_rvas(path=None, rows=None):
+def released_rvas(path=None, rows=None, root=None):
     """{rva: (deferral line index, [blocker rvas])} of deferrals whose blockers landed.
 
     The link is explicit and exact: the STANDING verdict at rva is a deferral
     (re_log.DEFERRED_STATUSES) whose evidence carries `blocked-on=0x<rva>[,...]`
     (re_log.blocked_on, all-or-nothing). It is released only when EVERY named
     blocker
-      * has a landing_row at exactly that RVA now (a matched row naming an
-        identity, not a placeholder, dump or lift), and
+      * has a landed_at row at exactly that RVA now (matched hand-written
+        C++, not a dump, lift or ?j_ thunk), and
       * has a resolution (re_log.RESOLVED_STATUSES, e.g. the `landed`
         add_match records, which check_csv only admits beside its matched
         ledger row) as its STANDING verdict at that RVA.
@@ -220,7 +242,7 @@ def released_rvas(path=None, rows=None):
                 waiting[rva] = (index, blockers)
     out = {}
     if waiting:
-        landed = landed_identities(rows)
+        landed = landed_at({b for _i, blockers in waiting.values() for b in blockers}, rows, root)
         for rva, (index, blockers) in waiting.items():
             if all(b in landed and b in records and records[b][1][3] in re_log.RESOLVED_STATUSES
                    for b in blockers):

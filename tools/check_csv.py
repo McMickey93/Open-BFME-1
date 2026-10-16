@@ -297,7 +297,8 @@ def check_re_attempts_range(base, tip, problems):
         found = []
         check_re_attempts_append_only(read_re_attempts(f"{commit}^"), read_re_attempts(commit), found,
                                       dedupe_claim=re_attempts_dedupe_claim(commit),
-                                      ledger=ledger_keys_at(commit))
+                                      ledger=ledger_keys_at(commit),
+                                      base_ledger=ledger_keys_at(f"{commit}^"))
         problems.extend(f"{commit[:10]}: {p}" for p in found)
 
 
@@ -341,7 +342,8 @@ def add_match_landing(line):
         return None
 
 
-def check_re_attempts_append_only(base, new, problems, dedupe_claim=None, ledger=None):
+def check_re_attempts_append_only(base, new, problems, dedupe_claim=None, ledger=None,
+                                  base_ledger=None):
     """re_attempts.log only grows: its old lines stay, in order, and lines are
     appended after them (approved by the project lead 2026-10-16). Compared
     with CR-at-EOL ignored, so the one-time LF normalisation passes, but a
@@ -372,16 +374,18 @@ def check_re_attempts_append_only(base, new, problems, dedupe_claim=None, ledger
     if tail_base:
         base_lines.append(tail_base)               # last line without newline
     plain = lambda line: line[:-1] if line.endswith(b"\r") else line
-    if ledger is not None:
+    if ledger is not None and base_ledger is not None:
         # The one deletion a landing may take back: `git revert` of a landing
         # commit removes add_match's `landed` row together with its ledger row.
-        # A landed row whose (name, rva, size) is no longer a matched row may
-        # leave the log; every other line stays append-only.
+        # Only a row whose (name, rva, size) was a matched row in the PARENT
+        # and is gone in THIS commit may leave; a line for a body renamed,
+        # resized or retired long ago stays, as every other line does.
         survivors = collections.Counter(plain(line) for line in new_lines + [tail_new])
         kept = []
         for line in base_lines:
             key = add_match_landing(line)
-            if key is not None and key not in ledger and not survivors[plain(line)]:
+            if (key is not None and key in base_ledger and key not in ledger
+                    and not survivors[plain(line)]):
                 continue
             kept.append(line)
         base_lines = kept
@@ -851,7 +855,8 @@ def main():
         if has_base:
             check_re_attempts_append_only(read_re_attempts(base_spec), read_re_attempts(spec), problems,
                                           dedupe_claim=re_attempts_dedupe_claim(args.ref),
-                                          ledger=matched_ledger_keys(functions_raw))
+                                          ledger=matched_ledger_keys(functions_raw),
+                                          base_ledger=matched_ledger_keys(read_ledger(FUNCTIONS, base_spec)))
     check_attempts(spec, problems, functions_raw=functions_raw,
                    sources_ok=sources_ok)
     data_raw = read_data_rows(spec)

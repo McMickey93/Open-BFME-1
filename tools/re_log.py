@@ -630,11 +630,23 @@ def _record(argv):
     evidence = _census_tag(status, rva_text, symbol, _require_tags(status, evidence))
     blockers = blocked_on(evidence, status=status)   # a malformed or misplaced token is refused
     if blockers:
-        # A blocker that has already landed is no blocker: naming it would
-        # release this deferral at once (and lets the release rule ignore order).
+        # A blocker must be a body the ledger knows (the start of a row) and
+        # not an ILT thunk, and must not have landed yet: naming a landed body
+        # would release this deferral at once (and lets the release rule
+        # ignore line order).
         import eligibility
-        landed = eligibility.landed_identities()
-        already = [b for b in blockers if b in landed]
+        import ilt_oracle
+        rows = eligibility.load_rows(rvas=set(blockers))
+        starts = {eligibility.rva_of(r) for r in rows}
+        thunk = ilt_oracle.oracle()
+        for b in blockers:
+            slot, rest = divmod(b - (thunk.first_thunk - 0x400000), 5)
+            if b not in starts:
+                raise SystemExit(f"blocked-on names 0x{b:08X}, which starts no functions.csv row")
+            if (rest == 0 and 0 <= slot < len(thunk.target)) or all(
+                    (r.get("name") or "").startswith("?j_") for r in rows if eligibility.rva_of(r) == b):
+                raise SystemExit(f"blocked-on names 0x{b:08X}, an ILT thunk; name the body it jumps to")
+        already = sorted(eligibility.landed_at(blockers))
         if already:
             raise SystemExit("blocked-on names " + ", ".join(f"0x{b:08X}" for b in already)
                              + ", which already has a matched identity row: it is not what stops "
