@@ -124760,26 +124760,13 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_0065eb50@@QAEPAXHH@Z,,0x0065EB50,11,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=this-store-arg2;ghidra=FUN_00a5eb50
 ?m@Gen_0065eb60@@QAEPAXHH@Z,,0x0065EB60,11,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=this-store-arg2;ghidra=FUN_00a5eb60
 ?m@Gen_00662740@@QAEXXZ,,0x00662740,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a62740
-?m@Gen_006628b0@@QAEXXZ,,0x006628B0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a628b0
 ?m@Gen_00662920@@QAEXXZ,,0x00662920,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a62920
 ?m@Gen_006630f0@@QAEHXZ,,0x006630F0,3,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=ret-zero;ghidra=FUN_00a630f0
 ?m@Gen_0066b120@@QAEHXZ,,0x0066B120,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=getter-d32;ghidra=FUN_00a6b120
 ?m@Gen_00670ca0@@QAEHXZ,,0x00670CA0,4,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=getter-d8;ghidra=FUN_00a70ca0
 ?m@Gen_00673730@@QAEXH@Z,,0x00673730,10,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=setter-d8;ghidra=FUN_00a73730
-?m@Gen_006738f0@@QAEXXZ,,0x006738F0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a738f0
-?m@Gen_006739f0@@QAEXXZ,,0x006739F0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a739f0
-?m@Gen_00673ae0@@QAEXXZ,,0x00673AE0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73ae0
-?m@Gen_00673b50@@QAEXXZ,,0x00673B50,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73b50
-?m@Gen_00673bc0@@QAEXXZ,,0x00673BC0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73bc0
-?m@Gen_00673c10@@QAEXXZ,,0x00673C10,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73c10
-?m@Gen_00673c60@@QAEXXZ,,0x00673C60,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73c60
-?m@Gen_00673d10@@QAEXXZ,,0x00673D10,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73d10
-?m@Gen_00673da0@@QAEXXZ,,0x00673DA0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a73da0
-?m@Gen_00674070@@QAEXXZ,,0x00674070,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a74070
-?m@Gen_00674100@@QAEXXZ,,0x00674100,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a74100
 ?m@Gen_006741c0@@QAEXXZ,,0x006741C0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a741c0
 ?m@Gen_006742e0@@QAEXXZ,,0x006742E0,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a742e0
-?m@Gen_00674350@@QAEXXZ,,0x00674350,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00a74350
 ?m@Gen_00681bc0@@QAEDXZ,,0x00681BC0,4,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=getter8-d8;ghidra=FUN_00a81bc0
 ?m@Gen_006962c0@@QAEHXZ,,0x006962C0,4,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=getter-d8;ghidra=FUN_00a962c0
 ?m@Gen_00696330@@QAEHXZ,,0x00696330,7,game/gen_small/fun_004.cpp,matched,gen-shim;skeleton=getter-d32;ghidra=FUN_00a96330
@@ -172541,3 +172528,16 @@ _lua_pushcclosure,,0x009904E0,5,game/Libraries/Source/Lua/lapi.c,matched,vendore
 ?getObjectGarrisonPointIndex@HordeGarrisonContain@@EAEHW4ObjectID@@@Z,,0x00248B10,5,game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeGarrisonContain.cpp,matched,extend-base override; tail jmp to GarrisonContain::getObjectGarrisonPointIndex ILT 0x0003C781; ilt_oracle CONFIRMED exact at ILT 0x00026477;model=claude-opus-5-5;host=app
 ??1AIExitState@@MAE@XZ,,0x00171670,5,game/GameEngine/Source/GameLogic/AI/AIStateTailDestructors.cpp,matched,protected complete dtor: tail jump to ~State via ILT 0x16725; ??_GAIExitState 0x1801C0 calls it via ILT 0x1B22F (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
 ??1AIFollowWaypointPathExactState@@MAE@XZ,,0x00185530,5,game/GameEngine/Source/GameLogic/AI/AIStateTailDestructors.cpp,matched,protected complete dtor: tail jump to ~AIInternalMoveToState via ILT 0x4AAF7; ??_GAIFollowWaypointPathExactState 0x185500 calls it via ILT 0x78AB (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
+??1NetFrameCommandMsg@@UAE@XZ,,0x006628B0,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetAckStage1CommandMsg@@UAE@XZ,,0x006738F0,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetAckStage2CommandMsg@@UAE@XZ,,0x006739F0,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetPlayerLeaveCommandMsg@@UAE@XZ,,0x00673AE0,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetDestroyPlayerCommandMsg@@UAE@XZ,,0x00673B50,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetKeepAliveCommandMsg@@UAE@XZ,,0x00673BC0,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetDisconnectKeepAliveCommandMsg@@UAE@XZ,,0x00673C10,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetDisconnectPlayerCommandMsg@@UAE@XZ,,0x00673C60,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetDisconnectVoteCommandMsg@@UAE@XZ,,0x00673D10,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetProgressCommandMsg@@UAE@XZ,,0x00673DA0,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetFileProgressCommandMsg@@UAE@XZ,,0x00674070,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetDisconnectFrameCommandMsg@@UAE@XZ,,0x00674100,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
+??1NetDisconnectScreenOffCommandMsg@@UAE@XZ,,0x00674350,7,game/GameEngine/Source/GameNetwork/NetCommandMsgDestructors.cpp,matched,empty subclass dtor re-seating only the base ??_7NetCommandMsg (inlined ~NetCommandMsg); ilt_oracle CONFIRMS the name at the ILT its ??_G calls;model=claude-opus-5-5;host=app
