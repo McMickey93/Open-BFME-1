@@ -2744,3 +2744,13 @@ game/GameEngine/Source/GameClient/DrawTransform00421830.cpp|local|compose0042183
 game/GameEngine/Source/GameClient/DrawTransform00421830.cpp|local|compose00421830|v21,c281485a42e2997b685fcea0,gpt-6.1-sol,20261016052321-3790e6,2026-10-16
 game/GameEngine/Source/GameClient/DrawTransform00421830.cpp|local|compose00421830|v22,583daa2806f0bd6e27d431ff,gpt-6.1-sol,20261016052321-3790e6,2026-10-16
 game/GameEngine/Source/GameClient/DrawTransform00421830.cpp|local|compose00421830|v23,c343cdda5d0b8624a03e916a,gpt-6.1-sol,20261016052321-3790e6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_unknown20,428366a41f33131ac6c143fd,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_flag28,1ec05a4f6cfc559a5325ef7b,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_flag29,546d280f51b3726caf1c7daa,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_unknown2c,c3addf953f9f4f7c74f48242,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_unknown34,a5bf5b02b57c2e45f557fbbb,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_unknown38,67d564b47b6df0a2c1b32836,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_unknown3c,222aba7180cd3df859126af7,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_flag40,232f9381685a24b4170201a6,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_unknown48,0075c661b80a796f9f2ec69b,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Damage/DamageModuleModuleDataCtorThunk.cpp|member||m_flag54,3b29ef50ed1374d2f42b0f1c,gpt-6.1-sol,20261016052713-da4b3f,2026-10-16
