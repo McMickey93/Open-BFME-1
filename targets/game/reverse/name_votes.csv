@@ -5589,3 +5589,11 @@ game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::
 game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|R0,844012c45e16fb71c8ef4494,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
 game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|tmp,57933eb773dd65e4264aa6cb,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
 game/GameEngine/Source/Common/Rva0018F660TransformPoints.cpp|local|Rva0018F660::transformPoints|v,19380a14dd34e037935b405f,gpt-6.1-sol,20261016122737-7eb3c0,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|member||floats_34,4ce1c348e3de95e698dab334,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|member||float_94,92268ce942315108fb4d9a4d,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|member||float_98,3fccb42fba24fd0bf5ffc6b5,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|member||float_9c,1dc4e43e0450acd694c61eb1,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|member||floats_c8,b629501eeb666b15fad6efec,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|member||bytes_188,f8df8b32b3faceb51abf7eb7,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|local|InitializeAudioSlot006ACB90::InitializeAudioSlot006ACB90|a,e0cebae0445e84820262af60,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
+game/GameEngine/Source/Common/InitializeAudioSlot006ACB90.cpp|local|InitializeAudioSlot006ACB90::InitializeAudioSlot006ACB90|b,460f5ab387f9fc64faae39b0,gpt-6.1-sol,20261016122745-dff86f,2026-10-16
