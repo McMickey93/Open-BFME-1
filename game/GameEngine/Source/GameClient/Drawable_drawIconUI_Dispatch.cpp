@@ -21,7 +21,6 @@ private:
 	void drawCaption();
 	void drawConstructPercent();
 	void drawHealing();
-	void drawBombed();
 	void drawEnthusiastic();
 	void drawDemoralized();
 	void drawDisabled();
@@ -44,12 +43,12 @@ void Drawable::drawIconUI(int group)
 		// ilt_oracle: 0x0003D514 drawEnthusiastic, 0x00038BAE drawAmmo and
 		// 0x00012E2C drawContained are CONFIRMED (exact).
 		drawEnthusiastic();
-		drawBombed();
+		drawDisabled();
 		drawAmmo();
 		drawContained();
 		break;
 	case 2:
-		drawDisabled();
+		drawVeterancy();
 		break;
 	case 3:
 		// ILT 0x00022782 reaches the address-named body 0x00410F90.
