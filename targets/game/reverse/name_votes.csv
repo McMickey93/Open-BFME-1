@@ -1383,3 +1383,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00734180.cpp|f
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00734180.cpp|local|W3DTreeBuffer::rva00734180|x,5f01c882f5422369ebd8ba8e,gpt-6.1-sol,20261016030933-e11f51,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00734180.cpp|local|W3DTreeBuffer::rva00734180|y,fb68808004f260ce0819e5ae,gpt-6.1-sol,20261016030933-e11f51,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00734180.cpp|local|W3DTreeBuffer::rva00734180|z,6b9cae3379f838533ddb3c4e,gpt-6.1-sol,20261016030933-e11f51,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayCalculateTerrainLOD.cpp|local|W3DDisplay::calculateTerrainLOD|freq64,4228303214e334e34489b3bd,gpt-6.1-sol,20261016030940-47ed10,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayCalculateTerrainLOD.cpp|local|W3DDisplay::calculateTerrainLOD|startTime64,6d946dbdb409a56544b697ae,gpt-6.1-sol,20261016030940-47ed10,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayCalculateTerrainLOD.cpp|local|W3DDisplay::calculateTerrainLOD|time64,e43feaaebea5474fb6aeefe4,gpt-6.1-sol,20261016030940-47ed10,2026-10-16
