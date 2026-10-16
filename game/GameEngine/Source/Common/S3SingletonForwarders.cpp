@@ -288,13 +288,6 @@ public:
 class UnicodeString;
 extern UnicodeString ctrl;		// 0x12f3afc
 extern UnicodeString shift;
-class Gen_00C70160Target
-{
-public:
-	void bfmeForward(void);					// retail 0x0003B304
-};
-
-extern Gen_00C70160Target TheBfmeObject_00C70160;		// 0x12f3dc4
 extern std::string lookAtPlayerName;
 namespace PopupReplayState { extern std::string replayPath; }
 extern std::string LastReplayFileName;
@@ -1043,11 +1036,7 @@ void bfmeForward_00C70150(void)
 {
 	shift.~UnicodeString();
 }
-// ?bfmeForward_00C70160@@YAXXZ
-void bfmeForward_00C70160(void)
-{
-	TheBfmeObject_00C70160.bfmeForward();
-}
+// 0x00C70160 is emitted with its global in StaticInit/Rva012F3DC4Global.cpp.
 // ?bfmeForward_00C70170@@YAXXZ
 void bfmeForward_00C70170(void)
 {
