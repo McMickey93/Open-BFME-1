@@ -5806,3 +5806,6 @@ game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|set
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setPlayerList|w,985247280b4acd83680f547d,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/FireSpreadUpdate.cpp|local|FireSpreadUpdate::update|d,6e1d9223eab4d603df360563,gpt-6.1-sol,20261016131027-10f287,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/FireSpreadUpdate.cpp|local|FireSpreadUpdate::calcNextSpreadDelay|d,740e849f51a9f1b850f2061d,gpt-6.1-sol,20261016131027-10f287,2026-10-16
+game/GameEngine/Source/Common/BfmeConv886.cpp|local|bfmeGoEVBa|p,278e3945f9b8049794a22d1f,gpt-6.1-sol,20261016131032-fa13ae,2026-10-16
+game/GameEngine/Source/Common/BfmeConv886.cpp|local|bfmeGoEVBb|p,4338533299d34e2beb48e538,gpt-6.1-sol,20261016131032-fa13ae,2026-10-16
+game/GameEngine/Source/Common/BfmeConv886.cpp|local|bfmeGoEVBc|p,6981f317b7532bc356c995d9,gpt-6.1-sol,20261016131032-fa13ae,2026-10-16
