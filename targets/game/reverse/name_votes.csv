@@ -5771,3 +5771,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE200Scroll.cpp|local|Rv
 game/GameEngine/Source/GameLogic/AI/Rva001695B0AdjustBuildList.cpp|local|Rva001695B0::adjustBuildList|s,63ddaf2d9310c07809bc445b,gpt-6.1-sol,20261016130819-66b4c3,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva001695B0AdjustBuildList.cpp|local|Rva001695B0::adjustBuildList|c,c73651d41ea9b2c18374de5b,gpt-6.1-sol,20261016130819-66b4c3,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2040.cpp|local|BfmeHostES::bfmeIndexES|t,4610417dd5ed6266057c1719,gpt-6.1-sol,20261016130824-e55fff,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ToppleUpdateApplyTopplingForce.cpp|local|ToppleUpdateApplyTopplingForceShim::apply|d,743b1bf46b8ff446c5738726,gpt-6.1-sol,20261016130829-ac1a91,2026-10-16
