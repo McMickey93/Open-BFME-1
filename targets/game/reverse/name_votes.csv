@@ -5713,3 +5713,11 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|membe
 game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at04,515d2c3e8559035f48aa4add,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at08,7db689d880135a8bf33fa714,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at0c,d3336f817a867bd59be08ac9,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|function||bfmeAllocJT,b6408066e1f4b40c0c625570,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|function||bfmeFreeJT,b9c276840bf3ab5e0de0dd72,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|param|bfmeFreeJT|p,8a2f3c5b49045c18cb5cece0,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|param|bfmeAllocJT|p,556075c91eab93862f872a1d,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|a,d64d072cc4abe4e3ebfef322,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|b,193ba5703bb31c16188ee7df,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|c,9b105ded61e3a5b5bd03c72a,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|d,c7cb5b4429fa8c4e4d0d9c4e,gpt-6.1-sol,20261016124006-66950c,2026-10-16
