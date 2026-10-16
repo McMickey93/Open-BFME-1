@@ -3923,3 +3923,6 @@ game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmeNext,0c93ada61a
 game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmePrev,11f6e5eb6d3b531bc54f6d56,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
 game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmeHead,ad0e49cd8eb8bb11d5bb2dee,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
 game/GameEngine/Source/Common/Bfme5ListAppends.cpp|member||m_bfmeList,04e4074cbeb82b07f8f5476a,gpt-6.1-sol,20261016062950-b5f94a,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FD990CameraCorners.cpp|member||camera70,a9d58ccf24f82bc57eae9ff5,gpt-6.1-sol,20261016062955-6ee57a,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FD990CameraCorners.cpp|local|Rva006FD990CameraCorners::build|x,983faf2cd6c02c3f6b1ecc79,gpt-6.1-sol,20261016062955-6ee57a,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FD990CameraCorners.cpp|local|Rva006FD990CameraCorners::build|y,be5dbc7f90853a0c8dbe1626,gpt-6.1-sol,20261016062955-6ee57a,2026-10-16
