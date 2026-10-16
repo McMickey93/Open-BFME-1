@@ -2045,3 +2045,6 @@ game/GameEngine/Source/GameLogic/Object/Behavior/FireWeaponWhenDeadBehaviorModul
 game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorThunk.cpp|member||m_14,c2bada55f3bbac156d057425,gpt-6.1-sol,20261016041035-596db1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorThunk.cpp|member||m_18,0e4113b8a2237745c58c11c2,gpt-6.1-sol,20261016041035-596db1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AutoDepositUpdateModuleDataCtorThunk.cpp|member||m_1c,0fc14fe528c5d53f092c3964,gpt-6.1-sol,20261016041035-596db1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/PropagandaTowerBehaviorModuleDataConstructor.cpp|member||m_unmodelled_08,7840a78df6be9653cc0b0e78,gpt-6.1-sol,20261016041042-07dbbf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/PropagandaTowerBehaviorModuleDataConstructor.cpp|member||m_unmodelled_0C,d2c98fb61b320c827cef14e3,gpt-6.1-sol,20261016041042-07dbbf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/PropagandaTowerBehaviorModuleDataConstructor.cpp|member||m_unmodelled_20,2939db8e731545af5e9ce55e,gpt-6.1-sol,20261016041042-07dbbf,2026-10-16
