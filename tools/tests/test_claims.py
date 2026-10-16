@@ -621,3 +621,48 @@ def test_printed_trailers_round_trip_and_release(hosts, capsys):
     assert set(claims.lease_trailers(sha)) == {0x500, 0x600}
     assert claims.main(["release", "--landed", sha]) == 0
     assert claims.active() == {}
+
+
+# Ported from Open-BFME-2 9733e43795: `claims.py claim` settles this checkout's
+# queued landings after claiming, holding what it was asked to claim.
+
+def test_claim_command_settles_landings_origin_already_holds(hosts, capsys):
+    a = hosts("a")
+    _published_and_queued(a)                       # 0x100 landed on origin, still claimed
+    assert claims.main(["claim", "0x700"]) == 0
+    assert "released 1 landed claim(s) origin/master now holds: 0x00000100" in capsys.readouterr().out
+    assert set(claims.active()) == {0x700}
+    assert claims.pending() == []
+
+
+def test_claim_command_holds_the_bodies_it_claims_again(hosts):
+    a = hosts("a")
+    _published_and_queued(a)
+    assert claims.main(["claim", "0x100"]) == 0    # claiming a landed body again keeps it
+    assert 0x100 in claims.active()
+    assert [e["rva"] for e in claims.pending()] == ["0x00000100"]   # its landing is kept
+    # BFME1 re-claims under a fresh lease, which the old landing never releases
+    assert claims.release_landed()[0] == [] and 0x100 in claims.active()
+
+
+def test_hold_also_covers_a_sha_trailer(hosts):
+    a = hosts("a")
+    _commit_ledger(a, [], "base")
+    got = claims.claim([0x300])
+    sha = _commit_ledger(a, ["?g@@YAXXZ,,0x00000300,8,game/y.cpp,matched,"],
+                         f"land\n\nClaim-Lease: 0x00000300={got.leases[0x300]}\n")
+    _git(a, "push", "-q", "origin", "HEAD:refs/heads/master")
+    assert claims.release_landed(sha, hold=iter([0x300])) == ([], [])
+    assert 0x300 in claims.active()
+
+
+def test_claim_command_exit_code_survives_a_settlement_failure(hosts, monkeypatch, capsys):
+    a = hosts("a")
+    _published_and_queued(a)
+
+    def broken(**_):
+        raise claims.ClaimsUnavailable("claims: cannot fetch origin/master")
+    monkeypatch.setattr(claims, "release_landed", broken)
+    assert claims.main(["claim", "0x700"]) == 0
+    assert "settling queued landings failed" in capsys.readouterr().err
+    assert {0x100, 0x700} <= set(claims.active())

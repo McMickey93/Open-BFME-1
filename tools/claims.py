@@ -665,7 +665,7 @@ def lease_trailers(sha, root=None):
     return {int(rva, 16): lease for rva, lease in LEASE_TRAILER.findall(body)}
 
 
-def release_landed(sha=None, root=None, who=None, keep_days=1.0):
+def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
     """Release claims for bodies that have landed on origin/master.
 
     Every queued landing (queue_landed) whose exact row origin/master now
@@ -674,8 +674,12 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0):
     commit names in a `Claim-Lease: 0xRVA=<lease>` trailer are released under
     `who` -- except any body that still has an unsettled queued landing,
     which stays claimed whatever selected it. Unsettled entries older than `keep_days` are dropped (their claims
-    have long expired). Returns (released, still_pending) lists of ints.
+    have long expired). Bodies in `hold` are never released, whether a queued
+    landing or a `sha` trailer names them, and keep any queued landing: the
+    caller is claiming them again (claims.py claim; Open-BFME-2 9733e43795).
+    Returns (released, still_pending) lists of ints.
     Raises ClaimsUnavailable when origin/master cannot be read."""
+    hold = set(hold)        # once: an iterator would be spent by the first test
     queue = pending(root)
     if not queue and sha is None:
         return [], []
@@ -722,6 +726,13 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0):
             rva = int(entry["rva"], 16)
         except (KeyError, ValueError):
             continue
+        if rva in hold:
+            # the caller is claiming this body again: its claim stays, lease
+            # and all, and so does the landing that will settle it
+            unsettled.add(rva)
+            keep.append(entry)
+            waiting.append(rva)
+            continue
         if landed(entry) and entry.get("lease"):
             holder = entry.get("owner") or who or owner(root)
             by_owner.setdefault(holder, {}).setdefault(rva, set()).add(entry["lease"])
@@ -732,6 +743,8 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0):
                 waiting.append(rva)
     sha_holder = who or owner(root)
     for rva in extra:
+        if rva in hold:         # held whether or not a landing is queued for it
+            continue
         by_owner.setdefault(sha_holder, {}).setdefault(rva, set()).add(trailers[rva])
     # A body with ANY queued landing whose row and blobs are not all on
     # origin/master stays claimed, however it was selected: an older commit
@@ -830,6 +843,22 @@ def main(argv=None):
             print(f"not claimed: {' '.join(f'0x{r:08X}' for r in refused)}"
                   + (f" (unconfirmed, origin trouble: {' '.join(f'0x{r:08X}' for r in result.unconfirmed)})"
                      if result.unconfirmed else " (held by someone else)"))
+        # Then settle this checkout's queued landings, as fleet_run does: a
+        # worker that claims here directly never runs fleet_run, so its landed
+        # claims sat until they expired (Open-BFME-2 9733e43795 measured 28% of
+        # live claims). After the claim, holding what it asked for: settling
+        # first would release a claim this command is about to renew. With
+        # nothing queued this does no network work; it never changes the
+        # claim's exit code.
+        asked = set(_ints(args.rvas))
+        try:
+            released, _ = release_landed(hold=asked)
+        except Exception as error:  # noqa: BLE001 -- claims expire on their own
+            print(f"claims: settling queued landings failed ({error}); claims kept", file=sys.stderr)
+            released = []
+        if released:
+            print(f"released {len(released)} landed claim(s) origin/master now holds: "
+                  f"{' '.join(f'0x{r:08X}' for r in released)}")
         return 0 if not refused else 1
     if args.action == "release" and args.landed is not None:
         try:
