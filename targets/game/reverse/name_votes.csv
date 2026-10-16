@@ -5606,3 +5606,7 @@ game/Libraries/Source/WWVegas/WW3D2/CreateScaledRenderObj00901F80.cpp|local|Crea
 game/GameEngine/Source/Common/Rva006995F0Attenuate.cpp|local|Rva006995F0Owner::attenuate|x,7928f3357a4b3a574e999868,gpt-6.1-sol,20261016122916-74e303,2026-10-16
 game/GameEngine/Source/Common/Rva006995F0Attenuate.cpp|local|Rva006995F0Owner::attenuate|y,040d1b259afe8d6aa0118b3f,gpt-6.1-sol,20261016122916-74e303,2026-10-16
 game/GameEngine/Source/Common/Rva006995F0Attenuate.cpp|local|Rva006995F0Owner::attenuate|z,e280af4bb01513907ffd6672,gpt-6.1-sol,20261016122916-74e303,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|s,9df6d7b9ac32377e09d47ed1,gpt-6.1-sol,20261016122923-544dba,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|c,7743cc2b3f118a3328837e58,gpt-6.1-sol,20261016122923-544dba,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|tmp1,0cf025a3d6a1f5c6ccda17db,gpt-6.1-sol,20261016122923-544dba,2026-10-16
+game/GameEngine/Source/GameClient/System/ParticleSystemRotateLocalTransformY.cpp|local|Rotate_Y|tmp2,02235b8f880b237c4cfb77f8,gpt-6.1-sol,20261016122923-544dba,2026-10-16
