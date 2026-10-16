@@ -1661,3 +1661,4 @@ game/Libraries/Source/EA/Apt/AptString/Rva0089DD40.cpp|function||rva0089DD40,0be
 game/Libraries/Source/EA/Apt/AptString/Rva0089DD40.cpp|local|rva0089DD40|p,19928db0f05cfc8c37ea2978,gpt-6.1-sol,20261016033518-69158d,2026-10-16
 game/Libraries/Source/EA/Apt/AptString/Rva0089DD40.cpp|local|rva0089DD40|c,ea66761634c43c5b3b1f2ad3,gpt-6.1-sol,20261016033518-69158d,2026-10-16
 game/GameEngine/Source/Common/Rva009A3290HashInsert.cpp|local|Rva009A3290Owner::insertNode|h,957e1bad72e2192b0c3d5e2f,gpt-6.1-sol,20261016033524-bfa2de,2026-10-16
+game/Libraries/Source/Apt/BfmeN1235InitEmpty.cpp|local|BfmeN1235::bfmeInitEmpty1235|u,fa369f059ceecd170c40117f,gpt-6.1-sol,20261016033530-f6e891,2026-10-16
