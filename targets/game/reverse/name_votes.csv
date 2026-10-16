@@ -4940,3 +4940,5 @@ game/GameEngine/Source/Common/Bfme5PushNode.cpp|member||m_bfmeHead,7edf700bdb5fc
 game/GameEngine/Source/Common/Bfme5PushNode.cpp|function|Gen_00896500@|bfmePush,b561787a0545f01238a5f64d,gpt-6.1-sol,20261016072029-2c3a71,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarInitSpecialPowershortcutBar.cpp|param|inlineStr|s,7401415fd447ed19c3585477,gpt-6.1-sol,20261016072015-e6a3ac,2026-10-16
 game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarInitSpecialPowershortcutBar.cpp|param|inlineIsEmpty|s,db67a2e4e6c68e247b265f4d,gpt-6.1-sol,20261016072015-e6a3ac,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DDebrisDraw.cpp|param|W3DDebrisDraw::setModelName|t,f842d0a8b18c5311c2c983af,gpt-6.1-sol,20261016072036-a17b45,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DDebrisDraw.cpp|param|isAnimationComplete|r,49759fc3bb2edda97fb60417,gpt-6.1-sol,20261016072036-a17b45,2026-10-16
