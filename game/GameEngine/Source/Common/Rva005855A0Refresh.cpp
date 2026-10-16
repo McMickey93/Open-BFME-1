@@ -1,14 +1,40 @@
 // ?cachedPair@Rva005855A0Owner@@QAEXXZ
-// partial score=0.9042 date=2026-10-16
-// 167/167 bytes; identical code, only the float out local sits at the frame bottom (retail: top).
+// Retail 0x005855A0 (167 bytes, thiscall, bare RET). No named caller or
+// vtable reaches it, so the owner and method keep the address. It asks the
+// 0x003C9470 fallback (receiver: the +0x28 object of the 0x012F1028 global)
+// for a position keyed by the record at [this+8]+4, passes that position by
+// value to BfmeHostESM::bfmeRunESM (0x00609DA0) on g_bfmeStateDF, converts it
+// through the state's vtable slot 9 into an integer pair, and when the pair
+// differs from the one cached at +0x10/+0x14 it reports it through
+// bfmeGo1077C (0x0051B3D0) and caches it.
+//
+// Frame: retail keeps the bfmeRunESM float output right after the coordinate
+// it was computed for (a 12-byte x/y/out record), and builds both the record's
+// coordinate and the by-value argument from the fallback position (the
+// argument's y is reloaded from the position, not from the record). The
+// empty BfmeCoordESM destructor reproduces the by-value copy's saved-esp slot.
 // cl: /DNDEBUG /DWIN32 /MD /EHsc
+
+struct Rva003C9470Output
+{
+	float x;
+	float y;
+};
+
 struct BfmeCoordESM
 {
-	BfmeCoordESM(float x, float y) { m_x = x; m_y = y; }
+	BfmeCoordESM(const Rva003C9470Output &o) { m_x = o.x; m_y = o.y; }
 	BfmeCoordESM(const BfmeCoordESM &other) throw() { m_x = other.m_x; m_y = other.m_y; }
 	~BfmeCoordESM() {}
 	float m_x;
 	float m_y;
+};
+
+struct Rva005855A0Query
+{
+	Rva005855A0Query(const Rva003C9470Output &p) : coord(p) {}
+	BfmeCoordESM coord;
+	float out;
 };
 
 struct Rva005855A0Pair
@@ -19,11 +45,6 @@ struct Rva005855A0Pair
 
 class Rva003C9470Key;
 
-struct Rva003C9470Output
-{
-	float x;
-	float y;
-};
 
 class Rva003C9470Owner
 {
@@ -76,11 +97,10 @@ void Rva005855A0Owner::cachedPair()
 	Rva003C9470Output position;
 	owner->fallback(
 		(Rva003C9470Key *)(*(char **)((char *)this + 8) + 4), &position);
-	BfmeCoordESM coord(position.x, position.y);
-	float out;
-	g_bfmeStateDF->bfmeRunESM(coord, &out);
+	Rva005855A0Query query(position);
+	g_bfmeStateDF->bfmeRunESM(position, &query.out);
 	Rva005855A0Pair result;
-	g_bfmeStateDF->slot24(&coord, &result);
+	g_bfmeStateDF->slot24(&query.coord, &result);
 	if (result.first != m_cachedFirst || result.second != m_cachedSecond)
 	{
 		bfmeGo1077C(0, (float)result.first, (float)result.second);
