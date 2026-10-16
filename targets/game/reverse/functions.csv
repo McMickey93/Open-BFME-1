@@ -122068,7 +122068,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0006b3d0@@YAXXZ,,0x0006B3D0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=FUN_00dd88f0
 ?j_0006b3e0@@YAXXZ,,0x0006B3E0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x009D7460
 ?j_0006b3f0@@YAXXZ,,0x0006B3F0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x009D7DE0
-?j_000723d0@@YAXXZ,,0x000723D0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000723e0@@YAXXZ,,0x000723E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00076320@@YAXXZ,,0x00076320,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00013AFC
 ?j_00076cf0@@YAXXZ,,0x00076CF0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00475ea0
@@ -122104,7 +122103,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_000a2410@@YAXXZ,,0x000A2410,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000a4b60@@YAXXZ,,0x000A4B60,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004a3c70
 ?j_000a7700@@YAXXZ,,0x000A7700,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
-?j_000abb50@@YAXXZ,,0x000ABB50,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004ab1c0
 ?j_000abb60@@YAXXZ,,0x000ABB60,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004ab020
 ?j_000b00e0@@YAXXZ,,0x000B00E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000b7c80@@YAXXZ,,0x000B7C80,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00006B45
@@ -122180,7 +122178,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00137810@@YAXXZ,,0x00137810,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000417C7
 ?j_00137820@@YAXXZ,,0x00137820,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000457F5
 ?j_00137c80@@YAXXZ,,0x00137C80,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00537830
-?j_0013a050@@YAXXZ,,0x0013A050,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=FUN_00ddb7a0
 ?j_0013ad00@@YAXXZ,,0x0013AD00,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0013e1a0@@YAXXZ,,0x0013E1A0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00140cf0@@YAXXZ,,0x00140CF0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0003AFD0
@@ -122724,7 +122721,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00383906@@YAXXZ,,0x00383906,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001C89B
 ?j_00386a20@@YAXXZ,,0x00386A20,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00387050@@YAXXZ,,0x00387050,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
-?j_003872f0@@YAXXZ,,0x003872F0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00387300@@YAXXZ,,0x00387300,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00387f60@@YAXXZ,,0x00387F60,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00787480
 ?j_00387f70@@YAXXZ,,0x00387F70,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003FCE2
@@ -172565,3 +172561,7 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ??A?$hash_map@VAsciiString@@_NU?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@_N@_STL@@@_STL@@@_STL@@QAEAA_NABVAsciiString@@@Z,,0x000F7310,142,game/GameEngine/Source/Common/Rva000F7310AsciiHashByteIndex.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/000f7310-hash-map-asciistring-bool.md;identity-correction=targets/game/reverse/identity_evidence/000f7310-hash-map-asciistring-bool.md;mapped type bool proven by ilt_oracle at its ILT 0x0001859D and callee ILTs 0x000043FE 0x00040066 0x000479D3;model=claude-opus-5-5;host=app
 ?Rva00BFBDF0Cleanup@@YAXXZ,,0x00BFBDF0,25,game/GameEngine/Source/Common/Rva000F7310AsciiHashByteIndex.cpp,matched,gen-funclet;object-symbol=$L35015;parent=??A?$hash_map@VAsciiString@@_NU?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@_N@_STL@@@_STL@@@_STL@@QAEAA_NABVAsciiString@@@Z;retail 000F7310 unwind map judged by eh_state_pins;jmp ILT 0x000479D3 pair<const AsciiString;bool> dtor;model=claude-opus-5-5;host=app
 ??1Rva00499F30Result@@QAE@XZ,,0x00499F30,13,game/GameEngine/Source/Common/BfmeWideCopyVY.cpp,matched,out-of-line inline dtor of the opaque owning handle: deletes its polymorphic pointee through vtable slot 0 (scalar deleting dtor with 1); retail funclets 0x00C2797B (parent 0x0049A1C0) and 0x00C28AA0 reach it through ILT 0x000224D0;model=claude-opus-5-5;host=app
+??1StringClass@@QAE@XZ,,0x0013A050,5,game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,matched,out-of-line inline ~StringClass: jmp Free_String 0x009DB7A0; laid out after matched ??0StringClass@@QAE@H_N@Z 0x0013A010; ILT 0x0001A41F (ilt_oracle CONFIRMED exact) routes the funclets 0x00C61328/0x00C5ACB8/0x00C5C1A8 here;model=claude-opus-5-5;host=app
+??1?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@QAE@XZ,,0x003872F0,5,game/GameEngine/Source/GameLogic/System/BuildableStatusHashMap.cpp,matched,pair<const AsciiString;BuildableStatus> dtor COMDAT: jmp releaseBuffer 0x00887940 (inlined ~AsciiString); its ILT 0x0000FF10 is ilt_oracle CONFIRMED exact and funclet 0x00C1C0F0 jumps there;model=claude-opus-5-5;host=app
+??1?$pair@$$CBVAsciiString@@_N@_STL@@QAE@XZ,,0x000723D0,5,game/GameEngine/Source/Common/Rva000F7310AsciiHashByteIndex.cpp,matched,pair<const AsciiString;bool> dtor COMDAT: jmp releaseBuffer 0x00887940; its ILT 0x000479D3 is ilt_oracle CONFIRMED exact and funclet 0x00BFBDF0 jumps there;model=claude-opus-5-5;host=app
+??1?$map@HVAsciiString@@U?$less@H@_STL@@V?$allocator@U?$pair@$$CBHVAsciiString@@@_STL@@@3@@_STL@@QAE@XZ,,0x000ABB50,5,game/GameEngine/Source/Common/IgnorePreferences_getIgnores.cpp,matched,map<int;AsciiString> dtor COMDAT: jmp its _Rb_tree dtor through ILT 0x0000E02F; its own ILT 0x0004133A is ilt_oracle CONFIRMED exact and funclet 0x00BF7808 jumps there;model=claude-opus-5-5;host=app
