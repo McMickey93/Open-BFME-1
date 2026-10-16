@@ -4156,3 +4156,11 @@ game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageStateCtor.cpp|member||m_f
 game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp|member||m_84,6970a63537b6a1cdfea4c65d,gpt-6.1-sol,20261016064116-109cd8,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp|local|Transfer003C3D90::tail003C12A0|tmp,8ffd4d41a63eee47e021e5cd,gpt-6.1-sol,20261016064116-109cd8,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/Transfer003C3D90.cpp|local|Transfer003C3D90::transfer|r,6c0efc5778cc5775560167eb,gpt-6.1-sol,20261016064116-109cd8,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field74,3d6618bebb0437a9a9ab3580,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3c0,c9ac446f521924557f94a3a9,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3c4,343ee1aa2c4211dbfce8a3a3,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3d0,87f5e41cb1b1bf29eeed811f,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e0,61e221dd50430f20f43a1e85,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e1,d7e8d9a27d8da379c77002b4,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e2,00d502a3ac80b1bf7d26916c,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdate_aiDoCommand_BFME.cpp|member||m_field3e3,36462069865ad8d97a025113,gpt-6.1-sol,20261016064121-2c9c5c,2026-10-16
