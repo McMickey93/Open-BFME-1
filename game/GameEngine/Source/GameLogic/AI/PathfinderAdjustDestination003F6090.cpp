@@ -78,7 +78,7 @@ public:
 extern TerrainLogic *TheTerrainLogic;
 class Rva003F4F70 { public: Bool call(const ICoord2D *, Int, ICoord2D *, void *); };
 class Rva003F5340 { public: Bool call(const ICoord2D *, Int, void *); };
-class Rva003E11E0 { public: Int call(Object *, const LocomotorSet &, const Coord3D *, const Coord3D *); };
+class Rva003E11E0 { public: Int checkPathCost(Object *, const LocomotorSet &, const Coord3D *, const Coord3D *); };
 class Pathfinder {
 public:
  Bool adjustDestination(Object *,const LocomotorSet &,Coord3D *,const Coord3D *);
@@ -253,7 +253,7 @@ Bool Pathfinder::adjustDestination(Object *obj,const LocomotorSet &locomotorSet,
   if (Glo012F0239 && TheCRCParameterCheck)
    bfmeRetailCritterDesyncLog(TheCRCParameterCheck,"        groupDest tighten path case...");
   tightenPath(*(Object *const volatile*)&obj,locomotorSet,dest,groupDest);
-  Int cost=((Rva003E11E0 *)this)->call(*(Object *const volatile*)&obj,locomotorSet,groupDest,dest);
+  Int cost=((Rva003E11E0 *)this)->checkPathCost(*(Object *const volatile*)&obj,locomotorSet,groupDest,dest);
   Int distance=(Int)fabs(groupDest->x-adjustDest.x)+(Int)fabs(groupDest->y-adjustDest.y);
   if (!(distance*1.4f<cost)) {_ReadWriteBarrier();return true;}
   if (Glo012F0239 && TheCRCParameterCheck)
@@ -283,7 +283,7 @@ Bool Pathfinder::adjustDestination(Object *obj,const LocomotorSet &locomotorSet,
 #pragma comment(linker, "/alternatename:?test@BfmeCellTesterRva003F5340@@QAE_NHH@Z=?j_00046e6b@@YAXXZ")
 #pragma comment(linker, "/alternatename:_bfmeRetailCritterDesyncLog=?j_0003a17a@@YAXXZ")
 #pragma comment(linker, "/alternatename:?call@Rva003F5340@@QAE_NPBUICoord2D@@HPAX@Z=?j_00011027@@YAXXZ")
-#pragma comment(linker, "/alternatename:?call@Rva003E11E0@@QAEHPAVObject@@ABVLocomotorSet@@PBVCoord3D@@2@Z=?j_00038f19@@YAXXZ")
+#pragma comment(linker, "/alternatename:?checkPathCost@Rva003E11E0@@QAEHPAVObject@@ABVLocomotorSet@@PBVCoord3D@@2@Z=?j_00038f19@@YAXXZ")
 #pragma comment(linker, "/alternatename:?tightenPath@Pathfinder@@IAEXPAVObject@@ABVLocomotorSet@@PAVCoord3D@@PBV4@@Z=?j_0000874c@@YAXXZ")
 #pragma comment(linker, "/alternatename:?adjustCoordToCell@Pathfinder@@IAEXHH_NAAVCoord3D@@W4PathfindLayerEnum@@@Z=?j_000411d2@@YAXXZ")
 #pragma comment(linker, "/alternatename:??0Rva003E6110Info@@QAE@PAVPathfinder@@PAVObject@@PAXPBVCoord3D@@3HH@Z=?j_000136bf@@YAXXZ")

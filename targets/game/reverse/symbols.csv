@@ -80619,7 +80619,7 @@ name,address,notes
 ?call@Rva000DF810@@QAEEPAVObject@@@Z,0x00003A85,retail ILT 0x00003A85 targets matched PlayerList::isLocalAlliedWith body 0x000DF810; thiscall Object* input and byte result
 ?call@Rva000FA800@@QAEPBVImage@@H@Z,0x0004A66F,retail ILT 0x0004A66F targets address-derived body 0x000FA800; caller passes index and reads EAX as Image*
 ?call@Rva001CAF20@@QAEPAURva004A5E30OverrideView@@XZ,0x0002BF85,retail ILT 0x0002BF85 targets body 0x001CAF20; caller reads AsciiString at returned EAX+0x2C; address-derived result view
-?call@Rva003E11E0@@QAEHPAVObject@@ABVLocomotorSet@@PBVCoord3D@@2@Z,0x003E11E0,RVA-derived call view; caller 0x003F6090+0x32A pushes four arguments and ECX; retail body uses ECX and returns EAX with ret16
+?checkPathCost@Rva003E11E0@@QAEHPAVObject@@ABVLocomotorSet@@PBVCoord3D@@2@Z,0x003E11E0,abi-view=?checkPathCost@Pathfinder@@IAEHPAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z;RVA-derived call view; caller 0x003F6090+0x32A pushes four arguments and ECX; retail body uses ECX and returns EAX with ret16
 ?call@Rva003F4F70@@QAE_NPBUICoord2D@@HPAU2@PAX@Z,0x003F4F70,RVA-derived call view; matched 775-byte body; caller 0x003F6090+0x292 passes ECX and four stack arguments with AL and ret16
 ?call@Rva003F5340@@QAE_NPBUICoord2D@@HPAX@Z,0x003F5340,RVA-derived call view; matched 527-byte body; caller 0x003F6090+0x447 passes ECX and three stack arguments with AL and ret12
 ?call@Rva003F55E0@@QAE_NPBUICoord2D@@HPAU2@PAX@Z,0x00034E0A,additive: retail call target of the red row ?rva003f5c70@Pathfinder@@QAE_NPAVObject@@PAXPAUCoord3D@@@Z
