@@ -3327,3 +3327,8 @@ game/GameEngine/Source/Common/Thing/ThingTemplateCopyAssignment.cpp|member||m_by
 game/GameEngine/Source/Common/Thing/ThingTemplateCopyAssignment.cpp|member||m_byte04cc,bfa11ad9e63836663137364b,gpt-6.1-sol,20261016060500-cfb744,2026-10-16
 game/GameEngine/Source/Common/Thing/ThingTemplateCopyAssignment.cpp|member||m_byte04cd,21f5378805f65d66cd9630b4,gpt-6.1-sol,20261016060500-cfb744,2026-10-16
 game/GameEngine/Source/Common/Thing/ThingTemplateCopyAssignment.cpp|member||m_dword04d0,2ed0267b4db495f095534dcc,gpt-6.1-sol,20261016060500-cfb744,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word24,44fd0434026c3f25f94ead1d,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word7c,c60f36ad91687e2a1bbdf2b0,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word80,dbdb9ff427a267a5e1d3d3d6,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_word88,63141282773d520a37ad45a8,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoCopy.cpp|member||m_vector8c,3327e6e50c887a35ebd71db4,gpt-6.1-sol,20261016060505-6e1b93,2026-10-16
