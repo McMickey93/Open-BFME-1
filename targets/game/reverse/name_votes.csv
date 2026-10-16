@@ -5601,3 +5601,5 @@ game/GameEngine/Source/Common/U2CStringScans.cpp|function||Rva00850790Hash,d450f
 game/GameEngine/Source/Common/U2CStringScans.cpp|local|Rva0084E030Buffer::squash|p,d2163221b59359c788506d51,gpt-6.1-sol,20261016122902-258ef2,2026-10-16
 game/GameEngine/Source/Common/U2CStringScans.cpp|local|Rva0084E030Buffer::squash|q,ed8f0e86a438b918bcb5b24f,gpt-6.1-sol,20261016122902-258ef2,2026-10-16
 game/GameEngine/Source/Common/U2CStringScans.cpp|local|Rva00850790Hash|h,77169cf5141ef4802544b2af,gpt-6.1-sol,20261016122902-258ef2,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/CreateScaledRenderObj00901F80.cpp|local|Create_Render_Obj|field1,198e622d0d0699bed58b80aa,gpt-6.1-sol,20261016122909-738dd1,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/CreateScaledRenderObj00901F80.cpp|local|Create_Render_Obj|field3,db8bb7d3a77e5aee77060f1d,gpt-6.1-sol,20261016122909-738dd1,2026-10-16
