@@ -3375,3 +3375,6 @@ game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDest
 game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field0C,65b45ddf0818717fbe959fa8,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field10,b320187803708fcfd3e090ec,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateModuleDataDestructors.cpp|member||m_field14,13cd749d1bce4e2cdb140486,gpt-6.1-sol,20261016060644-afebcb,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TensileFormationUpdateModuleDataConstructor.cpp|member||m_64,042716cf7a2d55f3db65c22b,gpt-6.1-sol,20261016060702-78b691,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TensileFormationUpdateModuleDataConstructor.cpp|member||m_68,944edab133e8dba57303fb60,gpt-6.1-sol,20261016060702-78b691,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/TensileFormationUpdateModuleDataConstructor.cpp|member||m_6c,40eab4b10b2544181a320e79,gpt-6.1-sol,20261016060702-78b691,2026-10-16
