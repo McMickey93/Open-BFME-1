@@ -4619,13 +4619,13 @@ struct BfmeObjectVisionFields
 class BfmeVisionBonusSource
 {
 public:
-	Bool bfmeGetBonus( Int which, Real *out );	///< retail ILT 0x000282d6
+	Bool rva00369460( Int which, Real *out );	///< retail ILT 0x000282d6
 };
 
 class BfmeVisionBonusHolder
 {
 public:
-	BfmeVisionBonusSource *bfmeGetBonusSource() const;	///< retail ILT 0x000202ed
+	BfmeVisionBonusSource *rva001BF830() const;	///< retail ILT 0x000202ed
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -4641,9 +4641,9 @@ Real Object::getVisionRange() const
 	slot[1] = 0.0f;
 
 	BfmeVisionBonusSource *source =
-		reinterpret_cast<const BfmeVisionBonusHolder *>(this)->bfmeGetBonusSource();
+		reinterpret_cast<const BfmeVisionBonusHolder *>(this)->rva001BF830();
 
-	if (source && source->bfmeGetBonus(14, &slot[1]))
+	if (source && source->rva00369460(14, &slot[1]))
 		return (slot[1] + 1.0f) * slot[0];
 
 	return slot[0];

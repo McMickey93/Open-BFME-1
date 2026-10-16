@@ -78321,8 +78321,8 @@ name,address,notes
 ?bfmeGetBS@BfmeInnerBS@@QAEPAVBfmeCtxBS@@XZ,0x000022BB,pin
 ?bfmeGetBUZA@BfmeSubBUZA@@QBE?AUBfmeHandleUZA@@HH@Z,0x0092C9D0,pin
 ?bfmeGetBlockZone@PathfindZoneManager@@QBEGABUPathfindMovementProfile@@HHPAPAVPathfindCell@@@Z,0x00403520,class-key ABI spelling of the matched struct-key PathfindZoneManager::bfmeGetBlockZone body (PathfindZoneBlockQueries.cpp); processHierarchicalCell 0x003D9970 calls it twice through ILT 0x00003FF3 with ecx=zone manager and four stack args
-?bfmeGetBonus@BfmeVisionBonusSource@@QAE_NHPAM@Z,0x000282D6,Open-BFME5 TU-local Object.cpp ABI view of the AttributeModifierPoolUpdate additive bonus method
-?bfmeGetBonusSource@BfmeVisionBonusHolder@@QBEPAVBfmeVisionBonusSource@@XZ,0x000202ED,TU-local Object.cpp ABI view of Object::findAttributeModifierPoolUpdate
+?rva00369460@BfmeVisionBonusSource@@QAE_NHPAM@Z,0x000282D6,abi-view=?getAttributeModifierBonus@AttributeModifierPoolUpdate@@QAE_NHPAM@Z;Open-BFME5 TU-local Object.cpp ABI view of the AttributeModifierPoolUpdate additive bonus method
+?rva001BF830@BfmeVisionBonusHolder@@QBEPAVBfmeVisionBonusSource@@XZ,0x000202ED,abi-view=?findAttributeModifierPoolUpdate@Object@@ABEPAVAttributeModifierPoolUpdate@@XZ;TU-local Object.cpp ABI view of Object::findAttributeModifierPoolUpdate
 ?bfmeGetBoxAFB@BfmeThingAFB@@QAEPAUBfmeBoxAFB@@XZ,0x000202ED,pin
 ?bfmeGetCCH@BfmeSubCCH@@QAEPAUBfmeResultCCH@@XZ,0x00046538,pin
 ?bfmeGetCanAttackContained@ActionManager@@QAE?AW4CanAttackResult@@PBVObject@@0W4CommandSourceType@@W4AbleToAttackType@@@Z,0x00047663,BFME ActionManager structure-attack helper; getCanAttackObject calls its incremental-link thunk before the normal attack query
