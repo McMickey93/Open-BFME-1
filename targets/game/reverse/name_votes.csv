@@ -5383,3 +5383,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FDCB0CameraProjection.cp
 game/GameEngine/Source/GameLogic/Object/Update/StickyBombUpdateCtorThunk.cpp|member||m_f14,e3b9544f24cd79160ea6dd6e,gpt-6.1-sol,20261016081248-c026dc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/StickyBombUpdateCtorThunk.cpp|member||m_f18,e06eb457a8375866d8039a88,gpt-6.1-sol,20261016081248-c026dc,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/StickyBombUpdateCtorThunk.cpp|member||m_f1c,d7d5f9c774da8411b2045844,gpt-6.1-sol,20261016081248-c026dc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponCopyAssignment.cpp|member||m_field28,ec84a8edf4d8fd96ab2cdac7,gpt-6.1-sol,20261016081501-15da27,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponCopyAssignment.cpp|member||m_reset50,8fff344ea7de8cbd2c28dbc0,gpt-6.1-sol,20261016081501-15da27,2026-10-16
