@@ -2937,3 +2937,8 @@ game/Libraries/Source/WWVegas/WWLib/Rva0084DBStringAndCodePage.cpp|type||Rva0084
 game/GameEngine/Source/GameLogic/Object/Update/Rva002D3080Destructor.cpp|member||m_field2c,9b415cf9913ec234b2cc2e66,gpt-6.1-sol,20261016053503-2dab1a,2026-10-16
 game/GameEngine/Source/Common/Bfme5EightyOne.cpp|member||m_bfmeRefs,ac284bd868e0275fd845976f,gpt-6.1-sol,20261016053725-aa9b72,2026-10-16
 game/GameEngine/Source/Common/Rva0016A490Set.cpp|param|Rva0016A490::set|p,5d00f109435459fdbfa243aa,gpt-6.1-sol,20261016053749-e52453,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredSeventyOne.cpp|member||m_bfmeOne,e4e991bd7c4fb316a9101fe3,gpt-6.1-sol,20261016053837-b9038f,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredSeventyOne.cpp|member||m_bfmeTwo,d6bedb44ddaaec1ffbb66d55,gpt-6.1-sol,20261016053837-b9038f,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredSeventyOne.cpp|member||m_bfmeThree,02cfdb9eef9c5bab330e4ebd,gpt-6.1-sol,20261016053837-b9038f,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredSeventyOne.cpp|member||m_bfmeCount,ac61add5bc574c5c4c342170,gpt-6.1-sol,20261016053837-b9038f,2026-10-16
+game/GameEngine/Source/Common/BfmeThreeHundredSeventyOne.cpp|member||m_bfmeList,225e615490b6b1432629bb2a,gpt-6.1-sol,20261016053837-b9038f,2026-10-16
