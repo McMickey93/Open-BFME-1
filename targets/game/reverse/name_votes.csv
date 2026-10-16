@@ -2397,3 +2397,7 @@ game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModule
 game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_214,6820731e497c8a3ec9bfaa2e,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_218,f25899c1d62b50b1a926e25c,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/DevastateSpecialPowerModuleDataCtorThunk.cpp|member||m_21c,5e11a9d40fd8c2fd593048d6,gpt-6.1-sol,20261016044534-8ca6e2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_254,32ece3cb1e02855ed662f088,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_258,5e53bd480244ace524d1aa90,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_259,0ac3e1d34fea11f43b93074a,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ModelConditionSpecialAbilityUpdateModuleDataCtorThunk.cpp|member||m_25c,1d162afb8c5c3f057bc57508,gpt-6.1-sol,20261016044540-445cc2,2026-10-16
