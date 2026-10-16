@@ -2060,3 +2060,6 @@ game/GameEngine/Source/Common/S4AdjustHeapElem12Pod.cpp|member||m_bfmeKey,85d682
 game/GameEngine/Source/Common/S3FlagPairRefreshes.cpp|member||m_bfmeFirst,bdace869461ca540b2d7aeda,gpt-6.1-sol,20261016040422-4e6a9d,2026-10-16
 game/GameEngine/Source/Common/S3FlagPairRefreshes.cpp|member||m_bfmeSecond,1fc3de17244761ede0d7f3f3,gpt-6.1-sol,20261016040422-4e6a9d,2026-10-16
 game/GameEngine/Source/Common/S3FlagPairRefreshes.cpp|member||m_bfmeSub,1a7e7904c424279de63c9868,gpt-6.1-sol,20261016040422-4e6a9d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SpecialPowerModule_initiateIntentToDoSpecialPower.cpp|member||m_dword28,c971f382c4638b23444f2492,gpt-6.1-sol,20261016040422-86d861,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SpecialPowerModule_initiateIntentToDoSpecialPower.cpp|local|SpecialPowerModule::initiateIntentToDoSpecialPower|u,3597ed6feda0d79b93f03932,gpt-6.1-sol,20261016040422-86d861,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/SpecialPowerModule_initiateIntentToDoSpecialPower.cpp|local|SpecialPowerModule::initiateIntentToDoSpecialPower|tmpl,dc973b281609142527982a18,gpt-6.1-sol,20261016040422-86d861,2026-10-16
