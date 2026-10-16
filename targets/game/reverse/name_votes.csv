@@ -4149,3 +4149,5 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdate
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateResetSlots.cpp|member||m_39d,4715e641b9cfc4b114dca397,gpt-6.1-sol,20261016063739-943809,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateResetSlots.cpp|member||m_39e,5efa3e08f57b41e2c89ba764,gpt-6.1-sol,20261016063739-943809,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateResetSlots.cpp|function|AssaultTransportAIUpdateBase@|call_0002105d,baff76aa7525145b82ceb70d,gpt-6.1-sol,20261016063739-943809,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/AODHordeContainUpdateFormationMembers.cpp|member||m_list038,76d75298be2523c0151f5452,gpt-6.1-sol,20261016063744-a3cc4a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/AODHordeContainUpdateFormationMembers.cpp|param|Coord3D::Coord3D#3|o,12f11f453691ee08893b3ebd,gpt-6.1-sol,20261016063744-a3cc4a,2026-10-16
