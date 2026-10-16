@@ -1993,3 +1993,5 @@ game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||
 game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f38,3cc3168d7d7f2f2710612e0e,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f40,363a783b631bb8dca230465d,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
 game/Libraries/Source/WWVegas/WW3D2/SegLineRendererClassAssignThunk.cpp|member||m_f44,0ee9e1229c55dc1dae43cedb,gpt-6.1-sol,20261016040505-e938b6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/AudioLoopUpgradeCtorModuleFactory.cpp|member||m_f14,54e85f5c3e1592306361f159,gpt-6.1-sol,20261016040519-064690,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/AudioLoopUpgradeCtorModuleFactory.cpp|member||m_f18,f9aa8a43cb3d33f49a23dd03,gpt-6.1-sol,20261016040519-064690,2026-10-16
