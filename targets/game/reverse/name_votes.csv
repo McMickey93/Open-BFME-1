@@ -2846,3 +2846,8 @@ game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProdu
 game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_14,3aa3d7eea35bf7058e48081b,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_18,8d78bfce649ca53629a3db96,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_1c,ba6f849f0981ef59caa65ef2,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x70,85f1d5543b577503ad0675c6,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x74,67dbdfed72103a10cbd27790,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x78,101fc38a219cde0b3e557972,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x7c,54813c8d8f497867f9b8fa40,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdateModuleDataCtorThunk.cpp|member||m_x8d,deb6b65aae85ef305d83036f,gpt-6.1-sol,20261016053022-d66c13,2026-10-16
