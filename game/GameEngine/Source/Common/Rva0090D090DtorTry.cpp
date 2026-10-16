@@ -2,14 +2,9 @@
 // experiment: reuse twin's exact base-class shape (9-slot vtable + virtual
 // dtor) instead of the simpler BfmeThingUB placeholder, to test whether the
 // richer base layout is what gives retail's push-ecx/push-esi 2-word frame.
-// cl: /DNDEBUG /MD /EHsc
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 
-class StringClass
-{
-public:
-	~StringClass();
-	char *m_buffer;
-};
+#include "wwstring.h"
 
 class Rva009EB810TailBase
 {
