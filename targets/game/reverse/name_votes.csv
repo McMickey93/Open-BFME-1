@@ -2986,3 +2986,14 @@ game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehavior_rva001
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehavior_rva001F1CE0.cpp|member||m_effect98,6afd84cb59a487c70da3b9e1,gpt-6.1-sol,20261016054358-e53346,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehavior_rva001F1CE0.cpp|member||m_effect9C,9056f27bffb409db08680e63,gpt-6.1-sol,20261016054358-e53346,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehavior_rva001F1CE0.cpp|member||m_effectA0,3b65ecc5fd88f2f730d8901b,gpt-6.1-sol,20261016054358-e53346,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|type||BfmeRecorderStore,4e17897abeadbc1a29921546,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeFile,653365184b1c3de52844ae82,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeFileName,3a5015e08cab473e807e9d91,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeCurrentFilePosition,ad189df20a8dd5a710700bd4,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeMode,f779b57e0de3fe1abd090ae2,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeGameInfo,c8b0d401efd6cb26d9b4a441,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeNetworkCrcInterval,dd35faedf2457177612f4303,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeOriginalGameMode,baf714d72cbfc8980698ba32,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeNextFrame,4765fca3c1c51958b9bbf1ff,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeDoingAnalysis,904cb3f2d081239c7d8965d9,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeGameMode,ed44d1de29b09e2871b663f0,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
