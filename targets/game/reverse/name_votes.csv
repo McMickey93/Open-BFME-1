@@ -4872,3 +4872,6 @@ game/GameEngine/Source/Common/BfmeConv2002.cpp|type||BfmeObjEVM,d8d1fccd21afb2fc
 game/GameEngine/Source/Common/BfmeConv2002.cpp|member||m_bfmeSubEVM,ae4a27944623545029da029b,gpt-6.1-sol,20261016071158-3b35e4,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2002.cpp|member||m_bfmeObjEVM,afbd6286669e8793fecba6d8,gpt-6.1-sol,20261016071158-3b35e4,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2002.cpp|param|bfmeTryEVM|arg,47ed36ff815c05c86d361e66,gpt-6.1-sol,20261016071158-3b35e4,2026-10-16
+game/GameEngine/Source/Common/RTS/ActionManager_canResumeConstructionOf_Thunk.cpp|member||m_id74,ff8cac6a23a969e00fe95436,gpt-6.1-sol,20261016071353-c27f8e,2026-10-16
+game/GameEngine/Source/Common/RTS/ActionManager_canResumeConstructionOf_Thunk.cpp|member||m_status90,63c58f05f6236eeb5f83264c,gpt-6.1-sol,20261016071353-c27f8e,2026-10-16
+game/GameEngine/Source/Common/RTS/ActionManager_canResumeConstructionOf_Thunk.cpp|member||m_flags344,e990927d5af0a1d9f4e8a7f8,gpt-6.1-sol,20261016071353-c27f8e,2026-10-16
