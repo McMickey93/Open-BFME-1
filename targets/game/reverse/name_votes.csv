@@ -4114,3 +4114,12 @@ game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at024,e2
 game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at04c,f2072fa6484425e3beb6e26f,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
 game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at050,aae139c3162de40d49a41fec,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
 game/GameEngine/Source/GameLogic/AI/FollowPathEntry00178EA0.cpp|member||at054,eb6aa67b5b8f1cd69409210d,gpt-6.1-sol,20261016063652-a21d83,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfmeAI,39d23e6c3ba090b98f8ed1e2,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfme2c,50c98a2dfd5e1384f370fee0,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfme30,3cf5cdf6747956793c1c1f55,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfmeStateValue,c7ffbbaee1dfa41dfa783f6b,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfme4C,b24124f72fdf4698a2ee2518,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfme50,43530252f9cafc1fb2b93810,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfmeFactors,63633b3d870ae101c3fc6af4,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|function|BfmeObjectAI@|bfmeStateFlags,999e2b27bf22d524c4d14a2b,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|function|BfmeObjectAI@|bfmeStateValue,d7cc968320de1335dcc25780,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
