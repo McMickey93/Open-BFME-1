@@ -5580,3 +5580,8 @@ game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|member||m_bfmeEnd,7ae864
 game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|function||bfmeUnregisterY,817ddb13ce5fdcb0101e28f2,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
 game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|local|bfmeUnregisterY|e,f48175249f677a8f01474d8e,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
 game/GameEngine/Source/Common/BfmeSecondYUnregister.cpp|local|bfmeUnregisterY|n,cf9645ba098518cc6067df7d,gpt-6.1-sol,20261016122722-c584ea,2026-10-16
+game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|member||m_bfmeData,4f45dee525e72aa9561d4424,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
+game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|member||m_bfmeStr,71621cd7321f446f8ef31582,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
+game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|member||m_bfmeNext,9d7b6404dd6233613d989d85,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
+game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|local|Bfme5AttachNodeA::bfmeAttach|h,fc9a044ba4ad0b3856d3ef3a,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
+game/GameEngine/Source/Common/Bfme5SharedStringAttach.cpp|local|Bfme5AttachNodeB::bfmeAttach|h,8bd82d76737fc17d3f0181d0,gpt-6.1-sol,20261016122729-93dc4f,2026-10-16
