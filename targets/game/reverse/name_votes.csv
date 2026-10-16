@@ -3976,3 +3976,5 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/FormationRefresh002
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/FormationRefresh0023FA80.cpp|member||at00c,57925c03ad7bd3b0dc22d9f8,gpt-6.1-sol,20261016062852-92929b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/FormationRefresh0023FA80.cpp|member||at03c,8d3ca71cb077647df223a5e1,gpt-6.1-sol,20261016062852-92929b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/FormationRefresh0023FA80.cpp|member||at004,34b8dfcda6e857cdbe737e88,gpt-6.1-sol,20261016062852-92929b,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldArmyAssign.cpp|member||m_4c,11fb41e672500620a9536e64,gpt-6.1-sol,20261016062857-a1c470,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldArmyAssign.cpp|member||m_50,9ac0b782cba685ed0831f471,gpt-6.1-sol,20261016062857-a1c470,2026-10-16
