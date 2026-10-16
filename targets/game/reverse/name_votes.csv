@@ -2689,3 +2689,5 @@ game/GameEngine/Source/Common/BfmeConv997.cpp|member||m_bfmeMode,0a2bbfcd5b42923
 game/GameEngine/Source/Common/BfmeConv997.cpp|member||m_bfmeZero,c5ed16b449f7978b60b74856,gpt-6.1-sol,20261016051439-451f89,2026-10-16
 game/GameEngine/Source/Common/BfmeConv997.cpp|member||m_bfmeArgA,8ddd9e6659d94aac06a68c07,gpt-6.1-sol,20261016051439-451f89,2026-10-16
 game/GameEngine/Source/Common/BfmeConv997.cpp|member||m_bfmeStamp,17c10931a55bbfaa3f028930,gpt-6.1-sol,20261016051439-451f89,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RubbleRiseUpdateModuleDataCtorThunk.cpp|member||m_dwordB4,fc7842dee35a219f61972c93,gpt-6.1-sol,20261016051830-56f9ea,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RubbleRiseUpdateModuleDataCtorThunk.cpp|member||m_dwordC4,d8c175ca23df4c4b654549f5,gpt-6.1-sol,20261016051830-56f9ea,2026-10-16
