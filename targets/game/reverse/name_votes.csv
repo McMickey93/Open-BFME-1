@@ -5800,3 +5800,4 @@ game/Libraries/Source/collisionmanager/BfmeConv597.cpp|local|BfmeThingCGD::bfmeO
 game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|getIndicatorColor|p,20fd5c9f43923ceaaff1d4d0,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|rva001C15F0NightColor|p,f5cf0c42af592f63226ef7dd,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Rva001C15F0.cpp|local|Object::rva001C15F0|r,c0a48d2b69d620e5aca038c1,gpt-6.1-sol,20261016131012-0998b2,2026-10-16
+game/GameEngine/Source/GameClient/MessageStream/HotKeyTranslator_translateGameMessage_Thunk.cpp|local|HotKeyTranslator::translateGameMessage|t,c815c0a74541ae07f04de77f,gpt-6.1-sol,20261016131017-f883e5,2026-10-16
