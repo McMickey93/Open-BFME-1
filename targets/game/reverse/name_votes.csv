@@ -1811,3 +1811,7 @@ game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThu
 game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_flag3D,29cd2c8deb95281ebce7b8a6,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_value40,f4f5f7003fadd62bccc2fa87,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_flag44,ba4a4d5c66c8f5b07315f74c,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_0C,a58c6f5b88a9a34b3e7080d0,gpt-6.1-sol,20261016035734-63de30,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_0D,5aaca24dfdf17db77d8cac75,gpt-6.1-sol,20261016035734-63de30,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_0E,af3105cf14826e52defd1771,gpt-6.1-sol,20261016035734-63de30,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DFloorDrawModuleDataConstructor.cpp|member||m_unmodelled_10,5a64c30e85f3cf501d902abc,gpt-6.1-sol,20261016035734-63de30,2026-10-16
