@@ -2356,3 +2356,13 @@ game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCt
 game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field24,b0fbba6e34df405bed2686b7,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field28,42e37a864af98bbeab3b314c,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/HitReactionBehaviorModuleDataCtorThunk.cpp|member||m_field2c,93f7d2937d3bdb3df3ecb03c,gpt-6.1-sol,20261016044148-5c4e89,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|member||m_0c,0b4bbf140fea458aaf5a30cd,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|member||m_10,344d02abb34abb17ae9be561,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|member||m_14,95a14617a6efea57ebb3ba57,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|member||m_18,328226c4c208e0b4c86749ee,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|member||m_20,8fa91412baa46e18c048aac9,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|function|W3DDisplay@|rva006ECD30,3b25b2432b35b928fd19c3ac,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|x0,44d98c3a912d3f0dfca3ae73,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|y0,15305985d9f6d15f74fe2b7a,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|x1,dbc9f0c29a9ff8879621d9e8,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayRva006ECD30.cpp|param|W3DDisplay::rva006ECD30|y1,71b4378dded0a2bf809ccd50,gpt-6.1-sol,20261016044414-0c7ee8,2026-10-16
