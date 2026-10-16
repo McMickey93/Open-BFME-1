@@ -91088,3 +91088,4 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ?privateIdle@AIUpdateInterface@@MAEXW4CommandSourceType@@@Z,0x0002270F,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
 ?chooseLocomotorSet@AIUpdateInterface@@UAE_NW4LocomotorSetType@@@Z,0x000289B1,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
 ?reset@FunctionLexicon@@UAEXXZ,0x000097A0,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?getObjectGarrisonPointIndex@GarrisonContain@@UAEHW4ObjectID@@@Z,0x0003C781,ILT to the matched GarrisonContain::getObjectGarrisonPointIndex body 0x0021F280; ilt_oracle CONFIRMED exact; HordeGarrisonContain extend-base override 0x00248B10 tail-jumps here

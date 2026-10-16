@@ -105,10 +105,19 @@ public:
 
 class Object;
 
+enum ObjectID;
+
 class GarrisonContain
 {
 public:
 	virtual void onContaining(Object *object, bool selected);
+	virtual int getObjectGarrisonPointIndex(ObjectID id);
+};
+
+class HordeGarrisonContain : public GarrisonContain
+{
+private:
+	virtual int getObjectGarrisonPointIndex(ObjectID id);
 };
 
 class BfmeRva489E0State
@@ -138,4 +147,12 @@ void Rva002489E0::admit(BfmeRva489E0Object *object)
 	primary->post();
 	if (ai->admissionComplete())
 		((BfmeRva489E0State *)TheControlBar)->m_flag = 1;
+}
+
+// Extend-base override, a bare tail jump to GarrisonContain's (ILT 0x0003C781).
+// Retail 0x00248B10; ilt_oracle CONFIRMS the private-virtual name exact at its
+// ILT 0x00026477.
+int HordeGarrisonContain::getObjectGarrisonPointIndex(ObjectID id)
+{
+	return GarrisonContain::getObjectGarrisonPointIndex(id);
 }
