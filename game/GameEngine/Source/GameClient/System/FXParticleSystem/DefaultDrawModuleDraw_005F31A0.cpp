@@ -55,7 +55,7 @@ public:
 };
 class Rva00917E10 {
 public:
-    void method(RenderInfoClass &info, unsigned int depth, int argument);
+    void rva00917E10(RenderInfoClass &info, unsigned int depth, int argument);
 };
 class Particle {
 public:
@@ -160,7 +160,7 @@ int Rva005F31A0::method(RenderInfoClass &info, const AABoxClass *box, int *outpu
             TheBfmeSecondManager->Set_Arrays(g_vector3Buffer, g_vector4Buffer, 0, g_floatBuffer, g_byteBuffer, 0, count);
             reinterpret_cast<Rva009120F0FlagBit *>(TheBfmeSecondManager)->setFlag(!m_field0004->m_field0080);
             if ((m_field0004->m_field000C == 4 ? 6u : 0u) > 1)
-                reinterpret_cast<Rva00917E10 *>(TheBfmeSecondManager)->method(info, m_field0004->m_field000C == 4 ? 6u : 0u, reinterpret_cast<int>(&m_field0004->m_field0084));
+                reinterpret_cast<Rva00917E10 *>(TheBfmeSecondManager)->rva00917E10(info, m_field0004->m_field000C == 4 ? 6u : 0u, reinterpret_cast<int>(&m_field0004->m_field0084));
             else
                 TheBfmeSecondManager->Render(info, reinterpret_cast<int>(&m_field0004->m_field0084));
         }

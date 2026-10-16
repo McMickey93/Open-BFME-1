@@ -8,7 +8,7 @@
 ; ?rva00913AF0@..., so the class is witnessed; no source names the member.
 ; Boundary: ret 12 at +0x3B5 (three stack arguments) then eight INT3 bytes to
 ; the next body at 0x009181D0.  A 0x005F31A0-side caller TU declares the same
-; address as ?method@Rva00917E10@@QAEXAAVRenderInfoClass@@IH@Z (ret 12).
+; address as ?rva00917E10@Rva00917E10@@QAEXAAVRenderInfoClass@@IH@Z (ret 12).
 ;
 ; WHY MASM.  The recoverable C++ bank (targets/game/reverse/attempts/0x00917e10.cpp)
 ; compiles to exactly 952 bytes with 31 relocations and instruction shape
