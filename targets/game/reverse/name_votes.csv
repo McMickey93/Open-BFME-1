@@ -3906,3 +3906,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|p
 game/GameEngine/Source/Common/BfmeConv996.cpp|member||m_bfmeVal,130b9c276503674fb3daf0b5,gpt-6.1-sol,20261016062419-362800,2026-10-16
 game/GameEngine/Source/Common/BfmeConv996.cpp|local|bfmeGo996A|x,a9c2113212550abbc06f1f50,gpt-6.1-sol,20261016062419-362800,2026-10-16
 game/GameEngine/Source/Common/BfmeConv996.cpp|local|bfmeGo996A|s,c564df7090a0306993ace6bd,gpt-6.1-sol,20261016062419-362800,2026-10-16
+game/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManagerConstructor.cpp|member||hash08,97793b9aa1d9fc181b43149a,gpt-6.1-sol,20261016062610-2a448f,2026-10-16
+game/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManagerConstructor.cpp|member||m_index00,9cfbc80ba0dde6771838532d,gpt-6.1-sol,20261016062610-2a448f,2026-10-16
