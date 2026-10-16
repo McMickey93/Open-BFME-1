@@ -7,7 +7,7 @@ struct DistanceNode003C5990 {
     float m_10, m_14;
     char m_18;
     float m_costSoFar, m_20, m_totalCost;
-    DistanceNode003C5990 *m_28;
+    DistanceNode003C5990 *m_parent;
 };
 struct PointerVector003C5990 {
     DistanceNode003C5990 **begin, **end, **capacity;
@@ -35,7 +35,7 @@ void DistanceUpdate003C5990::update(DistanceNode003C5990 *node, bool flag) {
             if(m_20.contains(p) && p->m_costSoFar<=distance) continue;
             remove003C4FF0(&m_14,p);
             remove003C4FF0(&m_20,p);
-            p->m_28=node;
+            p->m_parent=node;
             p->m_costSoFar=distance;
             p->m_20=((Gen003C4CB0Owner*)p)->planarDistance((Gen003C4CB0Point*)m_10);
             p->m_totalCost=p->m_20+distance;
