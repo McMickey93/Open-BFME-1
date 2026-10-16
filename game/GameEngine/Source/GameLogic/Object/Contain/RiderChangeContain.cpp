@@ -195,6 +195,9 @@ class SiegeEngineContain : public TransportContain
 {
 public:
 	virtual void onContaining( Object *rider, Bool wasSelected );
+protected:
+	virtual void createPayload();	// ILT 0x0001E191
+	friend class RiderChangeContain;
 };
 
 void SiegeEngineContain::onContaining( Object *rider, Bool wasSelected )
@@ -226,11 +229,10 @@ void SiegeEngineContain::onContaining( Object *rider, Bool wasSelected )
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
-// ?createPayload@RiderChangeContain@@MAEXXZ present-unmatched
 void RiderChangeContain::createPayload()
 {
-	// extend base class
-	TransportContain::createPayload();
+	// extend base class: BFME retail 0x0022A0D0 tail-jumps to SiegeEngineContain's
+	static_cast<SiegeEngineContain *>(static_cast<TransportContain *>(this))->SiegeEngineContain::createPayload();
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -243,7 +245,6 @@ void RiderChangeContain::unreserveDoorForExit( ExitDoorType exitDoor )
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
-// ?killRidersWhoAreNotFreeToExit@RiderChangeContain@@MAEXXZ present-unmatched
 void RiderChangeContain::killRidersWhoAreNotFreeToExit()
 {
 	// extend base class
@@ -279,7 +280,6 @@ Bool RiderChangeContain::isExitBusy() const	///< Contain style exiters are getti
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
-// ?onCapture@RiderChangeContain@@ present-unmatched
 void RiderChangeContain::onCapture( Player *oldOwner, Player *newOwner )
 {
 	// extend base class

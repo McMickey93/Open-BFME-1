@@ -122273,12 +122273,9 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00225b40@@YAXXZ,,0x00225B40,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000D517
 ?j_002262d0@@YAXXZ,,0x002262D0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00625aa0
 ?j_00226f90@@YAXXZ,,0x00226F90,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000130C
-?j_0022a0d0@@YAXXZ,,0x0022A0D0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0001E191
 ?j_0022a0e0@@YAXXZ,,0x0022A0E0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000084BD
-?j_0022a100@@YAXXZ,,0x0022A100,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0062d3c0
 ?j_0022a110@@YAXXZ,,0x0022A110,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00005D03
 ?j_0022a120@@YAXXZ,,0x0022A120,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000204FA
-?j_0022a140@@YAXXZ,,0x0022A140,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0062d590
 ?j_0022a1d0@@YAXXZ,,0x0022A1D0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00034702
 ?j_0022a350@@YAXXZ,,0x0022A350,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0022b2b0@@YAXXZ,,0x0022B2B0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0062cd20
@@ -123003,7 +123000,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00713506@@YAXXZ,,0x00713506,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000080FD
 ?j_00718da0@@YAXXZ,,0x00718DA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b17880
 ?j_0071cd76@@YAXXZ,,0x0071CD76,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0090DF10
-?j_00742cb0@@YAXXZ,,0x00742CB0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000312A0
 ?j_00746176@@YAXXZ,,0x00746176,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041191
 ?j_00746186@@YAXXZ,,0x00746186,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00014A38
 ?j_00746190@@YAXXZ,,0x00746190,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b40cf0
@@ -172541,3 +172537,7 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?update@W3DInGameUI@@UAEXXZ,,0x006FBFD0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_dtor.cpp,matched,ZH extend-base forwarder (jmp InGameUI::update ILT); ilt_oracle CONFIRMED at W3DInGameUI vtable ILT 0x416D2;model=claude-opus-5-5;host=app
 ?reset@W3DInGameUI@@UAEXXZ,,0x006FBFE0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DInGameUI_dtor.cpp,matched,ZH extend-base forwarder (jmp InGameUI::reset ILT); ilt_oracle CONFIRMED at W3DInGameUI vtable ILT 0x4B4C;model=claude-opus-5-5;host=app
 ?init@W3DGameWindowManager@@UAEXXZ,,0x0078F990,5,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/W3DGameWindowManager.cpp,matched,ZH extend-base forwarder (jmp GameWindowManager::init ILT 0x21C79); ilt_oracle CONFIRMED at W3DGameWindowManager vtable ILT 0x35FA8;model=claude-opus-5-5;host=app
+?forceRedraw@W3DView@@UAEXXZ,,0x00742CB0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DView.cpp,matched,ZH W3DView::forceRedraw (jmp setCameraTransform ILT 0x312A0); ilt_oracle CONFIRMED at W3DView vtable slot 20 ILT 0x169A0;model=claude-opus-5-5;host=app
+?createPayload@RiderChangeContain@@MAEXXZ,,0x0022A0D0,5,game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContain.cpp,matched,ZH extend-base forwarder (jmp SiegeEngineContain::createPayload ILT); ilt_oracle CONFIRMED at RiderChangeContain vtable ILT 0x17698;model=claude-opus-5-5;host=app
+?killRidersWhoAreNotFreeToExit@RiderChangeContain@@MAEXXZ,,0x0022A100,5,game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContain.cpp,matched,ZH extend-base forwarder (jmp TransportContain::killRidersWhoAreNotFreeToExit ILT); ilt_oracle CONFIRMED at RiderChangeContain vtable ILT 0x37E2A;model=claude-opus-5-5;host=app
+?onCapture@RiderChangeContain@@UAEXPAVPlayer@@0@Z,,0x0022A140,5,game/GameEngine/Source/GameLogic/Object/Contain/RiderChangeContain.cpp,matched,ZH extend-base forwarder (jmp TransportContain::onCapture ILT); ilt_oracle CONFIRMED at RiderChangeContain vtable ILT 0x3FCDD;model=claude-opus-5-5;host=app

@@ -91088,3 +91088,6 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ?update@InGameUI@@UAEXXZ,0x0000750E,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
 ?reset@InGameUI@@UAEXXZ,0x000015A5,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
 ?init@GameWindowManager@@UAEXXZ,0x00021C79,ilt_oracle CONFIRMED at this ILT; derived-class extend-base forwarder tail-jumps here
+?createPayload@SiegeEngineContain@@MAEXXZ,0x0001E191,ilt_oracle CONFIRMED at this ILT; RiderChangeContain extend-base forwarder tail-jumps here
+?killRidersWhoAreNotFreeToExit@TransportContain@@MAEXXZ,0x000418C1,ilt_oracle CONFIRMED at this ILT; RiderChangeContain extend-base forwarder tail-jumps here
+?onCapture@TransportContain@@UAEXPAVPlayer@@0@Z,0x00005524,ilt_oracle CONFIRMED at this ILT; RiderChangeContain extend-base forwarder tail-jumps here
