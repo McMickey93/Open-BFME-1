@@ -74,6 +74,8 @@ PROTECTED = (
     "tools/audit/*",
     "tools/ilt_oracle.py", "tools/ilt_guard.py", "targets/game/reverse/ilt_windows.tsv",
     "tools/abi_view.py",
+    # the owner-approved dir32 operator corrections (tools/dir32_record_guard.py)
+    "targets/game/reverse/dir32_operator_corrections.txt",
     # the hooks and CI that run all of the above
     ".githooks/*", ".github/workflows/*",
     # debt registers and exemption lists

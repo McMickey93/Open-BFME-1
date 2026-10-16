@@ -79,17 +79,14 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
 
     python3 tools/check_csv.py --ref "$local_sha" || fail "ledger integrity at $local_sha (see above)"
     # dir32_addresses.csv: a recorded address moves only by an operator
-    # correction; every outgoing commit is judged, by the guard as of the base
-    # (the remote tip) when it knows --range, so an edit cannot approve itself.
-    if [ -n "$base" ]; then
-        if git cat-file -e "$base:tools/dir32_record_guard.py" 2>/dev/null \
-           && git show "$base:tools/dir32_record_guard.py" | grep -q -e '"--range"'; then
-            git show "$base:tools/dir32_record_guard.py" | python3 - --range "$base" "$local_sha" \
-                || fail "dir32_addresses.csv address moved without a valid operator correction (see above)"
-        elif [ -f tools/dir32_record_guard.py ]; then
-            python3 tools/dir32_record_guard.py --range "$base" "$local_sha" \
-                || fail "dir32_addresses.csv address moved without a valid operator correction (see above)"
-        fi
+    # correction; every outgoing commit is judged by the guard AS OF THE BASE
+    # (the remote tip), so an edit cannot approve itself. A base whose guard
+    # predates --range has no correction route to check (the guard commit is
+    # pushed alone first), and the working tree's guard is never trusted here.
+    if [ -n "$base" ] && git cat-file -e "$base:tools/dir32_record_guard.py" 2>/dev/null \
+       && git show "$base:tools/dir32_record_guard.py" | grep -q -e '"--range"'; then
+        git show "$base:tools/dir32_record_guard.py" | python3 - --range "$base" "$local_sha" \
+            || fail "dir32_addresses.csv address moved without a valid operator correction (see above)"
     fi
     # --ref judges re_attempts.log only tip-vs-first-parent; a deletion in a
     # commit below the tip would pass it, so every outgoing commit is judged.
@@ -264,6 +261,12 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
     delta_out=$(mktemp)
     python3 tools/delta_sources.py --range "$base" "$local_sha" --selectors > "$delta_out" \
         || { rm -f "$delta_out"; fail "delta_sources (see above)"; }
+    # A record-only operator correction moves what every TU holding the old
+    # or new VA verifies against: rebuild those TUs too (dir32_record_guard).
+    if [ -f tools/dir32_record_guard.py ] && grep -q -e '"--sources"' tools/dir32_record_guard.py; then
+        python3 tools/dir32_record_guard.py --sources "$base" "$local_sha" >> "$delta_out" \
+            || { rm -f "$delta_out"; fail "dir32_record_guard --sources (see above)"; }
+    fi
     mapfile -t delta_raw < "$delta_out"
     rm -f "$delta_out"
     delta_sources=()
