@@ -236,6 +236,79 @@ def scaffold_problems(notes, source, status):
     return out
 
 
+RE_ATTEMPTS_REL = "targets/game/reverse/re_attempts.log"
+
+
+def read_re_attempts(spec):
+    """re_attempts.log's bytes in the chosen state (None = working tree, "" =
+    index, else a ref), or None when that state has no log. A log that exists
+    but cannot be read fails loudly: an unread log must not pass as empty."""
+    if spec is None:
+        path = ROOT / RE_ATTEMPTS_REL
+        return path.read_bytes() if path.exists() else None
+    exists = subprocess.run(["git", "-C", str(ROOT), "cat-file", "-e", f"{spec}:{RE_ATTEMPTS_REL}"],
+                            capture_output=True)
+    if exists.returncode != 0:
+        return None
+    out = subprocess.run(["git", "-C", str(ROOT), "show", f"{spec}:{RE_ATTEMPTS_REL}"], capture_output=True)
+    if out.returncode != 0:
+        raise SystemExit(f"check_csv: cannot read {spec}:{RE_ATTEMPTS_REL}: {out.stderr.decode().strip()}")
+    return out.stdout
+
+
+def check_re_attempts_append_only(base, new, problems):
+    """re_attempts.log only grows: its old lines stay, in order, and lines are
+    appended after them (approved by the project lead 2026-10-16). Compared
+    with CR-at-EOL ignored, so the one-time LF normalisation passes, but a
+    union merge that re-adds rows (a rebase across that normalisation
+    duplicates every line whose ending changed) does not. A kept line may
+    lose its CR, never gain one; an appended line must be LF and must not
+    repeat a line already in the log."""
+    if base is None or new is None:
+        return
+    base_lines = base.split(b"\n")
+    new_lines = new.split(b"\n")
+    tail_base = base_lines.pop() if base_lines else b""
+    tail_new = new_lines.pop() if new_lines else b""
+    if tail_base:
+        base_lines.append(tail_base)               # last line without newline
+    plain = lambda line: line[:-1] if line.endswith(b"\r") else line
+    n = len(base_lines)
+    if len(new_lines) + (1 if tail_new else 0) < n:
+        problems.append(f"{RE_ATTEMPTS_REL}: {n - len(new_lines)} line(s) removed; the log is append-only")
+        return
+    for i in range(n):
+        old_line = base_lines[i]
+        new_line = new_lines[i] if i < len(new_lines) else tail_new
+        if plain(new_line) != plain(old_line):
+            problems.append(f"{RE_ATTEMPTS_REL}: line {i + 1} differs from the committed log; the log is "
+                            "append-only (a union-merged rebase re-adds rows: rebase with -X renormalize "
+                            "(git pull --rebase -X renormalize); do not strip CRs from a rebased log)")
+            return
+        if new_line.endswith(b"\r") and not old_line.endswith(b"\r"):
+            problems.append(f"{RE_ATTEMPTS_REL}: line {i + 1} gained a CRLF ending")
+            return
+    appended = new_lines[n:] + ([tail_new] if tail_new and len(new_lines) >= n else [])
+    for k, line in enumerate(appended, n + 1):
+        if line.endswith(b"\r"):
+            problems.append(f"{RE_ATTEMPTS_REL}: appended line {k} ends in CRLF; the log is LF-only. "
+                            "Rebase with -X renormalize (git pull --rebase -X renormalize); do not strip "
+                            "CRs from a rebased log")
+            return
+    # Union duplication re-adds whole runs of rows. A single repeated row can be
+    # a coincidence (the log already holds 4,948 rows written more than once),
+    # so only two or more consecutive appended rows that repeat two consecutive
+    # rows of the log are refused.
+    pairs = {(plain(a), plain(b)) for a, b in zip(base_lines, base_lines[1:]) if a and b}
+    for k in range(len(appended) - 1):
+        pair = (plain(appended[k]), plain(appended[k + 1]))
+        if pair[0] and pair[1] and pair in pairs:
+            problems.append(f"{RE_ATTEMPTS_REL}: appended lines {n + k + 1}-{n + k + 2} repeat a run of "
+                            "existing rows (union-merge duplication): rebase with -X renormalize "
+                            "(git pull --rebase -X renormalize); do not strip CRs from a rebased log")
+            return
+
+
 def check_functions(raw, problems, sources_ok, deleted=None):
     deleted = tombstones() if deleted is None else deleted
     if b"\r\n" not in raw[:200]:
@@ -631,6 +704,12 @@ def main():
         check_removed_rows(head_functions, functions_raw, deleted, problems)
         check_row_extents(head_functions, functions_raw, problems)
     n_syms = check_symbols(read_ledger(SYMBOLS, spec), problems)
+    if args.staged or args.ref:
+        base_spec = "HEAD" if args.staged else f"{args.ref}^"
+        has_base = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "-q", "--verify", base_spec],
+                                  capture_output=True).returncode == 0
+        if has_base:
+            check_re_attempts_append_only(read_re_attempts(base_spec), read_re_attempts(spec), problems)
     check_attempts(spec, problems, functions_raw=functions_raw,
                    sources_ok=sources_ok)
     data_raw = read_data_rows(spec)

@@ -630,7 +630,7 @@ def _record(argv):
                 f"{status!r}: a dead end has nothing worth handing on, and a "
                 f"landed body belongs in game/.")
         evidence = f"{evidence} {_bank(symbol, rva_text, stash_text, score_text)}"
-    row = f"{symbol}\t{rva_text}\t{size_text}\t{status}\t{evidence}\r\n"
+    row = f"{symbol}\t{rva_text}\t{size_text}\t{status}\t{evidence}\n"  # LF: check_csv refuses appended CRLF
     with RE_ATTEMPTS.open("ab") as handle:
         handle.write(row.encode("utf-8"))
     print(f"recorded: {symbol} @ {rva_text} -> {status}")
