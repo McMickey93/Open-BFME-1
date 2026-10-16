@@ -3967,3 +3967,6 @@ game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|mem
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|member||words110,19dd5bb807db094b7a07d418,gpt-6.1-sol,20261016062842-a95888,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|member||sinkRate34,caf8c671acc7b34b21b84039,gpt-6.1-sol,20261016062842-a95888,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorUpdate.cpp|local|SlowDeathBehavior::update|d,b66a58ce5a760e389c37d031,gpt-6.1-sol,20261016062842-a95888,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ArmyObjectSpawner00363E30.cpp|member||field90,7e7adb3b480c771b4ee54878,gpt-6.1-sol,20261016062847-dfed96,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ArmyObjectSpawner00363E30.cpp|member||field4c,117318fb0b6450b32461a6b4,gpt-6.1-sol,20261016062847-dfed96,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ArmyObjectSpawner00363E30.cpp|member||field50,c54741eb931db71cde0f2d5f,gpt-6.1-sol,20261016062847-dfed96,2026-10-16
