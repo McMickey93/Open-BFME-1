@@ -1377,3 +1377,5 @@ game/Libraries/Source/EA/Apt/AptString/EAStringCTrimRight.cpp|function|EAStringC
 game/Libraries/Source/EA/Apt/AptString/EAStringCTrimRight.cpp|local|EAStringC::rva0089F530|p,8fb2e5e4ee310d6c553a1ceb,gpt-6.1-sol,20261016030822-be7208,2026-10-16
 game/Libraries/Source/EA/Apt/AptString/EAStringCTrimRight.cpp|local|EAStringC::rva0089F530|c,62e7573167b0540b57f582f9,gpt-6.1-sol,20261016030822-be7208,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/ScreenCrossFadeFilterPostRender.cpp|local|ScreenCrossFadeFilter::postRender|p,61ea4bc5a9f9b68647163816,gpt-6.1-sol,20261016030919-9644f9,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShader/W3DScreenFireFilter.cpp|member||v0,ee558dcae14c535a6307a33f,gpt-6.1-sol,20261016030926-12c1bb,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShader/W3DScreenFireFilter.cpp|local|ScreenGridRva007D4AF0::update|p,ce61451e10b6796e8f759587,gpt-6.1-sol,20261016030926-12c1bb,2026-10-16
