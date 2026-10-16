@@ -5818,3 +5818,4 @@ game/GameEngine/Source/Common/Rva001CA9C0.cpp|local|Rva001CA9C0::rva001CA9C0|r,1
 game/GameEngine/Source/Common/BfmeConv2042.cpp|local|BfmeHostEU::bfmeStepsEU|d,1a9dc8efeb782f84a492e6e5,gpt-6.1-sol,20261016131102-03b265,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsGarrisonedUnits.cpp|param|DLINK_ITERATOR|p,8481e444c48ebc5a674d6634,gpt-6.1-sol,20261016131107-6bf29d,2026-10-16
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsGarrisonedUnits.cpp|param|TeamIterator|p,ed30ce0681634ab14c18cfc7,gpt-6.1-sol,20261016131107-6bf29d,2026-10-16
+game/GameEngine/Source/Common/Rva0040D780Parse.cpp|local|bfmeParseD780|s,2737c0923463e356123097e9,gpt-6.1-sol,20261016131112-f595a6,2026-10-16
