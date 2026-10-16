@@ -4641,3 +4641,10 @@ game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|member||m_bfmeDieFrame,4cbde3b60d3aa0db67c6dcfc,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|member||m_bfmeFrame,dcd3725973a2421a8c7db1eb,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0023B7A0HordeContainView.cpp|local|Rva0023B7A0HordeContainView::rva0023B7A0|tmpl,cb52c461da6e971275d274a5,gpt-6.1-sol,20261016070715-ae4dcf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|type||BfmeSlotHF,8b7c95b1e6106beb7d792099,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeInnerHF,5eecdbbb79f9ea623c41674e,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeFlagsHF,d57592bb695aa7f81f996dc3,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeKeyHF,127560135482e7492da797bf,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeListHF,3d4f9496b476c656d361fb4a,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeThingHF,6782dfe4c41ac2c3e6cf55cf,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeSlotHF,e196870eb201b74bccbf82e0,gpt-6.1-sol,20261016070720-10b6d6,2026-10-16
