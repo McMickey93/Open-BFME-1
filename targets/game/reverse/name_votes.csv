@@ -2071,3 +2071,4 @@ game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_
 game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.cpp|param|constructPeerResponse|p,d76e915593d832d52ac15f69,gpt-6.1-sol,20261016040737-bd8bdd,2026-10-16
 game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.cpp|param|destroyPeerResponse|p,85f0d9655082bcbb89b662fd,gpt-6.1-sol,20261016040737-bd8bdd,2026-10-16
 game/GameEngine/Source/GameNetwork/GameSpy/Thread/PeerThreadPlayerInfoCallback.cpp|local|playerInfoCallback|t,7cd79de5cf070224f4228b2a,gpt-6.1-sol,20261016040737-bd8bdd,2026-10-16
+game/Libraries/Source/EA/Apt/ValuePredicates008C4940.cpp|function|ValuePredicates008C4940@|isType5_008C4960,4b20f5e5c4c399fad9aeea0b,gpt-6.1-sol,20261016041029-0d101e,2026-10-16
