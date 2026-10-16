@@ -307,7 +307,7 @@ public:
 	// The retail call is through ILT RVA 0x0001E33F to body RVA 0x001C1EA0.
 	// Its public Object method name is not recovered; the body references the
 	// EnragedBehavior module literal, so retain an address-derived ABI view.
-	void Rva001E33FSetBool( bool flag );
+	void rva001C1EA0( bool flag );
 };
 
 // ?ObjectSetEnragedState@@YAHPAUlua_State@@@Z
@@ -322,7 +322,7 @@ int ObjectSetEnragedState( lua_State *state )
 	if( !object )
 		return 0;
 	bool flag = Rva00990210Lookup( state, 2 ) != 0;
-	object->Rva001E33FSetBool( flag );
+	object->rva001C1EA0( flag );
 	return 1;
 }
 
@@ -332,7 +332,7 @@ public:
 	// The retail call is through ILT RVA 0x0001ED6C to body RVA 0x001CF8F0.
 	// The public Object method name is not recovered; retain an address-derived
 	// ABI view for the ObjectSetChanting binding.
-	void Rva001ED6CSetBool( bool flag );
+	void rva001CF8F0( bool flag );
 };
 
 // ?ObjectSetChanting@@YAHPAUlua_State@@@Z
@@ -347,7 +347,7 @@ int ObjectSetChanting( lua_State *state )
 	if( !object )
 		return 0;
 	bool flag = Rva00990210Lookup( state, 2 ) != 0;
-	object->Rva001ED6CSetBool( flag );
+	object->rva001CF8F0( flag );
 	return 1;
 }
 
