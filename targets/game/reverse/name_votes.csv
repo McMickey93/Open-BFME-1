@@ -1304,3 +1304,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewCameraUpdateAlternateOn
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewCameraUpdateAlternateOneFrame.cpp|param|Lerp|b,fa88b673c2407cb3f78d4dae,gpt-6.1-sol,20261016030051-51dd34,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewPitchCameraOneFrame.cpp|param|Lerp|a,902b61d2b2b44b14cdbc7339,gpt-6.1-sol,20261016030116-90274c,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewPitchCameraOneFrame.cpp|param|Lerp|b,299c2e5ff5d04bc667e62e0b,gpt-6.1-sol,20261016030116-90274c,2026-10-16
+game/Libraries/Source/WWVegas/WW3D2/Render2DClassAddTri.cpp|param|convertPosition006e|v,771be72b60306851a94c3fd9,gpt-6.1-sol,20261016030116-bb9d76,2026-10-16
