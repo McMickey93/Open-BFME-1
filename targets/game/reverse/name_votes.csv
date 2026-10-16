@@ -4812,3 +4812,7 @@ game/GameEngine/Source/GameLogic/Object/ObjectBuildObjectInfo.cpp|type||BfmeExpe
 game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field204,451491d221f5e05833d8101f,gpt-6.1-sol,20261016071651-e64678,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field214,d12f82f0c52c48270ea3555b,gpt-6.1-sol,20261016071651-e64678,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/TargetFlags001F8080.cpp|member||field3c,9a69e2d454dd0d73c9ba683c,gpt-6.1-sol,20261016071651-e64678,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|member||m_dword214,87a92c3b58f008b4c4f90862,gpt-6.1-sol,20261016071658-41607a,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|member||adjust4c,b00b3373a9d121371d46e572,gpt-6.1-sol,20261016071658-41607a,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|local|getTemplate|t,1bab0c7f41d33b480ebd22e0,gpt-6.1-sol,20261016071658-41607a,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackPursueTargetState_onEnter.cpp|param|setAdjustsDestination|b,b0becad163fd627ea777461a,gpt-6.1-sol,20261016071658-41607a,2026-10-16
