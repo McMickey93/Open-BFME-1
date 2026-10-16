@@ -4547,6 +4547,7 @@ name,address,notes
 ??1?$pair@$$CBVAsciiString@@VRva0045EF90Object@@@_STL@@QAE@XZ,0x0003D2B7,operator[] call at 0x00461CBA reaches the matched 0x0045F300 pair destructor through this ILT
 ??1?$pair@$$CBVAsciiString@@VRva00476440Ref@@@_STL@@QAE@XZ,0x00015F5F,0x00476E90 pair destructor template reaches the proven 0x004736D0 ILT body
 ??1?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@QAE@XZ,0x00036291,BuildableStatus key-erase pair destructor at 0x006A78C0; ILT resolves to the matched AsciiString release body
+??1?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@QAE@XZ,0x0000FF10,ilt_oracle CONFIRMED exact (0x00036291 is CONTRADICTED); retail unwind funclet 0x00C1C0F0 of matched hash_map<AsciiString,BuildableStatus>::operator[] 0x00390660 jmps to this ILT (-> 0x003872F0 -> releaseBuffer 0x00887940)
 ??1?$pair@$$CBVAsciiString@@W4Rva00693020Mapped@@@_STL@@QAE@XZ,0x00692000,native five-byte destructor body verified in RvaHashIndexAsciiString.cpp; parent693880 string-scalar pair lifetime via state0 actionC47150 and ILT46D9E proves binding; releaseBuffer tail
 ??1?$pair@$$CBVAsciiString@@W4Rva006A7AD0Mapped@@@_STL@@QAE@XZ,0x0069DEC0,native five-byte destructor body verified in RvaHashIndexAsciiString.cpp; parent6AC440 string-scalar pair lifetime via state0 actionC48210 and ILT36291 proves binding; releaseBuffer tail
 ??1?$pair@$$CBVUnicodeString@@_N@_STL@@QAE@XZ,0x00039D7E,pair<const UnicodeString Bool> destructor forwards through the existing releaseBuffer jump-thunk shared with other UnicodeString dtor callers

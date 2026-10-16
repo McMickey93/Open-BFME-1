@@ -38304,7 +38304,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c18b1d@@YAXXZ,,0x00C18B1D,17,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@01018b1d
 ?d_00c19290@@YAXXZ,,0x00C19290,11,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@01019290
 ?d_00c1929b@@YAXXZ,,0x00C1929B,11,game/gen_asm/d_00c17e98.asm,matched,gen-dump;ghidra=Unwind@0101929b
-?d_00c1c0f0@@YAXXZ,,0x00C1C0F0,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c0f0
 ?d_00c1c540@@YAXXZ,,0x00C1C540,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c540
 ?d_00c1c559@@YAXXZ,,0x00C1C559,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c559
 ?d_00c1c939@@YAXXZ,,0x00C1C939,31,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@0101c939
@@ -172565,3 +172564,4 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?Rva00C5ACB8Cleanup@@YAXXZ,,0x00C5ACB8,25,game/Libraries/Source/WWVegas/WW3D2/TextureHandleGetName.cpp,matched,gen-funclet;object-symbol=$L1130;parent=?Get_Texture_Name@BfmeHandleCX@@QBE?AVStringClass@@XZ;retail 008FF5B0 unwind map state 0 judged by eh_state_pins;jmp ILT 0x0001A41F (??1StringClass -> 0x0013A050);model=claude-opus-5-5;host=app
 ?Rva00C5C1A8Cleanup@@YAXXZ,,0x00C5C1A8,25,game/Libraries/Source/WWVegas/WW3D2/rendobj.cpp,matched,gen-funclet;object-symbol=$L23758;parent=?Filename_From_Asset_Name@@YA?AVStringClass@@PBD@Z;retail 00920770 unwind map state 0 judged by eh_state_pins;jmp ILT 0x0001A41F (??1StringClass -> 0x0013A050);model=claude-opus-5-5;host=app
 ??_G?$DynamicVectorClass@VShaderClass@@@@UAEPAXI@Z,,0x00930D30,30,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/009305d0-vectorclass-shaderclass-ctor.md;slot 0 of DynamicVectorClass<ShaderClass> vtable 0x0113C644; calls 0x00930040;retired DynamicVectorClass<PtrRemapStruct> claim;model=claude-opus-5.5;host=GreatFaram
+?Rva00C1C0F0Cleanup@@YAXXZ,,0x00C1C0F0,25,game/GameEngine/Source/GameLogic/System/BuildableStatusHashMap.cpp,matched,gen-funclet;object-symbol=$L6691;parent=??A?$hash_map@VAsciiString@@W4BuildableStatus@@U?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@4@V?$allocator@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@_STL@@@_STL@@QAEAAW4BuildableStatus@@ABVAsciiString@@@Z;retail 00390660 unwind map judged by eh_state_pins;jmp ILT 0x0000FF10 pair<const AsciiString;BuildableStatus> dtor;model=claude-opus-5-5;host=app
