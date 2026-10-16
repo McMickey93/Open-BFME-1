@@ -4266,3 +4266,14 @@ game/GameEngine/Source/Common/BfmeConv1110.cpp|local|BfmeV1110::bfmeGo1110B|q,f8
 game/GameEngine/Source/Common/BfmeConv1110.cpp|local|BfmeV1110::bfmeGo1110B|a,0cf8d4b15734c7442cff1a7c,gpt-6.1-sol,20261016064619-1c3abd,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1110.cpp|local|BfmeV1110::bfmeGo1110B|r,340526bada954b87441ad3b4,gpt-6.1-sol,20261016064619-1c3abd,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1110.cpp|local|BfmeV1110::bfmeGo1110B|b,fe29a741d3c388128bfbac0c,gpt-6.1-sol,20261016064619-1c3abd,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|member||m_bfme1c,181dda79d5d5b89729377251,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|param|bfmeGoAVIW|m,55af6f80faf070818c8f0969,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|local|bfmeGoAVIW|g,e565c145ec36bb41eefdbbfe,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|param|bfmeGoBVIW|m,9ea6785aefa3d3242c4df17a,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|local|bfmeGoBVIW|g,9c72f453f31392b6d112effd,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|param|bfmeGoCVIW|m,b73403f28e08aff05d04babb,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|local|bfmeGoCVIW|g,7f65b584168926a8ed6ef9cc,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|param|bfmeGoDVIW|m,3ed55e02f4339ba9487cf335,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|local|bfmeGoDVIW|g,86c30d70089aebc57b302097,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|param|bfmeGoEVIW|m,f9a9e7b49248f3e6b495b717,gpt-6.1-sol,20261016064639-b72289,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1379.cpp|local|bfmeGoEVIW|g,8b4fe8a441dcf3ce2e0f0f48,gpt-6.1-sol,20261016064639-b72289,2026-10-16
