@@ -3200,3 +3200,7 @@ game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|member||m_wordE4,60377d0eb
 game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|member||m_wordE5,2f6243c70b1cc1053388d575,gpt-6.1-sol,20261016060125-893f47,2026-10-16
 game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|param|isInList_TeamInstanceList|o,a262ba43552a563c787309de,gpt-6.1-sol,20261016060125-893f47,2026-10-16
 game/GameEngine/Source/Common/RTS/TeamConstructor.cpp|param|prependTo_TeamInstanceList|o,36d90460e7496dd069f42931,gpt-6.1-sol,20261016060125-893f47,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005FDC70Method.cpp|member||m_bfmePtrERU,9d2b9c6b84cd7182ea62b4be,gpt-6.1-sol,20261016055310-e3ee1c,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005FDC70Method.cpp|member||m_at04,d484ee7a51ea3e449f786de2,gpt-6.1-sol,20261016055310-e3ee1c,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005FDC70Method.cpp|member||m_at10,d55acacc873c7e13b0e62fe8,gpt-6.1-sol,20261016055310-e3ee1c,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005FDC70Method.cpp|member||m_at1C,ec9e68b9e4168c99bc20b889,gpt-6.1-sol,20261016055310-e3ee1c,2026-10-16
