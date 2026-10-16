@@ -5742,3 +5742,5 @@ game/GameEngine/Source/Common/BfmeFindWT.cpp|local|BfmeFindWT::find|n,5f95c8bfe0
 game/GameEngine/Source/Common/Rva0013ABC0TableEquals.cpp|local|Rva0013ABC0Table::equals|n,7fb44753d15001c50f15410e,gpt-6.1-sol,20261016130618-5139f8,2026-10-16
 game/GameEngine/Source/Common/SmallGaps/Rva007F6A10AllocSlot.cpp|local|Rva007F6A10Owner::allocSlot|s,1f6caceac4b878bdb6241749,gpt-6.1-sol,20261016130624-b4bf0a,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2039.cpp|local|BfmeHostER::bfmeIndexER|t,36a6534f85eb25215eea3422,gpt-6.1-sol,20261016130629-9b6ed0,2026-10-16
+game/GameEngine/Source/Common/RTS/ActionManagerCanDoSpecialPowerAtObject.cpp|local|ActionManager::canDoSpecialPowerAtObject|r,fc5aa06fd92fb46607510a35,gpt-6.1-sol,20261016130635-1c79ce,2026-10-16
+game/GameEngine/Source/Common/RTS/ActionManagerCanDoSpecialPowerAtObject.cpp|local|ActionManager::canDoSpecialPowerAtObject|m,5a889a6bc5cd0afd173de900,gpt-6.1-sol,20261016130635-1c79ce,2026-10-16
