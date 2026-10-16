@@ -9514,6 +9514,7 @@ name,address,notes
 ??1Rva0077B3F0Handle@@QAE@XZ,0x00013994,Rva0077B3F0 call-site ABI; +0x13A REL32 reaches ILT 0x00013994 to matched body 0x001DA440
 ??1Rva0077CC10Element@@QAE@XZ,0x0004A1C4,destructor of the 188-byte vector element (temporary in the 0x0077CDE0 constructor)
 ??1Rva0077CDE0ArrElem@@QAE@XZ,0x0000E746,element destructor paired with the 0x0077CDE0 array at +0x134
+??1Rva009F2140AssetSetGroup@@QAE@XZ,0x0000E746,state-0 cleanup callee of matched AssetManagerImpl::Collect_Keys_009EF7D0 0x009EF7D0: its unwind funclet 0x00C61AB0 destroys the returned group through this ILT
 ??1Rva0077CDE0Elem5@@QAE@XZ,0x0002C868,destructor of the +0x6c member of the 0x0077CDE0 class (unwind funclet target)
 ??1Rva0077CDE0Elem6@@QAE@XZ,0x00022C2D,destructor of the +0x78 member of the 0x0077CDE0 class (unwind funclet target)
 ??1Rva0077CDE0Opaque1@@QAE@XZ,0x0002303D,destructor of the +0x08 member of the 0x0077CDE0 constructor class (unwind funclet target)
