@@ -5500,3 +5500,6 @@ game/GameEngine/Source/GameClient/Rva004155A0NotifyArrays.cpp|local|Rva004155A0O
 game/GameEngine/Source/GameLogic/Object/Update/BloodthirstyUpdate.cpp|function|Gen_00287130@|bfmeAccept,59a41d366f32080b1f306c65,gpt-6.1-sol,20261016083413-622709,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2137.cpp|member||m_bfmePtrXT,17b3b68f839cb710edfd71b6,gpt-6.1-sol,20261016121535-3f1612,2026-10-16
 game/GameEngine/Source/GameClient/GUI/CrossFadeImage_draw.cpp|member||m_image2,04219c4d630bd4ba00fb2852,gpt-6.1-sol,20261016121535-83f64a,2026-10-16
+game/GameEngine/Source/Common/MapObject.cpp|type||Rva0088B70ThingRegistry,81302a74e1cb43d298015b66,gpt-6.1-sol,20261016121904-075de5,2026-10-16
+game/GameEngine/Source/Common/MapObject.cpp|function||Rva00088B70ReadMapObject,5bfe95aac6c9b748b1cfc580,gpt-6.1-sol,20261016121904-075de5,2026-10-16
+game/GameEngine/Source/Common/MapObject.cpp|local|Rva00088B70ReadMapObject|tmplate,7478964d130cd7d6cf8cbbbd,gpt-6.1-sol,20261016121904-075de5,2026-10-16
