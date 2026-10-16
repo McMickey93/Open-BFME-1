@@ -5440,3 +5440,9 @@ game/GameEngine/Source/Common/BfmeConv829.cpp|type||BfmeThingDA0,f8a6dee76d9a26a
 game/GameEngine/Source/Common/BfmeConv829.cpp|member||m_sub210,b9f02fae7bab11e62c959e08,gpt-6.1-sol,20261016082152-21d1bd,2026-10-16
 game/GameEngine/Source/Common/BfmeConv829.cpp|member||m_fieldB4C,f54c5d455fd87e02775b922d,gpt-6.1-sol,20261016082152-21d1bd,2026-10-16
 game/GameEngine/Source/Common/BfmeConv829.cpp|member||m_fieldB50,4b73b323aecf28858cc1cf28,gpt-6.1-sol,20261016082152-21d1bd,2026-10-16
+game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C060Box::copyFrom|a,2dde3c82f504aebf52ea0eff,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
+game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C060Box::copyFrom|b,70eccd6dc019778cb9834642,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
+game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C2F0Box::copyFrom|a,b88f1e015d257fc29951f09d,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
+game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C2F0Box::copyFrom|b,49ac17f59a287ff417f16f97,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
+game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C310Box::copyFrom|a,f48d777abad261e6f31ab742,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
+game/GameEngine/Source/Common/Small03hRefCopy.cpp|param|Rva0094C310Box::copyFrom|b,af3344ccbbfd2d65c8bb3369,gpt-6.1-sol,20261016082159-42a12c,2026-10-16
