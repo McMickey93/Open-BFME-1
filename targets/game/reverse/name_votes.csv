@@ -2774,3 +2774,13 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/HordeWorkerAIUpdateModul
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/HordeWorkerAIUpdateModuleDataCtor.cpp|member||m_flag40,ae4dd06b4d1dd26c03982f78,gpt-6.1-sol,20261016052726-b947c6,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/HordeWorkerAIUpdateModuleDataCtor.cpp|member||m_unknown48,d2e786d098b233058401f100,gpt-6.1-sol,20261016052726-b947c6,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/HordeWorkerAIUpdateModuleDataCtor.cpp|member||m_flag54,377666c475fb6ff4b0042fbb,gpt-6.1-sol,20261016052726-b947c6,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown20,1d46d335fab95da4e971e88b,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag28,862eb0444321696a9f792109,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag29,ce3620248076964fa23db466,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown2c,f82dea977d11e84c6002dbf9,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown34,f9e63e4ef6b0312761ca23ec,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown38,7af8a9c2930f1a248548c230,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown3c,c49385f4edb4a45cc48f9ea0,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag40,9abb401c3e8cdd3af6a0ca91,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown48,ad1d3bff1c14bbe6c94f420e,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WanderAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag54,11affc74617d4dbbc4ad814e,gpt-6.1-sol,20261016052733-57b61c,2026-10-16
