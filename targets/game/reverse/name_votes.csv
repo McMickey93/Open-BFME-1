@@ -2252,3 +2252,17 @@ game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmode
 game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_24,ed335129e483f0086f0b8283,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
 game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_28,a95cf7f47a3ae6d5991b1963,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
 game/GameEngine/Source/GameClient/RadiusDecalTemplateEquals.cpp|member||m_unmodelled_2C,3c2557bb67b08289cb688b41,gpt-6.1-sol,20261016043209-a709e9,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value0,bcebd1ae79cded86bb345239,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value1,6207398e6532294d2b5c6c8b,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value2,754116314daaba28b27bb298,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value3,b0a9bbb349fb087fb1a09df2,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value4,47e981b979886616a872593d,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value5,eb324f04c387593fac4a78dd,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value6,9743a5633a0eac23e6405798,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value7,309f8dbd1d75275c33bc4e9e,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value8,a9c17c6d624c0a12342c265b,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value9,1913ea9ee0e3de8c8e67b834,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value10,63c75286bff813e0c135578d,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||value11,1a486340e2f9790d8381da46,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||field12f0,c787c21123e6fc1df558864c,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/TerrainTracksRenderObjClassCtor.cpp|member||field12f4,e8db3a72e425ed79ae220f53,gpt-6.1-sol,20261016043226-1b8ed0,2026-10-16
