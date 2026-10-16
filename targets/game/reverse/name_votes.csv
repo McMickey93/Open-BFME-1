@@ -3064,3 +3064,6 @@ game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.
 game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f20,75f0b29acb2612dada77b215,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f24,d84e0e7c0e5ed33dfcea38c9,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/TemporarilyDefectUpdateCtorThunk.cpp|member||m_f28,5bdb766cc3132f9838414b74,gpt-6.1-sol,20261016055230-1f4ae1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RespawnUpdateCtorModuleFactory.cpp|member||m_f14,1b0d25ddecc50189d762796f,gpt-6.1-sol,20261016055236-3a0eec,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RespawnUpdateCtorModuleFactory.cpp|member||m_f18,d11f770abd755c2abdd3df96,gpt-6.1-sol,20261016055236-3a0eec,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RespawnUpdateCtorModuleFactory.cpp|member||m_f1c,ec9ff444da39ea871bf574af,gpt-6.1-sol,20261016055236-3a0eec,2026-10-16
