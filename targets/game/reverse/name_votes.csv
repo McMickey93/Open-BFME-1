@@ -4123,3 +4123,5 @@ game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|membe
 game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|member||m_bfmeFactors,63633b3d870ae101c3fc6af4,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|function|BfmeObjectAI@|bfmeStateFlags,999e2b27bf22d524c4d14a2b,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AI_getAdjustedVisionRangeForObject.cpp|function|BfmeObjectAI@|bfmeStateValue,d7cc968320de1335dcc25780,gpt-6.1-sol,20261016063657-284fcc,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorConstructor.cpp|param|setFlag|f,035edfe4550d5790b8f00635,gpt-6.1-sol,20261016063702-1b4f77,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorConstructor.cpp|param|Locomotor::Locomotor|tmpl,9f0db7bc1a3d9e862228e29a,gpt-6.1-sol,20261016063702-1b4f77,2026-10-16
