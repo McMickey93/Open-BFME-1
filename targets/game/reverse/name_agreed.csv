@@ -669,3 +669,4 @@ game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|member||field28,m_length,cl
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|put|v,element,gpt-6.1-sol+grok,applied,2026-10-16
 game/Libraries/Source/EA/Apt/ConcatArray008B9CC0.cpp|param|set|v,element,gpt-6.1-sol+grok,applied,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1947.cpp|local|BfmeHostEQW::bfmeGoEQW|s_bfmeKeyEQW,detachableRiderUpdateKey,gpt-6.1-sol+grok,agreed,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1947.cpp|local|BfmeHostEQW::bfmeGoEQW|s_bfmeKeyEQW,detachableRiderUpdateKey,gpt-6.1-sol+grok,applied,2026-10-16

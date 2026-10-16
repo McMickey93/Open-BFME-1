@@ -61,10 +61,10 @@ void BfmeHostEQW::bfmeGoEQW(BfmeThingEQW *thing)
 
 	if ((owner->m_bfmeFlagsEQW & 0x40) != 0)
 	{
-		static int s_bfmeKeyEQW =
+		static int detachableRiderUpdateKey =
 			g_bfmeKeyGenEQW->bfmeNameToKeyEQW("DetachableRiderUpdate");
 
-		BfmeModuleEQW *mod = thing->bfmeFindEQW(s_bfmeKeyEQW);
+		BfmeModuleEQW *mod = thing->bfmeFindEQW(detachableRiderUpdateKey);
 
 		if (mod != 0)
 			mod->bfmeDoEQW();
