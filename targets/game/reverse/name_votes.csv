@@ -4929,3 +4929,7 @@ game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|type||Rva00336C20
 game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|type||TAiData0014DAB0,47d7187cfafc2e3ea1a117cc,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|param|bfmeGetFinalOverride|o,052f279871cd0a7b4c9fb85c,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIRva0014DAB0AreaEnemy.cpp|local|getTemplate|t,b5fb5b39a02d6b2cc33d7125,gpt-6.1-sol,20261016071904-2e2848,2026-10-16
+game/GameEngine/Source/Common/SmallGaps/Rva001559B0NotifyMembers.cpp|type||Rva001559B0Target,2454189cc9943e00d01ae052,gpt-6.1-sol,20261016072043-3664cc,2026-10-16
+game/GameEngine/Source/Common/SmallGaps/Rva001559B0NotifyMembers.cpp|type||Rva001559B0Owner,efe7787466cda582a65c2e65,gpt-6.1-sol,20261016072043-3664cc,2026-10-16
+game/GameEngine/Source/Common/SmallGaps/Rva001559B0NotifyMembers.cpp|local|Rva001559B0Owner::notifyMembers|n,ca608e0cc0283b2d4ef1766c,gpt-6.1-sol,20261016072043-3664cc,2026-10-16
+game/GameEngine/Source/Common/SmallGaps/Rva001559B0NotifyMembers.cpp|local|Rva001559B0Owner::notifyMembers|t,c208ab89cd1c0e400bd59d1b,gpt-6.1-sol,20261016072043-3664cc,2026-10-16
