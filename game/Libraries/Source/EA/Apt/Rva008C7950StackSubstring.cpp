@@ -11,14 +11,40 @@ struct BfmeStringPool3AF0
     void *m_unknown00;
     void (__cdecl *free)(void *);
 };
-class EAStringC { public: class StringDataC; };
+extern BfmeStringPool3AF0 *g_rva01337A30AllocPair;
+extern void *(__cdecl *Rva008C5D70Alloc)(unsigned);
+static inline BfmeStringData3AF0 *sharedEmptyString012D5298();
+// Real class identity for the two UTF-8 slice helpers (ledger rows
+// ?utf8Suffix0089FAC0@EAStringC@@QBE?AV1@H@Z and ?utf8Mid0089FBC0@EAStringC@@QBE?AV1@HH@Z).
+// Same single-pointer layout as Rva8CD130String; Rva8CD130Value::getName keeps
+// the Rva8CD130String spell, so the two call sites cast between the two.
+class EAStringC
+{
+public:
+    class StringDataC;
+    EAStringC() : m_data(sharedEmptyString012D5298()) { ++m_data->m_refCount; }
+    ~EAStringC()
+    {
+        BfmeStringData3AF0 *old = m_data;
+        if (--old->m_refCount == 0) g_rva01337A30AllocPair->free(old);
+    }
+    EAStringC &operator=(const EAStringC &source)
+    {
+        ++source.m_data->m_refCount;
+        BfmeStringData3AF0 *old = m_data;
+        if (--old->m_refCount == 0) g_rva01337A30AllocPair->free(old);
+        m_data = source.m_data;
+        return *this;
+    }
+    EAStringC utf8Suffix0089FAC0(int start) const;
+    EAStringC utf8Mid0089FBC0(int start, int count) const;
+    BfmeStringData3AF0 *m_data;
+};
 extern EAStringC::StringDataC g_rva012D5298Empty;	// shared empty string block 0x012D5298
 static inline BfmeStringData3AF0 *sharedEmptyString012D5298()
 {
 	return (BfmeStringData3AF0 *)&g_rva012D5298Empty;
 }
-extern BfmeStringPool3AF0 *g_rva01337A30AllocPair;
-extern void *(__cdecl *Rva008C5D70Alloc)(unsigned);
 
 class Rva8CD130String
 {
@@ -44,8 +70,6 @@ public:
         m_data = sharedEmptyString012D5298();
         ++m_data->m_refCount;
     }
-    Rva8CD130String suffix0089FAC0(int start) const;
-    Rva8CD130String slice0089FBC0(int start, int count) const;
     BfmeStringData3AF0 *m_data;
 };
 class Rva8CD130Value
@@ -126,8 +150,10 @@ void stackSubstring008C7950(Stack008C7950 *state)
     }
     else result = new Rva008A9B00;
     if (count == 0) result->m_string.clear();
-    else if (count < 0) result->m_string = text.suffix0089FAC0(start);
-    else result->m_string = text.slice0089FBC0(start, count);
+    else if (count < 0) result->m_string = reinterpret_cast<const Rva8CD130String &>(
+        reinterpret_cast<const EAStringC &>(text).utf8Suffix0089FAC0(start));
+    else result->m_string = reinterpret_cast<const Rva8CD130String &>(
+        reinterpret_cast<const EAStringC &>(text).utf8Mid0089FBC0(start, count));
     for (int i = 1; i <= 3; ++i)
     {
         Value008C7950 *old = state->m_entries[state->m_count - i];
