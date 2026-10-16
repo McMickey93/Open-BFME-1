@@ -3,7 +3,7 @@
 typedef float Real;
 typedef int Int;
 
-extern Int g_Va0133F408;
+Int g_Va0133F408 = 0;
 extern const Real g_bfmeK1253;
 extern const Real g_bfmeK1266B;
 extern const Real g_rva003D2B80NegHalf;
