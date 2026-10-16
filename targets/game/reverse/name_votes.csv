@@ -5076,3 +5076,4 @@ game/GameEngine/Source/Common/Bfme5ThirtyOne.cpp|member||m_bfmeY,0a3d1b4d255f12b
 game/GameEngine/Source/Common/Bfme5ThirtyOne.cpp|member||m_bfmeRefs,e9c781808edaf99d98e4e60a,gpt-6.1-sol,20261016073459-033496,2026-10-16
 game/GameEngine/Source/Common/Bfme5ThirtyOne.cpp|member||m_bfmeThing,7d2ac85460beb63485695194,gpt-6.1-sol,20261016073459-033496,2026-10-16
 game/GameEngine/Source/Common/Bfme5ThirtyOne.cpp|member||m_bfmeHandle,1def268991643bd06dcca905,gpt-6.1-sol,20261016073459-033496,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineAttackInfo.cpp|param|friend_setName|n,addc7f1bf53b71398b7b1fe3,gpt-6.1-sol,20261016073405-512363,2026-10-16
