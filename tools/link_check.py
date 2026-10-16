@@ -421,6 +421,19 @@ def kept_definition(index, name):
     return index["objects"][holder], "strong" if holder in exclusive else copies[holder]
 
 
+def kept_verdict(index, name):
+    """The retail-truth verdict of the COMDAT copy the link keeps ("strong"
+    for an exclusive definition, None when nothing defines it)."""
+    kept = kept_definition(index, name)
+    if kept is None:
+        return None
+    holder, body = kept
+    if body == "strong":
+        return "strong"
+    position = index["objects"].index(holder)
+    return next((v for i, _, v in index["comdat"].get(name, ()) if i == position), None)
+
+
 def definer_signature(objects, strong, comdat, name):
     """Who defines `name`, how, and with which body: (object, kind[, digest])."""
     entries = [(objects[i], "strong") for i in strong.get(name, ())]
@@ -646,8 +659,16 @@ def command_moves(commit, sources):
 
 
 TRUTH_FILES = ("targets/game/reverse/functions.csv", "targets/game/reverse/data_rows.csv",
-               "targets/game/reverse/symbols.csv")
+               "targets/game/reverse/symbols.csv", "targets/game/reverse/dir32_addresses.csv",
+               "targets/game/reverse/reloc_names.csv")
 _OBJECT_SYMBOL = re.compile(r"object-symbol=([^;,\s\"]+)")
+_ANON = re.compile(r"\?A0x[0-9a-fA-F]{8}@")
+
+
+def _anon(text):
+    """Anonymous-namespace hashes (?A0x1234abcd@) differ between compiles of
+    one name; compare names and rows without them."""
+    return _ANON.sub("?A0x@", text)
 
 
 def _truth_rows(text):
@@ -655,7 +676,7 @@ def _truth_rows(text):
     its name column and any object-symbol= note."""
     rows = collections.defaultdict(set)
     for line in text.splitlines()[1:]:
-        line = line.rstrip("\r")
+        line = _anon(line.rstrip("\r"))
         name = next(csv.reader([line]), [""])[0] if line else ""
         for key in {name, *_OBJECT_SYMBOL.findall(line)}:
             if key:
@@ -663,27 +684,46 @@ def _truth_rows(text):
     return rows
 
 
-def truth_changes(commit, since, names):
-    """Names among `names` whose functions.csv / data_rows.csv rows or
-    symbols.csv pins differ from the census commit's (round 6 F5: a row
-    re-homed in its own source, or a new pin, changes retail truth without
-    changing any object). All of `names` when the census ledger cannot be read."""
+class AllNames(frozenset):
+    """Every name: the census ledger could not be read."""
+    def __contains__(self, item):
+        return True
+
+    def __and__(self, other):
+        return set(other)
+
+    __rand__ = __and__
+
+
+def truth_changes(commit, since, names=None):
+    """Names whose rows in a truth ledger (functions.csv, data_rows.csv,
+    symbols.csv pins, dir32_addresses.csv, reloc_names.csv; name column and
+    object-symbol= notes, anonymous-namespace hashes normalised) differ from
+    the census commit's. Retail truth moves without any object changing:
+    a row re-homed in its own source, a new pin (round 6 F5). Restricted to
+    `names` when given; with names=None, every such name (the full diff).
+    AllNames() when the census ledger cannot be read."""
     touched = [path for path in TRUTH_FILES if since is None or path in since]
     if not touched:
         return set()
     if not commit:
-        return set(names)
+        return set(names) if names is not None else AllNames()
     found = set()
     for path in touched:
         shown = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=ROOT, capture_output=True, text=True)
         try:
             now_text = (ROOT / path).read_text(encoding="utf-8")
         except OSError:
-            return set(names)
-        if shown.returncode:
-            return set(names)
+            now_text = None
+        if shown.returncode or now_text is None:
+            if (ROOT / path).exists() or shown.returncode == 0:
+                return set(names) if names is not None else AllNames()
+            continue                    # absent then and now
         old, new = _truth_rows(shown.stdout), _truth_rows(now_text)
-        found |= {name for name in names if old.get(name, set()) != new.get(name, set())}
+        if names is None:
+            found |= {name for name in set(old) | set(new) if old.get(name, set()) != new.get(name, set())}
+        else:
+            found |= {name for name in names if old.get(_anon(name), set()) != new.get(_anon(name), set())}
     return found
 
 
@@ -767,8 +807,11 @@ def _moved_objects(commit, since, order, ledger_objects, census_objects, sources
 HOOK_DEADLINE = 120.0
 
 
-HOOK_INPUTS = ("game", "inputs", "tools", "build.sh", "build.cmd") + TRUTH_FILES
+HOOK_INPUTS = ("game", "inputs", "tools", "build.sh", "build.cmd", "targets/game/reverse",
+               ":(exclude)targets/game/reverse/re_attempts.log", ":(exclude)targets/game/reverse/attempts")
 _REPORTED = set()          # files report() has printed a verdict for (hook timeout must not contradict them)
+import threading as _threading  # noqa: E402
+_REPORT_LOCK = _threading.RLock()  # report() and the hook's timeout print one at a time
 
 
 def _kill_children(pid=None):
@@ -816,9 +859,10 @@ def hook_main(args):
 
     def give_up():
         try:
+            _REPORT_LOCK.acquire()        # no verdict starts printing after this
+            _kill_children()
             pending = [p for p in paths if repo_path(p, Path.cwd()) not in _REPORTED]
             unknown(f"timeout after {deadline:.0f}s", pending)
-            _kill_children()
         finally:
             sys.stdout.flush()
             os._exit(0)
@@ -914,6 +958,7 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
     before = {name: definer_signature(census_view["objects"], census_view["strong"], census_view["comdat"], name)
               for name in touched}
     census_kept = {name: kept_definition(census_view, name) for name in touched}
+    census_verdict = {name: kept_verdict(census_view, name) for name in touched}
     # 1. current link order (N5, N6, N7)
     if order:                     # no ledger at all (a bare fixture): keep the census's order
         extra = [obj.name for obj in objects if obj.name not in set(order)]
@@ -936,6 +981,28 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
                or set(census_owners.get(name, ())) != set(owners_now.get(name, ()))
                or kept_definition(index, name) != census_kept[name]}
     truth_moved = truth_changes(commit, since, touched)    # retail truth moved without any object
+    # One step away (round 7 H1): a shared copy's verdict depends on the names
+    # its body references (a call's target row, a pin, a dir32 entry). Without
+    # per-copy reference lists, a truth change to any name the checked objects
+    # or the kept copies' objects reference changes every touched shared name.
+    shared = {name for name in touched
+              if len(definer_signature(index["objects"], index["strong"], index["comdat"], name)) > 1}
+    if shared and truth_moved is not None:
+        all_moved = truth_changes(commit, since, None)
+        if all_moved:
+            referenced = set()
+            for obj in objects:
+                referenced |= {_anon(n) for n in link_census.touched_names(facts[obj.name])}
+            holders = {kept_definition(index, name)[0] for name in shared if kept_definition(index, name)}
+            unread = False
+            for holder in holders - checked:
+                obj = ledger_objects.get(holder)
+                if obj is None or not _object_is_current(obj, sources, receipts):
+                    unread = True
+                    continue
+                referenced |= {_anon(n) for n in link_census.touched_names(link_census.object_facts(obj, truth))}
+            if unread or isinstance(all_moved, AllNames) or (referenced & {_anon(n) for n in all_moved}):
+                truth_moved = set(truth_moved) | shared
     changed |= truth_moved
     owners = dict(census_owners)
     owners.update({name: set(owners_now.get(name, ())) for name in changed})
@@ -959,6 +1026,8 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
     selection = index["selection"]
     selection["changed"], selection["stale"] = changed, stale
     selection["census_kept"] = {name: census_kept.get(name) for name in changed - truth_moved}
+    selection["truth_moved"] = set(truth_moved)
+    selection["census_verdict"] = {name: census_verdict.get(name) for name in truth_moved}
     selection["unknown_definers"] = bool(moved_unreadable) or scan_unknown
     if moved_unreadable:
         print(f"link_check: {len(moved_unreadable):,} ledger object(s) new or changed since the census cannot "
@@ -1483,6 +1552,8 @@ def wrong_selected(obj, fact, own, position, index, *, common_names=(), unknown=
     stale = selection.get("stale", set())
     hidden = selection.get("unknown_definers", False)
     census_kept = selection.get("census_kept", {})
+    truth_moved = selection.get("truth_moved", set())
+    census_verdict = selection.get("census_verdict", {})
     unknown = [] if unknown is None else unknown
     mine_copies = {name: (digest, verdict) for name, digest, _, verdict in copies}
     mine_strong = set(defined)
@@ -1517,6 +1588,11 @@ def wrong_selected(obj, fact, own, position, index, *, common_names=(), unknown=
         if result == "wrong":
             found.append(name)
         elif hidden:
+            unknown.append(name)
+        elif name in truth_moved and holder is not None and holder not in exclusive \
+                and found_copies[holder][1] != census_verdict.get(name):
+            # retail truth moved under the kept copy: the census's proof of it
+            # no longer holds, and nothing here proves it again
             unknown.append(name)
         elif result == "unknown" and name in changed:
             # The definers changed, yet the link keeps the very body the census
@@ -1585,6 +1661,13 @@ def resolve(argument, index):
 
 
 def report(source, obj, result, index, now_bytes):
+    """Print one file's verdict (see _report) under the report lock, so a
+    hook timeout never prints UNKNOWN for a file mid-verdict."""
+    with _REPORT_LOCK:
+        return _report(source, obj, result, index, now_bytes)
+
+
+def _report(source, obj, result, index, now_bytes):
     census = index["blockers"].get(source or "", {})
     before = index["bytes"].get(source, 0) if census.get("linked") else 0
     blocked = any(result.get(kind) for kind in ("unresolved", "duplicates", "comdat", "addresses", "selected",
@@ -2198,11 +2281,24 @@ def main(argv=None, hook=False):
                          "(a cold worktree: the whole tree)")
     ap.add_argument("--publish", metavar="CSV", nargs="?", const=str(QUEUE),
                     help=f"write the queue's top {QUEUE_LIMIT} rows (default {QUEUE.relative_to(ROOT).as_posix()})")
+    if "--hook" in argv:
+        # report-only: a usage error is UNKNOWN and exit 0, never argparse's exit 2
+        try:
+            args = ap.parse_args(argv)
+        except SystemExit as error:
+            if error.code in (0, None):
+                return 0
+            files = [a for a in argv if not a.startswith("-")]
+            for path in files or ["link_check --hook"]:
+                print(f"{path}: LINKED PREVIEW UNKNOWN (bad arguments: {' '.join(argv)})")
+            return 0
+        if not args.paths:
+            print("link_check --hook: LINKED PREVIEW UNKNOWN (no files given)")
+            return 0
+        return hook_main(args)
     args = ap.parse_args(argv)
     if not args.paths and not args.next and not args.publish:
         ap.error("give sources, --next, --publish or `next`")
-    if args.hook:
-        return hook_main(args)
     # BUILD_RECOMPILE_ONLY trusts every object it is not told to rebuild: a
     # stale checked object would be judged as current; CL/_CL_ would change
     # the compile itself (the pre-commit hook unsets all three)

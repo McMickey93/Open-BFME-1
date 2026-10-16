@@ -106,9 +106,9 @@ def test_hook_unstaged_lists_ledgers_tools_and_untracked_game_files(monkeypatch)
     monkeypatch.setattr(C, "_git", fake_git)
     assert C.hook_unstaged() == ["targets/game/reverse/symbols.csv", "game/new.h"]
     diff = calls[0]
-    for path in ("game", "inputs", "tools", "targets/game/reverse/functions.csv",
-                 "targets/game/reverse/data_rows.csv", "targets/game/reverse/symbols.csv"):
+    for path in ("game", "inputs", "tools", "targets/game/reverse"):   # every truth input (round 7 M1)
         assert path in diff
+    assert ":(exclude)targets/game/reverse/re_attempts.log" in diff
     assert calls[1][:2] == ("ls-files", "-z") and "game" in calls[1]
 
 
