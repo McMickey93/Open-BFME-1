@@ -113,6 +113,12 @@ template Int BitFlags<116>::size() const;
 
 #include "GameNetwork/GameInfo.h"
 
+// Retail's BuildListInfo merges ZH's MemoryPoolObject and Snapshot bases (see
+// inputs/reference/shims/buildlistinfo/GameLogic/SidesList.h), so m_nextBuildList sits at
+// +0x2c, not at the +0x30 this header's two-base layout gives getNext(). Read it at
+// retail's offset so this TU stops emitting a wrong ?getNext@BuildListInfo COMDAT.
+static inline BuildListInfo *bfmeBuildListNext(BuildListInfo *b) { return *(BuildListInfo **)((char *)b + 0x2c); }
+
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -4911,14 +4917,14 @@ void Player::xfer( Xfer *xfer )
 	// build list info
 	UnsignedShort buildListInfoCount = 0;
 	BuildListInfo *buildListInfo;
-	for( buildListInfo = m_pBuildList; buildListInfo; buildListInfo = buildListInfo->getNext() )
+	for( buildListInfo = m_pBuildList; buildListInfo; buildListInfo = bfmeBuildListNext(buildListInfo) )
 		buildListInfoCount++;
 	xfer->xferUnsignedShort( &buildListInfoCount );
 	if( xfer->getXferMode() == XFER_SAVE )
 	{
 
 		// xfer each build list info
-		for( buildListInfo = m_pBuildList; buildListInfo; buildListInfo = buildListInfo->getNext() )
+		for( buildListInfo = m_pBuildList; buildListInfo; buildListInfo = bfmeBuildListNext(buildListInfo) )
 			xfer->xferSnapshot( buildListInfo );
 
 	}  // end if, save
@@ -4948,8 +4954,8 @@ void Player::xfer( Xfer *xfer )
 			{
 				BuildListInfo *last = m_pBuildList;
 
-				while( last->getNext() != NULL )
-					last = last->getNext();
+				while( bfmeBuildListNext(last) != NULL )
+					last = bfmeBuildListNext(last);
 
 				last->setNextBuildList( buildListInfo );
 

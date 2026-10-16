@@ -65,6 +65,12 @@
 #include "GameLogic/Module/SupplyWarehouseDockUpdate.h"
 #include "GameLogic/PartitionManager.h"
 
+// Retail's BuildListInfo merges ZH's MemoryPoolObject and Snapshot bases (see
+// inputs/reference/shims/buildlistinfo/GameLogic/SidesList.h), so m_nextBuildList sits at
+// +0x2c, not at the +0x30 this header's two-base layout gives getNext(). Read it at
+// retail's offset so this TU stops emitting a wrong ?getNext@BuildListInfo COMDAT.
+static inline BuildListInfo *bfmeBuildListNext(BuildListInfo *b) { return *(BuildListInfo **)((char *)b + 0x2c); }
+
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
@@ -125,7 +131,7 @@ void AIPlayer::onStructureProduced( Object *factory, Object *bldg )
 	m_buildDelay = 0; // Cause 
 	/* Find the info building this. */
 	BuildListInfo *info;
-	for( info = m_player->getBuildList(); info; info = info->getNext() )
+	for( info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 	{
 		if (info->getObjectID() != bldg->getID()) continue;
 		Dict d;
@@ -154,7 +160,7 @@ void AIPlayer::onStructureProduced( Object *factory, Object *bldg )
 	}
 
 	// Look in build list & see if this is spawned from a hole.
-	for( info = m_player->getBuildList(); info; info = info->getNext() )
+	for( info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 	{
 		const ThingTemplate *bldgPlan = TheThingFactory->findTemplate( info->getTemplateName() );
 		if (!bldgPlan) {																											 
@@ -275,7 +281,7 @@ void AIPlayer::queueSupplyTruck( void )
 	}
 
 	/* Find the info building this. */
-	for( BuildListInfo *info = m_player->getBuildList(); info; info = info->getNext() )
+	for( BuildListInfo *info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 	{
 		if (info->isSupplyBuilding() == false) continue;
 		Int desiredGatherers = info->getDesiredGatherers();
@@ -719,7 +725,7 @@ void AIPlayer::processBaseBuilding( void )
 	if (m_readyToBuildStructure)
 	{
 
-		for( BuildListInfo *info = m_player->getBuildList(); info; info = info->getNext() )
+		for( BuildListInfo *info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 		{
 			AsciiString name = info->getTemplateName();
 			if (name.isEmpty()) continue;
@@ -1116,7 +1122,7 @@ void AIPlayer::onUnitProduced( Object *factory, Object *unit )
 						supplyTruckAI->setForceWantingState(supplyTruck);
 						if (supplyTruck) {
 							// assign to a supply depot.
-							for( BuildListInfo *info = m_player->getBuildList(); info; info = info->getNext() )
+							for( BuildListInfo *info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 							{
 								if (info->isSupplyBuilding() && info->getDesiredGatherers()>0 &&
 									info->getDesiredGatherers()>info->getCurrentGatherers()) {
@@ -1434,7 +1440,7 @@ Bool AIPlayer::startTraining( WorkOrder *order, Bool busyOK, AsciiString teamNam
 Object *AIPlayer::findFactory(const ThingTemplate *thing, Bool busyOK) 
 {
 	Object *busyFactory = NULL; // We prefer a factory that isn't busy.
-	for( BuildListInfo *info = m_player->getBuildList(); info; info = info->getNext() )
+	for( BuildListInfo *info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 	{
 		Object *factory = TheGameLogic->findObjectByID( info->getObjectID() );
 		if( factory )
@@ -2856,7 +2862,7 @@ void AIPlayer::computeCenterAndRadiusOfBase(Coord3D *center, Real *radius)
 	totalPos.x = 0;
 	totalPos.y = 0;
 	Int numBldg=0;
-	for( info = m_player->getBuildList(); info; info = info->getNext() )
+	for( info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 	{
 		AsciiString name = info->getTemplateName();
 		if (name.isEmpty()) continue;
@@ -2880,7 +2886,7 @@ void AIPlayer::computeCenterAndRadiusOfBase(Coord3D *center, Real *radius)
 
 	Real maxRadSqr = 0;
 	//
-	for( info = m_player->getBuildList(); info; info = info->getNext() )
+	for( info = m_player->getBuildList(); info; info = bfmeBuildListNext(info) )
 	{
 		AsciiString name = info->getTemplateName();
 		if (name.isEmpty()) continue;
