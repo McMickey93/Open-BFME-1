@@ -5153,3 +5153,5 @@ game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|member||m_value64,e104
 game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|function|Rva002DCBA0@|rva002DC8B0Apply,89c1d40141a6f11fd4b86292,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
 game/GameEngine/Source/Common/Rva002DCAE0WeaponRecord.cpp|function|Rva002DCBA0@|rva002DCAE0Slot5,ce7665c775a22e19ef17a78c,gpt-6.1-sol,20261016074045-e0d563,2026-10-16
 game/GameEngine/Source/Common/System/RadarConstructor.cpp|member||m_bfme1468,8b2a4a401bf90475ffca0c2e,gpt-6.1-sol,20261016074034-767309,2026-10-16
+game/GameEngine/Source/Common/RTS/Player_resetOrStartSpecialPowerReadyFrame.cpp|member||m_bfmeFrame,66b9ccfb0dff36ebef304aff,gpt-6.1-sol,20261016074326-2f369f,2026-10-16
+game/GameEngine/Source/Common/RTS/Player_resetOrStartSpecialPowerReadyFrame.cpp|param|Player::resetOrStartSpecialPowerReadyFrame|temp,57e164309faa3dbf739b76b3,gpt-6.1-sol,20261016074326-2f369f,2026-10-16
