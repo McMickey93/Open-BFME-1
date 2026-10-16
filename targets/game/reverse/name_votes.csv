@@ -2904,3 +2904,5 @@ game/GameEngine/Source/Common/Bfme5SmallAccessors.cpp|member||m_bfmeFieldB,34eab
 game/GameEngine/Source/Common/Bfme5SmallAccessors.cpp|function|Team@|bfmeFieldB,05e72b8eeb381033068c41da,gpt-6.1-sol,20261016052843-4bd257,2026-10-16
 game/GameEngine/Source/Common/Bfme5ThirtyThree.cpp|member||m_bfmeOwner,38c96478da754328527fb306,gpt-6.1-sol,20261016052844-52fcf8,2026-10-16
 game/GameEngine/Source/Common/Bfme5ThirtyThree.cpp|member||m_bfmeFlags,9d3ce0b429e6dba42109f13d,gpt-6.1-sol,20261016052844-52fcf8,2026-10-16
+game/GameEngine/Source/Common/GlobalWeatherSystemConstructor.cpp|member||m_at0C,5e3639ba3e39e27eb1b7f0ea,gpt-6.1-sol,20261016052047-6283d0,2026-10-16
+game/GameEngine/Source/Common/GlobalWeatherSystemConstructor.cpp|member||m_at10,35d1ecbb7a40c6095142f3fa,gpt-6.1-sol,20261016052047-6283d0,2026-10-16
