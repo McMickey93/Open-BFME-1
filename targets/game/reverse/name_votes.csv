@@ -2029,3 +2029,11 @@ game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorModuleDataC
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorModuleDataCtorThunk.cpp|member||m_f1,abeae6633ca6ea734831d33e,gpt-6.1-sol,20261016041011-9cda76,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorModuleDataCtorThunk.cpp|member||m_f2,84a9075c86877a8d300a6909,gpt-6.1-sol,20261016041011-9cda76,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehaviorModuleDataCtorThunk.cpp|member||m_f3,2ef80bcb8cb489e3e10d16f8,gpt-6.1-sol,20261016041011-9cda76,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field1A8,b43615973e29b02bf193f680,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field1AC,741a952b7f6da9a069a885b3,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field1B0,27d711355c2afcd708d1fb94,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_1B4,bf1e3ba3486fea72764b0e82,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_224,b0e1c69e87bfb64b042e448f,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field23C,9e2a8deea03162ef882ea611,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field240,4cdde84967b66e5a55c65d3a,gpt-6.1-sol,20261016041017-99645f,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GiantBirdSlowDeathBehaviorModuleDataConstructor.cpp|member||m_field244,5c71c2f834a20d5f7d3ef8d6,gpt-6.1-sol,20261016041017-99645f,2026-10-16
