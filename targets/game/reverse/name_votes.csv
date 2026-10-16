@@ -2302,3 +2302,10 @@ game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThun
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThunk.cpp|member||m_4C,78cd017d6fa2c8a8f9608351,gpt-6.1-sol,20261016041907-96d8aa,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThunk.cpp|member||m_50,f58fc7f43f4fb0bb00bf91ee,gpt-6.1-sol,20261016041907-96d8aa,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/PhysicsBehaviorModuleDataCtorThunk.cpp|member||m_54,055a6f5a5a2465d08227cae2,gpt-6.1-sol,20261016041907-96d8aa,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_08,f8a272757d086a09dc962418,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_0c,e6ef0007c51de9780580fb6d,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_10,9c884e4e9ff66cc24af94121,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_14,ff8da0fe6d30788d6f394ecf,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_18,0c2b8bb26c956387ef0d9159,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_1c,928f6a4b6930972e20f21378,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_20,f71c4f0aa685e77e185dcdbf,gpt-6.1-sol,20261016041924-9eea2a,2026-10-16
