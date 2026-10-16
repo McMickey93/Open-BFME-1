@@ -7599,7 +7599,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??1MinefieldBehaviorModuleData@@UAE@XZ,,0x0036CE20,100,game/GameEngine/Source/GameLogic/Object/Behavior/MinefieldBehaviorModuleDataDestructorThunk.cpp,matched,Exact retail MASM; factory 0x1145D0 ctor 0x36CDD0 ownership
 ??1MiscAudio@@QAE@XZ,,0x006952F0,556,game/GameEngine/Source/Common/Audio/MiscAudio.cpp,matched,Real C++556;32 AudioEventRTS70B members match INI tableC83310 field names;ctor694E60 corrected phantomGUIclick and missingCrateSalvage names; deletingwrapper699F00/30 calls thisbody; fullret69551B end69551C; actualscalar AudioEventRTS dtorB31F0/162 via26F35
 ??1MissingAnimClass@@UAE@XZ,,0x007BB7F0,73,game/Libraries/Source/WWVegas/WW3D2/hanimmgr.cpp,matched,
-??1MissingGeomClass@@UAE@XZ,,0x007B1130,73,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ??1MissingTextureClass@@UAE@XZ,,0x007B1130,73,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadow.cpp,matched,
 ??1Mission@@UAE@XZ,,0x005BBA80,187,game/GameEngine/Source/GameClient/System/Mission_ctor_Thunk.cpp,matched,
 ??1MobMemberSlavedUpdate@@UAE@XZ,,0x001FB0C0,226,game/GameEngine/Source/GameLogic/Object/Update/MobMemberSlavedUpdateDestructorThunk.cpp,matched,Exact 226B; factory ownership Open-BFME4
@@ -8607,7 +8606,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??1W3DRoadBuffer@@QAE@XZ,,0x0070FAF0,101,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DRoadBufferLifetime.cpp,matched,BFME teardown releases map and texture
 ??1W3DRopeDraw@@UAE@XZ,,0x0075A730,143,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDrawDestructorThunk.cpp,matched,Exact 143B clean C++ destructor; Open-BFME5
 ??1W3DShadowGeometry@@UAE@XZ,,0x007BBE20,115,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowGeometryDtor.cpp,matched,Zero Hour twin adapted to BFME AsciiString layout exact
-??1W3DShadowGeometryManager@@QAE@XZ,,0x007B0FF0,70,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ??1W3DShadowHelperManager@@QAE@XZ,,0x007C19A0,49,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowHelperManagerDtor.cpp,matched,
 ??1W3DShadowManager@@QAE@XZ,,0x007B7AF0,99,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadow.cpp,matched,Open-BFME5 clean C++ dtor; retail deletes a third shadow helper manager (stand-in) before the volumetric one
 ??1W3DShadowTexture@@UAE@XZ,,0x007AF4E0,93,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowTextureDestructor.cpp,matched,BFME W3DShadowTexture destructor with texture release at plus 0x30
@@ -12250,7 +12248,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??_GMilitarySubtitleData@InGameUI@@QAEPAXI@Z,,0x00442010,30,game/GameEngine/Source/GameClient/InGameUIMilitarySubtitleDataDeletingDestructor.cpp,matched,authentic scalar-deleting destructor; exact constructor recovered InGameUI allocation and removal flow and authoritative nested layout establish identity; wrapper calls destructor through ILT 0x00018CE1
 ??_GMiscAudio@@UAEPAXI@Z,,0x00699F00,30,game/GameEngine/Source/Common/Audio/MiscAudioDeletingDestructor.cpp,matched,authentic MiscAudio scalar-deleting destructor; matched constructor 0x00694E60 establishes the BFME 0xE00 layout with 32 embedded AudioEventRTS values and complete destructor 0x006952F0 performs the exact teardown
 ??_GMissingAnimClass@@UAEPAXI@Z,,0x007BB7C0,30,game/Libraries/Source/WWVegas/WW3D2/hanimmgr.cpp,matched,
-??_GMissingGeomClass@@UAEPAXI@Z,,0x007B1100,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,icf-owner=??_GMissingTextureClass@@UAEPAXI@Z
 ??_GMissingTextureClass@@UAEPAXI@Z,,0x007B1100,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadow.cpp,matched,
 ??_GMission@@UAEPAXI@Z,,0x005BBDF0,30,game/GameEngine/Source/GameClient/System/Mission_ctor_Thunk.cpp,matched,campaign=luna36h-20260907;lane=orchestrator;Mission ctor005BB9B0 installs vtable0110F658 slot0 via ILT0004534A;scalar dtor calls ILT00001668 to named real dtor005BBA80;real class emission replaces generated placeholder
 ??_GMobMemberSlavedUpdate@@UAEPAXI@Z,,0x001FB900,30,game/GameEngine/Source/GameLogic/Object/Update/MobMemberSlavedUpdateDeletingDestructor.cpp,matched,authentic MobMemberSlavedUpdate scalar-deleting destructor; unique matched constructor 0x001FB5D0 and complete destructor 0x001FB0C0 establish identity
@@ -12955,7 +12952,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??_GW3DRenderObjectSnapshot@@UAEPAXI@Z,,0x006BCE10,30,game/GameEngine/Source/Common/Rva006BCE40DeletingDestructor.cpp,matched,authentic scalar-deleting destructor; slot 0 of W3DRenderObjectSnapshot vtable 0x0111D024
 ??_GW3DRopeDraw@@MAEPAXI@Z,,0x0075A960,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DRopeDraw.cpp,matched,Open-BFME exact clean C++; authentic primary-vtable deleting destructor calling W3DRopeDraw::~W3DRopeDraw through ILT 0x0000CC70
 ??_GW3DShadowGeometry@@UAEPAXI@Z,,0x007BBDF0,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowGeometryDtor.cpp,matched,identity proven by matched constructor 0x007BBCF0 matched virtual destructor 0x007BBE20 and matched W3DShadowGeometry manager and initialization methods; wrapper calls destructor through ILT 0x00043F5E and is reached through ILT 0x0000A3F8
-??_GW3DShadowGeometryManager@@QAEPAXI@Z,,0x007B13E0,90,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ??_GW3DShadowGeometryManagerIterator@@UAEPAXI@Z,,0x007BB4F0,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowGeometryManagerIteratorDeletingDestructor.cpp,matched,authentic protected scalar-deleting destructor; exact constructor 0x007B96B0 installs vtable 0x00D284A8 whose slot zero routes through ILT 0x00022598; complete destructor ILT 0x00010B3B reaches tail body 0x007B96D0;ilt-verified=T1-access(efp=2.94e-03)
 ??_GW3DShadowHelperManager@@QAEPAXI@Z,,0x007B74A0,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowHelperManagerDeletingDestructor.cpp,matched,authentic scalar-deleting destructor; exact constructor 0x007C10D0 complete destructor 0x007C19A0 and W3DShadowManager ownership establish identity; wrapper calls destructor through ILT 0x00025BDA
 ??_GW3DShadowTexture@@UAEPAXI@Z,,0x007AF4B0,30,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DShadowTextureDestructor.cpp,matched,identity proven by matched virtual destructor 0x007AF4E0 and authoritative W3DShadowTexture RefCountClass plus HashableClass layout used by the matched shadow texture manager methods; wrapper calls destructor through ILT 0x00019B82 and is reached through ILT 0x0004277B
@@ -13178,7 +13174,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Add_Engine_Ref@IndexBufferClass@@QBEXXZ,,0x0091CD30,4,game/Libraries/Source/WWVegas/WW3D2/dx8indexbuffer.cpp,matched,trivial engine_refs++ accessor; byte-exact vs ZH dx8indexbuffer.cpp
 ?Add_Engine_Ref@VertexBufferClass@@QBEXXZ,,0x0091D9C0,4,game/Libraries/Source/WWVegas/WW3D2/dx8vertexbuffer.cpp,matched,trivial engine_refs++ accessor; byte-exact vs ZH dx8vertexbuffer.cpp
 ?Add_Fill_Light@LightEnvironmentClass@@QAEXXZ,,0x0094ACB0,207,game/Libraries/Source/WWVegas/WW3D2/lightenvironment.cpp,matched,Open-BFME5 exact clean C++ owner; BFME +4 layout view proven by Calculate_Fill_Light
-?Add_Geom@W3DShadowGeometryManager@@QAE_NPAVW3DShadowGeometry@@@Z,,0x007AEFA0,23,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Add_Head@?$DLListClass@USmudge@@@@QAEXPAV?$DLNodeClass@USmudge@@@@@Z,,0x005D3B00,81,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,
 ?Add_Head@?$DLListClass@USmudgeSet@@@@QAEXPAV?$DLNodeClass@USmudgeSet@@@@@Z,,0x005D3C20,81,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,
 ?Add_Head@?$DLListClass@VSortingNodeStruct@@@@QAEXPAV?$DLNodeClass@VSortingNodeStruct@@@@@Z,,0x00938C10,81,game/Libraries/Source/WWVegas/WW3D2/sortingrenderer.cpp,matched,
@@ -14750,7 +14745,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Free@TimeCodedBitChannelClass@@AAEXXZ,,0x00977B10,28,game/Libraries/Source/WWVegas/WW3D2/motchan.cpp,matched,
 ?Free@TimeCodedMotionChannelClass@@AAEXXZ,,0x009779E0,24,game/Libraries/Source/WWVegas/WW3D2/motchan.cpp,matched,
 ?Free_All_Anims@HAnimManagerClass@@QAEXXZ,,0x007BB670,118,game/Libraries/Source/WWVegas/WW3D2/hanimmgr.cpp,matched,
-?Free_All_Geoms@W3DShadowGeometryManager@@QAEXXZ,,0x007AEEA0,118,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Free_Character_Arrays@FontCharsClass@@AAEXXZ,,0x0093C750,163,game/Libraries/Source/WWVegas/WW3D2/render2dsentence.cpp,matched,pool-free sentinel -1 guard; global operator delete/delete[]; true body at 0x93C750 (drift RVA 0xC714D5 was misplaced)
 ?Free_Object_Memory@?$ObjectPoolClass@VAABTreeLinkClass@@$0BAA@@@QAEXPAVAABTreeLinkClass@@@Z,,0x006D1480,38,game/Libraries/Source/WWVegas/WWLib/ObjectPoolFreeObjectMemory.cpp,matched,
 ?Free_Object_Memory@?$ObjectPoolClass@VAABTreeNodeClass@@$0BAA@@@QAEXPAVAABTreeNodeClass@@@Z,,0x006D1480,38,game/Libraries/Source/WWVegas/WWLib/ObjectPoolFreeObjectMemory.cpp,matched,
@@ -16003,7 +15997,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Get_Current_Allocated_Memory@MemoryCounterClass@@QAEHXZ,,0x0010BDB0,3,game/Libraries/Source/WWVegas/WWDebug/wwmemlog.cpp,matched,icf-owner=?getDistributionType@GameClientRandomVariable@@QBE?AW4DistributionType@1@XZ
 ?Get_Current_Allocated_Memory@WWMemoryLogClass@@SAHH@Z,,0x00AFFA30,18,game/Libraries/Source/WWVegas/WWDebug/wwmemlog.cpp,matched,
 ?Get_Current_Anim@HAnimManagerIterator@@QAEPAVHAnimClass@@XZ,,0x007B9B70,14,game/Libraries/Source/WWVegas/WW3D2/hanimmgr.cpp,matched,
-?Get_Current_Geom@W3DShadowGeometryManagerIterator@@QAEPAVW3DShadowGeometry@@XZ,,0x007AE850,14,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Get_Current_LOD@HLodClass@@UAEPAVRenderObjClass@@XZ,,0x00978F20,47,game/Libraries/Source/WWVegas/WW3D2/HLodClass_Get_Current_LOD.cpp,matched,clean C++ conversion; current LOD at this+0x128; virtual count/sub-object calls pinned to vtable +0x228/+0x230; early return reuses the zero test instead of re-zeroing eax
 ?Get_Current_LOD@RenderObjClass@@UAEPAV1@XZ,,0x006CF5F0,6,game/GameEngineDevice/Source/W3DDevice/GameClient/BaseHeightMap.cpp,matched,gen-alias;object-symbol=?Get_Current_LOD@RenderObjClass@@UAEPAV1@XZ;C++ alias
 ?Get_Current_UV_Offset@LinearOffsetTextureMapperClass@@QAEXAAVVector2@@@Z,,0x00946440,18,game/Libraries/Source/WWVegas/WW3D2/dx8renderer.cpp,matched,
@@ -16097,7 +16090,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Get_Frustum@CameraClass@@QBEABVFrustumClass@@XZ,,0x006F6E70,16,game/Libraries/Source/WWVegas/WW3D2/camera.cpp,matched,
 ?Get_Future_Start_Time@ParticleBufferClass@@QBEMXZ,,0x0097E060,31,game/Libraries/Source/WWVegas/WW3D2/part_emt.cpp,matched,
 ?Get_Future_Start_Time@ParticleEmitterClass@@QBEMXZ,,0x0097E290,37,game/Libraries/Source/WWVegas/WW3D2/part_emt.cpp,matched,
-?Get_Geom@W3DShadowGeometryManager@@QAEPAVW3DShadowGeometry@@PBD@Z,,0x007AEF70,34,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Get_HAnim@@YAPAVHAnimClass@@PBD@Z,,0x0090BF00,255,game/Libraries/Source/WWVegas/WW3D2/Get_HAnim.cpp,matched,Clean C++ registry animation lookup; identity from matched W3DDebrisDraw setAnimNames and bfmeAnimERC callers; aggregate lifetime pattern from matched bfmeMakeXY; complete ret boundary +0xfe;model=gpt-6-astra
 ?Get_HAnim@HAnimComboDataClass@@QBEPAVHAnimClass@@XZ,,0x00973650,12,game/Libraries/Source/WWVegas/WW3D2/hanim.cpp,matched,ICF alias of existing matched body
 ?Get_HName@HCompressedAnimClass@@UBEPBDXZ,,0x0095B840,4,game/Libraries/Source/WWVegas/WW3D2/hcanim.cpp,matched,Parent actualHCompressed vtable113E038 slot3; full4B retail accessor; authenticinlineheader implementation; previously unclaimed real body
@@ -17062,7 +17054,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Is_Merge_Intersections@ParticleEmitterClass@@QBEHXZ,,0x0097E470,11,game/Libraries/Source/WWVegas/WW3D2/part_emt.cpp,matched,
 ?Is_Merge_Intersections@SegmentedLineClass@@QAEHXZ,,0x0094FC30,10,game/Libraries/Source/WWVegas/WW3D2/segline.cpp,matched,
 ?Is_Missing@HAnimManagerClass@@QAE_NPBD@Z,,0x007B9B50,22,game/Libraries/Source/WWVegas/WW3D2/hanimmgr.cpp,matched,
-?Is_Missing@W3DShadowGeometryManager@@QAE_NPBD@Z,,0x007AF050,22,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Is_Movie_Ready@WW3D@@SA_NXZ,,0x008FD400,14,game/Libraries/Source/WWVegas/WW3D2/ww3d.cpp,matched,
 ?Is_NULL_Lod_Included@HLodClass@@UBE_NXZ,,0x00979AE0,39,game/Libraries/Source/WWVegas/WW3D2/hlod.cpp,matched,
 ?Is_Node_Motion_Present@HCompressedAnimClass@@UAE_NH@Z,,0x0095B310,56,game/Libraries/Source/WWVegas/WW3D2/hcanim.cpp,matched,
@@ -17643,7 +17634,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Peek_FVF_Category_Container@MeshModelClass@@AAEPAVDX8FVFCategoryContainer@@XZ,,0x0094EE40,54,game/Libraries/Source/WWVegas/WW3D2/MeshModelReplaceTexture.cpp,matched,anonymous dump converted; MeshModelReplaceTexture.cpp already emits this body byte-exact (global object-to-dump scan; unique both ways);model=claude-opus-5-5
 ?Peek_FVF_Category_Container@MeshModelClass@@QAEPAVDX8FVFCategoryContainer@@XZ,,0x006CF680,3,game/Libraries/Source/WWVegas/WW3D2/meshmdl.cpp,matched,icf-owner=?Get_Sort_Level@RenderObjClass@@UBEHXZ
 ?Peek_First_Collected_Object_Internal@CullSystemClass@@IAEPAVCullableClass@@XZ,,0x008E2190,4,game/Libraries/Source/WWVegas/WWMath/cullsys.cpp,matched,
-?Peek_Geom@W3DShadowGeometryManager@@QAEPAVW3DShadowGeometry@@PBD@Z,,0x007AEF40,27,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Peek_HAnim@HAnimComboDataClass@@QBEPAVHAnimClass@@XZ,,0x0010BDB0,3,game/Libraries/Source/WWVegas/WW3D2/hanim.cpp,matched,icf-owner=?getDistributionType@GameClientRandomVariable@@QBE?AW4DistributionType@1@XZ
 ?Peek_Head@?$MultiListClass@VDX8PolygonRendererClass@@@@QAEPAVDX8PolygonRendererClass@@XZ,,0x00944CD0,17,game/Libraries/Source/WWVegas/WW3D2/dx8renderer.cpp,matched,
 ?Peek_Head@?$MultiListClass@VDX8TextureCategoryClass@@@@QAEPAVDX8TextureCategoryClass@@XZ,,0x00944D70,17,game/Libraries/Source/WWVegas/WW3D2/dx8renderer.cpp,matched,
@@ -17933,7 +17923,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Register_Mesh_Prototype@@YAXPBDHH@Z,,0x00971060,124,game/Libraries/Source/WWVegas/WW3D2/Register_Mesh_Prototype.cpp,matched,BFME MESH Load_Prototype register exact 124B @ 0x971060
 ?Register_Mesh_Type@DX8MeshRendererClass@@QAEXPAVMeshModelClass@@@Z,,0x00947810,686,game/Libraries/Source/WWVegas/WW3D2/DX8MeshRendererRegisterMeshTypeBFME.cpp,matched,Identity proven by matched MeshModelClass Register_For_Rendering0094F900; canonical native renderer and lists; matched00947170 container ABI and independently verified7-slot vtable; shared registered headVA0134B0E4
 ?Register_Missing@HAnimManagerClass@@QAEXPBD@Z,,0x007BB850,102,game/Libraries/Source/WWVegas/WW3D2/hanimmgr.cpp,matched,
-?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z,,0x007B1190,102,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,
 ?Register_Particle_Prototype@@YAXPBDHH@Z,,0x00971440,124,game/Libraries/Source/WWVegas/WW3D2/Register_Particle_Prototype.cpp,matched,BFME PART Load_Prototype register exact 124B @ 0x971440
 ?Register_Pointer@PointerRemapClass@@QAEXPAX0@Z,,0x000D2FF0,33,game/Libraries/Source/WWVegas/WWSaveLoad/pointerremap.cpp,matched,
 ?Register_Rva009723C0_Prototype@@YAXPBDHH@Z,,0x00972620,124,game/Libraries/Source/WWVegas/WW3D2/Rva00972620RegisterPrototype.cpp,matched,if name and not Render_Obj_Exists then Add_Prototype new Rva009723C0Proto
@@ -168801,7 +168790,7 @@ uw_00c52740,,0x00C52740,8,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;obje
 uw_00c52760,,0x00C52760,8,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;object-symbol=$L15803
 uw_00c52780,,0x00C52780,8,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;object-symbol=$L17066
 uw_00c527a0,,0x00C527A0,8,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;object-symbol=$L17066
-uw_00c527c0,,0x00C527C0,11,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DVolumetricShadow.cpp,matched,gen-funclet;parent=?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z;object-symbol=$L68325;model=openai-codex/gpt-6-sol;eh-state-pin $L67730->$L67735: retail unwind map (?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z states [0]) binds this address to $L67735;repin-model=claude-opus-5.5;eh-state-pin $L67735->$L67970: retail unwind map (?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z states [0]) binds this address to $L67970;repin-model=claude-sonnet;eh-state-pin $L68309->$L68325: retail unwind map (?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z states [0]) binds this address to $L68325;repin-model=claude-opus-5-5
+uw_00c527c0,,0x00C527C0,11,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadow.cpp,matched,gen-funclet;parent=?registerMissing@W3DShadowTextureManager@@QAEXPBD@Z;object-symbol=$L80121;op-1 2026-10-16: parent re-homed from the retired Register_Missing@W3DShadowGeometryManager over-claim (identity_evidence/007ae850-w3dshadowtexturemanager-not-geometry.md);eh-state-pin $L79884->$L80121: retail unwind map (?registerMissing@W3DShadowTextureManager@@QAEXPBD@Z states [0]) binds this address to $L80121;repin-model=claude-opus-5.5
 uw_00c527e0,,0x00C527E0,8,game/gen_small/uw_gen_005.cpp,matched,gen-funclet;object-symbol=$L8681
 uw_00c527e8,,0x00C527E8,8,game/gen_small/uw_gen_005.cpp,matched,gen-funclet;object-symbol=$L8672
 uw_00c527f0,,0x00C527F0,8,game/gen_small/uw_gen_009.cpp,matched,gen-funclet;object-symbol=$L1659

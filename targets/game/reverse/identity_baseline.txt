@@ -36,7 +36,7 @@ multi_name.different = 0
 size_outlier.indicted = 1
 ctor_vtable.contradicted = 20
 ctor_vtable.unreadable = 0
-one_identity.surplus = 2118
+one_identity.surplus = 2107
 # Retail registration proves DynamicPortalBehaviour owns ctor 001F8B80 and factory 001156B0; four false aliases retired.
 # fcf825b4f7 retired the false FXNugget zero-store claim; the body still has aliases.
 # 4c8346b3c9 retired the GDIFileStream ctor over-claim at 0x00087A50 (a zero-store body).
@@ -1842,30 +1842,8 @@ null_reloc.max_unreadable = 1000
 @ one_identity.surplus 0x007A51E0 ??E?$_Ht_iterator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@U?$equal_to@VAsciiString@@@6@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@@_STL@@QAEAAU01@XZ
 @ one_identity.surplus 0x007AE830 ??0HAnimManagerIterator@@QAE@AAVHAnimManagerClass@@@Z
 @ one_identity.surplus 0x007AE830 ??0W3DShadowTextureManagerIterator@@QAE@AAVW3DShadowTextureManager@@@Z
-@ one_identity.surplus 0x007AE850 ?Get_Current_Geom@W3DShadowGeometryManagerIterator@@QAEPAVW3DShadowGeometry@@XZ
-@ one_identity.surplus 0x007AE850 ?getCurrentTexture@W3DShadowTextureManagerIterator@@QAEPAVW3DShadowTexture@@XZ
-@ one_identity.surplus 0x007AEEA0 ?Free_All_Geoms@W3DShadowGeometryManager@@QAEXXZ
-@ one_identity.surplus 0x007AEEA0 ?freeAllTextures@W3DShadowTextureManager@@QAEXXZ
-@ one_identity.surplus 0x007AEF40 ?Peek_Geom@W3DShadowGeometryManager@@QAEPAVW3DShadowGeometry@@PBD@Z
-@ one_identity.surplus 0x007AEF40 ?peekTexture@W3DShadowTextureManager@@QAEPAVW3DShadowTexture@@PBD@Z
-@ one_identity.surplus 0x007AEF70 ?Get_Geom@W3DShadowGeometryManager@@QAEPAVW3DShadowGeometry@@PBD@Z
-@ one_identity.surplus 0x007AEF70 ?getTexture@W3DShadowTextureManager@@QAEPAVW3DShadowTexture@@PBD@Z
-@ one_identity.surplus 0x007AEFA0 ?Add_Geom@W3DShadowGeometryManager@@QAE_NPAVW3DShadowGeometry@@@Z
-@ one_identity.surplus 0x007AEFA0 ?addTexture@W3DShadowTextureManager@@QAE_NPAVW3DShadowTexture@@@Z
-@ one_identity.surplus 0x007AF050 ?Is_Missing@W3DShadowGeometryManager@@QAE_NPBD@Z
-@ one_identity.surplus 0x007AF050 ?isMissing@W3DShadowTextureManager@@QAE_NPBD@Z
 @ one_identity.surplus 0x007AF300 ?Translate@AABoxClass@@QAEXABVVector3@@@Z
 @ one_identity.surplus 0x007AF300 ?add@Coord3D@@QAEXPBU1@@Z
-@ one_identity.surplus 0x007B0FF0 ??1W3DShadowGeometryManager@@QAE@XZ
-@ one_identity.surplus 0x007B0FF0 ??1W3DShadowTextureManager@@QAE@XZ
-@ one_identity.surplus 0x007B1100 ??_GMissingGeomClass@@UAEPAXI@Z
-@ one_identity.surplus 0x007B1100 ??_GMissingTextureClass@@UAEPAXI@Z
-@ one_identity.surplus 0x007B1130 ??1MissingGeomClass@@UAE@XZ
-@ one_identity.surplus 0x007B1130 ??1MissingTextureClass@@UAE@XZ
-@ one_identity.surplus 0x007B1190 ?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z
-@ one_identity.surplus 0x007B1190 ?registerMissing@W3DShadowTextureManager@@QAEXPBD@Z
-@ one_identity.surplus 0x007B13E0 ??_GW3DShadowGeometryManager@@QAEPAXI@Z
-@ one_identity.surplus 0x007B13E0 ??_GW3DShadowTextureManager@@QAEPAXI@Z
 @ one_identity.surplus 0x007B8140 ?GetVertex@W3DShadowGeometryMesh@@IBEABVVector3@@H@Z
 @ one_identity.surplus 0x007B8140 ?Get_Key@?$PrimitiveAnimationChannelClass@VVector2@@@@QBEABVKeyClass@1@H@Z
 @ one_identity.surplus 0x007B9FC0 ?ID@?$VectorClass@VTCBClass@TCBSpline3DClass@@@@UAEHABVTCBClass@TCBSpline3DClass@@@Z
