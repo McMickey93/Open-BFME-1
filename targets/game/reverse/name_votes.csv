@@ -5709,3 +5709,7 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecal
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|param|exp7AF940Caller|a,4d7595aa0fedb43151d8993c,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|param|exp7AF940Caller|b,b29a63d51fa085f439d68324,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DProjectedShadowDecalHelpers.cpp|local|exp7AF940Caller|u,5630ad75e6922da1a8585d39,gpt-6.1-sol,20261016123953-f93c26,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at00,423f33375c91194bb0559089,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at04,515d2c3e8559035f48aa4add,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at08,7db689d880135a8bf33fa714,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Geometry00786B70.cpp|member||m_at0c,d3336f817a867bd59be08ac9,gpt-6.1-sol,20261016124000-080ab0,2026-10-16
