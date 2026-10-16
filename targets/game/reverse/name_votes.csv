@@ -5857,3 +5857,6 @@ game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|member||m_bfmeHolde
 game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|member||m_bfmeStateRC,6fd0da1d3397c6db3dd8d0b5,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
 game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|local|BfmeOwnerRC::Rva0041EFD0|a,75b8c08f57dbfeae8053e07e,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
 game/GameEngine/Source/GameClient/BfmeOwnerRCRva0041EFD0.cpp|local|BfmeOwnerRC::Rva0041EFD0|b,fd5dcbb0cd373cbcbab2aa9d,gpt-6.1-sol,20261016133824-a06c1d,2026-10-16
+game/GameEngine/Source/Common/RTS/Team_evacuateTeam.cpp|type||BfmeEvacuateContain,e85cb3ce51537309790162de,gpt-6.1-sol,20261016133829-b52b04,2026-10-16
+game/GameEngine/Source/Common/RTS/Team_evacuateTeam.cpp|member||m_contain1FC,8ad5d6006631923d51c5ef26,gpt-6.1-sol,20261016133829-b52b04,2026-10-16
+game/GameEngine/Source/Common/RTS/Team_evacuateTeam.cpp|member||m_effectivelyDead344,5ff674b261a2b56223ebec3b,gpt-6.1-sol,20261016133829-b52b04,2026-10-16
