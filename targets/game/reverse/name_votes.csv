@@ -5721,3 +5721,10 @@ game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|a,d64d072cc4abe
 game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|b,193ba5703bb31c16188ee7df,gpt-6.1-sol,20261016124006-66950c,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|c,9b105ded61e3a5b5bd03c72a,gpt-6.1-sol,20261016124006-66950c,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2079.cpp|local|bfmeAllocJT|d,c7cb5b4429fa8c4e4d0d9c4e,gpt-6.1-sol,20261016124006-66950c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|member||m_bfmeXZA,91bde045c9fd74ae2f26d443,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|member||m_bfmeP,0c65b981ebae140d511ebd25,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|local|BfmeThingEIB::bfmeGoEIBa|p,3a4b218f6a61189c2411d08e,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|local|BfmeThingEIB::bfmeGoEIBb|p,5404cf27631997f5be3e67dc,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|local|BfmeThingEIB::bfmeGoEIBc|p,6b5dc1cd62d85af2cc7ca261,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|local|BfmeThingEIB::bfmeGoEIBd|p,93b7dd4659d1dd9cb5cea5cd,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
+game/GameEngine/Source/Common/BfmeConv814.cpp|local|BfmeThingEIB::bfmeGoEIBe|p,021f8ba2458a86a74e36d3d3,gpt-6.1-sol,20261016124013-82f4a4,2026-10-16
