@@ -2331,3 +2331,8 @@ game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerMod
 game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_218,fb2e501f9f7cf0d96d970b82,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_21c,d19e1dbec679f73168917dc8,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/WeaponChangeSpecialPowerModuleModuleDataCtorThunk.cpp|member||m_220,c58835172d739575fb7e1f53,gpt-6.1-sol,20261016043217-b2b31b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_speed1,419c8a3f5ae9d86513af799b,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_speed2,a9fb755973d2b56053e21a25,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_flag10,8d4f84ff0c78a1e9097bbf8e,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_text14,aef0e58c619effeb9057268d,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/RunOffMapBehaviorModuleDataCtor.cpp|member||m_flag18,8b9180dbcf39c601a80c0d91,gpt-6.1-sol,20261016043226-c8ada1,2026-10-16
