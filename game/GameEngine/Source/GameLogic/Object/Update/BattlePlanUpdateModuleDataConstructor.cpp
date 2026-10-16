@@ -1,5 +1,3 @@
-// ??0BattlePlanUpdateModuleData@@QAE@XZ
-// partial score=1.0 date=2026-10-13
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 // readable body of ??0BattlePlanUpdateModuleData@@QAE@XZ: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source/GameLogic/Object/Update/BattlePlanUpdate.cpp

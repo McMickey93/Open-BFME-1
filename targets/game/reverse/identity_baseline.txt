@@ -34,7 +34,7 @@
 multi_name.family = 0
 multi_name.different = 0
 size_outlier.indicted = 1
-ctor_vtable.contradicted = 20
+ctor_vtable.contradicted = 19
 ctor_vtable.unreadable = 0
 one_identity.surplus = 2106
 # Retail registration proves DynamicPortalBehaviour owns ctor 001F8B80 and factory 001156B0; four false aliases retired.
@@ -60,7 +60,6 @@ null_reloc.max_unreadable = 1000
 @ ctor_vtable.contradicted 0x0027EAE0 ??0TransportAIUpdateModuleData@@QAE@XZ
 @ ctor_vtable.contradicted 0x0027EAE0 ??0UpdateModuleModuleData@@QAE@XZ
 @ ctor_vtable.contradicted 0x0027EAE0 ??0WanderAIUpdateModuleData@@QAE@XZ
-@ ctor_vtable.contradicted 0x00285F10 ??0BannerCarrierUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 @ ctor_vtable.contradicted 0x002978A0 ??0LargeGroupBonusUpdateModuleData@@QAE@XZ
 @ ctor_vtable.contradicted 0x002D0620 ??0CleanupHazardUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 @ one_identity.surplus 0x0000AE93 ?_M_insert_overflow@?$vector@UEvaCheck@@V?$allocator@UEvaCheck@@@_STL@@@_STL@@IAEXPAUEvaCheck@@ABU3@ABU__false_type@2@I_N@Z
