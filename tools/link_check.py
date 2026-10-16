@@ -366,11 +366,16 @@ REFRESH_RECEIPTS = link_census.OUT / "refresh_inputs.json"
 REFRESH_RUN = "link_check-refresh"
 
 
-def repo_path(path):
-    """A checked path as git status prints it: repo-root relative, posix
-    (./x, absolute and cwd-relative spellings all normalise)."""
+def repo_path(path, base=None):
+    """A path as git status prints it: repo-root relative, posix. A relative
+    path is relative to `base`, default ROOT (a build sidecar's keys; round 4
+    N3: never the current directory). Callers holding a command-line argument
+    pass base=Path.cwd()."""
+    path = Path(path)
+    if not path.is_absolute():
+        path = Path(base if base is not None else ROOT) / path
     try:
-        return Path(path).resolve().relative_to(ROOT.resolve()).as_posix()
+        return path.resolve().relative_to(ROOT.resolve()).as_posix()
     except ValueError:
         return Path(path).as_posix()
 
@@ -382,7 +387,7 @@ def refresh_dirty(paths):
     (targets/game/reverse/) are not checked: add_match and re_log edit them
     between a before and an after preview, and the index reads them as they
     are."""
-    paths = {repo_path(p) for p in paths}
+    paths = {repo_path(p, Path.cwd()) for p in paths}
     out = _git("status", "--porcelain=v1", "-z", "--untracked-files=all", "--",
                "game", "inputs/reference", check=True)
     dirty, entries = [], out.split("\0")
@@ -475,87 +480,166 @@ def _object_is_current(obj, sources, receipts):
     return link_census.object_current(source, obj) or bool(receipts and receipts.current(source, obj))
 
 
+class Changed(set):
+    """Repo paths changed since the census; `.added` holds the new ones."""
+    added = frozenset()
+
+
 def changed_since(commit):
     """Repo paths that differ between `commit` and the working tree (committed,
-    staged, unstaged) plus untracked files; None when `commit` cannot be read."""
+    staged, unstaged; renames as a deletion plus an addition) plus untracked
+    files; `.added` lists the added and untracked ones (a new header may
+    shadow an old one). None when `commit` cannot be read."""
     if not commit:
         return None
-    diff = subprocess.run(["git", "diff", "--name-only", "-z", commit, "--"], cwd=ROOT,
+    diff = subprocess.run(["git", "diff", "--name-status", "--no-renames", "-z", commit, "--"], cwd=ROOT,
                           capture_output=True, text=True)
-    if diff.returncode:
-        return None
     untracked = subprocess.run(["git", "ls-files", "-z", "--others", "--exclude-standard"], cwd=ROOT,
                                capture_output=True, text=True)
-    if untracked.returncode:
+    if diff.returncode or untracked.returncode:
         return None
-    return {p for p in (diff.stdout + untracked.stdout).split("\0") if p}
+    fields = diff.stdout.split("\0")
+    changed, added = Changed(), set()
+    for status, path in zip(fields[0::2], fields[1::2]):
+        if path:
+            changed.add(path)
+            if status.startswith("A"):
+                added.add(path)
+    new = {path for path in untracked.stdout.split("\0") if path}
+    changed |= new
+    changed.added = frozenset(added | new)
+    return changed
+
+
+_SHA256 = {}
+
+
+def _sha256(path):
+    try:
+        stat = os.stat(path)
+        key = (str(path), stat.st_size, stat.st_mtime_ns)
+        if key not in _SHA256:
+            _SHA256[key] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+        return _SHA256[key]
+    except OSError:
+        return None
 
 
 def object_inputs(obj, sources, receipts):
     """Repo paths an object was compiled from: its source plus the headers its
-    build sidecar (.deps.json) or compile-input receipt records; None when
-    neither exists here (an object never built in this checkout)."""
+    build sidecar (.deps.json) or compile-input receipt records -- only when
+    every recorded file still has the digest that build read, so the list is
+    this tree's, not a stale build's (round 4 N2). None otherwise, or when
+    the object or both records are missing. Digests are memoised per file, so
+    a whole-ledger scan reads each shared header once (no compiler runs)."""
+    if not Path(obj).exists():
+        return None
     source = sources.get(obj)
-    inputs = set()
-    if source is not None:
-        inputs.add(repo_path(source))
-    sidecar = build._deps_sidecar(obj)
     try:
-        recorded = json.loads(sidecar.read_text(encoding="utf-8"))
+        recorded = json.loads(build._deps_sidecar(obj).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        recorded = None
+    if isinstance(recorded, dict):
         deps = recorded.get("deps")
         if isinstance(deps, str):
             import ast
-            deps = ast.literal_eval(deps)
-        if isinstance(deps, dict):
-            return inputs | {repo_path(path) for path in deps}
-    except (OSError, ValueError, SyntaxError):
-        pass
+            try:
+                deps = ast.literal_eval(deps)
+            except (ValueError, SyntaxError):
+                deps = None
+        if (isinstance(deps, dict) and source is not None
+                and recorded.get("source") == build._hash_file(str(source))
+                and all(build._hash_file(str(ROOT / path if not Path(path).is_absolute() else path)) == md5
+                        for path, md5 in deps.items())):
+            return {repo_path(source, ROOT)} | {repo_path(path, ROOT) for path in deps}
     entry = getattr(receipts, "entries", {}).get(str(Path(obj).resolve())) if receipts else None
     files = (entry or {}).get("input", {}).get("files") if isinstance((entry or {}).get("input"), dict) else None
-    if isinstance(files, dict):
-        return inputs | {repo_path(path) for path in files}
+    if isinstance(files, dict) and all(_sha256(path) == sha for path, sha in files.items()):
+        inputs = {repo_path(path, ROOT) for path in files}
+        return inputs | ({repo_path(source, ROOT)} if source is not None else set())
     return None
+
+
+def inputs_moved(inputs, since):
+    """Did any input change since the census, or could a header added since
+    shadow one (same file name)? Undeterminable (None) counts as moved."""
+    if inputs is None or since is None:
+        return True
+    if inputs & since:
+        return True
+    added = {Path(path).name.lower() for path in getattr(since, "added", ())}
+    return bool(added and any(Path(path).name.lower() in added for path in inputs))
+
+
+def reorder_to_ledger(index, order):
+    """Renumber the index to the CURRENT ledger's link order (round 4 N5: a
+    new lower-RVA row moves an object), objects new since the census in their
+    places with no definitions yet, then census objects the ledger no longer
+    links at the end with their definitions removed (N6: they no longer
+    resolve anything). Returns the dropped object names."""
+    old = index["objects"]
+    current = list(dict.fromkeys(order))
+    known = set(current)
+    gone = [name for name in old if name not in known]
+    objects = current + gone
+    position = {name: i for i, name in enumerate(objects)}
+    shift = {i: position[name] for i, name in enumerate(old)}
+    dropped = {position[name] for name in gone}
+    index["objects"] = objects
+    index["strong"] = {name: [shift[i] for i in found if shift[i] not in dropped]
+                       for name, found in index["strong"].items()}
+    for table in ("comdat", "common", "aliases"):
+        if table in index:
+            index[table] = {name: [(shift[e[0]], *e[1:]) for e in entries if shift[e[0]] not in dropped]
+                            for name, entries in index[table].items()}
+    selection = index.get("selection")
+    if selection and "exceptions" in selection:
+        index["selection"] = {**selection, "exceptions": {
+            name: None if holder is None else shift[holder]
+            for name, holder in selection["exceptions"].items()
+            if holder is None or shift[holder] not in dropped}}
+    return gone
 
 
 def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None):
     """THE LINKED-CLAIM RULE (project lead, 2026-10-16), shared by every
     LINKED preview (link_check files, the pre-commit report).
 
-    1. Every current-ledger object the census never saw is placed at its
-       link-order position and read (compiled within the budget), so it is a
-       definer like any other (round 3 F3).
-    2. The checked `objects` are refreshed into the index.
-    3. A name they touch is CHANGED when its definers (object, kind, body
-       digest) or ledger ownership changed, when a new or dropped object
-       defines it, or when any census definer's recorded inputs (source and
-       headers) changed since the census commit -- committed, staged, dirty
-       or untracked (round 3 F2); inputs that cannot be determined count as
-       changed.
-    4. For every changed name EVERY definer is refreshed with current retail
-       truth. A definer the current ledger no longer links loses its
-       definitions. One in the ledger but missing or stale here is compiled
-       within the budget (`compile_limit` objects in total, default
-       REFRESH_COMPILE_LIMIT; 0: never), else the name is STALE (round 3 F1:
-       "not built here" is never "gone"). A changed name with a census /MAP
-       holder exception is stale too: the exception was measured on other
-       definers (F4).
+    1. The index is renumbered to the CURRENT ledger's link order: objects
+       new since the census take their places, objects that moved move, and
+       census objects the ledger no longer links lose their definitions.
+    2. Every ledger object that is new since the census, or whose recorded
+       inputs (source and headers, or a header added since that could shadow
+       one) changed since the census commit -- or cannot be determined here
+       -- is re-read, compiling within the budget (`compile_limit` objects in
+       total, default REFRESH_COMPILE_LIMIT; 0: never). If any of them cannot
+       be read, any name may be defined differently there:
+       selection["unknown_definers"] makes every touched name LINKED PREVIEW
+       UNKNOWN unless proven wrong.
+    3. The checked `objects` are refreshed. A name they touch is CHANGED when
+       its definers (object, kind, body digest), its ledger ownership or the
+       definition the link keeps differ from the census's.
+    4. For every changed name every remaining definer is re-read with current
+       retail truth (budget again), else the name is STALE; a changed name
+       with a census /MAP holder exception is stale too.
 
-    wrong_selected/check_object then report a changed name whose kept
-    definition is wrong as `selected`; a stale or still-unprovable changed
-    name as LINKED PREVIEW UNKNOWN; unchanged names keep the census verdict.
-    If a new ledger object cannot be read, any touched name might be
-    defined by it: selection["unknown_definers"] makes every touched name
-    PREVIEW UNKNOWN unless proven wrong. Returns (changed, stale)."""
+    wrong_selected/check_object report a changed name whose kept definition
+    is wrong as `selected`; a stale or still-unprovable changed name as
+    LINKED PREVIEW UNKNOWN unless the link keeps the very body the census
+    saw it keep; unchanged names keep the census verdict. Returns
+    (changed, stale)."""
     rows = (link_census.ledger() if rows is None else rows) or []
     budget = [REFRESH_COMPILE_LIMIT if compile_limit is None else compile_limit]
     index.setdefault("selection", {"exceptions": {}, "owners": {}})
     present, missing = link_census.objects(rows)
     ledger_objects = {obj.name: obj for obj in list(present) + list(missing)}
-    order = [obj.name for obj in link_census.link_order(rows, link_census.data_ledger())] if rows else []
+    order = [obj.name for obj in link_census.link_order(rows, link_census.data_ledger())]
     sources = link_census._object_sources(rows)
     receipts = _refresh_receipts()
-    census_objects = set(index["objects"])
     checked = {obj.name for obj in objects}
+    census_view = {"objects": list(index["objects"]), "strong": index["strong"], "comdat": index["comdat"],
+                   "selection": index["selection"]}
+    census_objects = set(index["objects"])
 
     def readable(objs):
         """(current, not) after compiling what the shared budget allows."""
@@ -574,89 +658,64 @@ def apply_selection_rule(index, objects, truth, rows=None, *, compile_limit=None
             behind = [obj for obj in behind if obj not in ok]
         return ok, behind
 
-    census_kept = {}                                 # filled lazily below, from the census tables
-    census_view = {"objects": list(index["objects"]), "strong": index["strong"], "comdat": index["comdat"],
-                   "selection": index["selection"]}
-    # 1. new ledger objects since the census (F3)
-    new = [name for name in order if name not in census_objects and name not in checked]
-    if new:
-        place_new(index, [n for n in new if n not in index["objects"]], order)
-    new_ok, new_unreadable = readable([ledger_objects[n] for n in new if n in ledger_objects])
-    # 2. the checked objects
+    # what the census had the checked objects define, and every name they touch
     facts = {obj.name: link_census.object_facts(obj, truth) for obj in objects}
     touched = set()
     for obj in objects:
         touched |= link_census.touched_names(facts[obj.name])
-        if obj.name in index["objects"]:          # what the census had it define, too
-            position = index["objects"].index(obj.name)
-            touched |= {n for n, at in index["strong"].items() if position in at}
-            touched |= {n for n, at in index["comdat"].items() if any(i == position for i, _, _ in at)}
-    before = {name: definer_signature(index["objects"], index["strong"], index["comdat"], name) for name in touched}
-    census_kept.update({name: kept_definition(census_view, name) for name in touched})
-    refresh(index, list(objects) + new_ok, truth)
+        if obj.name in census_view["objects"]:
+            position = census_view["objects"].index(obj.name)
+            touched |= {n for n, at in census_view["strong"].items() if position in at}
+            touched |= {n for n, at in census_view["comdat"].items() if any(i == position for i, _, _ in at)}
+    before = {name: definer_signature(census_view["objects"], census_view["strong"], census_view["comdat"], name)
+              for name in touched}
+    census_kept = {name: kept_definition(census_view, name) for name in touched}
+    # 1. current link order (N5, N6, N7)
+    if order:                     # no ledger at all (a bare fixture): keep the census's order
+        extra = [obj.name for obj in objects if obj.name not in set(order)]
+        reorder_to_ledger(index, order + extra)
+    # 2. objects new or changed since the census (F3, N1)
+    since = changed_since(index.get("meta", {}).get("commit"))
+    moved = [ledger_objects[name] for name in order
+             if name not in checked and name in ledger_objects
+             and (name not in census_objects
+                  or inputs_moved(object_inputs(ledger_objects[name], sources, receipts), since))]
+    moved_ok, moved_unreadable = readable(moved)
+    refresh(index, list(objects) + moved_ok, truth)
     selection = index["selection"]
-    # 3. what changed since the census
+    # 3. what changed
     owners_now = link_census.ledger_owners(rows)
     census_owners = selection.get("owners", {})
-    since = changed_since(index.get("meta", {}).get("commit"))
-    input_changed = {}
-
-    def definer_names(name):
-        return ({index["objects"][i] for i in index["strong"].get(name, ())}
-                | {index["objects"][i] for i, _, _ in index["comdat"].get(name, ())})
-
-    def inputs_changed(name):
-        if name not in input_changed:
-            if name in checked:
-                input_changed[name] = False       # refreshed already
-            elif name not in ledger_objects:
-                input_changed[name] = True        # dropped from the ledger
-            else:
-                obj = ledger_objects[name]
-                inputs = object_inputs(obj, sources, receipts) if since is not None else None
-                input_changed[name] = inputs is None or bool(inputs & since)
-        return input_changed[name]
-    changed, maybe = set(), set()
-    for name in touched:
-        now_sig = definer_signature(index["objects"], index["strong"], index["comdat"], name)
-        if len(now_sig) < 2 and len(before[name]) < 2:
-            continue          # one definition, then and now: there is nothing to select
-        if now_sig != before[name] or set(census_owners.get(name, ())) != set(owners_now.get(name, ())):
-            changed.add(name)
-        elif any(inputs_changed(obj) for obj in definer_names(name)):
-            maybe.add(name)   # a definer's inputs changed: re-read them all, then compare
+    changed = {name for name in touched
+               if definer_signature(index["objects"], index["strong"], index["comdat"], name) != before[name]
+               or set(census_owners.get(name, ())) != set(owners_now.get(name, ()))
+               or kept_definition(index, name) != census_kept[name]}
     owners = dict(census_owners)
     owners.update({name: set(owners_now.get(name, ())) for name in changed})
     selection["owners"] = owners
-    # 4. refresh every definer of every changed (or possibly changed) name
+    # 4. every remaining definer of every changed name, with current truth
+    done = checked | {obj.name for obj in moved_ok}
     definers = collections.defaultdict(set)       # object name -> changed names it defines
-    for name in changed | maybe:
-        for obj_name in definer_names(name):
-            definers[obj_name].add(name)
-    for name in checked | {obj.name for obj in new_ok}:
+    for name in changed:
+        for i in index["strong"].get(name, ()):
+            definers[index["objects"][i]].add(name)
+        for i, _, _ in index["comdat"].get(name, ()):
+            definers[index["objects"][i]].add(name)
+    for name in done:
         definers.pop(name, None)
-    stale = set()
-    gone = [name for name in definers if name not in ledger_objects]
     ok, behind = readable([ledger_objects[name] for name in definers if name in ledger_objects])
+    stale = set()
     for obj in behind:
         stale |= definers[obj.name]
     refresh(index, ok, truth)
-    drop_definitions(index, gone)
-    # A name whose definers were all re-read and still hold exactly the census's
-    # copies (object, kind, digest) did not change: its census verdict stands.
-    for name in maybe:
-        if (name in stale or definer_signature(index["objects"], index["strong"], index["comdat"], name)
-                != before[name]):
-            changed.add(name)
-    stale = {name for name in stale if name in changed}
-    stale |= {name for name in changed if name in index["selection"].get("exceptions", {})}      # F4
+    stale |= {name for name in changed if name in census_view["selection"].get("exceptions", {})}   # F4
     selection = index["selection"]
     selection["changed"], selection["stale"] = changed, stale
     selection["census_kept"] = {name: census_kept.get(name) for name in changed}
-    selection["unknown_definers"] = bool(new_unreadable)
-    if new_unreadable:
-        print(f"link_check: {len(new_unreadable):,} ledger object(s) added since the census cannot be read here "
-              f"(e.g. {new_unreadable[0].name}); any name may be defined there", file=sys.stderr)
+    selection["unknown_definers"] = bool(moved_unreadable)
+    if moved_unreadable:
+        print(f"link_check: {len(moved_unreadable):,} ledger object(s) new or changed since the census cannot "
+              f"be read here (e.g. {moved_unreadable[0].name}); any name may be defined there", file=sys.stderr)
     return changed, stale
 
 

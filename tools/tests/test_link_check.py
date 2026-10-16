@@ -391,6 +391,9 @@ def _new_files(monkeypatch, tmp_path, objects, order):
     monkeypatch.setattr(link_census, "data_ledger", lambda: [])
     monkeypatch.setattr(link_census, "link_order", lambda rows, data: [Path(name) for name in order])
     monkeypatch.setattr(C, "source_bytes", lambda sources: {s: 100 for s in sources})
+    # the census objects' inputs are known and unchanged since the census
+    monkeypatch.setattr(C, "changed_since", lambda commit: C.Changed())
+    monkeypatch.setattr(C, "object_inputs", lambda obj, sources, receipts: {obj.name})
     return ix
 
 
@@ -1111,7 +1114,8 @@ def test_rule_an_object_dropped_from_the_ledger_loses_its_definitions(monkeypatc
                                             ledger=["zhstl_005.obj", "bfmeconv1472.obj"])
     mine = _Path("bfmeconv1472.obj")
     changed, stale = C.apply_selection_rule(ix, [mine], None, ROWS)
-    assert stale == set() and sorted(i for i, _, _ in ix["comdat"][S]) == [1, 2]   # tgrid (0) dropped
+    assert stale == set() and sorted(ix["objects"][i] for i, _, _ in ix["comdat"][S]) == [
+        "bfmeconv1472.obj", "zhstl_005.obj"]                                   # tgrid's copy dropped
     assert _judge(ix, mine, facts_of) == ([], [])
 
 
@@ -1329,3 +1333,22 @@ def test_precommit_sparse_checkout_compiling_within_budget_proves_the_loss(monke
     selected, unknown, linked, after = _precommit_case(monkeypatch, sparse=True, modified=True,
                                                        new_definer=True, limit=50)
     assert not linked and (selected or unknown)
+
+
+def test_object_inputs_trusts_only_a_sidecar_whose_files_still_match(monkeypatch, tmp_path):
+    """Round 4 N2: the sidecar's header list counts only while the source and
+    every header still have the digests that build read; no compiler runs."""
+    import build
+    import hashlib
+    src, hdr, obj = tmp_path / "a.cpp", tmp_path / "a.h", tmp_path / "a.obj"
+    src.write_text("int a;\n")
+    hdr.write_text("#define A 1\n")
+    obj.write_bytes(b"obj")
+    md5 = lambda p: hashlib.md5(p.read_bytes()).hexdigest()
+    sidecar = tmp_path / "a.deps.json"
+    sidecar.write_text(__import__("json").dumps({"source": md5(src), "deps": {str(hdr): md5(hdr)}}))
+    monkeypatch.setattr(build, "_deps_sidecar", lambda o: sidecar)
+    got = C.object_inputs(obj, {obj: src}, None)
+    assert got == {C.repo_path(src), C.repo_path(hdr)}
+    hdr.write_text("#define A 2\n")                    # the header moved on since that build
+    assert C.object_inputs(obj, {obj: src}, None) is None
