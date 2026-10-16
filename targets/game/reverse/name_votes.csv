@@ -4778,3 +4778,8 @@ game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsSkirmishValueInAre
 game/GameEngine/Source/GameLogic/LivingWorld/OwnerNotify003C4740.cpp|member||m_D4,f0f89887676c02fdc3dc3337,gpt-6.1-sol,20261016071537-9cda1f,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/OwnerNotify003C4740.cpp|member||m_D8,5a8b7760bcfec06e25f83b3e,gpt-6.1-sol,20261016071537-9cda1f,2026-10-16
 game/GameEngine/Source/GameLogic/LivingWorld/OwnerNotify003C4740.cpp|function|Glo012F1028Type@|rva003C3F40,8d1d175e542d2bb5a3a20af6,gpt-6.1-sol,20261016071537-9cda1f,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|type||Rva00177A90AIUpdate,72a3724ee34bd588702a7891,gpt-6.1-sol,20261016071553-32f525,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|type||Rva00177A90Machine,0fa151fad294e5601f16ae32,gpt-6.1-sol,20261016071553-32f525,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|member||flag31e,38e8aa6931daf8305e2baaac,gpt-6.1-sol,20261016071553-32f525,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|member||m_field3C,ffbdcf5b535a8ed68bb17067,gpt-6.1-sol,20261016071553-32f525,2026-10-16
+game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_computePath.cpp|member||position5c,9d933626d642f33a5a9aca2a,gpt-6.1-sol,20261016071553-32f525,2026-10-16
