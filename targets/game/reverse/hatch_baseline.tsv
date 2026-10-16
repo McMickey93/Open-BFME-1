@@ -2046,7 +2046,6 @@ emit	game/GameEngine/Source/Common/System/UpgradeCenter_canAffordUpgrade_Thunk.c
 emit	game/GameEngine/Source/Common/System/memory_pool.cpp	*	433
 emit	game/GameEngine/Source/Common/Thing/ThingTemplateParseModuleNameThunk.cpp	*	772
 emit	game/GameEngine/Source/GameClient/DrawableFlashAsSelectedThunk.cpp	*	556
-emit	game/GameEngine/Source/GameClient/Drawable_drawContained_Thunk.cpp	*	833
 emit	game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarDestructorThunk.cpp	*	679
 emit	game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarEvaluateContextUIThunk.cpp	*	1571
 emit	game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarSetControlBarSchemeByPlayerThunk.cpp	*	790
@@ -10593,7 +10592,6 @@ object_symbol	targets/game/reverse/functions.csv	0x00412F50	1
 object_symbol	targets/game/reverse/functions.csv	0x00412F70	1
 object_symbol	targets/game/reverse/functions.csv	0x00413030	1
 object_symbol	targets/game/reverse/functions.csv	0x00413040	1
-object_symbol	targets/game/reverse/functions.csv	0x00414E40	1
 object_symbol	targets/game/reverse/functions.csv	0x00415B20	1
 object_symbol	targets/game/reverse/functions.csv	0x00415B60	1
 object_symbol	targets/game/reverse/functions.csv	0x00415B70	1
