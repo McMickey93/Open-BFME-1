@@ -4097,3 +4097,8 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeContainSlotRec
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeContainSlotRecenter0023B9F0.cpp|member||m_bfmeSlotEnd,47ccb8f7070138e37ab76add,gpt-6.1-sol,20261016063637-06c0bd,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeContainSlotRecenter0023B9F0.cpp|local|BfmeHordeContainRoster::rva0023B9F0|t,d6c7504a31eae1063d926e0f,gpt-6.1-sol,20261016063637-06c0bd,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeContainSlotRecenter0023B9F0.cpp|local|BfmeHordeContainRoster::rva0023B9F0|p,b963bf47f890f392287ab8a0,gpt-6.1-sol,20261016063637-06c0bd,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_position38,b08e4796e09a41fa18be74cb,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_ai204,6d7b35c237dc083e31493cb2,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_container214,b88c0075880e23768faced52,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_field1cc,23d83969dd921eb59281c729,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdSwoopStateOnEnter.cpp|member||m_rva002C3020_28Position,ec57bfbd6f5db308cf0a01c3,gpt-6.1-sol,20261016063642-e04baf,2026-10-16
