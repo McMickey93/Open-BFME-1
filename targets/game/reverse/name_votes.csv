@@ -5404,3 +5404,5 @@ game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|finalTemplate
 game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|t,f8a2c801078549769755e36d,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
 game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|p,d880ccc804c76fe09ea64815,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
 game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp|local|Drawable::notify00419F00|d,42eaad227e301a7b375fc2fd,gpt-6.1-sol,20261016081528-dfde12,2026-10-16
+game/GameEngine/Source/Common/Bfme5TinyTwentyNine.cpp|member||m_bfmeDeadline,18f213ff99807f6b5f13a20f,gpt-6.1-sol,20261016080924-cfd433,2026-10-16
+game/GameEngine/Source/Common/Bfme5TinyTwentyNine.cpp|member||m_bfmeNow,fddf9bac7dbe9eb16079e618,gpt-6.1-sol,20261016080924-cfd433,2026-10-16
