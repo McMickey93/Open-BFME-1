@@ -4822,3 +4822,4 @@ game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|me
 game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_0C,4972c89457005fdd15dd73ec,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
 game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_10,1ef0f2f4ec275f467f486cda,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
 game/GameEngine/Source/GameLogic/System/LivingWorld/LivingWorldPathFinder.cpp|member||m_14,946bfc83e6a512a0a6f5074a,gpt-6.1-sol,20261016071952-5a42dd,2026-10-16
+game/GameEngine/Source/GameLogic/AI/GiantBirdGuardAttackAggressorState_ctor.cpp|type||Rva002C11E0StateBase,8bc8d722011fce33d8e5562b,gpt-6.1-sol,20261016072010-d99477,2026-10-16
