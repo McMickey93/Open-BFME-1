@@ -1386,3 +1386,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00734180.cpp|l
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayCalculateTerrainLOD.cpp|local|W3DDisplay::calculateTerrainLOD|freq64,4228303214e334e34489b3bd,gpt-6.1-sol,20261016030940-47ed10,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayCalculateTerrainLOD.cpp|local|W3DDisplay::calculateTerrainLOD|startTime64,6d946dbdb409a56544b697ae,gpt-6.1-sol,20261016030940-47ed10,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayCalculateTerrainLOD.cpp|local|W3DDisplay::calculateTerrainLOD|time64,e43feaaebea5474fb6aeefe4,gpt-6.1-sol,20261016030940-47ed10,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RubbleRiseStep002A3B40.cpp|param|phase|p,91ae6c345f69259af5a373bc,gpt-6.1-sol,20261016030947-401a14,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/RubbleRiseStep002A3B40.cpp|local|RubbleRiseStep002A3B40::update|m,0dfca84f85e7d170af9ed1d5,gpt-6.1-sol,20261016030947-401a14,2026-10-16
