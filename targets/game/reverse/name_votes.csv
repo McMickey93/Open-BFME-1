@@ -2458,3 +2458,7 @@ game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCto
 game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_valueC8,f1a0296035df24940ac9f752,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_valueD0,3cc068d14cee565cad41ea7d,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/CritterEmitterUpdateModuleDataCtorThunk.cpp|member||m_valueD4,13e220300d139304a124ae24,gpt-6.1-sol,20261016045023-ec480a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_08,38631414f39a4b6f1f5e6ca9,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_0c,b965575e92219116f484b0b7,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_10,24e2d91d1f3d31415dc22d16,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_14,d11a2f0f47aa7e4a49be6914,gpt-6.1-sol,20261016045501-6d04f0,2026-10-16
