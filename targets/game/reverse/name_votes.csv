@@ -4721,3 +4721,7 @@ game/GameEngine/Source/Common/BfmeSettingsCopyWW.cpp|member||m_bfme7C,85ad887bd0
 game/GameEngine/Source/Common/BfmeSettingsCopyWW.cpp|member||m_bfme80,a14b05e09b5bce1599449fe7,gpt-6.1-sol,20261016071029-d5cbdb,2026-10-16
 game/GameEngine/Source/Common/BfmeSettingsCopyWW.cpp|member||m_bfme84,d0a6b8b724d4b93eb532fff5,gpt-6.1-sol,20261016071029-d5cbdb,2026-10-16
 game/GameEngine/Source/Common/BfmeSettingsCopyWW.cpp|member||m_bfme88,838073df91de879f8cfc1e60,gpt-6.1-sol,20261016071029-d5cbdb,2026-10-16
+game/GameEngine/Source/Common/Bfme5SeventySeven.cpp|member||m_bfmeWidth,1eb9a36735cab6e9bb9fbc27,gpt-6.1-sol,20261016070612-1769f1,2026-10-16
+game/GameEngine/Source/Common/Bfme5SeventySeven.cpp|member||m_bfmeHeight,e39d77c49fcf0f8a44a42179,gpt-6.1-sol,20261016070612-1769f1,2026-10-16
+game/GameEngine/Source/Common/Bfme5SeventySeven.cpp|member||m_bfmeCells,a7ed4d13650db8ae9d8446b0,gpt-6.1-sol,20261016070612-1769f1,2026-10-16
+game/GameEngine/Source/Common/Bfme5SeventySeven.cpp|function|Gen_008F7CD0@|bfmeAt,6e7c6e9863155b0646778454,gpt-6.1-sol,20261016070612-1769f1,2026-10-16
