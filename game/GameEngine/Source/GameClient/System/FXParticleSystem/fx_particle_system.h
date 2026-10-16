@@ -373,8 +373,17 @@ public:
     virtual ~LightningEmissionInfo();
     LightningEmissionInfo &operator=(const LightningEmissionInfo &that);
 
-    struct Point3D { float x, y, z; };
-    Point3D m_points[11];
+    Rva005FD9E0Coord m_coord08;
+    Rva005FD9E0Coord m_coord14;
+    GameClientRandomVariable m_var20;
+    GameClientRandomVariable m_var2C;
+    GameClientRandomVariable m_var38;
+    GameClientRandomVariable m_var44;
+    GameClientRandomVariable m_var50;
+    GameClientRandomVariable m_var5C;
+    GameClientRandomVariable m_var68;
+    GameClientRandomVariable m_var74;
+    GameClientRandomVariable m_var80;
 };
 
 class BoxEmissionVolumeInfo : public EmissionVolumeInfo {

@@ -289,20 +289,33 @@ PointEmissionVolumeModuleTag &PointEmissionVolumeModuleTag::operator=(const Poin
     return *this;
 }
 
+// Retail copies each random variable as one 12-byte record, the way
+// GameClientRandomVariable::operator= does, rather than member by member.
+static inline void copyRandomVariable(GameClientRandomVariable &to, const GameClientRandomVariable &from)
+{
+    struct Raw {
+        unsigned int distribution;
+        float minimum;
+        float maximum;
+    };
+
+    *(Raw *)&to = *(const Raw *)&from;
+}
+
 LightningEmissionInfo &LightningEmissionInfo::operator=(const LightningEmissionInfo &that)
 {
     m_flag = that.m_flag;
-    m_points[0] = that.m_points[0];
-    m_points[1] = that.m_points[1];
-    m_points[2] = that.m_points[2];
-    m_points[3] = that.m_points[3];
-    m_points[4] = that.m_points[4];
-    m_points[5] = that.m_points[5];
-    m_points[6] = that.m_points[6];
-    m_points[7] = that.m_points[7];
-    m_points[8] = that.m_points[8];
-    m_points[9] = that.m_points[9];
-    m_points[10] = that.m_points[10];
+    m_coord08 = that.m_coord08;
+    m_coord14 = that.m_coord14;
+    copyRandomVariable(m_var20, that.m_var20);
+    copyRandomVariable(m_var2C, that.m_var2C);
+    copyRandomVariable(m_var38, that.m_var38);
+    copyRandomVariable(m_var44, that.m_var44);
+    copyRandomVariable(m_var50, that.m_var50);
+    copyRandomVariable(m_var5C, that.m_var5C);
+    copyRandomVariable(m_var68, that.m_var68);
+    copyRandomVariable(m_var74, that.m_var74);
+    copyRandomVariable(m_var80, that.m_var80);
     return *this;
 }
 
@@ -507,23 +520,19 @@ EmissionVolumeInfo::EmissionVolumeInfo(const EmissionVolumeInfo &that)
 }
 
 LightningEmissionInfo::LightningEmissionInfo(const LightningEmissionInfo &that)
-    : EmissionVolumeInfo(that)
+    : EmissionVolumeInfo(that),
+      m_coord08(that.m_coord08),
+      m_coord14(that.m_coord14),
+      m_var20(that.m_var20),
+      m_var2C(that.m_var2C),
+      m_var38(that.m_var38),
+      m_var44(that.m_var44),
+      m_var50(that.m_var50),
+      m_var5C(that.m_var5C),
+      m_var68(that.m_var68),
+      m_var74(that.m_var74),
+      m_var80(that.m_var80)
 {
-    m_points[0].x = that.m_points[0].x;
-    m_points[0].y = that.m_points[0].y;
-    m_points[0].z = that.m_points[0].z;
-    m_points[1].x = that.m_points[1].x;
-    m_points[1].y = that.m_points[1].y;
-    m_points[1].z = that.m_points[1].z;
-    m_points[2] = that.m_points[2];
-    m_points[3] = that.m_points[3];
-    m_points[4] = that.m_points[4];
-    m_points[5] = that.m_points[5];
-    m_points[6] = that.m_points[6];
-    m_points[7] = that.m_points[7];
-    m_points[8] = that.m_points[8];
-    m_points[9] = that.m_points[9];
-    m_points[10] = that.m_points[10];
 }
 
 BoxEmissionVolumeInfo::BoxEmissionVolumeInfo(const BoxEmissionVolumeInfo &that)
