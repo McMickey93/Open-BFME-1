@@ -1362,3 +1362,8 @@ game/GameEngine/Source/Common/Bfme5IniNamedValue.cpp|member||m_bfmeName,1fb8dfb8
 game/GameEngine/Source/Common/Bfme5IniNamedValue.cpp|member||m_bfmeValue,aca365e2bd27617383bdc06c,gpt-6.1-sol,20261016030745-a74c2c,2026-10-16
 game/GameEngine/Source/Common/Bfme5IniNamedValue.cpp|param|bfme5ParseNamedValueA|t,541221b351c4f544a70b6667,gpt-6.1-sol,20261016030745-a74c2c,2026-10-16
 game/GameEngine/Source/Common/Bfme5IniNamedValue.cpp|param|bfme5ParseNamedValueB|t,d7979856d0145b81185685af,gpt-6.1-sol,20261016030745-a74c2c,2026-10-16
+game/GameEngine/Source/Common/Rva009A2350Init.cpp|member||m_08,3d27b3a08964213ee15ffb10,gpt-6.1-sol,20261016030752-a0a2d6,2026-10-16
+game/GameEngine/Source/Common/Rva009A2350Init.cpp|member||m_10,b28791dd4e30ff29eeba6902,gpt-6.1-sol,20261016030752-a0a2d6,2026-10-16
+game/GameEngine/Source/Common/Rva009A2350Init.cpp|member||m_14,04bc272f1bd222ba51e5d34e,gpt-6.1-sol,20261016030752-a0a2d6,2026-10-16
+game/GameEngine/Source/Common/Rva009A2350Init.cpp|local|Rva009A2350::init|p,2b600a40c28b46cc0f9ad1bf,gpt-6.1-sol,20261016030752-a0a2d6,2026-10-16
+game/GameEngine/Source/Common/Rva009A2350Init.cpp|local|Rva009A2350::init|q,43adfd63efa7dec8b6f2d7bc,gpt-6.1-sol,20261016030752-a0a2d6,2026-10-16
