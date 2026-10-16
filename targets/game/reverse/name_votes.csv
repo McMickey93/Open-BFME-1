@@ -3534,3 +3534,11 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDra
 game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDraw005F43B0.cpp|local|LightningDraw005F43B0::draw|b,bb29d1abb26aa46c0e8c3e1a,gpt-6.1-sol,20261016060859-a5d060,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/LightningDrawModuleDraw005F43B0.cpp|local|LightningDraw005F43B0::draw|c,cd4e9fbaf17253890bd025e2,gpt-6.1-sol,20261016060859-a5d060,2026-10-16
 game/GameEngine/Source/Common/Rva008B7040Build.cpp|member||field00,c9674f298f7c4ca152ea8591,gpt-6.1-sol,20261016061335-ef1687,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|member||m_radius38,d01369a6b7cd6f63558d5c40,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|member||m_radius1CC,3920bcbb8bad40c36768292f,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|member||m_x38,98a352be8c2c6f35d9db3ab4,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|member||m_y3C,790cbf3091dc03a1604e51cf,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|member||m_info204,d37d88d270d43097a8861b89,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|param|Rva002324A0Owner::test|a,9f206c48c5bb584b987d31d3,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|param|Rva002324A0Owner::test|b,06f5d95bae0e99e260fbcfa4,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
+game/GameEngine/Source/Common/Rva002324A0RadiusTest.cpp|local|Rva002324A0Owner::test|r,f3f2408bdac1990e6352ec43,gpt-6.1-sol,20261016061340-49a8f6,2026-10-16
