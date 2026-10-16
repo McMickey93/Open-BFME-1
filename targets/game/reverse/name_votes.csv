@@ -2824,3 +2824,13 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/TransportAIUpdateModuleD
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/TransportAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag40,6e168a3601e509f913b319ce,gpt-6.1-sol,20261016052924-6319cd,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/TransportAIUpdateModuleData_ctor_Thunk.cpp|member||m_unknown48,2f3605cc1886b194ebb9d171,gpt-6.1-sol,20261016052924-6319cd,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/TransportAIUpdateModuleData_ctor_Thunk.cpp|member||m_flag54,ca4201cc68f95c1c49613249,gpt-6.1-sol,20261016052924-6319cd,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown20,eb55b038d5c6d5f3dc5b459d,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_flag28,d4519fa3f3f768f35f5f3a33,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_flag29,ceaaec91fa4d77e58b6d4dd1,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown2c,798f80dd4c58e9582f6e0f11,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown34,eac749c4495ab40d8c3e6c1f,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown38,45d33bd627d3ba4c547367f1,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown3c,fe0b913a86ecbe1234eaf5f3,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_flag40,d663daa08f4cdaaecf7712c4,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_unknown48,cc37e92cd5460b12bbc452cd,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp|member||m_flag54,fb7ce1f3c462bdfefa48d6e9,gpt-6.1-sol,20261016052931-32d03a,2026-10-16
