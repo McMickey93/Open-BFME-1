@@ -1874,3 +1874,15 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModu
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme18,ed252b56ec54048b6d737f0a,gpt-6.1-sol,20261016040001-f36023,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme1C,f7bb4e8423cd803e9b4149bc,gpt-6.1-sol,20261016040001-f36023,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DLaserDrawModuleDataConstructor.cpp|member||m_bfme20,aa28832d4ec4ad3256d1ef0e,gpt-6.1-sol,20261016040001-f36023,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_name0,288a90ea9b8404ab1e141eb7,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value00,566dec738ee91fd1114ef286,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value01,5deaa62f11015f3f7a289a3b,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value02,5691c99f9791b6e4d757e0c7,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_name1,95fddcc56c48f0d9be515235,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value10,a19142bfb98ec3b634bac1c8,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value11,dd38e7f758031d1b2e3494f6,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value12,5c45fcf81c9923c47e668efd,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_name2,f978ef2024ed0bca11ad0ff7,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value20,9fd51245fc6e7a0ee1285dfa,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value21,60051361c24db717ac8f5c7a,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleInfoCopyCtorThunk.cpp|member||m_value22,9b0ac5cfa2f2ecea76e7b413,gpt-6.1-sol,20261016040007-7092ff,2026-10-16
