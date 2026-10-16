@@ -2234,3 +2234,9 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/DeployStyleAIUpdateCtorT
 game/GameEngine/Source/GameNetwork/FeslMessage_getInt64_rva007E8930.cpp|member||m_10,f041ec3c634ac28f6fb29b24,gpt-6.1-sol,20261016043116-a0f6ed,2026-10-16
 game/GameEngine/Source/GameNetwork/FeslMessage_getInt64_rva007E8930.cpp|local|Rva007E8810Message::getInt64|s,b2abc7a0a50c4dd1b87922e9,gpt-6.1-sol,20261016043116-a0f6ed,2026-10-16
 game/GameEngine/Source/GameNetwork/FeslMessage_getInt64_rva007E8930.cpp|local|Rva007E8810Message::getInt64|v,80c79c3d10a9b99fcc7fbba5,gpt-6.1-sol,20261016043116-a0f6ed,2026-10-16
+game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FAF90,f445c50d5f8e0c1aef6de1a6,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
+game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FBA50,741ab0c920aa45bfb673a79a,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
+game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FBA70,2f6b9a85e95c379a524c15f6,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
+game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FC270,4fe3e7df0db3b8e76b630ae5,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
+game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FCC80,b44e1238ee63d1397a58ce52,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
+game/GameEngine/Source/GameNetwork/Y4FeslSimpleRequests.cpp|function||Rva007FCCA0,c02f486d87000d7a4d93b818,gpt-6.1-sol,20261016043123-7b65e7,2026-10-16
