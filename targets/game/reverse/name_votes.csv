@@ -2158,3 +2158,5 @@ game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.c
 game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag152,a162595f1b204281b4ef2674,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag153,4264b065683294a3a18676da,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/OpenContainModuleDataCtorThunk.cpp|member||m_flag154,88dfdafdbc7c79805a8820b0,gpt-6.1-sol,20261016041945-aa778a,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorCopyAssignment.cpp|type||BfmeLocomotorCoord3D,bd3be8f6433892766f0d4f87,gpt-6.1-sol,20261016042105-1844ba,2026-10-16
+game/GameEngine/Source/GameLogic/Object/LocomotorCopyAssignment.cpp|member||m_field3c,2c02b33fd73f95681c0a9af8,gpt-6.1-sol,20261016042105-1844ba,2026-10-16
