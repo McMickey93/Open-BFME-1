@@ -1553,3 +1553,12 @@ game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|stringKind|f,bb
 game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|stringKind|t,95272adaeda1bd01d72ebdb6,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
 game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|nativeStringSlot80At008B3AA0|arg,ec09343f51bee902a7d35a46,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
 game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|nativeStringSlot88At008B3B70|arg,933a99a7b23fc04984a6dec8,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|y,a7b48869fe46313d93760684,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|pSrcB0,234c24db76fd6feb4cc003cf,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|pSrcB1,f06c952fc0b2ec32f144e8cc,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|pSrcB2,e0634f45480da43130e6f775,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|x,7e19b7b87dcfae74fbb6ccbc,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|v00,1f1585d77df33963a06d12b7,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|v01,4c8b44d826ade188fb09d40d,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|vM1,19d2022cc84981bad9f7dbba,gpt-6.1-sol,20261016032517-77a700,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Water/WaterRenderObjInitBumpMap.cpp|local|WaterRenderObjClass::initBumpMap|v10,9ccfd8790a462c153157ceee,gpt-6.1-sol,20261016032517-77a700,2026-10-16
