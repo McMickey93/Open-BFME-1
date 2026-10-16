@@ -20388,5 +20388,45 @@
   "after_sha256": "e658c6a048642f77e1c18e8cb001e1ad8aadcfc649c72373d603e010c18cbe73",
   "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch3-oracle.md",
   "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "addMoneyEarned",
+  "new_name": "dup_000c85f0",
+  "before_sha256": "19c9e0a37125c05faa7948b76c726bc78af85a35ec4613141022b9c45d23e81a",
+  "after_sha256": "62ea0364c817b675b572a09a04f61ea5113410672472bb90cef22dc1df27cf82",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "winSetNextInLayout",
+  "new_name": "dup_001bd6a0",
+  "before_sha256": "1a16c34114faba6c6cfeb9a985b9723d228c1cf1968a990358f1d250789c53a8",
+  "after_sha256": "f6948994dc212384a0f16ff8e579bebd97b744865d6a53e130213562722faf26",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "_M_insert_overflow",
+  "new_name": "dup_00757c70",
+  "before_sha256": "1e04bcf7cf6410f6992954bb66adefe2537ad3ee3993b8ae4620ea9d3a9048c0",
+  "after_sha256": "ee02ea72a7476fd05fd662b34fbce4ce11cd362a70ca6edd840f56b35561468c",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "winSetPrevInLayout",
+  "new_name": "dup_00478dd0",
+  "before_sha256": "ae02f25520c515e83c0b504fd895fea3b3966351f0e413f5752263da1f05f2e1",
+  "after_sha256": "a48d1c053eb15d2dc2864285f5277320f3fb3f0d0de4295f0a85e9445d94a620",
+  "evidence": "targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md",
+  "reason": "approved by the project lead 2026-10-16: ilt_oracle CONFIRMS this name at the pinned thunk of a different body and CONTRADICTS it at this body's own thunk; retail had no ICF, so this body keeps its bytes under an address-derived ?dup_ alias of the same COMDAT and its real identity is unknown"
  }
 ]
