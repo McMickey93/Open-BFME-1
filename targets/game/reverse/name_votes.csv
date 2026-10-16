@@ -4616,3 +4616,10 @@ game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|me
 game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|member||m_4ed,a5e1c88bbfdcd82f37137f0b,gpt-6.1-sol,20261016070622-f38661,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|local|Weapon::isGoalPosWithinAttackRange|s,35ce3f9d9a31de8193de8000,gpt-6.1-sol,20261016070622-f38661,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|local|Weapon::isGoalPosWithinAttackRange|t,a5093cd6a11c6440b9512b72,gpt-6.1-sol,20261016070622-f38661,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|type||Rva002D8D90Data,09b6fef2a6135a631b81ef27,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|member||field0088,6b9927ae56c1741cc1100837,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|member||flag00a8,fa27c42ea142a43160bd6010,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|member||flag00a9,864eb0e94757cc8e3b201c19,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|member||field78,f1901a0f95f5f8f5e98b2cb1,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|member||field003c,5a0c8b12f4b63558b666e6c7,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Upgrade/Rva002D8D90.cpp|member||field0c,007fa68416910bff79e03ad3,gpt-6.1-sol,20261016070627-a6d948,2026-10-16
