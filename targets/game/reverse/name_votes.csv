@@ -1442,3 +1442,5 @@ game/GameEngine/Source/Common/BfmeConv910.cpp|function|BfmeThingVCW@|bfmeGoVC,50
 game/GameEngine/Source/Common/BfmeConv910.cpp|local|BfmeThingVBW::bfmeGoVB|p,1fdfd952f857e636b939c914,gpt-6.1-sol,20261016031216-b67dd2,2026-10-16
 game/GameEngine/Source/Common/BfmeConv910.cpp|local|BfmeThingVBW::bfmeGoVB|s,b5b78d3e5e5a6622cfe994e9,gpt-6.1-sol,20261016031216-b67dd2,2026-10-16
 game/GameEngine/Source/Common/BfmeConv910.cpp|local|BfmeThingVCW::bfmeGoVC|n,fb726a84576d363ca44f7231,gpt-6.1-sol,20261016031216-b67dd2,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_bfmeRangeBase.cpp|function|WeaponTemplate@|bfmeRangeBase,016bd3054ec168914f42e55a,gpt-6.1-sol,20261016031707-0ae3bf,2026-10-16
+game/GameEngine/Source/GameLogic/Object/WeaponTemplate_bfmeRangeBase.cpp|param|getField|f,35e95e2cf30f692f218cffd7,gpt-6.1-sol,20261016031707-0ae3bf,2026-10-16
