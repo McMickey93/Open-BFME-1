@@ -7457,6 +7457,7 @@ name,address,notes
 ??1Gen_uw_00021d14@@QAE@XZ,0x00021D14,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00022390@@QAE@XZ,0x00022390,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_000224d0@@QAE@XZ,0x000224D0,gen-uw-pin dtor target read from the retail funclet bytes
+??1Rva004C1510Handle@@QAE@XZ,0x000224D0,state-0 cleanup callee of matched Rva004C1B60Adapter::slot04 0x004C1AE0: its unwind funclet 0x00C290B0 destroys the returned handle through this ILT
 ??1Gen_uw_00022750@@QAE@XZ,0x00022750,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_0002306f@@QAE@XZ,0x0002306F,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00023335@@QAE@XZ,0x00023335,gen-uw-pin dtor target read from the retail funclet bytes
@@ -91190,3 +91191,7 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ??$__copy@PAUGenNode_006fa270@@PAU1@H@_STL@@YAPAUGenNode_006fa270@@PAU1@00ABUrandom_access_iterator_tag@0@PAH@Z,0x006FA270,Address-derived intrusive handle binding; complete helper and call ABI verified in targets/game/reverse/identity_evidence/006fa9b0-render-count-recovery.md
 ??$__destroy_aux@PAUGenNode_006fa270@@@_STL@@YAXPAUGenNode_006fa270@@0ABU__false_type@0@@Z,0x006FA420,Address-derived intrusive handle binding; complete helper and call ABI verified in targets/game/reverse/identity_evidence/006fa9b0-render-count-recovery.md
 ??1GenNode_006fa270@@QAE@XZ,0x001DA440,Address-derived intrusive handle binding; complete helper and call ABI verified in targets/game/reverse/identity_evidence/006fa9b0-render-count-recovery.md
+??1?$allocator@PAX@_STL@@QAE@XZ,0x00041808,cleanup callee the retail unwind funclets 0x00C54990/0x00C549B0/0x00C549D0 of matched vector<void*> bodies jump to; ilt_oracle CONFIRMED exact
+??1?$basic_ostream@DV?$char_traits@D@_STL@@@_STL@@UAE@XZ,0x0002E40B,cleanup callee the retail unwind funclets 0x00C3C146/0x00C3C236 of the matched DefaultModuleTemplate writeINI bodies jump to; ilt_oracle CONFIRMED exact
+??1?$_String_base@GV?$allocator@G@_STL@@@_STL@@QAE@XZ,0x00032D85,cleanup callee the retail unwind funclet 0x00C55B00 of the matched 0x00844460 body jumps to; ilt_oracle CONFIRMED exact
+??1?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@QAE@XZ,0x0001570D,ilt_oracle CONFIRMED at ILT 0x0001570D and body 0x00066FE0 (_Vector_base<int> CONTRADICTED); retail unwind funclet 0x00BFBF43 of matched ??0Team@@QAE@PAVTeamPrototype@@I@Z (FuncInfo 0x00DE9494) destroys [ebp+4]+4 through this ILT

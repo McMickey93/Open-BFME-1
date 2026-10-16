@@ -96,9 +96,54 @@ struct BfmeNodeInfo1281
 	unsigned char m_flags74;
 };
 
-struct BfmeNode1285
+class BfmeD1046
 {
-	void bfmeSetState1285(int state);
+public:
+	void bfmeReset1046( int value );
+};
+
+struct BfmeStateRecord1285
+{
+	int m_mask;
+	int m_value;
+	int m_gap08;
+	float m_weight;
+	char m_gap10[ 0x24 - 0x10 ];
+	float m_tail;
+	char m_gap28[ 0x44 - 0x28 ];
+};
+
+struct BfmeStateDescriptor1285
+{
+	char m_gap00[ 0x2c ];
+	int m_count;
+	BfmeStateRecord1285 *m_records;
+};
+
+struct BfmeNodeState1285
+{
+	char m_gap00[ 0x0c ];
+	BfmeStateDescriptor1285 *m_descriptor;
+	char m_gap10[ 0x1c - 0x10 ];
+	int m_state;
+	BfmeD1046 m_slot;
+};
+
+class BfmeSubmitter1283
+{
+public:
+	void bfmeSubmit1283( int a0, int a1, int a2, int a3, int a4, int a5,
+		int a6, float *weight, int a8, int a9, int a10, int a11 );
+};
+
+class BfmeNode1285
+{
+public:
+	void bfmeSetState1285( int state );
+
+private:
+	char m_gap00[ 0x50 ];
+	BfmeNodeState1285 *m_info;
 };
 
 struct BfmeEntry1282;
@@ -382,4 +427,27 @@ void BfmeSlotDispatcher1281::bfmeDispatchDirect1281(unsigned int encoded)
 	}
 	if (picked != 0)
 		picked->bfmeRelease1281();
+}
+
+// ?bfmeSetState1285@BfmeNode1285@@QAEXH@Z -- retail 0x008D3050 (127 bytes).
+// BFME 2 donor: AptCIHLevel006E0B80.cpp / AptCIH::rva006E1F00.
+// Preserve the indexed mask test separately from the selected record reference.
+// The matched dispatcher above establishes the inherited method spelling.
+void BfmeNode1285::bfmeSetState1285(int state)
+{
+    BfmeNodeState1285 *info = m_info;
+    if (state == info->m_state)
+        return;
+    info->m_state = state;
+    info->m_slot.bfmeReset1046(0);
+    for (int i = 0; i < info->m_descriptor->m_count; ++i)
+    {
+        if (info->m_state & info->m_descriptor->m_records[i].m_mask)
+        {
+            BfmeStateRecord1285 &record = info->m_descriptor->m_records[i];
+            ((BfmeSubmitter1283 *)&info->m_slot)->bfmeSubmit1283(
+                0, i, record.m_value, 0, (int)this, 0, -1,
+                &record.m_tail, (int)&record.m_weight, 0, 0, 0);
+        }
+    }
 }

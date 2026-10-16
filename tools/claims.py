@@ -77,6 +77,7 @@ NS = "refs/claims/"
 # every worker against the same authoritative claim. (Ported from Open-BFME-2
 # 542acb66c4; the old shared refs/claims-seen/ mirror is no longer read.)
 SEEN = "refs/worktree/claims-seen/"  # local mirror; never pushed
+LEGACY_SEEN = "refs/claims-seen/"    # the old shared mirror; pruned on fetch
 TTL_HOURS = float(os.environ.get("BFME_CLAIM_TTL_HOURS", "4"))
 REMOTE = os.environ.get("BFME_CLAIM_REMOTE", "origin")
 PENDING = Path("build") / "claims" / "landed_pending.jsonl"
@@ -177,7 +178,7 @@ def owner(root=None):
 
 
 def _mirror(rva, sha, root=None):
-    """Record in refs/claims-seen/ a claim write origin just accepted."""
+    """Record in this worktree's mirror (SEEN) a claim write origin just accepted."""
     seen = SEEN + ref_of(rva)[len(NS):]
     _git(*(("update-ref", seen, sha) if sha else ("update-ref", "-d", seen)), cwd=root)
 
@@ -252,7 +253,27 @@ def fetch(root=None):
     # setting must not make this coordination fetch touch other remotes.
     got = _git("fetch", "-q", "--prune", "--no-tags", "--recurse-submodules=no",
                REMOTE, f"+{NS}*:{SEEN}*", cwd=root, timeout=120)
+    if got.returncode == 0:
+        _prune_legacy_mirror(root)
     return got.returncode == 0
+
+
+_PRUNED = set()
+
+
+def _prune_legacy_mirror(root=None):
+    """Delete the old shared refs/claims-seen/* mirror (before 53a0bc2eb4),
+    once per process and checkout. Nothing reads it; left alone it is
+    thousands of stale refs every worktree shares. Best effort: a peer
+    pruning at the same time only makes a delete find nothing."""
+    key = str(Path(root or ROOT).resolve())
+    if key in _PRUNED:
+        return
+    _PRUNED.add(key)
+    listed = _git("for-each-ref", "--format=%(refname)", LEGACY_SEEN, cwd=root)
+    refs = listed.stdout.split() if listed.returncode == 0 else []
+    if refs:
+        _git("update-ref", "--stdin", cwd=root, input_text="".join(f"delete {r}\n" for r in refs))
 
 
 def _read_local(root=None):

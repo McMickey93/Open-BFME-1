@@ -897,14 +897,6 @@ StateReturnType AIGuardRetaliateAttackAggressorState::onEnter( void )
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?update@AIGuardRetaliateAttackAggressorState@@ present-unmatched
-StateReturnType AIGuardRetaliateAttackAggressorState::update( void )
-{
-	if (m_attackState==NULL) return STATE_SUCCESS;
-	
-	return m_attackState->update();
-}
-
 //-------------------------------------------------------------------------------------------------
 // ?onExit@AIGuardRetaliateAttackAggressorState@@ present-unmatched
 void AIGuardRetaliateAttackAggressorState::onExit( StateExitType status )
@@ -946,4 +938,288 @@ void AIGuardRetaliateAttackAggressorState::xfer( Xfer *xfer )
 void AIGuardRetaliateAttackAggressorState::loadPostProcess()
 {
 	onEnter();
+}
+
+// Native BFME 1 lookup visible for the donor-based state update below.
+// Its hash-map storage and complete 82-byte body are independently matched.
+#include <hash_map>
+struct Rva0015F0F0Lookup
+{
+    char m_at00[0xb0];
+    _STL::hash_map<int, Object *, _STL::hash<int>, _STL::equal_to<int> > m_atB0;
+};
+inline __declspec(noinline) Object *GameLogic::findObjectByID(ObjectID id)
+{
+    if (id == INVALID_ID) return 0;
+    Rva0015F0F0Lookup *view = reinterpret_cast<Rva0015F0F0Lookup *>(this);
+    _STL::hash_map<int, Object *, _STL::hash<int>, _STL::equal_to<int> >::iterator it = view->m_atB0.find((int)id);
+    if (it == view->m_atB0.end()) return 0;
+    return (*it).second;
+}
+
+// BFME 2 donor AIGuardRetaliateStates.cpp update at 0x00545A46.
+class Rva0015EBE0State { public: int queryGuardContain(); };
+extern GameLogic *TheGameLogic;
+
+struct Rva0015F0F0Horde;
+struct Rva0015F0F0Contain;
+struct Rva0015F0F0Machine;
+struct Rva0015F0F0Substate;
+struct Rva0015F0F0Condition;
+
+struct Rva0015F0F0Horde {
+    virtual void slot00();
+    virtual void slot04();
+    virtual void slot08();
+    virtual void slot0C();
+    virtual void slot10();
+    virtual void slot14();
+    virtual void slot18();
+    virtual void slot1C();
+    virtual void slot20();
+    virtual void slot24();
+    virtual void slot28();
+    virtual void slot2C();
+    virtual void slot30();
+    virtual void slot34();
+    virtual void slot38();
+    virtual void slot3C();
+    virtual void slot40();
+    virtual void slot44();
+    virtual void slot48();
+    virtual void slot4C();
+    virtual void slot50();
+    virtual void slot54();
+    virtual void slot58();
+    virtual void slot5C();
+    virtual void slot60();
+    virtual void slot64();
+    virtual void slot68();
+    virtual void slot6C();
+    virtual void slot70();
+    virtual void slot74();
+    virtual void slot78();
+    virtual void slot7C();
+    virtual void slot80();
+    virtual void slot84();
+    virtual void slot88();
+    virtual void slot8C();
+    virtual void slot90();
+    virtual void slot94();
+    virtual void slot98();
+    virtual void slot9C();
+    virtual void slotA0();
+    virtual void slotA4();
+    virtual void slotA8();
+    virtual void slotAC();
+    virtual void slotB0();
+    virtual void slotB4();
+    virtual void slotB8();
+    virtual void slotBC();
+    virtual void slotC0();
+    virtual void slotC4();
+    virtual void slotC8();
+    virtual void slotCC();
+    virtual void slotD0();
+    virtual void slotD4();
+    virtual void slotD8();
+    virtual void slotDC();
+    virtual void slotE0();
+    virtual void slotE4();
+    virtual void slotE8();
+    virtual void slotEC();
+    virtual void slotF0();
+    virtual void slotF4();
+    virtual void slotF8();
+    virtual void slotFC();
+    virtual void slot100();
+    virtual void slot104();
+    virtual void slot108();
+    virtual void slot10C();
+    virtual void slot110();
+    virtual void slot114();
+    virtual void slot118();
+    virtual void slot11C();
+    virtual void slot120();
+    virtual void slot124();
+    virtual void slot128();
+    virtual void slot12C();
+    virtual bool slot130(Object *);
+    virtual void slot134();
+    virtual void slot138();
+    virtual void slot13C();
+    virtual void slot140();
+    virtual void slot144();
+    virtual void slot148();
+    virtual void slot14C();
+    virtual void slot150();
+    virtual void slot154();
+    virtual void slot158();
+    virtual void slot15C();
+    virtual void slot160();
+    virtual void slot164();
+    virtual void slot168();
+    virtual void slot16C();
+    virtual void slot170();
+    virtual void slot174();
+    virtual void slot178();
+    virtual void slot17C();
+    virtual void slot180();
+    virtual void slot184();
+    virtual void slot188();
+    virtual void slot18C();
+    virtual void slot190();
+    virtual void slot194();
+    virtual void slot198();
+    virtual void slot19C();
+    virtual void slot1A0();
+    virtual void slot1A4();
+    virtual void slot1A8();
+    virtual void slot1AC();
+    virtual void slot1B0();
+    virtual void slot1B4();
+    virtual void slot1B8();
+    virtual void slot1BC();
+    virtual void slot1C0();
+    virtual void slot1C4();
+    virtual void slot1C8();
+    virtual void slot1CC();
+    virtual void slot1D0();
+    virtual void slot1D4();
+    virtual void slot1D8();
+    virtual void slot1DC();
+    virtual void slot1E0();
+    virtual void slot1E4();
+    virtual void slot1E8();
+    virtual void slot1EC();
+    virtual void slot1F0();
+    virtual void slot1F4();
+    virtual void slot1F8();
+    virtual int slot1FC(int);
+};
+struct Rva0015F0F0Contain {
+    virtual void slot00();
+    virtual void slot04();
+    virtual void slot08();
+    virtual void slot0C();
+    virtual void slot10();
+    virtual void slot14();
+    virtual void slot18();
+    virtual void slot1C();
+    virtual void slot20();
+    virtual void slot24();
+    virtual void slot28();
+    virtual void slot2C();
+    virtual void slot30();
+    virtual void slot34();
+    virtual void slot38();
+    virtual void slot3C();
+    virtual void slot40();
+    virtual void slot44();
+    virtual void slot48();
+    virtual void slot4C();
+    virtual void slot50();
+    virtual void slot54();
+    virtual void slot58();
+    virtual void slot5C();
+    virtual void slot60();
+    virtual void slot64();
+    virtual Rva0015F0F0Horde *slot68();
+};
+struct Rva0015F0F0Object {
+    char m_at00[0x74]; int m_at74;
+    char m_at78[0x90 - 0x78]; unsigned int m_at90;
+    char m_at94[0x1fc - 0x94]; Rva0015F0F0Contain *m_at1fc;
+    char m_at200[4]; AIUpdateInterface *m_at204;
+    char m_at208[0x344 - 0x208]; unsigned char m_at344;
+    int getID() const { return m_at74; }
+    bool testDead() const { return (m_at344 & 1) != 0; }
+};
+struct Rva0015F0F0Machine {
+    virtual void slot00();
+    virtual void slot04();
+    virtual void slot08();
+    virtual void slot0C();
+    virtual void slot10();
+    virtual void slot14();
+    virtual void slot18();
+    virtual void slot1C();
+    virtual void slot20();
+    virtual void slot24();
+    virtual void slot28();
+    virtual void slot2C();
+    virtual void slot30();
+    virtual void slot34();
+    virtual void slot38(Object *);
+    char m_at04[12]; Rva0015F0F0Object *m_at10;
+    char m_at14[0x50 - 0x14]; int m_at50;
+    int getNemesisID() const { return m_at50; }
+    void setNemesisID(int id) { m_at50 = id; }
+    Rva0015F0F0Object *getOwner() const { return m_at10; }
+};
+struct Rva0015F0F0Condition {
+    virtual bool slot00(StateMachine *);
+    char m_at04[0x18];
+};
+struct Rva0015F0F0Substate {
+    virtual void slot00();
+    virtual void slot04();
+    virtual void slot08();
+    virtual void slot0C();
+    virtual void slot10();
+    virtual void slot14();
+    virtual int slot18();
+};
+class Rva0015F0F0 {
+public:
+    int method();
+    Rva0015F0F0Machine *getMachine() const { return m_at1c; }
+    Rva0015F0F0Machine *getGuardMachine() const { return getMachine(); }
+    Rva0015F0F0Object *getMachineOwner() const { return getMachine()->getOwner(); }
+    char m_at00[0x1c]; Rva0015F0F0Machine *m_at1c;
+    char m_at20[4]; Rva0015F0F0Condition m_at24;
+    Rva0015F0F0Substate *m_at40;
+};
+
+StateReturnType AIGuardRetaliateAttackAggressorState::update()
+{
+    Rva0015F0F0 *view = reinterpret_cast<Rva0015F0F0 *>(this);
+    Rva0015F0F0Machine *machine = view->getGuardMachine();
+    Rva0015F0F0Object *target = (Rva0015F0F0Object *)TheGameLogic->findObjectByID((ObjectID)machine->getNemesisID());
+    if (target && (target->testDead())) target = 0;
+    Rva0015F0F0Object *goal = (Rva0015F0F0Object *)((StateMachine *)machine)->getGoalObject();
+    if (goal && (goal->testDead())) goal = 0;
+    Rva0015F0F0Object *owner = view->getMachineOwner();
+    if (!goal)
+    {
+        if (!target) {
+            target = (Rva0015F0F0Object *)((Rva0015EBE0State *)this)->queryGuardContain();
+            if (!target) return STATE_SUCCESS;
+        }
+        owner->m_at204->friend_setGoalObject((Object *)target);
+        view->getGuardMachine()->setNemesisID(target->getID());
+        view->getMachine()->slot38((Object *)target);
+    }
+    Rva0015F0F0Condition *conditions = &view->m_at24;
+    if (conditions->slot00((StateMachine *)view->getMachine())) return STATE_SUCCESS;
+    if (!view->m_at40) return STATE_SUCCESS;
+    bool flag = ((owner->m_at90 >> 28) & 1) != 0;
+    Rva0015F0F0Contain *contain = owner->m_at1fc;
+    if (contain)
+    {
+        Rva0015F0F0Horde *horde = contain->slot68();
+        if (horde && target)
+        {
+            if (horde->slot130((Object *)target)) flag = true;
+            int reportedID = horde->slot1FC(target->getID());
+            if (reportedID == target->getID()) flag = true;
+        }
+    }
+    if (flag)
+    {
+        unsigned int frame = *(unsigned int *)((char *)TheGameLogic + 0x3c) + 20;
+        unsigned int &deadline = *(unsigned int *)((char *)this + 0x3c);
+        if (deadline < frame) deadline = frame;
+    }
+    return (StateReturnType)view->m_at40->slot18();
 }

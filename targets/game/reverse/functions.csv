@@ -36641,7 +36641,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0015ab50@@YAXXZ,,0x0015AB50,2416,game/gen_asm/d_00153d10.asm,matched,gen-dump;ghidra=FUN_0055ab50
 ?d_0015d530@@YAXXZ,,0x0015D530,2514,game/gen_asm/d_00153d10.asm,matched,gen-dump;ghidra=FUN_0055d530
 ?d_0015e510@@YAXXZ,,0x0015E510,290,game/gen_asm/d_00138250.asm,matched,gen-dump;bounds=high
-?d_0015f0f0@@YAXXZ,,0x0015F0F0,263,game/gen_asm/d_0015f070.asm,matched,gen-dump;ghidra=FUN_0055f0f0
 ?d_001604b0@@YAXXZ,,0x001604B0,4,game/GameEngine/Source/Common/Rva001604B0DwordGetter.cpp,matched,object-symbol=?get@Rva001604B0DwordField@@QBEIXZ;address-derived dword getter;carved boundary and retail bytes prove the body
 ?checkQueuedTeams@AIPlayer@@MAEXXZ,,0x00161E20,697,game/GameEngine/Source/GameLogic/AI/AIPlayerCheckQueuedTeams.cpp,matched,AIPlayer vtable 0x010968B0 slot 17 via ILT 0x0001E27C; Zero Hour twin; Team::getName nullable name with empty string fixes the last register byte; real dlink_next_TeamBuildQueue member pointer;model=claude-opus-5-5;host=vm
 ?d_0016bb20@@YAXXZ,,0x0016BB20,8,game/GameEngine/Source/Common/VirtualSlot5CallThunk.cpp,matched,object-symbol=?invokeOne@VirtualSlot5CallThunk@@QAEXXZ;Open-BFME5 clean C++ virtual slot 5 call
@@ -38146,7 +38145,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_008d1ca0@@YAXXZ,,0x008D1CA0,419,game/gen_asm/d_008d1540.asm,matched,gen-dump;ghidra=FUN_00cd1ca0
 ?d_008d1f10@@YAXXZ,,0x008D1F10,107,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_008d22c0@@YAXXZ,,0x008D22C0,1357,game/gen_asm/d_00882630.asm,matched,gen-dump;carved start=ghidra-start end=ret+int3 callers=0;ghidra=FUN_00cd22c0
-?d_008d3050@@YAXXZ,,0x008D3050,127,game/gen_asm/d_008d1540.asm,matched,gen-dump;ghidra=FUN_00cd3050
 ?d_008d3860@@YAXXZ,,0x008D3860,473,game/gen_asm/d_008d1540.asm,matched,gen-dump;ghidra=FUN_00cd3860
 ?d_008d60c0@@YAXXZ,,0x008D60C0,414,game/gen_asm/d_008d1540.asm,matched,gen-dump;ghidra=FUN_00cd60c0
 ?d_008f8520@@YAXXZ,,0x008F8520,734,game/gen_asm/d_008ecd00.asm,matched,gen-dump;ghidra=FUN_00cf8520
@@ -38279,9 +38277,7 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00bf7808@@YAXXZ,,0x00BF7808,25,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ff7808
 ?d_00bf9cf0@@YAXXZ,,0x00BF9CF0,25,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ff9cf0
 ?d_00bfa8bc@@YAXXZ,,0x00BFA8BC,22,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffa8bc
-?d_00bfab57@@YAXXZ,,0x00BFAB57,11,game/gen_asm/d_00bf2738.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail callers=0
 ?d_00bfbdf0@@YAXXZ,,0x00BFBDF0,25,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffbdf0
-?d_00bfbf43@@YAXXZ,,0x00BFBF43,11,game/gen_asm/d_00bf4ec3.asm,matched,gen-dump;carved start=ghidra-start end=jmp-tail refs=0
 ?d_00bfc2fe@@YAXXZ,,0x00BFC2FE,8,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@00ffc2fe
 ?d_00bfc306@@YAXXZ,,0x00BFC306,11,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffc306
 ?d_00bfc3d8@@YAXXZ,,0x00BFC3D8,17,game/gen_asm/d_00aa0d0d.asm,matched,gen-dump;ghidra=Unwind@00ffc3d8
@@ -38364,7 +38360,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c2797b@@YAXXZ,,0x00C2797B,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@0102797b
 ?d_00c28aa0@@YAXXZ,,0x00C28AA0,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01028aa0
 ?d_00c29080@@YAXXZ,,0x00C29080,11,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01029080
-?d_00c290b0@@YAXXZ,,0x00C290B0,25,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@010290b0
 ?d_00c30733@@YAXXZ,,0x00C30733,17,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030733
 ?d_00c30dbc@@YAXXZ,,0x00C30DBC,23,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030dbc
 ?d_00c30e80@@YAXXZ,,0x00C30E80,17,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030e80
@@ -38372,8 +38367,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c35663@@YAXXZ,,0x00C35663,34,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01035663
 ?d_00c37efb@@YAXXZ,,0x00C37EFB,24,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01037efb
 ?d_00c386d8@@YAXXZ,,0x00C386D8,22,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@010386d8
-?d_00c3c146@@YAXXZ,,0x00C3C146,14,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103c146
-?d_00c3c236@@YAXXZ,,0x00C3C236,14,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103c236
 ?d_00c3d83b@@YAXXZ,,0x00C3D83B,23,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103d83b
 ?d_00c3dc08@@YAXXZ,,0x00C3DC08,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103dc08
 ?d_00c3e7d7@@YAXXZ,,0x00C3E7D7,24,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103e7d7
@@ -38415,9 +38408,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c50305@@YAXXZ,,0x00C50305,24,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01050305
 ?d_00c54950@@YAXXZ,,0x00C54950,8,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01054950
 ?d_00c54970@@YAXXZ,,0x00C54970,8,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01054970
-?d_00c54990@@YAXXZ,,0x00C54990,8,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01054990
-?d_00c549b0@@YAXXZ,,0x00C549B0,8,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@010549b0
-?d_00c549d0@@YAXXZ,,0x00C549D0,8,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@010549d0
 ?d_00c54abb@@YAXXZ,,0x00C54ABB,11,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01054abb
 ?d_00c54bb0@@YAXXZ,,0x00C54BB0,25,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01054bb0
 ?d_00c54d7b@@YAXXZ,,0x00C54D7B,31,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01054d7b
@@ -38452,7 +38442,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c55644@@YAXXZ,,0x00C55644,31,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@01055644
 ?d_00c5566b@@YAXXZ,,0x00C5566B,31,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105566b
 ?d_00c5568a@@YAXXZ,,0x00C5568A,33,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@0105568a
-?d_00c55b00@@YAXXZ,,0x00C55B00,8,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@01055b00
 ?d_00c56490@@YAXXZ,,0x00C56490,25,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@01056490
 ?d_00c56e40@@YAXXZ,,0x00C56E40,11,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@01056e40
 ?d_00c56e4b@@YAXXZ,,0x00C56E4B,11,game/gen_asm/d_00c550fd.asm,matched,gen-dump;ghidra=Unwind@01056e4b
@@ -172555,3 +172544,14 @@ _rva009B1ED0,,0x009B1ED0,701,game/GameEngine/Source/Common/Rva009B1ED0Filter.cpp
 ?Rva00C6BB80Init@@YAXXZ,,0x00C6BB80,22,game/GameEngine/Source/Common/StaticInit/Rva012F48C8Global.cpp,matched,object-symbol=_$E1;native UnicodeString global initializer;identity-evidence=targets/game/reverse/identity_evidence/00c6bb80-unicode-global-lifetime.md;model=gpt-6;host=cal-desktop
 ?bfmeForward_00C701F0@@YAXXZ,,0x00C701F0,10,game/GameEngine/Source/Common/StaticInit/Rva012F4B00Global.cpp,matched,object-symbol=_$E2;native Palantir filename cleanup;identity-evidence=targets/game/reverse/identity_evidence/00c6bcb0-palantir-global-lifetime.md;model=gpt-6;host=cal-desktop
 ?Rva00C6BCB0Init@@YAXXZ,,0x00C6BCB0,27,game/GameEngine/Source/Common/StaticInit/Rva012F4B00Global.cpp,matched,object-symbol=_$E1;native Palantir filename initializer;identity-evidence=targets/game/reverse/identity_evidence/00c6bcb0-palantir-global-lifetime.md;model=gpt-6;host=cal-desktop
+?Rva00C290B0Cleanup@@YAXXZ,,0x00C290B0,25,game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarRva004C1B60.cpp,matched,gen-funclet;object-symbol=$L517;parent=?slot04@Rva004C1B60Adapter@@UAE?AVRva004C1510Handle@@XZ;retail 004C1AE0 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?bfmeSetState1285@BfmeNode1285@@QAEXH@Z,,0x008D3050,127,game/Libraries/Source/Apt/BfmeDispatchDirect1281.cpp,matched,127B RET4 extent; inherited placeholder identity proven by matched dispatcher 008BB720; BFME2 AptCIHLevel006E0B80.cpp indexed mask test and record reference; direct callees use existing matched names; evidence identity_evidence/008d3050-donor-indexed-state-update.md;model=gpt-6.1-sol;host=GreatFaram
+?Rva00C54990Cleanup@@YAXXZ,,0x00C54990,8,game/Libraries/Source/WWVegas/WWLib/VectorCountRva0082EA80.cpp,matched,gen-funclet;object-symbol=$L4037;parent=??0?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@QAE@I@Z;retail 0082EA80 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?Rva00C3C146Cleanup@@YAXXZ,,0x00C3C146,14,game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultModuleTemplate00WriteINIThunk.cpp,matched,gen-funclet;object-symbol=$L746;parent=?writeINI@?$DefaultModuleTemplate@$00@FXParticleSystem@@UBEXAAVFile@@I@Z;retail 005EEF50 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?Rva00C55B00Cleanup@@YAXXZ,,0x00C55B00,8,game/GameEngine/Source/Common/Bfme5WideStringRanges.cpp,matched,gen-funclet;object-symbol=$L14215;parent=?do_transform@?$collate@G@_STL@@MBE?AV?$basic_string@GV?$char_traits@G@_STL@@V?$allocator@G@2@@2@PBG0@Z;retail 00844460 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?Rva00C549B0Cleanup@@YAXXZ,,0x00C549B0,8,game/GameEngine/Source/Common/VectorVoidPtrCopyConstructor.cpp,matched,gen-funclet;object-symbol=$L4112;parent=??0?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@QAE@ABV01@@Z;retail 0082EB30 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?Rva00C549D0Cleanup@@YAXXZ,,0x00C549D0,8,game/Libraries/Source/WWVegas/WWLib/stlport_vector_voidptr_fill_assign.cpp,matched,gen-funclet;object-symbol=$L4116;parent=?_M_fill_assign@?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@QAEXIABQAX@Z;retail 0082EF90 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?Rva00C3C236Cleanup@@YAXXZ,,0x00C3C236,14,game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultModuleTemplate0AWriteINIThunk.cpp,matched,gen-funclet;object-symbol=$L807;parent=?writeINI@?$DefaultModuleTemplate@$0A@@FXParticleSystem@@UBEXAAVFile@@I@Z;retail 005F0530 unwind map native label of the matched parent;model=claude-opus-5-5;host=app
+?update@AIGuardRetaliateAttackAggressorState@@UAE?AW4StateReturnType@@XZ,,0x0015F0F0,263,game/GameEngine/Source/GameLogic/AI/AIGuardRetaliate.cpp,matched,ILT300B7 and State vtable010965C8 slot6; constructor and getter literal prove owner; full263B RET and virtual tail extent; BFME2 AIGuardRetaliateStates donor; identity_evidence/0015f0f0-bfme2-guard-update.md;model=gpt-6.1-sol;host=GreatFaram
+?Rva00BFBF43Cleanup@@YAXXZ,,0x00BFBF43,11,game/GameEngine/Source/Common/RTS/TeamConstructor.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L7812;parent=??0Team@@QAE@PAVTeamPrototype@@I@Z;retail parent 0x000F7790 -> FuncInfo 0x00DE9494 unwind map native label;destroys [ebp+4]+4 vector<void*> via ILT 0x0001570D;model=claude-opus-5-5;host=app
+?Rva00BFAB57Cleanup@@YAXXZ,,0x00BFAB57,11,game/GameEngine/Source/Common/RTS/PlayerTemplateCopyConstructor.cpp,matched,authored C++ cleanup;gen-funclet;object-symbol=$L14001;parent=??0PlayerTemplate@@QAE@ABV0@@Z;retail parent 0x000E2E50 -> FuncInfo 0x00DE83C0 unwind map native label;destroys [ebp+4]+4 vector<void*> via ILT 0x0001570D;model=claude-opus-5-5;host=app
