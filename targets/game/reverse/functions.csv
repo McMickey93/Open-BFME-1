@@ -67178,7 +67178,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00008346@@YAXXZ,,0x00008346,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=FUN_00b3a7b0
 ?j_0000834b@@YAXXZ,,0x0000834B,5,game/gen_small/gthunks_008.cpp,matched,gen-thunk;gap;target=0x0060F5E0
 ?j_00008350@@YAXXZ,,0x00008350,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=FUN_009db010
-?j_00008355@@YAXXZ,,0x00008355,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_0000835a@@YAXXZ,,0x0000835A,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=FUN_007b5ea0
 ?j_0000835f@@YAXXZ,,0x0000835F,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=FUN_006d9f30
 ?j_00008364@@YAXXZ,,0x00008364,5,game/gen_small/gthunks_008.cpp,matched,gen-thunk;gap;target=0x0015FA90
@@ -122522,7 +122521,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002c53c0@@YAXXZ,,0x002C53C0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0067a5e0
 ?j_002c5490@@YAXXZ,,0x002C5490,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0067e4e0
 ?j_002c5990@@YAXXZ,,0x002C5990,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00029CD5
-?j_002c6a10@@YAXXZ,,0x002C6A10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_002c6a50@@YAXXZ,,0x002C6A50,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_002c6a90@@YAXXZ,,0x002C6A90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
 ?j_002c6ad0@@YAXXZ,,0x002C6AD0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_004a1b30
@@ -172541,3 +172539,5 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?reset@FrameData@@QAEXXZ,,0x00670220,5,game/GameEngine/Source/GameNetwork/FrameData.cpp,matched,ZH FrameData::reset forwards to init; retail tail jmp to init ILT 0x00022340 (ilt_oracle CONFIRMED); reset ILT 0x0003BB6F CONFIRMED;model=claude-opus-5-5;host=app
 ?removeAllSequentialScripts@ScriptEngine@@QAEXPAVTeam@@@Z,,0x0033E870,5,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineNotifyTeamDestruction.cpp,matched,ZH removeAllSequentialScripts(Team*) forwards to notifyOfTeamDestruction; retail tail jmp to ILT 0x00042910 (ilt_oracle CONFIRMED notifyOfTeamDestruction); own ILT 0x00040EFD CONFIRMED;model=claude-opus-5-5;host=app
 ?getGameSpySlot@GameSpyStagingRoom@@QAEPAVGameSpyGameSlot@@H@Z,,0x00637D10,5,game/GameEngine/Source/GameNetwork/GameSpy/StagingRoomGameInfo.cpp,matched,ZH getGameSpySlot returns getSlot(index) (assert compiled out); retail tail jmp to GameInfo::getSlot ILT 0x0001EC18 (ilt_oracle CONFIRMED); own ILT 0x000061D6 CONFIRMED;model=claude-opus-5-5;host=app
+??1SupplyTruckWantsToPickUpOrDeliverBoxesState@@UAE@XZ,,0x002C6A10,5,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/SupplyTruckWantsToPickUpOrDeliverBoxesStateDeletingDestructor.cpp,matched,implicit ~SupplyTruckWantsToPickUpOrDeliverBoxesState: bare jmp State::~State ILT 0x00016725; reached from ??_G 0x002C69E0 via ILT 0x00008355;model=claude-opus-5.5;host=GreatFaram
+?j_00008355@@YAXXZ,,0x00008355,5,game/gen_small/thunks_003.cpp,matched,gen-thunk;target=0x002C6A10;model=claude-opus-5.5;host=GreatFaram
