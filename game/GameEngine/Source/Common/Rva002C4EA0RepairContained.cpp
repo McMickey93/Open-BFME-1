@@ -1,8 +1,12 @@
-// ?method@Rva002C4EA0@@QAEXPAVObject@@W4CommandSourceType@@@Z
-// partial score=1.0 date=2026-10-16
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /I.
 // stlport
-#define OBJECT_TU_MEMBERS void *unidentified_001BFE20() const; __forceinline AIUpdateInterface *getAIUpdateInterface() const;
+//
+// Orders every contained member whose template carries kind bit 0x4000 to
+// repair TARGET, after ActionManager::canRepairObject accepts the pair, and
+// remembers the target's id at +0x348. Owner identity is not recovered; the
+// name keeps the address. Shape follows the BFME 2 HordeWorkerAIUpdate private
+// repair donor.
+#define OBJECT_TU_MEMBERS void *unidentified_001BFE20() const;
 #include "game/GameEngine/Source/GameLogic/Object/object.h"
 #include "game/GameEngine/Source/GameLogic/command_source_type.h"
 #include <list>
@@ -13,7 +17,7 @@ extern ActionManager *TheActionManager;
 class AICommandInterface { public: void aiRepair(Object *,CommandSourceType); };
 class Rva002C4EA0UpdateBase { public: virtual ~Rva002C4EA0UpdateBase(); char m_pad04[0x20-4]; };
 class AIUpdateInterface : public Rva002C4EA0UpdateBase, public AICommandInterface {};
-__forceinline AIUpdateInterface *Object::getAIUpdateInterface() const { return m_ai; }
+static __forceinline AIUpdateInterface *rva002C4EA0AI(const Object *object) { return object->m_ai; }
 class Overridable { public: const Overridable *getFinalOverride() const; };
 struct Rva002C4EA0Template {
  void *m_vptr;
@@ -50,7 +54,7 @@ void Rva002C4EA0::method(Object *target,CommandSourceType source){
   if(info&&info->m_override)info=(Rva002C4EA0Template*)info->m_override->getFinalOverride();
   if(info->m_kindC8&0x4000){
    contain->slotA0(member);
-   member->getAIUpdateInterface()->aiRepair(target,CMD_FROM_AI);
+   rva002C4EA0AI(member)->aiRepair(target,CMD_FROM_AI);
    setAt348(target->m_id);
   }
  }
