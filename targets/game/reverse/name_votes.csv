@@ -2470,3 +2470,6 @@ game/GameEngine/Source/GameLogic/Object/Upgrade/MaxHealthUpgradeModule.cpp|membe
 game/GameEngine/Source/GameLogic/Object/Upgrade/MaxHealthUpgradeModule.cpp|member||m_74,9126b9519e0be5dc9a43930e,gpt-6.1-sol,20261016050242-c512be,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferCollectDirtyCells.cpp|local|TaintBuffer::collectDirtyCells|a,154b9e8154c2900bf27f0323,gpt-6.1-sol,20261016050248-273aae,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/TaintBufferCollectDirtyCells.cpp|local|TaintBuffer::collectDirtyCells|b,6613bcb44a2fb2fd83397e57,gpt-6.1-sol,20261016050248-273aae,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateModuleDataCtorThunk.cpp|member||m_field254,01aba54d6e17dc8611eb6ca1,gpt-6.1-sol,20261016050411-a2c734,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateModuleDataCtorThunk.cpp|member||m_field258,0b097ef3e7009e76180bc655,gpt-6.1-sol,20261016050411-a2c734,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/GloriousChargeUpdateModuleDataCtorThunk.cpp|member||m_field25c,e524b5bcf5b3611711fafdfd,gpt-6.1-sol,20261016050411-a2c734,2026-10-16
