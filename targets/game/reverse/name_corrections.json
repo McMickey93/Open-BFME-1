@@ -20258,5 +20258,15 @@
   "after_sha256": "15e17679412d151cb17b706aea92770571114a3b6c662ba4a6a0788f8fa96741",
   "evidence": "targets/game/reverse/identity_evidence/0082e070-stlport-od-string-rfind-find-last-not-of-char.md",
   "reason": "revert of c4c23b4869 approved by the project lead 2026-10-16: 0x0082E350 IS STLport basic_string<char>::find_last_not_of(char,size_type) (evidence kept), but the real-name row loses COMDAT selection to game/gen_small/tgrid_004.cpp and zhstl_005.cpp (whole-class basic_string<char>, earlier in link order), so the row parks on its BfmeConv1484 asm lift and placeholder name."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0038c1e0.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/System/UnitTimings0038C1E0.cpp",
+  "old_name": "format",
+  "new_name": "rva001A7A90",
+  "before_sha256": "8151a74c458631aa3563f1779a675318d1137cea9c6d9eec6715df1670244884",
+  "after_sha256": "badcd5e9e132523ce69d96f6b9b8af3d09216ca4ea939c4653066ddfa9f8373d",
+  "evidence": "targets/game/reverse/identity_evidence/0038c1e0-wave20-state-layout.md",
+  "reason": "false pairing: the banked draft's AsciiString::format declaration is still AsciiString::format in the converted source (call 0x00888FF0); rva001A7A90 is a separate TerrainLogic placer reached through ILT 0x50C9 that the draft never named. No identity changed."
  }
 ]
