@@ -1337,3 +1337,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|x,c6d74a41263083449c3b3af3,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|y,9348d81502f809a51abe1d1a,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeGetModelVertices.cpp|local|Rva006D7EA0RotateVector|z,2e3e3577755e77b1dd66f3b0,gpt-6.1-sol,20261016030254-23ab72,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2083.cpp|param|median|a,b1d17be85d64eab936b34c3e,gpt-6.1-sol,20261016030444-6bb885,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2083.cpp|param|median|b,35e9ba04e8ec07773535264f,gpt-6.1-sol,20261016030444-6bb885,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2083.cpp|param|median|c,1d15b0c7fd9018dc88607a6f,gpt-6.1-sol,20261016030444-6bb885,2026-10-16
