@@ -2891,3 +2891,8 @@ game/GameEngine/Source/GameLogic/Object/LocomotorTemplateConstructor.cpp|member|
 game/GameEngine/Source/GameLogic/Object/LocomotorTemplateConstructor.cpp|member||m_e34,c9f4a74f8bda3ad8109bdc2f,gpt-6.1-sol,20261016052519-ae1fe0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/LocomotorTemplateConstructor.cpp|member||m_e38,0a0630fcb351632f83984b8e,gpt-6.1-sol,20261016052519-ae1fe0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/LocomotorTemplateConstructor.cpp|member||m_e3c,8569809b12fabd01553911ce,gpt-6.1-sol,20261016052519-ae1fe0,2026-10-16
+game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_14,5fd6b6bb904ddf4e37af78ca,gpt-6.1-sol,20261016052525-36767e,2026-10-16
+game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_18,ea78584f2469796913969bdb,gpt-6.1-sol,20261016052525-36767e,2026-10-16
+game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_1c,b1f3211fd192f94e576ad639,gpt-6.1-sol,20261016052525-36767e,2026-10-16
+game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_20,d8cb138cc76bac2f08ad6f1d,gpt-6.1-sol,20261016052525-36767e,2026-10-16
+game/GameEngine/Source/GameLogic/System/RankInfoConstructorThunk.cpp|member||_bfme_24,99251456798b0666f0ca7391,gpt-6.1-sol,20261016052525-36767e,2026-10-16
