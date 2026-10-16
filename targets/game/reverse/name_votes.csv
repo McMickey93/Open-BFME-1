@@ -4745,3 +4745,4 @@ game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeIsO
 game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeName,c31bc43320bf7ffbed9b0e76,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
 game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeLevels,8cff0944a27cca279b526afc,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
 game/GameEngine/Source/GameLogic/System/INILightPointLevel.cpp|member||m_bfmeLoadType,f3af128ec8f34616c80a67b6,gpt-6.1-sol,20261016071310-6c4bc3,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/GettingBuiltBehavior_update.cpp|member||m_field31,10d9443ec09d791e6868f8e3,gpt-6.1-sol,20261016071315-f8787f,2026-10-16
