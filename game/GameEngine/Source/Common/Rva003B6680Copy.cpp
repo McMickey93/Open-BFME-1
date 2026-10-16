@@ -8,11 +8,12 @@
 // at +0xD8.
 //
 // Identity stays address-derived, like the rest of the family.
-// cl: /O2 /EHsc
+// cl: /O2 /EHsc /MD /DNDEBUG /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 
 #pragma inline_depth(255)
 #pragma inline_recursion(on)
+#pragma auto_inline(on)
 
 
 template <typename T>
@@ -176,4 +177,80 @@ Rva003B6680::Rva003B6680(const Rva003B6680 &other)
 	, mCC(other.mCC)
 	, mD8(other.mD8)
 {
+}
+
+// Retail 0x003A9F60: the inline element-copy vector constructor called by
+// Rva003B6680 above. The explicit Coord3D copy preserves the +0x10 cursors.
+// Donor: Open BFME 2 StlportCapturedBoneVectorCopy.cpp (0x00166110).
+#include <vector>
+#include "../../../Libraries/Include/Lib/Coord3D.h"
+extern int R2Data010EC764;
+
+// Existing retail allocation specialization and empty-allocator accessor.
+struct Gen_t_003a7bf0_p32cd { unsigned char bytes[32]; };
+class Gen_003a6710 { public: int m(int); };
+
+struct Rva003A9F60Coord : Coord3D
+{
+    Rva003A9F60Coord(const Rva003A9F60Coord &other)
+    {
+        x = other.x;
+        y = other.y;
+        z = other.z;
+    }
+};
+
+struct Rva003A9F60Element
+{
+    void *m_vptr;
+    unsigned int m_at04;
+    Rva003A9F60Coord m_position;
+    float m_scalar;
+    unsigned int m_at18;
+    bool m_flag;
+
+    Rva003A9F60Element(const Rva003A9F60Element &other)
+        : m_vptr(&R2Data010EC764), m_at04(other.m_at04),
+          m_position(other.m_position), m_scalar(other.m_scalar),
+          m_at18(other.m_at18), m_flag(other.m_flag)
+    {
+    }
+};
+
+namespace _STL {
+template<> _Vector_base<Gen_t_003a7bf0_p32cd,
+    allocator<Gen_t_003a7bf0_p32cd> >::_Vector_base(
+        unsigned int, const allocator<Gen_t_003a7bf0_p32cd> &);
+}
+
+class Rva003A9F60Vector
+    : public _STL::_Vector_base<Gen_t_003a7bf0_p32cd,
+                               _STL::allocator<Gen_t_003a7bf0_p32cd> >
+{
+    typedef _STL::allocator<Gen_t_003a7bf0_p32cd> Alloc;
+    typedef Alloc (Gen_003a6710::*Accessor)() const;
+public:
+    Rva003A9F60Vector(const Rva003A9F60Vector &other)
+        : _STL::_Vector_base<Gen_t_003a7bf0_p32cd, Alloc>(
+              (unsigned)(other._M_finish - other._M_start),
+              (((const Gen_003a6710 *)&other)->*
+                  reinterpret_cast<Accessor>(&Gen_003a6710::m))())
+    {
+        const Rva003A9F60Element *last =
+            (const Rva003A9F60Element *)other._M_finish;
+        const Rva003A9F60Element *first =
+            (const Rva003A9F60Element *)other._M_start;
+        Rva003A9F60Element *out = (Rva003A9F60Element *)_M_start;
+        while (first != last) {
+            new (out) Rva003A9F60Element(*first);
+            ++first;
+            ++out;
+        }
+        _M_finish = (Gen_t_003a7bf0_p32cd *)out;
+    }
+};
+
+void emitCopy003A9F60(void *out, const Rva003A9F60Vector &source)
+{
+    new (out) Rva003A9F60Vector(source);
 }

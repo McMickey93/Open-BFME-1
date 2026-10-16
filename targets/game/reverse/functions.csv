@@ -37170,7 +37170,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_003a50f0@@YAXXZ,,0x003A50F0,179,game/gen_asm/d_003a04a0.asm,matched,gen-dump;ghidra=FUN_007a50f0
 ?d_003a60a0@@YAXXZ,,0x003A60A0,1,game/GameEngine/Source/Common/Rva003A60C0Noop.cpp,matched,carved one byte ret with no semantic evidence; address-derived identity preserves the boundary
 ?d_003a6150@@YAXXZ,,0x003A6150,1,game/GameEngine/Source/Common/Rva003A6150.cpp,matched,carved ret body; caller and ret plus int3 boundary evidence; address-derived identity
-?d_003a9f60@@YAXXZ,,0x003A9F60,134,game/gen_asm/d_003a04a0.asm,matched,gen-dump;ghidra=FUN_007a9f60
 ?d_003ad560@@YAXXZ,,0x003AD560,548,game/gen_asm/d_003ad560.asm,matched,gen-dump;ghidra=FUN_007ad560
 ?d_003ad8b0@@YAXXZ,,0x003AD8B0,524,game/gen_asm/d_003ad560.asm,matched,gen-dump;ghidra=FUN_007ad8b0
 ?d_003adcc0@@YAXXZ,,0x003ADCC0,192,game/gen_asm/d_002e22f0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_007adcc0
@@ -172558,3 +172557,4 @@ _rva009B1ED0,,0x009B1ED0,701,game/GameEngine/Source/Common/Rva009B1ED0Filter.cpp
 ?storeWord@Rva00169FF0@@QAEXI@Z,,0x00169FF0,10,game/GameEngine/Source/Common/TinyIndexedForwarders.cpp,matched,carve rel32 target and RET4 plus INT3 prove10B; opaque word setter this+40; BFME2 AudioEventInfoPriority donor; sibling placement repair_queue dest 0016A040; identity_evidence/00169ff0-word-store.md;model=gpt-6.1-sol;host=GreatFaram
 ?get@Rva0016A010@@QBEPBVAudioEventRTS@@XZ,,0x0016A010,8,game/GameEngine/Source/Common/TinyIndexedForwarders.cpp,matched,Fresh REL32 carve RET+INT3 proves8B; constant53 forwarded to matched ThingTemplate getSound via ILT1BFD1; pointer return and receiver retained; BFME2 CallForwarders8B donor; identity_evidence/0016a010-sound-slot-forwarder.md;model=gpt-6.1-sol;host=GreatFaram
 ?get@Rva0016A020@@QBEPBVAudioEventRTS@@XZ,,0x0016A020,8,game/GameEngine/Source/Common/TinyIndexedForwarders.cpp,matched,Fresh REL32 carve RET+INT3 proves8B; constant54 forwarded to matched ThingTemplate getSound via ILT1BFD1; opaque wrapper pointer-return ABI; BFME2 CallForwarders8B donor; identity_evidence/0016a020-sound-slot-forwarder.md;model=gpt-6.1-sol;host=GreatFaram
+??0Rva003A9F60Vector@@QAE@ABV0@@Z,,0x003A9F60,134,game/GameEngine/Source/Common/Rva003B6680Copy.cpp,matched,BFME2 StlportCapturedBoneVectorCopy donor; memberwise Coord3D copy retains last-coordinate cursors; existing allocator ABI; identity_evidence/003a9f60-donor-coordinate-copy.md;model=gpt-6.1-sol;host=GreatFaram

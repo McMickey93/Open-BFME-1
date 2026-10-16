@@ -1,8 +1,11 @@
 // ?bfmeLookup008ACCF0@@YAHPAUBfmeLookupObject008ACCF0@@PAUBfmeLookupString008ACCF0@@E@Z
+// partial score=0.9951 date=2026-10-15
+// cl: /O2 /MD /DNDEBUG
+// ?bfmeLookup008ACCF0@@YAHPAUBfmeLookupObject008ACCF0@@PAUBfmeLookupString008ACCF0@@E@Z
 // partial score=0.55 date=2026-09-03
 // Open-BFME5 conversion.
 
-int bfmeCompareVSC(const char *a, const char *b);
+extern "C" int __cdecl _strcmpi(const char *a, const char *b);
 
 struct BfmeLookupString008ACCF0Header
 {
@@ -13,6 +16,7 @@ struct BfmeLookupString008ACCF0Header
 struct BfmeLookupString008ACCF0
 {
 	BfmeLookupString008ACCF0Header *m_header;
+ bool matches(const char *p) const { return _strcmpi((const char *)m_header+8,p)==0; }
 };
 
 struct BfmeLookupTable008ACCF0
@@ -40,7 +44,7 @@ struct BfmeLookupTableView008ACCF0
 struct BfmeLookupTableHolder008ACCF0
 {
 	char m_padding00[4];
-	BfmeLookupTable008ACCF0 *m_table;
+	char *m_table;
 };
 
 struct BfmeLookupOwner008ACCF0
@@ -63,21 +67,15 @@ int bfmeLookup008ACCF0(BfmeLookupObject008ACCF0 *object,
 	register unsigned char useSecond = include;
 	for (;;)
 	{
-		BfmeLookupTable008ACCF0 *table = object->m_owner->m_holder->m_table;
-		int firstCount = table->m_firstCount;
-		BfmeLookupTableView008ACCF0 *view =
-			(BfmeLookupTableView008ACCF0 *)((char *)table + 8);
-		int i = 0;
-		if (firstCount > 0)
-		{
-			do
-			{
-				if (bfmeCompareVSC((const char *)view->m_firstValues[i * 2],
-					(const char *)((char *)needle->m_header + 8)) == 0)
+		BfmeLookupTableView008ACCF0 *view = (BfmeLookupTableView008ACCF0 *)
+            ((char *)object->m_owner->m_holder->m_table + 8);
+        int firstCount = view->m_firstCount;
+		int i;
+        for(i=0;i<view->m_firstCount;++i)
+        {
+				if (needle->matches((const char *)view->m_firstValues[i * 2]))
 					return view->m_resultValues[view->m_firstValues[i * 2 + 1]];
-				++i;
-			} while (i < view->m_firstCount);
-		}
+        }
 
 		if (useSecond != 0)
 		{
@@ -86,16 +84,16 @@ int bfmeLookup008ACCF0(BfmeLookupObject008ACCF0 *object,
 			{
 				do
 				{
-					if (bfmeCompareVSC((const char *)view->m_secondValues[j * 4 + 1],
-						(const char *)((char *)needle->m_header + 8)) == 0)
+					if (needle->matches((const char *)view->m_secondValues[j * 4 + 1]))
 						return view->m_resultValues[view->m_secondValues[j * 4 + 2]];
 					++j;
 				} while (j < view->m_secondCount);
 			}
 		}
 
-		object = object->m_next;
-		if (object == 0)
-			return 0;
+		BfmeLookupObject008ACCF0 *next = object->m_next;
+        if (next == 0) return 0;
+        useSecond = 0;
+        object = next;
 	}
 }
