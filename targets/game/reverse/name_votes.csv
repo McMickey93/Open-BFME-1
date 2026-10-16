@@ -1652,3 +1652,6 @@ game/GameEngine/Source/Common/T2CtypeTableFacets.cpp|local|T2WideCtype::toLowerR
 game/GameEngine/Source/Common/T2CtypeTableFacets.cpp|param|T2WideCtype::narrow|c,72701f1d57f44927d29c047e,gpt-6.1-sol,20261016033008-766852,2026-10-16
 game/GameEngine/Source/Common/T2CtypeTableFacets.cpp|local|T2WideCtype::narrowRange|c,401fe1c6f34ab5f495a05db4,gpt-6.1-sol,20261016033008-766852,2026-10-16
 game/GameEngine/Source/Common/T2CtypeTableFacets.cpp|local|T2WideCtype::narrowRange|v,0bf068540420464ef61a6d52,gpt-6.1-sol,20261016033008-766852,2026-10-16
+game/GameEngine/Source/Common/Rva009C8130ByteDispersion.cpp|function||rva009C8130,f70ecc65f4506674869dc794,gpt-6.1-sol,20261016033506-dffeca,2026-10-16
+game/GameEngine/Source/Common/Rva009C8130ByteDispersion.cpp|local|rva009C8130|y,dbb653ea4274b292ad12357d,gpt-6.1-sol,20261016033506-dffeca,2026-10-16
+game/GameEngine/Source/Common/Rva009C8130ByteDispersion.cpp|local|rva009C8130|p,661e120930ad6a66b0c72e1e,gpt-6.1-sol,20261016033506-dffeca,2026-10-16
