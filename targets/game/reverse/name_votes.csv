@@ -1807,3 +1807,7 @@ game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataCon
 game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataConstructorThunk.cpp|member||m_b15,b725acd313de0e69d93b73a3,gpt-6.1-sol,20261016035652-8fd48f,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/RainOfFireUpdateModuleDataCtorThunk.cpp|member||m_28,f9de62143e1c4adeea21cdf7,gpt-6.1-sol,20261016035721-129ad0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/RainOfFireUpdateModuleDataCtorThunk.cpp|member||m_2c,bab4b2948f752c86bf0a2a39,gpt-6.1-sol,20261016035721-129ad0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_flag3C,5fddaef0a0144723c913786d,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_flag3D,29cd2c8deb95281ebce7b8a6,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_value40,f4f5f7003fadd62bccc2fa87,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AutoPickUpUpdateModuleDataCtorThunk.cpp|member||m_flag44,ba4a4d5c66c8f5b07315f74c,gpt-6.1-sol,20261016035728-8c40ce,2026-10-16
