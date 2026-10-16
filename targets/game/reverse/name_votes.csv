@@ -1545,3 +1545,11 @@ game/Libraries/Source/Apt/BfmeFlushSlots1289.cpp|local|BfmeSlotDispatcher1281::b
 game/Libraries/Source/Apt/BfmeFlushSlots1289.cpp|local|BfmeSlotDispatcher1281::bfmeFlushSlots1289|y,1a344d45fa0b16f8180d06e1,gpt-6.1-sol,20261016032505-cba571,2026-10-16
 game/Libraries/Source/Apt/BfmeFlushSlots1289.cpp|local|BfmeSlotDispatcher1281::bfmeApplyPosition1291|x,67eadcf0b99f15cce3929256,gpt-6.1-sol,20261016032505-cba571,2026-10-16
 game/Libraries/Source/Apt/BfmeFlushSlots1289.cpp|local|BfmeSlotDispatcher1281::bfmeApplyPosition1291|y,b019a4820b24e450ad123527,gpt-6.1-sol,20261016032505-cba571,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|member||field04,d180c77999fd7ac8ccae25cc,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|~Rva8CD130String|p,e48ade3e15cf553f8754fc51,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|param|call80|s,6e3daf1dd831b8fdd339821b,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|param|call88|s,0c69eda93e9fdc94b8f221cc,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|stringKind|f,bb94b7529748b07af7300348,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|stringKind|t,95272adaeda1bd01d72ebdb6,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|nativeStringSlot80At008B3AA0|arg,ec09343f51bee902a7d35a46,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
+game/Libraries/Source/EA/Apt/NativeStringSlots008B3AA0.cpp|local|nativeStringSlot88At008B3B70|arg,933a99a7b23fc04984a6dec8,gpt-6.1-sol,20261016032512-566fc3,2026-10-16
