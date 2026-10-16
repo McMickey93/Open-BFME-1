@@ -2700,3 +2700,7 @@ game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstruct
 game/GameEngine/Source/GameLogic/Object/Damage/EvacuateDamageModuleDataConstructor.cpp|member||m_bfme14,a6c52f95fab872fe1d09a528,gpt-6.1-sol,20261016051850-f09630,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeFlagBA,6effd3ac9dbe2e2c441e19c8,gpt-6.1-sol,20261016052033-d5ee3f,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,39b3e0a45854f434e35d5dc0,gpt-6.1-sol,20261016052033-d5ee3f,2026-10-16
+game/GameEngine/Source/Common/StateMachineCtorThunk.cpp|member||m_slot20,8b98eef4f08dda5d48837585,gpt-6.1-sol,20261016052107-f710c6,2026-10-16
+game/GameEngine/Source/Common/StateMachineCtorThunk.cpp|member||m_slot24,d8e56251995a8b8e2bed00b5,gpt-6.1-sol,20261016052107-f710c6,2026-10-16
+game/GameEngine/Source/Common/StateMachineCtorThunk.cpp|member||m_slot28,1984862aaabd1cc21bb59a11,gpt-6.1-sol,20261016052107-f710c6,2026-10-16
+game/GameEngine/Source/Common/StateMachineCtorThunk.cpp|member||m_slot2c,3074ae0fbfb03ff3aec2b98b,gpt-6.1-sol,20261016052107-f710c6,2026-10-16
