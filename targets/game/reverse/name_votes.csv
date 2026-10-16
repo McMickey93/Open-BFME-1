@@ -5843,3 +5843,4 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdateComputeQuickPath.cpp|para
 game/GameEngineDevice/Source/W3DDevice/GameLogic/W3DTerrainLogicRva006BE890.cpp|member||m_bfmeTerrainMap,bf4502a061af85b4f172d0fb,gpt-6.1-sol,20261016133442-93cb2a,2026-10-16
 game/GameEngine/Source/Common/BfmeConv570.cpp|member||m_bfmeCur,99ae3b3961d8d1ea22cda1db,gpt-6.1-sol,20261016133501-7c62e9,2026-10-16
 game/GameEngine/Source/Common/Bfme5FortyNine.cpp|member||m_bfmeValue,e08eb1e65451b5a40bf24bb4,gpt-6.1-sol,20261016133526-2c2755,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1895.cpp|member||m_bfmeIndexAH,7b0b50e7a05643b2a605e9ef,gpt-6.1-sol,20261016133539-1ba916,2026-10-16
