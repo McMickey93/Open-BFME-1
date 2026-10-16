@@ -2840,3 +2840,9 @@ game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cp
 game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f1,b38d76650bf4ffe7ef537284,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f2,3dd6c84130c5909a7efb186a,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/HordeUpdateModuleDataCtorThunk.cpp|member||m_f3,02bfbe5478ee29e0c1d2d51d,gpt-6.1-sol,20261016053001-b6f33e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_08,df5f14e911b099d6fe32401e,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_0c,4c38d2b045001b418bd6dd7e,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_10,d086e730af5770c2cecc9849,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_14,3aa3d7eea35bf7058e48081b,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_18,8d78bfce649ca53629a3db96,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/DefaultProductionExitUpdateFriendNewModuleDataThunk.cpp|member||m_1c,ba6f849f0981ef59caa65ef2,gpt-6.1-sol,20261016053015-1bb503,2026-10-16
