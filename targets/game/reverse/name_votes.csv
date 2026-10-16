@@ -4981,3 +4981,6 @@ game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|p,22
 game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|s,4320d3d9e3bbda9f17109dbb,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
 game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|n,ec40cc30e970dfe58493c2e4,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
 game/GameEngine/Source/Common/Rva00409F40Loop.cpp|local|BfmeObj9F::bfmeGo9F|h,710c6196d2ae33877dcca463,gpt-6.1-sol,20261016072237-68ae18,2026-10-16
+game/GameEngine/Source/GameLogic/Pathfinder/PathfinderFindSafePathBfme.cpp|member||m_unknown00,553c91a2c5d6335ec2515131,gpt-6.1-sol,20261016072512-3ae3d7,2026-10-16
+game/GameEngine/Source/GameLogic/Pathfinder/PathfinderFindSafePathBfme.cpp|member||m_bfmeSlots,ac26ebb4586e556148e4e558,gpt-6.1-sol,20261016072512-3ae3d7,2026-10-16
+game/GameEngine/Source/GameLogic/Pathfinder/PathfinderFindSafePathBfme.cpp|member||m_bfmeCursor,6d43746197eeb2b7100ad9b0,gpt-6.1-sol,20261016072512-3ae3d7,2026-10-16
