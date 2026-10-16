@@ -4754,3 +4754,12 @@ game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_onEnter.cpp|member|
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_onEnter.cpp|member||m_field214,c030fde467a94d14c71c98e9,gpt-6.1-sol,20261016071338-743653,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_onEnter.cpp|member||m_field50,74556b1574dd2d87c8d58ea5,gpt-6.1-sol,20261016071338-743653,2026-10-16
 game/GameEngine/Source/GameLogic/AI/AIAttackMeleeEngageState_onEnter.cpp|member||m_field78,0a72146ac576bd1f44d74038,gpt-6.1-sol,20261016071338-743653,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|type||Rva001E6930AIUpdate,5817aab0ba2751ea38273109,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|type||Rva001E6930AIData,9bedc39824c7a22ecd3ce58f,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|type||Rva001E6930WeaponTemplate,21b441596ee9c5a6b843d5ed,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|member||m_1cc,7328849aab487b477002990a,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|member||m_204,724140ba1a9c3f89a8f0e3b4,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|member||m_0c,4dbfa8c109a266d3e7d2313b,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|member||m_14,8a75a1148d9532e751989526,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|local|Weapon::isGoalPosWithinAttackRange|s,a96434b0acaa07e607a28822,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|local|Weapon::isGoalPosWithinAttackRange|t,25d3fb608ab088ea545a39a4,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
