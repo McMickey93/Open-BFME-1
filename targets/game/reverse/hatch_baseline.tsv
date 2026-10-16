@@ -2141,7 +2141,6 @@ emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptAction_ParseActionFalse
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActionsExecuteActionThunk.cpp	*	39600
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doForceObjectSelection_Thunk.cpp	*	481
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doMoveCameraAlongWaypointPath_Thunk.cpp	*	563
-emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doPlaySoundEffect_Thunk.cpp	*	266
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doRemoveCommandBarButton_Thunk.cpp	*	463
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doRotateCameraTowardObject_Thunk.cpp	*	118
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doSkirmishCommandButtonOnMostValuable_Thunk.cpp	*	795

@@ -1126,7 +1126,6 @@ void ScriptActions::doDebugMessage(const AsciiString& msg, Bool pause)
 //-------------------------------------------------------------------------------------------------
 /** doPlaySoundEffect */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doPlaySoundEffect_Thunk.cpp
 // ?doPlaySoundEffect@ScriptActions@@IAEXABVAsciiString@@@Z present-unmatched
 void ScriptActions::doPlaySoundEffect(const AsciiString& sound)
 {

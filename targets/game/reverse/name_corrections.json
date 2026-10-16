@@ -20318,5 +20318,25 @@
   "after_sha256": "b161c0c02bf9b771ce4c6d6226d64c03853dcd496839922b4c94696768195b56",
   "evidence": "targets/game/reverse/identity_evidence/008ad8f0-layout-flag-join.md",
   "reason": "approved by the project lead 2026-10-16: false pairing. g_aptTextLayout01337870 was a bank-only TU-local alias of the host callback cell 0x01337870, which the matched data row ?g_bfmeSlot14VB@@3P6AXXZA owns; the landed 0x008AD8F0 body reads that owned name and casts it to the new function-pointer typedef Rva008AD8F0LayoutCallback, so no descriptive name is replaced by a placeholder"
+ },
+ {
+  "old_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doPlaySoundEffect_Thunk.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_Rva002F22A0TeamHomeGroup.cpp",
+  "old_name": "doPlaySoundEffect",
+  "new_name": "rva002F22A0",
+  "before_sha256": "147276e14e4db4de5224727b0f32caa9450a65ab6ba32227f0e8157f820d7b83",
+  "after_sha256": "fda4705946d0343d046ad83f4ce680adeaac34cd98092d87f33ea017953fd5bb",
+  "evidence": "targets/game/reverse/identity_evidence/002f22a0-team-home-group.md",
+  "reason": "ILT 0x00041E93 contradicts doPlaySoundEffect and all 380 known ScriptActions do* names with this signature; the 266B body is a team home AI-group action with no Zero Hour twin so the identity is unknown and the row keeps an address-derived name"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "doPlaySoundEffect",
+  "new_name": "rva002F22A0",
+  "before_sha256": "1d6b5d300a0e0164182468bbf7daded70f8feeddd5ebf7069052a5e4865ca404",
+  "after_sha256": "8b190f061fb12c3a75c497043a93f6c50086f9922959a50ad182e46803f4dcfd",
+  "evidence": "targets/game/reverse/identity_evidence/002f22a0-team-home-group.md",
+  "reason": "ILT 0x00041E93 contradicts doPlaySoundEffect and all 380 known ScriptActions do* names with this signature; the 266B body is a team home AI-group action with no Zero Hour twin so the identity is unknown and the row keeps an address-derived name"
  }
 ]
