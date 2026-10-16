@@ -1412,3 +1412,15 @@ game/GameEngine/Source/Common/BfmeConv1112.cpp|local|BfmeV1112::bfmeGo1112B|h,6b
 game/GameEngine/Source/Common/BfmeConv1112.cpp|local|BfmeV1112::bfmeGo1112B|p,dc09d691eda1eae35b27fb77,gpt-6.1-sol,20261016031144-0fafc3,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1112.cpp|local|BfmeV1112::bfmeGo1112B|q,cdb8311e243e49ab4f5dd836,gpt-6.1-sol,20261016031144-0fafc3,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1112.cpp|local|BfmeV1112::bfmeGo1112B|w,795eafe13484783e818451c2,gpt-6.1-sol,20261016031144-0fafc3,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|type||Bfme5WalkSub,aa08fcfaeac14e78f80252d6,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|type||Bfme5WalkIface,72ce5df86180e1781235f699,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|type||Bfme5WalkItem,31be8a52a78f5b06e5be9324,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|member||m_bfmeItems,cadee71b2d46e64e8adb71e4,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|local|Bfme5WalkOwner::bfmeNotifyAll|p,149ab7d9485dcecce128928f,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|local|Bfme5WalkOwner::bfmeNotifyAll|s,1bbfc013b6ec7fd9d2eaa88a,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|param|bfme5WalkFindHit|o,a8aecbf2b7bc577c776342b5,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|local|bfme5WalkFindHit|p,5621e6be78abd32e8052a43e,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|local|bfme5WalkFindHit|h,51e43669cb6022f1c6481b0a,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|param|bfme5WalkFirstValue|o,ac5f1eedc902fbad4f961d86,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|local|bfme5WalkFirstValue|p,9d3b914095f9084094c18c50,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
+game/GameEngine/Source/Common/Bfme5IfaceWalk.cpp|local|bfme5WalkFirstValue|a,46875dd7cd17a1cd055e200a,gpt-6.1-sol,20261016031151-d8f6e6,2026-10-16
