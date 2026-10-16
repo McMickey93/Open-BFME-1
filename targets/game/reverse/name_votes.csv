@@ -5784,3 +5784,5 @@ game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.c
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehavior_update.cpp|local|BezierProjectileBehavior::update|d,5aab4479b3eb710f2ab8e8a6,gpt-6.1-sol,20261016130911-1fb0f9,2026-10-16
 game/GameEngine/Source/Common/Rva000D4360Owner.cpp|param|rva000D4360|arg0,f9fdaf9b50e0c0752689d2ad,gpt-6.1-sol,20261016130916-baa830,2026-10-16
 game/GameEngine/Source/Common/INI/INIMapCache.cpp|local|INI::parseMapCacheDefinition|c,5588af729057563045682e35,gpt-6.1-sol,20261016130921-e1b82f,2026-10-16
+game/GameEngine/Source/GameLogic/Map/FootprintIterator001A1460.cpp|local|FootprintIterator001A1460::FootprintIterator001A1460|c,12756ae6d5c1093871f76710,gpt-6.1-sol,20261016130926-9c913e,2026-10-16
+game/GameEngine/Source/GameLogic/Map/FootprintIterator001A1460.cpp|local|FootprintIterator001A1460::FootprintIterator001A1460|s,081edef6c14d17768593feda,gpt-6.1-sol,20261016130926-9c913e,2026-10-16
