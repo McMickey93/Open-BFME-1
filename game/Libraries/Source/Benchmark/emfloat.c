@@ -261,6 +261,23 @@ for(i=0;i<INTERNAL_FPF_PRECISION;i++)
 return(!n);
 }
 
+/* BFME-2 emfloat.c uses a constant index array to defer the OR reduction
+** reassociation. This order reproduces the result-zero test in AddSub's
+** 0x00879900 body; every mantissa word is still tested exactly once. Keep
+** the original helper and the independently matched multiply helper intact. */
+static __forceinline int IsMantissaZero00879900(u16 *mant)
+{
+int i;
+int n;
+int order[INTERNAL_FPF_PRECISION] = {0,2,1,3};
+
+n=0;
+for(i=0;i<INTERNAL_FPF_PRECISION;i++)
+        n|=mant[order[i]];
+
+return(!n);
+}
+
 /* BFME-2 donor 3f2d993a9762 uses this equivalent OR order for
 ** MultiplyInternalFPF's extra bits. Keep existing helpers unchanged. */
 // ?IsMantissaZero00879C80@@YAHPAG@Z absent-from-retail
@@ -670,6 +687,8 @@ case NORMAL_NORMAL:
                         z->exp = locy.exp;
                 }
 
+        }
+
                 if (locx.sign ^ locy.sign ^ operation)
                 {
                         /*
@@ -709,7 +728,7 @@ case NORMAL_NORMAL:
                                 */
                         }
 
-                        if (IsMantissaZero(z->mantissa))
+                        if (IsMantissaZero00879900(z->mantissa))
                         {
                                 z->type = IFPF_IS_ZERO;
                                 z->sign = 0; /* positive */
@@ -749,7 +768,6 @@ case NORMAL_NORMAL:
                                         z->type = IFPF_IS_NORMAL;
                         }
                 }
-        }
         break;
 
 case INFINITY_INFINITY:
