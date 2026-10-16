@@ -4844,3 +4844,5 @@ game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTarget002439F
 game/GameEngine/Source/GameLogic/AI/PathfindGetRadiusAndCenterE30.cpp|member||m_unknown00,d652613528581fd86aca681b,gpt-6.1-sol,20261016072055-364586,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfindGetRadiusAndCenterE30.cpp|local|Pathfinder::validateEndpoint003E2140|b,957bf3c41424ca746346bc4f,gpt-6.1-sol,20261016072055-364586,2026-10-16
 game/GameEngine/Source/GameLogic/AI/PathfindGetRadiusAndCenterE30.cpp|local|Pathfinder::validateEndpoint003E2140|a,bee73ac36842bef3f7df8ddb,gpt-6.1-sol,20261016072055-364586,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/GiantBirdAIUpdate.cpp|member||m_goalPosition47c,c02956899fb2caa6b79b41fa,gpt-6.1-sol,20261016072113-bded8b,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/GiantBirdAIUpdate.cpp|member||m_flags344,1d06be554140977918043090,gpt-6.1-sol,20261016072113-bded8b,2026-10-16
