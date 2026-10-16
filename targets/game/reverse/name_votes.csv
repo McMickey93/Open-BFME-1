@@ -2447,3 +2447,8 @@ game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainModuleDataCtorThu
 game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainModuleDataCtorThunk.cpp|member||m_330,42ec144f4704202ffb6a6353,gpt-6.1-sol,20261016045009-a8ede0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainModuleDataCtorThunk.cpp|member||m_334,91488c120b3d6f8e05331034,gpt-6.1-sol,20261016045009-a8ede0,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContainModuleDataCtorThunk.cpp|member||m_338,f84d46c7d4289e49a8daf997,gpt-6.1-sol,20261016045009-a8ede0,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_x71,2a37543672de7e3c4ad722b1,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_x85,9f2458aced87b68d69a209f4,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_x86,10daa2c23e2408a50174a25f,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_xa0,68c855f3ad7384dc9aa305ec,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehaviorModuleDataCtor.cpp|member||m_xa4,bfd5bbb006d33564390a80ba,gpt-6.1-sol,20261016045016-d578d4,2026-10-16
