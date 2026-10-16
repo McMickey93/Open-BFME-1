@@ -982,3 +982,24 @@ void AABTreeBuilderClass::Build_W3D_AABTree_Recursive
 
 
 
+
+// BFME 2 R3ScalarFieldConstructors1.cpp six-word zeroing shape.
+// Retain an opaque initializer: no caller proves an original type name.
+class Rva005CB1B0
+{
+public:
+    Rva005CB1B0 *initialize();
+private:
+    int m_at00, m_at04, m_at08, m_at0C, m_at10, m_at14;
+};
+
+Rva005CB1B0 *Rva005CB1B0::initialize()
+{
+    m_at00 = 0;
+    m_at04 = 0;
+    m_at08 = 0;
+    m_at0C = 0;
+    m_at10 = 0;
+    m_at14 = 0;
+    return this;
+}
