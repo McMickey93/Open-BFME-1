@@ -1740,3 +1740,4 @@ game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleD
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_effectA0,40dca9dea2a7b50adc74507a,gpt-6.1-sol,20261016035842-4fac06,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_invalidA4,2097493881bb880a94306570,gpt-6.1-sol,20261016035842-4fac06,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp|member||m_valueA8,f7d4f84331fa2a5cf88b7f68,gpt-6.1-sol,20261016035842-4fac06,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/W3DSnowManagerRender.cpp|type||Rva00725710DeviceVtable,f5f6952a55fc1e73ee9949d4,gpt-6.1-sol,20261016035842-4c6507,2026-10-16
