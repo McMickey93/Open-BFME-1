@@ -263,14 +263,6 @@ public:
 };
 
 extern Gen_00C70110Target TheBfmeObject_00C70110;		// 0x12f3370
-class Gen_00C70120Target
-{
-public:
-	void bfmeForward(void);					// retail 0x000398FB
-};
-
-class UnicodeString;
-extern _STL::list<UnicodeString, _STL::allocator<UnicodeString> > Rva00EF3884BriefingList;		// 0x12f3884
 class Gen_00C70130Target
 {
 public:
@@ -1001,11 +993,6 @@ void bfmeForward_00C70100(void)
 void bfmeForward_00C70110(void)
 {
 	TheBfmeObject_00C70110.bfmeForward();
-}
-// ?bfmeForward_00C70120@@YAXXZ
-void bfmeForward_00C70120(void)
-{
-	reinterpret_cast<Gen_00C70120Target *>(&Rva00EF3884BriefingList)->bfmeForward();
 }
 // ?bfmeForward_00C70130@@YAXXZ
 void bfmeForward_00C70130(void)
