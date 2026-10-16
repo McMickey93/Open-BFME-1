@@ -4763,3 +4763,8 @@ game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|me
 game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|member||m_14,8a75a1148d9532e751989526,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|local|Weapon::isGoalPosWithinAttackRange|s,a96434b0acaa07e607a28822,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Weapon_isGoalPosWithinAttackRange.cpp|local|Weapon::isGoalPosWithinAttackRange|t,25d3fb608ab088ea545a39a4,gpt-6.1-sol,20261016071345-02ba86,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|type||BfmeSlotHF,8b7c95b1e6106beb7d792099,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeInnerHF,5eecdbbb79f9ea623c41674e,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeKeyHF,127560135482e7492da797bf,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeThingHF,6782dfe4c41ac2c3e6cf55cf,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
+game/GameEngine/Source/GameLogic/Object/SpecialPower/RepairSpecialPowerDoSpecialPower.cpp|member||m_bfmeSlotHF,e196870eb201b74bccbf82e0,gpt-6.1-sol,20261016071351-2aa02d,2026-10-16
