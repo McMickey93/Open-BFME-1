@@ -5542,3 +5542,6 @@ game/GameEngine/Source/Common/BfmeConv1515.cpp|local|BfmeThingVNJ::bfmeGetVNJ|p,
 game/GameEngine/Source/Common/BfmeConv1409.cpp|member||m_bfmeArr,2a8f57c9aea35fb772e6ed8f,gpt-6.1-sol,20261016122245-b8b4e2,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1409.cpp|function|BfmeBlockVKS@|bfmeNotVKS,0cbcb067171b2d6568c95c78,gpt-6.1-sol,20261016122245-b8b4e2,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1409.cpp|local|BfmeBlockVKS::bfmeNotVKS|t,49d099cc50064bfcee628fa8,gpt-6.1-sol,20261016122245-b8b4e2,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Gen_006CC000_TerrainBit.cpp|type||Gen_006CC000Terrain,2e2bbcd42e131f946f7f3fbc,gpt-6.1-sol,20261016122440-a795fc,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Gen_006CC000_TerrainBit.cpp|local|Gen_006CC000Terrain::query|x,ad3d2f87111017401ede3106,gpt-6.1-sol,20261016122440-a795fc,2026-10-16
+game/GameEngineDevice/Source/W3DDevice/GameClient/Gen_006CC000_TerrainBit.cpp|local|Gen_006CC000Terrain::query|y,ebc4aec710993fdbb236dc8c,gpt-6.1-sol,20261016122440-a795fc,2026-10-16
