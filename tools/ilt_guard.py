@@ -29,6 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
+import abi_view  # noqa: E402
 import ilt_oracle as O  # noqa: E402
 
 BASELINE = O.REVERSE / "ilt_contradicted_baseline.txt"
@@ -76,7 +77,7 @@ def changed(diff_args):
             # An abi-view= pin is a compilation view whose decoration differs
             # from the ILT owner's by definition (tools/abi_view.py); it claims
             # no identity, so the oracle has nothing to judge.
-            if src == "pins" and "abi-view=" in ",".join([r.get("notes") or ""] + (r.get(None) or [])):
+            if src == "pins" and abi_view.is_view(",".join([r.get("notes") or ""] + (r.get(None) or []))):
                 continue
             if (rva, r["name"]) not in old:
                 out.append((src, rva, r["name"] or ""))

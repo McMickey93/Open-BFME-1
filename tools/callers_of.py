@@ -335,7 +335,11 @@ def closure(seeds_path):
         return max(states, key=STATES.index)
 
     pins = collections.defaultdict(list)
+    import abi_view
     for r in csv.DictReader(open('targets/game/reverse/symbols.csv', newline='')):
+        # an abi-view= pin is a compilation view and identifies nothing (tools/abi_view.py)
+        if abi_view.is_view(','.join([r.get('notes') or ''] + (r.get(None) or []))):
+            continue
         pins[int(r['address'], 16)].append(r['name'])
     prefixes = tuple(cfg['anonymous_prefixes'])
     substrings = cfg['anonymous_substrings']

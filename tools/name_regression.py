@@ -20,6 +20,7 @@ from functools import lru_cache
 from dataclasses import dataclass
 from pathlib import Path
 
+import abi_view
 import name_oracle as oracle
 import layout_history
 
@@ -768,6 +769,8 @@ def _ilt_respellings(root, old, new):
     # (?destroy@ProductionPrerequisiteDestructorShim pinned at 0x753450,
     # the ?j_00753450 row; re_attempts 28c943e424).
     for row in csv.DictReader(io.StringIO(read(root, old, SYMBOLS) or '')):
+        if _is_view(row):
+            continue
         try:
             rva = int(row['address'], 16)
         except (KeyError, TypeError, ValueError):
@@ -793,12 +796,20 @@ def _ilt_respellings(root, old, new):
     return recorded, ilt
 
 
+def _is_view(row):
+    """An abi-view= pin (tools/abi_view.py): a compilation view, never a
+    recorded name, so it pre-authorises no rename and settles nothing."""
+    return abi_view.is_view(','.join([row.get('notes') or ''] + (row.get(None) or [])))
+
+
 def _recorded_components(root, ref):
     """Name component -> RVAs where a symbols.csv pin or DIR32 record (a
     candidate, AGENTS.md) spells it as the method/datum or its owner."""
     out = defaultdict(set)
     for path, column, base in ((SYMBOLS, 'address', 0), (DIR32_RECORD, 'va', IMAGE_BASE)):
         for row in csv.DictReader(io.StringIO(read(root, ref, path) or '')):
+            if path == SYMBOLS and _is_view(row):
+                continue
             try:
                 rva = int(row[column], 16) - base
             except (KeyError, TypeError, ValueError):
@@ -944,6 +955,8 @@ def _add_base_pins(root, old, candidates, recorded, names):
         return
     pins = defaultdict(list)
     for row in csv.DictReader(io.StringIO(read(root, old, SYMBOLS) or '')):
+        if _is_view(row):
+            continue
         name = row.get('name') or ''
         try:
             rva = int(row['address'], 16)
@@ -971,7 +984,9 @@ def _without_short_rva_respellings(candidates, root, old):
             if text is None:
                 text = '\n'.join(line.split(',', 1)[0]
                                  for path in (FUNCTIONS, SYMBOLS, DATA_ROWS)
-                                 for line in (read(root, old, path) or '').splitlines())
+                                 for line in (read(root, old, path) or '').splitlines()
+                                 if not (path == SYMBOLS and abi_view.is_view(line.split(',', 2)[2]
+                                                                               if line.count(',') >= 2 else '')))
             if re.search(r'(?:(?<![A-Za-z0-9_])|(?<=[UVTW]))' + re.escape(f.new_name)
                          + r'(?![A-Za-z0-9_])', text):
                 continue

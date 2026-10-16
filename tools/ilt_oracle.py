@@ -42,6 +42,9 @@ import struct
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import abi_view  # noqa: E402  (is_view: the one abi-view= field test)
+
 ROOT = Path(__file__).resolve().parents[1]
 REVERSE = ROOT / "targets/game/reverse"
 WINDOWS = REVERSE / "ilt_windows.tsv"
@@ -195,7 +198,7 @@ def ledger_rows(root=ROOT):
             for r in csv.DictReader(f):
                 # abi-view= pins are compilation views, never identities
                 # (tools/abi_view.py): no window, anchor or verdict reads them.
-                if src == "pins" and "abi-view=" in ",".join([r.get("notes") or ""] + (r.get(None) or [])):
+                if src == "pins" and abi_view.is_view(",".join([r.get("notes") or ""] + (r.get(None) or []))):
                     continue
                 try:
                     yield src, r["name"], int(r[col], 16), r

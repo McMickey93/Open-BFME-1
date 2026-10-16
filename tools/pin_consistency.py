@@ -708,14 +708,14 @@ class Scanner:
         routes = load_routes(pins_path)
         # An abi-view= row is a compilation view, never an identity (approved by
         # the project lead 2026-10-16; tools/abi_view.py): admitted only when the
-        # image proves it, and then out of one-name-one-body like a route. A row
-        # carrying both is judged as a view, since a view's target is named
-        # differently by definition.
+        # image proves it. A view's target is named differently by definition, so
+        # it is judged by verify_views instead of the route= verdict; it stays in
+        # one-name-one-body, because the resolver offers every address a name has.
         views = verify_views(pins_path)
         verify_routes(self, {k: v for k, v in routes.items() if k not in views})
         multi = 0
         for name in sorted(pins):
-            addresses = [a for a in pins[name] if (name, a) not in routes and (name, a) not in views]
+            addresses = [a for a in pins[name] if (name, a) not in routes or (name, a) in views]
             if len(addresses) < 2:
                 continue
             multi += 1
@@ -739,16 +739,17 @@ def candidate_lists():
     lists = collections.defaultdict(list)
     routes = load_routes()
     import abi_view
-    views = {(n, a) for n, a, _c in abi_view.view_rows()}
+    views = {(n, a) for n, a, _c in abi_view.view_rows()}  # candidates like any pin
     for row in build.load_all_function_rows():
         rva = int(row["target_rva"], 16)
         if rva not in lists[row["name"]]:
             lists[row["name"]].append(rva)
     for name, addresses in load_pins().items():
         for address in addresses:
-            # A route or a view is a candidate to the resolver and never an
-            # identity, so it is out of this report as it is out of scan().
-            if address not in lists[name] and (name, address) not in routes and (name, address) not in views:
+            # A route is a candidate to the resolver and never an identity, so
+            # it is out of this report as it is out of scan(); a view stays in,
+            # since the resolver tries it like any pin.
+            if address not in lists[name] and ((name, address) not in routes or (name, address) in views):
                 lists[name].append(address)
     return lists
 

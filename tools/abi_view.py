@@ -38,7 +38,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import build  # noqa: E402
+# build is imported where it is used: is_view and ABI_VIEW_RE are read by
+# light tools (name_regression, brief, callers_of) that must not pay for it.
 
 ABI_VIEW_RE = re.compile(r"(?:^|;)\s*abi-view=([^;]+)")
 LEGACY_RE = re.compile(r"call view|abi view|aggregate-return view|by-value.*view", re.IGNORECASE)
@@ -236,12 +237,12 @@ def stack_bytes(slots):
 
 def returns_agree(view, canonical):
     """A caller of the view reads what the canonical body leaves: equal classes,
-    a void view over any EAX value, or a register aggregate over EAX/EDX:EAX;
-    "?" (extern "C" names) carries no return information and agrees."""
+    or a void view over an EAX value. A register aggregate (EAX or EDX:EAX,
+    size unknown) agrees only with another; "?" (extern "C" names) carries no
+    return information and agrees."""
     if "?" in (view, canonical) or view == canonical:
         return True
-    return (view == "v" and canonical in "iq") or (view == "R" and canonical in "iq") \
-        or (canonical == "R" and view in "viq")
+    return view == "v" and canonical == "i"
 
 
 def final_ret(body):
@@ -258,112 +259,232 @@ def final_ret(body):
 
 
 class Context:
-    """The retail image and the function ledger, loaded once."""
+    """The retail image, the function ledger and the pins, loaded once."""
 
-    def __init__(self, rows=None, data=None, sections=None):
+    def __init__(self, rows=None, data=None, sections=None, pins=None):
+        import build
         self.data = build.EXE.read_bytes() if data is None else data
         self.sections = build.pe_sections(self.data) if sections is None else sections
         text = next(s for s in self.sections if s["name"] == ".text")
         self.low, self.high = text["rva"], text["rva"] + text["size"]
         self.rows = build.load_all_function_rows() if rows is None else rows
-        self.at = {}
+        self.at, self.row_names = {}, set()
         for row in self.rows:
+            self.row_names.add(row["name"])
             try:
                 self.at.setdefault(int(row["target_rva"], 16), []).append(row)
             except (KeyError, TypeError, ValueError):
                 continue
+        # {name: [address]} of every symbols.csv pin (views included)
+        self.pins = pins if pins is not None else load_pin_addresses()
 
     def bytes_at(self, rva, size):
+        import build
         try:
             offset = build.rva_to_file_offset(self.sections, rva)
         except (ValueError, KeyError):
             return b""
         return self.data[offset:offset + size]
 
-    @functools.cached_property
-    def reached_by_calls(self):
-        """Every address a retail call reaches: the encoded target, and each
-        address along its `E9` jump-stub chain to the body."""
-        out = set()
-        for target in self.called:
-            cur = target
-            for _ in range(MAX_HOPS):
-                out.add(cur)
-                nxt = self.resolve_one(cur)
-                if nxt is None or nxt in out:
-                    break
-                cur = nxt
-        return out
+    def names_identity_at(self, rva):
+        import pin_consistency
+        return any(pin_consistency.names_identity(r) and not r["name"].startswith("?j_")
+                   for r in self.at.get(rva, ()))
 
     def resolve_one(self, rva):
+        """The next address of an `E9` jump stub, or None: not past a matched
+        row longer than a stub, nor past an address a row names as a function
+        (a tail-jumping body is a function, not a stub)."""
         head = self.bytes_at(rva, 5)
         sized = [int(r["target_size"]) for r in self.at.get(rva, ()) if r.get("status") == "matched"]
-        if len(head) < 5 or head[0] != 0xE9 or (sized and max(sized) > 5):
+        if len(head) < 5 or head[0] != 0xE9 or (sized and max(sized) > 5) or self.names_identity_at(rva):
             return None
         return (rva + 5 + struct.unpack_from("<i", head, 1)[0]) & 0xFFFFFFFF
 
-    @functools.cached_property
-    def called(self):
-        """Every RVA an `E8 rel32` in .text encodes."""
-        offset = build.rva_to_file_offset(self.sections, self.low)
-        text = self.data[offset:offset + (self.high - self.low)]
-        out, at = set(), text.find(b"\xe8")
-        while 0 <= at <= len(text) - 5:
-            out.add((self.low + at + 5 + struct.unpack_from("<i", text, at + 1)[0]) & 0xFFFFFFFF)
-            at = text.find(b"\xe8", at + 1)
-        return out
-
     def resolve(self, rva):
-        """The body an address reaches through `E9` jump stubs (not past a
-        matched row longer than a stub)."""
+        """The body an address reaches through `E9` jump stubs, or None on a cycle."""
         cur, seen = rva, {rva}
         for _ in range(MAX_HOPS):
-            head = self.bytes_at(cur, 5)
-            sized = [int(r["target_size"]) for r in self.at.get(cur, ()) if r.get("status") == "matched"]
-            if len(head) < 5 or head[0] != 0xE9 or (sized and max(sized) > 5):
+            nxt = self.resolve_one(cur)
+            if nxt is None:
                 return cur
-            nxt = (cur + 5 + struct.unpack_from("<i", head, 1)[0]) & 0xFFFFFFFF
             if nxt in seen:
                 return None
             seen.add(nxt)
             cur = nxt
         return None
 
+    @functools.cached_property
+    def raw_calls(self):
+        """{target: [site]} for every E8 byte in .text (not yet proven an instruction)."""
+        import build
+        offset = build.rva_to_file_offset(self.sections, self.low)
+        text = self.data[offset:offset + (self.high - self.low)]
+        out, at = {}, text.find(b"\xe8")
+        while 0 <= at <= len(text) - 5:
+            target = (self.low + at + 5 + struct.unpack_from("<i", text, at + 1)[0]) & 0xFFFFFFFF
+            out.setdefault(target, []).append(self.low + at)
+            at = text.find(b"\xe8", at + 1)
+        return out
+
+    @functools.cached_property
+    def row_extents(self):
+        """Sorted (start, end) of matched rows longer than a stub."""
+        out = []
+        for start, rows in self.at.items():
+            sizes = [int(r["target_size"]) for r in rows if r.get("status") == "matched"]
+            if sizes and max(sizes) > 5:
+                out.append((start, start + max(sizes)))
+        return sorted(out)
+
+    def decoded_call(self, site):
+        """True when SITE is a `call rel32` instruction in a linear decode of
+        the matched row that contains it (from the row's start)."""
+        import bisect
+        import capstone
+        k = bisect.bisect_right(self.row_extents, (site, 1 << 32)) - 1
+        if k < 0 or not self.row_extents[k][0] <= site < self.row_extents[k][1]:
+            return False
+        start, end = self.row_extents[k]
+        disassembler = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+        for ins in disassembler.disasm(self.bytes_at(start, end - start), start):
+            if ins.address == site:
+                return ins.mnemonic == "call" and ins.size == 5
+            if ins.address > site:
+                return False
+        return False
+
+    @functools.cached_property
+    def call_targets_through(self):
+        """{address: {encoded call target}} for every address an encoded
+        target's E9 stub chain passes through (the target itself included)."""
+        out = {}
+        for target in self.raw_calls:
+            if not self.low <= target < self.high:
+                continue
+            cur, seen = target, set()
+            for _ in range(MAX_HOPS):
+                if cur is None or cur in seen:
+                    break
+                seen.add(cur)
+                out.setdefault(cur, set()).add(target)
+                cur = self.resolve_one(cur)
+        return out
+
+    def called(self, address):
+        """True when a decoded retail `call` encodes ADDRESS, or an E9 stub chain
+        that a decoded call encodes passes through ADDRESS."""
+        return any(self.decoded_call(site) for target in self.call_targets_through.get(address, ())
+                   for site in self.raw_calls[target])
+
+
+def load_pin_addresses(path=None):
+    import build
+    out = {}
+    with (path or build.SYMBOLS).open("r", encoding="utf-8", newline="") as handle:
+        for row in csv.reader(handle):
+            if len(row) > 1 and row[0] != "name":
+                try:
+                    out.setdefault(row[0], []).append(int(row[1], 16))
+                except ValueError:
+                    continue
+    return out
+
+
+def qualified_prefix(sym):
+    """The decoration up to the end of its qualified name (function name and
+    scopes), or None when it cannot be read."""
+    try:
+        d = Decode(sym)
+        if sym.startswith("??$"):
+            return sym[:d.qualified(d.template_name(3))]
+        if sym.startswith("??"):
+            return sym[:d.qualified(4 if sym[2] == "_" else 3)]
+        if sym.startswith("?"):
+            return sym[:d.qualified(1)]
+    except (ValueError, IndexError):
+        return None
+    return None
+
+
+def spells_address(name, addresses):
+    """True when NAME spells one of ADDRESSES (RVA or VA) as a hex run."""
+    wanted = set(addresses) | {a + 0x400000 for a in addresses}
+    for run in re.findall(r"[0-9A-Fa-f]{5,}", name):     # maximal hex runs ("a001C86B0")
+        for width in range(5, 9):
+            if any(int(run[k:k + width], 16) in wanted for k in range(len(run) - width + 1)):
+                return True
+    return False
+
+
+def placeholder_canonical(ctx, row):
+    """A canonical row whose decoration is no proven ABI: a generated or
+    ?dup_ stand-in, or a naked __emit lift (its declaration is free text)."""
+    import pin_consistency
+    if not pin_consistency.names_identity(row):
+        return True
+    import progress
+    from pathlib import Path as _P
+    import build
+    source = row.get("source") or ""
+    try:
+        text = (build.ROOT / source).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    if "naked" not in text and "__emit" not in text and "_emit" not in text:
+        return False
+    key = (row["name"], row["target_rva"])
+    return key in progress.naked_cpp_rows({key: (int(row["target_size"]), source)}, {source: text})
+
 
 def view_verdict(ctx, name, address, canonical):
     """None when the abi-view pin is admissible, else why not."""
     if not ctx.low <= address < ctx.high:
         return f"0x{address:08X} is outside .text, so it is not a call target"
-    if address not in ctx.reached_by_calls:
-        return f"no retail `call` reaches 0x{address:08X} (directly or through its jump stubs)"
     body = ctx.resolve(address)
     if body is None:
         return f"0x{address:08X} does not resolve to a body (jump-stub cycle)"
+    if not ctx.called(address):
+        return f"no decoded retail `call` reaches 0x{address:08X} (directly or through its jump stubs)"
     if canonical == name:
         return "abi-view names the pin itself; a view differs from its canonical name"
+    # One name, one function: a view name is nobody's ledger name, and every
+    # address pinned to it reaches this one body.
+    if name in ctx.row_names:
+        return f"{name} is a functions.csv row's name: a view may not borrow a ledger identity"
+    elsewhere = sorted({hex(a) for a in ctx.pins.get(name, ()) if ctx.resolve(a) != body})
+    if elsewhere:
+        return f"{name} is also pinned at {', '.join(elsewhere)}, which reach another body"
     matched = [r for r in ctx.at.get(body, ()) if r.get("status") == "matched"]
-    if any(r["name"] == name for r in matched):
-        return (f"{name} is itself a matched row at 0x{body:08X}: the pin is an identity "
-                "(or a route=), not a view")
     rows = [r for r in matched if r["name"] == canonical]
     if not rows:
         owned = sorted({r["name"] for r in matched})
         return (f"0x{address:08X} reaches 0x{body:08X}, which no matched row names {canonical} "
                 f"(matched there: {', '.join(owned[:3]) or 'nothing'})")
+    # A view's name is not identity evidence, so it may not read like one: it
+    # is the canonical function respelt (same qualified name) or it spells the
+    # address it views.
+    prefix = qualified_prefix(name)
+    same_function = prefix is not None and prefix == qualified_prefix(canonical)
+    addressed = prefix is not None and spells_address(prefix, (address, body))  # in the name, not a type
+    if not (same_function or addressed):
+        return (f"{name} names a function the canonical {canonical} does not; a view must be the "
+                "canonical's qualified name respelt or spell its address (name-correction candidate)")
     forms_v = signature(name)
     if not forms_v:
         return f"the view's decoration {name} does not decode to a fixed ABI"
     ret = final_ret(ctx.bytes_at(body, int(rows[0]["target_size"])))
     if ret is None:
         return f"the body at 0x{body:08X} does not end in a ret, so its stack cleanup is unknown"
-    import pin_consistency
-    if not pin_consistency.names_identity(rows[0]):
-        # A generated or ?dup_ stand-in declares no ABI (its decoration is a
-        # placeholder), so the body's own cleanup is the only witness; __cdecl
-        # leaves none.
+    if placeholder_canonical(ctx, rows[0]):
+        # No declared ABI to compare: the body's own cleanup is the only
+        # witness, __cdecl leaves none, and the view must spell its address.
+        if not addressed:
+            return (f"{canonical} declares no proven ABI, so only an address-derived view name may "
+                    "stand on the body's cleanup alone")
         if forms_v[0][0] not in CALLEE_CLEANS:
-            return (f"{canonical} is a placeholder with no declared ABI, and a __cdecl view "
-                    "cannot be checked against the body's ret 0")
+            return (f"{canonical} declares no proven ABI, and a __cdecl view cannot be checked "
+                    "against the body's ret 0")
         if not any(stack_bytes(slots) == ret for _c, _r, slots in forms_v):
             return (f"retail pops {ret} bytes; the view needs "
                     f"{sorted({stack_bytes(slots) for _c, _r, slots in forms_v})}")
@@ -377,6 +498,10 @@ def view_verdict(ctx, name, address, canonical):
     callee_cleans = forms_v[0][0] in CALLEE_CLEANS
     if not callee_cleans and ret != 0:
         return f"a __cdecl body must end in ret 0; retail pops {ret}"
+    if not callee_cleans and (len(forms_v) > 1) != (len(forms_c) > 1):
+        # __cdecl leaves no cleanup to tell a hidden result pointer from a
+        # first argument, nor EAX from EDX:EAX: refuse the mixed pair.
+        return "a __cdecl aggregate return on one side only is ambiguous without a cleanup witness"
     for _cv, ret_v, slots_v in forms_v:
         for _cc, ret_c, slots_c in forms_c:
             agree = (slots_v == slots_c or "?" in (ret_v, ret_c)
@@ -391,6 +516,7 @@ def view_verdict(ctx, name, address, canonical):
 def view_rows(path=None):
     """[(name, address, canonical)] for every abi-view= row of symbols.csv."""
     out = []
+    import build
     with (path or build.SYMBOLS).open("r", encoding="utf-8", newline="") as handle:
         for row in csv.reader(handle):
             if not row or row[0] == "name":
@@ -410,7 +536,7 @@ def check(ctx=None, path=None):
     rows = view_rows(path)
     if not rows:
         return []
-    ctx = ctx or Context()
+    ctx = ctx or Context(pins=load_pin_addresses(path))
     return [(n, a, c, why) for n, a, c in rows if (why := view_verdict(ctx, n, a, c))]
 
 
@@ -434,6 +560,7 @@ def canonical_for(ctx, name, address):
 
 def migrate(write=False, path=None):
     """Tag every legacy view pin that validates with abi-view=<canonical>."""
+    import build
     path = path or build.SYMBOLS
     ctx = Context()
     text = path.read_text(encoding="utf-8")

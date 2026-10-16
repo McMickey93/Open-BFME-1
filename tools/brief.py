@@ -87,12 +87,14 @@ def load():
             rows[int(r["target_rva"], 16)] = r
         except ValueError:
             pass
+    import abi_view
     import eligibility
     for r in eligibility.carved_rows(rows=ledger_rows):
         rows.setdefault(int(r["target_rva"], 16), r)
     pins = {}
     for r in csv.reader(open(ROOT / "targets/game/reverse/symbols.csv", newline="", encoding="utf-8", errors="replace")):
-        if len(r) > 1 and r[1].startswith("0x"):
+        # abi-view= pins are compilation views, never identity leads (tools/abi_view.py)
+        if len(r) > 1 and r[1].startswith("0x") and not abi_view.is_view(",".join(r[2:])):
             try:
                 pins.setdefault(int(r[1], 16), []).append((r[0], r[2] if len(r) > 2 else ""))
             except ValueError:

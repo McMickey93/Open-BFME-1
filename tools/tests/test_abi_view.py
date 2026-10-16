@@ -44,14 +44,19 @@ def jmp(site, target):
 
 
 CODE = {
-    0x1000: call(0x1000, 0x1100),            # retail calls the ILT
-    0x1010: call(0x1010, 0x1300),            # and the cdecl body directly
+    # caller 0x1000..0x1020, NOP-filled so it decodes linearly
+    0x1000: call(0x1000, 0x1100) + b"\x90" * 11,        # retail calls the ILT
+    0x1010: call(0x1010, 0x1300) + b"\x90" * 3,         # and the cdecl body directly
+    0x1018: bytes([0xB8]) + call(0x1019, 0x1400) + b"\x90" * 2,
+    # ^ an E8 byte inside `mov eax, imm32` whose raw rel32 reaches 0x1400: not a call (N2)
     0x1100: jmp(0x1100, 0x1200),             # ILT -> thiscall body
     0x1200: bytes([0x8B, 0xC1, 0xC2, 0x08, 0x00]),   # mov eax, ecx; ret 8
     0x1300: bytes([0xC3]),                   # cdecl body
     0x1400: bytes([0xC2, 0x04, 0x00]),       # never called
 }
 REAL = "?real@Foo@@QAEPAHPAHH@Z"             # thiscall, (int*, int) -> int*: ret 8
+VIEW = "?v@Rva00001200Bar@@QAEPAHPAHH@Z"     # an address-derived view of it
+CALLER = "?caller@@YAXXZ"
 CDECL = "?c@@YAXHH@Z"
 
 
@@ -62,12 +67,13 @@ def row(name, rva, size, source="game/a.cpp", status="matched", notes="x"):
 
 @pytest.fixture
 def ctx():
-    def make(rows=None, code=CODE):
+    def make(rows=None, code=CODE, pins=None):
         rows = rows if rows is not None else [row(REAL, 0x1200, 5), row(CDECL, 0x1300, 1),
                                               row("?other@@QAEXH@Z", 0x1400, 3)]
+        rows = rows + [row(CALLER, 0x1000, 0x20)]
         data = pe(code)
         import build
-        return abi_view.Context(rows=rows, data=data, sections=build.pe_sections(data))
+        return abi_view.Context(rows=rows, data=data, sections=build.pe_sections(data), pins=pins or {})
     return make
 
 
@@ -100,54 +106,129 @@ def test_undecodable_signatures(sym):
 # --- admission ---
 
 def test_view_through_the_ilt_accepted(ctx):
-    assert abi_view.view_verdict(ctx(), "?v@Bar@@QAEPAHPAHH@Z", 0x1100, REAL) is None
+    assert abi_view.view_verdict(ctx(), VIEW, 0x1100, REAL) is None
 
 
 def test_view_at_the_body_accepted(ctx):
-    assert abi_view.view_verdict(ctx(), "?v@Bar@@QAEPAHPAHH@Z", 0x1200, REAL) is None
+    assert abi_view.view_verdict(ctx(), VIEW, 0x1200, REAL) is None
+
+
+def test_same_function_respelt_accepted(ctx):
+    # the canonical's own qualified name with other parameter spellings
+    assert abi_view.view_verdict(ctx(), "?real@Foo@@QAEPAXPAXH@Z", 0x1100, REAL) is None
 
 
 def test_hidden_return_equivalence_accepted(ctx):
     # (hidden Pos*, int) returning the pointer == (int*, int) -> int*
-    assert abi_view.view_verdict(ctx(), "?v@Bar@@QAE?AUPos@@H@Z", 0x1100, REAL) is None
+    assert abi_view.view_verdict(ctx(), "?v@Rva00001200Bar@@QAE?AUPos@@H@Z", 0x1100, REAL) is None
 
 
 def test_cdecl_view_accepted(ctx):
-    assert abi_view.view_verdict(ctx(), "?v@@YAXHPAX@Z", 0x1300, CDECL) is None
+    assert abi_view.view_verdict(ctx(), "?v@Rva00001300@@YAXHPAX@Z", 0x1300, CDECL) is None
+    assert abi_view.view_verdict(ctx(), "?c@@YAXPAXH@Z", 0x1300, CDECL) is None
 
 
 @pytest.mark.parametrize("name,address,canonical,why", [
-    ("?v@Bar@@QAEXH@Z", 0x1400, "?other@@QAEXH@Z", "no retail `call` reaches"),
-    ("?v@Bar@@QAEPAHPAHH@Z", 0x1100, "?wrong@@QAEXHH@Z", "which no matched row names"),
+    ("?v@Rva00001400Bar@@QAEXH@Z", 0x1400, "?other@@QAEXH@Z", "no decoded retail `call` reaches"),  # N2
+    (VIEW, 0x1100, "?wrong@@QAEXHH@Z", "which no matched row names"),
     (REAL, 0x1100, REAL, "names the pin itself"),
-    ("?v@Bar@@QAEPAHPAHH@Z", 0x2100, REAL, "outside .text"),
-    ("?v@@YAPAHPAHH@Z", 0x1100, REAL, "calling conventions differ"),
-    ("?v@Bar@@QAEXH@Z", 0x1100, REAL, "no layout"),                 # pops 4, retail 8
-    ("?v@Bar@@QAEXMH@Z", 0x1100, REAL, "no layout"),                # float where int*
-    ("?v@Bar@@QAENPAHH@Z", 0x1100, REAL, "no layout"),              # ST0 return vs EAX
-    ("?v@Bar@@QAEXVAsciiString@@H@Z", 0x1100, REAL, "does not decode"),
-    ("?v@@YAXHHH@Z", 0x1300, CDECL, "no layout"),                   # cdecl stack differs
+    (VIEW, 0x2100, REAL, "outside .text"),
+    ("?v@Rva00001200Bar@@YAPAHPAHH@Z", 0x1100, REAL, "calling conventions differ"),
+    ("?v@Rva00001200Bar@@QAEXH@Z", 0x1100, REAL, "no layout"),          # pops 4, retail 8
+    ("?v@Rva00001200Bar@@QAEXMH@Z", 0x1100, REAL, "no layout"),         # float where int*
+    ("?v@Rva00001200Bar@@QAENPAHH@Z", 0x1100, REAL, "no layout"),       # ST0 return vs EAX
+    ("?v@Rva00001200Bar@@QAEXVAsciiString@@H@Z", 0x1100, REAL, "does not decode"),
+    ("?c@@YAXHHH@Z", 0x1300, CDECL, "no layout"),                       # cdecl stack differs
+    ("?c@@YA?AUPos@@H@Z", 0x1300, CDECL, "ambiguous"),                  # N3: cdecl aggregate on one side
+    ("?v@Bar@@QAEPAHPAHH@Z", 0x1100, REAL, "name-correction candidate"),  # S1: a real-sounding name
 ])
 def test_refusals(ctx, name, address, canonical, why):
     assert why in abi_view.view_verdict(ctx(), name, address, canonical)
 
 
-def test_the_pin_already_naming_the_body_is_not_a_view(ctx):
-    rows = [row(REAL, 0x1200, 5), row("?v@Bar@@QAEPAHPAHH@Z", 0x1200, 5)]
-    assert "is itself a matched row" in abi_view.view_verdict(ctx(rows), "?v@Bar@@QAEPAHPAHH@Z", 0x1100, REAL)
+def test_b1_view_may_not_be_a_ledger_name(ctx):
+    # the name is matched elsewhere (any status, any address): it is that function's identity
+    for status in ("matched", "partial"):
+        rows = [row(REAL, 0x1200, 5), row(VIEW, 0x1300, 1, status=status)]
+        assert "functions.csv row's name" in abi_view.view_verdict(ctx(rows), VIEW, 0x1100, REAL)
+    # S3: the pinned address's own matched row
+    rows = [row(REAL, 0x1200, 5), row(VIEW, 0x1200, 5)]
+    assert "functions.csv row's name" in abi_view.view_verdict(ctx(rows), VIEW, 0x1100, REAL)
 
 
-def test_placeholder_canonical_checks_retail_cleanup_only(ctx):
+def test_b1_view_pinned_to_two_bodies_refused(ctx):
+    pins = {VIEW: [0x1100, 0x1300]}
+    assert "reach another body" in abi_view.view_verdict(ctx(pins=pins), VIEW, 0x1100, REAL)
+    assert abi_view.view_verdict(ctx(pins={VIEW: [0x1100, 0x1200]}), VIEW, 0x1100, REAL) is None
+
+
+def test_placeholder_canonical_needs_an_address_name_and_checks_cleanup_only(ctx):
     rows = [row("?dup_00001200@@YAXXZ", 0x1200, 5), row(CDECL, 0x1300, 1)]
-    assert abi_view.view_verdict(ctx(rows), "?v@Bar@@QAEXHH@Z", 0x1100, "?dup_00001200@@YAXXZ") is None
-    assert "retail pops 8" in abi_view.view_verdict(ctx(rows), "?v@Bar@@QAEXH@Z", 0x1100, "?dup_00001200@@YAXXZ")
+    dup = "?dup_00001200@@YAXXZ"
+    assert abi_view.view_verdict(ctx(rows), "?v@Rva00001200Bar@@QAEXHH@Z", 0x1100, dup) is None
+    assert "retail pops 8" in abi_view.view_verdict(ctx(rows), "?v@Rva00001200Bar@@QAEXH@Z", 0x1100, dup)
+    # S4: a real-sounding view over a placeholder is refused
+    assert "name-correction candidate" in abi_view.view_verdict(ctx(rows), "?draw@Render2D@@QAEXHH@Z", 0x1100, dup)
     gen = [row("?d_00001300@@YAXXZ", 0x1300, 1, source="game/gen_asm/d.asm", notes="gen-dump")]
-    assert "__cdecl view cannot be checked" in abi_view.view_verdict(ctx(gen), "?v@@YAXH@Z", 0x1300, "?d_00001300@@YAXXZ")
+    assert "__cdecl view cannot be checked" in abi_view.view_verdict(
+        ctx(gen), "?v@Rva00001300@@YAXH@Z", 0x1300, "?d_00001300@@YAXXZ")
+
+
+def test_n1_resolve_stops_at_a_named_tail_jump(ctx):
+    # 0x1100 is an E9, but a matched row names it a function: it is not a stub
+    rows = [row(REAL, 0x1200, 5), row("?tail@Foo@@QAEXXZ", 0x1100, 5)]
+    assert ctx(rows).resolve(0x1100) == 0x1100
+    assert ctx().resolve(0x1100) == 0x1200
 
 
 def test_unmatched_canonical_row_refused(ctx):
     rows = [row(REAL, 0x1200, 5, status="partial")]
-    assert "which no matched row names" in abi_view.view_verdict(ctx(rows), "?v@Bar@@QAEPAHPAHH@Z", 0x1100, REAL)
+    assert "which no matched row names" in abi_view.view_verdict(ctx(rows), VIEW, 0x1100, REAL)
+
+
+# --- B2: one field test everywhere ---
+
+@pytest.mark.parametrize("notes,view", [
+    ("abi-view=?x@@YAXXZ;why", True),
+    ("why;abi-view=?x@@YAXXZ", True),
+    ("not an abi-view=, keep", False),
+    ("x;notabi-view=?y", False),
+])
+def test_is_view_is_the_field_form(notes, view):
+    assert abi_view.is_view(notes) is view
+
+
+def test_ilt_oracle_reads_no_view_pin_and_every_other_pin(tmp_path):
+    import ilt_oracle
+    rev = tmp_path / "targets/game/reverse"
+    rev.mkdir(parents=True)
+    (rev / "functions.csv").write_text("name,export_rva,target_rva,target_size,source,status,notes\n"
+                                       "?real@@YAXXZ,,0x00001000,4,game/a.cpp,matched,x\n")
+    (rev / "symbols.csv").write_text("name,address,notes\n"
+                                     "?view@@YAXXZ,0x00001000,abi-view=?real@@YAXXZ;why, with a comma\n"
+                                     "?pin@@YAXXZ,0x00002000,plain pin\n"
+                                     "?fake@@YAXXZ,0x00003000,not an abi-view=, keep\n")
+    names = {name for _src, name, _rva, _row in ilt_oracle.ledger_rows(tmp_path)}
+    assert names == {"?real@@YAXXZ", "?pin@@YAXXZ", "?fake@@YAXXZ"}
+
+
+# --- S2: identity readers skip views ---
+
+def test_name_regression_recorded_components_skip_views(monkeypatch):
+    import name_regression
+    symbols = ("name,address,notes\n"
+               "?view@Rva00001200Bar@@QAEXXZ,0x00001200,abi-view=?real@@YAXXZ;x\n"
+               "?pin@Foo@@QAEXXZ,0x00001300,plain\n")
+    monkeypatch.setattr(name_regression, "read",
+                        lambda root, ref, path: symbols if path == name_regression.SYMBOLS else "va,name\n")
+    out = name_regression._recorded_components(None, "HEAD")
+    assert "Foo" in out and "Rva00001200Bar" not in out
+
+
+def test_brief_and_callers_of_filter_views():
+    # both read symbols.csv rows and must skip abi-view= pins by the same field test
+    for path in ("tools/brief.py", "tools/callers_of.py"):
+        assert "abi_view.is_view(" in (ROOT / path).read_text(encoding="utf-8")
 
 
 # --- the ledger: migration result, gate wiring, identity tools ---
@@ -158,7 +239,6 @@ needs_retail = pytest.mark.skipif(not REAL_EXE.exists(), reason="retail image no
 
 @needs_retail
 def test_efd7b316f7_position_view_validates():
-    import build
     c = abi_view.Context()
     assert abi_view.view_verdict(
         c, "?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z", 0x000421AE,
@@ -192,14 +272,26 @@ def test_pin_consistency_fails_an_inadmissible_view(tmp_path, capsys):
         ("?position@Rva001C86B0Object@@QAE?AURva0075BE60Position@@PAUCoord3D@@@Z", 0x000421AE)}
 
 
-def test_ilt_oracle_reads_no_view_pin(tmp_path):
-    import ilt_oracle
-    rev = tmp_path / "targets/game/reverse"
-    rev.mkdir(parents=True)
-    (rev / "functions.csv").write_text("name,export_rva,target_rva,target_size,source,status,notes\n"
-                                       "?real@@YAXXZ,,0x00001000,4,game/a.cpp,matched,x\n")
-    (rev / "symbols.csv").write_text("name,address,notes\n"
-                                     "?view@@YAXXZ,0x00001000,abi-view=?real@@YAXXZ;why, with a comma\n"
-                                     "?pin@@YAXXZ,0x00002000,plain pin\n")
-    names = {name for _src, name, _rva, _row in ilt_oracle.ledger_rows(tmp_path)}
-    assert names == {"?real@@YAXXZ", "?pin@@YAXXZ"}
+@needs_retail
+def test_real_reviewer_cases_refused():
+    c = abi_view.Context()
+    # B1 probe1: winSetEnabledColor (a real ledger name) as a view of winSetEnabledBorderColor
+    assert "functions.csv row's name" in abi_view.view_verdict(
+        c, "?winSetEnabledColor@GameWindow@@QAEHHH@Z", 0x00014867,
+        "?winSetEnabledBorderColor@GameWindow@@QAEHHH@Z")
+    # S3: the pin's own matched row
+    assert "functions.csv row's name" in abi_view.view_verdict(
+        c, "?getAdjustedVisionRangeForObject@Rva002BD020AI@@SAMPBVObject@@H@Z", 0x0002481B,
+        "?getAdjustedVisionRangeForObject@AI@@SAMPBVObject@@H@Z")
+    # S1: real-sounding names over unrelated canonicals
+    assert "name-correction candidate" in abi_view.view_verdict(
+        c, "?Draw_Sentence@Render2DSentenceHHHH@@QAEXIIII@Z", 0x0093EB50, "?d_0093eb50@@YAXXZ")
+
+
+@needs_retail
+def test_s5_naked_lift_canonical_is_no_proven_abi():
+    c = abi_view.Context()
+    row = next(r for r in c.at[0x006C3170] if r["name"] == "?drawEvents@W3DRadar@@IAEXHHHH@Z")
+    assert abi_view.placeholder_canonical(c, row)
+
+
