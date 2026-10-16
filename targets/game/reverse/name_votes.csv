@@ -2224,3 +2224,6 @@ game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|param|Position0
 game/GameEngine/Source/GameLogic/Map/TerrainLogicAddWaypoint.cpp|local|Position001ABC90|a,1fafde87c10f3d44b7022713,gpt-6.1-sol,20261016042659-034023,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Gadget/GadgetProgressBar.cpp|param|GadgetProgressBarSystem|mData1,ed65a13b097cc21b9ef1356b,gpt-6.1-sol,20261016042706-a695ce,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Gadget/GadgetProgressBar.cpp|param|GadgetProgressBarSetProgress|g,9b07cd8713a5bcba32552b7e,gpt-6.1-sol,20261016042706-a695ce,2026-10-16
+game/GameEngine/Source/GameClient/GUI/WindowFieldParsersBfme.cpp|local|parseTooltipCallback|c,ef76e0ebdbbc59a83561b425,gpt-6.1-sol,20261016042713-fd8147,2026-10-16
+game/GameEngine/Source/GameClient/GUI/WindowFieldParsersBfme.cpp|local|parseText|c,41d8e41adbb645119bde2b54,gpt-6.1-sol,20261016042713-fd8147,2026-10-16
+game/GameEngine/Source/GameClient/GUI/WindowFieldParsersBfme.cpp|local|parseTooltipText|c,7874b801b307b5c3e7a4fd42,gpt-6.1-sol,20261016042713-fd8147,2026-10-16
