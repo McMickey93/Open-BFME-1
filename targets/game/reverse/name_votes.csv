@@ -2067,3 +2067,4 @@ game/GameEngine/Source/Common/RTS/Player_newMap.cpp|local|BfmePlayerMapState::in
 game/GameEngine/Source/Common/RTS/Player_newMap.cpp|local|BfmePlayerMapState::init|y,4777e38498e10cee56c19458,gpt-6.1-sol,20261016040715-397e2a,2026-10-16
 game/GameEngine/Source/Common/INI/INIMultiplayer.cpp|local|MultiplayerSettings::newMultiplayerColorDefinition|tmp,dac7d78d05dc3426784d53f7,gpt-6.1-sol,20261016040722-f2c6df,2026-10-16
 game/GameEngine/Source/Common/INI/INIMultiplayer.cpp|local|INI::parseMultiplayerColorDefinition|c,69465a22ad46ea92631e86e2,gpt-6.1-sol,20261016040722-f2c6df,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseAudioEventBlock.cpp|member||m_flag0C,3a3f92d555f8b4e30fe7138e,gpt-6.1-sol,20261016040729-42b30f,2026-10-16
