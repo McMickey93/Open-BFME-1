@@ -2581,3 +2581,6 @@ game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide
 game/GameEngineDevice/Source/Win32Device/Common/Win32LocalFileSystemOpenFileWide.cpp|local|bfmeFind|p,211021527d7bf80821d68d21,gpt-6.1-sol,20261016050955-9b780a,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorCalcFlightPath.cpp|local|BezierProjectileBehavior::calcFlightPath|d,3c3fb0553ba998b236c4b850,gpt-6.1-sol,20261016051006-83e43c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorCalcFlightPath.cpp|local|BezierProjectileBehavior::calcFlightPath|z2,92f7f7b6b23836bbaf018ac0,gpt-6.1-sol,20261016051006-83e43c,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeFlagBA,6effd3ac9dbe2e2c441e19c8,gpt-6.1-sol,20261016051327-470824,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|member||m_bfmeLevelBA,3bba99048ec298aead04230e,gpt-6.1-sol,20261016051327-470824,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1907.cpp|function|BfmeHostBA@|bfmeSaveBA,ff78c2f42f211cfa564a9462,gpt-6.1-sol,20261016051327-470824,2026-10-16
