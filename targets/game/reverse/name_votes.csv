@@ -4540,3 +4540,4 @@ game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|m
 game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||height44,d35cb978cad7c333a6e4abf4,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
 game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||velocity9c,8c42cd81208511d1326cacc0,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
 game/GameEngine/Source/GameLogic/Object/LocomotorVerticalUpdateRva001B80D0.cpp|member||angleDeltaA0,5464de9789780e0e4bdf4156,gpt-6.1-sol,20261016070154-1a0170,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Behavior/Rva000941D0ParseNamedIntDefinition.cpp|member||m_bfmeNum,58e4dc09ea4e6510428707a4,gpt-6.1-sol,20261016070216-a142c4,2026-10-16
