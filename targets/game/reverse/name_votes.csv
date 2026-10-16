@@ -5834,3 +5834,6 @@ game/GameEngine/Source/Common/BfmeConv1807.cpp|member||m_bfmeScaleRW,99cfd3c83d7
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006C9270ResetTextureStages.cpp|member||m_flag4C,2e419194a86ae7048653eeb2,gpt-6.1-sol,20261016132535-07c523,2026-10-16
 game/GameEngine/Source/Common/Rva005C36C0Forward.cpp|member||m_valueAB4,9c2548ffa97d7293fae9d8b2,gpt-6.1-sol,20261016132540-63662e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/Rva001F9C20Unknown.cpp|member||m_flag3c,2f17073723a99b6aeb6ba287,gpt-6.1-sol,20261016132839-24c23b,2026-10-16
+game/GameEngine/Source/Common/Rva001CCFC0OwnerApplyMask.cpp|type||Rva00087A80View,8df2ebdd23d23aa90e57d8cc,gpt-6.1-sol,20261016133118-dde0dc,2026-10-16
+game/GameEngine/Source/Common/Rva001CCFC0OwnerApplyMask.cpp|type||Rva001CCFC0TemplateView,afb88b946bc3686f9e0832f3,gpt-6.1-sol,20261016133118-dde0dc,2026-10-16
+game/GameEngine/Source/Common/Rva001CCFC0OwnerApplyMask.cpp|type||Rva001CCFC0Slot68View,a958d0ae9f4dc20152fc8056,gpt-6.1-sol,20261016133118-dde0dc,2026-10-16
