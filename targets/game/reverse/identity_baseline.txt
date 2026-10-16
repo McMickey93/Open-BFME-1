@@ -36,7 +36,7 @@ multi_name.different = 0
 size_outlier.indicted = 1
 ctor_vtable.contradicted = 20
 ctor_vtable.unreadable = 0
-one_identity.surplus = 2135
+one_identity.surplus = 2118
 # Retail registration proves DynamicPortalBehaviour owns ctor 001F8B80 and factory 001156B0; four false aliases retired.
 # fcf825b4f7 retired the false FXNugget zero-store claim; the body still has aliases.
 # 4c8346b3c9 retired the GDIFileStream ctor over-claim at 0x00087A50 (a zero-store body).
@@ -96,23 +96,6 @@ null_reloc.max_unreadable = 1000
 @ one_identity.surplus 0x0005BC20 ??4KeyClass@?$PrimitiveAnimationChannelClass@VVector2@@@@QAEAAV01@ABV01@@Z
 @ one_identity.surplus 0x0005C320 ??0Region2D@@QAE@ABU0@@Z
 @ one_identity.surplus 0x0005C320 ??4KeyClass@Curve3DClass@@QAEAAV01@ABV01@@Z
-@ one_identity.surplus 0x0005C5D0 ??0?$DLNodeClass@USmudge@@@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0?$DLNodeClass@USmudgeSet@@@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0?$DLNodeClass@VSortingNodeStruct@@@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0?$DLNodeClass@VThumbnailManagerClass@@@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0AnimSet@GenericObjectCreationNugget@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0ArmorTemplateSet@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0AssistanceRequestData@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0DistLODDefClass@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0DistLODNodeDefStruct@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0GameClientRandomVariable@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0ModuleInfo@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0ModuleTemplate@ModuleFactory@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0ObjectCreationList@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0ResolutionDescClass@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0Smudge@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0TeamsInfoRec@@QAE@XZ
-@ one_identity.surplus 0x0005C5D0 ??0WeaponRecoilInfo@W3DModelDraw@@QAE@XZ
 @ one_identity.surplus 0x0005C6C0 ??0ChunkHeader@@QAE@XZ
 @ one_identity.surplus 0x0005C6C0 ??0Keyframe@FXParticleSystem@@QAE@XZ
 @ one_identity.surplus 0x0005E610 ?Resize@?$VectorClass@H@@UAE_NHPBH@Z
@@ -891,8 +874,6 @@ null_reloc.max_unreadable = 1000
 @ one_identity.surplus 0x001DE7E0 ??0QueuedDownload@@QAE@XZ
 @ one_identity.surplus 0x001E0B60 ?Is_Blocked@WWMouseClass@@ABE_NXZ
 @ one_identity.surplus 0x001E0B60 ?isOverride@WeaponTemplate@@QAE_NXZ
-@ one_identity.surplus 0x001E0CE0 ?Get_Locked_Volume_Slice_Pitch@VolumeTextureLoadTaskClass@@AAEII@Z
-@ one_identity.surplus 0x001E0CE0 ?Peek_Single_Material@MeshMatDescClass@@QBEPAVVertexMaterialClass@@H@Z
 @ one_identity.surplus 0x001EE7D0 ?Set_Modified@ParameterClass@@UAEX_N@Z
 @ one_identity.surplus 0x001EE7D0 ?Set_Post_Load_Registered@PostLoadableClass@@QAEX_N@Z
 @ one_identity.surplus 0x001EE7D0 ?setLeftMouseButton@SelectionTranslator@@QAEX_N@Z

@@ -1412,10 +1412,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0?$ConcreteModuleTemplate@V?$ModuleTag@$07$E?TERRAIN_COLLISION_MODULE_KEY@FXParticleSystem@@3QBDB$E?TERRAIN_COLLISION_MODULE_NAME@2@3QBDBVTerrainCollisionModule@2@VTerrainCollisionModuleTemplate@2@VParticleTerrainCollisionModule@2@VParticleTerrainCollisionModuleTemplate@2@@FXParticleSystem@@@FXParticleSystem@@QAE@XZ,0x00020E23,0x5e1f10,32,game/GameEngine/Source/GameClient/System/FXParticleSystem/fx_particle_system_bulk.cpp,matched,
 ??0?$DLListClass@USmudge@@@@QAE@XZ,,0x005D3820,17,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,SmudgeSet::m_freeSmudgeList instantiates DLListClass<Smudge>; vtable 0x0111015C and the constructor clear of head and tail confirm this template specialization
 ??0?$DLListClass@USmudgeSet@@@@QAE@XZ,,0x005D3860,17,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,gen-alias;object-symbol=??0?$DLListClass@USmudgeSet@@@@QAE@XZ;C++ alias
-??0?$DLNodeClass@USmudge@@@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,ICF alias of existing matched body
-??0?$DLNodeClass@USmudgeSet@@@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,ICF alias of existing matched body
-??0?$DLNodeClass@VSortingNodeStruct@@@@QAE@XZ,,0x0005C5D0,13,game/Libraries/Source/WWVegas/WW3D2/sortingrenderer.cpp,matched,icf-owner=??0?$DLNodeClass@USmudge@@@@QAE@XZ
-??0?$DLNodeClass@VThumbnailManagerClass@@@@QAE@XZ,,0x0005C5D0,13,game/Libraries/Source/WWVegas/WW3D2/texturethumbnail.cpp,matched,icf-owner=??0?$DLNodeClass@USmudge@@@@QAE@XZ
 ??0?$DefaultModuleTemplate@$00@FXParticleSystem@@QAE@ABV01@@Z,,0x005D51A0,62,game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultModuleTemplate00CopyCtorThunk.cpp,matched,Open-BFME5 clean C++ DefaultModuleTemplate00 copy ctor
 ??0?$DefaultModuleTemplate@$00@FXParticleSystem@@QAE@XZ,0x00016F95,0x005DD370,106,game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultModuleTemplate00CtorThunk.cpp,matched,
 ??0?$DefaultModuleTemplate@$01@FXParticleSystem@@QAE@ABV01@@Z,,0x005D8400,62,game/GameEngine/Source/GameClient/System/FXParticleSystem/DefaultModuleTemplate01CopyCtorThunk.cpp,matched,Open-BFME5 clean C++ DefaultModuleTemplate copy ctor
@@ -2315,7 +2311,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0Anim2DCollection@@QAE@XZ,,0x005BA370,26,game/GameEngine/Source/GameClient/System/Anim2D.cpp,matched,
 ??0Anim2DTemplate@@QAE@VAsciiString@@@Z,,0x005BAD80,124,game/GameEngine/Source/GameClient/System/Anim2DTemplate.cpp,matched,clean C++; narrow string assignment at 0x887C90; collection newTemplate caller and vtable VA 0x0110F2B8
 ??0AnimSet@GenericObjectCreationNugget@@QAE@ABU01@@Z,,0x001D6B80,98,game/GameEngine/Source/GameLogic/Object/GenericObjectCreationNuggetAnimSetCopy.cpp,matched,BFME2 three-string AnimSet copy constructor
-??0AnimSet@GenericObjectCreationNugget@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameLogic/Object/ObjectCreationList.cpp,matched,ICF alias of existing matched body
 ??0AnimalAIUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002B3090,118,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateCtorThunk.cpp,matched,Open-BFME5 clean C++ module ctor; vtbl base split from field base at +0x340
 ??0AnimalAIUpdateModuleData@@QAE@XZ,,0x0027EAE0,283,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AnimalAIUpdateModuleDataCtorThunk.cpp,matched,Open-BFME5 exact C++ ICF-primary raw module-data constructor
 ??0Animatable3DObjClass@@QAE@ABV0@@Z,,0x00982D10,193,game/Libraries/Source/WWVegas/WW3D2/Animatable3DObjClassCopyConstructorThunk.cpp,matched,Exact 193B C++ raw copy-constructor thunk Open-BFME5
@@ -2343,7 +2338,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0ArchivedFileInfo@@QAE@ABV0@@Z,,0x009CEBF0,93,game/GameEngine/Source/Common/System/ArchivedFileInfoCopyConstructorThunk.cpp,matched,Exact 93B C++ raw copy-constructor thunk Open-BFME5
 ??0ArchivedFileInfo@@QAE@XZ,,0x009CC650,103,game/GameEngine/Source/Common/System/ArchivedFileInfoCopyConstructorThunk.cpp,matched,
 ??0ArmorTemplate@@QAE@XZ,,0x001AFEA0,81,game/GameEngine/Source/GameLogic/Object/Armor.cpp,matched,
-??0ArmorTemplateSet@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/Common/Thing/ThingTemplate.cpp,matched,ICF alias of existing matched body
 ??0ArmorUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002D2AB0,53,game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeConstructor.cpp,matched,incremental thunk @0x3582D; standalone codegen-blocked C++ emits exact 53B retail constructor body
 ??0ArmorUpgradeModuleData@@QAE@XZ,,0x00129C10,90,game/GameEngine/Source/GameLogic/Object/Upgrade/ArmorUpgradeModuleDataCtorThunk.cpp,matched,Open-BFME5 exact C++ ICF-primary raw module-data constructor
 ??0ArrowStormUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002576E0,207,game/GameEngine/Source/GameLogic/Object/Update/ArrowStormUpdateConstructor.cpp,matched,real C++ ctor; same 4 vtables as matched dtor 0x00257940 confirm class; base ctor via pinned ILT 0x00013462; list node at +0xE8 then clear then 3 dwords and 1 byte zeroed; extent 207 ends at ret 8 not the 0x207B lift claim;model=space-bunny-free
@@ -2359,7 +2353,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0AssaultTransportAIUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002B46F0,97,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateCtorThunk.cpp,matched,Open-BFME5 clean C++ module ctor; +0x398 immediate then unnamed thiscall ILT 0x2105D
 ??0AssaultTransportAIUpdateModuleData@@QAE@XZ,,0x0027EAE0,283,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AssaultTransportAIUpdateModuleDataCtorThunk.cpp,matched,Open-BFME5 exact C++ ICF-alias raw module-data constructor
 ??0AssetManagerImpl@@QAE@XZ,,0x009F2140,631,game/GameEngineDevice/Source/W3DDevice/GameLogic/Rva009EB960Ctor.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/ea-worldbuilder-labels.md;model=glm-5-3;host=ymo-workstation
-??0AssistanceRequestData@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameLogic/Object/Weapon.cpp,matched,ICF alias of existing matched body
 ??0AssistedTargetingUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x0027FB60,134,game/GameEngine/Source/GameLogic/Object/Update/AssistedTargetingUpdateConstructor.cpp,matched,ModuleFactory caller 0x00117C40 and vtable 0x010BACD4 prove class; BFME ObjectModule and wake-frame constructor shape;model=GPT-6
 ??0AttachedModelFXNugget@@QAE@XZ,,0x00429A40,42,game/GameEngine/Source/GameClient/AttachedModelFXNuggetConstructor.cpp,matched,clean C++ BFME AttachedModel constructor; parser-proven 0xC0 layout and Modelname/RandomlyRotate/ExpireTimer fields
 ??0AttackFireWhileChargingMachine@@QAE@PAVObject@@PAVAIAttackState@@VAsciiString@@_N@Z,,0x001818D0,222,game/GameEngine/Source/GameLogic/AI/AttackFireWhileChargingMachineCtor.cpp,matched,retail constructor uses BFME StateMachine flag and AIChargeTargetState child
@@ -2987,8 +2980,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0DisplayString@@QAE@XZ,,0x000D16F0,23,game/GameEngine/Source/GameClient/DisplayString.cpp,matched,
 ??0DisplayStringManager@@QAE@XZ,,0x00410240,26,game/GameEngine/Source/GameClient/DisplayStringManager.cpp,matched,ZH DisplayStringManager ctor; installs 0x010F1014 whose slot 0 is the authentic ??_GDisplayStringManager 0x004102A0; replaces the ModuleFactory.cpp LifetimeUpdateModuleData ctor alias that matched only under the masked vtable operand;model=claude-opus-5-5
 ??0DistLODClass@@QAE@ABV0@@Z,,0x005EC3A0,46,game/Libraries/Source/WWVegas/WW3D2/DistLODClassCopyCtor.cpp,matched,object-symbol=??0BFMEDistLODClass@@QAE@ABV0@@Z;Open-BFME5 one-round copy constructor
-??0DistLODDefClass@@QAE@XZ,,0x0005C5D0,13,game/Libraries/Source/WWVegas/WW3D2/distlod.cpp,matched,icf-owner=??0?$DLNodeClass@USmudge@@@@QAE@XZ
-??0DistLODNodeDefStruct@@QAE@XZ,,0x0005C5D0,13,game/Libraries/Source/WWVegas/WW3D2/distlod.cpp,matched,icf-owner=??0?$DLNodeClass@USmudge@@@@QAE@XZ
 ??0DistLODPrototypeClass@@QAE@PAVDistLODDefClass@@@Z,,0x00149E30,25,game/Libraries/Source/WWVegas/WW3D2/distlod.cpp,matched,
 ??0DockUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002CD4B0,464,game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/DockUpdateConstructorBfme.cpp,matched,BFME DockUpdate base constructor; RepairDockUpdate and SupplyWarehouseDockUpdate forward here; nontrivial Coord3D by-value fill and STLport vector base unwind shape
 ??0DockUpdateModuleData@@QAE@XZ,,0x002CAAF0,20,game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/DockUpdate.cpp,matched,exact 15B no-call ModuleData ctor; m_numberApproachPositionsData=0 m_isAllowPassthrough=TRUE; moduledata shim; replaces 5B thunk @0x2C54D
@@ -3696,10 +3687,8 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0ModelConditionUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002D66D0,53,game/GameEngine/Source/GameLogic/Object/Upgrade/ModelConditionUpgradeConstructor.cpp,matched,Open-BFME5 real constructor; the old claim was the five-byte link thunk lifted naked
 ??0ModelConditionUpgradeModuleData@@QAE@XZ,,0x002D6A20,158,game/GameEngine/Source/GameLogic/Object/Upgrade/ModelConditionUpgradeModuleDataCtorThunk.cpp,matched,Open-BFME5 exact C++ module-data constructor; 0xC0 factory and matched destructor prove UpgradeModuleData plus two ModelConditionFlags layout
 ??0ModuleFactory@@QAE@XZ,,0x00128E30,228,game/GameEngine/Source/Common/Thing/ModuleFactoryConstructor.cpp,matched,
-??0ModuleInfo@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/Common/Thing/ThingTemplate.cpp,matched,ICF alias of existing matched body
 ??0ModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z,0x00029B81,0x0005C7E0,11,game/GameEngine/Source/GameClient/System/FXParticleSystem/fx_particle_system.cpp,matched,copy constructor sets vtable
 ??0ModuleTemplate@FXParticleSystem@@QAE@XZ,0x00028E3E,0x0005C7C0,9,game/GameEngine/Source/GameClient/System/FXParticleSystem/fx_particle_system.cpp,matched,default constructor sets vtable
-??0ModuleTemplate@ModuleFactory@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/Common/Thing/ModuleFactory.cpp,matched,ICF alias of existing matched body
 ??0Money@@QAE@ABV0@@Z,,0x000E1540,27,game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/WOLLobbyMenu.cpp,matched,
 ??0MoneyCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z,,0x00217D10,46,game/GameEngine/Source/GameLogic/Object/Collide/CrateCollide/MoneyCrateCollide.cpp,matched,MASM converted to clean C++
 ??0MonsterDockUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002CDA30,74,game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/MonsterDockUpdateConstructor.cpp,matched,canonical DockUpdate placement; source defines MonsterDockUpdate and no phantom alias
@@ -3808,7 +3797,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0Obf00619E50@@QAE@PAH0@Z,,0x00619E50,173,game/GameEngine/Source/Common/BigObfHookWrappers.cpp,matched,
 ??0Object@@QAE@PBVThingTemplate@@ABV?$BitFlags@$0CN@@@PAVTeam@@@Z,,0x001D29A0,4246,game/GameEngine/Source/GameLogic/Object/ObjectConstructorThunk.cpp,matched,Open-BFME5 exact C++ emits;object-symbol=_bfme_Object_ctor_1D29A0
 ??0ObjectCreationList@@QAE@ABV0@@Z,,0x001D7680,76,game/GameEngine/Source/GameLogic/Object/ObjectCreationList.cpp,matched,
-??0ObjectCreationList@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameLogic/Object/ObjectCreationList.cpp,matched,ICF alias of existing matched body
 ??0ObjectCreationListStore@@QAE@XZ,,0x001DAD50,114,game/GameEngine/Source/GameLogic/Object/ObjectCreationListStoreCtor.cpp,matched,
 ??0ObjectCreationUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002D6D90,116,game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeConstructor.cpp,matched,Open-BFME5 clean C++ conversion of __emit ctor thunk
 ??0ObjectCreationUpgradeModuleData@@QAE@XZ,,0x002D75B0,95,game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeModuleDataConstructor.cpp,matched,Open-BFME5 exact C++ raw module-data constructor
@@ -4061,7 +4049,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0ReplenishUnitsBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002044E0,253,game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorCtorThunk.cpp,matched,Exact 253B @ 0x002044E0; Exact retail MASM module ctor; unique friend_newModuleInstance factory 0x1173A0
 ??0ReplenishUnitsBehaviorModuleData@@QAE@XZ,,0x00204ED0,69,game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorModuleDataConstructor.cpp,matched,ModuleFactory registration for ReplenishUnitsBehavior reaches this ICF-folded body
 ??0ResizerWindow@@QAE@XZ,,0x004AAED0,31,game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarResizer.cpp,matched,
-??0ResolutionDescClass@@QAE@XZ,,0x0005C5D0,13,game/Libraries/Source/WWVegas/WW3D2/dxwrapper.cpp,matched,ICF alias of existing matched body
 ??0RespawnBody@@QAE@PAVThing@@PBVModuleData@@@Z,,0x00214650,46,game/GameEngine/Source/GameLogic/Object/Body/RespawnBodyCtorThunk.cpp,matched,Open-BFME5 clean C++ RespawnBody MI ctor (base hosts 3 vtbls)
 ??0RespawnBodyModuleData@@QAE@XZ,,0x002149D0,190,game/GameEngine/Source/GameLogic/Object/Body/RespawnBodyModuleDataCtorThunk.cpp,matched,Open-BFME5 C++ base and default respawn policy construction
 ??0RespawnUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002A1510,168,game/GameEngine/Source/GameLogic/Object/Update/RespawnUpdateCtorModuleFactory.cpp,matched,ModuleFactory registration and 0x44 allocation identify factory 0x0011CC00 whose ILT 0x0000FA38 reaches this body
@@ -5646,7 +5633,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0SlowDeathBehavior@@QAE@PAVThing@@PBVModuleData@@@Z,,0x00207B60,321,game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_ctor_Thunk.cpp,matched,exact clean C++; module factory and original SlowDeathBehavior.cpp establish identity; BFME module-data vectors and UpdateModule interface layout independently verified
 ??0SlowDeathBehaviorModuleData@@QAE@XZ,,0x002093F0,404,game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehaviorModuleData_ctor_Thunk.cpp,matched,Clean C++ constructor; factory 0x001154F0 and retail member calls identify the layout
 ??0SmartBombTargetHomingUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x00286F80,154,game/GameEngine/Source/GameLogic/Object/Update/SmartBombTargetHomingUpdateCtorThunk.cpp,matched,Open-BFME5 clean C++ exact 154B ICF-alias constructor
-??0Smudge@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,ICF alias of existing matched body
 ??0SmudgeManager@@QAE@XZ,,0x005D3A90,40,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,
 ??0SmudgeSet@@QAE@XZ,,0x005D4160,36,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,
 ??0Snapshot@@QAE@ABV0@@Z,0x000021D0,0x0005C530,11,game/GameEngine/Source/Common/System/GeometryInfoCopyConstructor.cpp,matched,sets vtable pointer
@@ -5848,7 +5834,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0TeamRelationMap@@QAE@XZ,,0x000F76E0,92,game/GameEngine/Source/Common/RTS/TeamRelationMapConstructor.cpp,matched,clean C++ BFME one-vptr relation table layout
 ??0TeamTemplateInfo@@QAE@PAVDict@@@Z,,0x000EFEB0,2992,game/GameEngine/Source/Common/RTS/TeamTemplateInfoConstructor.cpp,matched,native C++ constructor; independently proven TeamPrototype caller and BFME property keys; 0x144 layout; array callbacks audited; proof=identity_evidence/000EFEB0-team-template-constructor.md;model=GPT-6
 ??0TeamsInfo@@QAE@XZ,,0x00191460,14,game/GameEngine/Source/GameLogic/Map/SidesList.cpp,matched,
-??0TeamsInfoRec@@QAE@XZ,,0x0005C5D0,13,game/GameEngine/Source/GameLogic/Map/SidesList.cpp,matched,icf-owner=??0?$DLNodeClass@USmudge@@@@QAE@XZ
 ??0TechAndSupplyImages@@QAE@XZ,,0x00452150,100,game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/SkirmishGameOptionsMenu.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/tech_and_supply_images_00452150.md;native two-list constructor;identity proven by canonical global initializer _$E18 at 0x00C6B7D0 via ILT 0x0001EC90;model=gpt-6.1-sol;host=devbox1
 ??0TechBuildingBehaviorModuleData@@QAE@XZ,,0x0008A430,26,game/GameEngine/Source/GameLogic/Object/Behavior/TechBuildingBehavior.cpp,matched,
 ??0Template@@QAE@XZ,,0x00351260,149,game/GameEngine/Source/GameLogic/ScriptEngine/Template.cpp,matched,1:1 C++ thunk from certified retail ScriptEngine constructor
@@ -6091,7 +6076,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??0WeaponModeSpecialPowerUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002B2BD0,125,game/GameEngine/Source/GameLogic/Object/Update/WeaponModeSpecialPowerUpdateCtorThunk.cpp,matched,Open-BFME5 clean C++ module ctor; five novtable-driven vtbls; factory 0x119670
 ??0WeaponModeSpecialPowerUpdateModuleData@@QAE@XZ,,0x002B2CF0,54,game/GameEngine/Source/GameLogic/Object/Update/WeaponModeSpecialPowerUpdateModuleDataCtorThunk.cpp,matched,Open-BFME5 clean C++ WeaponModeSpecialPowerUpdateModuleData ctor
 ??0WeaponModeSpecialPowerUpdateModuleDataBase@@QAE@XZ,,0x0026A820,156,game/GameEngine/Source/GameLogic/Object/Update/WeaponModeSpecialPowerUpdateModuleDataBaseCtorThunk.cpp,matched,Open-BFME5 named-slot base constructor with vtable 0x010B7D40
-??0WeaponRecoilInfo@W3DModelDraw@@QAE@XZ,,0x0005C5D0,13,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDraw.cpp,matched,ICF alias of existing matched body
 ??0WeaponSetSpecialAbilityUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,,0x0026DC50,53,game/GameEngine/Source/GameLogic/Object/Update/WeaponSetSpecialAbilityUpdate.cpp,matched,Luna Open-BFME5.0 clean C++ empty SpecialAbilityUpdate derivative
 ??0WeaponSetSpecialAbilityUpdateModuleData@@QAE@XZ,,0x0026DC20,32,game/GameEngine/Source/GameLogic/Object/Update/WeaponSetSpecialAbilityUpdateModuleDataCtorThunk.cpp,matched,Open-BFME5 clean C++ SpecialPowerModuleData + two zero fields
 ??0WeaponSetUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,,0x002DA4E0,53,game/GameEngine/Source/GameLogic/Object/Upgrade/WeaponSetUpgradeConstructor.cpp,matched,thunk-dump converted to clean C++ constructor body at destination 0x2DA4E0
@@ -16189,7 +16173,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Get_List_Index@INIClass@@QAEHPBD0HQAPAD@Z,,0x009E3EC0,135,game/Libraries/Source/WWVegas/WWLib/ini.cpp,matched,
 ?Get_List_Node@MultiListObjectClass@@QBEPAVMultiListNodeClass@@XZ,,0x009DBD60,4,game/Libraries/Source/WWVegas/WWLib/multilist.cpp,matched,
 ?Get_Local_Center@BoxRenderObjClass@@QAEABVVector3@@XZ,,0x000C8B10,7,game/Libraries/Source/WWVegas/WW3D2/hlod.cpp,matched,gen-alias;object-symbol=?Get_Local_Center@BoxRenderObjClass@@QAEABVVector3@@XZ;C++ alias
-?Get_Locked_Volume_Slice_Pitch@VolumeTextureLoadTaskClass@@AAEII@Z,,0x001E0CE0,14,game/Libraries/Source/WWVegas/WW3D2/textureloader.cpp,matched,
 ?Get_Lod_Model@HLodClass@@UBEPAVRenderObjClass@@HH@Z,,0x00979A60,63,game/Libraries/Source/WWVegas/WW3D2/hlod.cpp,matched,
 ?Get_Lod_Model_Bone@HLodClass@@UBEHHH@Z,,0x00979AA0,57,game/Libraries/Source/WWVegas/WW3D2/hlod.cpp,matched,
 ?Get_Lod_Model_Count@HLodClass@@UBEHH@Z,,0x009799F0,34,game/Libraries/Source/WWVegas/WW3D2/hlod.cpp,matched,
@@ -17689,7 +17672,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?Peek_Shader@MaterialPassClass@@QBE?AVShaderClass@@XZ,,0x007F5640,12,game/Libraries/Source/WWVegas/WW3D2/decalmsh.cpp,matched,
 ?Peek_Shader@MeshLoadContextClass@@AAE?AVShaderClass@@H@Z,,0x0096D050,22,game/Libraries/Source/WWVegas/WW3D2/meshmdlio.cpp,matched,
 ?Peek_Shader@Vertex_Split_Table@@QAE?AVShaderClass@@II@Z,,0x009470E0,136,game/Libraries/Source/WWVegas/WW3D2/dx8renderer.cpp,matched,campaign=luna36h-20260907;lane=mesh;identity=Vertex_Split_Table neighbor methods plus MeshMatDesc Get_Shader caller;BFME PolyCount+24
-?Peek_Single_Material@MeshMatDescClass@@QBEPAVVertexMaterialClass@@H@Z,,0x001E0CE0,14,game/Libraries/Source/WWVegas/WW3D2/dx8renderer.cpp,matched,
 ?Peek_Single_Material@MeshModelClass@@QBEPAVVertexMaterialClass@@H@Z,,0x00945590,20,game/Libraries/Source/WWVegas/WW3D2/dx8renderer.cpp,matched,
 ?Peek_Texture@MaterialPassClass@@QBEPAVTextureClass@@H@Z,,0x0013D140,11,game/Libraries/Source/WWVegas/WW3D2/decalsys.cpp,matched,
 ?Peek_Texture@MeshLoadContextClass@@AAE?AVBfmeHandleCX@@H@Z,,0x0096D080,39,game/GameEngine/Source/Common/Bfme5FiftyEight.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/0096d080-MeshLoadContextClass-Peek_Texture.md;model=gpt-6.1-sol;host=fleet
@@ -49486,7 +49468,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?dup_008ff8b0@@YAXXZ,,0x008FF8B0,44,game/GameEngine/Source/Common/System/FileSystem.cpp,matched,gen-alias;object-symbol=?lower_bound@?$_Rb_tree@IU?$pair@$$CBI_N@_STL@@U?$_Select1st@U?$pair@$$CBI_N@_STL@@@2@U?$less@I@2@V?$allocator@U?$pair@$$CBI_N@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBI_N@_STL@@U?$_Nonconst_traits@U?$pair@$$CBI_N@_STL@@@2@@2@ABI@Z;C++ alias
 ?dup_00903230@@YAXXZ,,0x00903230,39,game/Libraries/Source/WWVegas/WW3D2/pointgr.cpp,matched,zh-landmulti exact-multi ZH twin (rel32-all-resolve);object-symbol=?Clear@?$VectorClass@E@@UAEXXZ
 ?dup_00903280@@YAXXZ,,0x00903280,39,game/Libraries/Source/WWVegas/WW3D2/pointgr.cpp,matched,zh-landmulti exact-multi ZH twin (rel32-all-resolve);object-symbol=?Clear@?$VectorClass@E@@UAEXXZ
-?dup_009036e0@@YAXXZ,,0x009036E0,13,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,gen-alias;object-symbol=??0?$DLNodeClass@USmudge@@@@QAE@XZ;C++ alias
 ?dup_009036f0@@YAXXZ,,0x009036F0,25,game/Libraries/Source/WWVegas/WWLib/ini.cpp,matched,gen-alias;object-symbol=??0?$TPoint3D@H@@QAE@HHH@Z;C++ alias
 ?dup_00905c30@@YAXXZ,,0x00905C30,45,game/Libraries/Source/WWVegas/WW3D2/meshmdl.cpp,matched,zh-landmulti exact-multi ZH twin (dir32-masked);object-symbol=??1?$DynamicVectorClass@K@@UAE@XZ
 ?dup_00905fb0@@YAXXZ,,0x00905FB0,45,game/Libraries/Source/WWVegas/WW3D2/meshmdl.cpp,matched,zh-landmulti exact-multi ZH twin (dir32-masked);object-symbol=??1?$DynamicVectorClass@K@@UAE@XZ
@@ -49595,7 +49576,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?dup_0092ee50@@YAXXZ,,0x0092EE50,39,game/Libraries/Source/WWVegas/WW3D2/pointgr.cpp,matched,zh-landmulti exact-multi ZH twin (rel32-all-resolve);object-symbol=?Clear@?$VectorClass@E@@UAEXXZ
 ?dup_0092eec0@@YAXXZ,,0x0092EEC0,39,game/Libraries/Source/WWVegas/WW3D2/pointgr.cpp,matched,zh-landmulti exact-multi ZH twin (rel32-all-resolve);object-symbol=?Clear@?$VectorClass@E@@UAEXXZ
 ?dup_0092ef90@@YAXXZ,,0x0092EF90,16,game/Libraries/Source/WWVegas/WWLib/ini.cpp,matched,gen-alias;object-symbol=??8NodeElement@?$IndexClass@HPAUINIEntry@@@@QBE_NABU01@@Z;C++ alias
-?dup_0092efe0@@YAXXZ,,0x0092EFE0,14,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,matched,gen-alias;object-symbol=?Peek_Single_Material@MeshMatDescClass@@QBEPAVVertexMaterialClass@@H@Z;C++ alias
 ?dup_0092f180@@YAXXZ,,0x0092F180,16,game/GameEngine/Source/GameLogic/Object/Update/DockUpdate/DockUpdate.cpp,matched,gen-alias;object-symbol=??0?$_Bit_iter@U_Bit_reference@_STL@@PAU12@@_STL@@QAE@XZ;C++ alias
 ?dup_0092f620@@YAXXZ,,0x0092F620,45,game/Libraries/Source/WWVegas/WW3D2/meshmdl.cpp,matched,zh-landmulti exact-multi ZH twin (dir32-masked);object-symbol=??1?$DynamicVectorClass@K@@UAE@XZ
 ?dup_0092f690@@YAXXZ,,0x0092F690,25,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTankDraw.cpp,matched,gen-alias;object-symbol=?ID@?$VectorClass@PAVRender2DClass@@@@UAEHPBQAVRender2DClass@@@Z;C++ alias
@@ -172566,3 +172546,6 @@ uw_00c5ce11,,0x00C5CE11,11,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,match
 ?d_00c6ba40@@YAXXZ,,0x00C6BA40,30,game/GameEngine/Source/GameClient/GUI/GUICallbacks/UpdateDiplomacyBriefingUnicodeText.cpp,matched,object-symbol=_$E1;compiler initializer of the Rva00EF3884BriefingList list<UnicodeString> global (VA 0x012F3884): list ctor via ILT 0x00008DCD with a default allocator temp then atexit cleanup 0x00C70120; ret +0x1D then INT3;model=claude-opus-5-5;host=app
 ?drawEnthusiastic@Drawable@@AAEXXZ,,0x0041A780,511,game/GameEngine/Source/GameClient/Drawable_drawEnthusiastic.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/0041a780-draw-enthusiastic-no-arg.md;Clean C++ replaces the naked lift; ILT 0x3D514 CONFIRMS the no-argument decoration the matched drawIconUI calls; ZH drawEnthusiastic body reading the drawable's own region like drawBombed; complete 511B;model=claude-opus-5-5;host=app
 ?drawContained@Drawable@@AAEXXZ,,0x00414E40,833,game/GameEngine/Source/GameClient/Drawable_drawContained.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00414e40-draw-contained-no-arg.md;Clean C++ replaces the naked lift; ILT 0x12E2C CONFIRMS the no-argument decoration; ZH drawContained with BFME two pip rows reading the drawable's own region; complete 833B;model=claude-opus-5-5;host=app
+?get@Rva001E0CE0IndexedField@@QBEHH@Z,,0x001E0CE0,14,game/GameEngine/Source/Common/Rva001E0CE0IndexedGetter.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/001e0ce0-0092efe0-peek-single-material.md;address-derived getter; Peek_Single_Material is 0x0092EFE0;model=claude-opus-5.5;host=GreatFaram
+?Peek_Single_Material@MeshMatDescClass@@QBEPAVVertexMaterialClass@@H@Z,,0x0092EFE0,14,game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/001e0ce0-0092efe0-peek-single-material.md;MeshMatDescClass::Peek_Single_Material (ZH meshmatdesc.h inline after Get_Single_Material 0x0092EFC0);model=claude-opus-5.5;host=GreatFaram
+??0ResolutionDescClass@@QAE@XZ,,0x009036E0,13,game/Libraries/Source/WWVegas/WW3D2/dxwrapper.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/0005c5d0-gameclientrandomvariable-ctor.md;called directly by matched VectorClass<ResolutionDescClass> ctor/op= 0x00906240/0x00905C80;model=claude-opus-5.5;host=GreatFaram
