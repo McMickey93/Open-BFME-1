@@ -78411,7 +78411,7 @@ name,address,notes
 ?bfmeGoDST@ThingTemplate@@QAEXW4LocomotorSetType@@M@Z,0x000174FE,001BD0D0 set then Speed value; FieldParse names Speed with parseReal; ILT to146270 stores map at340; ret8
 ?bfmeGoDVA@BfmeThingDVA@@QAE_NXZ,0x00029C3F,route=0x000A0040; ILT 0x00029C3F jumps to the matched bfmeGoDVA body; tail-called by the 0x0016AE80 child predicate
 ?bfmeGoDVBb@BfmeThingDVB@@QAE?AVBfmeSharedString@@H@Z,0x00048653,route=0x00387160; ILT 0x00048653 reaches the matched BfmeThingDVB::bfmeGoDVBb body at 0x00387160.
-?bfmeGoEBF@W3DView@@QAEXXZ,0x0045CB70,neutral direct W3DView ABI view; verified body pin for the BFME EBF reset helper; constructor 0x00745B10/vftable 0x011217A0 proves owner identity; campaign=luna36h-20260907;lane=particle
+?rva0045CB70@W3DView@@QAEXXZ,0x0045CB70,abi-view=?bfmeGoEBF@BfmeThingEBF@@QAEXXZ;neutral direct W3DView ABI view; verified body pin for the BFME EBF reset helper; constructor 0x00745B10/vftable 0x011217A0 proves owner identity; campaign=luna36h-20260907;lane=particle
 ?bfmeGoFBAThunk@BfmeThingFBA@@QAEMPAX@Z,0x0000B816,ILT alias for the cached-float helper used by the 0x00323B70 condition
 ?bfmeGoHI@BfmeThingHI@@QAEXHHH@Z,0x000378F8,ILT to BfmeThingHI::bfmeGoHI body at 0x00609800; called by Rva003BDC50
 ?bfmeGoJB@InGameUI@@QBE_NXZ,0x0043EC00,address-derived InGameUI selection guard called by Rva00458FC0
