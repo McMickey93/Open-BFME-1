@@ -4210,3 +4210,13 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdFollowThruSta
 game/GameEngine/Source/GameLogic/Object/Update/TargetEligibility00290990.cpp|local|TargetEligibility00290990::accepts|templ,b0b22d6df914fb31acb6b32f,gpt-6.1-sol,20261016064222-317f74,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberVision002434D0.cpp|member||at2f1,2dfddc7fff4225999c0a931a,gpt-6.1-sol,20261016064111-2dbe22,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTurnAndGoal0024E310.cpp|member||ptr208,16a33f669fae98a91c23fd98,gpt-6.1-sol,20261016064232-8829cc,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_xA08,febb4aeefb5a7e1d7a101b5b,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_yA0c,9971e4533e514ef87c746e2c,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_xB10,bbc0e740f094e7072fda4a14,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_yB14,bd233d30fed66cf894408890,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_transform0c,fcadcd6ffdc57de9c81197d1,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_count24,276422c60688e5f778ff7d59,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_elements28,ad26eb9122b49b2b58b689df,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_node00,d6fe2c8957a3c81244cf4f4e,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_count818,824ced755982fcb7cd41d3d7,gpt-6.1-sol,20261016064528-24698a,2026-10-16
+game/GameEngine/Source/Common/BfmePicker1284.cpp|member||m_entries81c,badc181f446252dcd30ea9b0,gpt-6.1-sol,20261016064528-24698a,2026-10-16
