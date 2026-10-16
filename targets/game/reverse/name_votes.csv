@@ -1589,3 +1589,15 @@ game/GameEngine/Source/Common/BfmeConv2152.cpp|function|BfmeHostCA@|bfmeRemoveCA
 game/GameEngine/Source/Common/BfmeConv2152.cpp|local|BfmeHostCA::bfmeRemoveCA|m,43c8426c61c70179ddc9cce8,gpt-6.1-sol,20261016032922-04c4c5,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2152.cpp|local|BfmeHostCA::bfmeRemoveCA|n,add394bd0b39dee3be5cc1c0,gpt-6.1-sol,20261016032922-04c4c5,2026-10-16
 game/GameEngine/Source/Common/BfmeConv2152.cpp|local|BfmeHostCA::bfmeRemoveCA|t,7afdd0f7a969c30d8dd51da3,gpt-6.1-sol,20261016032922-04c4c5,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfmeXHN,616961bc0a601b264e00e3df,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfmeYHN,003edc4884d3c50f49d9d15e,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfmeZHN,0f10dd27bcb03c58f67af094,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfme38HN,a239ed1efd4e8ed56efb8eb9,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfme3cHN,429caebd1c7d0ee13f6db12b,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfme40HN,7e56c6a07b28e03587a18aa5,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|member||m_bfmeGeomHN,7b895fa1a26c7647e2bf1f19,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|function|BfmeCheckHN@|bfmeTestHN,34f7d6a53752698a704e42cb,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|param|BfmeCheckHN::bfmeTestHN|p,c2d3a081252b6f0c46a22dfb,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|local|BfmeCheckHN::bfmeTestHN|o,ea5b64fba94a690925d608bd,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|local|BfmeCheckHN::bfmeTestHN|a,7ca3ed5d96e94a7585dc7618,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
+game/GameEngine/Source/Common/BfmeConv2073.cpp|local|BfmeCheckHN::bfmeTestHN|b,fd10fa4ac107e5c0ef67e26d,gpt-6.1-sol,20261016032928-bb1087,2026-10-16
