@@ -126,8 +126,11 @@ extern const unsigned short BFMEEmptyUnicodeString;
 extern bool __cdecl GadgetTextEntryValidateCharacter(
 WideChar character, signed char flags);
 extern void __cdecl GadgetTextEntryUpdateComposition(GameWindow *window);
-extern void __cdecl GadgetTextEntrySetCursorPosition(
-	GameWindow *window, UnsignedInt position);
+// Retail calls the 5-byte ILT thunk at 0x000148A8 (ledger row ?j_000148a8@@YAXXZ,
+// jmp to the cursor helper FUN_008be210), so the call names that row's symbol.
+extern void j_000148a8(void);
+#define GadgetTextEntrySetCursorPosition \
+	(reinterpret_cast<void (__cdecl *)(GameWindow *, UnsignedInt)>(j_000148a8))
 
 typedef bool (__cdecl *BfmeCharacterValidator)(
 	WideChar character, UnsignedInt flags);
