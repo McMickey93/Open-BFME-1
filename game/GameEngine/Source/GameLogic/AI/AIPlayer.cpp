@@ -2458,71 +2458,7 @@ void AIPlayer::processTeamBuilding( void )
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
-// ?queueUnits@AIPlayer@@IAEXXZ present-unmatched
-void AIPlayer::queueUnits( void )
-{
-
-	queueSupplyTruck();
-
-	// For each member of the current team to build, try to find a faction building to build it.
-	//
-	for ( DLINK_ITERATOR<TeamInQueue> iter = iterate_TeamBuildQueue(); !iter.done(); iter.advance())
-	{
-		TeamInQueue *team = iter.cur();
-		for( WorkOrder *order = team->m_workOrders; order; order = order->m_next )
-		{
-			// check if there is a unit on the map that we can steal (recruit) instead of building
-			// @todo: Should this try to alter the home location of the recruiting area to 
-			// the center of the team, or to the home area of this player?
-			Coord3D home = team->m_team->getPrototype()->getTemplateInfo()->m_homeLocation;
-			Bool hasHome = false;
-			if (team->m_team->getPrototype()->getTemplateInfo()->m_hasHomeLocation) {
-				hasHome = true; 
-			} else {
-				hasHome = getBaseCenter(&home);
-			}
-			while (order->isWaitingToBuild()) {
-				
-				Object *unit = team->m_team->tryToRecruit(order->m_thing, &home, TheAI->getAiData()->m_maxRecruitDistance);
-				if (unit) 
-				{
-					order->m_numCompleted++;
-
-					AsciiString teamStr = "Team '";
-					teamStr.concat(team->m_team->getPrototype()->getName());
-					teamStr.concat("' recruits ");
-					teamStr.concat(order->m_thing->getName());
-					teamStr.concat(" from team '");
-					teamStr.concat(unit->getTeam()->getPrototype()->getName());
-					teamStr.concat("'");
-					TheScriptEngine->AppendDebugMessage(teamStr, false);
-
-					unit->setTeam(team->m_team);
-
-					AIUpdateInterface *ai = unit->getAIUpdateInterface();
-					if (hasHome) {
-						ai->aiMoveToPosition( &home, CMD_FROM_AI);
-					} else {
-						ai->aiIdle(CMD_FROM_AI); // stop, you've been recruited.
-					}
-				}	else {
-					break;
-				}
-			}
-			if (order->isWaitingToBuild())
-			{
-
-				// start the creation of a new unit
-				startTraining( order, team->m_priorityBuild, team->m_team->getName());
-			}
-			else
-			{
-				// we are under construction, verify our factory still exists
-				order->validateFactory(m_player);
-			}
-		}
-	}
-}
+// Retail AIPlayer::queueUnits is defined in AIPlayerQueueUnits.cpp.
 
 //----------------------------------------------------------------------------------------------------------
 /**
