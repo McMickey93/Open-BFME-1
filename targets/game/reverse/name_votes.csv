@@ -1480,3 +1480,6 @@ game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|param|
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|param|Rva0021C8A0StatusGate::check|b,04034237765d7bfcb26479e5,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|local|Rva0021C8A0StatusGate::check|x,6873f43f070b9d36e3e4a592,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/Rva0021C8A0StatusGate.cpp|local|Rva0021C8A0StatusGate::check|y,3174da54a5e23964adb96ec1,gpt-6.1-sol,20261016032121-a65c56,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva007FA6C0Open.cpp|param|Rva007FA6C0::openHost|arg,3695065ed737c82f42658390,gpt-6.1-sol,20261016032128-7aa7eb,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva007FA6C0Open.cpp|local|Rva007FA6C0::openHost|b,d1fc731ea6ff5214c3602ebd,gpt-6.1-sol,20261016032128-7aa7eb,2026-10-16
+game/GameEngine/Source/GameNetwork/Rva007FA6C0Open.cpp|local|Rva007FA6C0::openHost|r,411b51fe6d6d9703d568ef41,gpt-6.1-sol,20261016032128-7aa7eb,2026-10-16
