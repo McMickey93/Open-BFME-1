@@ -1272,3 +1272,9 @@ game/GameEngine/Source/Common/Q3IntrosortLoop004775D0.cpp|param|Q3SortElem16Medi
 game/GameEngine/Source/Common/Q3IntrosortLoop004775D0.cpp|param|Q3SortElem16Median|b,3db4baae59ceb84c6c020087,gpt-6.1-sol,20261016025307-5d2479,2026-10-16
 game/GameEngine/Source/Common/Q3IntrosortLoop004775D0.cpp|param|Q3SortElem16Median|c,180400bef6b2684c50e69122,gpt-6.1-sol,20261016025307-5d2479,2026-10-16
 game/GameEngine/Source/Common/BfmeOptionsDispatchYV.cpp|function||bfmeOptionsYV,e8197f52d0fbaa5db53bbaf7,gpt-6.1-sol,20261016025819-9e275f,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|type||PointerVector003C5990,3add989956732a36a9eaba6c,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||m_begin04,c4d985f9b3b3760c22c58aef,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||m_end08,7be108ff740bdf9358217846,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|member||m_28,c6dbe69503d3d3c06b83ef6b,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|param|contains|p,25428fcd48c9b68091dedf16,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/DistanceUpdate003C5990.cpp|local|DistanceUpdate003C5990::update|p,315cf38c7fcc372c198695d8,gpt-6.1-sol,20261016025858-3f7ef6,2026-10-16
