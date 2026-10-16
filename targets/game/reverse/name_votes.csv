@@ -5000,3 +5000,10 @@ game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeUpgradeImpl
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeUpgradeImplementation.cpp|type||BfmeDataIS,31926923aa3eb83355f5ce25,gpt-6.1-sol,20261016072543-3f6b0d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeUpgradeImplementation.cpp|member||m_bfmeDelayIS,dc9054a41e055adaaf9865f2,gpt-6.1-sol,20261016072543-3f6b0d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Upgrade/ObjectCreationUpgradeUpgradeImplementation.cpp|member||m_bfmeDataIS,4505bbd40fdfe6c15c69274b,gpt-6.1-sol,20261016072543-3f6b0d,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_04,145bf60f7c372449ccdae783,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_08,54555a11630ca9750cdf258d,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_0C,5042265a46ce9d265febe406,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_10,816f5e92f7af6cc0e55aa47d,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_14,ad9a02314808912d5a876830,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_18,64d71a47a507cc5841a5daec,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
+game/GameEngine/Source/GameLogic/LivingWorld/ParseMoveCameraBlock.cpp|member||m_flag1C,b426c0a0a2707f4beda4724d,gpt-6.1-sol,20261016072549-1b789c,2026-10-16
