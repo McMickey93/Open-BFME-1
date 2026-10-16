@@ -2084,3 +2084,10 @@ game/GameEngine/Source/GameLogic/Object/Update/CivilianSpawnUpdateModuleDataCtor
 game/GameEngine/Source/GameLogic/Object/SpecialPower/DominateEnemySpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_254,6a9aa1f3da8722f861f72be0,gpt-6.1-sol,20261016041357-42354e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/DominateEnemySpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_258,b2e8bf20992e0433e76c3613,gpt-6.1-sol,20261016041357-42354e,2026-10-16
 game/GameEngine/Source/GameLogic/Object/SpecialPower/DominateEnemySpecialPowerModuleDataConstructor.cpp|member||m_unmodelled_25C,2c2ec5dfdf785cd6c0f119d3,gpt-6.1-sol,20261016041357-42354e,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_08,f8a272757d086a09dc962418,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_0c,e6ef0007c51de9780580fb6d,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_10,9c884e4e9ff66cc24af94121,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_14,ff8da0fe6d30788d6f394ecf,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_18,0c2b8bb26c956387ef0d9159,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_1c,928f6a4b6930972e20f21378,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateModuleDataCtorThunk.cpp|member||m_20,f71c4f0aa685e77e185dcdbf,gpt-6.1-sol,20261016041404-c5e946,2026-10-16
