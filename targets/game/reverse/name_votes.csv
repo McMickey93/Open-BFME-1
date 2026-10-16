@@ -5415,3 +5415,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeBufferRva00736B60AddTre
 game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva00326F40.cpp|type||Rva00326F40Field210,35008adebb548edc24351c1b,gpt-6.1-sol,20261016081751-2a2f8b,2026-10-16
 game/GameEngine/Source/Common/BfmeNameResolveAS.cpp|member||m_bfmeResultAS,cfcc5ec467c27f0e4310e7f9,gpt-6.1-sol,20261016081919-c73a13,2026-10-16
 game/GameEngine/Source/Common/BfmeNameResolveAS.cpp|member||m_bfmeNameAS,088b0e961c66fd957fa548aa,gpt-6.1-sol,20261016081919-c73a13,2026-10-16
+game/GameEngine/Source/Common/Bfme/Rva00889720.cpp|member||m_field9F50,2018d6d8cee3ec3dae8bd2f5,gpt-6.1-sol,20261016081550-1e3a89,2026-10-16
