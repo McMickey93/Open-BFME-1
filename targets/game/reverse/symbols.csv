@@ -16444,6 +16444,7 @@ name,address,notes
 ?after@TaintSpecialPower@@QAEXPBVCoord3D@@@Z,0x00033C62,ILT of 0x0026B9D0; the class is proven by the vftable ??0TaintSpecialPower@@ stores, the method name is still a placeholder
 ?afterRelease@GenAlpha@@QAEXXZ,0x0003139A,GenAlpha::h00024D2A follow-up thiscall ILT (body 0x007B96E0)
 ?afterWalk@BfmeObjF9@@QAEXXZ,0x0087EE60,Open-BFME5 post-walk callee of 0x0087F9C0
+?aiAttackMoveToPosition@AICommandInterface@@QAEXPBVCoord3D@@HW4CommandSourceType@@@Z,0x0002FB03,ILT thunk to body 0x00153AF0; ilt_oracle CONFIRMED for the class-keyed Coord3D decoration (the ledger PBUCoord3D row name is CONTRADICTED); called by Object::doCommandButtonAtPosition 0x001D1FA0
 ?aiAttackObject@AICommandInterface@@QAEXPAVObject@@HW4CommandSourceType@@@Z,0x0002EDCF,retail AIEnterState::update call target
 ?aiBfmeAttackObject@AICommandInterface@@QAEXPAVObject@@W4CommandSourceType@@@Z,0x00039C89,AICommand command 0x39 ILT used by BFME named giant-bird attack
 ?aiBfmeCommand45@AICommandInterface@@QAEXPAVObject@@W4CommandSourceType@@@Z,0x00019628,aiBfmeCommand45 ILT from groupBfmeCommand45; AICMD 0x45 builder at 0x00152C20

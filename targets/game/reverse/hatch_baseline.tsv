@@ -2100,7 +2100,6 @@ emit	game/GameEngine/Source/GameLogic/Object/Contain/SlaughterHordeContainDestru
 emit	game/GameEngine/Source/GameLogic/Object/ObjectConstructorThunk.cpp	*	4246
 emit	game/GameEngine/Source/GameLogic/Object/ObjectGetSingleLogicalBonePositionOnTurretThunk.cpp	*	1008
 emit	game/GameEngine/Source/GameLogic/Object/ObjectUpdateMapPropertiesThunk.cpp	*	1951
-emit	game/GameEngine/Source/GameLogic/Object/Object_doCommandButtonAtPosition_Thunk.cpp	*	417
 emit	game/GameEngine/Source/GameLogic/Object/Object_setTriggerAreaFlagsForChangeInPosition_Thunk.cpp	*	749
 emit	game/GameEngine/Source/GameLogic/Object/PlayerGetBattlePlansActiveSpecificThunk.cpp	*	575
 emit	game/GameEngine/Source/GameLogic/Object/SpecialPower/CashHackSpecialPower_doSpecialPowerAtObject_Thunk.cpp	*	439
