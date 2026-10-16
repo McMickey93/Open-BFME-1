@@ -690,7 +690,6 @@ void AIGuardRetaliateReturnState::loadPostProcess( void )
 
 //--------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------
-// ?onExit@AIGuardRetaliateReturnState@@ present-unmatched
 void AIGuardRetaliateReturnState::onExit( StateExitType status )
 {
 	AIInternalMoveToState::onExit( status );

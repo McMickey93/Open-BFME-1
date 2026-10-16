@@ -686,7 +686,6 @@ StateReturnType AIGuardReturnState::update( void )
 }
 
 //--------------------------------------------------------------------------------------
-// ?onExit@AIGuardReturnState@@ present-unmatched
 void AIGuardReturnState::onExit( StateExitType status )
 {
 	AIInternalMoveToState::onExit( status );

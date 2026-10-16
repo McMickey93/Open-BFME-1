@@ -23,6 +23,12 @@ enum StateReturnType
 	STATE_FAILURE = -2
 };
 
+enum StateExitType
+{
+	EXIT_NORMAL,
+	EXIT_RESET
+};
+
 #include "coord3d.h"
 inline Coord3D::Coord3D() {}
 inline Coord3D::~Coord3D() {}
@@ -160,12 +166,16 @@ public:
 	virtual void slot08();
 	virtual void slot0c();
 	virtual StateReturnType onEnter();
+	virtual void onExit(StateExitType status);	// slot +14
+	virtual StateReturnType update();			// slot +18
 };
 
 class AIHarvestApproachSiteState : public AIInternalMoveToState
 {
 public:
 	virtual StateReturnType onEnter();
+	virtual void onExit(StateExitType status);
+	virtual StateReturnType update();
 
 	char m_pad04[0x18];
 	StateMachine *m_machine;
@@ -238,4 +248,17 @@ StateReturnType AIHarvestApproachSiteState::onEnter()
 	}
 
 	return AIInternalMoveToState::onEnter();
+}
+
+// Retail 0x0015F9A0 (vtable slot +18, ILT 0x0002DF24) and 0x0015F9B0 (slot +14,
+// ILT 0x0002027F): ZH's extend-base bodies, tail jumps to the
+// AIInternalMoveToState ILTs 0x000488F6 and 0x00029311.
+StateReturnType AIHarvestApproachSiteState::update()
+{
+	return AIInternalMoveToState::update();
+}
+
+void AIHarvestApproachSiteState::onExit(StateExitType status)
+{
+	AIInternalMoveToState::onExit(status);
 }

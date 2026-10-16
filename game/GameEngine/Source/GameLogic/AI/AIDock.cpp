@@ -1105,7 +1105,6 @@ StateReturnType AIDockMoveToRallyState::onEnter( void )
 }
 
 //----------------------------------------------------------------------------------------------
-// ?update@AIDockMoveToRallyState@@ present-unmatched
 StateReturnType AIDockMoveToRallyState::update( void )
 {
 	// This state is fine with the loss of the goal object after the move starts
@@ -1115,7 +1114,6 @@ StateReturnType AIDockMoveToRallyState::update( void )
 }
 
 //----------------------------------------------------------------------------------------------
-// ?onExit@AIDockMoveToRallyState@@ present-unmatched
 void AIDockMoveToRallyState::onExit( StateExitType status )
 {
 	// This state is fine with the loss of the goal object after the move starts

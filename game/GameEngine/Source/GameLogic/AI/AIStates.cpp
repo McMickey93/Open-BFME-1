@@ -2101,7 +2101,6 @@ StateReturnType AIMoveToState::onEnter()
 }
 
 //----------------------------------------------------------------------------------------------------------
-// ?onExit@AIMoveToState@@UAEXW4StateExitType@@@Z present-unmatched
 void AIMoveToState::onExit( StateExitType status )
 {
 	AIInternalMoveToState::onExit( status );
@@ -4512,7 +4511,6 @@ StateReturnType AIPickUpCrateState::onEnter()
 }
 
 //----------------------------------------------------------------------------------------------------------
-// ?onExit@AIPickUpCrateState@@UAEXW4StateExitType@@@Z present-unmatched
 void AIPickUpCrateState::onExit( StateExitType status )
 {
 	AIInternalMoveToState::onExit( status );
