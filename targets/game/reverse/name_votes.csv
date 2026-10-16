@@ -3903,3 +3903,6 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|t
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|param|Vector3|x,3f500f17a4d91a72d5c3f4f6,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|param|Vector3|y,b9b4290d70d85c7b85d14d1b,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTreeLighting_006F7DA0.cpp|param|Vector3|z,e193899ac7722cc26867c8c1,gpt-6.1-sol,20261016062414-891cd3,2026-10-16
+game/GameEngine/Source/Common/BfmeConv996.cpp|member||m_bfmeVal,130b9c276503674fb3daf0b5,gpt-6.1-sol,20261016062419-362800,2026-10-16
+game/GameEngine/Source/Common/BfmeConv996.cpp|local|bfmeGo996A|x,a9c2113212550abbc06f1f50,gpt-6.1-sol,20261016062419-362800,2026-10-16
+game/GameEngine/Source/Common/BfmeConv996.cpp|local|bfmeGo996A|s,c564df7090a0306993ace6bd,gpt-6.1-sol,20261016062419-362800,2026-10-16
