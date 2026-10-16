@@ -2997,3 +2997,7 @@ game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfme
 game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeNextFrame,4765fca3c1c51958b9bbf1ff,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
 game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeDoingAnalysis,904cb3f2d081239c7d8965d9,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
 game/GameEngine/Source/Common/System/RecorderClassConstructor.cpp|member||m_bfmeGameMode,ed44d1de29b09e2871b663f0,gpt-6.1-sol,20261016053816-6b1679,2026-10-16
+game/GameEngine/Source/Common/Rva00477E20Walk.cpp|type||Rva00477E20,9ba633a0f3b2d6a68b32f34f,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
+game/GameEngine/Source/Common/Rva00477E20Walk.cpp|member||m_200,1d8b4cfa8d9d34ddb7d27ffe,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
+game/GameEngine/Source/Common/Rva00477E20Walk.cpp|member||m_204,cd83f7d13ef09ee513982c40,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
+game/GameEngine/Source/Common/Rva00477E20Walk.cpp|local|Rva00477E20::walk|p,78140313d2eedae93bd45b25,gpt-6.1-sol,20261016053847-35b4fc,2026-10-16
