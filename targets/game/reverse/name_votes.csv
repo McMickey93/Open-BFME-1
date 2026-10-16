@@ -5462,3 +5462,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewResetBfme.cpp|member||m
 game/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManagerRva006A8DC0.cpp|member||m_requestTable050,bc370c87e4c8fe0614253e94,gpt-6.1-sol,20261016082515-085fe5,2026-10-16
 game/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManagerRva006A8DC0.cpp|member||m_deques9d4,ca9691a0c22cf45c1f80ad82,gpt-6.1-sol,20261016082515-085fe5,2026-10-16
 game/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManagerRva006A8DC0.cpp|function|MilesAudioManager@|rva006A8DC0,25145fec807280a8bceb5b72,gpt-6.1-sol,20261016082515-085fe5,2026-10-16
+game/GameEngine/Source/GameClient/InGameUIRva00442FD0.cpp|member||m_field_12b1,0a086f151f0a50d1f7b582b9,gpt-6.1-sol,20261016082619-48e9a6,2026-10-16
