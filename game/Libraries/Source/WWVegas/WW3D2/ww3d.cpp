@@ -277,6 +277,18 @@ bool														WW3D::Lite = false;
 **
 ***********************************************************************************/
 
+// Retail tail-jump targets, called by their ledger row names. Each body is the
+// ZH callee: 0x00902160 returns ?CurRenderDevice@DX8Wrapper (DIR32) as
+// DX8Wrapper::Get_Render_Device; 0x00937260/0x00937270 return the
+// Debug_Statistics last_frame_dx8_polygons/vertices data rows;
+// 0x00903E70 (Get_Render_Device_Count) and 0x00902130 (Get_Swap_Interval)
+// follow from the WW3D forwarders' ZH order.
+int Rva00902160Get( void );
+int Rva00903E70Get( void );
+int Rva00902130Get( void );
+int Rva00937260Get( void );
+int Rva00937270Get( void );
+
 // Retail N-patch setters are supplied by WW3D_SetNPatchesLevelThunk.cpp
 // and WW3D_SetNPatchesGapFillingModeThunk.cpp (RVAs 0x008FD080/0x008FD060).
 
@@ -577,10 +589,9 @@ WW3DErrorType WW3D::Toggle_Windowed (void)
  *   3/24/98    GTH : Created.                                                                 *
  *   1/25/2001  gth : converted to dx8                                                         *
  *=============================================================================================*/
-// ?Get_Render_Device@WW3D@@ present-unmatched
 int WW3D::Get_Render_Device(void)
 {
-	return DX8Wrapper::Get_Render_Device();
+	return Rva00902160Get();
 }
 
 
@@ -617,10 +628,9 @@ const RenderDeviceDescClass & WW3D::Get_Render_Device_Desc(int deviceidx)
  *   5/19/99    GTH : Created.                                                                 *
  *   1/25/2001  gth : converted to DX8                                                         *
  *=============================================================================================*/
-// ?Get_Render_Device_Count@WW3D@@ present-unmatched
 const int WW3D::Get_Render_Device_Count(void)
 {
-	return DX8Wrapper::Get_Render_Device_Count();
+	return Rva00903E70Get();
 }
 
 
@@ -1187,16 +1197,14 @@ void WW3D::Flip_To_Primary(void)
  * HISTORY:                                                                                    *
  *   7/28/99    GTH : Created.                                                                 *
  *=============================================================================================*/
-// ?Get_Last_Frame_Poly_Count@WW3D@@ present-unmatched
 unsigned int WW3D::Get_Last_Frame_Poly_Count(void)
 {
-	return Debug_Statistics::Get_DX8_Polygons();
+	return Rva00937260Get();
 }
 
-// ?Get_Last_Frame_Vertex_Count@WW3D@@ present-unmatched
 unsigned int WW3D::Get_Last_Frame_Vertex_Count(void)
 {
-	return Debug_Statistics::Get_DX8_Vertices();
+	return Rva00937270Get();
 }
 
 
@@ -1249,10 +1257,9 @@ void WW3D::Set_Ext_Swap_Interval(long swap)
  * HISTORY:                                                                                    *
  *   5/07/98    NH : Created.                                                                  *
  *=============================================================================================*/
-// ?Get_Ext_Swap_Interval@WW3D@@ present-unmatched
 long WW3D::Get_Ext_Swap_Interval(void)
 {
-	return DX8Wrapper::Get_Swap_Interval();
+	return Rva00902130Get();
 }
 
 
