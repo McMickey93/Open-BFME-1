@@ -4989,3 +4989,8 @@ game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f18,5757a0062400f283b3ccfcf1,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f24,afeee7885f419d2b7907eff0,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateCtorThunk.cpp|member||m_f2c,7d7e9b05c4cfe8f83ceadd43,gpt-6.1-sol,20261016072524-dd1e40,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|type||AI00243EA0,48486faae33865f435d3b157,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|type||Command00243EA0,ba47577d439f1269563a2992,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|type||Pathfinder00243EA0,2dddcc8cba78fa2e04b31688,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|member||field140,1254d6e2948bcd7d2de7159b,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberGoalRefresh00243EA0.cpp|member||field1D8,129f158b876aec8a7f210291,gpt-6.1-sol,20261016072530-cf11ba,2026-10-16
