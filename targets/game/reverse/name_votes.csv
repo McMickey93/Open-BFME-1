@@ -2324,3 +2324,5 @@ game/GameEngine/Source/Common/Rva001B74A0Ctor.cpp|member||m_08,844c2afdf7bbec8cd
 game/GameEngine/Source/Common/Rva001B74A0Ctor.cpp|member||m_0C,e3e814ea48d7541efe538a9b,gpt-6.1-sol,20261016042350-90a68e,2026-10-16
 game/GameEngine/Source/GameClient/GUI/MpGameSetup.cpp|function|MpGameSetup@|bfmeRefresh,04074fd513fc309c262f7efb,gpt-6.1-sol,20261016042350-81341d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00370730CastleMemberState.cpp|member||m_localPlayer0c,a39aa246cf688584990fc0da,gpt-6.1-sol,20261016042350-aa8bcc,2026-10-16
+game/GameEngine/Source/Common/Bfme5ListMemberDtors.cpp|member||m_bfmeNode,a99a7386de2a13221fd4e230,gpt-6.1-sol,20261016042350-497f4b,2026-10-16
+game/GameEngine/Source/Common/Bfme5ListMemberDtors.cpp|member||m_bfmeList,04105b28cc1f2bf17c7e383b,gpt-6.1-sol,20261016042350-497f4b,2026-10-16
