@@ -1715,3 +1715,6 @@ game/GameEngine/Source/GameClient/GUI/Rva56E070StateDispatch.cpp|member||m_arg26
 game/GameEngine/Source/GameClient/GUI/Rva56E070StateDispatch.cpp|member||m_arg268,c4b1756a7016b794f5332086,gpt-6.1-sol,20261016035541-6422a6,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Rva56E070StateDispatch.cpp|member||m_mode270,0c46a57884d83eeef130da08,gpt-6.1-sol,20261016035541-6422a6,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Rva56E070StateDispatch.cpp|function|Rva56E070StateOwner@|finishState16,6a4741d798171be65556ea6b,gpt-6.1-sol,20261016035541-6422a6,2026-10-16
+game/GameEngine/Source/Common/BfmeConv815.cpp|type||BfmeArg171,f094889ef79f7afee72e8fb7,gpt-6.1-sol,20261016035645-333b2d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv815.cpp|type||BfmeThingD02,92bbbbdd352a6ea31bc336ea,gpt-6.1-sol,20261016035645-333b2d,2026-10-16
+game/GameEngine/Source/Common/BfmeConv815.cpp|param|WeaponTemplate::scaleToInt|arg,fda39cbae6ffeb4caf560cbd,gpt-6.1-sol,20261016035645-333b2d,2026-10-16
