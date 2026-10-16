@@ -122,6 +122,7 @@ public:
 #undef SLOT
 	virtual int slot200() = 0;
 
+	Object *checkForCrateToPickup();
 	void setCurrentVictim(const Object *victim);
 	void friend_setGoalObject(Object *object);
 
@@ -233,11 +234,6 @@ public:
 	bool rva003F5E20(const Object *source, const Coord3D *goal,
 		const Weapon *weapon, int extra);
 };
-class Rva00272F70AIUpdateMethods
-{
-public:
-	Object *checkForCrateToPickup();
-};
 // ?update@AIAttackSquadState@@UAE?AW4StateReturnType@@XZ
 // Retail vtable 0x01097E30 slot 6 routes here. Keep the actual rva0016B010
 // helper in this TU: the compiler passes its Object* in EDI, not on the stack.
@@ -281,7 +277,7 @@ StateReturnType AIAttackSquadState::update()
 	if (owner->testStatus(0x25) && owner->m_containedBy != 0)
 		return STATE_SUCCESS;
 
-	Object *crate = ((Rva00272F70AIUpdateMethods *)ai)->checkForCrateToPickup();
+	Object *crate = ai->checkForCrateToPickup();
 	if (crate != 0)
 	{
 		this->m_attackSquadMachine->setGoalObject(crate);

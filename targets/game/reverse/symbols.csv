@@ -77564,7 +77564,7 @@ name,address,notes
 ?bfmeDoERK@@YAXPAVBfmeThingERK@@PAVBfmeModERK@@01@Z,0x00043888,pin
 ?bfmeDoERR@BfmeYERR@@QAEXPAVBfmeXERR@@I@Z,0x000157DA,pin
 ?bfmeDoESM@BfmeHostESM@@QAEDPAVBfmeThingESM@@UBfmePairESM@@PAPAXHH@Z,0x00021CEC,pin
-?bfmeDoFW@BfmeBaseFW@@QAEXXZ,0x00026044,pin
+?createWaypoints@DynamicPortalBehaviour@@QAEXXZ,0x00026044,route=0x001F96E0; ilt_oracle CONFIRMED exact at this thunk; callers 0x001F9C60 and BfmeConv815 reach the matched row through it
 ?bfmeDoHC@BfmeObjHC@@QAE_NPAX00H@Z,0x00045D9A,pin
 ?bfmeDoIC@BfmeThingIC@@QAEXPAXPAUBfmeNodeIC@@@Z,0x0000AD85,pin
 ?bfmeDoID@BfmeThingID@@QAEXPAUBfmeNodeID@@H@Z,0x0003FF67,pin
@@ -80625,7 +80625,7 @@ name,address,notes
 ?checkBoxAllowObservers@@3PAVGameWindow@@A,0x012F3F1C,PopupHostGame.wnd:CheckBoxAllowObservers static used by createGame
 ?checkDestination@Pathfinder@@QAE_NPBVObject@@HHW4PathfindLayerEnum@@H_N@Z,0x00027C96,ILT to the matched checkDestination body at 0x003DD7A0; reached from the adjust cascade at 0x003DEAB0
 ?checkForAdjust@Pathfinder@@QAEEPAVObject@@ABVLocomotorSet@@EHHHHEPAUCoord3D@@PBU4@MPAPAVPathfindCell@@H@Z,0x003F0F40,BFME 13-arg checkForAdjust; arg11 originalZ is float (fld at +0xC9 and +0x39B); arg13 onlyIfLayer is int (dword load at +0x2F1); TightenPathCallbackInfo caller verified
-?checkForCrateToPickup@Rva00272F70AIUpdateMethods@@QAEPAVObject@@XZ,0x000265A8,abi-view=?checkForCrateToPickup@AIUpdateInterface@@QAEPAVObject@@XZ;ILT-only ABI view; update 0x00184D50 calls on AIUpdateInterface and tests returned Object; resolved body 0x00272F70
+?checkForCrateToPickup@AIUpdateInterface@@QAEPAVObject@@XZ,0x000265A8,route=0x00272F70; ilt_oracle CONFIRMED exact at this thunk; AIAttackSquadState callers reach the matched row through it
 ?checkForDrag@Mouse@@IAEXXZ,0x005A4370,Full109B matched helper; processMouseEvent5A46FC via3EB80; threebuttondrag predicates and ECX preserved; canonicalMouse body verified
 ?checkForPossible@Pathfinder@@QAE_NABUPathfindMovementProfile@@H_NHHW4PathfindLayerEnum@@PAUCoord3D@@1@Z,0x00018BE7,ILT to the BFME checkForPossible body: ZH twin shape (getCell / impassable 4-5 reject / getEffectiveZone of goal cell with the movement profile / terrain zone when startingInObstacle / zone compare / adjust coord) and the aligned spiral call sites in matched adjustToPossibleDestination 0x003EAC80 pass (profile* zone center i j layer dest isObstacle)
 ?checkForTarget@Pathfinder@@QAE_NPBVObject@@HHPBVWeapon@@0PBUCoord3D@@H_NPAU4@@Z,0x0004864E,ILT to 0x003ECF90; callee of Rva003EEB50::run
@@ -81441,7 +81441,6 @@ name,address,notes
 ?dlink_next_TeamMemberList@BfmeObjectDlinkBase@@QBEPAVObject@@XZ,0x00001140,Typed DLINKbase getter identified byTeamF2770 PMF; route=0x000C8980
 ?dlink_next_TeamMemberList@Object@@QBEPAV1@XZ,0x00001140,Object DLINK PMF pfn used by Team member-list walks; ILT 0x00001140 -> 0x000C8980
 ?dlink_removeFrom_TeamMemberList@Object@@QAEXPAPAV1@@Z,0x001BD490,MAKE_DLINK unlink body; unlinks Object +0x25C/+0x260 and writes *pListHead
-?doAction@BfmeSub9BB@@QAEXXZ,0x00026044,pin
 ?doCall@BfmeSub204_2C0@@QAEXH@Z,0x00016DF1,pin
 ?doCommandButton@BfmeObjectDoCommandButton@@QAEXPBVCommandButton@@HH@Z,0x000063CF,alias of the three-argument Object spelling pinned at the same ILT; ScriptActions.cpp reaches it through a view because the reference header declares the two-argument form
 ?doCommandButton@Object@@QAEXPBVCommandButton@@HH@Z,0x000063CF,Object::doCommandButton via ILT thunk

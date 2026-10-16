@@ -18,10 +18,10 @@ public:
 	void bfmeInitTCB();
 };
 
-class BfmeBaseFW
+class DynamicPortalBehaviour
 {
 public:
-	void bfmeDoFW();
+	void createWaypoints();
 };
 
 class Drawable;
@@ -154,7 +154,7 @@ void Rva001F9C60UpdateModule::run(void)
 	}
 
 
-	((BfmeBaseFW *)((char *)this - 0x10))->bfmeDoFW();
+	((DynamicPortalBehaviour *)((char *)this - 0x10))->createWaypoints();
 
 	if (obj->m_ai != 0)
 	{

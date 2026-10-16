@@ -47,10 +47,10 @@ bool BfmeThingD02::contains(BfmeFinderD02 *finder)
 	return finder->find(m_val8) == 1;
 }
 
-class BfmeSub9BB
+class DynamicPortalBehaviour
 {
 public:
-	void doAction();
+	void createWaypoints();
 };
 
 struct BfmeSub4_9BB
@@ -73,7 +73,7 @@ void BfmeThing9BB::checkAndRun()
 {
 	if (!m_flag3D) {
 		if (m_sub4->m_flagC4 || m_flag3C)
-			((BfmeSub9BB*)this)->doAction();
+			((DynamicPortalBehaviour*)this)->createWaypoints();
 	}
 }
 
