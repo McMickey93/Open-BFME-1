@@ -4209,3 +4209,4 @@ game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdFollowThruSta
 game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/AIGiantBirdFollowThruStateUpdate.cpp|member||m_machine1c,ebb361bbde93ca893e45b21c,gpt-6.1-sol,20261016064212-f5c123,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Update/TargetEligibility00290990.cpp|local|TargetEligibility00290990::accepts|templ,b0b22d6df914fb31acb6b32f,gpt-6.1-sol,20261016064222-317f74,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberVision002434D0.cpp|member||at2f1,2dfddc7fff4225999c0a931a,gpt-6.1-sol,20261016064111-2dbe22,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/MemberTurnAndGoal0024E310.cpp|member||ptr208,16a33f669fae98a91c23fd98,gpt-6.1-sol,20261016064232-8829cc,2026-10-16
