@@ -3778,3 +3778,14 @@ game/GameEngine/Source/Common/BfmeConv1323.cpp|member||m_bfmeHr,909d9f704533f404
 game/GameEngine/Source/Common/BfmeConv1323.cpp|member||m_bfmeName,07b52de40ac8fbdcfd04c504,gpt-6.1-sol,20261016062123-4d54f9,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1323.cpp|function|BfmeThingTTE@|bfmeGoTTE,c2c1ee87b82bad852284016c,gpt-6.1-sol,20261016062123-4d54f9,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1323.cpp|local|BfmeThingTTE::bfmeGoTTE|h,58f86e41caf498ecb7fbc839,gpt-6.1-sol,20261016062123-4d54f9,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|type||BfmeM1091,539f89c715e4a1942168a525,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|type||BfmeR1091,b6a3d494014bf4bee78f5f9c,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|type||BfmeP1091,4d81808e91abec91dc95ea04,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|member||m_bfme3c,4626482e97f5f51984963dbf,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|member||m_bfme11f8,92da9cdc11d9f97249fbd3a8,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|ScriptConditions::evaluateScienceAcquired|e,2d8871066deb4df1399a01f9,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|ScriptConditions::evaluateScienceAcquired|r,114e8be1b5bd623b54b2faa4,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091B|n,c174eee00787fc704ec46cca,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091B|r,cc39aed842a4dffd66e41197,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091C|n,72f7dfef12cb21100211a5e7,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
+game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsScienceAcquired.cpp|local|bfmeGo1091C|r,c6bf1c54a04a546028d7034c,gpt-6.1-sol,20261016062133-5babc5,2026-10-16
