@@ -152,6 +152,8 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
     # only, and this hook is bounded by push size and never full — so a wrong
     # pin could reach origin without one check ever looking at it. 1.6s.
     python3 tools/pin_consistency.py --check || fail "pin consistency (see above)"
+    python3 tools/pin_consistency.py --delta "$base" --new "$local_sha" \
+        || fail "new pin/candidate debt across the outgoing range (see above)"
     python3 tools/pin_consistency.py --assert-shrink-only "$base" --at "$local_sha" \
         || fail "pin_consistency_baseline.csv grew across the outgoing range (see above)"
     python3 tools/b_pin_check.py --ref "$local_sha" || fail "a b_<rva> call lost its pin at $local_sha (see above)"

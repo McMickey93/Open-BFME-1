@@ -81,5 +81,6 @@
 #           it points inside a byte-verified body, so it cannot be any function.
 #
 # NOT COVERED HERE: single-pinned names, and the functions.csv half of the
-# resolver's candidate list. `--candidates` reports the second (114 more).
+# resolver's candidate list. `--candidates` reports the second (live count);
+# `--delta` refuses new instances of both.
 symbol,bodies,kind,evidence
