@@ -123066,12 +123066,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0082ada0@@YAXXZ,,0x0082ADA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c81f30
 ?j_00845bc0@@YAXXZ,,0x00845BC0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c45a00
 ?j_00845bd0@@YAXXZ,,0x00845BD0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c45aa0
-?j_0084e720@@YAXXZ,,0x0084E720,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
-?j_0084e730@@YAXXZ,,0x0084E730,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
-?j_0084e740@@YAXXZ,,0x0084E740,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
-?j_0084e750@@YAXXZ,,0x0084E750,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
-?j_0084e760@@YAXXZ,,0x0084E760,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
-?j_0084e770@@YAXXZ,,0x0084E770,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0084E6A0
 ?j_00853580@@YAXXZ,,0x00853580,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c53460
 ?j_008543a0@@YAXXZ,,0x008543A0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=WSACleanup
 ?j_00857ea0@@YAXXZ,,0x00857EA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00c667a0
@@ -172541,3 +172535,9 @@ _ghttpNewPost,,0x0087ADD0,5,game/GameEngine/Source/GameNetwork/GameSpy/ghttp/ght
 _ghttpSetRequestProxy,,0x0087AD50,5,game/GameEngine/Source/GameNetwork/GameSpy/ghttp/ghttpMain.c,matched,later-SDK ghttpMain.c forwarder: tail jmp to ghiSetRequestProxy 0x0087C950; between ghttpSetProxy 0x87AD40 and ghttpSetThrottle 0x87AD60;model=claude-opus-5-5;host=app
 _gpSetInfoCacheFilenameA,,0x008EAEE0,5,game/GameEngine/Source/GameNetwork/GameSpy/gp/gp.c,matched,tail jmp to gpiSetInfoCacheFilename 0x008F0500; immediately precedes gpSetInfoCacheFilenameW 0x8EAEF0 as in gp.c;model=claude-opus-5-5;host=app
 _peerSendNatNegotiateCookie,,0x008575A0,5,game/GameEngine/Source/GameNetwork/GameSpy/peer/peerMainBlockingOperations.cpp,matched,peerMain.c forwarder: tail jmp to piSendNatNegotiateCookie 0x00864F00; between peerParseQuery 0x857570 and peerAlwaysGetPlayerInfo 0x8575B0;model=claude-opus-5-5;host=app
+_Rva0084E720LocaleDefault,,0x0084E720,5,game/stlport/LocaleCodePageQueries.c,matched,STLport 4.5.3 per-category _Locale_*_default: tail jmp to _Locale_common_default 0x0084E6A0; unreferenced so the category is unproven;model=claude-opus-5-5;host=app
+_Rva0084E730LocaleDefault,,0x0084E730,5,game/stlport/LocaleCodePageQueries.c,matched,STLport 4.5.3 per-category _Locale_*_default: tail jmp to _Locale_common_default 0x0084E6A0; unreferenced so the category is unproven;model=claude-opus-5-5;host=app
+_Rva0084E740LocaleDefault,,0x0084E740,5,game/stlport/LocaleCodePageQueries.c,matched,STLport 4.5.3 per-category _Locale_*_default: tail jmp to _Locale_common_default 0x0084E6A0; unreferenced so the category is unproven;model=claude-opus-5-5;host=app
+_Rva0084E750LocaleDefault,,0x0084E750,5,game/stlport/LocaleCodePageQueries.c,matched,STLport 4.5.3 per-category _Locale_*_default: tail jmp to _Locale_common_default 0x0084E6A0; unreferenced so the category is unproven;model=claude-opus-5-5;host=app
+_Rva0084E760LocaleDefault,,0x0084E760,5,game/stlport/LocaleCodePageQueries.c,matched,STLport 4.5.3 per-category _Locale_*_default: tail jmp to _Locale_common_default 0x0084E6A0; unreferenced so the category is unproven;model=claude-opus-5-5;host=app
+_Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,matched,STLport 4.5.3 per-category _Locale_*_default: tail jmp to _Locale_common_default 0x0084E6A0; unreferenced so the category is unproven;model=claude-opus-5-5;host=app

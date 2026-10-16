@@ -193,6 +193,40 @@ char *_Locale_common_default(char *buf)
     return __GetLocaleName(0x400, cp, buf);
 }
 
+/* Six unreferenced forwarders to _Locale_common_default (retail 0x0084E720
+   through 0x0084E770, one per 16 bytes, ahead of _Locale_ctype_name): STLport's
+   per-category _Locale_*_default entries. Nothing calls them, so which category
+   each one is stays unproven and the names keep the address. */
+char *Rva0084E720LocaleDefault(char *buf)
+{
+    return _Locale_common_default(buf);
+}
+
+char *Rva0084E730LocaleDefault(char *buf)
+{
+    return _Locale_common_default(buf);
+}
+
+char *Rva0084E740LocaleDefault(char *buf)
+{
+    return _Locale_common_default(buf);
+}
+
+char *Rva0084E750LocaleDefault(char *buf)
+{
+    return _Locale_common_default(buf);
+}
+
+char *Rva0084E760LocaleDefault(char *buf)
+{
+    return _Locale_common_default(buf);
+}
+
+char *Rva0084E770LocaleDefault(char *buf)
+{
+    return _Locale_common_default(buf);
+}
+
 char *_Locale_ctype_name(const void *loc, char *buf)
 {
     char cpBuf[6];
