@@ -356,7 +356,10 @@ def source_mentions(name):
     # the linked object (the .asm is assembled whole, its segments are not
     # COMDATs), but no code reaches it and no gate verifies it. Its EXTERN line
     # only serves those procs. Anything else, or a gen_small C++ dump, blocks.
-    dead |= {p for p in hits - dead if p.startswith("game/gen_asm/")
+    # The test is the file's FORMAT, not dumpness: only a generated MASM file
+    # (.asm under GEN_ROOTS) has PROC bodies to read; whether a row is a dump is
+    # build.is_scaffold_row's question and is not asked here.
+    dead |= {p for p in hits - dead if is_generated(p) and p.endswith(".asm")
              and only_in_unbuilt_procs(p, name, bare_identifier(name))}
     return sorted(hits - dead)
 
