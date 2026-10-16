@@ -2387,3 +2387,7 @@ game/GameEngine/Source/Common/S5Parse005A0720.cpp|member||m_14,08d87247e113f72f7
 game/GameEngine/Source/Common/Rva00352810ParserRegistrationCtor.cpp|member||m_0c,b7c617ed2001cc553ccb585f,gpt-6.1-sol,20261016044905-6d1f0a,2026-10-16
 game/GameEngine/Source/Common/Rva00352810ParserRegistrationCtor.cpp|member||m_10,1faff69dc9c4dacc07d6c5f1,gpt-6.1-sol,20261016044905-6d1f0a,2026-10-16
 game/GameEngine/Source/Common/Rva00352810ParserRegistrationCtor.cpp|function|Rva00352810ParserRegistration@|bfmeReadScripts_0035BFB0,e747ead2b5de03bfa9b1b1a8,gpt-6.1-sol,20261016044905-6d1f0a,2026-10-16
+game/GameEngine/Source/Common/WideBuildFieldParseMore.cpp|param|Rva0013E170::buildFieldParse|p,283641f46874c20fa874b830,gpt-6.1-sol,20261016044911-556fca,2026-10-16
+game/GameEngine/Source/Common/WideBuildFieldParseMore.cpp|param|Rva00212CD0::buildFieldParse|p,81f975728bb5e3bd91436865,gpt-6.1-sol,20261016044911-556fca,2026-10-16
+game/GameEngine/Source/Common/WideBuildFieldParseMore.cpp|param|Rva00378170::buildFieldParse|p,c5fb30ec573805d74d718cbe,gpt-6.1-sol,20261016044911-556fca,2026-10-16
+game/GameEngine/Source/Common/WideBuildFieldParseMore.cpp|param|Rva00753A80::buildFieldParse|p,3f137fa9182a9b1477088aa8,gpt-6.1-sol,20261016044911-556fca,2026-10-16
