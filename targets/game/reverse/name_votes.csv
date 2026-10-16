@@ -3046,3 +3046,15 @@ game/GameEngine/Source/GameLogic/Object/GenericObjectCreationNuggetConstructor.c
 game/GameEngine/Source/GameLogic/Object/GenericObjectCreationNuggetConstructor.cpp|member||m_flag119,eccca7b48c482d2bf6eebcbb,gpt-6.1-sol,20261016055219-c7dec9,2026-10-16
 game/GameEngine/Source/GameLogic/Object/GenericObjectCreationNuggetConstructor.cpp|member||m_flag11a,bcd983bf793a303545b97c45,gpt-6.1-sol,20261016055219-c7dec9,2026-10-16
 game/GameEngine/Source/GameLogic/Object/GenericObjectCreationNuggetConstructor.cpp|member||m_word11c,0de16f82d41ac31c7c56a3a8,gpt-6.1-sol,20261016055219-c7dec9,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field04,15bbc06656a1bfd6ae93046f,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field08,72840dc317d283bfdfc91ce8,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field0c,4b579ba0aa4980bb61e2a048,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field10,e7474fdd84efdca407634819,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field1c,9b9d258f5c6a50b1f68726c2,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field20,67fc807d4ae068dbe97eef8a,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field28,0426303cf51eb0f8027ee4c2,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field2c,260c772a921c3199b85b9d3e,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field34,35c4a6abcfeeec3574640343,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field38,761ebe71bfc8c17a998e9c26,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field40,cb5cf1268300daa79811de90,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
+game/GameEngine/Source/GameClient/System/FXParticleSystem/WindModuleInfoCtorThunk.cpp|member||field44,cc345e2f4d2b5eb4d505ca2d,gpt-6.1-sol,20261016055225-5cd446,2026-10-16
