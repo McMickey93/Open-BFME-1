@@ -234,3 +234,14 @@ void HordeContain::attackTargetNow(Object *target) {
  }
 }
 
+// HorseHordeContain's extend-base override, a bare tail jump to the
+// HordeContain ILT 0x0000483B. Retail 0x0024D340; ilt_oracle CONFIRMS the name
+// exact at its ILT 0x00004417.
+class HorseHordeContain : public HordeContain {
+public:
+    virtual void attackTargetNow(Object *target);
+};
+
+void HorseHordeContain::attackTargetNow(Object *target) {
+    HordeContain::attackTargetNow(target);
+}
