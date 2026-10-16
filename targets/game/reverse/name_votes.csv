@@ -1346,3 +1346,7 @@ game/GameEngine/Source/Common/BfmeConv1081.cpp|local|bfmeGo1081A|f,d80a128238bd1
 game/GameEngine/Source/Common/BfmeConv1081.cpp|local|bfmeGo1081B|e,66ad321b36f45cd2270d9120,gpt-6.1-sol,20261016030454-70b32f,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1081.cpp|local|bfmeGo1081B|f,91f5b971672d88ba13af0772,gpt-6.1-sol,20261016030454-70b32f,2026-10-16
 game/GameEngine/Source/Common/BfmeConv1081.cpp|local|bfmeGo1081B|d,6ab1eb5fffddd9d5ccff2f17,gpt-6.1-sol,20261016030454-70b32f,2026-10-16
+game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|param|Coord3D::Coord3D#2|v,17b14b1191c1d4b4410cb225,gpt-6.1-sol,20261016030503-130f31,2026-10-16
+game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|param|Rva000FE640Subtract|v,5a48c710fb5114b5ce1841db,gpt-6.1-sol,20261016030503-130f31,2026-10-16
+game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|param|Rva000FE640Dot|v,52aaf04645ff049ec8f4a690,gpt-6.1-sol,20261016030503-130f31,2026-10-16
+game/GameEngine/Source/Common/System/PathProximity000FE640.cpp|local|getTemplate|t,69d8683040048f4f31f424e6,gpt-6.1-sol,20261016030503-130f31,2026-10-16
