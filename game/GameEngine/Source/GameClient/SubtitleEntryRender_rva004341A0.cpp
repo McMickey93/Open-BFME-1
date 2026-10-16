@@ -25,8 +25,12 @@ public:
 
 extern Int __cdecl bfmeAlignVIL(Int alignment, Int length, Int unused,
 	Real low, Real high);
-extern Int __cdecl rva004340C0SubtitleCoordinate(Int index,
-	Rva0081D520Owner *owner, Real low, Real high);
+// The coordinate helper at 0x004340C0 is still the dump row ?d_004340c0@@YAXXZ, so the
+// call names that row's symbol through its cdecl signature; the pinned
+// ?rva004340C0SubtitleCoordinate@@YAHHPAVRva0081D520Owner@@MM@Z has no definition.
+extern void d_004340c0();
+#define rva004340C0SubtitleCoordinate \
+	(reinterpret_cast<Int (__cdecl *)(Int, Rva0081D520Owner *, Real, Real)>(d_004340c0))
 
 class Display;
 extern Display *TheDisplay;
