@@ -1294,3 +1294,9 @@ game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072a0
 game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072a0|a3,319138b4595c734a739bfbfc,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
 game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072f0|a1,2046802829d7261bf561ce24,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
 game/GameEngine/Source/GameClient/SubsystemRefreshCallbacks.cpp|param|d_001072f0|a2,c03cf26fdbc8325b4ffc45e6,gpt-6.1-sol,20261016025955-3545b9,2026-10-16
+game/GameEngine/Source/Common/System/DataChunkInput.cpp|local|compare|n,e004970af52cb10ea079aba0,gpt-6.1-sol,20261016025955-75a816,2026-10-16
+game/GameEngine/Source/Common/System/DataChunkInput.cpp|local|compare|c,31f09782ba88d0ea64c002e3,gpt-6.1-sol,20261016025955-75a816,2026-10-16
+game/GameEngine/Source/Common/System/DataChunkInput.cpp|local|decrementDataLeft|c,abed2df7369f521941f28c11,gpt-6.1-sol,20261016025955-75a816,2026-10-16
+game/GameEngine/Source/Common/System/DataChunkInput.cpp|local|closeDataChunk|c,c4177134cea696ea6841c514,gpt-6.1-sol,20261016025955-75a816,2026-10-16
+game/GameEngine/Source/Common/System/DataChunkInput.cpp|local|DataChunkInput::readArrayOfBytes|c,380baca5f040b2d042e28ccd,gpt-6.1-sol,20261016025955-75a816,2026-10-16
+game/GameEngine/Source/Common/System/DataChunkInput.cpp|local|DataChunkInput::registerParser|p,453ea47abc96ea9f902ad640,gpt-6.1-sol,20261016025955-75a816,2026-10-16
