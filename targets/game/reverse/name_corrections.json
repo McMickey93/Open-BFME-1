@@ -20348,5 +20348,15 @@
   "after_sha256": "901dff436d073f8263ceb8b5b7a44eb23cfae2f7dabc0ce34e1b6de25bcd6540",
   "evidence": "targets/game/reverse/identity_evidence/name-lane-disputes.md",
   "reason": "disputed: Matched Xfer::operator==(Version&) at RVA 0x009d6430 serializes byte +1 and compares it against the earliest supported byte +0. XferVersionTransfer.cpp records both comparisons and their retail error strings. The first byte is a lower compatibility bound, so m_version gives it the wrong role."
+ },
+ {
+  "old_path": "game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Behavior/BezierProjectileBehaviorModuleDataCtorThunk.cpp",
+  "old_name": "m_flightPathAdjustDistPerSecond",
+  "new_name": "m_value84",
+  "before_sha256": "f30aabe936d37e70c5ef3f89bf200c62dbbbb7c87431431acb65f84402e29dd7",
+  "after_sha256": "726eca3afb6b6430f1ebdb2228ced6f6d13428dde55219d5aa1920acabe737a3",
+  "evidence": "targets/game/reverse/identity_evidence/name-lane-disputes.md",
+  "reason": "disputed: Retail FlightPathAdjustDistPerSecond at table RVA 0x00ca2140 uses the velocity parser. Matched BezierProjectileBehavior_update.cpp clamps movement once per frame using +0x84. Zero Hour DumbProjectileBehavior.cpp maps the same INI key through parseVelocityReal to m_flightPathAdjustDistPerFrame, proving the stored member is per-frame rather than per-second."
  }
 ]
