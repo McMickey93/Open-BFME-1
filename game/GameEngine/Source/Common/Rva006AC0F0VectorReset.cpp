@@ -1,21 +1,16 @@
 // cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD
 // Retail 0x006AC0F0: lock the owner, erase an AsciiString key from the
-// BuildableStatus table at +0x70, and invalidate the ready flag.
+// AudioEventInfo table at +0x70 (Zero Hour AudioEventInfoHash, the slot after
+// findAudioEventInfo in the AudioManager vtable), and invalidate the ready flag.
+// identity_evidence/006a78c0-ascii-hash-erase-not-buildablestatus.md
 
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(
 	void *handle, unsigned long milliseconds);
 extern "C" __declspec(dllimport) int __stdcall ReleaseMutex(void *handle);
 
 class AsciiString;
-enum BuildableStatus
-{
-    BSTATUS_YES = 0,
-    BSTATUS_IGNORE_PREREQUISITES,
-    BSTATUS_NO,
-    BSTATUS_ONLY_BY_AI,
-    BSTATUS_NUM_TYPES
-};
-namespace rts { template <class Key> struct hash; }
+class AudioEventInfo;
+namespace rts { template <class Key> struct hash; template <class Key> struct equal_to; }
 namespace _STL
 {
 template <class First, class Second> struct pair;
@@ -70,11 +65,11 @@ void Rva006AC0F0Owner::resetVector(int index)
 	Rva006AC0F0Owner *self = this;
 	void *handle = self->m_mutex;
 	Rva006AC0F0MutexGuard guard(handle);
-    reinterpret_cast<_STL::hashtable<_STL::pair<const AsciiString, BuildableStatus>,
+    reinterpret_cast<_STL::hashtable<_STL::pair<const AsciiString, AudioEventInfo *>,
         AsciiString, rts::hash<AsciiString>,
-        _STL::_Select1st<_STL::pair<const AsciiString, BuildableStatus> >,
-        _STL::equal_to<AsciiString>,
-        _STL::allocator<_STL::pair<const AsciiString, BuildableStatus> > > *>(
+        _STL::_Select1st<_STL::pair<const AsciiString, AudioEventInfo *> >,
+        rts::equal_to<AsciiString>,
+        _STL::allocator<_STL::pair<const AsciiString, AudioEventInfo *> > > *>(
             reinterpret_cast<char *>(self) + 0x70)
         ->erase(*reinterpret_cast<const AsciiString *>(index + 8));
 	self->m_ready = 0;
