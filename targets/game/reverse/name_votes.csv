@@ -2008,3 +2008,11 @@ game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModule
 game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|member||field24,e43af653dbaf8e9ed6ee7b91,gpt-6.1-sol,20261016040847-31c302,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|member||field58,84eb662363fa6fc2e7de1d0a,gpt-6.1-sol,20261016040847-31c302,2026-10-16
 game/GameEngine/Source/GameClient/System/FXParticleSystem/RenderObjectDrawModuleSelectModelName005F6B60.cpp|function|Rva005F6B60Owner@|selectModelNameAt005F6B60,cb19b3f5199db371f305e272,gpt-6.1-sol,20261016040847-31c302,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_one1C,28c55e6b8514569b9e2ad6db,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_one20,18c8b0e682ce5d115bfbf874,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_one24,4d53188229aa507f7634b98b,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_negative28,3927b1f77e3c052d6327a5bc,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_negative2C,e136d504f9d7d7dbbcbd12e9,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_value0C,d87031511c6970ec1d9ca991,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_value10,1119eec3e8b70804f2ffa8c0,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FadeAndDieOrnamentUpdateModuleDataCtorThunk.cpp|member||m_value14,a0d1205e6784b28dded4b7f7,gpt-6.1-sol,20261016040954-7b57ac,2026-10-16
