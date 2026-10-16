@@ -4906,3 +4906,10 @@ game/GameEngine/Source/GameLogic/Map/Rva001A51F0GridVisitInt.cpp|local|Rva001A51
 game/GameEngine/Source/GameLogic/Map/Rva001A51F0GridVisitInt.cpp|local|Rva001A51F0GridVisitInt::visit|y,6fd91f09fb3d9029a593d379,gpt-6.1-sol,20261016071534-6c47d4,2026-10-16
 game/GameEngine/Source/Common/Bfme5SmallOnes.cpp|member||m_bfmeNext,020721bcf6806c361bbbafea,gpt-6.1-sol,20261016071528-7fa6d8,2026-10-16
 game/GameEngine/Source/Common/Bfme5SmallOnes.cpp|member||m_bfmeList,4d0e60fbbd01d614954d2a41,gpt-6.1-sol,20261016071528-7fa6d8,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|type||BfmeMgr1000,50dd234dacfafb47d5982a1f,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|member||m_bfmeMgr,4469b926fa98ff2392ed9429,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|member||m_bfmeVal,6d10318384bef34eb741ce14,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|param|BfmeA1000::bfmeGo1000A|a,ca56cf56885c4dce13173b9d,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|local|BfmeA1000::bfmeGo1000A|m,d954d0879e9a0f7792afd5c8,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|param|bfmeGo1000B|t,9b6a88cc2456f4a4cd7e8656,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
+game/GameEngine/Source/Common/BfmeConv1000.cpp|param|bfmeGo1000B|s,8ed724962a98e973cddde315,gpt-6.1-sol,20261016071539-c4a568,2026-10-16
