@@ -7643,6 +7643,7 @@ name,address,notes
 ??1Gen_uw_00040db3@@QAE@XZ,0x00040DB3,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00041137@@QAE@XZ,0x00041137,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_0004113c@@QAE@XZ,0x0004113C,gen-uw-pin dtor target read from the retail funclet bytes
+??1?$map@HVAsciiString@@U?$less@H@_STL@@V?$allocator@U?$pair@$$CBHVAsciiString@@@_STL@@@3@@_STL@@QAE@XZ,0x0004133A,ilt_oracle CONFIRMED exact; retail unwind funclet 0x00BF7808 of matched IgnorePreferences::getIgnores 0x000AC9D0 returns this map and destroys it by jmp to this ILT
 ??1Gen_uw_0004133a@@QAE@XZ,0x0004133A,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_0004185d@@QAE@XZ,0x0004185D,gen-uw-pin dtor target read from the retail funclet bytes
 ??1Gen_uw_00041948@@QAE@XZ,0x00041948,gen-uw-pin dtor target read from the retail funclet bytes
