@@ -5751,3 +5751,5 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDrawAtta
 game/Libraries/Source/subsystem/GameSpyLoginPreferences_addLogin.cpp|local|compare|c,fea58ee7f4c1160643035895,gpt-6.1-sol,20261016130656-d7148f,2026-10-16
 game/GameEngine/Source/GameLogic/AI/Rva00150700PathReset.cpp|local|Rva00150700Owner::reset|p,6fee41740c598e6b85d5d827,gpt-6.1-sol,20261016130701-3a077d,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Damage/TransitionDamageFXRubbleNeighbors.cpp|local|TransitionDamageFX::rva002539F0|d,12d87095d7f3780c8d6f8742,gpt-6.1-sol,20261016130706-9f7c10,2026-10-16
+game/GameEngine/Source/Common/U2AllocatedRangeCopies.cpp|local|Rva0083F2F0Duplicate|p,c8c68aa04511cd67cdedb66a,gpt-6.1-sol,20261016130711-d8886e,2026-10-16
+game/GameEngine/Source/Common/U2AllocatedRangeCopies.cpp|local|Rva0083F330Duplicate|p,8c0918646b615b58885a3721,gpt-6.1-sol,20261016130711-d8886e,2026-10-16
