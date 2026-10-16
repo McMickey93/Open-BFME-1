@@ -5804,3 +5804,5 @@ game/GameEngine/Source/GameClient/MessageStream/HotKeyTranslator_translateGameMe
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setGameList|w,3cd51b715571639efd8c527b,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setChatWindow|w,8610b6456033143eeab261dc,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
 game/GameEngine/Source/GameClient/GUI/GUICallbacks/Apt/AptLanLobby.cpp|param|setPlayerList|w,985247280b4acd83680f547d,gpt-6.1-sol,20261016131022-3f1058,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FireSpreadUpdate.cpp|local|FireSpreadUpdate::update|d,6e1d9223eab4d603df360563,gpt-6.1-sol,20261016131027-10f287,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/FireSpreadUpdate.cpp|local|FireSpreadUpdate::calcNextSpreadDelay|d,740e849f51a9f1b850f2061d,gpt-6.1-sol,20261016131027-10f287,2026-10-16
