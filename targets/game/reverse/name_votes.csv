@@ -1313,3 +1313,5 @@ game/Libraries/Source/Apt/Rva008AE2E0BoundsGetter.cpp|local|Rva8BB1A0BoundsSourc
 game/GameEngine/Source/GameClient/GUI/Line0078B040.cpp|function||emitLine0078B040,75853c7efe3e84d006b9007a,gpt-6.1-sol,20261016030158-a781e9,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Line0078B040.cpp|param|emitLine0078B040|a,825acd6c0b0c0a1a8a160adf,gpt-6.1-sol,20261016030158-a781e9,2026-10-16
 game/GameEngine/Source/GameClient/GUI/Line0078B040.cpp|param|emitLine0078B040|b,dded64e7ad4dc6a16c403c2e,gpt-6.1-sol,20261016030158-a781e9,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/SpecialAbilityUpdate_startUnpacking.cpp|local|getType|p,af1f5ab10783a13e05f72bb6,gpt-6.1-sol,20261016030228-4c0c11,2026-10-16
+game/GameEngine/Source/GameLogic/Object/Update/SpecialAbilityUpdate_startUnpacking.cpp|local|SpecialAbilityUpdate::startUnpacking|d,1dc5627335703195b9c102ac,gpt-6.1-sol,20261016030228-4c0c11,2026-10-16
