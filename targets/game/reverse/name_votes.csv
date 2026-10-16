@@ -2860,3 +2860,8 @@ game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|membe
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value68,698c1c424f8dc395a01e3329,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_value6C,e854e12d9e85fd8d52bad638,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
 game/GameEngine/Source/GameLogic/Object/Behavior/Rva00126080ModuleData.cpp|member||m_flag70,7b9673b6b27cb460fc4d5d56,gpt-6.1-sol,20261016052939-35b25c,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoConstructor.cpp|member||m_24,785cbcba663ad7f81d8b7e8c,gpt-6.1-sol,20261016052513-d18504,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoConstructor.cpp|member||m_7c,227442c1ba5e5537b7606fa0,gpt-6.1-sol,20261016052513-d18504,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoConstructor.cpp|member||m_80,9215b882eabf87be575b5506,gpt-6.1-sol,20261016052513-d18504,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoConstructor.cpp|member||m_88,1b1b7ea003925a67b21f4677,gpt-6.1-sol,20261016052513-d18504,2026-10-16
+game/GameEngine/Source/Common/INI/AudioEventInfoConstructor.cpp|member||m_vector8c,0880a96feb1c38d412fbd8f7,gpt-6.1-sol,20261016052513-d18504,2026-10-16
