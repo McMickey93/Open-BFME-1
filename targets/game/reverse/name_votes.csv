@@ -5264,3 +5264,4 @@ game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE730CameraBounds.cpp|me
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE730CameraBounds.cpp|member||fielde4,c121e90aa41c0a9f2a6b6de4,gpt-6.1-sol,20261016074730-bd37ce,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE730CameraBounds.cpp|member||fieldf0,fd3682baac89462f68e0fda5,gpt-6.1-sol,20261016074730-bd37ce,2026-10-16
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva006FE730CameraBounds.cpp|member||box120,ad22d458b880eeaa47f83a5e,gpt-6.1-sol,20261016074730-bd37ce,2026-10-16
+game/GameEngine/Source/GameLogic/AI/Rva00181DF0OwnerDtor.cpp|type||Rva00181DF0Owner,de0a61d55da06c539a255eb8,gpt-6.1-sol,20261016075033-ef2013,2026-10-16
