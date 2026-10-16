@@ -71,7 +71,7 @@ public:
 	unsigned char m_unreconstructed008[0xC8 - 0x08];
 	ModelConditionFlags m_kindof;						// +0xC8 KindOf bits, same 320-bit storage
 	unsigned char m_unreconstructed0F0[0x4CA - 0xF0];
-	Bool m_bfme4CA;										// +0x4CA gates the revive-on-heal step below
+	Bool m_keepSelectableWhenDead;										// +0x4CA gates the revive-on-heal step below
 };
 
 template <class T> class OverridePtr
@@ -200,7 +200,7 @@ Bool Object::attemptHealingFromSoleBenefactor(Real amount, const Object *source,
 
 		attemptHealingInline(amount, source);
 
-		if (getTemplate()->m_bfme4CA)
+		if (getTemplate()->m_keepSelectableWhenDead)
 		{
 			clearModelConditionState(5);
 			if (isEffectivelyDead())
