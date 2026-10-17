@@ -27,13 +27,17 @@ enum AssaultStateTypes
 
 class BfmeSeedTarget;
 
-// The retail base serializer is the existing ILT 0x00043441 candidate for
-// Gen_002B5250.  This class has the proven 0x344-byte base span only to keep
-// the derived object's field offsets honest; it emits no vtable.
+// The retail base serializer is called through ILT 0x00043441, the ledger's
+// 5-byte row ?j_00043441@@YAXXZ (game/gen_small/thunks_032.cpp), as
+// tools/callees.py 0x2b44e0 273 prints.  Nothing defines the pinned
+// ?bfmeAccept@Gen_002B5250@@AAEXPAVBfmeSeedTarget@@@Z, so xfer names the
+// thunk through a raw pointer bridge that keeps the thiscall shape.  This
+// class has the proven 0x344-byte base span only to keep the derived
+// object's field offsets honest; it emits no vtable.
+void j_00043441();
 class Gen_002B5250
 {
 private:
-	void bfmeAccept(BfmeSeedTarget *target);
 	friend class AssaultTransportAIUpdate;
 
 	unsigned char m_base[0x340];
@@ -73,7 +77,13 @@ private:
 // ?xfer@AssaultTransportAIUpdate@@MAEXPAVXfer@@@Z
 void AssaultTransportAIUpdate::xfer(Xfer *xfer)
 {
-	bfmeAccept(reinterpret_cast<BfmeSeedTarget *>(xfer));
+	union
+	{
+		void (*raw)(void);
+		void (Gen_002B5250::*typed)(BfmeSeedTarget *);
+	} accept;
+	accept.raw = &j_00043441;
+	(this->*accept.typed)(reinterpret_cast<BfmeSeedTarget *>(xfer));
 	if (xfer->IsLightCRC())
 		return;
 
