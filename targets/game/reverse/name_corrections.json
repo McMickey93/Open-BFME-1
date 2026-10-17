@@ -20588,5 +20588,35 @@
   "after_sha256": "8441e2aaf30f9e8d55c746ba16c7ff3b9f5aff8fae9c29b7ae3d06f616671988",
   "evidence": "targets/game/reverse/identity_evidence/004cd6c0-getnext-host-check.md",
   "reason": "retail 0x004CD6C0 calls 0x0068D4A0 directly (ILT 0x329B1) and not the virtual amIHost slot 0x10 the unverified source spelled; that callee's ledger name is bfmeGo935B"
+ },
+ {
+  "old_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptList_WriteScriptDataChunk.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptList_WriteScriptDataChunk.cpp",
+  "old_name": "WriteScriptDataChunk",
+  "new_name": "Rva00357B30",
+  "before_sha256": "0819cf87d164c1510394f931907e9bdb99baa4081ed3a130f7af6ec6664060ba",
+  "after_sha256": "9c089a5ddf760f32833243cdb0a1b3038595008986204b15d0bf7387ef4734cf",
+  "evidence": "targets/game/reverse/identity_evidence/00357b30-script-chunk-writer.md",
+  "reason": "retail 0x00357B30 takes three arguments and writes \"Script\" chunks; ILT 0x285D3 contradicts the two-argument Script::WriteScriptDataChunk row name and no name is proven, so the body keeps its address"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "WriteScriptDataChunk",
+  "new_name": "Rva00357B30",
+  "before_sha256": "23e394f0789a3335b69e3991369cc02457a0cdf41e32c51ca00918549e844cef",
+  "after_sha256": "f637250800b1205f18813a8ff06ea91318840bec906e7918d166f971fc476894",
+  "evidence": "targets/game/reverse/identity_evidence/00357b30-script-chunk-writer.md",
+  "reason": "retail 0x00357B30 takes three arguments and writes \"Script\" chunks; ILT 0x285D3 contradicts the two-argument Script::WriteScriptDataChunk row name and no name is proven, so the body keeps its address"
+ },
+ {
+  "old_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptList_WriteScriptDataChunk.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptList_WriteScriptDataChunk.cpp",
+  "old_name": "WriteScriptDataChunk",
+  "new_name": "Rva00357B30",
+  "before_sha256": "2f075597f9a33c0d96e200d64e6ef785d2c11f453d46a2fdf16f73257d670340",
+  "after_sha256": "9c089a5ddf760f32833243cdb0a1b3038595008986204b15d0bf7387ef4734cf",
+  "evidence": "targets/game/reverse/identity_evidence/00357b30-script-chunk-writer.md",
+  "reason": "retail 0x00357B30 takes three arguments and writes \"Script\" chunks; ILT 0x285D3 contradicts the two-argument Script::WriteScriptDataChunk row name and no name is proven, so the body keeps its address"
  }
 ]

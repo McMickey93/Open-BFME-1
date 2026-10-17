@@ -3194,7 +3194,6 @@ functions	0x003556A0	?xfer@ScriptList@@MAEXPAVXfer@@@Z
 functions	0x00355C30	??_GScriptGroup@@MAEPAXI@Z
 functions	0x00355C60	??_GScript@@MAEPAXI@Z
 functions	0x00357860	?getUiText@Script@@QAE?AVAsciiString@@XZ
-functions	0x00357B30	?WriteScriptDataChunk@Script@@SAXAAVDataChunkOutput@@PAV1@@Z
 functions	0x00357D30	?run@ConditionDuplicateShim@@QBEPAVCondition@@XZ
 functions	0x00359EE0	?WriteScriptDataChunk@@YAXAAVDataChunkOutput@@PAVScriptList@@PAVScript@@@Z
 functions	0x0035B4B0	?WriteScriptsDataChunk@ScriptList@@SAXAAVDataChunkOutput@@QAPAV1@H@Z

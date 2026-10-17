@@ -656,7 +656,7 @@ Int ScriptList::getReadScripts(ScriptList *scriptLists[MAX_PLAYER_COUNT])
 // reference, the script chain (+0x08, written by 0x00357B30 as "Script" chunks)
 // goes out before the group chain (+0x04, the "ScriptGroup" writer at
 // 0x00359EE0, which the ledger still names WriteScriptDataChunk).
-void j_000285d3( DataChunkOutput &chunkWriter, ScriptList *scriptList, Script *script );
+void Rva00357B30( DataChunkOutput &chunkWriter, ScriptList *scriptList, Script *script );
 void WriteScriptDataChunk( DataChunkOutput &chunkWriter, ScriptList *scriptList, Script *script );
 
 struct BfmeScriptListHeads
@@ -712,7 +712,7 @@ void ScriptList::WriteScriptListDataChunk(DataChunkOutput &chunkWriter)
 	BfmeScriptListHeads *self = (BfmeScriptListHeads *)this;
 
 	/**********SCRIPTS DATA ***********************/
-		if (self->m_firstScript) j_000285d3(chunkWriter, this, self->m_firstScript);
+		if (self->m_firstScript) Rva00357B30(chunkWriter, this, self->m_firstScript);
 		if (self->m_firstGroup) WriteScriptDataChunk(chunkWriter, this, self->m_firstGroup);
 }
 
@@ -1298,6 +1298,9 @@ AsciiString Script::getUiText(void)
 *	Input: DataChunkInput 
 *		
 */
+// ?WriteScriptDataChunk@Script@@ absent-from-retail
+// BFME has no two-argument form: its Script chunk writer is Rva00357B30
+// (ScriptList_WriteScriptDataChunk.cpp), which also takes the list.
 void Script::WriteScriptDataChunk(DataChunkOutput &chunkWriter, Script *pScript)
 {
 	/**********SCRIPT  DATA ***********************/
