@@ -135,7 +135,10 @@ struct Rva0073AED0GameClient
 };
 
 class PlayerList;
-struct GlobalData;
+// data_rows.csv line 3 owns ?TheWritableGlobalData@@3PAVGlobalData@@A at
+// retail 0x012ED5C8, so this declaration must spell GlobalData as a class to
+// reach that definition (a struct spelling mangles to PAU and stays unresolved).
+class GlobalData;
 class GameClient;
 extern View *TheTacticalView;
 extern PlayerList *ThePlayerList;

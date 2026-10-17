@@ -40,7 +40,7 @@ extern void j_00044661();
 class GameEngine;
 class GameLogic;
 extern GameEngine *TheGameEngine;
-extern GameLogic *TheBfmeGameLogic;
+extern GameLogic *TheGameLogic;  // retail 0x012F0898; data_rows.csv line 976 owns this name there
 
 class BfmeGameLogicPause
 {
@@ -213,8 +213,8 @@ void MilesAudioManager::update()
 	union { void (__cdecl *freeFunction)(); SlotUpdateFn memberFunction; } call2f68f;
 	call2f68f.freeFunction = ::j_0002f68f;
 	(m_slots[2].*call2f68f.memberFunction)(float_44);
-	if (dword_604 != 2 && TheBfmeGameLogic != 0 &&
-		!((BfmeGameLogicPause *)TheBfmeGameLogic)->isGamePaused())
+	if (dword_604 != 2 && TheGameLogic != 0 &&
+		!((BfmeGameLogicPause *)TheGameLogic)->isGamePaused())
 		(m_slots[dword_604].*call2f68f.memberFunction)(float_44);
 
 	union { void (__cdecl *freeFunction)(); VoidFn memberFunction; } call48c84;

@@ -105,7 +105,10 @@ public:
 	char m_gap000[ 0xBA8 ];
 	float m_defaultStructureRubbleHeight;
 };
-extern GlobalData *TheGlobalData;
+// retail 0x012ED5C8 (census 37f19b491b queue 35): data_rows.csv line 3 owns the
+// name ?TheWritableGlobalData@@3PAVGlobalData@@A there, so the reference must use
+// it; a bare TheGlobalData mangles to a name nothing defines.
+extern GlobalData *TheWritableGlobalData;
 
 class Rva00215650State
 {
@@ -161,7 +164,7 @@ void Rva00215650Module::rva00215650()
 	{
 		float rubbleHeight = obj->getTemplate()->m_structureRubbleHeight;
 		if( rubbleHeight <= 0.0f )
-			rubbleHeight = TheGlobalData->m_defaultStructureRubbleHeight;
+			rubbleHeight = TheWritableGlobalData->m_defaultStructureRubbleHeight;
 		obj->setGeometryInfoZ( rubbleHeight );
 		getObject()->setStatusBit( 4, true );
 	}
