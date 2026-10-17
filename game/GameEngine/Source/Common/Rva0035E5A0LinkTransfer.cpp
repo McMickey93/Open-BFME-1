@@ -17,9 +17,14 @@ class BfmeNodeEAT
 {
 public:
     void bfmeLinkEAT(BfmeNodeEAT *node, int *a, int *b);
-    void bfmeRelinkEAT(BfmeNodeEAT *node, int *a, int *b);
 };
 }
+
+// bfmeRelinkEAT is the body at 0x0035D9B0, linked as the gen-dump
+// ?d_0035d9b0@@YAXXZ, so the thiscall is reached through a member-pointer
+// call (the pattern the Apt callers of ?d_008cc940 use).
+extern void d_0035d9b0();
+typedef void (Rva0035E510::BfmeNodeEAT::*Rva0035D9B0Relink)(Rva0035E510::BfmeNodeEAT *node, int *a, int *b);
 
 class BfmeOwnerXQ
 {
@@ -101,7 +106,8 @@ void Rva0035E710Owner::bfmeDoZN(void *a, BfmeNodeZN **link, void *what)
                 tail = (int **)*tail;
             *tail = first;
         }
-        receiver->bfmeRelinkEAT((Rva0035E510::BfmeNodeEAT *)source, (int *)&second, (int *)secondSlot);
+        union { void (*fn)(); Rva0035D9B0Relink call; } relink = { d_0035d9b0 };
+        (receiver->*relink.call)((Rva0035E510::BfmeNodeEAT *)source, (int *)&second, (int *)secondSlot);
         if (second) {
             int **tail = &source->head08;
             while (*tail)
