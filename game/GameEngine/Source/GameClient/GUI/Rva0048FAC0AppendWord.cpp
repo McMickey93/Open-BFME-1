@@ -1,6 +1,12 @@
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWLib
+// stlport
 // Body at 0x0048FAC0 (__thiscall, RET 12): appends spaces and a word to a text
 // line, measures it through the line's DisplayString and wraps via 0x0048F8C0.
+// Body at 0x0048F8C0 (__thiscall, RET 4): moves the finished line into the
+// owner's entry list.
+
+#define _STLP_NO_EXCEPTIONS 1
+#include <vector>
 
 #include <wchar.h>
 #include "string_base.h"
@@ -31,24 +37,47 @@ public:
 	virtual void getSize(int *width, int *height);
 };
 
-// A line record: +0x00 width limit, +0x0C display string, +0x10 text, +0x14 measured width.
+// A line record: +0x00 width limit, +0x04 x offset, +0x08 offset list,
+// +0x0C display string, +0x10 text, +0x14 measured width.
 struct Rva0048FAC0Line {
 	int m_maxWidth;
-	int m_pad04[2];
+	int m_x;
+	_STL::vector<int> *m_offsets;
 	DisplayString *m_displayString;
 	UnicodeString m_text;
 	int m_width;
 };
 
-// Retail 0x0048F8C0 body (`ret 4`, one stack argument) is a thiscall member of
-// this owner class; its only ledger name is the address-derived `?d_0048f8c0@@YAXXZ`
-// byte dump, so the call goes through it as a member pointer of matching shape.
-extern void d_0048f8c0();
+struct Rva0048F5C0Context;
+
+// 0x14-byte entry built from a finished line's text (constructor 0x0048F5C0
+// through ILT 0x0002FF63).
+class Rva0048F5C0Entry {
+public:
+	Rva0048F5C0Entry(const UnicodeString &text, Rva0048F5C0Context *context);
+private:
+	char m_unmodelled000[0x14];
+};
 
 class Rva0048FAC0Owner {
 public:
 	void appendWord(Rva0048FAC0Line *line, int spaces, const UnicodeString &word);
+	void flushLine(Rva0048FAC0Line *line);
+private:
+	char m_unmodelled000[0x08];
+	Rva0048F5C0Context *m_context;					// +0x08
+	_STL::vector<Rva0048F5C0Entry *> m_entries;			// +0x0C
 };
+
+// Wraps the line's text in a new entry, appends it to the owner's list,
+// records the line's x offset less half its width, then empties the line.
+void Rva0048FAC0Owner::flushLine(Rva0048FAC0Line *line)
+{
+	m_entries.push_back(new Rva0048F5C0Entry(line->m_text, m_context));
+	line->m_offsets->push_back(line->m_x - line->m_width / 2);
+	((StringBase<unsigned short> *)&line->m_text)->clear();
+	line->m_width = 0;
+}
 
 void Rva0048FAC0Owner::appendWord(Rva0048FAC0Line *line, int spaces, const UnicodeString &word)
 {
@@ -61,9 +90,7 @@ void Rva0048FAC0Owner::appendWord(Rva0048FAC0Line *line, int spaces, const Unico
 	line->m_displayString->getSize(&width, &height);
 	if (width > line->m_maxWidth) {
 		if (!line->m_text.isEmpty()) {
-			typedef void (Rva0048FAC0Owner::*FlushLine)(Rva0048FAC0Line *);
-			union { void (*fn)(); FlushLine call; } fl = { d_0048f8c0 };
-			(this->*fl.call)(line);
+			flushLine(line);
 			line->m_displayString->setText(word);
 			line->m_displayString->getSize(&width, &height);
 		} else if (spaces > 0) {
