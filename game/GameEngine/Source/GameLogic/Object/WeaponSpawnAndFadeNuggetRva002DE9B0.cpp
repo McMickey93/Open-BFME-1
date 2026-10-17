@@ -1,5 +1,3 @@
-// ?rva002DE9B0@Made001E6170@@UBEXPBVDamageInfo@@PBUCoord3D@@@Z
-// partial score=0.6862 date=2026-10-17
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas
 // stlport
 //
@@ -11,15 +9,10 @@
 // by the source's orientation, drops it onto its layer, kills the source and
 // registers the spawn with the pathfinder when its template has bit 0x400 of
 // the word at +0xDC set. The method name stays address-derived, as its
-// sibling WeaponDamageFieldNuggetRva002DAEC0.cpp's does.
-//
-// BANK (shape 0.973, 321/325 B, 94 masked byte diffs): everything through the
-// inlined WWMath Vector3::Rotate_Z (retail +0xB2) matches. Retail then adds
-// pos-first (`fld pos.x; fadd X` / `fld pos.y; fadd st1`) and keeps offset.Y
-// live until the getLayer call (`fstp st0` at +0xCE); this body adds
-// offset-first and consumes Y. Tried: +=/explicit/reversed adds, pointer and
-// reference adds, inner scopes, operator[], Set(), copy-init, local Vector3
-// view, Coord3D temporaries, z adds (all 94 B or worse).
+// sibling WeaponDamageFieldNuggetRva002DAEC0.cpp's does. The offset turns
+// through WWMath's inline Vector3::Rotate_Z on a default-constructed vector
+// whose fields are assigned one by one; the three-argument constructor
+// enregisters the fields and changes how the two adds are scheduled.
 
 #define _STLP_NO_EXCEPTIONS 1
 #include <bitset>
@@ -77,7 +70,13 @@ private:
 
 class Team;
 
-class Object
+class Thing
+{
+public:
+	void setOrientation(Real angle);
+};
+
+class Object : public Thing
 {
 public:
 	const ThingTemplate *getTemplate() const
@@ -92,7 +91,6 @@ public:
 	Team *getTeam() const { return m_team; }
 	int getLayer() const;
 	void setPosition(const Coord3D *pos);
-	void setOrientation(Real angle);
 	void kill(DamageType damageType, DeathType deathType);
 
 private:
@@ -174,7 +172,10 @@ void Made001E6170::rva002DE9B0(const DamageInfo *damageInfo, const Coord3D *) co
 
 	Object *spawn = TheThingFactory->newObject(tmpl, source->getTeam());
 
-	Vector3 offset(m_offset.x, m_offset.y, m_offset.z);
+	Vector3 offset;
+	offset.X = m_offset.x;
+	offset.Y = m_offset.y;
+	offset.Z = m_offset.z;
 	Coord3D pos;
 	pos.x = source->getPosition()->x;
 	pos.y = source->getPosition()->y;
