@@ -12,14 +12,16 @@ class LocomotorSet;
 class PathfindCell;
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/AIPathfind.h
-class Pathfinder
-{
-public:
-	Bool checkForAdjust(Object *object, const LocomotorSet &locomotorSet, Bool isHuman,
-		Int cellX, Int cellY, Int layer, Int radius, Bool centerInCell, Coord3D *destination,
-		const Coord3D *groupDestination, Real originalZ,
-		PathfindCell **previousCellSlot, Int onlyIfLayer);
-};
+// The call at 0x3F1890 reaches the incremental-link thunk at retail 0x0002AA04,
+// the ledger's 5-byte row ?j_0002aa04@@YAXXZ (game/gen_small/thunks_020.cpp),
+// whose body at 0x003F0F40 is the matched gen dump ?d_003f0f40@@YAXXZ
+// (game/gen_asm/d_003eeb90.asm), as tools/callees.py 0x3f1840 127 prints for
+// the callee.  Nothing defines a member named checkForAdjust, so the call names
+// the thunk the ledger owns; the bridge sits at the call site, and Pathfinder
+// stays only the receiver view so no body is emitted under the pinned name.
+void j_0002aa04();
+
+class Pathfinder {};
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/AIPathfind.h
 class PathfindCell
@@ -59,7 +61,14 @@ Int TightenPathCallbackInfo::cellCallback(PathfindCell *previousCell,
 	if (m_layer != candidateCell->getLayer())
 		return 0;
 
-	if (!m_pathfinder->checkForAdjust(m_object, *m_locomotorSet, 1,
+	union
+	{
+		void (*raw)(void);
+		Bool (Pathfinder::*typed)(Object *, const LocomotorSet &, Bool, Int, Int, Int, Int, Bool,
+			Coord3D *, const Coord3D *, Real, PathfindCell **, Int);
+	} checkForAdjust;
+	checkForAdjust.raw = &j_0002aa04;
+	if (!(m_pathfinder->*checkForAdjust.typed)(m_object, *m_locomotorSet, 1,
 		cellX, cellY, candidateCell->getLayer(), m_radius, m_centerInCell, &m_candidatePosition,
 		0, 0.0f, &previousCell, 0))
 		return 0;

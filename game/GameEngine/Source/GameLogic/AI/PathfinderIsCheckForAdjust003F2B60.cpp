@@ -15,12 +15,16 @@ extern CRCParameterCheck *TheCRCParameterCheck;
 extern bool Glo012F0239;
 extern "C" void __cdecl bfmeRetailCritterDesyncLog(CRCParameterCheck *, const char *, ...);
 
-class Pathfinder
-{
-public:
-	Bool checkForAdjust(Object *, const LocomotorSet &, Bool, Int, Int, Int,
-		Int, Bool, Coord3D *, const Coord3D *, Real, PathfindCell **, Int);
-};
+// The call at 0x3F2BC4 reaches the incremental-link thunk at retail 0x0002AA04,
+// the ledger's 5-byte row ?j_0002aa04@@YAXXZ (game/gen_small/thunks_020.cpp),
+// whose body at 0x003F0F40 is the matched gen dump ?d_003f0f40@@YAXXZ
+// (game/gen_asm/d_003eeb90.asm), as tools/callees.py 0x3f2b60 355 prints for the
+// callee.  Nothing defines a member named checkForAdjust, so the call names the
+// thunk the ledger owns; the bridge sits at the call site, and Pathfinder stays
+// only the receiver view so no body is emitted under the pinned name.
+void j_0002aa04();
+
+class Pathfinder {};
 
 enum KindOfType { KINDOF_INFANTRY = 0x7C };
 
@@ -56,7 +60,14 @@ bool BfmeCellTesterRva003F5340::test(Int cellX, Int cellY)
 	if (Glo012F0239 && TheCRCParameterCheck)
 		bfmeRetailCritterDesyncLog(TheCRCParameterCheck, "\t\t  Pathfinder_IsCheckForAdjust() called with cell=%d,%d", cellX, cellY);
 	Int count;
-	if (!m_pathfinder->checkForAdjust(m_obj, *m_arg3, m_notComputer, cellX, cellY, m_layer, m_radius,
+	union
+	{
+		void (*raw)(void);
+		Bool (Pathfinder::*typed)(Object *, const LocomotorSet &, Bool, Int, Int, Int, Int, Bool,
+			Coord3D *, const Coord3D *, Real, PathfindCell **, Int);
+	} checkForAdjust;
+	checkForAdjust.raw = &j_0002aa04;
+	if (!(m_pathfinder->*checkForAdjust.typed)(m_obj, *m_arg3, m_notComputer, cellX, cellY, m_layer, m_radius,
 			m_center, &m_pos, m_groupPos, m_arg6, (PathfindCell **)&count, m_arg7))
 	{
 		if (Glo012F0239 && TheCRCParameterCheck)
