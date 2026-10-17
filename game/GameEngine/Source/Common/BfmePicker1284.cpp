@@ -149,6 +149,23 @@ BfmePickNode1284 *BfmePicker1284::bfmePick1284(int pointX, int pointY)
 	return 0;
 }
 
+// Retail 0x008BAC30 (37 B): file-static affine transform of one mesh vertex; point in
+// ECX, transform in EAX, result in EDX through MSVC's private static convention.
+static void rva008BAC30(const BfmeVector2_1290 *point, const BfmeTransform2_1290 *transform,
+	BfmeVector2_1290 *out)
+{
+	out->x = transform->m00 * point->x + transform->m01 * point->y + transform->tx;
+	out->y = transform->m10 * point->x + transform->m11 * point->y + transform->ty;
+}
+
+// ?rva008BAC30Caller@@YAXPBUBfmeVector2_1290@@PBUBfmeTransform2_1290@@PAU1@@Z absent-from-retail
+// TU-local caller that keeps the static above alive with retail's register convention.
+void rva008BAC30Caller(const BfmeVector2_1290 *point, const BfmeTransform2_1290 *transform,
+	BfmeVector2_1290 *out)
+{
+	rva008BAC30(point, transform, out);
+}
+
 static int bfmeContains1283(const BfmeTriangle1290 *triangle, float x, float y)
 {
 	int inside = 0;
