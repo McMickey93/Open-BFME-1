@@ -20,7 +20,10 @@ class VptrZeroHead
 public:
 	VptrZeroHead() : m_unmodelled_04( 0 ) {}
 
-	virtual void vptrZeroAnchor();
+	// Pure: no slot body is recovered, and a declared-only virtual left the
+	// derived vftables naming a symbol nothing defines.  The constructors
+	// only store the vftable address, so their bytes do not depend on it.
+	virtual void vptrZeroAnchor() = 0;
 
 	unsigned int m_unmodelled_04;
 };
