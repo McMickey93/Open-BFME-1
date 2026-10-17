@@ -28,9 +28,12 @@ public:
 
 class Gen0021CE60
 {
-public:
-	void handle(int objectBits);
 };
+// The handler at 0x0021CE60 is linked as the gen-dump ?d_0021ce60@@YAXXZ, so
+// the thiscall is reached through a member-pointer call (the pattern the Apt
+// callers of ?d_008cc940 use).
+extern void d_0021ce60();
+typedef void (Gen0021CE60::*Gen0021CE60Handle)(int objectBits);
 
 class Rva0021D180
 {
@@ -88,6 +91,7 @@ private:
 
 void Rva0021D5D0Secondary::onContaining(Object *object, Bool selected)
 {
+	union { void (*fn)(); Gen0021CE60Handle call; } handleCall = { d_0021ce60 };
 	((GarrisonContain *)this)->GarrisonContain::onContaining(object, selected);
 	Object *host = owner();
 	if (disabled())
@@ -96,7 +100,7 @@ void Rva0021D5D0Secondary::onContaining(Object *object, Bool selected)
 		return;
 
 	if (host->m_status & 8) {
-		((Gen0021CE60 *)primary())->handle((int)object);
+		(((Gen0021CE60 *)primary())->*handleCall.call)((int)object);
 	} else {
 		if (containHead()->m_next == containHead()) {
 			((Rva0021D180 *)primary())->body();
@@ -106,11 +110,11 @@ void Rva0021D5D0Secondary::onContaining(Object *object, Bool selected)
 		host->setStatusBit(0x23, true);
 		for (Rva0021D5D0Node *node = containHead()->m_next;
 			node != containHead(); node = node->m_next)
-			((Gen0021CE60 *)primary())->handle((int)node->m_object);
+			(((Gen0021CE60 *)primary())->*handleCall.call)((int)node->m_object);
 
 		for (Rva0021D5D0Node *node = contestHead()->m_next;
 			node != contestHead(); node = node->m_next)
-			((Gen0021CE60 *)primary())->handle((int)node->m_object);
+			(((Gen0021CE60 *)primary())->*handleCall.call)((int)node->m_object);
 	}
 
 	((Rva0021D5D0WakeAccess *)primary())->wake(host);
