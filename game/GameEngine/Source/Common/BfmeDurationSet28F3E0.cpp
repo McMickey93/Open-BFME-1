@@ -4,10 +4,14 @@
 // ambient rounding mode; the surrounding algorithm remains C++.
 extern "C" __declspec(dllimport) double __cdecl ceil(double value);
 
+// The pending callback is invoked through ILT 0x00015E2E, the ledger's 5-byte
+// row ?j_00015e2e@@YAXXZ (game/gen_small/thunks_010.cpp), jmp to 0x0037C600,
+// as tools/callees.py 0x28f3e0 127 prints.  Nothing defines the pinned
+// ?invoke37C600@Rva0037C600Callback@@QAEXXZ, so the call names the thunk
+// through a raw pointer bridge that keeps the thiscall shape.
+void j_00015e2e();
 class Rva0037C600Callback
 {
-public:
-	void invoke37C600(void);
 };
 
 struct BfmeDeadlineSource
@@ -54,7 +58,13 @@ void Gen_0028F3E0::bfmeSet(int value, float seconds, BfmeDeadlineSource *source)
 
 	if (m_pendingCallback != 0)
 	{
-		m_pendingCallback->invoke37C600();
+		union
+		{
+			void (*raw)(void);
+			void (Rva0037C600Callback::*typed)(void);
+		} invoke;
+		invoke.raw = &j_00015e2e;
+		(m_pendingCallback->*invoke.typed)();
 		m_pendingCallback = 0;
 	}
 }
