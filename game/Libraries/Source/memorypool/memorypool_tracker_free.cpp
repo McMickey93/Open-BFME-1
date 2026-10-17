@@ -6,11 +6,18 @@
 // 0xFFFFFD66 plus the block pointer. The bucket table, slot ring, disabled
 // flag and lock use that TU's witnessed owner layout.
 
+#include <stdarg.h>
+#include <string.h>
+
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(void *lock);
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(void *lock);
 extern "C" __declspec(dllimport) void *__stdcall GetProcessHeap(void);
 extern "C" __declspec(dllimport) int __stdcall HeapFree(
 	void *heap, unsigned long flags, void *block);
+extern "C" __declspec(dllimport) void *__stdcall HeapAlloc(
+	void *heap, unsigned long flags, unsigned long bytes);
+extern "C" __declspec(dllimport) int __cdecl _vsnprintf(
+	char *buffer, unsigned int count, const char *format, va_list args);
 
 class Rva008838F0Node
 {
@@ -28,6 +35,7 @@ class Rva008838F0Owner
 {
 public:
 	void rva008839B0(int type, void *block);
+	void __cdecl rva008835C0(void *block, const char *format, ...);
 
 private:
 	char m_pad00[0x0c];
@@ -89,6 +97,53 @@ void Rva008838F0Owner::rva008839B0(int type, void *block)
 	m_slots[m_slotIndex] = node;
 	if (++m_slotIndex == 0x7530)
 		m_slotIndex = 0;
+
+	if (m_lock != 0)
+		LeaveCriticalSection(m_lock);
+}
+
+// Retail 0x008835C0 (294 bytes): variadic __cdecl owner method, owner on the
+// stack. For a tracked block whose node is still live (negative free
+// checkpoint), free its +0x14 text and replace it with the formatted
+// description, or clear it when no format is given. Same bucket walk, lock
+// and early-unlock exits as rva008839B0 above. Address-derived name.
+void __cdecl Rva008838F0Owner::rva008835C0(void *block, const char *format, ...)
+{
+	char buffer[512];
+
+	if (m_disabled)
+		return;
+
+	if (m_lock != 0)
+		EnterCriticalSection(m_lock);
+
+	Rva008838F0Node **link = &m_buckets[(unsigned int)block % 0x2b7b];
+	while (*link != 0 && (*link)->m_key != (unsigned int)block)
+		link = &(*link)->m_next;
+
+	Rva008838F0Node *node = *link;
+	if (node == 0 || node->m_freeCheckpoint >= 0)
+	{
+		if (m_lock != 0)
+			LeaveCriticalSection(m_lock);
+		return;
+	}
+
+	if (node->m_value14 != 0)
+		HeapFree(GetProcessHeap(), 4, node->m_value14);
+	if (format != 0)
+	{
+		va_list args;
+		va_start(args, format);
+		if (_vsnprintf(buffer, sizeof(buffer), format, args) < 0)
+			buffer[511] = 0;
+		va_end(args);
+		unsigned int length = (unsigned int)strlen(buffer) + 1;
+		node->m_value14 = HeapAlloc(GetProcessHeap(), 4, length);
+		memcpy(node->m_value14, buffer, length);
+	}
+	else
+		node->m_value14 = 0;
 
 	if (m_lock != 0)
 		LeaveCriticalSection(m_lock);
