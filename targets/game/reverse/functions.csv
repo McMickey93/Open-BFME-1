@@ -37454,7 +37454,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_004a4240@@YAXXZ,,0x004A4240,4572,game/gen_asm/d_004a32e0.asm,matched,gen-dump;ghidra=FUN_008a4240
 ?d_004a9300@@YAXXZ,,0x004A9300,634,game/gen_asm/d_004a32e0.asm,matched,gen-dump;ghidra=FUN_008a9300
 ?d_004afb20@@YAXXZ,,0x004AFB20,3,game/GameEngine/Source/Common/Rva004AFB20GetThis.cpp,matched,object-symbol=?getThis@Rva004AFB20@@QBEIXZ;address-derived this getter;carved boundary and retail bytes prove the body
-?d_004b21c0@@YAXXZ,,0x004B21C0,23,game/gen_asm/d_004844f0.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_004b2560@@YAXXZ,,0x004B2560,88,game/gen_asm/d_004b2470.asm,matched,gen-dump;ghidra=FUN_008b2560
 ?d_004b25d0@@YAXXZ,,0x004B25D0,1365,game/gen_asm/d_004b2470.asm,matched,gen-dump;ghidra=FUN_008b25d0
 ?d_004be210@@YAXXZ,,0x004BE210,242,game/gen_asm/d_004b2470.asm,matched,gen-dump;ghidra=FUN_008be210
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?bfmeFindModule@@YAPAVBfmeDestroyable@@PAVObject@@@Z,,0x0028CCD0,43,game/GameEngine/Source/Common/Bfme5OwnedObjectRelease.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/a1-bfmefindmodule-static-eax.md;file-static Object+0x1F0 module scan (slot +0x78) with retail private EAX convention; inline asm retired;model=claude-opus-5-5;host=app
 ?rva004AF9B0@@YA_NPAVGameWindow@@@Z,,0x004AF9B0,46,game/GameEngine/Source/Common/Rva004AF9B0.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/a1-rva004af9b0-static-esi.md;file-static push-button test (winIsHidden then GadgetButtonGetData +0x144 > 0) with retail private ESI convention; inline asm retired; no direct retail caller;model=claude-opus-5-5;host=app
 ?IS_IMPASSABLE@@YA_NW4CellType@PathfindCell@@@Z,,0x003D5D80,20,game/GameEngine/Source/GameLogic/AI/AIPathfind.cpp,matched,ZH AIPathfind.cpp static inline IS_IMPASSABLE twin; EA source file pathfinder.cpp (retail-run brief); tests cell types 5/4/6 with the type in EAX (private static convention); BFME checks bridge-impassable first;model=claude-opus-5-5;host=app
+?Rva004B21C0@@YAHPBVRva004B21C0Owner@@@Z,,0x004B21C0,23,game/GameEngine/Source/GameClient/GUI/Rva004B2260.cpp,matched,file-static rounded slot 0x18 float of the owner+0x200 object (owner in EAX; 0 when absent) next to the Rva004B2260 static; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app

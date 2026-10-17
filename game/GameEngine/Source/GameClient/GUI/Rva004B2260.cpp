@@ -39,3 +39,39 @@ void Rva004B2260Caller(Object *object, void *templ, int &melee, int &ranged)
 {
 	Rva004B2260(object, templ, melee, ranged);
 }
+
+// Retail 0x004B21C0 (23 B): file-static rounded value of the object held at owner+0x200
+// (0 when absent); the owner arrives in EAX through the private static convention and
+// the float result tail-calls _ftol2. Owner and value types are address-named.
+class Rva004B21C0Value
+{
+public:
+	virtual void slot00();
+	virtual void slot04();
+	virtual void slot08();
+	virtual void slot0C();
+	virtual void slot10();
+	virtual void slot14();
+	virtual float slot18();
+};
+
+class Rva004B21C0Owner
+{
+public:
+	unsigned char m_unmodelled000[0x200];
+	Rva004B21C0Value *m_value200;
+};
+
+static int Rva004B21C0(const Rva004B21C0Owner *owner)
+{
+	Rva004B21C0Value *value = owner->m_value200;
+	if (value)
+		return (int)value->slot18();
+	return 0;
+}
+
+// absent-from-retail: TU-local caller that keeps the static above alive.
+int Rva004B21C0Caller(const Rva004B21C0Owner *owner)
+{
+	return Rva004B21C0(owner);
+}
