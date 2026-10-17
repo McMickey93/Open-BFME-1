@@ -7,7 +7,12 @@
 #include "game/GameEngine/Source/GameLogic/command_source_type.h"
 extern GameLogic *TheGameLogic;
 class BfmeC979 { public: void bfmeGo979C(); };
-class Rva002C4910 { public: void method(Object *, CommandSourceType); };
+class Rva002C4910 {};
+// Body at 0x002C4910 is linked as the gen-dump ?d_002c4910@@YAXXZ, so the
+// thiscall (Object *, CommandSourceType) method is reached through a
+// member-pointer call, as the Apt callers of ?d_008cc940 do.
+extern void d_002c4910();
+typedef void (Rva002C4910::*Rva002C4910Method)(Object *, CommandSourceType);
 enum UpdateSleepTime { UPDATE_SLEEP_NONE = 1, UPDATE_SLEEP_FOREVER = 0x3FFFFFFF };
 class HordeAIUpdate { public: virtual UpdateSleepTime update(); };
 class AICommandInterface { public: void aiIdle(CommandSourceType); };
@@ -59,7 +64,10 @@ int Rva002C4CC0::update() {
     }
     if (field<unsigned int>(this, 0x33C)) {
         Object *target = TheGameLogic->findObjectByID(field<unsigned int>(this, 0x33C));
-        if (target) reinterpret_cast<Rva002C4910 *>(primary)->method(target, CMD_FROM_AI);
+        if (target) {
+            union { void (*fn)(); Rva002C4910Method call; } u = { d_002c4910 };
+            (reinterpret_cast<Rva002C4910 *>(primary)->*u.call)(target, CMD_FROM_AI);
+        }
         field<unsigned int>(this, 0x33C) = 0;
         return 1;
     }
