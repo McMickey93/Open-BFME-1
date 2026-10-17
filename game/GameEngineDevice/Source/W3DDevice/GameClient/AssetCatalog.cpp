@@ -1,7 +1,7 @@
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 // stlport
 // Complete reconstruction of retail RVA 00938150, 1231 bytes.
-// Existing name is anchored by Load_Asset_Dat's three catalog calls.
+// Existing name is anchored by the three catalog calls of the asset.dat loader at 0x00938620.
 // The binary, rather than an available Zero Hour twin, defines this BFME catalog format.
 #define _STLP_NO_EXCEPTIONS 1
 #include <stdio.h>

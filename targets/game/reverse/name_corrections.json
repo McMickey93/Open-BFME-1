@@ -20648,5 +20648,15 @@
   "after_sha256": "87f23b23a4da24db00abdfaf062cb5bd3ad57c5b92f347da5c245b007485d751",
   "evidence": "targets/game/reverse/identity_evidence/00740440-camera-path-angles.md",
   "reason": "the bank's callee guess setCameraPathAngles is the matched ledger row ?rva00740440@Rva00740440@@QAEX_NMH@Z at 0x00740440 (its identity correction evidence); the bank now calls the ledger name so it links"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "Load_Asset_Dat",
+  "new_name": "Rva00938620",
+  "before_sha256": "f09a3bcfbcc7473fa74c00b92be18bc4c9461fa85c5b5ac24a61c66572075f41",
+  "after_sha256": "b2bbfa893c74544961338c8efb5587fc0cb806941354863714455c4798ba9313",
+  "evidence": "targets/game/reverse/identity_evidence/00938620-asset-dat-loader-two-strings.md",
+  "reason": "Load_Asset_Dat came with a naked lift as a no-argument function; retail's only caller W3DDisplay::init copy-constructs two by-value AsciiStrings into the call and the body's unwind map destroys both incoming slots, so the body is the pinned bool(AsciiString AsciiString) at 0x00938620 whose real name no source gives"
  }
 ]
