@@ -63,9 +63,12 @@ public:
 class Gen003C8A50Result;
 class Gen003C8A50
 {
-public:
-	void drop( Gen003C8A50Result *found );
 };
+// The drop body at 0x003CA9D0 is linked as the gen-dump ?d_003ca9d0@@YAXXZ,
+// so the thiscall is reached through a member-pointer call (the pattern the
+// Apt callers of ?d_008cc940 use).
+extern void d_003ca9d0();
+typedef void (Gen003C8A50::*Gen003CA9D0Drop)( Gen003C8A50Result *found );
 
 class Glo012F4B98Type
 {
@@ -138,7 +141,8 @@ void Rva003BCA90::run()
 	LivingWorldRegion *found = m_at28->rva003C8A50( m_at30 );
 	if( !found )
 		return;
-	((Gen003C8A50 *)m_at28)->drop( (Gen003C8A50Result *)found );
+	union { void (*fn)(); Gen003CA9D0Drop call; } drop = { d_003ca9d0 };
+	(((Gen003C8A50 *)m_at28)->*drop.call)( (Gen003C8A50Result *)found );
 	int count = found->m_at80;
 	if( count <= 0 )
 		return;
