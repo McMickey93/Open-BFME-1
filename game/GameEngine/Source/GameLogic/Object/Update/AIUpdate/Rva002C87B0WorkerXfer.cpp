@@ -59,30 +59,24 @@ public:
 class BfmeSeedTarget;
 
 // The call at 0x2C87BC reaches the incremental-link thunk at retail 0x00043441,
-// the ledger's 5-byte row ?j_00043441@@YAXXZ (game/gen_small/thunks_032.cpp).
-// Nothing defines a member named bfmeAccept here, so the call names the thunk
-// the ledger owns, keeping its thiscall shape through the raw pointer bridge.
-extern void j_00043441();
+// the ledger's 5-byte row ?j_00043441@@YAXXZ (game/gen_small/thunks_032.cpp), as
+// tools/callees.py 0x2c87b0 499 prints for the callee.  Nothing defines a member
+// named bfmeAccept here, so the call names the thunk the ledger owns; the bridge
+// sits at the call site, and Gen_002B3190 stays only the receiver view so this
+// object emits no body under the pinned placeholder name.
+void j_00043441();
 
-class Gen_002B3190
-{
-private:
-	void bfmeAccept(BfmeSeedTarget *xfer)
-	{
-		union
-		{
-			void (*raw)(void);
-			void (Gen_002B3190::*typed)(BfmeSeedTarget *);
-		} call;
-		call.raw = &j_00043441;
-		(this->*call.typed)(xfer);
-	}
-	friend void invokeWorkerBaseXfer(Gen_002B3190 *, BfmeSeedTarget *);
-};
+class Gen_002B3190 {};
 
 static void invokeWorkerBaseXfer(Gen_002B3190 *base, BfmeSeedTarget *xfer)
 {
-	base->bfmeAccept(xfer);
+	union
+	{
+		void (*raw)(void);
+		void (Gen_002B3190::*typed)(BfmeSeedTarget *);
+	} accept;
+	accept.raw = &j_00043441;
+	(base->*accept.typed)(xfer);
 }
 
 struct BfmeFormattedText
