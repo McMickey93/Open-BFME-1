@@ -14,10 +14,14 @@ class BfmeEntryYQ
 {
 };
 
+// The per-player lookup goes through ILT 0x0004AF84, the ledger's 5-byte row
+// ?j_0004af84@@YAXXZ (game/gen_small/thunks_036.cpp), as tools/callees.py
+// 0x2f0be0 167 prints.  Nothing defines the pinned
+// ?bfmeFindYQ@BfmeThingYQ@@QAEPAVBfmeEntryYQ@@HH@Z, so the call names the
+// thunk through a raw pointer bridge that keeps the thiscall shape.
+void j_0004af84();
 class BfmeThingYQ
 {
-public:
-	BfmeEntryYQ *bfmeFindYQ(int kind, int output);
 };
 
 class BfmeThingERK
@@ -107,7 +111,13 @@ void ScriptActions::doSetUnitReferenceToHomeBaseOfPlayer(const AsciiString &play
 			if (player)
 			{
 				BfmeThingERK *candidate;
-				void *object = ((BfmeThingYQ *)player)->bfmeFindYQ(
+				union
+				{
+					void (*raw)(void);
+					BfmeEntryYQ *(BfmeThingYQ::*typed)(int, int);
+				} findYQ;
+				findYQ.raw = &j_0004af84;
+				void *object = (((BfmeThingYQ *)player)->*findYQ.typed)(
 					*(const int *)(const void *)&insideMap, (int)&candidate);
 				if (candidate)
 				{
