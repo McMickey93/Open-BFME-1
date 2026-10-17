@@ -1,5 +1,5 @@
 // ?get_deformed_vertices@MeshGeometryClass@@IAEXPAVVector3@@PBVHTreeClass@@@Z
-// partial score=0.79 date=2026-09-28
+// partial score=0.4084 date=2026-10-17
 // cl: /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/Wwutil /Igame/Libraries/Source/WWVegas/WWDownload /Igame/Libraries/Source/Compression /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 // ?get_deformed_vertices@MeshGeometryClass@@IAEXPAVVector3@@PBVHTreeClass@@@Z -- retail 0x00925860, 1199 B (ret 8 at +0x4AC).
 // Land in game/Libraries/Source/WWVegas/WW3D2/meshgeometry.cpp in place of the ZH body.
@@ -46,7 +46,7 @@ void MeshGeometryClass::get_deformed_vertices(Vector3 *dst_vert,const HTreeClass
 {
 	MeshGeometryRetailSkinView * const geometry =
 		reinterpret_cast<MeshGeometryRetailSkinView *>(this);
-	if (geometry->bone_run == NULL || geometry->bone_link == NULL || dst_vert == NULL) {
+	if (geometry->bone_run == NULL || geometry->bone_link == NULL || htree == NULL) {
 		return;
 	}
 
@@ -57,7 +57,11 @@ void MeshGeometryClass::get_deformed_vertices(Vector3 *dst_vert,const HTreeClass
 	Vector3 * src_vert[2];
 	int i;
 	for (i = 0; i < influences; i++) {
-		src_vert[i] = geometry->vertex[i] ? geometry->vertex[i]->Get_Array() : NULL;
+		if (geometry->vertex[i] != NULL) {
+			src_vert[i] = geometry->vertex[i]->Get_Array();
+		} else {
+			src_vert[i] = NULL;
+		}
 	}
 	uint16 * bonelink = geometry->bone_link->Get_Array();
 	uint16 * run = geometry->bone_run->Get_Array();
@@ -94,10 +98,10 @@ void MeshGeometryClass::get_deformed_vertices(Vector3 *dst_vert,const HTreeClass
 				d++;
 			}
 		} else {
-			const Matrix3D & tm = htree->Get_Transform(bone0);
-			Vector3 * s = src_vert[0];
 			Vector3 * d = dst_vert;
 			int n = count;
+			const Matrix3D & tm = htree->Get_Transform(bone0);
+			Vector3 * s = src_vert[0];
 			while (n--) {
 				d->X = tm[0][0] * s->X + tm[0][1] * s->Y + tm[0][2] * s->Z + tm[0][3];
 				d->Y = tm[1][0] * s->X + tm[1][1] * s->Y + tm[1][2] * s->Z + tm[1][3];
