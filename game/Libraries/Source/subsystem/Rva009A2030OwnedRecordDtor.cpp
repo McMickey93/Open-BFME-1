@@ -22,12 +22,17 @@ public:
 	~Rva009A2030OwnedRecord();
 
 private:
-	void releaseContents();	// 0x009A1F90
-
 	std::vector<Rva009A2030Pair> m_pairs;
 };
 
+// The helper at 0x009A1F90 is linked as the gen-dump ?d_009a1f90@@YAXXZ, so the
+// thiscall is reached through a member-pointer call (the pattern the Apt
+// callers of ?d_008cc940 use).
+extern void d_009a1f90();
+typedef void (Rva009A2030OwnedRecord::*Rva009A1F90Release)();
+
 Rva009A2030OwnedRecord::~Rva009A2030OwnedRecord()
 {
-	releaseContents();
+	union { void (*fn)(); Rva009A1F90Release call; } releaseContents = { d_009a1f90 };
+	(this->*releaseContents.call)();
 }
