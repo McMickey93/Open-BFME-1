@@ -1,11 +1,11 @@
 class BfmeRefCHB;
 
-// retail ILT 0x0003FA7B -> 0x0058C4C0 is the matched ~UpgradeMuxData row and
+// retail ILT 0x0003FA7B -> 0x0058C4C0 is the matched ~Rva0058BE30FourString row and
 // 0x00881EB0 the matched operator delete
-class UpgradeMuxData
+class Rva0058BE30FourString
 {
 public:
-	~UpgradeMuxData();
+	~Rva0058BE30FourString();
 };
 
 class BfmeThingCHB
@@ -23,7 +23,7 @@ void BfmeThingCHB::bfmeGoCHB(BfmeRefCHB *what)
 	{
 		if (cur != 0)
 		{
-			((UpgradeMuxData *)cur)->~UpgradeMuxData();
+			((Rva0058BE30FourString *)cur)->~Rva0058BE30FourString();
 			operator delete(cur);
 		}
 		m_bfmeRef = what;

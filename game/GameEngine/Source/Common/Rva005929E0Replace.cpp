@@ -6,7 +6,7 @@
 // destroys the owned pointer at +8. This body `new`s the four-UnicodeString
 // record whose constructor is already landed at 0x00590010 (ILT 0x0004B2B3)
 // and, when the pointer changes, runs the same non-virtual dtor + ??3 pair
-// as release (ILT 0x0003FA7B -> UpgradeMuxData / Gen0003FA7B).
+// as release (ILT 0x0003FA7B -> Rva0058BE30FourString / Gen0003FA7B).
 
 class UnicodeString;
 
@@ -24,13 +24,13 @@ private:
 };
 
 // The record's destructor call goes through ILT 0x0003FA7B to 0x0058C4C0,
-// matched as ??1UpgradeMuxData@@QAE@XZ (UpgradeMuxData_dtor_Thunk.cpp: four
+// matched as ??1Rva0058BE30FourString@@QAE@XZ (UpgradeMuxData_dtor_Thunk.cpp: four
 // wide-string releases at +0x0C..+0x00); S2DeleteHeldObject.cpp reaches the
 // same body the same way.
-class UpgradeMuxData
+class Rva0058BE30FourString
 {
 public:
-	~UpgradeMuxData();
+	~Rva0058BE30FourString();
 };
 
 class Rva005929E0
@@ -59,7 +59,7 @@ void Rva005929E0::replace(
 	if (p != m_owned)
 	{
 		if (m_owned)
-			delete (UpgradeMuxData *)m_owned;
+			delete (Rva0058BE30FourString *)m_owned;
 		m_owned = p;
 	}
 }

@@ -1,24 +1,12 @@
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
-// Open-BFME5: UpgradeMuxData::~UpgradeMuxData, retail 0x0058C4C0,
-// zh_sweep packet 0058c4c0.
+// Rva0058BE30FourString::~Rva0058BE30FourString, retail 0x0058C4C0 (102 B).
 //
-// The destructor is entirely implicit -- four members destroyed in reverse
-// order with the EH state stepping 2, 1, 0, -1 -- and compiled inside
-// ModuleFactory.cpp the shape was already exact. Only the stride was wrong:
-// retail destroys members at [this+0x0C], +0x08, +0x04 and +0x00, where the
-// vendored class destroys them at +0x24, +0x18, +0x0C and +0x00.
-//
-// So BFME's four upgrade-name lists are four-byte objects, not the reference's
-// four twelve-byte std::vector<AsciiString>. All four destructor calls go to
-// the same body, 0x008881D0, which this ledger already records as the wide
-// string destructor -- ??1UnicodeString@@QAE@XZ and ??1?$StringBase@G@@AAE@XZ
-// both pin there, along with UnicodeString::releaseBuffer and clear.
-//
-// That is as far as the bytes go: four members, four bytes each, one shared
-// destructor body whose recorded name is UnicodeString's. Whether BFME really
-// stores these upgrade names as wide strings or as some other four-byte handle
-// that folds onto the same code is not settled here, so the member names are
-// kept from the reference and only the type is taken from the call target.
+// Formerly filed as ??1UpgradeMuxData@@QAE@XZ (zh_sweep packet 0058c4c0); see
+// targets/game/reverse/identity_evidence/0058c4c0-four-string-dtor.md. The body
+// destroys four four-byte UnicodeString members at +0x0C, +0x08, +0x04, +0x00 (EH
+// states 2, 1, 0, -1), the record whose copy constructor is 0x0058BE30 and whose
+// owners (0x00593E60, 0x00592640, 0x005929E0) delete it through ILT 0x0003FA7B.
+// The file keeps its old path; the identity is address-derived.
 
 #include "unicode_string.h"
 
@@ -26,18 +14,18 @@
 // StringBase<unsigned short>::releaseBuffer (0x008881D0), not the ??1UnicodeString stub.
 inline UnicodeString::~UnicodeString() { ((StringBase<unsigned short> *)this)->releaseBuffer(); }
 
-class UpgradeMuxData
+class Rva0058BE30FourString
 {
 public:
-	~UpgradeMuxData();
+	~Rva0058BE30FourString();
 
-	UnicodeString m_triggerUpgradeNames;					///< +0x00
-	UnicodeString m_activationUpgradeNames;					///< +0x04
-	UnicodeString m_conflictingUpgradeNames;				///< +0x08
-	UnicodeString m_removalUpgradeNames;					///< +0x0C
+	UnicodeString m_string0;					///< +0x00
+	UnicodeString m_string4;					///< +0x04
+	UnicodeString m_string8;				///< +0x08
+	UnicodeString m_stringC;					///< +0x0C
 };
 
-// ??1UpgradeMuxData@@QAE@XZ
-UpgradeMuxData::~UpgradeMuxData()
+// ??1Rva0058BE30FourString@@QAE@XZ
+Rva0058BE30FourString::~Rva0058BE30FourString()
 {
 }
