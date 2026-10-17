@@ -11,11 +11,11 @@ class StringClass
 public:
 	StringClass(const char *string);
 	~StringClass();
-	StringClass &operator=(const char *string);
-	static char *m_EmptyString;
-	char *m_Buffer;
+	const StringClass &operator=(const char *string);
 
 private:
+	static char *m_EmptyString;
+	char *m_Buffer;
 	void Get_String(int length, bool is_temp);
 };
 

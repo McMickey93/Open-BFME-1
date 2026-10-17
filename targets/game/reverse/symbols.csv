@@ -10178,7 +10178,7 @@ name,address,notes
 ??4SplitChoiceStruct@AABTreeBuilderClass@@QAEAAU01@ABU01@@Z,0x0096B6B0
 ??4StlStr@@QAEAAV0@PBD@Z,0x00013746,STLport basic_string<char> assign ILT used as StlStr::operator= by CustomMatch applySlotColor 0x0053CB90
 ??4StreakRendererClass@@QAEAAV0@ABV0@@Z,0x0095C860,read out of StreakLineClass::operator= call displacement; body is gen-dump d_0095c860
-??4StringClass@@QAEAAV0@PBD@Z,0x000202E3,retail ILT callee decoded from assigned BFME FontChars initializer
+??4StringClass@@QAEABV0@PBD@Z,0x000202E3,route=0x007AF330; retail ILT of operator=(const char *) body 0x007AF330 (ilt_oracle CONFIRMED const return; the old non-const AAV0 spelling was CONTRADICTED)
 ??4TAiData@@QAEAAV0@ABV0@@Z,0x00045A61,AI::newOverride retail ILT-derived assignment callee
 ??4TRoadSegInfo@@QAEAAU0@ABU0@@Z,0x000015EB
 ??4TerrainType@@QAEAAV0@ABV0@@Z,0x0001A00A,ILT jmp to body 0x000A8490 (sole caller newTerrain 0x000A8680+0x6A); ZH TerrainTypes.cpp newTerrain *terrain = *defaultTerrain after findTerrain; ecx=new TerrainType from ctor 0x000A82F0 and one pushed TerrainType* arg; body ret 4 returning this; vptr-skipping memberwise copy from +0x04
