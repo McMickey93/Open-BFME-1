@@ -20738,5 +20738,45 @@
   "after_sha256": "68c6f92a48ff2b5f9c4bee25050ef4a3e9cc4c61393dec51f16d4052efc650c0",
   "evidence": "targets/game/reverse/identity_evidence/0058c4c0-four-string-dtor.md",
   "reason": "0x0058C4C0 destroys four 4-byte UnicodeStrings of the record copied by 0x0058BE30 and is deleted only by GUI-block owners via ILT 0x0003FA7B; ZH UpgradeMuxData holds vector<AsciiString> lists and its real methods sit at 0x002D9xxx, so the UpgradeMuxData name and its upgrade-list member names were unsupported."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x003f2160.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/AI/PathfinderFindGroundPath.cpp",
+  "old_name": "finishReset",
+  "new_name": "rva003F6F10",
+  "before_sha256": "d17879e46e1b3fb3873bdd4b293ee785c891081ab8ea4da008fb07c55a410446",
+  "after_sha256": "1b8a76ab182732261f488cfbb03ac3a917b685a9a18a0056161fa870e869275e",
+  "evidence": "targets/game/reverse/identity_evidence/003F2160-findGroundPath-object-first.md",
+  "reason": "The bank's finishReset for this callee was unproven; the conversion uses the address-derived pin rva003F6F10 that the matched findSafePath already calls through the same ILT."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x003f2160.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/AI/PathfinderFindGroundPath.cpp",
+  "old_name": "firstLive",
+  "new_name": "rva003F6F10",
+  "before_sha256": "d17879e46e1b3fb3873bdd4b293ee785c891081ab8ea4da008fb07c55a410446",
+  "after_sha256": "1b8a76ab182732261f488cfbb03ac3a917b685a9a18a0056161fa870e869275e",
+  "evidence": "targets/game/reverse/identity_evidence/003F2160-findGroundPath-object-first.md",
+  "reason": "The bank's firstLive for this callee was unproven; the conversion uses the address-derived pin rva003F6F10 that the matched findSafePath already calls through the same ILT."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x003f2160.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/AI/PathfinderFindGroundPath.cpp",
+  "old_name": "listHelper",
+  "new_name": "rva003F6C30",
+  "before_sha256": "d17879e46e1b3fb3873bdd4b293ee785c891081ab8ea4da008fb07c55a410446",
+  "after_sha256": "1b8a76ab182732261f488cfbb03ac3a917b685a9a18a0056161fa870e869275e",
+  "evidence": "targets/game/reverse/identity_evidence/003F2160-findGroundPath-object-first.md",
+  "reason": "The bank's listHelper for this callee was unproven; the conversion uses the address-derived pin rva003F6C30 that the matched findSafePath already calls through the same ILT."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "findGroundPath",
+  "new_name": "rva003F2160",
+  "before_sha256": "0fd7fc0ab89f27bfb33943844a0006bb2abfee2eec285c5d0fc7561efbed3d89",
+  "after_sha256": "358adbb6cf8e414aba5a0ab59632b0d0c31126a737149ec19904c1f2ae26782c",
+  "evidence": "targets/game/reverse/identity_evidence/003F2160-findGroundPath-object-first.md",
+  "reason": "0x003F2160 is BFME's object-first findGroundPath, but retail's ILT table contradicts the Zero Hour decoration and the object-first findGroundPath spelling (ilt_oracle CONTRADICTED); the row takes the address-derived name rva003F2160 that the matched caller TU AIGroup.cpp already declares for this body."
  }
 ]

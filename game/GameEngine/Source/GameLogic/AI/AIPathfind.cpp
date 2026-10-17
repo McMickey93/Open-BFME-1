@@ -5728,7 +5728,7 @@ struct GroundCellsStruct
  * Find a short, valid path between given locations.
  * Uses A* algorithm.
  */
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/AI/AIPathfind_findGroundPath.asm
+// BFME findGroundPath (object first, Pathfinder::rva003F2160): game/GameEngine/Source/GameLogic/AI/PathfinderFindGroundPath.cpp
 
 /**
  * Find a short, valid path between given locations.
