@@ -1,9 +1,9 @@
 // ?bfmeRemoveObjectA1C20@BfmeJ1017@@QAEXPAVBfmeObj4310@@@Z
-// partial score=0.0459 date=2026-09-10
+// partial score=0.2857 date=2026-10-18
+// cl: /O2 /DNDEBUG /MD
 // BFME object-removal helper reached by BfmeObj4310::bfmeCleanup at 0x008C3F10.
 // The caller leaves the BfmeJ1017 holder in ECX and passes the object on the
 // stack; the holder's 0x20-byte entries are drained through releaseAll.
-// cl: /O2 /DNDEBUG /MD
 
 class Rva008A0FF0ValueStack
 {
@@ -17,9 +17,21 @@ public:
 	virtual void slot00(void) = 0;
 	virtual void release(void) = 0;
 
-	unsigned int m_flags;
+	union
+	{
+		unsigned int m_flags;
+		struct { unsigned m_type:6; unsigned m_bits06:9; unsigned m_valid15:1; };
+	};
 	char m_gap08[0x1c];
 	int m_key;
+
+	int isType10()
+	{
+		bool undefined = !m_valid15;
+		if (m_type == 10 && !undefined)
+			return 1;
+		return 0;
+	}
 };
 
 class BfmeObjectStateA1C20
@@ -55,49 +67,39 @@ public:
 	void bfmeRemoveObjectA1C20(BfmeObj4310 *object);
 };
 
-extern BfmeJ1017 *g_bfmeJ1017;
+struct BfmePickWorld1284
+{
+	char m_gap00[0x12a4];
+	int m_limit;
+};
 
-// ?bfmeRemoveObjectA1C20@BfmeJ1017@@QAEXPAVBfmeObj4310@@@Z
+extern BfmePickWorld1284 *g_bfmeHolderBU;
+
 void BfmeJ1017::bfmeRemoveObjectA1C20(BfmeObj4310 *object)
 {
 	int remaining = m_count;
-	int index = 0;
-
-	if (remaining == index)
-		return;
-	if (g_bfmeJ1017->m_limit <= index)
+	if (remaining == 0)
 		return;
 
-	unsigned int offset = 0;
-
-	for (;;)
+	for (int index = 0; index < g_bfmeHolderBU->m_limit; ++index)
 	{
-		BfmeSlotA1C20 *slot =
-			(BfmeSlotA1C20 *)((char *)m_slots + offset);
+		BfmeSlotA1C20 *slot = &m_slots[index];
+		if (slot->m_value == 0)
+			continue;
 
-		if (slot->m_value != 0)
+		BfmeObjectStateA1C20 *state = object->m_state;
+		if (state != 0)
 		{
-			BfmeObjectStateA1C20 *state = object->m_state;
-			if (state != 0)
+			if (slot->m_entry->isType10() && slot->m_entry->m_key == state->m_key)
 			{
-				BfmeEntryA1C20 *entry = slot->m_entry;
-				unsigned int flags = entry->m_flags;
-				if ((flags & 0x3f) == 0x0a && (flags & 0x8000) != 0 &&
-					entry->m_key == state->m_key)
-				{
-					entry->release();
-					((Rva008A0FF0ValueStack *)((char *)m_slots + offset))->releaseAll();
-					*(void **)((char *)m_slots + offset) = 0;
-					--m_count;
-					if (--remaining == 0)
-						return;
-				}
+				slot->m_entry->release();
+				((Rva008A0FF0ValueStack *)&m_slots[index])->releaseAll();
+				m_slots[index].m_value = 0;
+				--m_count;
 			}
 		}
-
-		++index;
-		offset += 0x20;
-		if (index >= g_bfmeJ1017->m_limit)
-			return;
+		if (--remaining == 0)
+			break;
 	}
 }
+
