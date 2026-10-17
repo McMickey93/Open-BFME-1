@@ -4,7 +4,13 @@ public:
 	unsigned char m_bfmeGapGQ[8];
 };
 
-void bfmeSwapSubGQ(BfmeSubGQ *a, BfmeSubGQ *b);
+// The sub swap goes through ILT 0x00025176, the ledger's 5-byte row
+// ?j_00025176@@YAXXZ (game/gen_small/thunks_017.cpp), as tools/callees.py
+// 0x6a060 129 prints.  Nothing defines the pinned
+// ?bfmeSwapSubGQ@@YAXPAVBfmeSubGQ@@0@Z, so the call names the thunk through a
+// function pointer cast that keeps the two-argument cdecl shape.
+void j_00025176();
+typedef void (*BfmeSwapSubGQFn)(BfmeSubGQ *a, BfmeSubGQ *b);
 
 class BfmeStateGQ
 {
@@ -63,5 +69,5 @@ void BfmeStateGQ::bfmeSwapGQ(BfmeStateGQ *o)
 	m_bfmeA3GQ = v->m_bfmeA3GQ;
 	v->m_bfmeA3GQ = t3;
 
-	bfmeSwapSubGQ(&m_bfmeSubGQ, &o->m_bfmeSubGQ);
+	((BfmeSwapSubGQFn)&j_00025176)(&m_bfmeSubGQ, &o->m_bfmeSubGQ);
 }
