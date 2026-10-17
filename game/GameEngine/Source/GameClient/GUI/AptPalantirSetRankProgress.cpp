@@ -46,3 +46,48 @@ void AptPalantir::setRankProgress( float value )
 		m_rankProgress = value;
 	}
 }
+
+// Retail 0x00588890 (50 B): file-static percentage of the value behind owner+0x200,
+// scaled and rounded, clamped to 0..100 and 100 when absent. The owner arrives in EAX
+// through MSVC's private static convention; owner and value types are address-named.
+extern float g_bfmeScaleBC;
+extern const float g_bfmeK1253;
+
+class Rva00588890Value
+{
+public:
+	virtual void slot00();
+	virtual void slot04();
+	virtual void slot08();
+	virtual void slot0C();
+	virtual void slot10();
+	virtual float slot14();
+};
+
+class Rva00588890Owner
+{
+public:
+	unsigned char m_unmodelled000[0x200];
+	Rva00588890Value *m_value200;
+};
+
+static int rva00588890(const Rva00588890Owner *owner)
+{
+	Rva00588890Value *value = owner->m_value200;
+	if (value)
+	{
+		int percent = (int)(value->slot14() * g_bfmeScaleBC + g_bfmeK1253);
+		if (percent > 100)
+			percent = 100;
+		else if (percent < 0)
+			percent = 0;
+		return percent;
+	}
+	return 100;
+}
+
+// absent-from-retail: TU-local caller that keeps the static above alive.
+int rva00588890Caller(const Rva00588890Owner *owner)
+{
+	return rva00588890(owner);
+}

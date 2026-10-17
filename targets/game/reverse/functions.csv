@@ -37586,7 +37586,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00587e40@@YAXXZ,,0x00587E40,477,game/gen_asm/d_0057da50.asm,matched,gen-dump;ghidra=FUN_00987e40
 ?d_0058801d@@YAXXZ,,0x0058801D,31,game/gen_asm/d_0057da50.asm,matched,gen-dump;ghidra=Catch@0098801d
 ?d_005880c0@@YAXXZ,,0x005880C0,1167,game/gen_asm/d_00499050.asm,matched,gen-dump;carved start=rel32-call/jmp end=ret+int3 callers=1
-?d_00588890@@YAXXZ,,0x00588890,50,game/gen_asm/d_004844f0.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_005893c0@@YAXXZ,,0x005893C0,69,game/gen_asm/d_004844f0.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_0058a080@@YAXXZ,,0x0058A080,8,game/gen_asm/d_0057da50.asm,matched,gen-dump;ghidra=FUN_0098a080
 ?d_0058a260@@YAXXZ,,0x0058A260,8,game/gen_asm/d_0057da50.asm,matched,gen-dump;ghidra=FUN_0098a260
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?rva008BAC30@@YAXPBUBfmeVector2_1290@@PBUBfmeTransform2_1290@@PAU1@@Z,,0x008BAC30,37,game/GameEngine/Source/Common/BfmePicker1284.cpp,matched,file-static 2D affine vertex transform (point ECX transform EAX out EDX) between AptInput and the mesh hit-test bodies whose hit test inlines the same transform; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app
 ?rva007831B0@@YAXPBURva007831B0Point@@PBURva007845D0Transform@@PAU1@@Z,,0x007831B0,37,game/GameEngine/Source/GameClient/GUI/Rva007833E0AptScaledTransform.cpp,matched,file-static 2D affine point transform (point ECX transform EAX out EDX) next to setScaledTransform; same bytes as 0x008BAC30; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app
 ?rva00783720@@YAXPBURva007831B0Point@@PAU1@1@Z,,0x00783720,72,game/GameEngine/Source/GameClient/GUI/Rva007833E0AptScaledTransform.cpp,matched,file-static min/max bounds extend of a float pair (point ECX min EDX max ESI) next to setScaledTransform; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app
+?rva00588890@@YAHPBVRva00588890Owner@@@Z,,0x00588890,50,game/GameEngine/Source/GameClient/GUI/AptPalantirSetRankProgress.cpp,matched,file-static clamped 0..100 percentage of the owner+0x200 value (owner in EAX) next to AptPalantir::setRankProgress; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app
