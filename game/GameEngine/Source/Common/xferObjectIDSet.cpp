@@ -28,8 +28,13 @@ class BfmeObjectIDTree
 public:
 	RbNode *m_header;
 	unsigned int m_size;
-	BfmeInsertResult insertUnique(const int &id);
 };
+
+// insertUnique is reached through ILT 0x000499F9, the ledger's 5-byte row
+// ?j_000499f9@@YAXXZ (symbols.csv pins the method name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_000499f9();
+typedef BfmeInsertResult (BfmeObjectIDTree::*BfmeObjectIDTreeInsertUnique)(const int &id);
 
 class Xfer
 {
@@ -117,12 +122,14 @@ Xfer *xferObjectIDSet(Xfer *xfer, BfmeObjectIDTree *tree)
 		{
 			throw XferException(4, "Set must be empty on load");
 		}
+		union { void (*raw)(void); BfmeObjectIDTreeInsertUnique typed; } insertUnique;
+		insertUnique.raw = &j_000499f9;
 		while (count)
 		{
 			--count;
 			int value;
 			Rva0010C3C0((MidVirtualSlot90Receiver *)x, &value);
-			t->insertUnique(value);
+			(t->*insertUnique.typed)(value);
 		}
 	}
 	return x;
