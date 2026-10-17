@@ -1,191 +1,194 @@
-// ?doNugget@SpawnAndFadeNugget@@UBEXPBVDamageInfo@@PBUCoord3D@@@Z
-// partial score=0.93 date=2026-09-12
-// cl: /DNDEBUG /MD /EHsc
-// SpawnAndFadeNugget::doNugget, retail 0x002DE9B0.
-// Parser 0x001E6170, constructor 0x002DE930 (Made001E6170, size 0x6c).
+// ?rva002DE9B0@Made001E6170@@UBEXPBVDamageInfo@@PBUCoord3D@@@Z
+// partial score=0.6862 date=2026-10-17
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas
+// stlport
+//
+// Retail 0x002DE9B0 (325 B), slot 6 of vtable 0x010CF1C4, which the 0x6C-byte
+// nugget ctor ??0Made001E6170@@QAE@XZ (0x002DE930) installs; the INI
+// `SpawnAndFadeNugget =` callback 0x001E6170 allocates that object (see
+// WeaponNuggetParse.cpp). Spawns the template named at +0x5C for the damage
+// source's team at the source's position plus the +0x60/+0x64 offset rotated
+// by the source's orientation, drops it onto its layer, kills the source and
+// registers the spawn with the pathfinder when its template has bit 0x400 of
+// the word at +0xDC set. The method name stays address-derived, as its
+// sibling WeaponDamageFieldNuggetRva002DAEC0.cpp's does.
+//
+// BANK (shape 0.973, 321/325 B, 94 masked byte diffs): everything through the
+// inlined WWMath Vector3::Rotate_Z (retail +0xB2) matches. Retail then adds
+// pos-first (`fld pos.x; fadd X` / `fld pos.y; fadd st1`) and keeps offset.Y
+// live until the getLayer call (`fstp st0` at +0xCE); this body adds
+// offset-first and consumes Y. Tried: +=/explicit/reversed adds, pointer and
+// reference adds, inner scopes, operator[], Set(), copy-init, local Vector3
+// view, Coord3D temporaries, z adds (all 94 B or worse).
 
-extern "C" double sin(double);
-extern "C" double cos(double);
-#pragma intrinsic(sin)
-#pragma intrinsic(cos)
+#define _STLP_NO_EXCEPTIONS 1
+#include <bitset>
+#include <math.h>
 
-typedef int Int;
-typedef float Real;
 typedef unsigned int UnsignedInt;
+typedef int ObjectID;
+typedef float Real;
+typedef bool Bool;
+enum DamageType { };
+enum DeathType { };
 
-struct Coord3D
+#include "ascii_string.h"
+#define _OPERATOR_NEW_DEFINED_
+#include "vector3.h"
+#include "../../../../Libraries/Include/Lib/Coord3D.h"
+
+template<int NUMBITS>
+class BitFlags
 {
-	Real x;
-	Real y;
-	Real z;
+public:
+	BitFlags() { }
+
+private:
+	_STL::bitset<NUMBITS> m_bits;
 };
 
-class AsciiString
+typedef BitFlags<86> ObjectStatusMaskType;
+
+class DamageInfo
 {
-	void *m_data;
+public:
+	char m_pad00[8];
+	ObjectID m_sourceID;
+};
+
+class Overridable
+{
+public:
+	const Overridable *getFinalOverride() const;
+
+	void *m_vtbl;
+	Overridable *m_nextOverride;
 };
 
 class ThingTemplate
 {
-};
-
-class Team
-{
-};
-
-class ObjectStatusMaskType
-{
 public:
-	ObjectStatusMaskType()
-	{
-		m_bits[0] = 0;
-		m_bits[1] = 0;
-		m_bits[2] = 0;
-	}
+	UnsignedInt testFlagsDC(UnsignedInt mask) const { return m_flagsDC & mask; }
 
-	UnsignedInt m_bits[3];
+private:
+	char m_pad00[0xDC];
+	UnsignedInt m_flagsDC;
 };
+
+class Team;
 
 class Object
 {
 public:
-	Int getLayer() const;
-	void setPosition(const Coord3D *position);
+	const ThingTemplate *getTemplate() const
+	{
+		const Overridable *tmpl = m_template;
+		if (tmpl && tmpl->m_nextOverride)
+			tmpl = tmpl->m_nextOverride->getFinalOverride();
+		return (const ThingTemplate *)tmpl;
+	}
+	const Coord3D *getPosition() const { return &m_pos; }
+	Real getOrientation() const { return m_angle; }
+	Team *getTeam() const { return m_team; }
+	int getLayer() const;
+	void setPosition(const Coord3D *pos);
 	void setOrientation(Real angle);
-	void kill(Int damageType, Int deathType);
+	void kill(DamageType damageType, DeathType deathType);
 
-	char m_pad00[0x38];
-	Coord3D m_position;
-	Real m_orientation;
-	char m_pad48[0x23c - 0x48];
+private:
+	void *m_vtbl;
+	Overridable *m_template;
+	char m_pad08[0x38 - 8];
+	Coord3D m_pos;
+	Real m_angle;
+	char m_pad48[0x23C - 0x48];
 	Team *m_team;
 };
 
 class GameLogic
 {
 public:
-	Object *findObjectByID(Int id);
+	Object *findObjectByID(ObjectID id);
 };
-
-extern GameLogic *TheBfmeGameLogic;
 
 class ThingFactory
 {
 public:
 	const ThingTemplate *findTemplate(const AsciiString &name);
+	Object *newObject(const ThingTemplate *tmplate, Team *team,
+		const ObjectStatusMaskType &statusBits = ObjectStatusMaskType(),
+		UnsignedInt flags = 0);
 };
-
-extern ThingFactory *TheThingFactory;
-
-typedef Object *(__fastcall *ThingFactoryNewObjectCall)(
-	ThingFactory *, ObjectStatusMaskType *, ThingTemplate *, Team *,
-	const volatile ObjectStatusMaskType &, void *);
-
-extern void j_0004494a();
 
 class TerrainLogic
 {
 public:
-	virtual void slot0() = 0;
-	virtual void slot1() = 0;
-	virtual void slot2() = 0;
-	virtual void slot3() = 0;
-	virtual void slot4() = 0;
-	virtual void slot5() = 0;
-	virtual void slot6() = 0;
-	virtual Real getLayerHeight(Real x, Real y, Int layer, void *normal,
-		int clip) = 0;
-};
-
-extern TerrainLogic *TheTerrainLogic;
-
-class Overridable
-{
-public:
-	const Overridable *getFinalOverride() const;
-	char m_pad00[4];
-	Overridable *m_nextOverride;
+	virtual void slot0();
+	virtual void slot1();
+	virtual void slot2();
+	virtual void slot3();
+	virtual void slot4();
+	virtual void slot5();
+	virtual void slot6();
+	virtual Real getLayerHeight(Real x, Real y, int layer, Coord3D *normal = 0, Bool clip = 1) const;
 };
 
 class Pathfinder
 {
 public:
-	void addObjectToPathfindMap(Object *object);
+	void addObjectToPathfindMap(Object *obj);
 };
 
 class AI
 {
 public:
-	char m_pad00[0x0c];
+	Pathfinder *pathfinder() { return m_pathfinder; }
+
+private:
+	char m_pad00[0xC];
 	Pathfinder *m_pathfinder;
 };
 
+extern GameLogic *TheGameLogic;
+extern ThingFactory *TheThingFactory;
+extern TerrainLogic *TheTerrainLogic;
 extern AI *TheAI;
 
-class DamageInfo
+class Made001E6170
 {
 public:
-	char m_pad00[8];
-	Int m_sourceID;
+	virtual void rva002DE9B0(const DamageInfo *damageInfo, const Coord3D *pos) const;
+
+private:
+	char m_pad04[0x58];
+	AsciiString m_spawnName;
+	Coord3D m_offset;
 };
 
-class SpawnAndFadeNugget
+void Made001E6170::rva002DE9B0(const DamageInfo *damageInfo, const Coord3D *) const
 {
-public:
-	virtual void slot0() = 0;
-	virtual void slot1() = 0;
-	virtual void slot2() = 0;
-	virtual void slot3() = 0;
-	virtual void slot4() = 0;
-	virtual void slot5() = 0;
-	virtual void doNugget(const DamageInfo *damageInfo,
-		const Coord3D *position) const;
-
-	char m_pad04[0x58 - 4];
-	char m_objectTargetFilter[4];
-	AsciiString m_spawnedObjectName;
-	Coord3D m_spawnOffset;
-};
-
-void SpawnAndFadeNugget::doNugget(const DamageInfo *damageInfo,
-	const Coord3D *) const
-{
-	Object *source;
-	Object *spawned;
-	const ThingTemplate *thingTemplate;
-	float extra[3];
-
-	source = TheBfmeGameLogic->findObjectByID(damageInfo->m_sourceID);
-	thingTemplate = TheThingFactory->findTemplate(m_spawnedObjectName);
-	if (!thingTemplate)
+	Object *source = TheGameLogic->findObjectByID(damageInfo->m_sourceID);
+	const ThingTemplate *tmpl = TheThingFactory->findTemplate(m_spawnName);
+	if (tmpl == 0)
 		return;
 
-	ObjectStatusMaskType statusMask;
-	spawned = ((ThingFactoryNewObjectCall)j_0004494a)(
-		TheThingFactory, &statusMask, (ThingTemplate *)thingTemplate,
-		source->m_team, statusMask, 0);
+	Object *spawn = TheThingFactory->newObject(tmpl, source->getTeam());
 
-	Coord3D position;
-	position.x = source->m_position.x;
-	position.y = source->m_position.y;
-	position.z = source->m_position.z;
-	extra[0] = source->m_orientation;
-	extra[1] = (Real)sin(extra[0]);
-	extra[2] = (Real)cos(extra[0]);
-	position.x += m_spawnOffset.x * extra[2] - m_spawnOffset.y * extra[1];
-	position.y += m_spawnOffset.x * extra[1] + m_spawnOffset.y * extra[2];
-	position.z = TheTerrainLogic->getLayerHeight(
-		position.x, position.y, source->getLayer(), 0, 1);
+	Vector3 offset(m_offset.x, m_offset.y, m_offset.z);
+	Coord3D pos;
+	pos.x = source->getPosition()->x;
+	pos.y = source->getPosition()->y;
+	pos.z = source->getPosition()->z;
+	Real angle = source->getOrientation();
+	offset.Rotate_Z(angle);
+	pos.x += offset.X;
+	pos.y += offset.Y;
+	pos.z = TheTerrainLogic->getLayerHeight(pos.x, pos.y, source->getLayer());
 
-	spawned->setPosition(&position);
-	spawned->setOrientation(extra[0]);
-	source->kill(8, 22);
+	spawn->setPosition(&pos);
+	spawn->setOrientation(angle);
+	source->kill((DamageType)8, (DeathType)22);
 
-	Overridable *link = *(Overridable **)((char *)spawned + 4);
-	if (link && link->m_nextOverride)
-	{
-		const Overridable *result = link->m_nextOverride->getFinalOverride();
-		if (*(UnsignedInt *)((char *)result + 0xdc) & 0x400)
-			TheAI->m_pathfinder->addObjectToPathfindMap(spawned);
-	}
+	if (spawn->getTemplate()->testFlagsDC(0x400))
+		TheAI->pathfinder()->addObjectToPathfindMap(spawn);
 }

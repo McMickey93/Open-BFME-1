@@ -20558,5 +20558,15 @@
   "after_sha256": "fdb714d4bc9b479087fd7ff5bc0566b3e3868f93694796b43a545c6f77081c48",
   "evidence": "targets/game/reverse/identity_evidence/002daec0-bfmethinguba-slot6.md",
   "reason": "vtable 0x010CE990 belongs to the matched ctor ??0BfmeThingUBA (0x002DB0B0); nothing in retail names the class DamageFieldNugget or the slot doNugget"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x002de9b0.cpp",
+  "new_path": "targets/game/reverse/attempts/0x002de9b0.cpp",
+  "old_name": "doNugget",
+  "new_name": "rva002DE9B0",
+  "before_sha256": "fdc0b116ad13850c1e30f5afd18648daefa34a1818bc0f3b83c5ce3b4f03d9ff",
+  "after_sha256": "ee7282bdb512bc2415550136bdb4326e8bbb5c4503d3dff477237e0904ac4d23",
+  "evidence": "targets/game/reverse/identity_evidence/002de9b0-made001e6170-slot6.md",
+  "reason": "vtable 0x010CF1C4 belongs to the matched ctor ??0Made001E6170 (0x002DE930); nothing in retail names the slot doNugget"
  }
 ]
