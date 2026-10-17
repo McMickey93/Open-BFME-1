@@ -91109,3 +91109,5 @@ g_windGlobalB,0x012B8E00,WindModuleInfo ctor global
 rva00618600Names,0x012AA020,name table indexed by Rva00618600Poly constructor
 rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ??0?$hash_map@PAXPAVRva00494EC0EntryView@@URva00494EC0Hash@@U?$equal_to@PAX@_STL@@V?$allocator@U?$pair@QAXPAVRva00494EC0EntryView@@@_STL@@@4@@_STL@@QAE@XZ,0x0001C738,default ctor of the g_rva00494EC0Map hash_map (VA 0x012F3354): its _$E1 dynamic initializer 0x00C6B9C0 calls it through this ILT (body 0x00495230)
+??0Gen_00C6FE10Target@@QAE@XZ,0x0000B1F9,default ctor of the tree at VA 0x012EFFA0: its _$E1 dynamic initializer 0x00C6B120 calls it through this ILT (body 0x00296E10)
+??1Gen_00C6FE10Target@@QAE@XZ,0x000390C7,dtor of the tree at VA 0x012EFFA0: the atexit forwarder 0x00C6FE10 registered by its initializer 0x00C6B120 tail-jumps through this ILT
