@@ -46,9 +46,13 @@ protected:
 class CastleBehavior
 {
 public:
-	Object *rva00371650(BuildListInfo *info, bool state);
 	void registerOwnedObject(Object *object);
 };
+// The body at 0x00371650 is linked as the gen-dump ?d_00371650@@YAXXZ, so the
+// thiscall is reached through a member-pointer call (the pattern the Apt
+// callers of ?d_008cc940 use).
+extern void d_00371650();
+typedef Object *(CastleBehavior::*CastleBehavior00371650)(BuildListInfo *info, bool state);
 
 // The call site passes its receiver in ECX and consumes this callee's EAX.
 class Rva0036EF70Owner
@@ -69,12 +73,13 @@ void Rva00374F20Receiver::instantiateBuildListObjects(bool state)
 		reinterpret_cast<Rva0036EF70Owner *>(this)->d_0036ef70Method();
 	int index = 0;
 	BuildListInfo info;
+	union { void (*fn)(); CastleBehavior00371650 call; } make = { d_00371650 };
 
 	while (reinterpret_cast<BfmeIndexedMapOwner *>(TheSidesList)->bfmeFindAndUse(
 		key, index, reinterpret_cast<BfmeIndexedMapConsumer *>(&info)))
 	{
 		++index;
 		reinterpret_cast<CastleBehavior *>(this)->registerOwnedObject(
-			reinterpret_cast<CastleBehavior *>(this)->rva00371650(&info, state));
+			(reinterpret_cast<CastleBehavior *>(this)->*make.call)(&info, state));
 	}
 }
