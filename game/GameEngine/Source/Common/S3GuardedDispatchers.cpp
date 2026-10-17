@@ -178,10 +178,14 @@ extern AssetRegistry *g_theAssetRegistry;
 
 void bfmeDispatch_009EBA60(void *first, void *second);
 
+// 0x0064C6A0 calls its target through ILT 0x0001F785, the ledger's 5-byte row
+// ?j_0001f785@@YAXXZ (game/gen_small/gthunks_034.cpp), jmp to 0x00649790, as
+// tools/callees.py 0x64c6a0 24 prints.  Nothing defines the pinned
+// ?bfmeInvoke@Gen_0064C6A0Target@@QAEXPAX0@Z, so the call names the thunk
+// through a raw pointer bridge that keeps the thiscall shape.
+void j_0001f785();
 class Gen_0064C6A0Target
 {
-public:
-	void bfmeInvoke(void *first, void *second);
 };
 
 void bfmeDispatch_0064C6A0(void *first, void *second, void *third, Gen_0064C6A0Target *target);
@@ -218,5 +222,13 @@ void bfmeDispatch_009EBA60(void *first, void *second)
 void bfmeDispatch_0064C6A0(void *first, void *second, void *third, Gen_0064C6A0Target *target)
 {
 	if (target)
-		target->bfmeInvoke(first, second);
+	{
+		union
+		{
+			void (*raw)(void);
+			void (Gen_0064C6A0Target::*typed)(void *, void *);
+		} invoke;
+		invoke.raw = &j_0001f785;
+		(target->*invoke.typed)(first, second);
+	}
 }
