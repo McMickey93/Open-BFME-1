@@ -8,6 +8,14 @@ struct IDirect3DDevice8;
 struct _D3DADAPTER_IDENTIFIER8;
 enum WW3DFormat { WW3DFormat_dummy = 0 };
 
+// Both constructors call retail 0x0091C230, whose ledger row is the naked
+// lift in DX8CapsComputeCapsThunk.cpp defining _bfme_DX8Caps_Compute_Caps_91C230
+// (tools/callees.py 0x91cbf0 261 and 0x91cb00 233 print that object symbol).
+// Nothing defines the pinned ?Compute_Caps@DX8Caps@@AAEX...8@@@Z, so the calls
+// name the lift through a raw pointer bridge that keeps the two-argument
+// thiscall shape.
+extern "C" void bfme_DX8Caps_Compute_Caps_91C230();
+
 struct _D3DCAPS8
 {
 	unsigned char m_unreconstructed_00[0x1C];
@@ -26,7 +34,6 @@ public:
 
 private:
 	void Init_Caps(IDirect3DDevice8 *);
-	void Compute_Caps(WW3DFormat, const _D3DADAPTER_IDENTIFIER8 &);
 
 	int m_maxDisplayWidth;
 	int m_maxDisplayHeight;
@@ -56,7 +63,13 @@ DX8Caps::DX8Caps(IDirect3D8 *direct3D, const D3DCAPS8 &caps,
 		m_supportTnL = false;
 	}
 
-	Compute_Caps(displayFormat, adapterIdentifier);
+	union
+	{
+		void (*raw)(void);
+		void (DX8Caps::*typed)(WW3DFormat, const _D3DADAPTER_IDENTIFIER8 &);
+	} computeCaps;
+	computeCaps.raw = &bfme_DX8Caps_Compute_Caps_91C230;
+	(this->*computeCaps.typed)(displayFormat, adapterIdentifier);
 }
 
 // ??0DX8Caps@@QAE@PAUIDirect3D8@@PAUIDirect3DDevice8@@W4WW3DFormat@@ABU_D3DADAPTER_IDENTIFIER8@@@Z
@@ -68,5 +81,11 @@ DX8Caps::DX8Caps(IDirect3D8 *direct3D, IDirect3DDevice8 *device,
 	  m_direct3D(direct3D)
 {
 	Init_Caps(device);
-	Compute_Caps(displayFormat, adapterIdentifier);
+	union
+	{
+		void (*raw)(void);
+		void (DX8Caps::*typed)(WW3DFormat, const _D3DADAPTER_IDENTIFIER8 &);
+	} computeCaps;
+	computeCaps.raw = &bfme_DX8Caps_Compute_Caps_91C230;
+	(this->*computeCaps.typed)(displayFormat, adapterIdentifier);
 }
