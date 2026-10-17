@@ -87,7 +87,9 @@ inline void drawImage(Display *display, const Image *image, Real x0,
 }
 
 // A six-word image draw record: +0x00 image, +0x04..+0x10 the rectangle
-// corners, +0x14 the key the caller must pass to draw it.
+// corners, +0x14 the key the caller must pass to draw it. Two callers name
+// it differently: this TU's display update (Rva0040E2F0State) and
+// BfmeConv923.cpp's three-record owner (BfmeElem923E).
 class Rva0040E2F0State
 {
 public:
@@ -107,6 +109,26 @@ void Rva0040E2F0State::call_0040E2F0(void *o, int k, unsigned int c)
 {
 	if (m_00 && k == m_14)
 		drawImage((Display *)o, m_00, m_04, m_08, m_0c, m_10, c, 2);
+}
+
+class BfmeElem923E
+{
+public:
+	void bfmeTail923E(void *t, void *b);
+
+	const Image *m_00;
+	Real m_04;
+	Real m_08;
+	Real m_0c;
+	Real m_10;
+	void *m_14;
+};
+
+// Retail 0x0040E260 (RET 8): the same draw with colour -1, keyed by `b`.
+void BfmeElem923E::bfmeTail923E(void *t, void *b)
+{
+	if (m_00 && b == m_14)
+		drawImage((Display *)t, m_00, m_04, m_08, m_0c, m_10, -1, 2);
 }
 
 class Rva0040EE90Owner
