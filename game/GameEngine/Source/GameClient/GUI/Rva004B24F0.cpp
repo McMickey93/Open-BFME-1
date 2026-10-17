@@ -9,6 +9,8 @@
 // Identity stays address-derived: the helper is only reached from the
 // TooltipText builder at 0x004B25D0 and no owning class name survives.
 
+#include "string_base.h"
+
 class Object;
 
 struct Iterator004B25D0
@@ -70,4 +72,39 @@ static __declspec(noinline) int rank004B24F0(Object *object)
 int rank004B24F0Caller(Object *object)
 {
 	return rank004B24F0(object);
+}
+
+// Retail 0x004B2560, 88 bytes: the TooltipText builder's line append. A non-empty
+// text gets a newline first, then the next line is appended. Also reached only from
+// the builder at 0x004B25D0 (inlined there), so it stays address-derived; as a
+// file-static it takes the text in ESI and the line on the stack.
+// StringBase::isEmpty is inlined here; its m_data is private, so this view of the
+// StringBase layout (Header: ref count, then the 16-bit length) spells the test.
+struct TextView004B2560
+{
+	struct Header
+	{
+		int refCount;
+		unsigned short length;
+	} *data;
+};
+
+// ?appendLine004B2560@@YAXPAV?$StringBase@G@@ABV1@@Z
+static __declspec(noinline) void appendLine004B2560(StringBase<unsigned short> *text,
+	const StringBase<unsigned short> &line)
+{
+	const TextView004B2560 *view = reinterpret_cast<const TextView004B2560 *>(text);
+	if (!(view->data == 0 || view->data->length == 0))
+	{
+		unsigned short newline = '\n';
+		text->concat(&newline, 1);
+	}
+	text->concat(line.str(), line.getLength());
+}
+
+// ?appendLine004B2560Caller@@YAXPAV?$StringBase@G@@ABV1@@Z absent-from-retail
+void appendLine004B2560Caller(StringBase<unsigned short> *text,
+	const StringBase<unsigned short> &line)
+{
+	appendLine004B2560(text, line);
 }
