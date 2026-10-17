@@ -1,5 +1,7 @@
 // ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
-// partial score=0.58 date=2026-09-10
+// partial score=0.5056 date=2026-10-18
+// ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
+// partial score=0.52 date=2026-10-18 (532/536 B, 257 diffs, shape 0.988; was 588 B 286 diffs)
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/stringinline
 //
 // ScriptActions::doTeamGarrisonNearestBuilding, retail RVA 0x00302240.
@@ -62,26 +64,32 @@ public:
 	virtual void bfmeObjectSlot0(void) = 0;
 };
 
+class Overridable
+{
+public:
+	const Overridable *getFinalOverride(void) const
+	{
+		if (m_nextOverride)
+			return m_nextOverride->getFinalOverride();
+		return this;
+	}
+
+	void *m_vtable;
+	Overridable *m_nextOverride;
+};
+
 template <class T>
 class BfmeOverride
 {
 public:
 	const T *operator->() const
 	{
-		const T *value = m_overridable;
-		if (value && *(const void *const *)((const char *)value + 4))
-			value = (const T *)((const Overridable *)
-				*(const void *const *)((const char *)value + 4))->getFinalOverride();
-		return value;
+		if (!m_overridable)
+			return 0;
+		return (const T *)m_overridable->getFinalOverride();
 	}
 
-	const T *volatile m_overridable;
-};
-
-class Overridable
-{
-public:
-	const Overridable *getFinalOverride(void) const;
+	T *m_overridable;
 };
 
 struct Coord3D
@@ -97,16 +105,17 @@ enum KindOfType
 	KINDOF_NO_GARRISON = 27
 };
 
-class ThingTemplate
+class ThingTemplate : public Overridable
 {
 public:
 	Bool isKindOf(KindOfType kind) const
 	{
-		const volatile UnsignedInt *kindOf =
-			(const volatile UnsignedInt *)((const char *)this + 0xc8);
-		return (kindOf[(UnsignedInt)kind >> 5] &
+		return (m_kindOf[(UnsignedInt)kind >> 5] &
 			(1u << ((UnsignedInt)kind & 31))) != 0;
 	}
+
+	unsigned char m_pad08[0xc8 - 0x08];
+	UnsignedInt m_kindOf[6];
 };
 
 class BfmeObjectDlinkBase
@@ -230,8 +239,7 @@ public:
 
 	Bool isKindOf(KindOfType kind) const
 	{
-		const ThingTemplate *thingTemplate = getTemplate();
-		return thingTemplate != 0 && thingTemplate->isKindOf(kind);
+		return getTemplate()->isKindOf(kind);
 	}
 };
 
@@ -334,46 +342,32 @@ struct BfmeRangeNode
 class SimpleObjectIterator
 {
 public:
-	Object *first(void)
-	{
-		return next();
-	}
-
 	Object *next(void)
 	{
-		char *end = m_end;
-		char *cur = m_current;
-		if (cur == end)
+		BfmeRangeNode *end = m_end;
+		if (m_current == end)
 			return 0;
-		Object *object = *(Object **)cur;
-		cur += 8;
-		m_current = cur;
-		return object;
+		return (m_current++)->m_object;
 	}
 
-	void deleteInstance(void)
+	__forceinline void deleteInstance(void)
 	{
-		--m_refCount;
-		if (m_refCount == 0)
+		BfmeRangeNode *begin = m_begin;
+		if (begin != 0)
 		{
-			char *begin = m_begin;
-			if (begin != 0)
-			{
-				Int bytes = ((m_capacity - begin) >> 3) << 3;
-				if (bytes > 0x80)
-					::operator delete(begin);
-				else
-					_STL::__node_alloc<true, 0>::_M_deallocate(begin, bytes);
-			}
-			::operator delete(this);
+			unsigned int bytes = (m_capacity - begin) * sizeof(BfmeRangeNode);
+			if (bytes > 0x80)
+				::operator delete(begin);
+			else
+				_STL::__node_alloc<true, 0>::_M_deallocate(begin, bytes);
 		}
+		::operator delete(this);
 	}
 
-private:
-	char *m_begin;
-	char *m_end;
-	char *m_capacity;
-	char *m_current;
+	BfmeRangeNode *m_begin;
+	BfmeRangeNode *m_end;
+	BfmeRangeNode *m_capacity;
+	BfmeRangeNode *m_current;
 	Int m_refCount;
 };
 
@@ -381,9 +375,11 @@ struct BfmeWideResult
 {
 	SimpleObjectIterator *m_value;
 
-	~BfmeWideResult(void)
+	__forceinline ~BfmeWideResult(void)
 	{
-		m_value->deleteInstance();
+		--m_value->m_refCount;
+		if (m_value->m_refCount == 0)
+			m_value->deleteInstance();
 	}
 };
 
@@ -440,12 +436,9 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 	if (!leader)
 		return;
 
-	PartitionFilterSameMapStatus f1(leader);
-	PartitionFilterGarrisonableByPlayer f2(
-		theTeam->getControllingPlayer(), true, 1);
 	BfmeWideResult result = ThePartitionManager->bfmeForwardWideC(
 		(int)leader->getPosition(), 0x49742400, 3,
-		(int)f2.link(&f1), 1);
+		(int)PartitionFilterGarrisonableByPlayer(theTeam->getControllingPlayer(), true, 1).link(&PartitionFilterSameMapStatus(leader)), 1);
 
 	Object *theBuilding;
 	while ((theBuilding = result.m_value->next()) != 0)
@@ -460,7 +453,7 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 		{
 			Object *object = diter.cur();
 			if (diter.done() || !object)
-				return;
+				goto done;
 
 			BfmeAIUpdateView *ai = object->getAIUpdateInterface();
 			if (ai && object->isKindOf(KINDOF_INFANTRY) &&
@@ -472,4 +465,7 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 			diter.advance();
 		}
 	}
+done:
+	;
 }
+
