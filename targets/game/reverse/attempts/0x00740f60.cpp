@@ -1,277 +1,146 @@
 // ?setupWaypointPath@W3DView@@AAEXH_NMM@Z
-// partial score=0.5142 date=2026-09-20
-// BFME W3DView waypoint-path setup.
-//
-// The retail body at 0x00740F60 is the private four-argument companion used
-// by W3DView's waypoint-path entry point.  The deliberately sparse virtual
-// declarations below preserve the retail ABI slots while keeping the source
-// independent of the much larger, still-being-recovered W3D headers.
-//
-// Confirmed real bug fixed vs the prior 0.65 stash: retail stores each
-// waypoint's segment length through an Int-reinterpreted round trip
-// (fstp to a stack temp, reload as int, reload as float, int-store into the
-// array, then add the reloaded float) rather than a direct float store; see
-// the RealBits round trip below. This moved the first divergence from +0x4b
-// to +0x7d (probe.py, confirmed).
+// partial score=0.9683 date=2026-10-17
+// ?setupWaypointPath@W3DView@@AAEXH_NMM@Z
+// clean ZH-literal rewrite with real wwmath.h/vector2.h/vector3.h; 599/599 19 diffs
+// cl: /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib
+#include <math.h>
 
-typedef int Int;
 typedef float Real;
+typedef int Int;
 typedef bool Bool;
 
-struct Coord3D {
-    Real x;
-    Real y;
-    Real z;
-};
+#include "wwmath.h"
+#include "vector2.h"
+#include "vector3.h"
 
-struct WaypointRecord {
-    Coord3D position;
-    void *name;
-    Int flags;
-};
-
-class Rva00740440 {
-public:
-    virtual void slot00();
-    virtual void slot01();
-    virtual void configure(Int value, Int duration, Int first, Int second,
-                           Int stored, Int unused);
-
-    void setCameraPathAngles(Bool orient, Real angle, Int firstWaypoint);
-
-    char m_padding0004[0x2c - 4];
-    WaypointRecord m_waypoints[255];
-    WaypointRecord m_extraWaypoints[4];
-    Real m_cameraAngles[256];
-    Real m_waySegmentLengths[256];
-    Real m_totalDistance;
-    Real m_initialGroundHeight;
-    Real m_finalGroundHeight;
-    char m_padding1c74[0x2070 - 0x1c74];
-    Int m_numWaypoints;
-};
-
-class Rva0045A000 {
-public:
-    char m_padding0000[0x1c];
-    Bool m_ready;
-    char m_padding001d[0x70 - 0x1d];
-};
-
-struct Rva003FD060TerrainLogic {
-    virtual void slot00() = 0;
-    virtual void slot01() = 0;
-    virtual void slot02() = 0;
-    virtual void slot03() = 0;
-    virtual void slot04() = 0;
-    virtual void slot05() = 0;
-    virtual Real getGroundHeight(Real x, Real y) = 0;
-};
-
-extern Rva003FD060TerrainLogic *TheTerrainLogic;
-extern void j_00046fa1(void);
-extern Real g_bfmeK1253;
-
-union RealBits {
-    Real value;
-    Int bits;
-};
-
-static __forceinline Real squareRoot(Real value)
+// class-gate: allow Coord3D canonical header is struct-keyed; retail ILT proves the class-keyed mangling
+class Coord3D
 {
-    __asm {
-        fld value
-        fsqrt
-    }
-}
-
-class W3DView {
 public:
-    virtual void slot00() = 0;
-    virtual void slot01() = 0;
-    virtual void slot02() = 0;
-    virtual void slot03() = 0;
-    virtual void slot04() = 0;
-    virtual void slot05() = 0;
-    virtual void slot06() = 0;
-    virtual void slot07() = 0;
-    virtual void slot08() = 0;
-    virtual void slot09() = 0;
-    virtual void slot10() = 0;
-    virtual void slot11() = 0;
-    virtual void slot12() = 0;
-    virtual void slot13() = 0;
-    virtual void slot14() = 0;
-    virtual void slot15() = 0;
-    virtual void slot16() = 0;
-    virtual void slot17() = 0;
-    virtual void slot18() = 0;
-    virtual void slot19() = 0;
-    virtual void slot20() = 0;
-    virtual void slot21() = 0;
-    virtual void slot22() = 0;
-    virtual void slot23() = 0;
-    virtual void slot24() = 0;
-    virtual void slot25() = 0;
-    virtual void slot26() = 0;
-    virtual void slot27(Int value) = 0;
-    virtual void slot28() = 0;
-    virtual void slot29() = 0;
-    virtual void slot30() = 0;
-    virtual void slot31() = 0;
-    virtual void slot32() = 0;
-    virtual void slot33() = 0;
-    virtual void slot34() = 0;
-    virtual void slot35() = 0;
-    virtual void slot36() = 0;
-    virtual void slot37() = 0;
-    virtual void slot38() = 0;
-    virtual void slot39() = 0;
-    virtual void slot40() = 0;
-    virtual void slot41() = 0;
-    virtual void slot42() = 0;
-    virtual void slot43() = 0;
-    virtual void slot44() = 0;
-    virtual void slot45() = 0;
-    virtual void slot46() = 0;
-    virtual void slot47() = 0;
-    virtual void slot48() = 0;
-    virtual void slot49() = 0;
-    virtual void slot50() = 0;
-    virtual void slot51() = 0;
-    virtual void slot52() = 0;
-    virtual void slot53() = 0;
-    virtual void slot54() = 0;
-    virtual void slot55() = 0;
-    virtual void slot56() = 0;
-    virtual void slot57() = 0;
-    virtual void slot58() = 0;
-    virtual void slot59() = 0;
-    virtual void slot60() = 0;
-    virtual void slot61() = 0;
-    virtual void slot62() = 0;
-    virtual Real slot63() = 0;
+	Real x;
+	Real y;
+	Real z;
+};
+
+struct WaypointRecord
+{
+	Coord3D position;
+	void *name;
+	Int flags;
+};
+
+// The camera waypoint-path record at W3DView+0x280.
+class Rva00740440
+{
+public:
+	virtual void slot00();
+	virtual void slot01();
+	virtual void configure(Int timeMultiplier, Int shutter, Real easeIn, Real easeOut,
+		Int arg4, Int arg5);
+	void rva00740440(Bool orient, Real angle, Int firstWaypoint);	// 0x00740440
+	void startAngles(Real angle)
+	{
+		Real *p = &cameraAngle[numWaypoints+2];
+		cameraAngle[1] = angle;
+		p[-1] = p[-2];
+		cameraAngle[0] = cameraAngle[1];
+	}
+
+	char m_padding0004[0x2c - 0x04];
+	WaypointRecord waypoints[259];		// +0x002C
+	Real cameraAngle[255];				// +0x1468
+	Real waySegLength[257];				// +0x1864
+	Real totalDistance;					// +0x1C68
+	Real initialGroundHeight;			// +0x1C6C
+	Real finalGroundHeight;				// +0x1C70
+	char m_padding1C74[0x2070 - 0x1C74];
+	Int numWaypoints;					// +0x2070
+};
+
+class Rva0045A000
+{
+public:
+	Real sample(Real x, Real y);		// 0x00459B10
+	char m_padding0000[0x1c];
+	Bool m_ready;
+	char m_padding001d[0x70 - 0x1d];
+};
+
+struct Rva003FD060TerrainLogic
+{
+	virtual void slot00() = 0;
+	virtual void slot01() = 0;
+	virtual void slot02() = 0;
+	virtual void slot03() = 0;
+	virtual void slot04() = 0;
+	virtual void slot05() = 0;
+	virtual Real getGroundHeight(Real x, Real y, Coord3D *normal = 0) = 0;
+};
+extern Rva003FD060TerrainLogic *TheTerrainLogic;
+
+#define V(N) virtual void slot##N() = 0
+class W3DView
+{
+public:
+	V(00);V(01);V(02);V(03);V(04);V(05);V(06);V(07);V(08);V(09);V(10);V(11);V(12);V(13);
+	V(14);V(15);V(16);V(17);V(18);V(19);V(20);V(21);V(22);V(23);V(24);V(25);V(26);
+	virtual void slot27(Int value) = 0;
+	V(28);V(29);V(30);V(31);V(32);V(33);V(34);V(35);V(36);V(37);V(38);V(39);V(40);
+	V(41);V(42);V(43);V(44);V(45);V(46);V(47);V(48);V(49);V(50);V(51);V(52);V(53);
+	V(54);V(55);V(56);V(57);V(58);V(59);V(60);V(61);V(62);
+	virtual Real getAngle() = 0;		// vtable +0xFC
 
 private:
-    void setupWaypointPath(Int shutter, Bool orient, Real easeIn,
-                           Real easeOut);
+	void setupWaypointPath(Int shutter, Bool orient, Real easeIn, Real easeOut);
 
-    char m_padding0004[0x1dc - 4];
-    Bool m_doingRotateCamera;
-    char m_padding01dd[0x280 - 0x1dd];
-    Rva00740440 m_cameraPath;
-    char m_padding22f4[0x2354 - 0x22f4];
-    Int m_cameraMovementMode;
-    char m_padding2358[0x23c4 - 0x2358];
-    Int m_timeMultiplierDefault;
-    char m_padding23c8[0x23f8 - 0x23c8];
-    Real m_groundLevel;
-    char m_padding23fc[0x2448 - 0x23fc];
-    Rva0045A000 m_heightField;
+	char m_padding0004[0x1dc - 0x04];
+	Bool m_doingRotateCamera;					// +0x1DC
+	char m_padding01dd[0x280 - 0x1dd];
+	Rva00740440 m_mcwpInfo;						// +0x280
+	char m_padding22f4[0x2354 - 0x22f4];
+	Int m_doingMoveCameraOnWaypointPath;		// +0x2354
+	char m_padding2358[0x23c4 - 0x2358];
+	Int m_timeMultiplier;						// +0x23C4
+	char m_padding23c8[0x23f8 - 0x23c8];
+	Real m_groundLevel;							// +0x23F8
+	char m_padding23fc[0x2448 - 0x23fc];
+	Rva0045A000 m_heightField;					// +0x2448
 };
 
-void W3DView::setupWaypointPath(Int shutter, Bool orient, Real easeIn,
-                                 Real easeOut)
+void W3DView::setupWaypointPath(Int shutter, Bool orient, Real easeIn, Real easeOut)
 {
-    m_cameraPath.configure(m_timeMultiplierDefault, shutter,
-                           *(Int *)&easeIn, *(Int *)&easeOut, 0, 1);
+	m_mcwpInfo.configure(m_timeMultiplier, shutter, easeIn, easeOut, 0, 1);
+	Int i;
+	m_mcwpInfo.totalDistance = 0;
+	for (i = 1; i < m_mcwpInfo.numWaypoints; i++) {
+		const Coord3D &a = m_mcwpInfo.waypoints[i].position;
+		const Coord3D &b = m_mcwpInfo.waypoints[i+1].position;
+		Vector2 dir(b.x - a.x, b.y - a.y);
+		m_mcwpInfo.waySegLength[i] = dir.Length();
+		m_mcwpInfo.totalDistance += m_mcwpInfo.waySegLength[i];
+	}
+	m_mcwpInfo.waySegLength[0] = 0;
+	m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints] = 0;
+	m_mcwpInfo.waySegLength[m_mcwpInfo.numWaypoints+1] = 0;
 
-    Int waypointCount = m_cameraPath.m_numWaypoints;
-    Int waypoint = 1;
-    m_cameraPath.m_totalDistance = 0.0f;
-    if (waypointCount > 1) {
-        Real *segmentLength = m_cameraPath.m_waySegmentLengths;
-        Real *point = &m_cameraPath.m_waypoints[1].position.y;
-        do {
-            Real dx = point[4] - point[-1];
-            Real dy = point[5] - point[0];
-            easeIn = dx * dx + dy * dy;
-            RealBits d;
-            d.value = squareRoot(easeIn);
-            *(Int *)segmentLength = d.bits;
-            m_cameraPath.m_totalDistance += d.value;
-            ++waypoint;
-            ++segmentLength;
-            point += 5;
-        } while (waypoint < m_cameraPath.m_numWaypoints);
-    }
+	m_mcwpInfo.rva00740440(orient, getAngle(), -1);
+	m_mcwpInfo.startAngles(getAngle());
+	m_mcwpInfo.cameraAngle[m_mcwpInfo.numWaypoints] = m_mcwpInfo.cameraAngle[m_mcwpInfo.numWaypoints-1];
+	m_mcwpInfo.cameraAngle[m_mcwpInfo.numWaypoints+1] = m_mcwpInfo.cameraAngle[m_mcwpInfo.numWaypoints];
+	for (i = m_mcwpInfo.numWaypoints-1; i > 1; i--) {
+		m_mcwpInfo.cameraAngle[i] = (m_mcwpInfo.cameraAngle[i] + m_mcwpInfo.cameraAngle[i-1]) / 2;
+	}
 
-    m_cameraPath.m_waySegmentLengths[-1] = 0.0f;
-    m_cameraPath.m_waySegmentLengths[m_cameraPath.m_numWaypoints - 1] = 0.0f;
-    m_cameraPath.m_waySegmentLengths[m_cameraPath.m_numWaypoints] = 0.0f;
+	const Coord3D &last = m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints].position;
+	Coord3D finalPos;
+	finalPos.x = last.x;
+	finalPos.y = last.y;
+	m_mcwpInfo.initialGroundHeight = m_groundLevel;
+	m_mcwpInfo.finalGroundHeight = TheTerrainLogic->getGroundHeight(finalPos.x, finalPos.y);
+	if (m_heightField.m_ready)
+		m_mcwpInfo.finalGroundHeight = m_heightField.sample(finalPos.x, finalPos.y);
 
-    Rva00740440 *path = &m_cameraPath;
-    path->setCameraPathAngles(orient, slot63(), -1);
-
-    Real startAngle = slot63();
-    path->m_cameraAngles[1] = startAngle;
-    path->m_cameraAngles[m_cameraPath.m_numWaypoints + 1] =
-        path->m_cameraAngles[m_cameraPath.m_numWaypoints];
-    path->m_cameraAngles[0] = path->m_cameraAngles[1];
-    path->m_cameraAngles[m_cameraPath.m_numWaypoints] =
-        path->m_cameraAngles[m_cameraPath.m_numWaypoints - 1];
-    path->m_cameraAngles[m_cameraPath.m_numWaypoints + 1] =
-        path->m_cameraAngles[m_cameraPath.m_numWaypoints];
-
-    Int lastAngle = m_cameraPath.m_numWaypoints - 1;
-    if (lastAngle - 1 >= 4) {
-        unsigned groups = ((unsigned)(lastAngle - 5) >> 2) + 1;
-        Real *angle = &path->m_cameraAngles[lastAngle - 1];
-        lastAngle -= groups * 4;
-        do {
-            Real smoothed = *angle;
-            angle -= 4;
-            smoothed += angle[5];
-            smoothed *= g_bfmeK1253;
-            angle[5] = smoothed;
-            smoothed = angle[4] + angle[3];
-            smoothed *= g_bfmeK1253;
-            angle[4] = smoothed;
-            smoothed = angle[3] + angle[2];
-            smoothed *= g_bfmeK1253;
-            angle[3] = smoothed;
-            smoothed = angle[1] + angle[3];
-            smoothed *= g_bfmeK1253;
-            angle[3] = smoothed;
-            --groups;
-        } while (groups != 0);
-    }
-
-    if (lastAngle > 1) {
-        Real *angle = &path->m_cameraAngles[lastAngle];
-        do {
-            --lastAngle;
-            Real smoothed = angle[-1];
-            --angle;
-            --lastAngle;
-            smoothed += angle[1];
-            smoothed *= g_bfmeK1253;
-            angle[1] = smoothed;
-        } while (lastAngle != 1);
-    }
-
-    Int lastWaypoint = m_cameraPath.m_numWaypoints;
-    WaypointRecord *finalWaypoint = &m_cameraPath.m_waypoints[lastWaypoint];
-    Coord3D finalPos;
-    finalPos.x = finalWaypoint->position.x;
-    finalPos.y = finalWaypoint->position.y;
-    m_cameraPath.m_initialGroundHeight = m_groundLevel;
-
-    Real finalGround =
-        TheTerrainLogic->getGroundHeight(finalPos.x, finalPos.y);
-    m_cameraPath.m_finalGroundHeight = finalGround;
-    if (m_heightField.m_ready) {
-        typedef Real (Rva0045A000::*HeightSample)(Real, Real);
-        union HeightSampleBits {
-            void (*raw)(void);
-            HeightSample member;
-        } sample;
-        sample.raw = j_00046fa1;
-        finalGround = (m_heightField.*sample.member)(finalPos.x, finalPos.y);
-        m_cameraPath.m_finalGroundHeight = finalGround;
-    }
-
-    m_cameraMovementMode = m_cameraPath.m_numWaypoints > 1;
-    slot27(0);
-    m_doingRotateCamera = false;
+	m_doingMoveCameraOnWaypointPath = m_mcwpInfo.numWaypoints > 1;
+	slot27(0);
+	m_doingRotateCamera = false;
 }

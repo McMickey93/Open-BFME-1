@@ -20638,5 +20638,15 @@
   "after_sha256": "973d78fc4b98b3e2f5dd0b5e7582157d90621959e2ccc263e3a32db3f927446d",
   "evidence": "targets/game/reverse/identity_evidence/0047d2b0-gogogadgetslider.md",
   "reason": "ILT slot 11655 contradicts both the Zero Hour ten-argument decoration and the descriptor decoration on GameWindowManager for the ret-0x10 slot-20 factory at 0x0047D2B0; the class keeps the address token like the gogoGadgetTextEntry sibling"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00740f60.cpp",
+  "new_path": "targets/game/reverse/attempts/0x00740f60.cpp",
+  "old_name": "setCameraPathAngles",
+  "new_name": "rva00740440",
+  "before_sha256": "5d7ee4400f0bb49a7e98f5fcb5a537ea700ada7588dfe479e5be54c4b2d583af",
+  "after_sha256": "87f23b23a4da24db00abdfaf062cb5bd3ad57c5b92f347da5c245b007485d751",
+  "evidence": "targets/game/reverse/identity_evidence/00740440-camera-path-angles.md",
+  "reason": "the bank's callee guess setCameraPathAngles is the matched ledger row ?rva00740440@Rva00740440@@QAEX_NMH@Z at 0x00740440 (its identity correction evidence); the bank now calls the ledger name so it links"
  }
 ]
