@@ -67,6 +67,15 @@ public:
 
 extern void __fastcall normAngle(Real &angle);
 
+// The moveAlongWaypointPath call reaches the incremental-link thunk at 0x000321FA,
+// the ledger's 5-byte row ?j_000321fa@@YAXXZ (game/gen_small/thunks_023.cpp),
+// whose jmp lands on 0x0073CB10, the matched gen dump ?d_0073cb10@@YAXXZ, as
+// tools/callees.py 0x73ff30 497 prints for the callee.  W3DView.cpp's Zero Hour
+// moveAlongWaypointPath(Int) is not retail's body there, so the call names the
+// thunk the ledger owns through a raw pointer bridge that keeps the
+// one-argument thiscall shape.
+void j_000321fa();
+
 #define BFME_W3D_SLOT(n) virtual void slot##n() = 0;
 
 class W3DView
@@ -88,8 +97,6 @@ public:
 	virtual void cameraModLookToward(Coord3D *pLoc);
 
 private:
-	void moveAlongWaypointPath(Int frames);
-
 	char padding0004[0x138 - 4];
 	Int m_field138;
 	char padding013c[0x1dc - 0x13c];
@@ -147,7 +154,13 @@ void W3DView::cameraModLookToward(Coord3D *pLoc)
 			}
 		}
 		if (cameraPath.unknown04 == 1) {
-			moveAlongWaypointPath(1);
+			union
+			{
+				void (*raw)(void);
+				void (W3DView::*typed)(Int frames);
+			} moveAlongWaypointPath;
+			moveAlongWaypointPath.raw = &j_000321fa;
+			(this->*moveAlongWaypointPath.typed)(1);
 			cameraMovementMode = 1;
 			m_field138 = false;
 			slot27(false);
