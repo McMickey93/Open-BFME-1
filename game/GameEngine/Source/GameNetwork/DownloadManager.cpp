@@ -35,6 +35,11 @@
 #include "GameNetwork/DownloadManager.h"
 #include "string_base.h"
 
+// Retail inlines ~AsciiString here too: QueuedDownload's destructor (0x00626C90)
+// releases each string with a direct call to StringBase<char>::releaseBuffer
+// (0x00887940), as DownloadManagerQueueFileForDownload.cpp spells it.
+inline AsciiString::~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
+
 // BFME inlines UnicodeString's copy-set through the wide StringBase body at
 // 0x00888530.  The reference UnicodeString declaration otherwise leaves an
 // out-of-line UnicodeString::set call, whose ledger alias is the narrow body.
