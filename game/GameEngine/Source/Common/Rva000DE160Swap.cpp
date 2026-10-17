@@ -4,7 +4,13 @@ extern "C" void _ReadWriteBarrier(void);
 #pragma intrinsic(_ReadWriteBarrier)
 
 struct BfmeSwapTailCJ;
-void __cdecl bfmeSwapTailCJ(BfmeSwapTailCJ *first, BfmeSwapTailCJ *second);
+// The tail swap goes through ILT 0x0004918E, the ledger's 5-byte row
+// ?j_0004918e@@YAXXZ (game/gen_small/thunks_035.cpp), as tools/callees.py
+// 0xde160 57 prints.  Nothing defines the pinned
+// ?bfmeSwapTailCJ@@YAXPAUBfmeSwapTailCJ@@0@Z, so the call names the thunk
+// through a function pointer cast that keeps the two-argument cdecl shape.
+void j_0004918e();
+typedef void (__cdecl *BfmeSwapTailCJFn)(BfmeSwapTailCJ *first, BfmeSwapTailCJ *second);
 
 struct Rva000DE160
 {
@@ -34,6 +40,6 @@ void Rva000DE160::swap(Rva000DE160 &other)
 	m_word08 = other.m_word08;
 	other.m_word08 = t2;
 
-	bfmeSwapTailCJ(reinterpret_cast<BfmeSwapTailCJ *>(m_tail),
+	((BfmeSwapTailCJFn)&j_0004918e)(reinterpret_cast<BfmeSwapTailCJ *>(m_tail),
 		reinterpret_cast<BfmeSwapTailCJ *>(other.m_tail));
 }
