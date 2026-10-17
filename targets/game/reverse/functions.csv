@@ -37987,7 +37987,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_008bf100@@YAXXZ,,0x008BF100,18655,game/gen_asm/d_008bf100.asm,matched,gen-dump;ghidra=FUN_00cbf100
 ?d_008c3c00@@YAXXZ,,0x008C3C00,510,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00cc3c00
 ?d_008c5a60@@YAXXZ,,0x008C5A60,189,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned;abs-ref end=ret+int3 refs=1
-?d_008c6460@@YAXXZ,,0x008C6460,94,game/gen_asm/d_008c39e0.asm,matched,gen-dump;ghidra=FUN_00cc6460
 ?d_008c64c0@@YAXXZ,,0x008C64C0,470,game/gen_asm/d_008c39e0.asm,matched,gen-dump;ghidra=FUN_00cc64c0
 ?d_008c66a0@@YAXXZ,,0x008C66A0,129,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_008c6ad0@@YAXXZ,,0x008C6AD0,233,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?rva00808E00@@YAPADDPAPAD@Z,,0x00808E00,36,game/GameEngine/Source/GameNetwork/Y4FeslLanGameApply.cpp,matched,file-static strchr tokenizer step with retail private AL/EDI convention; no direct retail caller;model=claude-opus-5-5;host=app
 ?rva009D9110@@YAXPAVBfmeAppendSink@@PBDZZ,,0x009D9110,77,game/GameEngine/Source/Common/Gen009D9360.cpp,matched,file-static variadic format-and-append to the sink slot 0x10 (sink in ESI; private static convention) beside bfmeAppend 0x009D9180; absent-from-retail caller;model=claude-opus-5-5;host=app
 ?appendLine004B2560@@YAXPAV?$StringBase@G@@ABV1@@Z,,0x004B2560,88,game/GameEngine/Source/GameClient/GUI/Rva004B24F0.cpp,matched,file-static TooltipText line append (newline when non-empty then concat) with retail private ESI convention;model=claude-opus-5-5;host=app
+?rva008C6460@@YAXPAURva008C6460Object@@PAUBfmeString008AD350@@H@Z,,0x008C6460,94,game/Libraries/Source/EA/Apt/Rva008C6460MemberOrEvent.cpp,matched,file-static Apt member/event forwarder (types 13/18 setMember 0x008AD350; type 14 setEvent 0x008D30D0) with retail private ESI/EBX/EDI convention; no direct retail caller;model=claude-opus-5-5;host=app

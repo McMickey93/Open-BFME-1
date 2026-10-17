@@ -81267,6 +81267,7 @@ name,address,notes
 ?d_008be760@@YAXXZ,0x008BE760,Address-only compatibility for withdrawn dump; native ?create008BE760@BfmeSubmitter1283@@QAEXHPAXHHHHPAPAVBfmeNodeDX@@PAH@Z body (game/GameEngine/Source/Common/BfmeSubmitter1283CreateCharacter.cpp); game/GameEngine/Source/Common/BfmeSubmitterColors1283.cpp still calls this name
 ?d_008c55b0@@YAXXZ,0x008C55B0,address-only legacy compatibility for matched pair parser member-pointer casts; thiscall three pointers and pointer result independently decoded
 ?d_008c6320@@YAXXZ,0x008C6320,The matched Apt callers retain extern void d_008c6320 and cast it to a __cdecl function type with five stack arguments. The exact rva008C6320 body and ParsePath8C4DA0 prove the target and ABI. These callers ignore the bool result.
+?d_008c6460@@YAXXZ,0x008C6460,Address-only compatibility for withdrawn dump; native rva008C6460 body (game/Libraries/Source/EA/Apt/Rva008C6460MemberOrEvent.cpp); game/gen_asm/d_008cb600.asm (0x008CC690) still calls this name
 ?d_008f7990@BfmeThingCDE@@QAEXXZ,0x008F7990,callee pin for CDE cleanup helper
 ?d_008f7ec0@BfmeThingCDE@@QAEXXZ,0x008F7EC0,callee pin for CDE entry sweep helper
 ?d_008fc4f0@@YAXXZ,0x008FC4F0,Legacy relocation spelling for retired generated ASM50 claim; existing DrawPixel call independently reaches this actual ECX-description/EAX-result helper; full105 clean recovery now in SurfaceByteSize.cpp; not a historical C++ signature; campaign=astra36h-20260908
