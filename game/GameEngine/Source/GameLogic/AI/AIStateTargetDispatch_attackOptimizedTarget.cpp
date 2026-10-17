@@ -30,10 +30,14 @@ struct Coord2D
 	}
 };
 
+// Both formation-refresh guards go through ILT 0x00044774, the ledger's 5-byte
+// row ?j_00044774@@YAXXZ (game/gen_small/thunks_033.cpp), as tools/callees.py
+// 0x27e070 194 prints (inferred __thiscall, no stack slots, bool result).
+// Nothing defines the pinned ?bfmeBlocksFormationRefresh@BfmeHordeMember@@QAE_NXZ,
+// so the calls name the thunk through a raw pointer bridge.
+void j_00044774();
 class BfmeHordeMember
 {
-public:
-	bool bfmeBlocksFormationRefresh();
 };
 
 class Thing;
@@ -129,8 +133,14 @@ void AIStateTargetDispatch::attackOptimizedTarget(Thing *target)
 		return;
 
 	Object *self = m_object;
-	bool selfBlocks = bfmeBlocksFormationRefresh();
-	bool otherBlocks = otherAI->bfmeBlocksFormationRefresh();
+	union
+	{
+		void (*raw)(void);
+		bool (BfmeHordeMember::*typed)();
+	} blocksRefresh;
+	blocksRefresh.raw = &j_00044774;
+	bool selfBlocks = (this->*blocksRefresh.typed)();
+	bool otherBlocks = (otherAI->*blocksRefresh.typed)();
 	if (self->getRelationship(static_cast<Object *>(target)) != ALLIES)
 		return;
 	if (self->getLayer() != LAYER_GROUND)
