@@ -57,11 +57,14 @@ public:
 	void *m_nested;
 };
 
-// Pinned spelling of the 0x000347E3 getter; called on the +0x210 module.
+// The getter on the +0x210 module is called through ILT 0x000347E3, the
+// ledger's 5-byte row ?j_000347e3@@YAXXZ (game/gen_small/thunks_025.cpp), as
+// tools/callees.py 0x32c7f0 324 prints.  Nothing defines the pinned
+// ?getContainCount@BfmeNamedContain@@QBEHXZ, so the call names the thunk
+// through a raw pointer bridge that keeps the thiscall shape.
+void j_000347e3();
 class BfmeNamedContain
 {
-public:
-	int getContainCount() const;
 };
 
 
@@ -177,7 +180,13 @@ Bool ScriptConditions::rva0032C7F0(Parameter *playerParameter,
 				if (module != 0)
 				{
 					int level = module->m_level;
-					if (level > ((BfmeNamedContain *)module)->getContainCount())
+					union
+					{
+						void (*raw)(void);
+						int (BfmeNamedContain::*typed)() const;
+					} getContainCount;
+					getContainCount.raw = &j_000347e3;
+					if (level > (((BfmeNamedContain *)module)->*getContainCount.typed)())
 						++count;
 				}
 			}
