@@ -84567,7 +84567,6 @@ name,address,notes
 ?goDSD@Rva00832180@@QAE_NPAX@Z,0x008366C0,thiscall view of the landed bfmeGoDSD body (STLport locale inequality); _M_copy_state at 0x0083F3F0 calls it with ECX=&_M_locale and one pushed argument and the body passes ECX through to 0x008365B0 and returns with ret 4
 ?goProne@ProneUpdate@@QAEXPBVDamageInfo@@@Z,0x00015456,ILT fronting the 76-byte body at 0x002A0120; from AIUpdateInterface::privateGoProne
 ?gogoGadgetListBox@GameWindowManager@@UAEPAVGameWindow@@PAV2@IHHHHPAVWinInstanceData@@PAU_ListboxData@@PAVGameFont@@_N@Z,0x0047d150,vtable-slot ??_7GameWindowManager@@6B@ slot 19 anchors=37
-?gogoGadgetSlider@GameWindowManager@@UAEPAVGameWindow@@PAV2@IHHHHPAVWinInstanceData@@PAU_SliderData@@PAVGameFont@@_N@Z,0x0047d2b0,vtable-slot ??_7GameWindowManager@@6B@ slot 20 anchors=37
 ?gogoGadgetStaticText@GameWindowManager@@UAEPAVGameWindow@@PAV2@IHHHHPAVWinInstanceData@@PAU_TextData@@PAVGameFont@@_N@Z,0x0047e010,vtable-slot ??_7GameWindowManager@@6B@ slot 22 anchors=37
 ?gogoGadgetTextEntry@GameWindowManager@@UAEPAVGameWindow@@PAV2@IHHHHPAVWinInstanceData@@PAU_EntryData@@PAVGameFont@@_N@Z,0x0047fcf0,vtable-slot ??_7GameWindowManager@@6B@ slot 23 anchors=37
 ?gotInternalAddress@NAT@@IAEXHI@Z,0x00670D70,processGlobalMessage callee

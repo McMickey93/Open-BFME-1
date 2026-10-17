@@ -96333,7 +96333,7 @@ pin	targets/game/reverse/symbols.csv	0x0047D040	1
 pin	targets/game/reverse/symbols.csv	0x0047D080	1
 pin	targets/game/reverse/symbols.csv	0x0047D090	2
 pin	targets/game/reverse/symbols.csv	0x0047D150	3
-pin	targets/game/reverse/symbols.csv	0x0047D2B0	3
+pin	targets/game/reverse/symbols.csv	0x0047D2B0	2
 pin	targets/game/reverse/symbols.csv	0x0047D500	2
 pin	targets/game/reverse/symbols.csv	0x0047D570	1
 pin	targets/game/reverse/symbols.csv	0x0047D760	1
