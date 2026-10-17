@@ -18,6 +18,40 @@ float g_Va012BB878 = 1.0f;
 int g_Va012BB860 = 3;
 extern float Rva01126A68Threshold;
 void Rva00892A00Query(void **, void **);
+// Retail 0x007831B0 (37 B) and 0x00783720 (72 B) bracket setScaledTransform: two
+// file-statics on the same six-float transform and float pairs. MSVC gives them private
+// register conventions (point ECX, transform EAX, out EDX; point ECX, min EDX, max ESI),
+// reproduced here through an absent-from-retail TU-local caller.
+struct Rva007831B0Point { float x, y; };
+
+static void rva007831B0(const Rva007831B0Point *point, const Rva007845D0Transform *transform,
+	Rva007831B0Point *out)
+{
+	out->x = transform->m[0] * point->x + transform->m[2] * point->y + transform->m[4];
+	out->y = transform->m[1] * point->x + transform->m[3] * point->y + transform->m[5];
+}
+
+static void rva00783720(const Rva007831B0Point *point, Rva007831B0Point *minimum,
+	Rva007831B0Point *maximum)
+{
+	if (minimum->x > point->x)
+		minimum->x = point->x;
+	else if (maximum->x < point->x)
+		maximum->x = point->x;
+	if (minimum->y > point->y)
+		minimum->y = point->y;
+	else if (maximum->y < point->y)
+		maximum->y = point->y;
+}
+
+// absent-from-retail: TU-local caller that keeps both statics above alive.
+void rva007831B0Caller(const Rva007831B0Point *point, const Rva007845D0Transform *transform,
+	Rva007831B0Point *out, Rva007831B0Point *minimum, Rva007831B0Point *maximum)
+{
+	rva007831B0(point, transform, out);
+	rva00783720(out, minimum, maximum);
+}
+
 void setScaledTransform007833E0(const Rva007845D0Transform *transform)
 {
  g_Rva00F0692CTransform = *transform;
