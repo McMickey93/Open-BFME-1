@@ -24,8 +24,6 @@ class TextureRef
 class BfmeThingVGX
 {
 public:
-	void Render(RenderInfoClass &, const Matrix3D &, unsigned int, Vector3 *, float *,
-		const SphereClass &);
 	ShaderClass Get_Shader() const { return m_shader; }
 
 	TextureRef m_tex;
@@ -36,6 +34,13 @@ public:
 	float m_1c;
 	char m_20;
 };
+
+// BfmeThingVGX::Render at 0x00975100 is linked as the gen-dump
+// ?d_00975100@@YAXXZ, so the thiscall is reached through a member-pointer call
+// (the pattern the Apt callers of ?d_008cc940 use).
+extern void d_00975100();
+typedef void (BfmeThingVGX::*BfmeThingVGXRender)(RenderInfoClass &, const Matrix3D &, unsigned int,
+	Vector3 *, float *, const SphereClass &);
 
 class Bitmap2DObjClass : public RenderObjClass
 {
@@ -73,6 +78,7 @@ void Bitmap2DObjClass::Render(RenderInfoClass &rinfo)
 
 	SphereClass bounding_sphere;
 	Get_Obj_Space_Bounding_Sphere(bounding_sphere);
-	m_vgx.Render(rinfo, Transform, m_vertices.Count(), &m_vertices[0], &m_widths[0],
+	union { void (*fn)(); BfmeThingVGXRender call; } render = { d_00975100 };
+	(m_vgx.*render.call)(rinfo, Transform, m_vertices.Count(), &m_vertices[0], &m_widths[0],
 		bounding_sphere);
 }
