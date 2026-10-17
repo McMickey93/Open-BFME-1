@@ -207,14 +207,6 @@ public:
 	char bfmeGo935B();
 };
 
-class Rva004CD5F0GameInfo
-{
-public:
-	Bool rva004CD5F0( Int slotIndex ) const;
-};
-
-extern void d_004cd5f0();
-
 static void rva004CB810StartPosition( Int player, Int startPos );
 
 
@@ -507,17 +499,73 @@ public:
 	Int getPlayerTemplate( void ) const { return m_playerTemplate; }
 };
 
-static Int getNextSelectablePlayer(Int start)
+// BFME's MapMetaData keeps the map's eight start-position records at +0x54
+// (proven by the matched MapMetaData_assign.cpp); each says whether a human
+// and a computer player may start there and, when its set is not empty, which
+// factions may.
+struct BfmeStartPositionRecord
 {
-	LANGameInfo *game = ((BfmeVirtualLanApi *)TheLAN)->GetMyGame();
-	if (!((BfmeVirtualLanGameInfo *)game)->amIHost())
+	Bool m_human;
+	Bool m_computer;
+	Bool m_loadAIScripts;
+	Int m_forcePlayerTeam;
+	std::set<AsciiString> m_factionSet;
+};
+
+// Retail 0x004CD5F0: may the game's slot take the map start position?  A
+// file static, so MSVC passes the game in ECX and the position in EAX.  Retail
+// has no unwind frame for the template name temporary, which the empty
+// exception specification reproduces.
+static __declspec(noinline) Bool rva004CD5F0SlotFitsStartPosition(
+	const GameInfo *game, Int startPos, Int slotIndex ) throw()
+{
+	const MapMetaData *md = TheMapCache->findMap( game->getMap() );
+	if (!md)
+		return TRUE;
+
+	const BfmeStartPositionRecord *pos =
+		(const BfmeStartPositionRecord *)((const char *)md + 0x54) + startPos;
+	const GameSlot *slot = game->getConstSlot(slotIndex);
+	if (slot->isAI())
+	{
+		if (!pos->m_computer)
+			return FALSE;
+	}
+	else
+	{
+		if (!pos->m_human)
+			return FALSE;
+	}
+
+	const std::set<AsciiString> &factions = pos->m_factionSet;
+	if (!factions.empty())
+	{
+		Int playerTemplate = ((const BfmeGameSlotLayout *)slot)->getPlayerTemplate();
+		if (playerTemplate >= 0)
+		{
+			const PlayerTemplate *pt = ThePlayerTemplateStore->getNthPlayerTemplate(playerTemplate);
+			if (factions.count(pt->getName()) == 0)
+				return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+// Retail 0x004CD6C0 and 0x004CD780: the Zero Hour helpers, which BFME gives
+// the clicked start position so only players allowed there are picked; the
+// first one also returns -1 instead of the local slot when nobody fits.
+static __declspec(noinline) Int getNextSelectablePlayer(Int start, Int startPos)
+{
+	LANGameInfo *game = ((BfmeTargetLanApi *)TheLAN)->GetMyGame();
+	if (!((BfmeThing935B *)game)->bfmeGo935B())
 		return -1;
 	for (Int j=start; j<MAX_SLOTS; ++j)
 	{
-		LANGameSlot *slot = game->getLANSlot(j);
+		LANGameSlot *slot = (LANGameSlot *)((Rva0068D3E0Arr *)game)->at(j);
 		if (slot && slot->getStartPos() == -1 &&
-			( (j==((BfmeVirtualLanGameInfo *)game)->getLocalSlotNum() && game->getConstSlot(j)->getPlayerTemplate()!=PLAYERTEMPLATE_OBSERVER)
-			|| slot->isAI()))
+			( (j==((BfmeVirtualLanGameInfo *)game)->getLocalSlotNum() && ((const BfmeGameSlotLayout *)game->getConstSlot(j))->getPlayerTemplate()!=PLAYERTEMPLATE_OBSERVER)
+			|| slot->isAI()) &&
+			rva004CD5F0SlotFitsStartPosition(game, startPos, j))
 		{
 			return j;
 		}
@@ -525,21 +573,23 @@ static Int getNextSelectablePlayer(Int start)
 	return -1;
 }
 
-static Int getFirstSelectablePlayer(const GameInfo *game)
+static __declspec(noinline) Int getFirstSelectablePlayer(const GameInfo *game, Int startPos)
 {
 	const BfmeVirtualGameInfo *bfmeGame = (const BfmeVirtualGameInfo *)game;
-	const GameSlot *slot = game->getConstSlot(bfmeGame->getLocalSlotNum());
-	if (!bfmeGame->amIHost() || slot && ((const BfmeGameSlotLayout *)slot)->getPlayerTemplate() != PLAYERTEMPLATE_OBSERVER)
-		return bfmeGame->getLocalSlotNum();
+	Int localSlot = bfmeGame->getLocalSlotNum();
+	const GameSlot *slot = game->getConstSlot(localSlot);
+	if ((!bfmeGame->amIHost() || slot && ((const BfmeGameSlotLayout *)slot)->getPlayerTemplate() != PLAYERTEMPLATE_OBSERVER) &&
+		rva004CD5F0SlotFitsStartPosition(game, startPos, localSlot))
+		return localSlot;
 
 	for (Int i=0; i<MAX_SLOTS; ++i)
 	{
 		slot = game->getConstSlot(i);
-		if (slot && slot->isAI())
+		if (slot && slot->isAI() && rva004CD5F0SlotFitsStartPosition(game, startPos, i))
 			return i;
 	}
 
-	return bfmeGame->getLocalSlotNum();
+	return -1;
 }
 
 void updateMapStartSpots( GameInfo *myGame, GameWindow *buttonMapStartPositions[], Bool onLoadScreen = FALSE );
@@ -922,10 +972,8 @@ static void handlePlayerTemplateSelection(register int index)
 			}
 		}
 
-		typedef Bool (Rva004CD5F0GameInfo::*Fn004CD5F0)( Int ) const;
-		union { void (*fn004CD5F0)(); Fn004CD5F0 call; } u004CD5F0 = { d_004cd5f0 };
 		if (slot->getStartPos() >= 0 &&
-			!(((Rva004CD5F0GameInfo *)myGame)->*u004CD5F0.call)(index))
+			!rva004CD5F0SlotFitsStartPosition(myGame, slot->getStartPos(), index))
 			rva004CB810StartPosition(index, -1);
 	}
 }
@@ -1901,7 +1949,7 @@ WindowMsgHandledType LanGameOptionsMenuSystem( GameWindow *window, UnsignedInt m
 								if (playerIdxInPos == game->getLocalSlotNum() || (game->amIHost() && slot && slot->isAI()))
 								{
 									// it's one of my type.  Try to change it.
-									Int nextPlayer = getNextSelectablePlayer(playerIdxInPos+1);
+									Int nextPlayer = getNextSelectablePlayer(playerIdxInPos+1, i);
 									handleStartPositionSelection(playerIdxInPos, -1);
 									if (nextPlayer >= 0)
 									{
@@ -1912,9 +1960,9 @@ WindowMsgHandledType LanGameOptionsMenuSystem( GameWindow *window, UnsignedInt m
 							else
 							{
 								// nobody in the slot - put us in
-								Int nextPlayer = getNextSelectablePlayer(0);
+								Int nextPlayer = getNextSelectablePlayer(0, i);
 								if (nextPlayer < 0)
-									nextPlayer = getFirstSelectablePlayer(game);
+									nextPlayer = getFirstSelectablePlayer(game, i);
 								handleStartPositionSelection(nextPlayer, i);
 							}
 						}
