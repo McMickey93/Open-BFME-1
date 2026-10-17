@@ -79,9 +79,16 @@ public:
 	virtual void attemptDamage(DamageInfo *);
 };
 
-class PorcupineFormationBodyModule : public BehaviorModule,
+// The base body (ILT 0x0003B372 -> ActiveBody::attemptDamage 0x00211D40).
+class ActiveBody : public BehaviorModule,
 	public BehaviorModuleInterface,
 	public BodyModuleInterface
+{
+public:
+	virtual void attemptDamage(DamageInfo *damageInfo);
+};
+
+class PorcupineFormationBodyModule : public ActiveBody
 {
 public:
 	virtual void attemptDamage(DamageInfo *damageInfo);
@@ -120,13 +127,11 @@ void PorcupineFormationBodyModule::attemptDamage(DamageInfo *damageInfo)
 	}
 fallback:
 	{
-		BodyModuleInterface *base = (BodyModuleInterface *)((char *)this + 0x10);
-		base->BodyModuleInterface::attemptDamage(damageInfo);
+		ActiveBody::attemptDamage(damageInfo);
 		return;
 	}
 finish:
 	{
-		BodyModuleInterface *base = (BodyModuleInterface *)((char *)this + 0x10);
-		base->BodyModuleInterface::attemptDamage(damageInfo);
+		ActiveBody::attemptDamage(damageInfo);
 	}
 }

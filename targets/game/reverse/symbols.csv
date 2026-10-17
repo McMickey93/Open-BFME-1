@@ -16689,7 +16689,7 @@ name,address,notes
 ?attack@AIGroupGroupAttackObjectPrivateShim@@QAEX_NPAVObject@@HW4CommandSourceType@@@Z,0x00155DA0,AIGroup groupAttackObjectPrivate incremental-link thunk target through a TU-local forwarding shim
 ?attackOptimizedTarget@AIStateTargetDispatch@@QAEXPAVThing@@@Z,0x0027E070,address-derived optimized target dispatch callee
 ?attackOrdinaryTarget@AIStateTargetDispatch@@QAEXPAVThing@@@Z,0x0027CF60,address-derived ordinary target dispatch callee
-?attemptDamage@BodyModuleInterface@@UAEXPAVDamageInfo@@@Z,0x0003B372,ABI facade for PorcupineFormationBodyModule::attemptDamage base dispatch
+?attemptDamage@ActiveBody@@UAEXPAVDamageInfo@@@Z,0x0003B372,ILT thunk of ActiveBody::attemptDamage 0x00211D40 (ilt_oracle CONFIRMED); the base call of PorcupineFormationBodyModule and DetachableRiderBody::attemptDamage; replaces the ILT-contradicted BodyModuleInterface spelling
 ?attemptToPurchaseScience@Player@@QAE_NW4ScienceType@@@Z,0x00004BC4,ILT thunk to Player::attemptToPurchaseScience; identity from Zero Hour ScriptActions.cpp doPlayerPurchaseScience
 ?audioManagerAddEventHelper@@YGIPBVAudioEventRTS@@HHH@Z,0x00020B08,AudioManager addAudioEvent helper YGI stdcall
 ?awardInitialCaptureBonus@AutoDepositUpdate@@QAEXPAVPlayer@@@Z,0x00038A87,Player::becomingTeamMember direct-call ILT thunk

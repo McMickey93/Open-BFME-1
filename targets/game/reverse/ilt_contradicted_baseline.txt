@@ -8040,7 +8040,6 @@ pins	0x0003B2AA	?construct@LightningDrawTemplateCtorShim@FXParticleSystem@@QAEXX
 pins	0x0003B304	?destroyNodeValue@UnicodeString@@QAEXXZ
 pins	0x0003B31D	??1BeaconClientUpdate@@UAE@XZ
 pins	0x0003B359	?validMovementPosition@Pathfinder@@QAE_NPBUCoord3D@@W4PathfindLayerEnum@@IPAVObject@@@Z
-pins	0x0003B372	?attemptDamage@BodyModuleInterface@@UAEXPAVDamageInfo@@@Z
 pins	0x0003B3E5	??$_Construct@GG@_STL@@YAXPAGABG@Z
 pins	0x0003B3F4	??_GAIDockState@@MAEPAXI@Z
 pins	0x0003B417	?invoke@GameLogic@@QAEXXZ

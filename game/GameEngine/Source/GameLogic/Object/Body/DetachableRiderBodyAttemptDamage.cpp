@@ -87,9 +87,16 @@ public:
 	virtual Real slot06() const;
 };
 
-class DetachableRiderBodyBody : public BehaviorModule,
+// The base body (ILT 0x0003B372 -> ActiveBody::attemptDamage 0x00211D40).
+class ActiveBody : public BehaviorModule,
 	public BehaviorModuleInterface,
 	public BodyModuleInterface
+{
+public:
+	virtual void attemptDamage(DamageInfo *damageInfo);
+};
+
+class DetachableRiderBodyBody : public ActiveBody
 {
 	char m_unreconstructed014[0xe0 - 0x14];
 };
@@ -132,5 +139,5 @@ void DetachableRiderBody::attemptDamage(DamageInfo *damageInfo)
 				((Gen_0028D8F0 *)rider)->bfmeSelectCondition();
 		}
 	}
-	BodyModuleInterface::attemptDamage(damageInfo);
+	ActiveBody::attemptDamage(damageInfo);
 }
