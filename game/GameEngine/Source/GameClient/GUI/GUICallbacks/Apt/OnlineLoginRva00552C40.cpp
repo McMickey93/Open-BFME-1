@@ -92,7 +92,7 @@ class BfmeLevelAN { public:
 extern WindowManager *g_rva012F19E8WindowManager;
 class GameWindow;
 GameWindow *MessageBoxOkCancel(UnicodeString,UnicodeString,void (*)(),void (*)());
-void d_00551db0();
+void Rva00551DB0();
 void j_00548d00();
 struct LoginContext00552C40 { char field000[0x250]; unsigned int field250; };
 class BfmeAptScreenOnlineLogin { public:
@@ -104,7 +104,7 @@ class BfmeAptScreenOnlineLogin { public:
 };
 void BfmeAptScreenOnlineLogin::rva00552C40(bool argument) {
  if(argument) {
-  MessageBoxOkCancel(UnicodeString(L""),TheGameText->fetch("GUI:SureDeleteNickname"),d_00551db0,j_00548d00);
+  MessageBoxOkCancel(UnicodeString(L""),TheGameText->fetch("GUI:SureDeleteNickname"),Rva00551DB0,j_00548d00);
   return;
  }
  AsciiString login,password;
