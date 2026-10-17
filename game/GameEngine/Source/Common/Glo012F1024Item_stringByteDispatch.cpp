@@ -58,8 +58,14 @@ public:
     }
 };
 
-class Glo012F1028Type;
-extern Glo012F1028Type *Glo012F1028;
+// Retail 0x012F1028 is EA's TheLivingWorldLogic: data_rows.csv owns
+// ?TheLivingWorldLogic@@3PAVLivingWorldLogic@@A there, defined in
+// game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp.  The
+// Glo012F1028 spelling was the address-derived pin (dir32_addresses.csv), which
+// nothing defines, so the reference moves to the defining name; BfmeGlobal_012f1028
+// above is this TU's own view of the pointee.
+class LivingWorldLogic;
+extern LivingWorldLogic *TheLivingWorldLogic;
 
 // ?j_0000d1d4@Glo012F1024Item@@QAEXXZ
 void Glo012F1024Item::j_0000d1d4(void)
@@ -75,6 +81,6 @@ void Glo012F1024Item::j_0000d1d4(void)
     {
         char *begin = owner->m_bfmeFlat.m_bfmeBegin;
         BfmeElem12Flat *element = (BfmeElem12Flat *)(begin + index * 12);
-        ((BfmeGlobal_012f1028 *)Glo012F1028)->m((((User003AD440 *)element)->*getter.GetName)(), element->bfmeByte());
+        ((BfmeGlobal_012f1028 *)TheLivingWorldLogic)->m((((User003AD440 *)element)->*getter.GetName)(), element->bfmeByte());
     }
 }

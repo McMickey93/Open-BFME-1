@@ -250,9 +250,14 @@ public:
 
 };
 
-class Glo012F1028Type;
-extern Glo012F1028Type *Glo012F1028;
-#define RVA00365DF0_LIVING_WORLD_LOGIC (reinterpret_cast<Rva00365DF0Logic *>(Glo012F1028))
+// Retail 0x012F1028 is EA's TheLivingWorldLogic (data_rows.csv owns
+// ?TheLivingWorldLogic@@3PAVLivingWorldLogic@@A there, defined in
+// game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp).  The
+// Glo012F1028 spelling was the address-derived pin, which nothing defines, so
+// the reference moves to the defining name.
+class LivingWorldLogic;
+extern LivingWorldLogic *TheLivingWorldLogic;
+#define RVA00365DF0_LIVING_WORLD_LOGIC (reinterpret_cast<Rva00365DF0Logic *>(TheLivingWorldLogic))
 
 // ?rva00365df0@BfmeLivingWorldPlayerArmyCollection@@QAEXPAVObject@@@Z
 void BfmeLivingWorldPlayerArmyCollection::rva00365df0(Object *firstObject)
