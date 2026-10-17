@@ -90,10 +90,17 @@ public:
 	Object *findObjectByID(int id);
 };
 
+// The report call reaches the incremental-link thunk at 0x0001B94B, the
+// ledger's 5-byte row ?j_0001b94b@@YAXXZ (game/gen_small/thunks_012.cpp), whose
+// jmp lands on 0x001C9490, the matched gen dump ?d_001c9490@@YAXXZ, as
+// tools/callees.py 0x298010 115 prints for the callee.  Nothing defines the
+// pinned ?report@BFMEReportDamageSource@@QAEXPAVObject@@H@Z, so the call names
+// the thunk through a raw pointer bridge that keeps the two-argument thiscall
+// shape.
+void j_0001b94b();
+
 class BFMEReportDamageSource
 {
-public:
-	void report(Object *owner, int setting);
 };
 
 class LifetimeUpdate
@@ -129,7 +136,15 @@ UpdateSleepTime LifetimeUpdate::update()
 				? self->getBodyModule()->getLastDamageInfo()->m_sourceID
 				: 0);
 		if (killer != 0)
-			((BFMEReportDamageSource *)killer)->report(self, 1);
+		{
+			union
+			{
+				void (*raw)(void);
+				void (BFMEReportDamageSource::*typed)(Object *, int);
+			} report;
+			report.raw = &j_0001b94b;
+			(((BFMEReportDamageSource *)killer)->*report.typed)(self, 1);
+		}
 	}
 
 	self->kill(DAMAGE_SNIPER, (DeathType)data->getDeathType());

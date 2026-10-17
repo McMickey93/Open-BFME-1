@@ -63,10 +63,17 @@ private:
 	unsigned char m_bytes[0x5C];
 };
 
+// The report call reaches the incremental-link thunk at 0x0001B94B, the
+// ledger's 5-byte row ?j_0001b94b@@YAXXZ (game/gen_small/thunks_012.cpp), whose
+// jmp lands on 0x001C9490, the matched gen dump ?d_001c9490@@YAXXZ, as
+// tools/callees.py 0x2dda40 326 prints for the callee.  Nothing defines the
+// pinned ?report@BFMEReportDamageSource@@QAEXPAVObject@@H@Z, so the call names
+// the thunk through a raw pointer bridge that keeps the two-argument thiscall
+// shape.
+void j_0001b94b();
+
 class BFMEReportDamageSource
 {
-public:
-	void report(Object *victim, Int flag);
 };
 
 class MetaModuleA
@@ -200,7 +207,15 @@ void MetaImpactNugget::execute(Weapon *weapon, Object *victim)
 
 			Object *source = TheGameLogic->findObjectByID(weapon->m_ownerID);
 			if (source)
-				((BFMEReportDamageSource *)source)->report(victim, 1);
+			{
+				union
+				{
+					void (*raw)(void);
+					void (BFMEReportDamageSource::*typed)(Object *, int);
+				} report;
+				report.raw = &j_0001b94b;
+				(((BFMEReportDamageSource *)source)->*report.typed)(victim, 1);
+			}
 
 			MetaModuleA *iface = mod->vslot00();
 			iface->vslot34(mod->vslot68(victim));
