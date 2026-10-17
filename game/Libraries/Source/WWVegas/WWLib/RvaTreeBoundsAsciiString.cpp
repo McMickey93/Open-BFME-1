@@ -60,7 +60,9 @@ private:
 	Header *m_data;
 };
 
-inline bool operator<(const AsciiString &left, const AsciiString &right)
+// This inlined comparison belongs to this layout view. The public operator
+// has a separate retail-proven provider in AsciiStringInequalityThunk.cpp.
+static inline bool operator<(const AsciiString &left, const AsciiString &right)
 {
 	return left.compare(right) < 0;
 }
