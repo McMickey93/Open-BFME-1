@@ -87822,7 +87822,7 @@ name,address,notes
 ?rva001B3E30@GhostObject@@UAEXH@Z,0x001B3E30,GhostObject override of virtual-base slot 3 of vtable 0x00D1CF8C; W3DGhostObject's vtordisp{-4,0x98} thunk 0x006BCAF0 and GhostObject's own thunk 0x001B3E20 jump here through ILT 0x0000B9DD; method name address-derived
 ?rva001B3E50@GhostObject@@UBEHXZ,0x001B3E50,GhostObject override of virtual-base slot 4 of vtable 0x00D1CF8C; W3DGhostObject's vtordisp{-4,0x98} thunk 0x006BCB10 and GhostObject's own thunk 0x001B3E40 jump here through ILT 0x000302DD; method name address-derived
 ?rva001B9D00@Rva001B9D00Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001B9D00,abi-view=?d_001b9d00@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001B9D00
-?rva001BA1C0@Rva001BA1C0Handler@@QAEXPAVObject@@PBUCoord3D@@@Z,0x001BA1C0,abi-view=?d_001ba1c0@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BA1C0
+?rva001BA1C0@Rva001BA1C0Handler@@QAEXPAVObject@@PBUCoord3D@@@Z,0x001BA1C0,abi-view=?behavior@Rva001BA1C0Handler@@QAE_NPAXPBUCoord3D@@@Z;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BA1C0
 ?rva001BB530@Rva001BB530Mover@@QAEXPAVObject@@PBUCoord3D@@MM@Z,0x001BB530,abi-view=?d_001bb530@@YAXXZ;RVA-qualified typed call view; dispatcher 0x001BC820 and parent raw callee ABI verified; direct body 0x001BB530; ret16 at +0x536
 ?rva001BD790@BfmeSub1CC_EC3@@QAEXM@Z,0x00032A24,ILT jumping to the unclaimed 24-byte locomotor body that lowers the float at +0x3C to its argument (thiscall ret 4); called by Object::rva001CC250 (0x001CC250) on AI+0x1CC right before cache1B4980; address-derived name
 ?rva001BE310@Object@@QBEHHPBV1@PBVCoord3D@@H@Z,0x001BE310,CommandXlat witnessed call 0x5a8981; callee ABI inspected; build/gap_005ade0d/PIN_EVIDENCE.md
@@ -88922,6 +88922,7 @@ name,address,notes
 ?update@Radar@@UAEXXZ,0x00030E77,W3DRadar update retail base thunk
 ?update@RadiusDecal@@QAEXXZ,0x0003FC15,BFME RadiusDecal update ILT called by InGameUI handleRadiusCursor
 ?update@Rva001048C0@@QAE_NPBMPAM@Z,0x001048C0,00756F00+5BD passes owner+2C twice to owner+34; 001048C0 reads second float pointer and advances its five phase envelope; first pointer unused; ILT 000433A1 independently reaches this physical body
+?update@Rva001B95B0HeightState@@QAEMPAVObject@@PBUCoord3D@@M@Z,0x0001712F,REL32 pin from 0x001BA1C0 (Locomotor behavior-Z handler) case 2/3: retail call site e8 -> ILT 0x0001712F -> matched 603B body 0x001B95B0 ledger name ?update@Rva001B95B0HeightState@@QAEMPAVObject@@PBVCoord3D@@M@Z; struct-keyed Coord3D spelling of the same thiscall(Object* const Coord3D* float) returning float
 ?update@Rva0025E0B0Module@@QAEXPAVObject@@@Z,0x0025E0B0,caller25E610 throughILT557E supplies sameownerECX andObject pointer; full128B target updates module flags andFX plus objectstatus86 mask; RET4; same address-labelled view as banked setup body
 ?update@Rva00260060Owner@@QAEXPAVObject@@@Z,0x0000543E,LevelGrant slot15 helper call through retail ILT543E to independently matched222B update260060 with Object pointer and terminal ret4;route=0x00260060
 ?update@Rva00367810Entry@@QAEXXZ,0x0000E0AC,REL32 target read from the retail call at RVA 0x0036786D; ILT thunk to RVA 0x00367330
