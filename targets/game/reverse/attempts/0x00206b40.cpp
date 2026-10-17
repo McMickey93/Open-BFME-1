@@ -1,7 +1,5 @@
 // ?claimNearest@Rva00206B40Owner@@QAEHH@Z
 // partial score=0.0407 date=2026-10-18
-// ?claimNearest@Rva00206B40Owner@@QAEHH@Z
-// partial score=0.2339 date=2026-10-18 (279/295 B, 226 diffs, shape 0.851)
 // cl: /O2 /GR- /DNDEBUG /DWIN32 /MD /EHsc- /Igame/Libraries/Include /Igame/GameEngine/Source/GameLogic/Object
 typedef float Real;
 typedef int Int;
