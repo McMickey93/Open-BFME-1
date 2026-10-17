@@ -1863,7 +1863,6 @@ functions	0x001BD2E0	?setAreaToGuard@AIGuardMachine@@QAEXPBVPolygonTrigger@@@Z
 functions	0x001BD2F0	?setRenderObject@W3DProjectedShadow@@QAEXPAVRenderObjClass@@@Z
 functions	0x001BD300	?setMapContentsMask@GameInfo@@QAEXH@Z
 functions	0x001BD310	?setCustomFrame@Condition@@QAEXH@Z
-functions	0x001BD400	?getDisabledFlags@Object@@QBE?AV?$BitFlags@$0N@@@XZ
 functions	0x001BD6A0	?winSetNextInLayout@GameWindow@@QAEXPAV1@@Z
 functions	0x001BD780	?Poke_Texture@TextureBaseClass@@IAEXPAUIDirect3DBaseTexture8@@@Z
 functions	0x001BD780	?setLastFrameInGame@GameSlot@@QAEXI@Z

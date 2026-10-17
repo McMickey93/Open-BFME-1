@@ -2024,105 +2024,12 @@ UnsignedInt Object::getDisabledUntil( DisabledType type ) const
 	return 0;
 }
 
-//-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/Object_clearDisabled_Thunk.cpp
-// ?clearDisabled@Object@@QAE_NW4DisabledType@@@Z present-unmatched
-Bool Object::clearDisabled( DisabledType type )
-{
-	if( type < 0 || type >= DISABLED_COUNT )
-	{
-		DEBUG_CRASH( ("Invalid disabled type value %d specified -- doesn't not exist!", type ) );
-		return FALSE;
-	}
-
-	if (!isDisabledByType(type)) {
-		return FALSE;
-	}
-
-	if( type == DISABLED_UNDERPOWERED || type == DISABLED_EMP || type == DISABLED_SUBDUED || type == DISABLED_HACKED )
-	{
-		//We've regained power-- make sure we aren't still disabled by another type.
-	 	AudioEventRTS sound;
-		if( (!isDisabledByType( DISABLED_UNDERPOWERED ) || type == DISABLED_UNDERPOWERED ) &&
-				(!isDisabledByType( DISABLED_EMP ) || type == DISABLED_EMP ) &&
-				(!isDisabledByType( DISABLED_SUBDUED ) || type == DISABLED_SUBDUED ) &&
-				(!isDisabledByType( DISABLED_HACKED ) || type == DISABLED_HACKED ) )
-		{
-			if( isKindOf( KINDOF_STRUCTURE ) )
-			{
-				sound = TheAudio->getMiscAudio()->m_buildingReenabled;
-				sound.setPosition( getPosition() );
-				TheAudio->addAudioEvent( &sound );
-			}
-			else if( isKindOf( KINDOF_VEHICLE ) )
-			{
-				sound = TheAudio->getMiscAudio()->m_vehicleReenabled;
-				sound.setPosition( getPosition() );
-				TheAudio->addAudioEvent( &sound );
-			}
-		}
-	}
-
-
-	// an edge-test for disabledness, for type. This DECREMENTS m_pauseCount
-	// srj sez: HELD nevers disables special powers.
-	if ( type != DISABLED_HELD && isDisabledByType( type ) )
-		pauseAllSpecialPowers( FALSE );
-
-	ContainModuleInterface *contain = getContain();
-	if ( contain )
-	{
-		// We explicitly pass stuff in up in the set, so we need to turn it off if it is a forever type
-		Object *rider = (Object*)contain->friend_getRider();
-		if( rider  &&  (m_disabledTillFrame[ type ] == FOREVER) )
-		{
-			rider->clearDisabled(type);
-		}
-	}
-
-	if ( isKindOf( KINDOF_SPAWNS_ARE_THE_WEAPONS ) )
-	{
-		SpawnBehaviorInterface *sbi = this->getSpawnBehaviorInterface();
-		if ( sbi )
-		{
-			//Kris: Patch 1.02 - December 17, 2003
-			//Make sure slaves can recover from being disabled by subdual (stinger site soldier case)
-			sbi->orderSlavesToClearDisabled( type );
-		}
-
-	}
-
-	m_disabledTillFrame[ type ] = NEVER;
-	m_disabledMask.set( type, 0 );
-
-	DisabledMaskType exceptions;
-	exceptions.set(DISABLED_HELD);
-	exceptions.set(DISABLED_SCRIPT_DISABLED);
-	exceptions.set(DISABLED_UNMANNED);
-
-	DisabledMaskType myFlagsMinusExceptions = getDisabledFlags();
-	myFlagsMinusExceptions.clearAndSet(exceptions, DISABLEDMASK_NONE);
-
-	// to clarify, if I am NOT disabled by anything other than DISABLED_HELD, or DISABLED_SCRIPT_DISABLED
-	
-	// to clarify, count inverse intersection gives you the number of exceptions you don't have, 
-	// and has nothing to do with checking other disabled types
-//	if( !isDisabled() || getDisabledFlags().countInverseIntersection( exceptions ) == 0 )  
-	if( myFlagsMinusExceptions.count() == 0 )  
-	{
-		// I have no disabled flag that is not one of the exceptions above.
-		if (m_drawable)
-			m_drawable->clearTintStatus( TINT_STATUS_DISABLED );
-	}
-
-	checkDisabledStatus();// in case we just edged
-
-	// if we're no longer disabled by anything, then call the edge function.
-	if (!isDisabled()) {
-		onDisabledEdge(false);
-	}
-	return TRUE;
-}
+// Retail Object::clearDisabled (0x001C8440) is implemented in Object_clearDisabled_Thunk.cpp.
+// The ZH copy here also emitted these STLport bitset members; retail keeps them as
+// standalone COMDAT bodies, so instantiate them explicitly.
+template _STL::bitset<DISABLED_COUNT>& _STL::bitset<DISABLED_COUNT>::operator&=(const _STL::bitset<DISABLED_COUNT>&);
+template _STL::bitset<DISABLED_COUNT>& _STL::bitset<DISABLED_COUNT>::operator|=(const _STL::bitset<DISABLED_COUNT>&);
+template void _STL::_Base_bitset<1>::_M_do_or(const _STL::_Base_bitset<1>&);
 
 
 // Retail Object::checkDisabledStatus (0x001C5780) is implemented in ObjectCheckDisabledStatus.cpp.

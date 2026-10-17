@@ -20568,5 +20568,15 @@
   "after_sha256": "ee7282bdb512bc2415550136bdb4326e8bbb5c4503d3dff477237e0904ac4d23",
   "evidence": "targets/game/reverse/identity_evidence/002de9b0-made001e6170-slot6.md",
   "reason": "vtable 0x010CF1C4 belongs to the matched ctor ??0Made001E6170 (0x002DE930); nothing in retail names the slot doNugget"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "Object",
+  "new_name": "Rva001BD400",
+  "before_sha256": "b1b03ef4318bf1b17e346f043127dc1db0b53f897c6b5c43b1636cf52194e9d5",
+  "after_sha256": "8490ebfbfd8d19a5fdcf40310f60fa626d1cb0e4b946934dcc1e6f5b97359b99",
+  "evidence": "targets/game/reverse/identity_evidence/001bd400-not-getdisabledflags.md",
+  "reason": "0x001BD400 was named Object::getDisabledFlags only through Object.cpp's non-retail ZH clearDisabled copy; retail's ILT order contradicts every getDisabledFlags@Object decoration and nothing else proves the class"
  }
 ]
