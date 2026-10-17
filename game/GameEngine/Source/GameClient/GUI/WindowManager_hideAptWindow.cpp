@@ -24,7 +24,6 @@ class WindowManager
 {
 public:
 	bool hideAptWindow(int index);
-	bool hideAptWindowInternal(int index);
 
 private:
 	char m_unmodelled[0xA8];
@@ -35,6 +34,11 @@ private:
 		char m_pad[3];
 	} m_aptWindows[12];
 };
+
+// The inner hide is reached through ILT 0x0003F3E1, the ledger's 5-byte row
+// ?j_0003f3e1@@YAXXZ (symbols.csv pins hideAptWindowInternal there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_0003f3e1();
 
 bool WindowManager::hideAptWindow(int index)
 {
@@ -48,5 +52,7 @@ bool WindowManager::hideAptWindow(int index)
 	if (!(window.m_flags & 2))
 		return false;
 
-	return hideAptWindowInternal(index);
+	union { void (*raw)(void); bool (WindowManager::*typed)(int); } hideInternal;
+	hideInternal.raw = &j_0003f3e1;
+	return (this->*hideInternal.typed)(index);
 }
