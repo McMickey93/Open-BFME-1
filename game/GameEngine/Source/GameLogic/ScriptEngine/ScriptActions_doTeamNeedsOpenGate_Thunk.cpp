@@ -50,9 +50,13 @@ private:
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Team.h
 class Team
 {
-public:
-	void bfmeSetNeedsGateOpenRaw(Int, Int);
 };
+
+// The gate setter is reached through ILT 0x0000E6B5, the ledger's 5-byte row
+// ?j_0000e6b5@@YAXXZ (symbols.csv pins ?bfmeSetNeedsGateOpenRaw@Team@@QAEXHH@Z
+// there and nothing defines it), through a raw pointer bridge that keeps the
+// thiscall shape.
+void j_0000e6b5();
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/ScriptEngine.h
 class ScriptEngine
@@ -111,5 +115,7 @@ void ScriptActions::doTeamNeedsOpenGate(ScriptActionParameter *teamParameter,
 		return;
 	}
 
-	team->bfmeSetNeedsGateOpenRaw(gate->getId(), *(const Int *)&needsOpen);
+	union { void (*raw)(void); void (Team::*typed)(Int, Int); } setNeedsGateOpen;
+	setNeedsGateOpen.raw = &j_0000e6b5;
+	(team->*setNeedsGateOpen.typed)(gate->getId(), *(const Int *)&needsOpen);
 }
