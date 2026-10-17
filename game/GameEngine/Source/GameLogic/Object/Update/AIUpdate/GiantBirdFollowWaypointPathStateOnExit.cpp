@@ -28,11 +28,12 @@ struct Coord3D
 #include "GameEngine/Source/GameLogic/Object/object.h"
 
 extern void j_00015d02();
+// Retail calls updateGoal through ILT 0x000294E2 (?j_000294e2@@YAXXZ), whose
+// jmp lands on the matched gen dump ?d_003e9720@@YAXXZ; nothing defines the
+// pinned ?updateGoal@Pathfinder@@QAEXPAVObject@@PBUCoord3D@@HPBDH@Z.
+extern void j_000294e2();
 class Pathfinder
 {
-public:
-	void updateGoal(Object *object, const Coord3D *position, int layer,
-		const char *file, Int line);
 };
 
 class AI
@@ -86,7 +87,10 @@ void GiantBirdFollowWaypointPathState::onExit(StateExitType status)
 	typedef void (Pathfinder::*RemoveGoalFn)(Object *);
 	union { void (*fn)(); RemoveGoalFn call; } removeGoal = { j_00015d02 };
 	(TheAI->pathfinder()->*removeGoal.call)((Object *)object);
+	typedef void (Pathfinder::*UpdateGoalFn)(Object *, const Coord3D *, int,
+		const char *, Int);
+	union { void (*fn)(); UpdateGoalFn call; } updateGoal = { j_000294e2 };
 #line 1516 "F:\\bfme\\Code\\gameengine\\Source\\GameLogic\\Object\\Update\\AIUpdate\\GiantBirdAIUpdate.cpp"
-	TheAI->pathfinder()->updateGoal((Object *)object,
+	(TheAI->pathfinder()->*updateGoal.call)((Object *)object,
 		(const Coord3D *)(object + 0x38), 1, __FILE__, __LINE__);
 }
