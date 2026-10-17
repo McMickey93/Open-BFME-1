@@ -1,7 +1,23 @@
 // ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
-// partial score=0.9097 date=2026-10-11
+// partial score=0.9787 date=2026-10-17
+// ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
 // cl: /DNDEBUG /MD /Igame/Libraries/Include/Lib /Igame/GameEngine/Source/GameLogic/Object
-#include "Coord3D.h"
+// 2026-10-17 (claude-opus-5-5): 212 -> 50 differing bytes at 2347/2347.
+// Levers: BFME Coord3D user copy constructor and `Coord3D adjustTo = *rawTo`;
+// checkDestination as an inline with its own blocker (retail packs blocker onto
+// cell); visible never-inlined getClippedCell; parentCell->getZone() accessor
+// (rotation_sweep); info stores layer, center, radius. Left: +0x4C6..+0x538,
+// retail hoists both the surfaces and the template-layer loads before the
+// crusher negate and stores zone1 before loading goal's zone (scratch
+// rotation); every profile store order and helper/ctor spelling tried.
+struct Coord3D
+{
+	Coord3D() {}
+	Coord3D( const Coord3D &c ) : x(c.x), y(c.y), z(c.z) {}
+	float x;
+	float y;
+	float z;
+};
 #define BFME_HAVE_COORD3D
 typedef bool Bool;
 typedef unsigned short UnsignedShort;
@@ -119,6 +135,7 @@ public:
     PathfindCellInfo *m_info;
     int m_unused04;
     UnsignedShort m_zone;
+    UnsignedShort getZone() const { return m_zone; }
     UnsignedShort m_unused0a;
     unsigned m_bits;
 
@@ -148,12 +165,24 @@ public:
     }
 };
 
+class Rva003DB4F0
+{
+public:
+    int value() const;
+};
+
+class Rva003DB4C0
+{
+public:
+    bool field() const;
+};
+
 class Pathfinder
 {
 public:
     Bool worldToCell(const Coord3D *, ICoord2D *);
     PathfindCell *getCell(PathfindLayerEnum, int, int);
-    PathfindCell *getClippedCell(PathfindLayerEnum, const Coord3D *);
+    __declspec(noinline) PathfindCell *getClippedCell(PathfindLayerEnum layer, const Coord3D *pos);
     void clip(Coord3D *, Coord3D *);
     __forceinline PathfindCell *getCell(PathfindLayerEnum layer, const Coord3D *pos)
     {
@@ -163,6 +192,14 @@ public:
         return 0;
     }
     Bool validMovementPosition(const Coord3D *, PathfindLayerEnum, unsigned, Object *);
+    Bool rva003DF580(Object *obj, int cellX, int cellY, PathfindLayerEnum layer,
+        int radius, Bool centerInCell, void **blocker, int flags);
+    __forceinline Bool checkDestination(Object *obj, int cellX, int cellY,
+        PathfindLayerEnum layer, int radius, Bool centerInCell)
+    {
+        void *blocker;
+        return rva003DF580(obj, cellX, cellY, layer, radius, centerInCell, &blocker, 1);
+    }
     unsigned rva003DB900(PathfindCell *, PathfindCell *);
     void rva003D6400(PathfindCell *);
     void rva003D5FC0();
@@ -343,12 +380,19 @@ inline __declspec(noinline) PathfindCellInfo *__cdecl bfmeAcquirePathfindCellInf
 }
 
 // ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
+inline __declspec(noinline) PathfindCell *Pathfinder::getClippedCell(PathfindLayerEnum layer, const Coord3D *pos)
+{
+	ICoord2D cell;
+	worldToCell(pos, &cell);
+	return getCell(layer, cell.x, cell.y);
+}
+
 Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet, const Coord3D *from, const Coord3D *rawTo)
 {
     if (bfmeRetailCritterDesyncSink)
         bfmeRetailCritterDesyncLog(bfmeRetailCritterDesyncSink, "CritterDesync:    Pathfinder::InternalFindPath() called");
     g_rva012F1060 = 0;
-    __declspec(align(4)) Bool centerInCell = true;
+    Bool centerInCell = true;
     int radius = 0;
     getRadiusAndCenter(obj, radius, centerInCell);
     Bool isHuman = true;
@@ -367,10 +411,7 @@ Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet
         TRACE("3 return NULL");
         return 0;
     }
-    Coord3D adjustTo;
-    adjustTo.y = rawTo->y;
-    adjustTo.x = rawTo->x;
-    adjustTo.z = rawTo->z;
+    Coord3D adjustTo = *rawTo;
     Coord3D *to = &adjustTo;
     Coord3D clipFrom = *from;
     clip(&clipFrom, &adjustTo);
@@ -392,10 +433,7 @@ Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet
             return 0;
         }
         worldToCell(to, &cell);
-        void *blocker;
-        typedef Bool (Pathfinder::*Fn)(Object *, int, int, PathfindLayerEnum, int, Bool, void **, int);
-        union { void (*raw)(); Fn fn; } call = { j_00049f3f };
-        if (!(this->*call.fn)(obj, cell.x, cell.y, destinationLayer, radius, centerInCell, &blocker, 1))
+        if (!checkDestination(obj, cell.x, cell.y, destinationLayer, radius, centerInCell))
         {
             TRACE("6 return NULL");
             return 0;
@@ -451,18 +489,14 @@ Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet
     PathfindMovementProfile profile;
     {
         __declspec(align(4)) Bool isComputer = obj->bfmeIsComputerControlled();
-        typedef int (Object::*LayerFn)() const;
-        union { void (*raw)(); LayerFn fn; } maxLayer = { j_0001fbbd };
-        int templateLayer = (obj->*maxLayer.fn)() - 1;
-        typedef unsigned char (Object::*FlagFn)() const;
-        union { void (*raw)(); FlagFn fn; } flag = { j_00036b33 };
-        unsigned char templateFlag = (obj->*flag.fn)();
+        int templateLayer = reinterpret_cast<const Rva003DB4F0 *>(obj)->value() - 1;
+        bool templateFlag = reinterpret_cast<const Rva003DB4C0 *>(obj)->field();
         profile.crusher = !templateFlag;
         profile.terrainOnly = isComputer;
         profile.acceptableSurfaces = locomotorSet.getValidSurfaces();
         profile.layer = templateLayer;
     }
-    int zone1 = m_zoneManager.getEffectiveZone(profile, parentCell->m_zone);
+    int zone1 = m_zoneManager.getEffectiveZone(profile, parentCell->getZone());
     int zone2 = m_zoneManager.getEffectiveZone(profile, goalCell->m_zone);
     if (goalCell->isObstaclePresent(m_ignoreObstacleID) || parentCell->isObstaclePresent(m_ignoreObstacleID) || m_isTunneling)
     {
@@ -502,8 +536,8 @@ Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet
         TRACE("17");
         Rva003D54E0 info;
         info.m_08 = parentCell->getLayer();
-        info.m_0c = radius;
         info.m_10 = centerInCell;
+        info.m_0c = radius;
         info.m_14 = 0;
         info.m_18 = obj->m_ai ? obj->m_ai->getIgnoredObstacleID() : 0;
         worldToCell(&clipFrom, reinterpret_cast<ICoord2D *>(&info));
