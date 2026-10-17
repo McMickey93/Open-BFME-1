@@ -2,6 +2,7 @@
 // stlport
 // Open-BFME: CaveContain::changeTeamOnAllConnectedCaves, retail 0x00219E80, 225 bytes.
 // Ghidra/gen-dump listed 222 and omitted the trailing ret 8 (C2 08 00).
+// Open-BFME: static findCave, retail 0x00219910, 43 bytes; MSVC passes obj in EAX.
 // ZH twin: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source/GameLogic/Object/Contain/CaveContain.cpp
 #define __PLACEMENT_VEC_NEW_INLINE
 #define _STLP_USE_NEWALLOC 1
@@ -128,6 +129,17 @@ private:
 	int m_caveIndex;
 };
 
+static CaveInterface *findCave(Object *obj)
+{
+	for (BehaviorModule **i = obj->getBehaviorModules(); *i; ++i)
+	{
+		CaveInterface *c = (*i)->getCaveInterface();
+		if (c != 0)
+			return c;
+	}
+	return 0;
+}
+
 // ?changeTeamOnAllConnectedCaves@CaveContain@@QAEXPAVTeam@@_N@Z
 void CaveContain::changeTeamOnAllConnectedCaves(Team *newTeam, Bool setOriginalTeams)
 {
@@ -139,16 +151,7 @@ void CaveContain::changeTeamOnAllConnectedCaves(Team *newTeam, Bool setOriginalT
 		Object *currentCave = TheGameLogic->findObjectByID(*iter);
 		if (currentCave)
 		{
-			CaveInterface *caveModule = 0;
-			for (BehaviorModule **i = currentCave->getBehaviorModules(); *i; ++i)
-			{
-				CaveInterface *c = (*i)->getCaveInterface();
-				if (c != 0)
-				{
-					caveModule = c;
-					break;
-				}
-			}
+			CaveInterface *caveModule = findCave(currentCave);
 			if (caveModule == 0)
 				continue;
 			if (setOriginalTeams)
