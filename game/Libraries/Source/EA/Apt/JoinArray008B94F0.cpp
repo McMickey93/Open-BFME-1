@@ -116,7 +116,17 @@ static __forceinline Rva008A9B00 *&rva01338478FreeHead() {
 class Rva8CD130String;
 class Rva8CD130Value { public: void getName(Rva8CD130String *); };
 class BfmeString1284;
-class BfmeStringWriter1284 { public: void bfmeBuildString1284(BfmeString1284 *, int); };
+// The calls at 0x8B9594 (this row) and 0x8B9498
+// (game/GameEngine/Source/Common/BfmeStringWriter1284.cpp) reach retail
+// 0x008B8E70, whose ledger row is the matched gen dump ?d_008b8e70@@YAXXZ
+// (game/gen_asm/d_00882630.asm), as tools/callees.py 0x8b94f0 431 prints for
+// the callee.  Nothing defines a member named bfmeBuildString1284, so the calls
+// name the dump through the raw pointer bridge; the bridge sits at the call
+// site rather than in a member, because a body emitted under the pinned
+// placeholder name would be judged against retail's 267-byte body at
+// 0x008B8E70 and charged as a comdat loser.
+void d_008b8e70();
+class BfmeStringWriter1284 {};
 class Value008B94F0 {
 public:
     void *vptr;
@@ -132,11 +142,17 @@ void *joinArray008B94F0(Value008B94F0 *src, int count)
     if (src->isType(0x16)) {
         BfmeUtf8String008A01F0 output;
         BfmeUtf8String008A01F0 separator;
+        union
+        {
+            void (*raw)(void);
+            void (BfmeStringWriter1284::*typed)(BfmeString1284 *, int);
+        } buildString;
+        buildString.raw = &d_008b8e70;
         if (count>0) {
             Rva8CD130Value *arg=(*(Rva8CD130Value ***)((char *)&Rva008AE770TheStack + 8))[Rva008AE770TheStack.m_count-1]; arg->getName((Rva8CD130String *)&separator);
-            ((BfmeStringWriter1284 *)src)->bfmeBuildString1284((BfmeString1284 *)&output,(int)((char *)separator.m_block+8));
+            (((BfmeStringWriter1284 *)src)->*buildString.typed)((BfmeString1284 *)&output,(int)((char *)separator.m_block+8));
         } else {
-            ((BfmeStringWriter1284 *)src)->bfmeBuildString1284((BfmeString1284 *)&output,(int)",");
+            (((BfmeStringWriter1284 *)src)->*buildString.typed)((BfmeString1284 *)&output,(int)",");
         }
         Rva008A9B00 *obj = rva01338478FreeHead();
         if (obj) {

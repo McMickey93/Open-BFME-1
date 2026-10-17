@@ -47,23 +47,35 @@ public:
 	BfmeStringData1284 *m_data;
 };
 
+// The two calls at 0x8B9498 (this row) and 0x8B9594
+// (game/Libraries/Source/EA/Apt/JoinArray008B94F0.cpp) reach retail 0x008B8E70,
+// whose ledger row is the matched gen dump ?d_008b8e70@@YAXXZ
+// (game/gen_asm/d_00882630.asm), as tools/callees.py 0x8b9460 139 prints for
+// the callee.  Nothing defines a member named bfmeBuildString1284, so the calls
+// name the dump through the raw pointer bridge; the bridge sits at the call
+// site rather than in a member, because a body emitted under the pinned
+// placeholder name would be judged against retail's 267-byte body at
+// 0x008B8E70 and charged as a comdat loser.  A plain __cdecl reference to the
+// dump cannot keep the bytes: the caller pushes two stack words and passes the
+// writer in ECX, which is the thiscall shape below.
+void d_008b8e70();
+
 class BfmeStringWriter1284
 {
 public:
-	// LINK: the call target 0x008B8E70 is owned by the gen-asm dump as the
-	// zero-argument `?d_008b8e70@@YAXXZ`, but the caller pushes two stack
-	// words, so no spelling of a __cdecl reference to that name can both
-	// resolve and keep the 139 bytes (a varargs `(...)` declaration mangles
-	// the same but changes the call's stack setup -- measured byte mismatch).
-	// Needs a ledger repoint of 0x008B8E70 to a two-argument __cdecl name.
-	void bfmeBuildString1284(BfmeString1284 *result, int value);
 	void bfmeWriteString1284(char *destination, int value);
 };
 
 void BfmeStringWriter1284::bfmeWriteString1284(char *destination, int value)
 {
 	BfmeString1284 result;
-	bfmeBuildString1284(&result, value);
+	union
+	{
+		void (*raw)(void);
+		void (BfmeStringWriter1284::*typed)(BfmeString1284 *, int);
+	} buildString;
+	buildString.raw = &d_008b8e70;
+	(this->*buildString.typed)(&result, value);
 	strcpy(destination, result.m_data->m_text);
 }
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
