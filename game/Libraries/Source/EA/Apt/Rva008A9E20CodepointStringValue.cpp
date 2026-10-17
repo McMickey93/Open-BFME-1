@@ -9,6 +9,12 @@ struct BfmeStringPool3AF0 {
 };
 static inline BfmeStringData3AF0 *sharedEmptyString012D5298();
 extern BfmeStringPool3AF0 *g_rva01337A30AllocPair;
+// The assign call reaches retail 0x0089FDA0, whose ledger row is the matched
+// gen dump ?d_0089fda0@@YAXXZ (game/gen_asm/d_0089a830.asm), as
+// tools/callees.py 0x8a9e20 326 prints.  Nothing defines the pinned
+// ?rva0089FDA0@EAStringC@@QAEAAV1@PBDH@Z, so the call names the dump through a
+// raw pointer bridge that keeps the thiscall shape.
+void d_0089fda0();
 class EAStringC {
 public:
     class StringDataC;
@@ -20,7 +26,6 @@ public:
         BfmeStringData3AF0 *old = m_data;
         if (--old->m_refCount == 0) g_rva01337A30AllocPair->free(old);
     }
-    EAStringC &rva0089FDA0(const char *source, int limit);
     BfmeStringData3AF0 *m_data;
 };
 extern EAStringC::StringDataC g_rva012D5298Empty;	// shared empty string block 0x012D5298
@@ -98,7 +103,13 @@ Rva008A9B00 *rva008A9E20CodepointStringValue(AptValue *value) {
     if (!p) return (Rva008A9B00 *)g_bfmeFallbackDB;
     {
     EAStringC result;
-    result.rva0089FDA0((const char *)p, 1);
+    union
+    {
+        void (*raw)(void);
+        EAStringC &(EAStringC::*typed)(const char *, int);
+    } assign;
+    assign.raw = &d_0089fda0;
+    (result.*assign.typed)((const char *)p, 1);
     Rva008A9B00 *obj = (*(Rva008A9B00 **)&g_rva01338478NodeHead);
     if (obj) {
         (*(Rva008A9B00 **)&g_rva01338478NodeHead) = obj->m_next;
