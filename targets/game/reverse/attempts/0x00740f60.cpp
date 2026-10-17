@@ -1,5 +1,5 @@
 // ?setupWaypointPath@W3DView@@AAEXH_NMM@Z
-// partial score=0.7 date=2026-09-20
+// partial score=0.5142 date=2026-09-20
 // BFME W3DView waypoint-path setup.
 //
 // The retail body at 0x00740F60 is the private four-argument companion used
