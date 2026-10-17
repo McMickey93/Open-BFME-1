@@ -1,16 +1,22 @@
-// ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
-// partial score=0.9872 date=2026-10-17
-// ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
 // cl: /DNDEBUG /MD /Igame/Libraries/Include/Lib /Igame/GameEngine/Source/GameLogic/Object
-// 2026-10-17 (claude-opus-5-5): 212 -> 30 differing bytes at 2347/2347.
-// Levers: BFME Coord3D user copy constructor and `Coord3D adjustTo = *rawTo`;
-// checkDestination as an inline with its own blocker (retail packs blocker onto
-// cell); visible never-inlined getClippedCell; parentCell->getZone() accessor
-// (rotation_sweep); info stores layer, center, radius; the profile filled by an
-// inline init(locomotorSet, !field, value - 1, isComputer) whose arguments
-// evaluate right to left (retail's call order) and whose body stores surfaces,
-// crusher, terrainOnly, layer. Left: +0x4FB..+0x538, retail stores zone1
-// before loading the goal zone (ours hoists the load: one scratch rotation).
+//
+// Retail 0x003F0340 (2347 B): Pathfinder::internalFindPath, Zero Hour's
+// A* search with BFME's CritterDesync trace strings, movement profile and
+// waypoint/tunnel checks. Built from the banked reconstruction (attempt history
+// 0x003f0340) and finished on 2026-10-17:
+//  - worldToCell, clip, getClippedCell, the cell-info acquire and
+//    getRadiusAndCenter are visible never-inlined copies, as in retail's
+//    pathfinder TU (each emitted copy matches its own retail body), so VC7.1
+//    knows the coordinate and cell locals do not escape;
+//  - BFME's Coord3D has a user copy constructor;
+//  - checkDestination is an inline owning its blocker (retail packs blocker
+//    onto the cell index);
+//  - the movement profile is filled by an inline init() whose arguments
+//    evaluate right to left in retail's call order;
+//  - the zone and obstacle reads go through the cell's getZone() and the
+//    pathfinder's getIgnoreObstacleID() accessors (TU-local inline readers of
+//    the fields; each changes the scratch-register rotation retail shows).
+// class-gate: allow Coord3D BFME's user copy constructor, absent from the canonical header, decides the frame and copy order here
 struct Coord3D
 {
 	Coord3D() {}
@@ -231,6 +237,8 @@ private:
     int m_ignoreObstacleID;
     unsigned char m_pad848[0xc9c - 0x848];
     PathfindZoneManager m_zoneManager;
+public:
+    int getIgnoreObstacleID() const { return m_ignoreObstacleID; }
 };
 
 extern "C" __declspec(dllimport) double __cdecl floor( double );
@@ -499,8 +507,8 @@ Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet
     profile.init(locomotorSet, !reinterpret_cast<const Rva003DB4C0 *>(obj)->field(),
         reinterpret_cast<const Rva003DB4F0 *>(obj)->value() - 1, obj->bfmeIsComputerControlled());
     int zone1 = m_zoneManager.getEffectiveZone(profile, parentCell->getZone());
-    int zone2 = m_zoneManager.getEffectiveZone(profile, goalCell->m_zone);
-    if (goalCell->isObstaclePresent(m_ignoreObstacleID) || parentCell->isObstaclePresent(m_ignoreObstacleID) || m_isTunneling)
+    int zone2 = m_zoneManager.getEffectiveZone(profile, goalCell->getZone());
+    if (goalCell->isObstaclePresent(getIgnoreObstacleID()) || parentCell->isObstaclePresent(getIgnoreObstacleID()) || m_isTunneling)
     {
         zone2 = m_zoneManager.bfmeEffectiveTerrainZone(profile, (UnsignedShort)zone2);
         zone2 = m_zoneManager.getEffectiveZone(profile, (UnsignedShort)zone2);

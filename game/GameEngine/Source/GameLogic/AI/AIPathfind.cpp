@@ -5507,7 +5507,7 @@ Int Pathfinder::examineNeighboringCells(PathfindCell *parentCell, PathfindCell *
  * Find a short, valid path between given locations.
  * Uses A* algorithm.
  */
-// byte-exact reconstruction: game/masm_dumps/internalFindPath_Pathfinder_3F0340.asm
+// BFME internalFindPath: game/GameEngine/Source/GameLogic/AI/PathfinderInternalFindPath.cpp
 
 /**
  * Checks to see if there is enough path width at this cell for ground

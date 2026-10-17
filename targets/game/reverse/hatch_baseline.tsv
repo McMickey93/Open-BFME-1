@@ -1643,7 +1643,6 @@ asm_bytes	game/GameEngine/Source/GameClient/GUI/GameWindowManager_gogoGadgetComb
 asm_bytes	game/GameEngine/Source/GameClient/System/ParticleSys_ParticleSystem_ctor.asm	*	1426
 asm_bytes	game/GameEngine/Source/GameClient/System/ParticleSys_generateParticleInfo.asm	*	1257
 asm_bytes	game/GameEngine/Source/GameLogic/AI/AIPathfind_classifyCells.asm	*	1405
-asm_bytes	game/GameEngine/Source/GameLogic/AI/AIPathfind_findGroundPath.asm	*	2045
 asm_bytes	game/GameEngine/Source/GameLogic/AI/AIPlayer_recruitSpecificAITeam.asm	*	1654
 asm_bytes	game/GameEngine/Source/GameLogic/Object/Locomotor_locoUpdate_moveTowardsPosition.asm	*	1701
 asm_bytes	game/GameEngine/Source/GameLogic/Object/Update/StructureToppleUpdate_update.asm	*	1211
@@ -2031,7 +2030,6 @@ asm_bytes	game/masm_dumps/__Load_INIClass__QAEHAAVStraw___Z_9E4680.asm	*	1411
 asm_bytes	game/masm_dumps/_entry__ParticleSystemDebugDisplay_YAXPAVDebugDisplayInterface_PAXP_5CA370.asm	*	1345
 asm_bytes	game/masm_dumps/_sa3__doSpeechPlay_ScriptActions__IAEXABVAsciiString____6AF840.asm	*	973
 asm_bytes	game/masm_dumps/_sa5__onExit_TurretAIIdleScanState__UAEXW4StateExitType_18DB60.asm	*	694
-asm_bytes	game/masm_dumps/internalFindPath_Pathfinder_3F0340.asm	*	2347
 emit	game/GameEngine/Source/Common/Audio/AudioManager_isMusicAlreadyLoadedMethodThunk.cpp	*	456
 emit	game/GameEngine/Source/Common/INI/INI_getNextQuotedAsciiString_Thunk.cpp	*	401
 emit	game/GameEngine/Source/Common/RTS/ActionManager.cpp	*	3094
