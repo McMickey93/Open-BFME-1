@@ -23,13 +23,17 @@ struct Rva8CDA60Context
 class Rva8CDA60State
 {
 public:
-	void append(void *first, void *second, void *data, Rva8CDA60Value *value,
-		int zero1, int one, int zero2);
-
 	int m_count;
 	int m_unused;
 	Rva8CDA60Value **m_stack;
 };
+
+// The seven-argument append at 0x008CC690 is linked as the gen-dump
+// ?d_008cc690@@YAXXZ, so the thiscall is reached through a member-pointer call
+// (the pattern Rva008AF650SetMember.cpp uses for the same body).
+extern void d_008cc690();
+typedef void (Rva8CDA60State::*Rva8CDA60Append)(void *first, void *second, void *data, Rva8CDA60Value *value,
+	int zero1, int one, int zero2);
 
 void rva8CDA60StackDispatch(Rva8CDA60State *state, Rva8CDA60Context *context)
 {
@@ -37,7 +41,8 @@ void rva8CDA60StackDispatch(Rva8CDA60State *state, Rva8CDA60Context *context)
 	Rva8CDA60Value *value = state->m_stack[count - 1];
 	Rva8CDA60Value *dataValue = state->m_stack[count - 2];
 	void *data = (char *)(dataValue->m_flags % 64 == 1 ? dataValue : dataValue->m_indirect) + 8;
-	state->append(context->m_first, context->m_second, data, value, 0, 1, 0);
+	union { void (*fn)(); Rva8CDA60Append call; } append = { d_008cc690 };
+	(state->*append.call)(context->m_first, context->m_second, data, value, 0, 1, 0);
 
 	for (int i = 1; i <= 2; ++i)
 	{
