@@ -9,11 +9,15 @@ public:
 	virtual void bfmeStopXJR(int a);
 };
 
+// bfmeFinishJR is reached through ILT 0x000294E7, the ledger's 5-byte row
+// ?j_000294e7@@YAXXZ (symbols.csv pins the method name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_000294e7();
+
 class BfmeThingJR
 {
 public:
 	int bfmeStopJR();
-	int bfmeFinishJR(int a);
 
 	unsigned char m_bfmeHeadJR[0x18];
 	int m_bfme18JR;
@@ -54,5 +58,7 @@ int BfmeThingJR::bfmeStopJR()
 	m_bfme38JR = 0;
 	m_bfme3cJR = 0;
 
-	return bfmeFinishJR(m_bfme18JR);
+	union { void (*raw)(void); int (BfmeThingJR::*typed)(int); } finish;
+	finish.raw = &j_000294e7;
+	return (this->*finish.typed)(m_bfme18JR);
 }
