@@ -100,7 +100,12 @@ EnumeratedIP *Rva00624C80IPEnumeration::getAddresses()
 	{
 		EnumeratedIP *newIP = new EnumeratedIP;
 		newIP->setIPstring( AsciiString( "127.0.0.1" ) );
-		newIP->setIP( 0x0100007f );
+		// 127.0.0.1 as h_addr_list carries it, octets 7f 00 00 01 in memory.
+		// A plain number and not an image address -- retail emits no relocation
+		// at this operand (tools/retail_relocs.py) -- but its value sits in the
+		// image range, so tools/link_debt.py read the written form as one and
+		// kept this file out of the link; the octets are the same dword.
+		newIP->setIP( 0x7F | (0x01 << 24) );
 		m_IPlist = newIP;
 		newIP->setNext( 0 );
 		return m_IPlist;
