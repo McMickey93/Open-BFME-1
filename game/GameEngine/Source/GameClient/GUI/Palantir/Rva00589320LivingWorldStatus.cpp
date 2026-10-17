@@ -82,3 +82,36 @@ int Rva00589320(void)
 
 	return player->m_active ? 3 : 1;
 }
+
+// Retail 0x005893C0 (69 B): file-static progress percentage of owner+0x25C between the
+// integer bounds at +0x26C and +0x268, clamped to 1..100 (1 for an empty range). The
+// owner arrives in EAX through MSVC's private static convention; types are address-named.
+class Rva005893C0Owner
+{
+public:
+	unsigned char m_unmodelled000[0x25c];
+	float m_value25c;
+	unsigned char m_unmodelled260[8];
+	int m_end268;
+	int m_start26c;
+};
+
+static int rva005893C0(const Rva005893C0Owner *owner)
+{
+	int start = owner->m_start26c;
+	int range = owner->m_end268 - start;
+	if (range == 0)
+		return 1;
+	int percent = (int)(owner->m_value25c - start) * 100 / range;
+	if (percent < 1)
+		return 1;
+	if (percent > 100)
+		return 100;
+	return percent;
+}
+
+// absent-from-retail: TU-local caller that keeps the static above alive.
+int rva005893C0Caller(const Rva005893C0Owner *owner)
+{
+	return rva005893C0(owner);
+}
