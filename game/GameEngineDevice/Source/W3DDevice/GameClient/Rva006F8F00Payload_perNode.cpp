@@ -13,9 +13,12 @@ class MeshClass;
 // 0x006F83F0 (pinned typed view; body still a gen_asm dump).
 class Rva006F8700Owner
 {
-public:
-	int rva006F83F0(void *a, int b, void *c, void *p);
 };
+// The copier is linked as the gen-dump ?d_006f83f0@@YAXXZ, so the thiscall is
+// reached through a member-pointer call (the pattern the Apt callers of
+// ?d_008cc940 use).
+extern void d_006f83f0();
+typedef int (Rva006F8700Owner::*Rva006F83F0Copy)(void *a, int b, void *c, void *p);
 
 // 0x006F8720, Rva006F8720GetModelIndices.cpp.
 class Rva006F8720MeshBuffer
@@ -31,7 +34,8 @@ static __forceinline int copyVerticesIfMesh(Rva006F8700Owner *owner, void *a, in
 {
 	if (p == 0)
 		return (0);
-	return owner->rva006F83F0(a, b, c, p);
+	union { void (*fn)(); Rva006F83F0Copy call; } copy = { d_006f83f0 };
+	return (owner->*copy.call)(a, b, c, p);
 }
 
 class Rva006F8F00Payload
