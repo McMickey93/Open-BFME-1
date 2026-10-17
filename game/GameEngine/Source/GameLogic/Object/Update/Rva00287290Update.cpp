@@ -30,9 +30,19 @@ union Rva001C9380Argument
 
 class BfmeObjAS : public Object
 {
-public:
-	BfmeObjAS *bfmeParentAS(Int mode);
 };
+
+// Both parent lookups go through ILT 0x0000FAA6, the ledger's 5-byte row
+// ?j_0000faa6@@YAXXZ (game/gen_small/thunks_007.cpp), jmp to 0x001CB020, as
+// tools/callees.py 0x287290 125 prints.  Nothing defines the pinned
+// ?bfmeParentAS@BfmeObjAS@@QAEPAV1@H@Z, so the calls name the thunk through a
+// raw pointer bridge on a plain receiver view (Object's member pointers are
+// not single-word), which keeps the thiscall shape.
+void j_0000faa6();
+class BfmeParentASView
+{
+};
+typedef BfmeObjAS *(BfmeParentASView::*BfmeParentASFn)(Int mode);
 
 class Rva00287290Interface
 {
@@ -130,7 +140,14 @@ void Rva00287290Self::Rva00287290(BfmeObjAS *candidate)
 	if (candidate == 0)
 		return;
 
-	BfmeObjAS *resolved = candidate->bfmeParentAS(0);
+	union
+	{
+		void (*raw)(void);
+		BfmeParentASFn typed;
+	} parentAS;
+	parentAS.raw = &j_0000faa6;
+	BfmeObjAS *resolved =
+		(reinterpret_cast<BfmeParentASView *>(candidate)->*parentAS.typed)(0);
 	if (resolved == 0)
 		return;
 
@@ -145,7 +162,8 @@ void Rva00287290Self::Rva00287290(BfmeObjAS *candidate)
 	Rva001C9380UnionCall unionCall = &Object::rva001c9380;
 	Rva001C9380ScalarCall scalarCall =
 		reinterpret_cast<Rva001C9380ScalarCall>(unionCall);
-	(parent->bfmeParentAS(0)->*scalarCall)((Int)candidate, 1);
+	((reinterpret_cast<BfmeParentASView *>(parent)->*parentAS.typed)(0)->*scalarCall)(
+		(Int)candidate, 1);
 
 	Rva00287290Interface *interfaceValue =
 		(Rva00287290Interface *)resolved->m_contain;
