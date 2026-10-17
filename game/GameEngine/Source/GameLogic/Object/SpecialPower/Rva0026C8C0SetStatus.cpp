@@ -49,10 +49,14 @@ public:
 	ObjectV28 *asV28() { return (ObjectV28 *)this; }
 };
 
+// The base step goes through ILT 0x0000F975, the ledger's 5-byte row
+// ?j_0000f975@@YAXXZ (game/gen_small/thunks_007.cpp), jmp to 0x002A8540, as
+// tools/callees.py prints for this body.  Nothing defines the pinned
+// ?bfmeOneCRB@BfmeThingCRB@@QAEXPAX0@Z, so the call names the thunk through a
+// raw pointer bridge that keeps the thiscall shape.
+void j_0000f975();
 class BfmeThingCRB
 {
-public:
-	void bfmeOneCRB(void *a, void *b);
 };
 
 class Rva0026C8C0Owner : public BfmeThingCRB
@@ -75,5 +79,11 @@ void Rva0026C8C0Owner::apply(void *a, void *b)
 		host[0xb0 / 4] = 1.0f;
 	}
 	m_object->setStatus(MAKE_OBJECT_STATUS_MASK(73), false);
-	bfmeOneCRB(a, b);
+	union
+	{
+		void (*raw)(void);
+		void (BfmeThingCRB::*typed)(void *, void *);
+	} oneCRB;
+	oneCRB.raw = &j_0000f975;
+	(this->*oneCRB.typed)(a, b);
 }
