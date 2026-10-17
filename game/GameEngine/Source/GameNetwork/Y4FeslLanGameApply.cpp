@@ -169,3 +169,30 @@ Rva00808920LanGame::Rva00808920LanGame( int maxPlayers )
 	strncat( m_ugid, text + 20, 12 );
 	m_ugid[ 0x24 ] = 0;
 }
+
+// Retail 0x00808E00 (36 B): a file-static tokenizer step. It returns the token at *cursor,
+// cuts it at the first separator and advances *cursor past it, or clears *cursor when no
+// separator is left. Every retail use is inlined (no direct caller), so it keeps an
+// address-derived name; as a file-static it takes the separator in AL and the cursor in
+// EDI, retail's private convention.
+// ?rva00808E00@@YAPADDPAPAD@Z
+static __declspec(noinline) char *rva00808E00( char separator, char **cursor )
+{
+	char *token = *cursor;
+	char *end = strchr( token, separator );
+	if( end == 0 )
+	{
+		*cursor = 0;
+		return token;
+	}
+	*end++ = 0;
+	*cursor = end;
+	return token;
+}
+
+// ?rva00808E00Caller@@YAPADDPAPAD@Z absent-from-retail TU-local caller that keeps the
+// static above alive.
+char *rva00808E00Caller( char separator, char **cursor )
+{
+	return rva00808E00( separator, cursor );
+}
