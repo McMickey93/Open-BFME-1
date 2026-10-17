@@ -11,14 +11,27 @@
 // the member, so the reload is real, and the local is what puts the bound in a
 // register for the entry test as well.
 
-void __cdecl bfmeDeallocate(void *block, unsigned int bytes);	// retail 0x0082E5F0
+// retail 0x0082E5F0: STLport's private node-pool entry, reached under its
+// real name (the ledger row in node_alloc_M_deallocateThunk.cpp).
+namespace _STL
+{
+template <bool __threads, int __inst> class __node_alloc;
+static void nodePoolDeallocate(void *block, unsigned int bytes);
+template <bool __threads, int __inst>
+class __node_alloc
+{
+	friend void nodePoolDeallocate(void *, unsigned int);
+	static void __cdecl _M_deallocate(void *__p, unsigned int __n);
+};
+static inline void nodePoolDeallocate(void *block, unsigned int bytes) { __node_alloc<true, 0>::_M_deallocate(block, bytes); }
+}
 
 inline void bfmeRelease(void *block, unsigned int bytes)
 {
 	if (bytes > 0x80)
 		::operator delete(block);
 	else
-		bfmeDeallocate(block, bytes);
+		_STL::nodePoolDeallocate(block, bytes);
 }
 
 struct BfmeElem8P { int m_bfmeA; int m_bfmeB; };
