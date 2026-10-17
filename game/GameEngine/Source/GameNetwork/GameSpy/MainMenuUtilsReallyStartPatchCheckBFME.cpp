@@ -19,7 +19,7 @@ extern "C" int __cdecl ghttpSetProxy(const char *server);
 
 enum GHTTPBool { GHTTPFalse, GHTTPTrue };
 enum GHTTPResult { GHTTPSuccess };
-void d_0062fe40();
+int Rva0062FE40(int request, int status, char *buffer, int bytes, int stamp, int run);  // MainMenuUtils.cpp
 GHTTPBool __cdecl configHeadCallback(int request, GHTTPResult result, char *buffer, __int64 bufferLen, void *param);
 GHTTPBool rva0062EE00MainMenuOnlineCallback(int request, int result, char *buffer, __int64 bufferLen, void *param);
 
@@ -41,10 +41,10 @@ void bfmeReallyStartPatchCheck(void)
 
 	// These callback VAs are the direct operands in the retail call sites.
 	ghttpGetA(gameURL.c_str(), 1,
-		reinterpret_cast<GHTTPCompletedCallback>(d_0062fe40),
+		reinterpret_cast<GHTTPCompletedCallback>(Rva0062FE40),
 		reinterpret_cast<void *>(timeThroughOnline));
 	ghttpGetA(mapURL.c_str(), 1,
-		reinterpret_cast<GHTTPCompletedCallback>(d_0062fe40),
+		reinterpret_cast<GHTTPCompletedCallback>(Rva0062FE40),
 		reinterpret_cast<void *>(timeThroughOnline));
 	ghttpHeadA(configURL.c_str(), 1,
 		reinterpret_cast<GHTTPCompletedCallback>(configHeadCallback),
