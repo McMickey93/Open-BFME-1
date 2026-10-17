@@ -1098,6 +1098,85 @@ static CHAT chatConnectDoit(CILoginType loginType,
 	return (CHAT)connection;
 }
 
+/* chatConnectSecureA and chatConnectLoginA call the static constructor
+   above, so they live in this TU as in the SDK. */
+CHAT chatConnectSecureA(const char *serverAddress,
+	int port,
+	const char *nick,
+	const char *name,
+	const char *gamename,
+	const char *secretKey,
+	chatGlobalCallbacks *callbacks,
+	chatNickErrorCallback nickErrorCallback,
+	chatFillInUserCallback fillInUserCallback,
+	chatConnectCallback connectCallback,
+	void *param,
+	CHATBool blocking)
+{
+	return chatConnectDoit(CINoLogin,
+		serverAddress,
+		port,
+		nick,
+		0,
+		name,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		gamename,
+		secretKey,
+		callbacks,
+		nickErrorCallback,
+		fillInUserCallback,
+		connectCallback,
+		param,
+		blocking);
+}
+
+CHAT chatConnectLoginA(const char *serverAddress,
+	int port,
+	int namespaceID,
+	const char *email,
+	const char *profilenick,
+	const char *uniquenick,
+	const char *password,
+	const char *name,
+	const char *gamename,
+	const char *secretKey,
+	chatGlobalCallbacks *callbacks,
+	chatNickErrorCallback nickErrorCallback,
+	chatFillInUserCallback fillInUserCallback,
+	chatConnectCallback connectCallback,
+	void *param,
+	CHATBool blocking)
+{
+	return chatConnectDoit((uniquenick && uniquenick[0]) ?
+		CIUniqueNickLogin : CIProfileLogin,
+		serverAddress,
+		port,
+		0,
+		0,
+		name,
+		namespaceID,
+		email,
+		profilenick,
+		uniquenick,
+		password,
+		0,
+		0,
+		gamename,
+		secretKey,
+		callbacks,
+		nickErrorCallback,
+		fillInUserCallback,
+		connectCallback,
+		param,
+		blocking);
+}
+
 /* This wrapper shares the original TU with the static constructor above. */
 CHAT chatConnectPreAuthA(const char *serverAddress,
 	int port,

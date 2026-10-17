@@ -138986,9 +138986,9 @@ _chatBanUserA,,0x00861550,52,game/GameEngine/Source/GameNetwork/GameSpy/chat/cha
 _chatBanUserSimpleA,,0x00860FF0,41,game/GameEngine/Source/GameNetwork/GameSpy/chat/ChatSdkBodies.cpp,matched,GameSpy chat gap: MODE channel +b user over ciSocketSendf; C++ ABI slice after ChatChangeNickA.cpp
 _chatChangeNickA,,0x008604C0,310,game/GameEngine/Source/GameNetwork/GameSpy/chat/ChatSdkBodies.cpp,matched,
 _chatConnectDoit,,0x00861ED0,995,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatMain.c,matched,authored-c;GameSpy chatMain reconstruction;full995B;identity=matched login and pre-auth wrappers;static same-TU ciThink ABI;original server arguments;recovered banked blocker
-_chatConnectLoginA,,0x008623E0,117,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatConnectLogin.c,matched,GameSpy Chat SDK 2007 source body; retail parameter forwarding identical
+_chatConnectLoginA,,0x008623E0,117,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatMain.c,matched,GameSpy Chat SDK 2007 source body; retail parameter forwarding identical
 _chatConnectPreAuthA,,0x00862460,90,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatMain.c,matched,authored-c;GameSpy chatMain pre-auth wrapper;co-located with static chatConnectDoit to preserve retail argument-slot reuse;full90B
-_chatConnectSecureA,,0x00862380,87,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatConnectSecure.c,matched,reconstructed-gamespy; provenance=GameSpy/PROVENANCE.txt; chatMain.c secure connection wrapper
+_chatConnectSecureA,,0x00862380,87,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatMain.c,matched,reconstructed-gamespy; provenance=GameSpy/PROVENANCE.txt; chatMain.c secure connection wrapper
 _chatDisconnect,,0x008603F0,116,game/GameEngine/Source/GameNetwork/GameSpy/chat/chatDisconnectAll.c,matched,
 _chatEnterChannelA,,0x00860920,141,game/GameEngine/Source/GameNetwork/GameSpy/chat/ChatMessagePump.c,matched,vendored=gamespy-2007
 _chatEnumChannelBansA,,0x00860F80,108,game/GameEngine/Source/GameNetwork/GameSpy/chat/ChatMessagePump.c,matched,
