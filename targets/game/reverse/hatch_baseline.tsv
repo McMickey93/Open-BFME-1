@@ -18023,7 +18023,6 @@ object_symbol	targets/game/reverse/functions.csv	0x0081D980	1
 object_symbol	targets/game/reverse/functions.csv	0x0081D990	1
 object_symbol	targets/game/reverse/functions.csv	0x0081D9C0	1
 object_symbol	targets/game/reverse/functions.csv	0x0081DAA0	1
-object_symbol	targets/game/reverse/functions.csv	0x0081DAD0	1
 object_symbol	targets/game/reverse/functions.csv	0x00822D90	1
 object_symbol	targets/game/reverse/functions.csv	0x00822F20	1
 object_symbol	targets/game/reverse/functions.csv	0x00826410	1
@@ -18042,7 +18041,6 @@ object_symbol	targets/game/reverse/functions.csv	0x00835590	1
 object_symbol	targets/game/reverse/functions.csv	0x00835EF0	1
 object_symbol	targets/game/reverse/functions.csv	0x00836300	1
 object_symbol	targets/game/reverse/functions.csv	0x008365B0	1
-object_symbol	targets/game/reverse/functions.csv	0x00839530	1
 object_symbol	targets/game/reverse/functions.csv	0x0083A2D0	1
 object_symbol	targets/game/reverse/functions.csv	0x0083B940	1
 object_symbol	targets/game/reverse/functions.csv	0x0083C3A0	1
@@ -19208,7 +19206,6 @@ object_symbol	targets/game/reverse/functions.csv	0x009ED3D0	1
 object_symbol	targets/game/reverse/functions.csv	0x009ED400	1
 object_symbol	targets/game/reverse/functions.csv	0x009ED420	1
 object_symbol	targets/game/reverse/functions.csv	0x009ED490	1
-object_symbol	targets/game/reverse/functions.csv	0x009ED4A0	1
 object_symbol	targets/game/reverse/functions.csv	0x009ED510	1
 object_symbol	targets/game/reverse/functions.csv	0x009ED550	1
 object_symbol	targets/game/reverse/functions.csv	0x009ED5D0	1
@@ -19248,7 +19245,6 @@ object_symbol	targets/game/reverse/functions.csv	0x009EE810	1
 object_symbol	targets/game/reverse/functions.csv	0x009EE890	1
 object_symbol	targets/game/reverse/functions.csv	0x009EF060	1
 object_symbol	targets/game/reverse/functions.csv	0x009EF0D0	1
-object_symbol	targets/game/reverse/functions.csv	0x009EF140	1
 object_symbol	targets/game/reverse/functions.csv	0x009EF950	1
 object_symbol	targets/game/reverse/functions.csv	0x009EF9C0	1
 object_symbol	targets/game/reverse/functions.csv	0x009F2900	1
