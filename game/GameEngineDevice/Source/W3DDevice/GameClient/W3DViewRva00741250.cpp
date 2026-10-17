@@ -25,13 +25,18 @@ struct Rva00741250Point
 	int m_value;
 };
 
+// The finalizer goes through ILT 0x00049AE9, the ledger's 5-byte row
+// ?j_00049ae9@@YAXXZ (game/gen_small/thunks_035.cpp), as tools/callees.py
+// 0x741250 215 prints.  Nothing defines the pinned
+// ?finalize@Rva002BC260Goal@@QAEXXZ, so the calls name the thunk through a raw
+// pointer bridge that keeps the thiscall shape.
+void j_00049ae9();
 class Rva002BC260Goal
 {
 public:
 	virtual void unused000();
 	virtual void setSource(Rva00741250Source *source);
 	virtual void configure(int a, int b, int c, int d, int e, int f);
-	void finalize();
 
 private:
 	char m_unreconstructed004[0x2c - 4];
@@ -93,9 +98,15 @@ void W3DView::rva00741250(Rva00741250Source *source, int a2, int a3, int a4,
 	Rva002BC260Goal *path = alternate ? &m_path2358 : &m_path22F4;
 	path->setSource(source);
 	path->configure(m_int23C4, a2, a4, a5, (int)a6, 1);
+	union
+	{
+		void (*raw)(void);
+		void (Rva002BC260Goal::*typed)();
+	} finalize;
+	finalize.raw = &j_00049ae9;
 	if (alternate) {
 		m_bool23B8 = true;
-		path->finalize();
+		(path->*finalize.typed)();
 		return;
 	}
 	m_int2354 = 2;
@@ -103,5 +114,5 @@ void W3DView::rva00741250(Rva00741250Source *source, int a2, int a3, int a4,
 		slot027(path->m_points[1].m_value);
 	else
 		slot027(0);
-	path->finalize();
+	(path->*finalize.typed)();
 }
