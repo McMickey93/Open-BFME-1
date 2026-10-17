@@ -5,7 +5,20 @@
 // while leaving the imported ZH header untouched.
 
 void __cdecl operator delete(void *block); // retail 0x00881EB0
-void __cdecl bfmeDeallocate(void *block, unsigned int bytes); // retail 0x0082E5F0
+namespace _STL
+{
+// retail 0x0082E5F0 is STLport's private node-pool entry; reach it under its real name.
+template <bool __threads, int __inst> class __node_alloc;
+static void nodePoolDeallocate(void *block, unsigned int bytes);
+template <bool __threads, int __inst>
+class __node_alloc
+{
+	friend void nodePoolDeallocate(void *, unsigned int);
+	static void __cdecl _M_deallocate(void *__p, unsigned int __n);
+};
+static inline void nodePoolDeallocate(void *block, unsigned int bytes) { __node_alloc<true, 0>::_M_deallocate(block, bytes); }
+}
+static inline void bfmeDeallocate(void *block, unsigned int bytes) { _STL::nodePoolDeallocate(block, bytes); }
 void __cdecl operator delete[](void *block); // retail 0x00881EF0
 
 class TextureBaseClass
