@@ -6479,16 +6479,45 @@ void ScriptActions::doModifyBuildableStatus( const AsciiString& objectType, Int 
 }
 
 //-------------------------------------------------------------------------------------------------
+// BFME BehaviorModule keeps its BehaviorModuleInterface base at +0xC (ZH: +0x10) and
+// getCaveInterface is slot 15 there (ZH: 17), as in the matched CaveContain.cpp twin.
+class BfmeBehaviorModuleInterfaceView
+{
+public:
+	virtual void slot00() = 0;
+	virtual void slot01() = 0;
+	virtual void slot02() = 0;
+	virtual void slot03() = 0;
+	virtual void slot04() = 0;
+	virtual void slot05() = 0;
+	virtual void slot06() = 0;
+	virtual void slot07() = 0;
+	virtual void slot08() = 0;
+	virtual void slot09() = 0;
+	virtual void slot10() = 0;
+	virtual void slot11() = 0;
+	virtual void slot12() = 0;
+	virtual void slot13() = 0;
+	virtual void slot14() = 0;
+	virtual CaveInterface* getCaveInterface() = 0;
+};
+
+// ZH's file-static findCave; CaveContain.cpp owns the plain name (0x00219910), so this
+// TU's copy takes the address twin namespace. Retail 0x002EFDE0, obj arrives in EAX.
+namespace Rva002EFDE0Twin {
 static CaveInterface* findCave(Object* obj)
 {
 	for (BehaviorModule** i = obj->getBehaviorModules(); *i; ++i)
 	{
-		CaveInterface* c = (*i)->getCaveInterface();
+		CaveInterface* c = reinterpret_cast<BfmeBehaviorModuleInterfaceView *>(
+			reinterpret_cast<char *>(*i) + 0xC)->getCaveInterface();
 		if (c != NULL)
 			return c;
 	}
 	return NULL;
 }
+}
+using Rva002EFDE0Twin::findCave;
 
 //-------------------------------------------------------------------------------------------------
 /** doSetCaveIndex */
