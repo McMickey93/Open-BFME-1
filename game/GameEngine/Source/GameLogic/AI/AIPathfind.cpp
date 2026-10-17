@@ -81,13 +81,15 @@
 
 static inline Bool IS_IMPASSABLE(PathfindCell::CellType type) {
 	// Return true if cell is impassable to ground units. jba. [8/18/2003]
-	if (type==PathfindCell::CELL_IMPASSABLE) {
+	// BFME tests the bridge, obstacle and impassable types in this order (retail
+	// 0x003D5D80, the out-of-line copy with the type in EAX).
+	if (type==PathfindCell::CELL_BRIDGE_IMPASSABLE) {
 		return true;
 	}
 	if (type==PathfindCell::CELL_OBSTACLE) {
 		return true;
 	}
-	if (type==PathfindCell::CELL_BRIDGE_IMPASSABLE) {
+	if (type==PathfindCell::CELL_IMPASSABLE) {
 		return true;
 	}
 	return false;
