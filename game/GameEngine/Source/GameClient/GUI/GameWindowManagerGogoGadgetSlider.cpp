@@ -1,13 +1,15 @@
-// ?gogoGadgetSlider@GameWindowManager@@UAEPAVGameWindow@@PAURva0047D2B0FactoryInput@@PAU_SliderData@@PAVGameFont@@_N@Z
-// partial score=1.0 date=2026-10-16
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/gamewindowlist /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad
 
-// GameWindowManager slot 20 of the vtable at VA 0x010F8B60 (symbols.csv pin,
-// 37 anchors), between the matched gadget factories at 0x0047D090 and
-// 0x0047D500. Zero Hour gogoGadgetSlider reshaped around the BFME creation
-// descriptor its siblings take: retail ends with ret 0x10 (descriptor,
-// SliderData, font, visual), creates the slider through slot 29 and the thumb
-// through gogoGadgetPushButton (slot 14) with a second descriptor on the stack.
+// GameWindowManager slot 20 of the vtable at VA 0x010F8B60, between the
+// matched gadget factories at 0x0047D090 and 0x0047D500: Zero Hour's
+// gogoGadgetSlider reshaped around the BFME creation descriptor its siblings
+// take. Retail ends with ret 0x10 (descriptor, SliderData, font, visual),
+// creates the slider through slot 29 and the thumb through
+// gogoGadgetPushButton (slot 14) with a second descriptor on the stack.
+// ILT slot 11655 contradicts both the Zero Hour decoration and this
+// descriptor spelling on GameWindowManager, so the class keeps the address
+// token, as the gogoGadgetTextEntry sibling (0x0047FCF0) does. All calls here
+// are virtual; the class name changes no byte.
 
 #include <string.h>
 
@@ -58,7 +60,7 @@ typedef struct _SliderData
 	int position;
 } SliderData;
 
-class GameWindowManager
+class Rva0047D2B0GameWindowManager
 {
 public:
 	virtual void v00();
@@ -93,7 +95,7 @@ public:
 	virtual GameWindow *winCreate(Rva0047D2B0FactoryInput *);
 };
 
-GameWindow *GameWindowManager::gogoGadgetSlider(Rva0047D2B0FactoryInput *input,
+GameWindow *Rva0047D2B0GameWindowManager::gogoGadgetSlider(Rva0047D2B0FactoryInput *input,
 	SliderData *sliderData, GameFont *defaultFont, bool defaultVisual)
 {
 	input->m_status04 |= 0x100;

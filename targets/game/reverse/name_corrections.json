@@ -20628,5 +20628,15 @@
   "after_sha256": "c0f7dcc7f7ce189921473467c3f5cbc38c9897e45aa08a5cf01daface01d5e5a",
   "evidence": "targets/game/reverse/identity_evidence/006f5a90-w3d-new-display-string.md",
   "reason": "ILT 0x0004A8BD contradicts W3DDisplayStringManager::newDisplayString at 0x005A5AE0, a SubsystemInterface-derived constructor; the name is CONFIRMED at 0x006F5A90 where it now lands, and ??0Mouse is contradicted here too, so 0x005A5AE0 keeps its address"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0047d2b0.cpp",
+  "new_path": "game/GameEngine/Source/GameClient/GUI/GameWindowManagerGogoGadgetSlider.cpp",
+  "old_name": "GameWindowManager",
+  "new_name": "Rva0047D2B0GameWindowManager",
+  "before_sha256": "80bbc4f17cc43612de78fef054306b3d63e4b17cbf0dbe104a608b1cf8b24e57",
+  "after_sha256": "973d78fc4b98b3e2f5dd0b5e7582157d90621959e2ccc263e3a32db3f927446d",
+  "evidence": "targets/game/reverse/identity_evidence/0047d2b0-gogogadgetslider.md",
+  "reason": "ILT slot 11655 contradicts both the Zero Hour ten-argument decoration and the descriptor decoration on GameWindowManager for the ret-0x10 slot-20 factory at 0x0047D2B0; the class keeps the address token like the gogoGadgetTextEntry sibling"
  }
 ]
