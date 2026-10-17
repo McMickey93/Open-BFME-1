@@ -14,9 +14,12 @@ struct Rva21C710Node
 
 class Rva21C710Owner
 {
-public:
-	void prepare(Rva21C710Object *object);
 };
+
+// prepare() is reached through ILT 0x0000D468, the ledger's 5-byte row
+// ?j_0000d468@@YAXXZ (symbols.csv pins the method name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_0000d468();
 
 class Object;
 class BfmeRva49250Object;
@@ -48,7 +51,11 @@ private:
 void Rva21C710MemberDispatch::dispatch(Rva21C710Object *object, void *action)
 {
 	if ((object->status & 0x40) != 0)
-		((Rva21C710Owner *)((char *)this - 0x20))->prepare(object);
+	{
+		union { void (*raw)(void); void (Rva21C710Owner::*typed)(Rva21C710Object *); } prepare;
+		prepare.raw = &j_0000d468;
+		(((Rva21C710Owner *)((char *)this - 0x20))->*prepare.typed)(object);
+	}
 
 	Rva21C710Node *end = members;
 	Rva21C710Node *node = end->next;
