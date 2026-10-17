@@ -1,5 +1,5 @@
 // ?get_deformed_vertices@MeshGeometryClass@@IAEXPAVVector3@@PBVHTreeClass@@@Z
-// partial score=0.4084 date=2026-10-17
+// partial score=0.9697 date=2026-10-17
 // cl: /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/Wwutil /Igame/Libraries/Source/WWVegas/WWDownload /Igame/Libraries/Source/Compression /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 // ?get_deformed_vertices@MeshGeometryClass@@IAEXPAVVector3@@PBVHTreeClass@@@Z -- retail 0x00925860, 1199 B (ret 8 at +0x4AC).
 // Land in game/Libraries/Source/WWVegas/WW3D2/meshgeometry.cpp in place of the ZH body.
@@ -22,13 +22,18 @@
 #include "rinfo.h"
 #include "camera.h"
 
-// Destination pointers MUST point to arrays large enough to hold all vertices
-// BFME skins with up to two bone influences per vertex: each influence has its
-// own bone-space position array (this+0x30/+0x34, see Compute_Ram_Size), the
-// bone-link buffer at this+0x58 holds four vertex-count-long uint16 planes
-// (bone 0, bone 1, weight 0, weight 1 in percent) and the buffer at this+0x5C
-// lists runs of vertices that share their bones (the count is the second
-// uint16 of each pair).
+
+struct Rva00925860Pivot
+{
+	char m_pad0[0x44];
+	Matrix3D m_tm;
+	char m_pad1[0x40];
+};
+struct Rva00925860Tree
+{
+	char m_pad0[0x14];
+	Rva00925860Pivot *m_pivots;
+};
 struct MeshGeometryRetailSkinView
 {
 	char pad_00[0x28];
@@ -36,84 +41,87 @@ struct MeshGeometryRetailSkinView
 	char pad_2c[4];
 	ShareBufferClass<Vector3> *vertex[2];
 	char pad_38[0x20];
-	ShareBufferClass<uint16> *bone_link;
-	ShareBufferClass<uint16> *bone_run;
+	ShareBufferClass<unsigned short> *bone_link;
+	ShareBufferClass<unsigned short> *bone_run;
 };
 
 void rva009371E0Inc();
+extern float g_01076C24;
 
 void MeshGeometryClass::get_deformed_vertices(Vector3 *dst_vert,const HTreeClass * htree)
 {
 	MeshGeometryRetailSkinView * const geometry =
 		reinterpret_cast<MeshGeometryRetailSkinView *>(this);
-	if (geometry->bone_run == NULL || geometry->bone_link == NULL || htree == NULL) {
+	Rva00925860Tree *tree = (Rva00925860Tree *)htree;
+	if (geometry->bone_run == 0 || geometry->bone_link == 0 || tree == 0)
 		return;
-	}
-
-	int influences = 1;
-	if (geometry->vertex[1] != NULL) {
-		influences = 2;
-	}
-	Vector3 * src_vert[2];
+	int streams = 1;
+	if (geometry->vertex[1] != 0)
+		streams = 2;
+	Vector3 *srcV[2];
 	int i;
-	for (i = 0; i < influences; i++) {
-		if (geometry->vertex[i] != NULL) {
-			src_vert[i] = geometry->vertex[i]->Get_Array();
-		} else {
-			src_vert[i] = NULL;
-		}
+	for (i = 0; i < streams; i++) {
+		if (geometry->vertex[i] != 0)
+			srcV[i] = (Vector3 *)geometry->vertex[i]->Get_Array();
+		else
+			srcV[i] = 0;
 	}
-	uint16 * bonelink = geometry->bone_link->Get_Array();
-	uint16 * run = geometry->bone_run->Get_Array();
+	unsigned short *runs = (unsigned short *)geometry->bone_run->Get_Array();
+	unsigned short *links = (unsigned short *)geometry->bone_link->Get_Array();
 	rva009371E0Inc();
-
-	int vertex_count = geometry->vertex_count;
-	int remaining = vertex_count;
-	run++;
-	while (remaining > 0) {
-		int count = *run;
-		run += 2;
-		remaining -= count;
-		int bone0 = bonelink[0];
-		int bone1 = bonelink[vertex_count];
-		if (influences == 2 && bone1 != 0) {
-			float weight0 = bonelink[vertex_count * 2] * 0.01f;
-			float weight1 = bonelink[vertex_count * 3] * 0.01f;
-			Matrix3D tm0 = htree->Get_Transform(bone0);
-			Matrix3D tm1 = htree->Get_Transform(bone1);
-			for (i = 0; i < 3; i++) {
-				tm0[i] *= weight0;
-				tm1[i] *= weight1;
+	int count = geometry->vertex_count;
+	int left = count;
+	while (left > 0) {
+		int n = runs[1];
+		runs += 2;
+		left -= n;
+		int b0 = links[0];
+		int b1 = links[count];
+		int c;
+		if (streams == 2 && b1 != 0) {
+			float w0 = (float)links[count * 2];
+			float w1 = (float)links[count * 3];
+			w0 *= g_01076C24;
+			w1 *= g_01076C24;
+			Matrix3D m0 = tree->m_pivots[b0].m_tm;
+			Matrix3D m1 = tree->m_pivots[b1].m_tm;
+			for (int r3 = 0; r3 < 3; r3++) {
+				m0[r3] *= w0;
+				m1[r3] *= w1;
 			}
-			Vector3 * s0 = src_vert[0];
-			Vector3 * s1 = src_vert[1];
-			Vector3 * d = dst_vert;
-			int n = count;
-			while (n--) {
-				d->X = tm0[0][0] * s0->X + tm0[0][1] * s0->Y + tm0[0][2] * s0->Z + tm0[0][3] + tm1[0][0] * s1->X + tm1[0][1] * s1->Y + tm1[0][2] * s1->Z + tm1[0][3];
-				d->Y = tm0[1][0] * s0->X + tm0[1][1] * s0->Y + tm0[1][2] * s0->Z + tm0[1][3] + tm1[1][0] * s1->X + tm1[1][1] * s1->Y + tm1[1][2] * s1->Z + tm1[1][3];
-				d->Z = tm0[2][0] * s0->X + tm0[2][1] * s0->Y + tm0[2][2] * s0->Z + tm0[2][3] + tm1[2][0] * s1->X + tm1[2][1] * s1->Y + tm1[2][2] * s1->Z + tm1[2][3];
-				s0++;
-				s1++;
-				d++;
+			const Vector3 *pa;
+			const Vector3 *pb;
+			Vector3 *po;
+			po = dst_vert;
+			pb = srcV[1];
+			pa = srcV[0];
+			c = n;
+			while (c--) {
+				po->X = m0[0].X * pa->X + m0[0].Y * pa->Y + m0[0].Z * pa->Z + m0[0].W + m1[0].X * pb->X + m1[0].Y * pb->Y + m1[0].Z * pb->Z + m1[0].W;
+				po->Y = m0[1].X * pa->X + m0[1].Y * pa->Y + m0[1].Z * pa->Z + m0[1].W + m1[1].X * pb->X + m1[1].Y * pb->Y + m1[1].Z * pb->Z + m1[1].W;
+				po->Z = m0[2].X * pa->X + m0[2].Y * pa->Y + m0[2].Z * pa->Z + m0[2].W + m1[2].X * pb->X + m1[2].Y * pb->Y + m1[2].Z * pb->Z + m1[2].W;
+				++pa;
+				++pb;
+				++po;
 			}
 		} else {
-			Vector3 * d = dst_vert;
-			int n = count;
-			const Matrix3D & tm = htree->Get_Transform(bone0);
-			Vector3 * s = src_vert[0];
-			while (n--) {
-				d->X = tm[0][0] * s->X + tm[0][1] * s->Y + tm[0][2] * s->Z + tm[0][3];
-				d->Y = tm[1][0] * s->X + tm[1][1] * s->Y + tm[1][2] * s->Z + tm[1][3];
-				d->Z = tm[2][0] * s->X + tm[2][1] * s->Y + tm[2][2] * s->Z + tm[2][3];
-				s++;
-				d++;
+			const Matrix3D &m = tree->m_pivots[b0].m_tm;
+			const Vector3 *in;
+			Vector3 *out;
+			in = srcV[0];
+			out = dst_vert;
+			c = n;
+			while (c--) {
+				out->X = m[0].X * in->X + m[0].Y * in->Y + m[0].Z * in->Z + m[0].W;
+				out->Y = m[1].X * in->X + m[1].Y * in->Y + m[1].Z * in->Z + m[1].W;
+				out->Z = m[2].X * in->X + m[2].Y * in->Y + m[2].Z * in->Z + m[2].W;
+				++in;
+				++out;
 			}
 		}
-		bonelink += count;
-		for (i = 0; i < influences; i++) {
-			src_vert[i] += count;
-		}
-		dst_vert += count;
+		links += n;
+		for (i = 0; i < streams; i++)
+			srcV[i] += n;
+		dst_vert += n;
 	}
 }
