@@ -38,13 +38,18 @@ class Rva8D0D80Result : public Rva8CD130Value {};
 class Rva8D0D80State
 {
 public:
-    Rva8D0D80Result *create(void *, void *, void *, int, int);
     int m_count;
     int m_unknown04;
     Rva8CD130Value **m_stack;
 };
 struct Rva008D1540Context { void *m_unknown00; void *m_unknown04; void *m_scope08; };
 extern AptValue *g_bfmeFallbackDB;
+// The create call reaches retail 0x008D0080, whose ledger row is the matched
+// gen dump ?d_008d0080@@YAXXZ (game/gen_asm/d_00882630.asm), as
+// tools/callees.py 0x8d1540 350 prints.  Nothing defines the pinned
+// ?create@Rva8D0D80State@@QAEPAVRva8D0D80Result@@PAX00HH@Z, so the call names
+// the dump through a raw pointer bridge that keeps the thiscall shape.
+void d_008d0080();
 
 void rva008D1540ConvertPairDispatch(Rva8D0D80State *state, Rva008D1540Context *context)
 {
@@ -56,7 +61,13 @@ void rva008D1540ConvertPairDispatch(Rva8D0D80State *state, Rva008D1540Context *c
     int count = ((AptValue *)number)->toInteger();
     Rva8CD130String second;
     top->getName(&second);
-    Rva8D0D80Result *result = state->create(under, context->m_scope08, &first, count, 1);
+    union
+    {
+        void (*raw)(void);
+        Rva8D0D80Result *(Rva8D0D80State::*typed)(void *, void *, void *, int, int);
+    } create;
+    create.raw = &d_008d0080;
+    Rva8D0D80Result *result = (state->*create.typed)(under, context->m_scope08, &first, count, 1);
     for (int index = 1; index <= 3; ++index) {
         Rva8CD130Value *old = state->m_stack[state->m_count - index];
         if (!((unsigned char)(old->m_flags >> 30) & 1)) old->release();
