@@ -72,13 +72,13 @@ public:
 	virtual void shutdown();
 };
 
-class Rva000A1B30Holder { public: ~Rva000A1B30Holder(); };
+class State { public: virtual ~State(); };
 
 // Keep the base vptr width without emitting a base vptr store.
 class __declspec(novtable) OwnedPtrBase000A1B30
 {
 public:
-	virtual ~OwnedPtrBase000A1B30() { reinterpret_cast<Rva000A1B30Holder *>(this)->Rva000A1B30Holder::~Rva000A1B30Holder(); }
+	virtual ~OwnedPtrBase000A1B30() { reinterpret_cast<State *>(this)->State::~State(); }
 };
 
 #define Q4_OWNED_PTR_DTOR( NAME )                                         \

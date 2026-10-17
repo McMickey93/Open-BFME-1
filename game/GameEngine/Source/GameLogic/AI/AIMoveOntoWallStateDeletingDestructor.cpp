@@ -29,14 +29,14 @@ public:
 	virtual void shutdown();
 };
 
-// The base destructor 0x000A1B30 is ledgered as ??1Rva000A1B30Holder@@QAE@XZ;
+// The base destructor 0x000A1B30 is ledgered as ??1State@@UAE@XZ (State::~State);
 // reach it the way Q4OwnedPtrDtors.cpp does, without a base vptr store.
-class Rva000A1B30Holder { public: ~Rva000A1B30Holder(); };
+class State { public: virtual ~State(); };
 
 class __declspec(novtable) OwnedPtrBase000A1B30
 {
 public:
-	virtual ~OwnedPtrBase000A1B30() { reinterpret_cast<Rva000A1B30Holder *>(this)->Rva000A1B30Holder::~Rva000A1B30Holder(); }
+	virtual ~OwnedPtrBase000A1B30() { reinterpret_cast<State *>(this)->State::~State(); }
 };
 
 class AIMoveOntoWallState : public OwnedPtrBase000A1B30

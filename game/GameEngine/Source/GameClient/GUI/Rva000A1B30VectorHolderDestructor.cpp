@@ -1,18 +1,14 @@
-// Fuzzy twin (tools/fuzzy_twin_scan.py) of Rva007873C0VectorHolderDestructor.cpp: the
-// same base-vtable-restore + node-alloc vector free, for 12-byte elements with the
-// vector at +0x10 and the BfmeBaseVUQ vtable at 0x01073744. Address-derived names.
+// State::~State at 0x000A1B30. Identity: every matched derived state destructor
+// (AIGuardIdleState, AIQuarrelState, AIGuardInnerState, ... ) tail-calls
+// ??1State@@UAE@XZ through ILT 0x00016725, which routes here. Fuzzy twin
+// (tools/fuzzy_twin_scan.py) of Rva007873C0VectorHolderDestructor.cpp: Snapshot
+// base-vtable restore (0x01073744) + node-alloc free of the 12-byte-element vector
+// at +0x10. novtable keeps State's own (dead) vptr store and vftable out.
 // cl: /DNDEBUG /MD /EHsc /O2 /D_STLP_USE_STATIC_LIB
 // stlport
 
 #include <memory>
 #include "../../Common/System/snapshot.h"
-
-class Rva000A1B30Base
-{
-public:
-	~Rva000A1B30Base() { ((Snapshot *)this)->Snapshot::~Snapshot(); }
-	void *m_table;
-};
 
 class Rva000A1B30Vector
 {
@@ -33,17 +29,17 @@ public:
 	Element *m_capacityEnd;
 };
 
-class Rva000A1B30Holder : public Rva000A1B30Base
+class __declspec(novtable) State : public Snapshot
 {
 public:
-	~Rva000A1B30Holder();
+	virtual ~State();
 	int m_pad04;
 	int m_pad08;
 	int m_pad0C;
 	Rva000A1B30Vector m_vector;
 };
 
-// @??1Rva000A1B30Holder@@QAE@XZ 0x000A1B30
-Rva000A1B30Holder::~Rva000A1B30Holder()
+// @??1State@@UAE@XZ 0x000A1B30
+State::~State()
 {
 }

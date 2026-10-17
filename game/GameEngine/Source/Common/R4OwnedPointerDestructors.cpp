@@ -31,7 +31,7 @@
 // The 0x00172430 base destructor is identified independently as
 // AIInternalMoveToState by its matched body, constructor, and the named state
 // destructors that route through this shared cleanup.  The 0x000A1B30 base is
-// named Rva000A1B30Holder: that is the DEFINING name at that address (its
+// State::~State: that is the DEFINING name at that address (its
 // matched body lives in GameClient/GUI/Rva000A1B30VectorHolderDestructor.cpp),
 // so it is spelled here rather than a local stand-in that could never link.
 //
@@ -43,9 +43,9 @@ struct GenOwned { virtual ~GenOwned(); };
 
 // The base destructor at 0x000A1B30 is owned by
 // GameClient/GUI/Rva000A1B30VectorHolderDestructor.cpp as
-// ??1Rva000A1B30Holder@@QAE@XZ, so this TU declares it by that name -- and
+// ??1State@@UAE@XZ (State::~State), so this TU declares it by that name -- and
 // without `virtual`, because a virtual base destructor would mangle UAE.
-struct Rva000A1B30Holder { ~Rva000A1B30Holder(); };
+struct State { virtual ~State(); };
 struct AIInternalMoveToState { virtual ~AIInternalMoveToState(); };
 
 // That base must still occupy four bytes at offset 0 (retail tail-calls it
@@ -60,7 +60,7 @@ class __declspec( novtable ) R4Base000A1B30
 public:
 	virtual ~R4Base000A1B30()
 	{
-		reinterpret_cast<Rva000A1B30Holder *>( this )->Rva000A1B30Holder::~Rva000A1B30Holder();
+		reinterpret_cast<State *>(this)->State::~State();
 	}
 };
 
