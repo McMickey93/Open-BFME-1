@@ -1,6 +1,19 @@
 // Retail 008B91F0. Existing bfmeHandler1233 comparator callback identity.
 // 008B90F0 returns strcmp-style EAX: -1/0/+1 from tagged value arguments.
-class BfmeTab1024 { public: int bfmeFind1024(int); };
+// The two calls at 0x8B923E and 0x8B9257 reach retail 0x0089CEF0, whose ledger
+// row is the matched gen dump ?d_0089cef0@@YAXXZ (game/gen_asm/d_0089a830.asm);
+// no reader defines a method named bfmeFind1024 here.  The member call keeps its
+// thiscall shape through the raw pointer bridge and names the dump the ledger
+// owns, as tools/callees.py 0x8b91f0 308 prints for the callee.
+void d_0089cef0();
+class BfmeTab1024 {
+public:
+    int bfmeFind1024(int key) {
+        union { void (*raw)(); int (BfmeTab1024::*typed)(int); } call;
+        call.raw = &d_0089cef0;
+        return (this->*call.typed)(key);
+    }
+};
 extern "C" int __cdecl atoi(const char *);
 extern "C" int __cdecl compareValues008B90F0(unsigned *, unsigned *);
 struct BfmeBuf1233 { unsigned short refs, length; };
