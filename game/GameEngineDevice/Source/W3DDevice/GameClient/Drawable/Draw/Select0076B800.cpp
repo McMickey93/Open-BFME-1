@@ -43,7 +43,13 @@ class FXList { public:
  static void doFXPos(const FXList*,const Coord3D*,const Matrix3D*,float,const Coord3D*);
 };
 class Rva0075BA30Owner { friend class Select0076B800; float getCurrentAnimFraction() const; };
-class Rva00766A70W3DScriptedModelDraw { friend class Select0076B800; void apply(void*,int,int,int,int); };
+// The transition call goes through ILT 0x00001CA8, the ledger's 5-byte row
+// ?j_00001ca8@@YAXXZ (game/gen_small/thunks_000.cpp), as tools/callees.py
+// 0x76b800 299 prints.  Nothing defines the pinned
+// ?apply@Rva00766A70W3DScriptedModelDraw@@AAEXPAXHHHH@Z, so the call names the
+// thunk through a raw pointer bridge that keeps the thiscall shape.
+void j_00001ca8();
+class Rva00766A70W3DScriptedModelDraw {};
 class Cleanup0076B550 { public: void stopParticles(bool); };
 extern unsigned int g_rva0075b2e0_value;
 struct Drawable0076B800 { char pad00[0xfc]; Object* m_object; char pad100[0x10]; unsigned char b110; };
@@ -69,7 +75,9 @@ bool Select0076B800::select(State0076B800* state,bool force,int flags) {
  union { float f; int i; } fraction;
  fraction.f=((Rva0075BA30Owner*)this)->getCurrentAnimFraction();
  m_curState=state;
- ((Rva00766A70W3DScriptedModelDraw*)this)->apply(old,fraction.i,0,0,flags);
+ union { void (*raw)(void); void (Rva00766A70W3DScriptedModelDraw::*typed)(void*,int,int,int,int); } apply;
+ apply.raw = &j_00001ca8;
+ (((Rva00766A70W3DScriptedModelDraw*)this)->*apply.typed)(old,fraction.i,0,0,flags);
  if(m_curState==state) {
   if(state && state->p44) {
    Drawable0076B800* d=p08;
