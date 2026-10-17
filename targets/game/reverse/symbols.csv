@@ -14356,7 +14356,7 @@ name,address,notes
 ?WouldMapTransfer@@YA_NPAVGameInfo@@@Z,0x004515F0,BFME GameInfo overload body candidate for re-linked callers
 ?Write@ChunkSaveClass@@QAEKPBXK@Z,0x009E18A0
 ?WriteConditionDataChunk@Condition@@SAXAAVDataChunkOutput@@PAV1@@Z,0x0003DA91
-?WriteGroupDataChunk@@YAXAAVDataChunkOutput@@PAVScriptList@@PAVScriptGroup@@@Z,0x000285D3,ScriptList group writer via ILT thunk
+?j_000285d3@@YAXAAVDataChunkOutput@@PAVScriptList@@PAVScript@@@Z,0x000285D3,ILT thunk of the BFME "Script" chunk writer 0x00357B30; WriteGroupDataChunk was ILT-contradicted and semantically wrong (body writes Script chunks)
 ?WriteScriptDataChunk@@YAXAAVDataChunkOutput@@PAVScriptList@@PAVScript@@@Z,0x00002310,ScriptList script writer via ILT thunk
 ?YFlip@Targa@@QAEXXZ,0x009E0360,Targa Load direct call with thiscall receiver and ret0; helper reads Header Width Height PixelDepth and mImage at canonical offsets
 ?ZeroStuff@Cftp@@AAEXXZ,0x008853C0,retail Cftp constructor helper

@@ -7469,7 +7469,6 @@ pins	0x0002847F	?changeBridgeState@Pathfinder@@QAEXW4PathfindLayerEnum@@_N@Z
 pins	0x0002847F	?friend_changeBridgeState@Pathfinder@@QAEXW4PathfindLayerEnum@@_N@Z
 pins	0x00028560	?findTemplate@ThingFactory@@QAEPAVThingTemplate@@ABVAsciiString@@@Z
 pins	0x00028560	?findTemplateInternal@ThingFactory@@QAEPAVThingTemplate@@ABVAsciiString@@@Z
-pins	0x000285D3	?WriteGroupDataChunk@@YAXAAVDataChunkOutput@@PAVScriptList@@PAVScriptGroup@@@Z
 pins	0x00028655	?getCurrent@BezFwdIterator@@QBEABUCoord3D@@XZ
 pins	0x000286AA	??$_M_allocate_and_copy@PBUParticleSysBoneInfo@@@?$vector@UParticleSysBoneInfo@@V?$allocator@UParticleSysBoneInfo@@@_STL@@@_STL@@IAEPAUParticleSysBoneInfo@@IPBU2@0@Z
 pins	0x000287C7	??0StructureToppleUpdateModuleData@@QAE@XZ

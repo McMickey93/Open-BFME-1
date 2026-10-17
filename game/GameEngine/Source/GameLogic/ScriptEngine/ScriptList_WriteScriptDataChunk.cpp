@@ -20,8 +20,8 @@ struct ScriptData
 {
 	ScriptData *previousVersion;
 	void *unused;
-	Script *script;
-	ScriptGroup *group;
+	Script *childGroups;
+	Script *scripts;
 	bool active;
 	bool subroutine;
 };
@@ -57,7 +57,9 @@ private:
 	friend void WriteScriptDataChunk(DataChunkOutput &, ScriptList *, Script *);
 };
 
-void WriteGroupDataChunk(DataChunkOutput &output, ScriptList *list, ScriptGroup *group);
+// ILT 0x000285D3 -> 0x00357B30, the "Script" chunk writer for a chain of
+// script handles; see targets/game/reverse/identity_evidence/00357b30-script-chunk-writer.md.
+void j_000285d3(DataChunkOutput &output, ScriptList *list, Script *script);
 
 void WriteScriptDataChunk(DataChunkOutput &output, ScriptList *list, Script *script)
 {
@@ -85,10 +87,10 @@ void WriteScriptDataChunk(DataChunkOutput &output, ScriptList *list, Script *scr
 			output.writeAsciiString(list->records[script->recordIndex].name);
 			output.writeByte(data->active);
 			output.writeByte(data->subroutine);
-			if (data->script)
-				WriteScriptDataChunk(output, list, data->script);
-			if (data->group)
-				WriteGroupDataChunk(output, list, data->group);
+			if (data->childGroups)
+				WriteScriptDataChunk(output, list, data->childGroups);
+			if (data->scripts)
+				j_000285d3(output, list, data->scripts);
 			output.closeDataChunk();
 		}
 		script = script->next;

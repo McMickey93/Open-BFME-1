@@ -652,17 +652,18 @@ Int ScriptList::getReadScripts(ScriptList *scriptLists[MAX_PLAYER_COUNT])
 *		
 */
 // BFME's two writers are FREE functions taking the list itself as a second
-// argument, not the static members the reference calls with two -- and it writes
-// the GROUP chunk first. The reference copy writes the script chunk first, so
-// the two produce different chunk orders in the saved map.
-void WriteGroupDataChunk( DataChunkOutput &chunkWriter, ScriptList *scriptList, ScriptGroup *scriptGroup );
+// argument, not the static members the reference calls with two. As in the
+// reference, the script chain (+0x08, written by 0x00357B30 as "Script" chunks)
+// goes out before the group chain (+0x04, the "ScriptGroup" writer at
+// 0x00359EE0, which the ledger still names WriteScriptDataChunk).
+void j_000285d3( DataChunkOutput &chunkWriter, ScriptList *scriptList, Script *script );
 void WriteScriptDataChunk( DataChunkOutput &chunkWriter, ScriptList *scriptList, Script *script );
 
 struct BfmeScriptListHeads
 {
 	UnsignedByte m_unreconstructed_00[4];
-	Script *m_firstScript;						///< retail this+0x04
-	ScriptGroup *m_firstGroup;					///< retail this+0x08
+	Script *m_firstGroup;						///< retail this+0x04, group handle chain
+	Script *m_firstScript;						///< retail this+0x08, script handle chain
 };
 
 //
@@ -711,8 +712,8 @@ void ScriptList::WriteScriptListDataChunk(DataChunkOutput &chunkWriter)
 	BfmeScriptListHeads *self = (BfmeScriptListHeads *)this;
 
 	/**********SCRIPTS DATA ***********************/
-		if (self->m_firstGroup) WriteGroupDataChunk(chunkWriter, this, self->m_firstGroup);
-		if (self->m_firstScript) WriteScriptDataChunk(chunkWriter, this, self->m_firstScript);
+		if (self->m_firstScript) j_000285d3(chunkWriter, this, self->m_firstScript);
+		if (self->m_firstGroup) WriteScriptDataChunk(chunkWriter, this, self->m_firstGroup);
 }
 
 
