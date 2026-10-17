@@ -1,132 +1,133 @@
-// ?d_00206b40@@YAXXZ
-// partial score=0.26 date=2026-09-21
-// cl: /DNDEBUG /MD
-// Retail 0x00206B40, 295 bytes. Finds an Object by id, syncs this-0x20 via
-// the pinned bfmeTwoCFD, then scans a pointer array at this+4..this+8 for
-// the nearest not-yet-claimed (+0x20==0) item whose owner/override chain
-// passes an Overridable check and whose own +4 is clear, tracking the
-// closest by 3D distance to a fixed anchor (the array's first element),
-// and finally stores the found id (param) into the closest item's +0x20.
-// No caller/vtable/string identity; address-derived receiver and fields.
-
+// ?claimNearest@Rva00206B40Owner@@QAEHH@Z
+// partial score=0.0407 date=2026-10-18
+// ?claimNearest@Rva00206B40Owner@@QAEHH@Z
+// partial score=0.2339 date=2026-10-18 (279/295 B, 226 diffs, shape 0.851)
+// cl: /O2 /GR- /DNDEBUG /DWIN32 /MD /EHsc- /Igame/Libraries/Include /Igame/GameEngine/Source/GameLogic/Object
+typedef float Real;
 typedef int Int;
+typedef unsigned int UnsignedInt;
+typedef bool Bool;
 
-extern "C" double sqrt( double value );
+#include <math.h>
+#pragma intrinsic(sqrt)
 
-class BfmeOuterCFD
-{
-public:
-	void bfmeTwoCFD();
-};
-
-class GameLogic
-{
-public:
-	void *findObjectByID( Int id );
-};
-
-#define TheBfmeGameLogic ( *(GameLogic **)0x012F0898 )
+#include "Lib/Coord3D.h"
 
 class Overridable
 {
 public:
-	const Overridable *getFinalOverride() const;
+	const Overridable *getFinalOverride() const
+	{
+		if (m_nextOverride)
+			return m_nextOverride->getFinalOverride();
+		return this;
+	}
 
-	char m_unmodelled000[ 0xd8 ];
-	Int m_flagsD8;
+	void *m_vtable;
+	Overridable *m_nextOverride;
 };
 
-class BfmeSubBIA
+class Rva00206B40Template : public Overridable
 {
 public:
-	Overridable *ask();
+	unsigned char m_pad008[0xd8 - 0x08];
+	UnsignedInt m_flagsD8;
 };
 
-struct Coord3D
-{
-	float x;
-	float y;
-	float z;
-};
-
-class ArrayItem
+template <class T>
+class OVERRIDE
 {
 public:
-	Int m_claimed20;
-	Int m_ownerField4;
-	Coord3D m_position;
+	const T *operator->() const
+	{
+		if (!m_overridable)
+			return 0;
+		return (const T *)m_overridable->getFinalOverride();
+	}
+
+	T *m_overridable;
+};
+
+#define BFME_HAVE_COORD3D
+#define OBJECT_TU_MEMBERS \
+	const Rva00206B40Template *getTemplate00206B40() const \
+	{ \
+		return ((const OVERRIDE<Rva00206B40Template> *)&m_template)->operator->(); \
+	}
+#include "object.h"
+#undef OBJECT_TU_MEMBERS
+
+class GameLogic
+{
+public:
+	Object *findObjectByID(Int id);
+};
+extern GameLogic *TheGameLogic;
+
+class BfmeHostERP
+{
+public:
+	void bfmeSweepERP();
+};
+
+struct ArrayItem
+{
+	void *m_vtable;
+	Int m_occupied;
+	Coord3D m_pos;
+	unsigned char m_pad14[0x20 - 0x14];
+	Int m_claimantID;
 };
 
 class Rva00206B40Owner
 {
 public:
-	Int rva00206b40( Int id );
+	Int claimNearest(Int objectID);
 
-private:
-	char m_unmodelled000[ 4 ];
-	ArrayItem **m_arrayBegin;
-	ArrayItem **m_arrayEnd;
+	void *m_vtable;
+	ArrayItem **m_begin;
+	ArrayItem **m_end;
 };
 
-Int Rva00206B40Owner::rva00206b40( Int id )
+Int Rva00206B40Owner::claimNearest(Int objectID)
 {
-	void *found = TheBfmeGameLogic->findObjectByID( id );
-	if ( found == 0 )
+	Object *obj = TheGameLogic->findObjectByID(objectID);
+	if (obj == 0)
 		return -1;
 
-	reinterpret_cast<BfmeOuterCFD *>(
-		reinterpret_cast<char *>( this ) - 0x20 )->bfmeTwoCFD();
+	((BfmeHostERP *)((char *)this - 0x20))->bfmeSweepERP();
 
-	ArrayItem **begin = m_arrayBegin;
-	ArrayItem **end = m_arrayEnd;
-	Int count = ( end - begin );
-
-	Int result = -1;
-	if ( count == 0 )
-		return result;
-
-	ArrayItem *anchor = *begin;
-	float bestDistance = 100001.0f;
+	ArrayItem **items = m_begin;
+	UnsignedInt count = m_end - items;
 	Int bestIndex = -1;
+	if (count == 0)
+		return bestIndex;
 
-	for ( Int i = 0; i < count; ++i )
+	Real bestDist = 99999.0f;
+	for (UnsignedInt i = 0; i < count; ++i)
 	{
-		ArrayItem *item = begin[ i ];
-		if ( item->m_claimed20 != 0 )
+		ArrayItem *item = m_begin[i];
+		if (item->m_claimantID != 0)
+			continue;
+		if (!(obj->getTemplate00206B40()->m_flagsD8 & 0x400) && item->m_occupied != 0)
 			continue;
 
-		if ( anchor->m_ownerField4 != 0 )
+		Coord3D delta;
+		delta.x = item->m_pos.x;
+		delta.y = item->m_pos.y;
+		delta.z = item->m_pos.z;
+		delta.x -= obj->m_cachedPos.x;
+		delta.y -= obj->m_cachedPos.y;
+		delta.z -= obj->m_cachedPos.z;
+		Real dist = (Real)sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
+		if (dist < bestDist)
 		{
-			BfmeSubBIA *ownerField = reinterpret_cast<BfmeSubBIA *>(
-				anchor->m_ownerField4 );
-			if ( *reinterpret_cast<void **>( reinterpret_cast<char *>( ownerField ) + 4 ) != 0 )
-			{
-				Overridable *nested = *reinterpret_cast<Overridable **>(
-					reinterpret_cast<char *>( ownerField ) + 4 );
-				const Overridable *override_ = nested->getFinalOverride();
-				if ( const_cast<Overridable *>( override_ )->m_flagsD8 & 0x40000 )
-					continue;
-			}
-		}
-
-		if ( item->m_ownerField4 != 0 )
-			continue;
-
-		float dx = item->m_position.x - anchor->m_position.x;
-		float dy = item->m_position.y - anchor->m_position.y;
-		float dz = item->m_position.z - anchor->m_position.z;
-		float distance = (float)sqrt( dx * dx + dy * dy + dz * dz );
-
-		if ( distance < bestDistance )
-		{
-			bestDistance = distance;
+			bestDist = dist;
 			bestIndex = i;
 		}
 	}
 
-	if ( bestIndex < 0 )
-		return result;
-
-	begin[ bestIndex ]->m_claimed20 = id;
-	return result;
+	if (bestIndex >= 0)
+		items[bestIndex]->m_claimantID = objectID;
+	return bestIndex;
 }
