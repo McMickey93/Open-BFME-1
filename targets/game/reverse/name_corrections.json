@@ -20778,5 +20778,15 @@
   "after_sha256": "358adbb6cf8e414aba5a0ab59632b0d0c31126a737149ec19904c1f2ae26782c",
   "evidence": "targets/game/reverse/identity_evidence/003F2160-findGroundPath-object-first.md",
   "reason": "0x003F2160 is BFME's object-first findGroundPath, but retail's ILT table contradicts the Zero Hour decoration and the object-first findGroundPath spelling (ilt_oracle CONTRADICTED); the row takes the address-derived name rva003F2160 that the matched caller TU AIGroup.cpp already declares for this body."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x003f0340.cpp",
+  "new_path": "targets/game/reverse/attempts/0x003f0340.cpp",
+  "old_name": "field",
+  "new_name": "bfmeIsComputerControlled",
+  "before_sha256": "882c2963e283c929e5b92d6fbbfe7f1cdcd30621c0df36d38a9600911e3663b3",
+  "after_sha256": "9c98c170f68b5d5b3ccdfc663fbb2e2bb0a48e7453d363941a0237a218060e0a",
+  "evidence": "targets/game/reverse/attempts/0x003f0340.cpp",
+  "reason": "Token-alignment artifact of a bank edit, not a rename: field() and bfmeIsComputerControlled() are both still called; the profile is now filled by an inline init whose argument list evaluates them in retail's order (see the bank's 2026-10-17 note)."
  }
 ]

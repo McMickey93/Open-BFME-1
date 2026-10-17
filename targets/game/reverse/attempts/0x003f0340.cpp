@@ -1,15 +1,16 @@
 // ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
-// partial score=0.9787 date=2026-10-17
+// partial score=0.9872 date=2026-10-17
 // ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
 // cl: /DNDEBUG /MD /Igame/Libraries/Include/Lib /Igame/GameEngine/Source/GameLogic/Object
-// 2026-10-17 (claude-opus-5-5): 212 -> 50 differing bytes at 2347/2347.
+// 2026-10-17 (claude-opus-5-5): 212 -> 30 differing bytes at 2347/2347.
 // Levers: BFME Coord3D user copy constructor and `Coord3D adjustTo = *rawTo`;
 // checkDestination as an inline with its own blocker (retail packs blocker onto
 // cell); visible never-inlined getClippedCell; parentCell->getZone() accessor
-// (rotation_sweep); info stores layer, center, radius. Left: +0x4C6..+0x538,
-// retail hoists both the surfaces and the template-layer loads before the
-// crusher negate and stores zone1 before loading goal's zone (scratch
-// rotation); every profile store order and helper/ctor spelling tried.
+// (rotation_sweep); info stores layer, center, radius; the profile filled by an
+// inline init(locomotorSet, !field, value - 1, isComputer) whose arguments
+// evaluate right to left (retail's call order) and whose body stores surfaces,
+// crusher, terrainOnly, layer. Left: +0x4FB..+0x538, retail stores zone1
+// before loading the goal zone (ours hoists the load: one scratch rotation).
 struct Coord3D
 {
 	Coord3D() {}
@@ -77,8 +78,23 @@ public:
 
 };
 
+class LocomotorSet
+{
+public:
+    unsigned char m_pad[0x10];
+    int m_validLocomotorSurfaces;
+    int getValidSurfaces() const { return m_validLocomotorSurfaces; }
+};
+
 struct PathfindMovementProfile
 {
+    __forceinline void init(const LocomotorSet &locomotorSet, Bool crush, Int lay, Bool terrain)
+    {
+        acceptableSurfaces = locomotorSet.getValidSurfaces();
+        crusher = crush;
+        terrainOnly = terrain;
+        layer = lay;
+    }
     int acceptableSurfaces;
     unsigned char crusher;
     unsigned char terrainOnly;
@@ -100,13 +116,6 @@ public:
 };
 extern TerrainLogic *TheTerrainLogic;
 
-class LocomotorSet
-{
-public:
-    unsigned char m_pad[0x10];
-    int m_validLocomotorSurfaces;
-    int getValidSurfaces() const { return m_validLocomotorSurfaces; }
-};
 
 class PathfindCellInfo
 {
@@ -487,15 +496,8 @@ Path *Pathfinder::internalFindPath(Object *obj, const LocomotorSet &locomotorSet
         }
     }
     PathfindMovementProfile profile;
-    {
-        __declspec(align(4)) Bool isComputer = obj->bfmeIsComputerControlled();
-        int templateLayer = reinterpret_cast<const Rva003DB4F0 *>(obj)->value() - 1;
-        bool templateFlag = reinterpret_cast<const Rva003DB4C0 *>(obj)->field();
-        profile.crusher = !templateFlag;
-        profile.terrainOnly = isComputer;
-        profile.acceptableSurfaces = locomotorSet.getValidSurfaces();
-        profile.layer = templateLayer;
-    }
+    profile.init(locomotorSet, !reinterpret_cast<const Rva003DB4C0 *>(obj)->field(),
+        reinterpret_cast<const Rva003DB4F0 *>(obj)->value() - 1, obj->bfmeIsComputerControlled());
     int zone1 = m_zoneManager.getEffectiveZone(profile, parentCell->getZone());
     int zone2 = m_zoneManager.getEffectiveZone(profile, goalCell->m_zone);
     if (goalCell->isObstaclePresent(m_ignoreObstacleID) || parentCell->isObstaclePresent(m_ignoreObstacleID) || m_isTunneling)
