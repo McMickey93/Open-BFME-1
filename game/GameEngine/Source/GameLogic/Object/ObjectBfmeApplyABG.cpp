@@ -60,11 +60,16 @@ public:
 
 extern ControlBar *TheControlBar;
 
+class Object;
+// doCommandButton is reached through ILT 0x000063CF, the ledger's 5-byte row
+// ?j_000063cf@@YAXXZ (symbols.csv pins the method name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_000063cf();
+typedef void (Object::*ObjectDoCommandButton)(const CommandButton *button, Int source, Int extra);
+
 class Object
 {
 public:
-	void doCommandButton(const CommandButton *button, Int source, Int extra);
-
 	void *m_vtable;
 	Overridable *m_template;
 	unsigned char m_unmodelled_008[0x328 - 0x08];
@@ -123,7 +128,9 @@ void BfmeK1094::bfmeApplyABG(void *a, void *b)
 				}
 				else
 				{
-					((Object *)this)->doCommandButton(button, source, 0);
+					union { void (*raw)(void); ObjectDoCommandButton typed; } doCommandButton;
+					doCommandButton.raw = &j_000063cf;
+					(((Object *)this)->*doCommandButton.typed)(button, source, 0);
 					return;
 				}
 			}
