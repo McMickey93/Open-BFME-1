@@ -226,3 +226,27 @@ void Rva00699180Owner::removeByKey(unsigned int key)
 		}
 	}
 }
+
+// Retail 0x00699150 (27 B): file-static test whether the record behind the holder has a
+// +0x54 value not at or above the frame-time scale at 0x0111BB98. The holder arrives in EAX through
+// the private static convention; the record type is address-named.
+extern float g_bfmeElapsedScale;
+
+struct Rva00699150Record
+{
+	unsigned char m_unmodelled00[0x54];
+	float m_value54;
+};
+
+static int rva00699150(Rva00699150Record *const *holder)
+{
+	if ((*holder)->m_value54 >= g_bfmeElapsedScale)
+		return 0;
+	return 1;
+}
+
+// absent-from-retail: TU-local caller that keeps the static above alive.
+int rva00699150Caller(Rva00699150Record *const *holder)
+{
+	return rva00699150(holder);
+}
