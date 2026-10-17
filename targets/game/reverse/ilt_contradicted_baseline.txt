@@ -4317,7 +4317,6 @@ functions	0x0059FE90	??0?$_List_base@PAVShellMenuSchemeImage@@V?$allocator@PAVSh
 functions	0x005A03E0	??_GTextOnFrameTransition@@MAEPAXI@Z
 functions	0x005A4690	?parseMouseDefinition@INI@@SAXPAV1@@Z
 functions	0x005A46B0	?processMouseEvent@Mouse@@AAEXH@Z
-functions	0x005A5AE0	?newDisplayString@W3DDisplayStringManager@@UAEPAVDisplayString@@XZ
 functions	0x005A5FA0	?parseMouseCursorDefinition@INI@@SAXPAV1@@Z
 functions	0x005A63A0	??1LookAtTranslator@@UAE@XZ
 functions	0x005A6580	??0LookAtTranslator@@QAE@XZ
@@ -5167,7 +5166,6 @@ functions	0x006F4C50	??1W3DDisplayString@@MAE@XZ
 functions	0x006F4F20	??_GW3DDisplayString@@MAEPAXI@Z
 functions	0x006F4F50	?checkForChangedTextData@W3DDisplayString@@IAE_NPA_N@Z
 functions	0x006F5420	?computeExtents@W3DDisplayString@@IAEXXZ
-functions	0x006F5A90	?winCreate@GameWindowManager@@UAEPAVGameWindow@@PAV2@IHHHHP6A?AW4WindowMsgHandledType@@0III@ZPAVWinInstanceData@@@Z
 functions	0x006F6120	?Buffer_Needs_Data@CRCEngine@@IBE_NXZ
 functions	0x006F62A0	?Release_Render_Obj_Iterator@WW3DAssetManager@@UAEXPAVRenderObjIterator@@@Z
 functions	0x006F6BA0	?Open_W3D_File@@YAPAXPAX0PBD@Z

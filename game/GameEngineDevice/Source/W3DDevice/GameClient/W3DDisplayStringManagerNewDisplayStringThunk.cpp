@@ -1,6 +1,11 @@
 // cl: /DNDEBUG /MD /EHsc
-// readable body of ?newDisplayString@W3DDisplayStringManager@@UAEPAVDisplayString@@XZ: game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayStringManager.cpp
-// Open-BFME5: lift the exact retail W3DDisplayStringManager::newDisplayString MASM body.
+// Open-BFME5 lift of retail 0x005A5AE0 (774 B), ledgered as ?dup_005a5ae0@@YAXXZ
+// through object-symbol=: the symbol below is NOT this body's identity.
+// W3DDisplayStringManager::newDisplayString is 0x006F5A90
+// (W3DDisplayStringManagerNewDisplayString.cpp); ILT 0x0004A8BD contradicts it
+// here. The body is a SubsystemInterface-derived constructor (vtable
+// 0x0110D580) reached from the DirectInputMouse constructor; ??0Mouse@@QAE@XZ is
+// contradicted at the same ILT, so the identity stays open.
 
 class DisplayString;
 

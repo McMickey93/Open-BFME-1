@@ -141,7 +141,7 @@ void W3DDisplayStringManager::postProcessLoad( void )
 /** Allocate a new display string and tie it to the master list so we
 	* can keep track of it */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/Libraries/Source/WWVegas/WW3D2/W3DDisplayStringManagerNewDisplayStringThunk.cpp
+// byte-exact reconstruction: game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayStringManagerNewDisplayString.cpp
 // ?newDisplayString@W3DDisplayStringManager@@UAEPAVDisplayString@@XZ present-unmatched
 DisplayString *W3DDisplayStringManager::newDisplayString( void )
 {

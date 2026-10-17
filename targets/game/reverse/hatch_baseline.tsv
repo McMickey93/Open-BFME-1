@@ -2056,7 +2056,6 @@ emit	game/GameEngine/Source/GameClient/GUI/EstablishConnectionsMenu/EstablishCon
 emit	game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/showNotificationBox_Thunk.cpp	*	557
 emit	game/GameEngine/Source/GameClient/GUI/Gadget/GadgetListBoxSystemThunk.cpp	*	4328
 emit	game/GameEngine/Source/GameClient/GUI/GameWindowManager_winCreateLayout_Thunk.cpp	*	257
-emit	game/GameEngine/Source/GameClient/GUI/GameWindowManager_winCreate_Thunk.cpp	*	269
 emit	game/GameEngine/Source/GameClient/GUI/setWindowText_Thunk.cpp	*	416
 emit	game/GameEngine/Source/GameClient/GameText.cpp	*	3411
 emit	game/GameEngine/Source/GameClient/GameTextManager_initMapStringFile_Thunk.cpp	*	432
