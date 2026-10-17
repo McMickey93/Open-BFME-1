@@ -13,6 +13,12 @@
 
 extern void j_0001bb4e();
 
+// INI::load at 0x00853CB0 is linked as the gen-dump ?d_00853cb0@@YAXXZ, so
+// the thiscall load is reached through a member-pointer call (the pattern the
+// Apt callers of ?d_008cc940 use).
+extern void d_00853cb0();
+typedef void (INI::*Gen0081DBE0IniLoad)(AsciiString, int, int, void *);
+
 // Retail inlines the C-string store: the member address goes to ECX first,
 // then strlen, then a direct call to StringBase<char>::set(const char *, int).
 // ascii_string.h declares operator=(const char *) out of line, so the store is
@@ -42,5 +48,6 @@ void Gen_0081DBE0::bfmeLoad_0081DD20(const char *filename)
 	bfmeAssign(m_bfmeNameA, filename);
 
 	INI ini;
-	ini.load(AsciiString(filename), 1, 0, (void *)j_0001bb4e);
+	union { void (*fn)(); Gen0081DBE0IniLoad call; } u = { d_00853cb0 };
+	(ini.*u.call)(AsciiString(filename), 1, 0, (void *)j_0001bb4e);
 }
