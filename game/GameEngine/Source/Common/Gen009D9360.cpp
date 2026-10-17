@@ -46,6 +46,25 @@ public:
 	BfmeAppendEntry *m_end;
 };
 
+// Retail 0x009D9110 (77 B): file-static of this writer TU that formats into a
+// 1024-byte buffer and appends it. The sink arrives in ESI through VC7.1's private
+// static convention; the format and its arguments stay on the stack.
+static void rva009D9110(BfmeAppendSink *sink, const char *format, ...)
+{
+	char buffer[1024];
+	va_list args;
+	va_start(args, format);
+	_vsnprintf(buffer, sizeof(buffer), format, args);
+	va_end(args);
+	sink->append(buffer, strlen(buffer));
+}
+
+// absent-from-retail: TU-local caller that keeps the static above alive.
+void rva009D9110Caller(BfmeAppendSink *sink, int value)
+{
+	rva009D9110(sink, "%i", value);
+}
+
 extern "C" void __cdecl bfmeAppend(BfmeAppendStream *stream,
 	const char *format, ...)
 {
