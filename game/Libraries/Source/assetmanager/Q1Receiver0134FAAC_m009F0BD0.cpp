@@ -50,7 +50,6 @@ class Q1Receiver0134FAAC
 {
 public:
 	void m009F0BD0(int value);
-	void refresh(void);
 
 private:
 	unsigned char m_unmodelled_000[0x60];
@@ -58,6 +57,12 @@ private:
 	unsigned char m_unmodelled_078[0x118];
 	Q1ReceiverSetGroup m_set190;
 };
+
+// The refresh at 0x009EFF50 is linked as the gen-dump ?d_009eff50@@YAXXZ, so
+// the thiscall is reached through a member-pointer call (the pattern the Apt
+// callers of ?d_008cc940 use).
+extern void d_009eff50();
+typedef void (Q1Receiver0134FAAC::*Q1Receiver009EFF50Refresh)(void);
 
 void Q1Receiver0134FAAC::m009F0BD0(int value)
 {
@@ -79,5 +84,6 @@ void Q1Receiver0134FAAC::m009F0BD0(int value)
 
 	if (!changed)
 		return;
-	this->refresh();
+	union { void (*fn)(); Q1Receiver009EFF50Refresh call; } refresh = { d_009eff50 };
+	(this->*refresh.call)();
 }
