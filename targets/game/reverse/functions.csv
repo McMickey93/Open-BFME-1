@@ -38207,7 +38207,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c43f90@@YAXXZ,,0x00C43F90,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01043f90
 ?d_00c43f9b@@YAXXZ,,0x00C43F9B,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01043f9b
 ?d_00c44730@@YAXXZ,,0x00C44730,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01044730
-?d_00c447d0@@YAXXZ,,0x00C447D0,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@010447d0
 ?d_00c46e56@@YAXXZ,,0x00C46E56,22,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01046e56
 ?d_00c471e8@@YAXXZ,,0x00C471E8,25,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@010471e8
 ?d_00c47201@@YAXXZ,,0x00C47201,11,game/gen_asm/d_00c44ba8.asm,matched,gen-dump;ghidra=Unwind@01047201
@@ -172539,3 +172538,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?call_0040E2F0@Rva0040E2F0State@@QAEXPAXHI@Z,,0x0040E2F0,118,game/GameEngine/Source/GameClient/Rva0040EE90OwnerUpdate.cpp,matched,thiscall RET 12 image draw record; null-image and key guard then display slots 0xB0 0xD4 0xDC through the inline drawImage helper whose parameter copies reproduce the dead key-argument home; called by matched Rva0040EE90Owner::update in the same TU; class name from that caller (address-derived);model=claude-opus-5-5;host=Stijn
 ?bfmeTail923E@BfmeElem923E@@QAEXPAX0@Z,,0x0040E260,115,game/GameEngine/Source/GameClient/Rva0040EE90OwnerUpdate.cpp,matched,thiscall RET 8 sibling of 0x0040E2F0 with colour -1; called through ILT 0x0001F7BC by matched BfmeThing923E::bfmeGo923E 0x0040F080 whose declaration gives the name; inline drawImage helper; class name from that caller (address-derived);model=claude-opus-5-5;host=Stijn
 ?Rva00938620@@YA_NVAsciiString@@0@Z,,0x00938620,1057,game/Libraries/Source/WWVegas/WW3D2/assetinit.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00938620-asset-dat-loader-two-strings.md;clean C++ in EA assetinit.cpp TU; two by-value AsciiString args proven by W3DDisplay::init copies and unwind map; retires naked lift Load_Asset_Dat;model=claude-opus-5-5;host=app
+?Rva00C447D0Cleanup@@YAXXZ,,0x00C447D0,11,game/GameEngine/Source/GameNetwork/DisconnectManager.cpp,matched,object-symbol=$L50505;parent=?sendDisconnectCommand@DisconnectManager@@IAEXHPAVConnectionManager@@@Z;unwind-state=0;FuncInfo=0x00E340DC uniquely binds allocation failure action;ret C447DA proves11B extent;t=8;model=gpt-6.1-sol;host=cal-desktop

@@ -47,8 +47,7 @@ public: \
 	inline void *operator new(size_t s, ARGCLASS##MagicEnum e DECLARE_LITERALSTRING_ARG2) \
 	{ return MP_GLUE_ALLOCATE(ARGCLASS); } \
 public: \
-	inline void operator delete(void *p, ARGCLASS##MagicEnum e DECLARE_LITERALSTRING_ARG2) \
-	{ BfmePoolGlue::free(p); } \
+	void operator delete(void *p, ARGCLASS##MagicEnum e DECLARE_LITERALSTRING_ARG2); \
 protected: \
 	inline void *operator new(size_t s) { return ::operator new(s); } \
 	inline void operator delete(void *p) { ::operator delete(p); } \
@@ -76,6 +75,33 @@ public:
 #include "GameNetwork/NetworkUtil.h"
 #include "GameNetwork/GameSpy/PingThread.h"
 #include "GameNetwork/GameSpy/GSConfig.h"
+
+// Preserve the separately verified placement deletes while the retail
+// sendDisconnectCommand allocation uses global new and global failure cleanup.
+void NetDestroyPlayerCommandMsg::operator delete(void *p, NetDestroyPlayerCommandMsgMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
+
+void NetDisconnectKeepAliveCommandMsg::operator delete(void *p, NetDisconnectKeepAliveCommandMsgMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
+
+void NetDisconnectPlayerCommandMsg::operator delete(void *p, NetDisconnectPlayerCommandMsgMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
+
+void NetDisconnectVoteCommandMsg::operator delete(void *p, NetDisconnectVoteCommandMsgMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
+
+void NetPacketRouterAckCommandMsg::operator delete(void *p, NetPacketRouterAckCommandMsgMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
 
 // BFME adds this connection-state query; the published ZH class declaration does not expose it.
 class BFMEConnectionManager : public ConnectionManager
@@ -895,7 +921,7 @@ void DisconnectManager::sendDisconnectCommand(Int slot, ConnectionManager *conMg
 	UnsignedInt disconnectFrame = getMaxDisconnectFrame();
 
 	// Need to do the NetDisconnectPlayerCommandMsg creation and sending here.
-	NetDisconnectPlayerCommandMsg *msg = newInstance(NetDisconnectPlayerCommandMsg);
+	NetDisconnectPlayerCommandMsg *msg = ::new NetDisconnectPlayerCommandMsg;
 	msg->setDisconnectSlot(slot);
 	msg->setDisconnectFrame(disconnectFrame);
 	msg->setPlayerID(conMgr->getLocalPlayerID());
