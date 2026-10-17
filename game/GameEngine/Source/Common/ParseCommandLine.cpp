@@ -23,13 +23,27 @@ struct ParseCommandLineGlobalData
 
 class ArchiveFile;
 
+// The incremental-link thunk at retail 0x00038B22 is the ledger's 5-byte row
+// ?j_00038b22@@YAXXZ (game/gen_small/thunks_027.cpp); its body at 0x0063960 is
+// the matched AsciiString-to-pointer map operator[].  The class below is this
+// TU's view of ArchiveFileSystem::m_archiveFileMap (+0x04): one-argument
+// operator[] over the AsciiString key.  Nothing defines a method spelled
+// insert() here -- the old name was an address-derived placeholder -- so the
+// call names the thunk the ledger owns.
+extern void j_00038b22();
+
 class BfmeSubMap3B3
 {
 public:
-	void **insert(void *key);
 	void *&operator[](void *key)
 	{
-		return *insert(key);
+		union
+		{
+			void (*raw)(void);
+			void *&(BfmeSubMap3B3::*typed)(void *);
+		} call;
+		call.raw = &j_00038b22;
+		return (this->*call.typed)(key);
 	}
 };
 
