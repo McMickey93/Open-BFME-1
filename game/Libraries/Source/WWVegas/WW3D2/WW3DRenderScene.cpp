@@ -137,11 +137,6 @@ public:
 	void Apply(void);
 };
 
-struct Rva00923880Owner
-{
-	void releaseStacks(void);
-};
-
 // The target RenderInfoClass footprint is 0x1b8 bytes; its local base is at
 // EBP-0x1d4 because the function keeps separate stack temporaries below the
 // reserved area.  The observed leading members retain their source names.
@@ -149,7 +144,7 @@ class RenderInfoClass
 {
 public:
 	RenderInfoClass(CameraClass &cam);
-	~RenderInfoClass(void) { reinterpret_cast<Rva00923880Owner *>(this)->releaseStacks(); }
+	~RenderInfoClass(void);	// retail 0x00923880
 	// The BFME field is a pointer-sized camera slot.  The constructor itself
 	// lives in RenderInfoClassConstructorBfme.cpp at retail 0x00923690.
 	CameraClass *Camera;

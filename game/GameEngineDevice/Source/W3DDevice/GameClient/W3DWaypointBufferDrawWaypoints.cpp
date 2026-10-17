@@ -85,17 +85,12 @@ private:
 	unsigned char m_unreconstructed_000[0x228];
 };
 
-struct Rva00923880Owner
-{
-	void releaseStacks(void);
-};
-
 // layout: RenderInfoClassConstructorBfme.cpp (retail 0x00923690), 0x1b8 bytes.
 class RenderInfoClass
 {
 public:
 	RenderInfoClass(CameraClass &cam);
-	~RenderInfoClass(void) { reinterpret_cast<Rva00923880Owner *>(this)->releaseStacks(); }
+	~RenderInfoClass(void);	// retail 0x00923880
 
 	CameraClass &Camera;
 	float fog_scale;

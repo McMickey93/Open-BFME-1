@@ -9225,6 +9225,7 @@ name,address,notes
 ??1RegistryClass@@QAE@XZ,0x009DC280,pinharvest x4 (body)
 ??1Render2DSentenceClass@@QAE@XZ,0x00887940,per-TU copy called by W3DGameWindow dtor
 ??1RenderDeviceDescClass@@QAE@XZ,0x009077B0
+??1RenderInfoClass@@QAE@XZ,0x00923880,RenderInfoClass dtor: matched WW3D::Render (0x008FE718) and W3DWaypointBuffer::drawWaypoints (0x00746CA1) call it on their RenderInfoClass locals and the WW3D::Render unwind funclet 0x00C5ABC0 jumps to it; its first loop is Pop_Material_Pass (0x009237C0) inlined; ledger row keeps opaque alias releaseStacks@Rva00923880Owner
 ??1RenderObjClass@@UAE@XZ,0x0091FC10,base dtor; derived from ~ParticleBufferClass call site
 ??1RepairDockUpdate@@MAE@XZ,0x00038BC2,destructor ILT to 0x002CEDC0
 ??1RepairDockUpdateModuleData@@UAE@XZ,0x0003CFB5,destructor ILT to 0x002CEF90
