@@ -1,11 +1,20 @@
 // ?buildGroundPath@Pathfinder@@IAEPAVPath@@PBUCoord3D@@PAVPathfindCell@@_NH@Z
-// partial score=0.9 date=2026-09-24
+// partial score=0.9743 date=2026-10-17
+// ?buildGroundPath@Pathfinder@@IAEPAVPath@@PBUCoord3D@@PAVPathfindCell@@_NH@Z
 // Open-BFME reconstruction of the BFME Pathfinder ground-path builder.
 // The surrounding layout follows the GPLv3 GeneralsMD reference tree; the
 // retail-specific path smoothing is reconstructed from the BFME body at RVA
 // 0x003E6B80 and its matched Pathfinder::findGroundPath caller.
 //
 // cl: /DNDEBUG /DWIN32 /MD /EHsc
+//
+// 2026-10-17 (claude-opus-5-5): snapLine and worldToCell visible as
+// never-inlined bodies (retail's pathfinder TU defines them beside this one)
+// let VC7.1 prove adjustedPosition does not escape: 96 -> 16 differing bytes.
+// Left: the order of the two squares under sqrt (+0xEC, retail squares dirX
+// first), the cross-product fxch (+0x133) and offset.x + adjusted.x load order
+// (+0x1E5); declaration order, operand order, dir struct, sqrt casts and the
+// Coord3D copy constructor do not move them.
 
 #include <math.h>
 
@@ -17,6 +26,43 @@ extern const Real g_bfmeDefaultBU;
 extern const Real g_bfmeK1253;
 
 class Pathfinder;
+
+struct ICoord2D
+{
+	Int x, y;
+};
+
+struct IRegion2D
+{
+	ICoord2D lo, hi;
+};
+
+enum PathfindLayerEnum
+{
+	LAYER_INVALID = 0,
+	LAYER_GROUND = 1
+};
+
+extern "C" __declspec(dllimport) double __cdecl floor( double );
+
+__forceinline long fast_float2long_round( float value )
+{
+	long result;
+	__asm {
+		fld [value]
+		fistp [result]
+	}
+	return result;
+}
+
+#define REAL_TO_INT_FLOOR(x) (fast_float2long_round((Real)floor((double)(x))))
+
+struct Rva003D61C0Vec
+{
+	Int a, b, c;
+};
+
+struct Rva003DE480Struct;
 
 class AI
 {
@@ -75,8 +121,27 @@ private:
 	char m_state[0x18];
 };
 
+struct Coord3DPlain
+{
+	float x, y, z;
+};
+
+class Rva003D61C0
+{
+public:
+	Rva003D61C0 &set(Int a, Int b, const Rva003D61C0Vec *p);
+
+	Int m_00;
+	Int m_04;
+	Coord3DPlain m_pos;
+};
+
 class Pathfinder
 {
+public:
+	__declspec(noinline) bool worldToCell(const Coord3D *worldPosition, ICoord2D *cellIndex);
+	Int iterateCellsAlongLine(const ICoord2D &startCell, const ICoord2D &destinationCell,
+		PathfindLayerEnum layer, Rva003DE480Struct *userData);
 protected:
 	Path *buildGroundPath(const Coord3D *fromPos, PathfindCell *goalCell,
 		bool center, Int pathDiameter);
@@ -84,12 +149,40 @@ protected:
 public:
 	void prependCells(Path *path, const Coord3D *fromPos,
 		PathfindCell *goalCell, bool center);
-	void snapLine(const Coord3D *from, Coord3D *to);
+	__declspec(noinline) void snapLine(const Coord3D *sourcePosition, Coord3D *destinationPosition);
 
-private:
-	char m_beforeFieldA0[0xa0];
+	char m_before14[0x14];
+	IRegion2D m_extent;
+	char m_beforeFieldA0[0xa0 - 0x24];
 	Real m_fieldA0;
 };
+
+inline bool Pathfinder::worldToCell(const Coord3D *worldPosition, ICoord2D *cellIndex)
+{
+	cellIndex->x = REAL_TO_INT_FLOOR(worldPosition->x/10);
+	cellIndex->y = REAL_TO_INT_FLOOR(worldPosition->y/10);
+	bool overflow = false;
+	if (cellIndex->x < m_extent.lo.x) {overflow = true; cellIndex->x = m_extent.lo.x;}
+	if (cellIndex->y < m_extent.lo.y) {overflow = true; cellIndex->y = m_extent.lo.y;}
+	if (cellIndex->x > m_extent.hi.x) {overflow = true; cellIndex->x = m_extent.hi.x;}
+	if (cellIndex->y > m_extent.hi.y) {overflow = true; cellIndex->y = m_extent.hi.y;}
+	return overflow;
+}
+
+inline void Pathfinder::snapLine(const Coord3D *sourcePosition, Coord3D *destinationPosition)
+{
+	Rva003D61C0 info;
+	info.set((Int)this, 4, (const Rva003D61C0Vec *)sourcePosition);
+	ICoord2D start;
+	worldToCell(sourcePosition, &start);
+	ICoord2D end;
+	worldToCell(destinationPosition, &end);
+	if (iterateCellsAlongLine(start, end, LAYER_GROUND, (Rva003DE480Struct *)&info)) {
+		destinationPosition->x = info.m_pos.x;
+		destinationPosition->y = info.m_pos.y;
+		destinationPosition->z = info.m_pos.z;
+	}
+}
 
 // ?buildGroundPath@Pathfinder@@IAEPAVPath@@PBUCoord3D@@PAVPathfindCell@@_NH@Z
 Path *Pathfinder::buildGroundPath(const Coord3D *fromPos,
