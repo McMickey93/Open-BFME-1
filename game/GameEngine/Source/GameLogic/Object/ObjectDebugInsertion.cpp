@@ -9,7 +9,13 @@ class Object;
 
 #include "ascii_string.h"
 
-AsciiString DescribeObject(const Object *object);
+// DescribeObject is called through ILT 0x0000D08A, the ledger's 5-byte row
+// ?j_0000d08a@@YAXXZ (game/gen_small/thunks_005.cpp), jmp to 0x001C4310, as
+// tools/callees.py 0x1c45e0 112 prints.  Nothing defines the pinned
+// ?DescribeObject@@YA?AVAsciiString@@PBVObject@@@Z, so the call names the thunk
+// through a function pointer cast that keeps the cdecl by-value return shape.
+void j_0000d08a();
+typedef AsciiString (*DescribeObjectFn)(const Object *object);
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/debug/debug_debug.h
 class Debug
@@ -35,6 +41,6 @@ public:
 // ??6@YAAAVDebug@@AAV0@PBVObject@@@Z
 Debug &operator<<(Debug &debug, const Object *object)
 {
-	debug << DescribeObject(object).str();
+	debug << ((DescribeObjectFn)&j_0000d08a)(object).str();
 	return debug;
 }
