@@ -54,7 +54,9 @@ public:
 	char m_gap0000[ 0xDCD ];
 	bool m_rvaDCD;
 };
-extern GlobalData *TheGlobalData;
+// retail 0x012ED5C8 (census 37f19b491b queue 35): the owned name there is
+// ?TheWritableGlobalData@@3PAVGlobalData@@A (data_rows.csv line 3).
+extern GlobalData *TheWritableGlobalData;
 
 struct Rva0022E150AIData
 {
@@ -122,7 +124,7 @@ public:
 Object *Rva0022E150::method( const ThingTemplate *tmplate, Rva0022E150Sink *sink, Object *creator, int unused, int arg )
 {
 	BitFlags< 86 > statusBits;
-	if( sink->slot68() && !TheGlobalData->m_rvaDCD
+	if( sink->slot68() && !TheWritableGlobalData->m_rvaDCD
 		&& !( tmplate->m_kindof[ 2 ] & 0x2000000 ) && !( tmplate->m_kindof[ 0 ] & 0x400 )
 		&& TheAI->m_aiData->m_rvaB7 )
 		statusBits.m_bits[ 1 ] |= 0x400000;
