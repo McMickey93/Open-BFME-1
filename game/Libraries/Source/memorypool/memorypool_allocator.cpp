@@ -26,6 +26,7 @@ public:
 	unsigned char check(void);
 	void setUsed(int used);
 	void *guardStart(void);
+	void rva008824E0(unsigned int size);
 private:
 	void *m_field00;
 	void *m_field04;
@@ -67,6 +68,23 @@ report:
 		g_bfmeRva0130EA10Owner.rva008836F0(
 			(unsigned char *)this + 0x0c, diagnostic, 0x1000);
 	return 1;
+}
+
+// Retail 0x008824E0 (104 bytes, __thiscall, ret 4): reset a block header to
+// an unused block of `size` payload bytes, refill both guard bands and, when
+// free-poisoning is on, poison the payload. Address-derived name.
+void Rva00882580Block::rva008824E0(unsigned int size)
+{
+	m_field00 = 0;
+	m_size08 = size;
+	if (Rva0130EA00GuardWords != 0)
+	{
+		unsigned int guardBytes = Rva0130EA00GuardWords * 4;
+		memset32((char *)this - guardBytes, 0x0BADF00D, guardBytes);
+		memset32((char *)this + m_size08 + 0x0c, 0x0BADF00D, guardBytes);
+	}
+	if (g_rva0130EA04 != 0)
+		memset32((char *)this + 0x0c, 0xDEADC0DE, m_size08);
 }
 
 void Rva00882580Block::setUsed(int used)
