@@ -28,10 +28,13 @@ class SphereClass
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2/seglinerenderer.h
 class SegLineRendererClass
 {
-public:
-	void Render(RenderInfoClass &, const Matrix3D &, unsigned int, Vector3 *,
-		const SphereClass &, Vector4 * = 0);
 };
+// SegLineRendererClass::Render at 0x00960A30 is linked as the gen-dump
+// ?d_00960a30@@YAXXZ, so the thiscall is reached through a member-pointer call
+// (the pattern the Apt callers of ?d_008cc940 use).
+extern void d_00960a30();
+typedef void (SegLineRendererClass::*SegLineRender)(RenderInfoClass &, const Matrix3D &, unsigned int,
+	Vector3 *, const SphereClass &, Vector4 *);
 
 template <class Type>
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib/simplevec.h
@@ -145,10 +148,12 @@ void StreakLineClass::Render_Seg_Line(RenderInfoClass &rinfo)
 	SphereClass boundingSphere;
 	Get_Obj_Space_Bounding_Sphere(boundingSphere);
 
-	LineRenderer.Render(
+	union { void (*fn)(); SegLineRender call; } render = { d_00960a30 };
+	(LineRenderer.*render.call)(
 		rinfo,
 		Transform,
 		PointLocations.ActiveCount,
 		PointLocations.Vector,
-		boundingSphere);
+		boundingSphere,
+		0);
 }
