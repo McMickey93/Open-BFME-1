@@ -24,9 +24,12 @@ struct BfmeOverridable
 };
 class Rva0039F0A0
 {
-public:
-    bool accepts(const void *thing, Player *player, Player *observer);
 };
+// The filter test is reached through ILT 0x0001B437, the ledger's 5-byte row
+// ?j_0001b437@@YAXXZ (symbols.csv pins ?accepts@Rva0039F0A0@@... there and
+// nothing defines it), through a raw pointer bridge that keeps the thiscall
+// shape.
+void j_0001b437();
 struct Rva2225E0Filter
 {
     bool accepts(Object *object, Player *player);
@@ -44,5 +47,7 @@ bool Rva2225E0Filter::accepts(Object *object, Player *player)
         walked = overrides->m_bfmeNextOverride->resolve();
     else
         walked = overrides;
-    return ((Rva0039F0A0 *)this)->accepts(walked, object->getControllingPlayer(), player);
+    union { void (*raw)(void); bool (Rva0039F0A0::*typed)(const void *, Player *, Player *); } test;
+    test.raw = &j_0001b437;
+    return (((Rva0039F0A0 *)this)->*test.typed)(walked, object->getControllingPlayer(), player);
 }
