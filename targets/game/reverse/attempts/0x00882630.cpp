@@ -1,5 +1,5 @@
 // ?rva00882630AddBucketBlocks@@YAXII@Z
-// partial score=0.9976 date=2026-10-17
+// partial score=1.0 date=2026-10-17
 
 namespace MemoryPool {
 
@@ -135,14 +135,15 @@ static __declspec(noinline) void rva00882630AddBucketBlocks(unsigned int index, 
     char *raw = mem;
     for (unsigned int i = 0; i != count; ++i) {
         Rva00882BA0Block *block = (Rva00882BA0Block *)(first + i * stride);
+        unsigned int *sizeField = &block->m_size08;
         block->m_field00 = 0;
-        block->m_size08 = blockSize;
+        *sizeField = blockSize;
         if (guardWords != 0) {
             memset32(raw, 0x0BADF00D, guardWords * 4);
-            memset32((char *)(block + 1) + block->m_size08, 0x0BADF00D, Rva0130EA00GuardWords * 4);
+            memset32((char *)(block + 1) + *sizeField, 0x0BADF00D, Rva0130EA00GuardWords * 4);
         }
         if (g_rva0130EA04 != 0)
-            memset32(block + 1, 0xDEADC0DE, block->m_size08);
+            memset32(block + 1, 0xDEADC0DE, *sizeField);
         block->m_field04 = g_Va0130E9D4[index];
         g_Va0130E9D4[index] = block;
         raw += stride;
@@ -188,8 +189,9 @@ void *MemoryPool::_Allocate(unsigned int size, MemoryPool::AllocType type)
     block->m_field00 = &((Rva00882BA0Block **)g_Va0130E9D0)[index];
     ((Rva00882BA0Block **)g_Va0130E9D0)[index] = block;
     block->m_size08 = size;
-    if (Rva0130EA00GuardWords != 0)
-        memset32((char *)(block + 1) + size, 0x0BADF00D, Rva0130EA00GuardWords * 4);
+    int guardWords = Rva0130EA00GuardWords;
+    if (guardWords != 0)
+        memset32((char *)(block + 1) + size, 0x0BADF00D, guardWords * 4);
     if (g_Va0130E9F8)
         memset(block + 1, 0, size);
     LeaveCriticalSection(g_Va0130E9D8);
