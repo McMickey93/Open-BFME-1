@@ -49,8 +49,7 @@ public: \
 	inline void *operator new(size_t s, ARGCLASS##MagicEnum e DECLARE_LITERALSTRING_ARG2) \
 	{ return MP_GLUE_ALLOCATE(ARGCLASS); } \
 public: \
-	inline void operator delete(void *p, ARGCLASS##MagicEnum e DECLARE_LITERALSTRING_ARG2) \
-	{ BfmePoolGlue::free(p); } \
+	void operator delete(void *p, ARGCLASS##MagicEnum e DECLARE_LITERALSTRING_ARG2); \
 protected: \
 	inline void *operator new(size_t s) { return ::operator new(s); } \
 	inline void operator delete(void *p) { ::operator delete(p); } \
@@ -60,6 +59,18 @@ public:
 
 #include "GameNetwork/NetCommandWrapperList.h"
 #include "GameNetwork/NetPacket.h"
+
+// Keep the separately verified placement-delete body available even though
+// processWrapper uses global allocation, as its retail unwind action proves.
+void NetCommandWrapperListNode::operator delete(void *p, NetCommandWrapperListNodeMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
+
+void NetCommandList::operator delete(void *p, NetCommandListMagicEnum)
+{
+	BfmePoolGlue::free(p);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////// NetCommandWrapperListNode ///////////////////////////////////////////////////////////////////
@@ -213,7 +224,7 @@ void NetCommandWrapperList::processWrapper(NetCommandRef *ref) {
 	}
 
 	if (matchingNode == NULL) {
-		matchingNode = newInstance(NetCommandWrapperListNode)(msg);
+		matchingNode = ::new NetCommandWrapperListNode(msg);
 		matchingNode->m_next = m_list;
 		m_list = matchingNode;
 	}
