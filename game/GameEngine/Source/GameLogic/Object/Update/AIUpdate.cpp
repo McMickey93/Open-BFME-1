@@ -1193,7 +1193,8 @@ const LocomotorTemplateVector* AIUpdateModuleData::findLocomotorTemplateVector(L
 		throw INIException(3, "Only one turret to a customer, for now");
 	}
 
-	TurretAIData* td = newInstance(TurretAIData);
+	// Retail's constructor-failure action uses global delete, without a pool tag.
+	TurretAIData* td = ::new TurretAIData;
 	ini->initFromINIMultiProc(td, td->buildFieldParse);
 	*(TurretAIData**)store = td;
 }
