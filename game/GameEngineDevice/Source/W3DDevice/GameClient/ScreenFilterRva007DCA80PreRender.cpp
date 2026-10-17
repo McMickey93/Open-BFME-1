@@ -9,7 +9,11 @@ class DX8Wrapper{public:static void Set_Render_Target(IDirect3DSurface8*,bool);s
 class GlobalData;
 extern GlobalData *TheWritableGlobalData;
 struct Settings{char pad[0xdbd];bool active;};
-void bfmeCopyCuSnap(void*,void*);
+// The snapshot copy is reached through ILT 0x0002D664, the ledger's 5-byte row
+// ?j_0002d664@@YAXXZ (symbols.csv pins ?bfmeCopyCuSnap@@YAXPAX0@Z there and
+// nothing defines it); the cdecl call casts the row's symbol to its shape.
+void j_0002d664();
+typedef void (*BfmeCopyCuSnapFn)(void*,void*);
 struct Snap{int mode,count;float a,b,c,d;};
 class Rva007DCA80{public:virtual bool preRender(bool&,int&);char pad0[0x14-4];float amount;int count;bool saved;char pad1[0x30-0x1d];bool valid;char pad2[3];char snap[0x18];IDirect3DSurface8*surface;};
 bool Rva007DCA80::preRender(bool&skip,int&mode){
@@ -17,7 +21,7 @@ bool Rva007DCA80::preRender(bool&skip,int&mode){
  float scale=18.0f/count;
  Snap s;s.mode=2;s.count=count*2;s.a=0.18f;s.b=0.06f*scale;s.c=4.5f;s.d=0.11f*scale;
  amount=0.8f;
- bfmeCopyCuSnap(snap,&s);
+ ((BfmeCopyCuSnapFn)j_0002d664)(snap,&s);
  saved=((Settings*)TheWritableGlobalData)->active;((Settings*)TheWritableGlobalData)->active=false;
  DX8Wrapper::Set_Render_Target(surface,true);
  Vector3 black;black.X=0;black.Y=0;black.Z=0;
