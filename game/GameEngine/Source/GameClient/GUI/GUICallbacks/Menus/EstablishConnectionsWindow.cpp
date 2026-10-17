@@ -183,12 +183,16 @@ static const char *qmperPlayerGadgetsToHide[] = { 0 };
 
 // Retail 0x004C8460 and 0x004C8490 (33 bytes each). Every call is inlined, but
 // VC7.1 still emits both statics with a private ABI that takes show in EDX.
-// The GameOptions helper compiles exact at 0x004C8460 but has no ledger row:
-// WOLMapSelectMenu.cpp owns the same mangled static name at 0x00503E80.
+// WOLMapSelectMenu.cpp owns the plain mangled name of ZH's second copy of the
+// GameOptions helper (0x00503E80), so this TU's copy takes the address twin
+// namespace (the ScriptActions findCave precedent).
+namespace Rva004C8460Twin {
 static void showGameSpyGameOptionsUnderlyingGUIElements( bool show )
 {
 	ShowUnderlyingGUIElements( show, layoutFilename, parentName, gadgetsToHide, perPlayerGadgetsToHide );
 }
+}
+using Rva004C8460Twin::showGameSpyGameOptionsUnderlyingGUIElements;
 
 static void showGameSpyQMUnderlyingGUIElements( bool show )
 {
