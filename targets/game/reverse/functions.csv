@@ -12709,7 +12709,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??_GSmartBombTargetHomingUpdate@@MAEPAXI@Z,,0x00287100,30,game/GameEngine/Source/GameLogic/Object/Update/SmartBombTargetHomingUpdateDestructor.cpp,matched,primary class vtable slot zero reaches this deleting destructor
 ??_GSmudgeManager@@UAEPAXI@Z,,0x005D44D0,30,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,
 ??_GSmudgeSet@@UAEPAXI@Z,,0x005D42F0,30,game/GameEngine/Source/GameClient/System/Smudge.cpp,matched,authentic scalar-deleting destructor; SmudgeSet vtable 0x0111017C slot 0 routes via ILT 0x0003E662 and matched constructor 0x005D4160 and destructor 0x005D4190 prove identity
-??_GSnapshot@@UAEPAXI@Z,,0x008E2260,31,game/Libraries/Source/WWVegas/WWMath/cullsys.cpp,matched,object-symbol=??_GCullSystemClass@@UAEPAXI@Z;C++ alias
 ??_GSortingIndexBufferClass@@UAEPAXI@Z,,0x0091D930,30,game/Libraries/Source/WWVegas/WW3D2/dx8indexbuffer.cpp,matched,
 ??_GSortingNodeStruct@@QAEPAXI@Z,,0x0093B830,30,game/Libraries/Source/WWVegas/WW3D2/sortingrenderer.cpp,matched,
 ??_GSortingVertexBufferClass@@MAEPAXI@Z,,0x0091F2D0,30,game/Libraries/Source/WWVegas/WW3D2/dx8vertexbuffer.cpp,matched,
