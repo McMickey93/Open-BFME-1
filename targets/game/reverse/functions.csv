@@ -38075,7 +38075,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_009d7de0@@YAXXZ,,0x009D7DE0,438,game/gen_asm/d_009cf9a0.asm,matched,gen-dump;ghidra=FUN_00dd7de0
 ?d_009d8f50@@YAXXZ,,0x009D8F50,314,game/gen_asm/d_009cf9a0.asm,matched,gen-dump;ghidra=FUN_00dd8f50
 ?d_009d9110@@YAXXZ,,0x009D9110,77,game/gen_asm/d_009cf9a0.asm,matched,gen-dump;ghidra=FUN_00dd9110
-?d_009d9160@@YAXXZ,,0x009D9160,26,game/gen_asm/d_009cf9a0.asm,matched,gen-dump;ghidra=FUN_00dd9160
 ?d_009d9d90@@YAXXZ,,0x009D9D90,5472,game/gen_asm/d_009d9a30.asm,matched,gen-dump;ghidra=FUN_00dd9d90
 ?d_009efd40@@YAXXZ,,0x009EFD40,504,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00defd40
 ?d_009eff50@@YAXXZ,,0x009EFF50,3186,game/gen_asm/d_009a4740.asm,matched,gen-dump;carved start=ghidra-start end=ret+int3 callers=0;ghidra=FUN_00deff50
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?rva005C65E0@@YAXPAVRva005C6400Owner@@PAVRva005C6400Owned@@@Z,,0x005C65E0,23,game/GameEngine/Source/Common/Rva005C6400SlotSetters.cpp,matched,file-static owned-pointer setter (+0xBC: delete old then store) with retail private ESI/EDI convention; no direct retail caller;model=claude-opus-5-5;host=app
 ?rva0058FE20@@YAPBVImage@@PAVDrawable@@@Z,,0x0058FE20,50,game/GameEngine/Source/GameClient/GUI/AptPalantirRva00594740.cpp,matched,file-static portrait of Drawable+0xFC object via Open2SelectPortrait143730(template; object) as the matched selectPortrait00596D40 loops do; drawable in EAX (private static convention); absent-from-retail caller;model=claude-opus-5-5;host=app
 ?strtrim@Rva0005D5B0Twin@@YAPADPAD@Z,,0x0005D5B0,88,game/Main/NextParam.cpp,matched,ZH WinMain.cpp static strtrim twin beside matched nextParam 0x0005D620; WWLib trim.cpp owns the plain name so twin namespace; buffer in EAX (private static convention); absent-from-retail caller;model=claude-opus-5-5;host=app
+?rva009D9160@@YAXHPAVRva009D9160Stream@@@Z,,0x009D9160,26,game/Libraries/Source/xfer/xfer_debug.cpp,matched,file-static tab-indent writer (stream slot +0x10 write of a one-char tab per level) with retail private EAX/ESI convention; no direct retail caller;model=claude-opus-5-5;host=app

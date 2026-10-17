@@ -60,3 +60,31 @@ XferSaveAsText *XferSaveAsText::XferRawBytes(const void *data, unsigned int leng
 
 	return this;
 }
+
+// Retail 0x009D9160 (26 B): a file-static indent writer that sends one tab per level to
+// the stream's virtual write (slot +0x10). Every retail use is inlined (no direct caller),
+// so it keeps an address-derived name; as a file-static it takes the level count in EAX
+// and the stream in ESI, retail's private convention.
+class Rva009D9160Stream
+{
+public:
+	virtual void slot00();
+	virtual void slot04();
+	virtual void slot08();
+	virtual void slot0C();
+	virtual void write(const char *text, int length);
+};
+
+// ?rva009D9160@@YAXHPAVRva009D9160Stream@@@Z
+static __declspec(noinline) void rva009D9160(int levels, Rva009D9160Stream *stream)
+{
+	for (; levels != 0; --levels)
+		stream->write("\t", 1);
+}
+
+// ?rva009D9160Caller@@YAXHPAVRva009D9160Stream@@@Z absent-from-retail TU-local caller that
+// keeps the static above alive.
+void rva009D9160Caller(int levels, Rva009D9160Stream *stream)
+{
+	rva009D9160(levels, stream);
+}
