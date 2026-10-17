@@ -1,19 +1,14 @@
 // Retail 008B91F0. Existing bfmeHandler1233 comparator callback identity.
 // 008B90F0 returns strcmp-style EAX: -1/0/+1 from tagged value arguments.
 // The two calls at 0x8B923E and 0x8B9257 reach retail 0x0089CEF0, whose ledger
-// row is the matched gen dump ?d_0089cef0@@YAXXZ (game/gen_asm/d_0089a830.asm);
-// no reader defines a method named bfmeFind1024 here.  The member call keeps its
-// thiscall shape through the raw pointer bridge and names the dump the ledger
-// owns, as tools/callees.py 0x8b91f0 308 prints for the callee.
+// row is the matched gen dump ?d_0089cef0@@YAXXZ (game/gen_asm/d_0089a830.asm),
+// as tools/callees.py 0x8b91f0 308 prints for the callee.  Nothing defines a
+// method named bfmeFind1024 here, so the calls name the dump through the raw
+// pointer bridge -- and the bridge sits at the call sites, not in a member, so
+// this object emits no body under the pinned placeholder name (one would be
+// judged against retail's 520-byte body at 0x0089CEF0 and charged as a loser).
 void d_0089cef0();
-class BfmeTab1024 {
-public:
-    int bfmeFind1024(int key) {
-        union { void (*raw)(); int (BfmeTab1024::*typed)(int); } call;
-        call.raw = &d_0089cef0;
-        return (this->*call.typed)(key);
-    }
-};
+class BfmeTab1024 {};
 extern "C" int __cdecl atoi(const char *);
 extern "C" int __cdecl compareValues008B90F0(unsigned *, unsigned *);
 struct BfmeBuf1233 { unsigned short refs, length; };
@@ -93,9 +88,11 @@ extern "C" int bfmeHandler1233(unsigned *a, unsigned *b) {
     Value008B91F0 *right = (Value008B91F0 *)(*b & ~1u);
     if ((left->flags & 0x3f) == 0x1b && !left->undefined() &&
         right->isType(0x1b)) {
-        b = (unsigned *)((BfmeTab1024 *)&left->field08)->bfmeFind1024((int)&g_bfmeStr1233);
+        union { void (*raw)(); int (BfmeTab1024::*typed)(int); } bfmeFind;
+        bfmeFind.raw = &d_0089cef0;
+        b = (unsigned *)(((BfmeTab1024 *)&left->field08)->*bfmeFind.typed)((int)&g_bfmeStr1233);
         if (!b) return 0;
-        a = (unsigned *)((BfmeTab1024 *)&right->field08)->bfmeFind1024((int)&g_bfmeStr1233);
+        a = (unsigned *)(((BfmeTab1024 *)&right->field08)->*bfmeFind.typed)((int)&g_bfmeStr1233);
         if (!a) return 0;
         return compareValues008B90F0((unsigned *)&b, (unsigned *)&a);
     }
