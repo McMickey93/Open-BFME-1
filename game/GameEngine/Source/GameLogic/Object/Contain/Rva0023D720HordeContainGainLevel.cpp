@@ -93,11 +93,16 @@ static inline BfmeGameLogic *bfmeGameLogic( void )
 	return (BfmeGameLogic *)TheGameLogic;
 }
 
+// The formation refresh at the end goes through ILT 0x0001798B, the ledger's
+// 5-byte row ?j_0001798b@@YAXXZ (game/gen_small/thunks_011.cpp; symbols.csv
+// pins ?bfmeRefreshFormation@BfmeHordeContainOwner@@QAEXXZ there).  Nothing
+// defines the pinned name, so the call names the thunk through a raw pointer
+// bridge that keeps the thiscall shape.
+void j_0001798b();
 class BfmeHordeContainOwner
 {
 public:
 	void bfmeRefreshMemberExperience( void );
-	void bfmeRefreshFormation( void );
 
 	char m_head[ 0x30 ];
 	BfmeMemberIndexNode *m_memberIndex;
@@ -157,5 +162,13 @@ void BfmeHordeContainOwner::bfmeRefreshMemberExperience( void )
 
 	++m_refreshCount;
 	if ( m_pendingRefresh == 0 )
-		bfmeRefreshView()->bfmeRefreshFormation();
+	{
+		union
+		{
+			void (*raw)( void );
+			void (BfmeHordeContainOwner::*typed)( void );
+		} refreshFormation;
+		refreshFormation.raw = &j_0001798b;
+		(bfmeRefreshView()->*refreshFormation.typed)();
+	}
 }
