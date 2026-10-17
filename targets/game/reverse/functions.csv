@@ -37594,7 +37594,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0058c920@@YAXXZ,,0x0058C920,216,game/gen_asm/d_0058b1f0.asm,matched,gen-dump;ghidra=FUN_0098c920
 ?d_0058d820@@YAXXZ,,0x0058D820,101,game/gen_asm/d_0058aec0.asm,matched,gen-dump;bounds=high
 ?d_0058e390@@YAXXZ,,0x0058E390,1810,game/gen_asm/d_0058b1f0.asm,matched,gen-dump;ghidra=FUN_0098e390
-?d_0058fe20@@YAXXZ,,0x0058FE20,50,game/gen_asm/d_0058aec0.asm,matched,gen-dump;bounds=high
 ?d_00593440@@YAXXZ,,0x00593440,482,game/gen_asm/d_0058b1f0.asm,matched,gen-dump;ghidra=FUN_00993440
 ?d_005936a0@@YAXXZ,,0x005936A0,584,game/gen_asm/d_0058b1f0.asm,matched,gen-dump;ghidra=FUN_009936a0
 ?d_00594fd0@@YAXXZ,,0x00594FD0,308,game/gen_asm/d_00593a30.asm,matched,gen-dump;ghidra=FUN_00994fd0
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?rva005C65A0@@YAXPAVRva005C6400Owner@@PAVRva005C6400Owned@@@Z,,0x005C65A0,23,game/GameEngine/Source/Common/Rva005C6400SlotSetters.cpp,matched,file-static owned-pointer setter (+0xB4: delete old then store) with retail private ESI/EDI convention; no direct retail caller;model=claude-opus-5-5;host=app
 ?rva005C65C0@@YAXPAVRva005C6400Owner@@PAVRva005C6400Owned@@@Z,,0x005C65C0,23,game/GameEngine/Source/Common/Rva005C6400SlotSetters.cpp,matched,file-static owned-pointer setter (+0xB8: delete old then store) with retail private ESI/EDI convention; no direct retail caller;model=claude-opus-5-5;host=app
 ?rva005C65E0@@YAXPAVRva005C6400Owner@@PAVRva005C6400Owned@@@Z,,0x005C65E0,23,game/GameEngine/Source/Common/Rva005C6400SlotSetters.cpp,matched,file-static owned-pointer setter (+0xBC: delete old then store) with retail private ESI/EDI convention; no direct retail caller;model=claude-opus-5-5;host=app
+?rva0058FE20@@YAPBVImage@@PAVDrawable@@@Z,,0x0058FE20,50,game/GameEngine/Source/GameClient/GUI/AptPalantirRva00594740.cpp,matched,file-static portrait of Drawable+0xFC object via Open2SelectPortrait143730(template; object) as the matched selectPortrait00596D40 loops do; drawable in EAX (private static convention); absent-from-retail caller;model=claude-opus-5-5;host=app

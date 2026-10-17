@@ -336,6 +336,21 @@ class Player;
 class Team { public: Player *getControllingPlayer() const; };
 class ImageCollection { public: const Image *findImageByName(const AsciiString &); };
 extern ImageCollection *TheMappedImageCollection;
+// RVA 0x0058FE20: file-static portrait of a drawable's object, the same
+// Open2SelectPortrait143730 call the selected-drawable loops below make; the
+// drawable arrives in EAX through VC7.1's private static convention.
+static const Image *rva0058FE20(Drawable *drawable)
+{
+ Object *object=drawable->getObject();
+ return Open2SelectPortrait143730((const Open2Template143730*)((Thing*)object)->getTemplate(),(const Open2Template143730*)object);
+}
+
+// absent-from-retail: TU-local caller that keeps the static above alive.
+const Image *rva0058FE20Caller(Drawable *drawable)
+{
+ return rva0058FE20(drawable);
+}
+
 // RVA 0x00596D40: one stack Object argument and ret 4; no receiver read.
 // The shared private-ABI iterator helpers above and matching portrait chooser
 // call establish the selected-drawable family. Unknown authentic function name.
