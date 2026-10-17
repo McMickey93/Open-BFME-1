@@ -20,7 +20,7 @@ static int checksLeftBeforeOnline;
 extern volatile unsigned char g_rva012F7178PatchCheckLayoutActive;
 static char *configBuffer;
 void Rva004C5490();
-void d_0062ea60();
+void Rva0062EA60StartOnline();
 
 enum GHTTPBool { GHTTPFalse, GHTTPTrue };
 enum GHTTPResult { GHTTPSuccess };
@@ -98,7 +98,7 @@ GHTTPBool __cdecl configHeadCallback(int request, GHTTPResult result, char *buff
                         configBuffer[fileLen - 1] = 0;
                         fclose(fp);
                         if (!checksLeftBeforeOnline)
-                            d_0062ea60();
+                            Rva0062EA60StartOnline();
                         return GHTTPTrue;
                     }
                 }

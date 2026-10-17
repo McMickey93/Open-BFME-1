@@ -81,7 +81,7 @@ extern GlobalData *TheWritableGlobalData;
 #define TheGlobalData ((const GlobalData *)TheWritableGlobalData)
 
 void Rva004C5490(void);		// ?Rva004C5490@@YAXXZ ReleaseWindowLayout(0) wrapper
-void d_0062ea60(void);		// ?d_0062ea60@@YAXXZ retail startOnline (dump)
+void Rva0062EA60StartOnline(void);	// matched retail body at 0x0062EA60 (Rva0062EA60StartOnline.cpp)
 
 static Bool checkingForPatchBeforeGameSpy = false;	// 0x012F7160
 static Int checksLeftBeforeOnline = 0;				// 0x012F7164
@@ -118,7 +118,7 @@ GHTTPBool configCallback( GHTTPRequest request, GHTTPResult result,
 		cantConnectBeforeOnline = true;
 		if (!checksLeftBeforeOnline)
 		{
-			d_0062ea60();
+			Rva0062EA60StartOnline();
 		}
 		return GHTTPTrue;
 	}
@@ -144,7 +144,7 @@ GHTTPBool configCallback( GHTTPRequest request, GHTTPResult result,
 	}
 
 	if (!checksLeftBeforeOnline)
-		d_0062ea60();
+		Rva0062EA60StartOnline();
 
 	return GHTTPTrue;
 }
