@@ -83,6 +83,13 @@ struct BfmeOwnerYD
 	ObjectID m_bfmeOwnerID;
 };
 
+// The step call in bfmeGoYD goes through ILT 0x00048D6A, the ledger's 5-byte
+// row ?j_00048d6a@@YAXXZ (game/gen_small/thunks_035.cpp), as tools/callees.py
+// 0x1fd5a0 60 prints.  Nothing defines the pinned
+// ?bfmeStepYD@BfmeThingYD@@QAEXXZ, so the call names the thunk through a raw
+// pointer bridge that keeps the thiscall shape.
+void j_00048d6a();
+
 class BfmeThingYD
 {
 public:
@@ -97,7 +104,6 @@ public:
 	virtual void bfmeSpareYDb1();
 	virtual void bfmeSpareYDb2();
 	virtual bool bfmeAskOneYD();
-	void bfmeStepYD();
 	void bfmeSetYD(int what);
 	void bfmeGoYD();
 	unsigned char m_bfmePrefix[4];
@@ -163,7 +169,13 @@ void BfmeThingYD::bfmeGoYD()
 		return;
 	if (!bfmeAskTwoYD())
 		return;
-	bfmeStepYD();
+	union
+	{
+		void (*raw)(void);
+		void (BfmeThingYD::*typed)();
+	} step;
+	step.raw = &j_00048d6a;
+	(this->*step.typed)();
 	bfmeSetYD(2);
 	m_bfmeFlag = false;
 	m_bfmeCount = 0;
