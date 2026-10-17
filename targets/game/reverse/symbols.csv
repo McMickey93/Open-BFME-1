@@ -10859,6 +10859,7 @@ name,address,notes
 ??_7RiderChangeContain@@6B@,0x00CACAF0,exact constructor 0x00229FB0 installs this dedicated vtable; slot zero ILT 0x000310AC reaches scalar wrapper 0x0022A510
 ??_7Rva000C8480Owner@@6B@,0x00C83CA4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x000C8480 calls; autopin
 ??_7Rva000E9A40@@6B@,0x00C84DF0,Open-BFME5 own vtable stored by the 0x000E9A40 destructor
+??_7Rva01117624Owner@@6B@,0x00D17624,own vtable 0x01117624 stored by the 0x0061DA30 constructor and the 0x0061E3E0 destructor (the only two .text bodies carrying it)
 ??_7Rva0014C850Store@@6B@,0x00C959D4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x0014C850 calls; autopin
 ??_7Rva001FC330MultiTailDtor@@6BRva00047C53MultiBase@@@,0x00CA40C4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x001FC330 calls; autopin
 ??_7Rva001FC330MultiTailDtor@@6BRva1FC330IfaceA@@@,0x00CA4108,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x001FC330 calls; autopin
@@ -91103,3 +91104,4 @@ _bfmeFormatText,0x009D6220,address-only compatibility pin for 10 frozen game/gen
 ?d_004cd780@@YAXXZ,0x004CD780,Address-only compatibility for withdrawn dump; native ?getFirstSelectablePlayer@@YAHPBVGameInfo@@H@Z body (game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/LanGameOptionsMenu.cpp); game/gen_asm/d_00499050.asm still calls this name
 ?d_004cd820@@YAXXZ,0x004CD820,Address-only compatibility for withdrawn dump; native ?handlePlayerTemplateSelection004CD820@@YAXH@Z body (game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/LanGameOptionsMenu.cpp); game/gen_asm/d_00499050.asm still calls this name
 _qsort,0x009F7D80,MSVCR71 import stub (jmp dword ptr [0x0135946C]); the retail import table names IAT slot 0x0135946C MSVCR71.dll qsort. Called as (base count width compare) cdecl by the Apt array sort 0x008B9930.
+?d_0061e3e0@@YAXXZ,0x0061E3E0,Address-only compatibility for withdrawn dump; native ??1Rva01117624Owner@@QAE@XZ body (game/GameEngine/Source/GameLogic/LivingWorld/Rva0061DA30BaseDestructor.cpp); BfmeSinkAMDrop.cpp and BfmeConv2126.cpp still call this name
