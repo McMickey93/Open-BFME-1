@@ -4,6 +4,8 @@
 // line, measures it through the line's DisplayString and wraps via 0x0048F8C0.
 // Body at 0x0048F8C0 (__thiscall, RET 4): moves the finished line into the
 // owner's entry list.
+// Body at 0x0048F5C0 (__thiscall, RET 8): the entry constructor, which splits
+// the text into width-limited segments.
 
 #define _STLP_NO_EXCEPTIONS 1
 #include <vector>
@@ -11,8 +13,11 @@
 #include <wchar.h>
 #include "string_base.h"
 template<> inline bool StringBase<unsigned short>::isEmpty() const { return !m_data || m_data->length == 0; }
+template<> inline bool StringBase<unsigned short>::isNotEmpty() const { return getLength() != 0; }
+template<> inline unsigned short StringBase<unsigned short>::getCharAt(int index) const { return m_data ? peek()[index] : 0; }
 #include "unicode_string.h"
 
+inline UnicodeString::UnicodeString() : m_text(0) {}
 inline UnicodeString::UnicodeString(const UnicodeString &s) { ((StringBase<unsigned short>*)this)->StringBase<unsigned short>::StringBase(*(const StringBase<unsigned short>*)&s); }
 inline UnicodeString::~UnicodeString() { ((StringBase<unsigned short>*)this)->~StringBase<unsigned short>(); }
 inline UnicodeString &UnicodeString::operator=(const UnicodeString &s) { ((StringBase<unsigned short>*)this)->set(*(const StringBase<unsigned short>*)&s); return *this; }
@@ -35,6 +40,33 @@ public:
 	virtual void setWordWrapCentered(bool);
 	virtual void slot28(); virtual void slot2C(); virtual void slot30(); virtual void slot34(); virtual void slot38();
 	virtual void getSize(int *width, int *height);
+	virtual void slot40(); virtual void slot44(); virtual void slot48(); virtual void slot4C(); virtual void slot50(); virtual void slot54();
+	virtual void slot58(wchar_t c);
+};
+
+// Local view of the DisplayStringManager at 0x012F12CC (the slots
+// game/GameEngine/Source/GameClient/GUI/IngameNoticeDisplay.cpp also calls).
+class DisplayStringManager;
+extern DisplayStringManager *TheDisplayStringManager;
+class Rva0048F5C0StringManagerView {
+public:
+	virtual void f0(); virtual void f1(); virtual void f2(); virtual void f3();
+	virtual void f4(); virtual void f5(); virtual void f6(); virtual void f7();
+	virtual void f8();
+	virtual DisplayString *create(void);
+	virtual void release(DisplayString *string);
+};
+
+// The matched 0x0048EC80 constructor (IngameNoticeDisplay.cpp); retail
+// allocates 0x18 bytes for it, of which that TU models the first 0x10.
+class Rva0048EC80UnicodeString;
+struct Rva0048EC80Descriptor;
+class Rva0048EC80ResourceOwner {
+public:
+	Rva0048EC80ResourceOwner(const Rva0048EC80UnicodeString &text,
+		Rva0048EC80Descriptor *descriptor, int identifier);
+private:
+	char m_unmodelled000[0x18];
 };
 
 // A line record: +0x00 width limit, +0x04 x offset, +0x08 offset list,
@@ -48,7 +80,12 @@ struct Rva0048FAC0Line {
 	int m_width;
 };
 
-struct Rva0048F5C0Context;
+// Owner +0x08 context: +0x04 font, vtable slot 0x0C the width limit.
+struct Rva0048F5C0Context {
+	virtual void slot00(); virtual void slot04(); virtual void slot08();
+	virtual unsigned int slot0C();
+	GameFont *m_font;
+};
 
 // 0x14-byte entry built from a finished line's text (constructor 0x0048F5C0
 // through ILT 0x0002FF63).
@@ -56,8 +93,49 @@ class Rva0048F5C0Entry {
 public:
 	Rva0048F5C0Entry(const UnicodeString &text, Rva0048F5C0Context *context);
 private:
-	char m_unmodelled000[0x14];
+	_STL::vector<Rva0048EC80ResourceOwner *> m_segments;	// +0x00
+	char m_unmodelled00C[0x08];
 };
+
+// Measures the text one character at a time and cuts a new segment each
+// time the width passes the context's limit.
+Rva0048F5C0Entry::Rva0048F5C0Entry(const UnicodeString &text, Rva0048F5C0Context *context)
+{
+	int length = text.getLength();
+	if (length == 0)
+		return;
+	DisplayString *measure = ((Rva0048F5C0StringManagerView *)TheDisplayStringManager)->create();
+	GameFont *font = context->m_font;
+	measure->setFont(font);
+	UnicodeString segment;
+	unsigned int maxWidth = context->slot0C();
+	int width = maxWidth;
+	int index = 0;
+	while (length > 0) {
+		wchar_t c = text.getCharAt(index++);
+		measure->slot58(c);
+		int textWidth, textHeight;
+		measure->getSize(&textWidth, &textHeight);
+		if (textWidth > maxWidth) {
+			m_segments.push_back(new Rva0048EC80ResourceOwner(
+				*(const Rva0048EC80UnicodeString *)&segment,
+				(Rva0048EC80Descriptor *)context, width));
+			width = textWidth - width;
+			((StringBase<unsigned short> *)&segment)->clear();
+			segment += c;
+			measure->setText(segment);
+		} else {
+			width = textWidth;
+			segment += c;
+		}
+		--length;
+	}
+	if (segment.isNotEmpty())
+		m_segments.push_back(new Rva0048EC80ResourceOwner(
+			*(const Rva0048EC80UnicodeString *)&segment,
+			(Rva0048EC80Descriptor *)context, width));
+	((Rva0048F5C0StringManagerView *)TheDisplayStringManager)->release(measure);
+}
 
 class Rva0048FAC0Owner {
 public:
