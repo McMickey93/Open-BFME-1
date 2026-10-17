@@ -30,7 +30,6 @@ class Rva003BFAB0
 {
 public:
 	void run( bool flag );
-	void finish();
 
 private:
 	char m_pad00[ 0x28 ];
@@ -48,6 +47,12 @@ private:
 	int m_atCC;
 };
 
+// finish() is reached through ILT 0x0000A754, the ledger's 5-byte row
+// ?j_0000a754@@YAXXZ (symbols.csv pins ?finish@Rva003BFAB0@@QAEXXZ there and
+// nothing defines it), through a raw pointer bridge that keeps the thiscall
+// shape.
+void j_0000a754();
+
 // ?run@Rva003BFAB0@@QAEX_N@Z
 void Rva003BFAB0::run( bool flag )
 {
@@ -64,6 +69,8 @@ void Rva003BFAB0::run( bool flag )
 	if( ok )
 	{
 		((Glo012F1024Type *)TheLivingWorldCampaignManager)->step();
-		finish();
+		union { void (*raw)( void ); void (Rva003BFAB0::*typed)( void ); } finish;
+		finish.raw = &j_0000a754;
+		(this->*finish.typed)();
 	}
 }
