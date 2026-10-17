@@ -32,9 +32,13 @@ char *BfmeThing933A::bfmeGo933A()
 
 class BfmeTail933B
 {
-public:
-	void bfmeTail933B();
 };
+
+// The tail call goes through ILT 0x0003436A, the ledger's 5-byte row
+// ?j_0003436a@@YAXXZ (symbols.csv pins ?bfmeTail933B@BfmeTail933B@@QAEXXZ there
+// and nothing defines it), through a raw pointer bridge that keeps the
+// thiscall shape.
+void j_0003436a();
 
 struct BfmeB933B
 {
@@ -60,7 +64,9 @@ void BfmeThing933B::bfmeGo933B()
 {
 	BfmeA933B *a = m_bfmeA;
 	BfmeB933B *b = a->m_bfmeB;
-	b->m_bfmeTail.bfmeTail933B();
+	union { void (*raw)(void); void (BfmeTail933B::*typed)(void); } tail;
+	tail.raw = &j_0003436a;
+	(b->m_bfmeTail.*tail.typed)();
 }
 
 // TU-local view of the GameLogic singleton's dword at +0x3C.
