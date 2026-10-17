@@ -73,14 +73,20 @@ public:
 };
 
 extern LANAPI *TheLAN;
-void writeLANGameInfo(const LANGameInfo *game, char *buffer, unsigned int size);
+// The serializer call goes through ILT 0x00041579, the ledger's 5-byte row
+// ?j_00041579@@YAXXZ (game/gen_small/thunks_031.cpp), as tools/callees.py
+// 0x68e630 112 prints.  Nothing defines the pinned
+// ?writeLANGameInfo@@YAXPBVLANGameInfo@@PADI@Z, so the call names the thunk
+// through a function pointer cast that keeps the three-argument cdecl shape.
+void j_00041579();
+typedef void (*WriteLANGameInfoFn)(const LANGameInfo *game, char *buffer, unsigned int size);
 
 void fillCurrentLANGameInfo(char *buffer, unsigned int size)
 {
 	if (TheLAN->GetMyGame() != 0) {
 		LANGameInfo *game = TheLAN->GetMyGame();
 		if (game->m_hasLocalPlayer && game->m_slots[0].isLocalPlayer()) {
-			writeLANGameInfo(TheLAN->GetMyGame(), buffer, size);
+			((WriteLANGameInfoFn)&j_00041579)(TheLAN->GetMyGame(), buffer, size);
 			return;
 		}
 	}
