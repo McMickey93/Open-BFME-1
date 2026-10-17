@@ -10,9 +10,12 @@ struct BfmeShadowEdge
 
 class BfmeShadowEdgeSource
 {
-public:
-	BfmeShadowEdge *getEdges(int *count);
 };
+// The edge accessor at 0x00928820 is linked as the gen-dump ?d_00928820@@YAXXZ,
+// so the thiscall is reached through a member-pointer call (the pattern the
+// Apt callers of ?d_008cc940 use).
+extern void d_00928820();
+typedef BfmeShadowEdge *(BfmeShadowEdgeSource::*BfmeShadowGetEdges)(int *count);
 
 struct BfmeShadowMesh
 {
@@ -47,7 +50,8 @@ void BfmeVolumetricShadowSilhouette::buildEdges()
 	m_edgeCount = 0;
 
 	BfmeShadowEdgeSource *edgeSource = mesh->edgeSource;
-	BfmeShadowEdge *source = edgeSource->getEdges(sourceCountPtr);
+	union { void (*fn)(); BfmeShadowGetEdges call; } getEdges = { d_00928820 };
+	BfmeShadowEdge *source = (edgeSource->*getEdges.call)(sourceCountPtr);
 	while (sourceCount != 0)
 	{
 		unsigned char state0 = m_faceStates[source->face0];
