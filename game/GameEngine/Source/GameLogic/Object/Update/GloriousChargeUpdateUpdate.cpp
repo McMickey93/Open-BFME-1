@@ -137,8 +137,18 @@ sleep:
 
 // Extend-base override, a bare tail jump to the SpecialAbilityUpdate ILT
 // 0x0002FE05. Retail 0x0025E820; ilt_oracle CONFIRMS the protected-virtual
-// name exact at its ILT 0x0001B1C6.
+// name exact at its ILT 0x0001B1C6.  The base body is reached through that
+// ILT, the ledger's row ?j_0002fe05@@YAXXZ (symbols.csv pins the base name
+// there and nothing defines it), through a raw pointer bridge that keeps the
+// thiscall shape.
+void j_0002fe05();
 bool GloriousChargeUpdate::continuePreparation()
 {
-    return SpecialAbilityUpdate::continuePreparation();
+    union
+    {
+        void (*raw)(void);
+        bool (GloriousChargeUpdate::*typed)(void);
+    } base;
+    base.raw = &j_0002fe05;
+    return (this->*base.typed)();
 }
