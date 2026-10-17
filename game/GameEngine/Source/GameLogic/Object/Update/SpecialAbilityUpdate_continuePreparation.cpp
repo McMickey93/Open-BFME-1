@@ -1,4 +1,4 @@
-// ?continuePreparation@SpecialAbilityUpdate@@IAE_NXZ
+// ?continuePreparation@SpecialAbilityUpdate@@MAE_NXZ
 // BFME continuePreparation twin, with current ledger-proven helper declarations.
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
@@ -282,10 +282,11 @@ public:
 	}
 
 protected:
-	Bool continuePreparation();
+	// Protected virtual: ilt_oracle CONFIRMS the MAE spelling at ILT 0x0002FE05
+	// and CONTRADICTS the earlier non-virtual IAE one.
+	virtual Bool continuePreparation();
 
 private:
-	void *m_vtable;
 	SpecialAbilityUpdateModuleData *m_moduleData;
 	Object *m_object;
 	unsigned char m_prefix00c[0x9c];

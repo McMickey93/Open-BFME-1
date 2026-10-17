@@ -24,7 +24,7 @@ class SpecialAbilityUpdate
 	friend class Gen_002983b0;
 
 protected:
-	bool continuePreparation();
+	virtual bool continuePreparation();
 };
 
 class Gen_00267680
@@ -73,7 +73,7 @@ bool Gen_00267680::bfmeAllows(void)
 	if (m_bfme0024 == 2)
 		return false;
 
-	return reinterpret_cast<SpecialAbilityUpdate *>(this)->continuePreparation();
+	return reinterpret_cast<SpecialAbilityUpdate *>(this)->SpecialAbilityUpdate::continuePreparation();
 }
 
 // ?bfmeAllows@Gen_0026c0d0@@QAE_NXZ
@@ -82,7 +82,7 @@ bool Gen_0026c0d0::bfmeAllows(void)
 	if (m_bfme0024 == 2)
 		return false;
 
-	return reinterpret_cast<SpecialAbilityUpdate *>(this)->continuePreparation();
+	return reinterpret_cast<SpecialAbilityUpdate *>(this)->SpecialAbilityUpdate::continuePreparation();
 }
 
 // ?bfmeAllows@Gen_0026c5d0@@QAE_NXZ
@@ -91,7 +91,7 @@ bool Gen_0026c5d0::bfmeAllows(void)
 	if (m_bfme0024 == 2)
 		return false;
 
-	return reinterpret_cast<SpecialAbilityUpdate *>(this)->continuePreparation();
+	return reinterpret_cast<SpecialAbilityUpdate *>(this)->SpecialAbilityUpdate::continuePreparation();
 }
 
 // ?bfmeAllows@Gen_002983b0@@QAE_NXZ
@@ -100,5 +100,5 @@ bool Gen_002983b0::bfmeAllows(void)
 	if (m_bfme0024 == 2)
 		return false;
 
-	return reinterpret_cast<SpecialAbilityUpdate *>(this)->continuePreparation();
+	return reinterpret_cast<SpecialAbilityUpdate *>(this)->SpecialAbilityUpdate::continuePreparation();
 }

@@ -2732,7 +2732,6 @@ functions	0x002A6520	?getClassMemoryPool@SpecialAbilityUpdate@@CAPAVMemoryPool@@
 functions	0x002A65C0	?isWithinAbilityAbortRange@SpecialAbilityUpdate@@QAE_NXZ
 functions	0x002A68F0	?validateSpecialObjects@SpecialAbilityUpdate@@QAEXXZ
 functions	0x002A7010	?initLaser@SpecialAbilityUpdate@@QAE_NPAVObject@@0@Z
-functions	0x002A71E0	?continuePreparation@SpecialAbilityUpdate@@IAE_NXZ
 functions	0x002A7540	?createSpecialObject@SpecialAbilityUpdate@@QAEPAVObject@@XZ
 functions	0x002A7670	?endPreparation@SpecialAbilityUpdate@@QAEXXZ
 functions	0x002A79B0	?isWithinStartAbilityRange@SpecialAbilityUpdate@@QAEEXZ

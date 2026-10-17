@@ -3,7 +3,7 @@ class BfmeThingDSB;
 class SpecialAbilityUpdate
 {
 protected:
-	bool continuePreparation();
+	virtual bool continuePreparation();
 	friend class BfmeThingDSB;
 };
 
@@ -19,5 +19,5 @@ bool BfmeThingDSB::bfmeGoDSB()
 {
 	if (m_bfmeFlag)
 		return false;
-	return ((SpecialAbilityUpdate *)this)->continuePreparation();
+	return ((SpecialAbilityUpdate *)this)->SpecialAbilityUpdate::continuePreparation();
 }
