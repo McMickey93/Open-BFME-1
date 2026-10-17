@@ -25,11 +25,16 @@ public:
 class BfmeA1231
 {
 public:
-	void bfmeEmit1231(void *a1, void *a2, BfmeE1231 *a3, BfmeE1231 *a4, void *a5, int a6);
 	int m_bfme00;
 	int m_bfme04;
 	BfmeE1231 **m_bfme08;
 };
+
+// The emitter at 0x008CF5A0 is linked as the gen-dump ?d_008cf5a0@@YAXXZ, so
+// the thiscall is reached through a member-pointer call (the pattern the Apt
+// callers of ?d_008cc940 use).
+extern void d_008cf5a0();
+typedef void (BfmeA1231::*BfmeEmit1231Fn)(void *a1, void *a2, BfmeE1231 *a3, BfmeE1231 *a4, void *a5, int a6);
 
 void bfmeGo1231(BfmeA1231 *a, BfmeB1231 *b)
 {
@@ -44,7 +49,8 @@ void bfmeGo1231(BfmeA1231 *a, BfmeB1231 *b)
 	e2 = a->m_bfme08[a->m_bfme00 - 2];
 	e3 = a->m_bfme08[a->m_bfme00 - 3];
 	v = (void *)((AptValue *)e1)->toInteger();
-	a->bfmeEmit1231(b->m_bfme04, b->m_bfme08, e3, e2, v, 0);
+	union { void (*fn)(); BfmeEmit1231Fn call; } emit = { d_008cf5a0 };
+	(a->*emit.call)(b->m_bfme04, b->m_bfme08, e3, e2, v, 0);
 	for (i = 1; i <= 3; ++i) {
 		e = a->m_bfme08[a->m_bfme00 - i];
 		if (!((unsigned char)(e->m_bfme04 >> 30) & 1))
