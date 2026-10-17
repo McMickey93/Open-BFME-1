@@ -34,15 +34,17 @@ class W3DTerrainBackground
 public:
 	void setFlip(WorldHeightMap *htMap, int extra);
 
-protected:
-	void setFlipRecursive(int xOffset, int yOffset, int width, int extra);
-
 private:
 	unsigned char m_pad00[0x48];
 	int m_width;
 	WorldHeightMap *m_map;
 	bool m_initialized;
 };
+
+// setFlipRecursive is reached through ILT 0x0002E735, the ledger's 5-byte row
+// ?j_0002e735@@YAXXZ (symbols.csv pins the method name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_0002e735();
 
 void W3DTerrainBackground::setFlip(WorldHeightMap *htMap, int extra)
 {
@@ -54,5 +56,7 @@ void W3DTerrainBackground::setFlip(WorldHeightMap *htMap, int extra)
 	}
 	if (!m_initialized)
 		return;
-	setFlipRecursive(0, 0, m_width, extra);
+	union { void (*raw)(void); void (W3DTerrainBackground::*typed)(int, int, int, int); } setFlipRecursive;
+	setFlipRecursive.raw = &j_0002e735;
+	(this->*setFlipRecursive.typed)(0, 0, m_width, extra);
 }
