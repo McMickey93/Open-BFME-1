@@ -1,15 +1,10 @@
 // ?locoUpdate_moveTowardsAngle@Locomotor@@QAEXPAVObject@@M@Z
-// partial score=0.5625 date=2026-09-28
+// partial score=0.9779 date=2026-10-18
 // ?locoUpdate_moveTowardsAngle@Locomotor@@QAEXPAVObject@@M@Z
-// Reworked from bank: retail uses template+0x80 as a cosine angle threshold,
-// not a movement speed. m_minSpeed was disproved by the two Cos calls.
-// cl: /Igame/Libraries/Source/WWVegas/WWMath /O2 /GR- /DNDEBUG /MD /EHsc-
-// BFME Locomotor angle-update view.  The retail object layout is the one
-// recovered by the matched 0x001BC820 movement dispatcher; this TU keeps the
-// angle method's BFME fields local instead of importing the ZH Locomotor ABI.
-
-#include <string.h>
-#pragma intrinsic(memcpy)
+// partial score=0.978 date=2026-10-18 (12 non-reloc diffs: goalAngle EDI load scheduled before the position copy in the minSpeed>0 branch)
+// ?locoUpdate_moveTowardsAngle@Locomotor@@QAEXPAVObject@@M@Z
+// cl: /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /O2 /GR- /DNDEBUG /MD /EHsc-
+// Retail 0x001BCE20 (542 B, thiscall ret 8): BFME Locomotor::locoUpdate_moveTowardsAngle; ZH spelling with landed callees. symbols.csv pins this address as ?locoUpdate2@Rva002C12E0Locomotor@@QAEXPAX0@Z (same bytes measured under that spelling).
 
 typedef unsigned int UnsignedInt;
 typedef float Real;
@@ -20,18 +15,35 @@ inline Coord3D::Coord3D() {}
 inline Coord3D::~Coord3D() {}
 inline Coord3D::Coord3D(const Coord3D &that) { x=that.x; y=that.y; z=that.z; }
 
-class Matrix3D
-{
-public:
-	Real cell[12];
-};
+#include "matrix3d.h"
 
 class Overridable
 {
 public:
 	void *m_vtable;
 	Overridable *m_nextOverride;
-	Overridable *getFinalOverride();
+	const Overridable *getFinalOverride() const
+	{
+		if (m_nextOverride)
+			return m_nextOverride->getFinalOverride();
+		return this;
+	}
+};
+
+template <class T> class OVERRIDE
+{
+public:
+	const T *operator->() const { return getFinalOverride(); }
+	operator const T *() const { return getFinalOverride(); }
+	const T *getFinalOverride() const
+	{
+		if (!m_overridable)
+			return 0;
+		return (T *)m_overridable->getFinalOverride();
+	}
+
+private:
+	T *m_overridable;
 };
 
 class LocomotorTemplate : public Overridable
@@ -110,6 +122,7 @@ public:
 	void *m_vtable;
 	char m_pad004[0x08 - 0x04];
 	Matrix3D m_transform;
+	const Matrix3D *getTransformMatrix() const { return &m_transform; }
 	void setTransformMatrix(const Matrix3D *matrix);
 };
 
@@ -132,25 +145,32 @@ public:
 	void apply(Real angle);
 };
 
-class Rva00170120Object;
+struct Rva001B59ScaleContext;
 
-class Rva00170120Locomotor
+class Rva001B59FloatView
 {
 public:
-	Real check(Rva00170120Object *object);
+	float getScaledFirst(const Rva001B59ScaleContext *context) const;
 };
 
 class BfmeD1054;
 class BfmeC1054
 {
 public:
-	void bfmeGo1054C(BfmeD1054 *object, const Coord3D *a, int b);
+	void bfmeGo1054C(BfmeD1054 *p, int b, int c);
+};
+
+class Rva001BC820Locomotor
+{
+public:
+	void locoUpdate_moveTowardsPosition(Object *obj, const Coord3D &goalPos,
+		Real onPathDistToGoal, Real desiredSpeed, Bool *blocked);
 };
 
 class Rva001BA1C0Handler
 {
 public:
-	void behavior(Object *object, const Coord3D *position);
+	Bool behavior(void *object, const Coord3D *position);
 };
 
 Real normalizeAngle(Real angle);
@@ -160,86 +180,72 @@ Real Sin(Real angle);
 class Locomotor
 {
 public:
-	void locoUpdate_moveTowardsAngle(Object *object, Real goalAngle);
-	void locoUpdate_moveTowardsPosition(Object *object, const Coord3D &goalPos,
-		Real onPathDistToGoal, Real desiredSpeed, Bool *blocked);
+	void locoUpdate_moveTowardsAngle(Object *obj, Real goalAngle);
 
 private:
+	enum LocoFlag { MAINTAIN_POS_IS_VALID = 2 };
+	void setFlag(LocoFlag f, Bool set)
+	{
+		if (set)
+			m_flags |= (1 << f);
+		else
+			m_flags &= ~(1 << f);
+	}
+
 	void *m_vtable;
-	LocomotorTemplate *m_template;
+	OVERRIDE<LocomotorTemplate> m_template;
 	char m_pad008[0x40 - 0x08];
 	UnsignedInt m_flags;
 	char m_pad044[0x64 - 0x44];
 	Matrix3D m_savedTransform;
 };
 
-void Locomotor::locoUpdate_moveTowardsAngle(Object *object, Real goalAngle)
+void Locomotor::locoUpdate_moveTowardsAngle(Object *obj, Real goalAngle)
 {
-	m_flags &= ~4u;
-	if (object == 0)
-		return;
-	if (m_template == 0)
-		return;
-	Locomotor *self = this;
-	Object *obj = object;
+	setFlag(MAINTAIN_POS_IS_VALID, false);
 
-	LocomotorTemplate *resolved = self->m_template;
-	if (resolved->m_nextOverride) resolved = (LocomotorTemplate*)resolved->m_nextOverride->getFinalOverride();
-	if (resolved == 0)
+	if (obj == 0 || m_template == 0)
 		return;
 
 	PhysicsBehavior *physics = obj->m_physics;
 	if (physics != 0 && physics->m_stunned != 0)
 		return;
 
-	Matrix3D *saved = &self->m_savedTransform;
-	const Matrix3D *live = &obj->m_transform;
-	memcpy(&self->m_savedTransform.cell[0], &live->cell[0], sizeof(Real));
-	memcpy(&self->m_savedTransform.cell[1], &live->cell[1], sizeof(Real));
-	memcpy(&self->m_savedTransform.cell[2], &live->cell[2], sizeof(Real));
-	memcpy(&self->m_savedTransform.cell[3], &live->cell[3], sizeof(Real));
-	memcpy(&saved->cell[4], &live->cell[4], sizeof(Real));
-	memcpy(&saved->cell[5], &live->cell[5], sizeof(Real));
-	memcpy(&saved->cell[6], &live->cell[6], sizeof(Real));
-	memcpy(&saved->cell[7], &live->cell[7], sizeof(Real));
-	memcpy(&saved->cell[8], &live->cell[8], sizeof(Real));
-	memcpy(&saved->cell[9], &live->cell[9], sizeof(Real));
-	memcpy(&saved->cell[10], &live->cell[10], sizeof(Real));
-	memcpy(&saved->cell[11], &live->cell[11], sizeof(Real));
+	m_savedTransform = *obj->getTransformMatrix();
 
 	Real delta = normalizeAngle(goalAngle - obj->getAngle());
-	LocomotorTemplate *next = self->m_template;
-	if (next && next->m_nextOverride) next = (LocomotorTemplate*)next->m_nextOverride->getFinalOverride();
-	Real angleThreshold = next->m_angleThreshold001BCE20;
+	Real angleThreshold = m_template->m_angleThreshold001BCE20;
 	Real cosDelta = Cos(delta);
-	if (Cos(angleThreshold) > cosDelta) {
-	ObjectModule *module = obj->m_module;
-	MotionNode *motion = module != 0 ? (MotionNode *)module->getMotion() : 0;
-	if (motion != 0)
+	if (Cos(angleThreshold) > cosDelta)
 	{
-		motion->beforeUpdate();
-		((Rva001B4A50Locomotor *)self)->apply(goalAngle);
-		obj->setTransformMatrix(saved);
-		motion->afterUpdate();
-	}
-	}
-	Real scale = ((Rva00170120Locomotor *)self)->check((Rva00170120Object *)obj);
-		if (scale > 0.0f)
+		ObjectModule *module = obj->m_module;
+		MotionNode *motion = module != 0 ? (MotionNode *)module->getMotion() : 0;
+		if (motion != 0)
 		{
-			Coord3D desired = *obj->getPosition();
-			desired.x += Cos(goalAngle) * scale * 2.0f;
-			desired.y += Sin(goalAngle) * scale * 2.0f;
-			Bool blocked;
-			self->locoUpdate_moveTowardsPosition(obj, desired, 99999.0f,
-				scale, &blocked);
-			return;
+			motion->beforeUpdate();
+			((Rva001B4A50Locomotor *)this)->apply(goalAngle);
+			obj->setTransformMatrix(&m_savedTransform);
+			motion->afterUpdate();
 		}
+	}
 
+	Real minSpeed = ((const Rva001B59FloatView *)this)->getScaledFirst((const Rva001B59ScaleContext *)obj);
+	if (minSpeed > 0)
 	{
-	Coord3D desired = *obj->getPosition();
-	desired.x += Cos(goalAngle) * 1000.0f;
-	desired.y += Sin(goalAngle) * 1000.0f;
-	((BfmeC1054 *)self)->bfmeGo1054C((BfmeD1054 *)obj, &desired, 0);
-	((Rva001BA1C0Handler *)self)->behavior(obj, &obj->m_cachedPos);
+		Coord3D desiredPos = *obj->getPosition();
+		desiredPos.x += Cos(goalAngle) * minSpeed * 2;
+		desiredPos.y += Sin(goalAngle) * minSpeed * 2;
+		const Real onPathDistToGoal = 99999.0f;
+		Bool blocked;
+		((Rva001BC820Locomotor *)this)->locoUpdate_moveTowardsPosition(obj, desiredPos, onPathDistToGoal, minSpeed, &blocked);
+		return;
+	}
+	else
+	{
+		Coord3D desiredPos = *obj->getPosition();
+		desiredPos.x += Cos(goalAngle) * 1000.0f;
+		desiredPos.y += Sin(goalAngle) * 1000.0f;
+		((BfmeC1054 *)this)->bfmeGo1054C((BfmeD1054 *)obj, (int)&desiredPos, 0);
+		((Rva001BA1C0Handler *)this)->behavior(obj, obj->getPosition());
 	}
 }
