@@ -819,7 +819,7 @@ void LANEnableStartButton(Bool enabled)
 // Retail 0x004CB3F0 (392 bytes), Zero Hour's handleColorSelection; the
 // address suffix keeps it apart from WOLGameSetupMenu.cpp's static of the
 // same name (0x004F3F20). BFME keeps Zero Hour's colour checks but,
-// like handlePlayerTemplateSelection below, the host path sends the
+// like handlePlayerTemplateSelection004CD820 below, the host path sends the
 // serialized game info instead of an options string, and the client path also
 // requires the slot to be the local player's.
 class BfmeColorSettings
@@ -916,7 +916,9 @@ static void handleColorSelection004CB3F0(int index)
 	}
 }
 
-static void handlePlayerTemplateSelection(register int index)
+// Retail 0x004CD820. The address suffix keeps it apart from
+// WOLGameSetupMenu.cpp's static of the same name (0x004F41E0).
+static void handlePlayerTemplateSelection004CD820(register int index)
 {
 	GameWindow *combo = comboBoxPlayerTemplate[index];
 	register Int playerTemplate;
@@ -965,10 +967,9 @@ static void handlePlayerTemplateSelection(register int index)
 		{
 			if (AreSlotListUpdatesEnabled())
 			{
-				BFMERetailAsciiString options;
-				((AsciiString *)&options)->format(
-					AsciiString("PlayerTemplate=%d"), playerTemplate);
-				((BfmePlayerTemplateLANAPI *)TheLAN)->RequestGameOptions(options, TRUE);
+				AsciiString options;
+				options.format("PlayerTemplate=%d", playerTemplate);
+				((BfmeColorLANAPI *)TheLAN)->RequestGameOptions(options, TRUE);
 			}
 		}
 
@@ -1817,7 +1818,7 @@ WindowMsgHandledType LanGameOptionsMenuSystem( GameWindow *window, UnsignedInt m
 					  }
 					  else if (controlID == comboBoxPlayerTemplateID[i])
 					  {
-						  handlePlayerTemplateSelection(i);
+						  handlePlayerTemplateSelection004CD820(i);
 					  }
 					  else if (controlID == comboBoxTeamID[i])
 					  {
