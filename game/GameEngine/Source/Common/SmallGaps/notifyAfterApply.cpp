@@ -32,10 +32,12 @@ public:
 
 class ThingFactory;
 
-// TU-local view of the retail singleton's findTemplate/lookup entry points.
+// TU-local view of the retail singleton.  The per-element call goes through
+// ILT 0x00028560 to 0x00137E80, the matched
+// ?findTemplate@BfmeThingFactory@@QAEPBVThingTemplate@@ABVAsciiString@@@Z
+// (tools/callees.py 0x234200 91): the owner's elements are AsciiStrings.
 struct Rva0020AA00Registry : public BfmeThingFactory
 {
-	Rva0020AA00Target *lookup(const int &id);
 };
 
 extern ThingFactory *TheThingFactory;
@@ -140,7 +142,7 @@ void notifyAfterApply(Rva00234200Owner* owner, int a, int b)
 {
 	Rva00234200Apply(owner, a, b);
 	for (int* it = owner->m_begin; it != owner->m_end; ++it) {
-		Rva0020AA00Target* t = localTheThingFactory()->lookup(*it);
+		Rva0020AA00Target* t = (Rva0020AA00Target *)localTheThingFactory()->findTemplate(*(const AsciiString *)it);
 		if (t)
 			static_cast<ThingTemplate *>(t)->rva00144DC0(*(AssetList *)a, (void *)b);
 	}
