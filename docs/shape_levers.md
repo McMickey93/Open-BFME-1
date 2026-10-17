@@ -1913,3 +1913,16 @@ body is defined in-class beside the real `<algorithm>` instantiation in its
 staging" wall. A helper holding a loop or a `new` with EH cleanup is never
 expanded by VC7.1, so wrapping such code in an inline helper reproduces nothing
 (0x000E15A0, 0x00139B40).
+
+## Put a pool-overflow flag clear inside its inline append
+
+At RVA008991E0, the 120-byte reference-count release bank had one wrong
+comparison operand: retail repeats CMP ESI,EDI, while the bank reloads
+capacity from memory. Directly calling an expanded pool append through the
+global registry pointer preserves both guards. Keep the overflow-side value
+flag clear inside that append, and return the inserted index with m_count++;
+this also preserves failure-first layout and the load/increment/store count
+update. A normal inline declaration remained a call under this TU's options;
+__forceinline expands it and reproduces all120 bytes. Both volatile reads in
+the old bank can then be removed. The existing owned registry pointer passes
+strict DIR32 checks. See identity_evidence/008991e0-inline-root-pool.md.
