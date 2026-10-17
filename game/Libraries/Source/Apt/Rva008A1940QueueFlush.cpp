@@ -59,7 +59,9 @@ extern unsigned Rva008A5250LastKey;
 struct BfmePickWorld1284 { char gap00[0x1268]; Rva008A1940Value *field1268; Rva008A1940Value *get() { return field1268; } };
 extern BfmePickWorld1284 *g_bfmeHolderBU;
 class AptInteger { public: static AptInteger *Create(int); };
-class BfmeR1226 { public: void bfmeAdd1226(void *, void *, int); void bfmeLine1226(char *); };
+// Retail 0x008CCED0 is the matched Rva008CCED0BytecodeRunner::run (Rva008CCED0BytecodeRunner.cpp).
+class Rva008CCED0BytecodeRunner { public: unsigned char *run(void *, void *, int); };
+class BfmeR1226 { public: void bfmeLine1226(char *); };
 class Rva008CF740Value;
 class Rva008CF740 { public: void run(Rva008CF740Value *, Rva008CF740Value *, int); };
 class BfmeThingLN { public: void bfmeClearLN(); };
@@ -82,7 +84,7 @@ void Rva008A1940Queue::flush()
             Rva008A1940Value *value = it->field10.value;
             if (!value->invalid() && !value->kind19() &&
                 (it->field08.code >= 0 || -it->field08.code == value->field50->field18)) {
-                ((BfmeR1226 *)&Rva008AE770TheStack)->bfmeAdd1226(*it->field0c.stream, value, -1);
+                ((Rva008CCED0BytecodeRunner *)&Rva008AE770TheStack)->run(*it->field0c.stream, value, -1);
                 ((BfmeR1226 *)&Rva008AE770TheStack)->bfmeLine1226("eActionType == AAT_ACTION");
                 rva008A18C0();
             }

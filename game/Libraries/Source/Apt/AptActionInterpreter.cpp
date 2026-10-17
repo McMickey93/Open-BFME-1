@@ -39,10 +39,11 @@ public:
 	unsigned m_flags;
 };
 
+// Retail 0x008CCED0 is the matched Rva008CCED0BytecodeRunner::run (Rva008CCED0BytecodeRunner.cpp).
+class Rva008CCED0BytecodeRunner { public: unsigned char *run(void *, void *, int); };
 class BfmeR1226
 {
 public:
-	void bfmeAdd1226(void *data, void *context, int size);
 };
 
 class Rva8CD130String;
@@ -102,7 +103,7 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
 	cursor->m_position += record->m_secondSize;
 	cursor->m_position += record->m_thirdSize;
 
-	reinterpret_cast<BfmeR1226 *>(state)->bfmeAdd1226(
+	reinterpret_cast<Rva008CCED0BytecodeRunner *>(state)->run(
 		aligned + 0x14, cursor->m_context, record->m_firstSize);
 	Rva8CF1B0Value *pending = state->m_pending;
 	if (pending != 0 && (record->m_flags & 1) != 0)
@@ -124,7 +125,7 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
 
 		state->m_pending->release();
 		state->m_pending = 0;
-		reinterpret_cast<BfmeR1226 *>(state)->bfmeAdd1226(
+		reinterpret_cast<Rva008CCED0BytecodeRunner *>(state)->run(
 			aligned + 0x14 + record->m_firstSize,
 			cursor->m_context, record->m_secondSize);
 		if ((record->m_flags & 4) != 0)
@@ -150,7 +151,7 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
 			state->m_pending = 0;
 		}
 		unsigned *sizes = &record->m_firstSize;
-		reinterpret_cast<BfmeR1226 *>(state)->bfmeAdd1226(
+		reinterpret_cast<Rva008CCED0BytecodeRunner *>(state)->run(
 			(void *)(sizes[1] + sizes[0] + (unsigned)record + 0x14),
 			cursor->m_context, sizes[2]);
 		if (pending != 0 && state->m_pending == 0)
