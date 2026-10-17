@@ -9,7 +9,13 @@ public:
     bool permanent() const { return ((m_valueBits >> 30) & 1) != 0; }
 };
 class Rva008CF740Value;
-class Rva008CF740 { public: void run(Rva008CF740Value *, Rva008CF740Value *, int); };
+// The run call reaches retail 0x008CF740, whose ledger row is the matched gen
+// dump ?d_008cf740@@YAXXZ (game/gen_asm/d_008cb600.asm), as tools/callees.py
+// 0x8b9850 213 prints.  Nothing defines the pinned
+// ?run@Rva008CF740@@QAEXPAVRva008CF740Value@@0H@Z, so the call names the dump
+// through a raw pointer bridge that keeps the thiscall shape.
+void d_008cf740();
+class Rva008CF740 {};
 class BfmeR1226 { public: void bfmeLine1226(char *); };
 // 0x01338748: the Apt stack depth global, defined in Rva00C6DCC0StaticInit.cpp.
 // Its address is also what this body passes as the interpreter receiver.
@@ -32,7 +38,13 @@ int arraySortScriptFunction008B9850(unsigned *a, unsigned *b) {
     AptValue *right = (AptValue *)(*b & ~1u);
     push(right);
     push(left);
-    ((Rva008CF740 *)&Rva008AE770TheStack)->run(Rva01338454SortReceiver, Rva01338450SortFunction, 2);
+    union
+    {
+        void (*raw)(void);
+        void (Rva008CF740::*typed)(Rva008CF740Value *, Rva008CF740Value *, int);
+    } run;
+    run.raw = &d_008cf740;
+    (((Rva008CF740 *)&Rva008AE770TheStack)->*run.typed)(Rva01338454SortReceiver, Rva01338450SortFunction, 2);
     ((BfmeR1226 *)&Rva008AE770TheStack)->bfmeLine1226("arraySortScriptFunction");
     int result = Rva008AE770TheStack.m_rva01338750[Rva008AE770TheStack.m_count - 1]->toInteger();
     AptValue *top = Rva008AE770TheStack.m_rva01338750[Rva008AE770TheStack.m_count - 1];
