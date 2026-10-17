@@ -35,9 +35,12 @@ public:
 
 class BfmeRvaAIView
 {
-public:
-	void setHeldState(int, int);
 };
+
+// setHeldState is reached through ILT 0x0001336D, the ledger's 5-byte row
+// ?j_0001336d@@YAXXZ (symbols.csv pins the method name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_0001336d();
 
 class Rva00244080
 {
@@ -58,7 +61,11 @@ void Rva00244080::updateMembers(void)
 		BfmeRvaAIView *ai =
 			*(BfmeRvaAIView **)((char *)object + 0x204);
 		if (ai)
-			((BfmeRvaAIView *)((char *)ai + 0x20))->setHeldState(0, 1);
+		{
+			union { void (*raw)(void); void (BfmeRvaAIView::*typed)(int, int); } setHeldState;
+			setHeldState.raw = &j_0001336d;
+			(((BfmeRvaAIView *)((char *)ai + 0x20))->*setHeldState.typed)(0, 1);
+		}
 		node = node->next;
 	}
 }
