@@ -1,53 +1,67 @@
 // ?releaseContents@Rva009A2030OwnedRecord@@AAEXXZ
-// partial score=0.3 date=2026-09-09
+// partial score=0.3656 date=2026-10-17
 // ?releaseContents@Rva009A2030OwnedRecord@@AAEXXZ
-// Address-derived: reverse-order release of a ref-counted (ptr,obj) array,
-// then a dead compaction pass whose element count is always zero because it
-// subtracts m_finish from itself, matching retail's shipped bytes exactly.
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /GX /D_STLP_USE_STATIC_LIB
+// stlport
+//
+// Retail 0x009A2030 (125 B): fuzzy twin (tools/fuzzy_twin_scan.py) of the
+// Rva003691A0OwnedRecord destructor in Rva0036B6B0OwnedPointerCleanup.cpp.
+// Same 8-byte-pair vector at +0 freed through the inline __node_alloc shape,
+// but where the twin releases a trailing StringBase member, this body calls a
+// this-relative helper (the dump at 0x009A1F90, thiscall, no arguments) from
+// the destructor body first. Identity unproven; address-derived names.
 
-struct Rva009A2030Releasable
+#include <vector>
+
+// The second word owns a polymorphic object: releaseContents deletes it
+// through its virtual destructor (vtable slot 0, flag 1).
+class Rva009A2030Owned
 {
-	virtual void Release( int ) = 0;
+public:
+	virtual ~Rva009A2030Owned();
 };
 
-struct Rva009A2030Elem
+struct Rva009A2030Pair
 {
-	void *m_ptr;
-	Rva009A2030Releasable *m_obj;
+	Rva009A2030Pair(void *first, Rva009A2030Owned *second) : m_first(first), m_second(second) {}
+	Rva009A2030Pair &operator=(const Rva009A2030Pair &that)
+	{
+		m_first = that.m_first;
+		m_second = that.m_second;
+		return *this;
+	}
+
+	void *m_first;
+	Rva009A2030Owned *m_second;
 };
 
 class Rva009A2030OwnedRecord
 {
-private:
-	void releaseContents();
+public:
+	~Rva009A2030OwnedRecord();
 
-	Rva009A2030Elem *m_start;        // +0x00
-	Rva009A2030Elem *m_finish;       // +0x04
-	void *m_pad08;                   // +0x08
-	Rva009A2030Elem *m_endOfStorage; // +0x0C
+private:
+	void releaseContents();	// 0x009A1F90
+
+	std::vector<Rva009A2030Pair> m_pairs;
+	int m_count;				// +0x0C
 };
 
+Rva009A2030OwnedRecord::~Rva009A2030OwnedRecord()
+{
+	releaseContents();
+}
+
+// Retail 0x009A1F90 (93 B, plain ret): release each pair from the back, then
+// clear the vector (STLport erase(begin, end): the self-subtracted count of
+// its copy loop) and reset the count.
 void Rva009A2030OwnedRecord::releaseContents()
 {
-	Rva009A2030Elem *p = m_finish;
-	if( p != m_start )
+	for (std::vector<Rva009A2030Pair>::reverse_iterator it = m_pairs.rbegin(); it != m_pairs.rend(); ++it)
 	{
-		do
-		{
-			--p;
-			if( p->m_obj )
-				p->m_obj->Release( 1 );
-			p->m_ptr = 0;
-			p->m_obj = 0;
-		} while( p != m_start );
+		delete it->m_second;
+		*it = Rva009A2030Pair(0, 0);
 	}
-
-	Rva009A2030Elem *dst = m_start;
-	Rva009A2030Elem *src = m_finish;
-	int n = ( int )( m_finish - m_finish );
-	for( int i = 0; i < n; ++i )
-		dst[ i ] = src[ i ];
-
-	m_endOfStorage = 0;
-	m_finish = m_start;
+	m_pairs.clear();
+	m_count = 0;
 }
