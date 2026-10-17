@@ -38182,7 +38182,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c23357@@YAXXZ,,0x00C23357,24,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01023357
 ?d_00c233c3@@YAXXZ,,0x00C233C3,24,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@010233c3
 ?d_00c25300@@YAXXZ,,0x00C25300,25,game/gen_asm/d_009f6921.asm,matched,gen-dump;ghidra=Unwind@01025300
-?d_00c2712b@@YAXXZ,,0x00C2712B,11,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@0102712b
 ?d_00c29080@@YAXXZ,,0x00C29080,11,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01029080
 ?d_00c30733@@YAXXZ,,0x00C30733,17,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030733
 ?d_00c30dbc@@YAXXZ,,0x00C30DBC,23,game/gen_asm/d_00c25c80.asm,matched,gen-dump;ghidra=Unwind@01030dbc
@@ -172538,3 +172537,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?rva008824E0@Rva00882580Block@@QAEXI@Z,,0x008824E0,104,game/Libraries/Source/memorypool/memorypool_allocator.cpp,matched,thiscall ret 4 block-header reset: size store then guard bands both ends via memset32 and DEADC0DE payload poison; layout +0 link +8 size shared with check/setUsed; int3-carved boundary; address-derived name;model=claude-opus-5-5;host=app
 ??1Rva0058BE30FourString@@QAE@XZ,,0x0058C4C0,102,game/GameEngine/Source/Common/Thing/UpgradeMuxData_dtor_Thunk.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/0058c4c0-four-string-dtor.md;four-UnicodeString record dtor (copy ctor 0x0058BE30); callers in the GUI block delete it via ILT 0x0003FA7B; was UpgradeMuxData;model=claude-opus-5-5;host=Stijn
 ?rva008835C0@Rva008838F0Owner@@QAAXPAXPBDZZ,,0x008835C0,294,game/Libraries/Source/memorypool/memorypool_tracker_free.cpp,matched,variadic cdecl tracker-owner method: bucket walk by block then for a live node (negative free checkpoint) frees and replaces the +0x14 description via _vsnprintf 512 and HeapAlloc or clears it; owner layout +0x282C0 disabled +0x282C8 lock as rva008839B0; ret+int3 boundary; address-derived name;model=claude-opus-5-5;host=app
+?Rva00C2712BCleanup@@YAXXZ,,0x00C2712B,11,game/GameEngine/Source/GameClient/GUI/Rva0048FAC0AppendWord.cpp,matched,gen-funclet;object-symbol=$L7355;parent=??0Rva0048F5C0Entry@@QAE@ABVUnicodeString@@PAURva0048F5C0Context@@@Z;retail 0048F5C0 -> handler 00C27136 -> FuncInfo 00E174F0 state3 judged by eh_state_pins;twin_proof=state-index;model=claude-opus-5-5;host=app
