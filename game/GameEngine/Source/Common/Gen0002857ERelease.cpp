@@ -10,10 +10,15 @@ extern "C" __declspec(dllimport) unsigned int __stdcall AIL_ms_count(void);
 
 class Gen0002857E;
 
+// The owner notification goes through ILT 0x00008A62, the ledger's 5-byte row
+// ?j_00008a62@@YAXXZ (game/gen_small/thunks_003.cpp), jmp to 0x00693EC0, as
+// tools/callees.py 0x6ba220 136 prints.  Nothing defines the pinned
+// ?notify@Gen0002857EOwner@@QAEXPAVGen0002857E@@@Z, so the call names the
+// thunk through a raw pointer bridge that keeps the thiscall shape.
+void j_00008a62();
 class Gen0002857EOwner
 {
 public:
-	void notify(Gen0002857E *self);
 	char m_pad[0x48];
 	void *m_mutex;
 };
@@ -60,6 +65,12 @@ void Gen0002857E::release()
 	if (m_count == 0)
 	{
 		m_stamp = AIL_ms_count();
-		m_owner->notify(this);
+		union
+		{
+			void (*raw)(void);
+			void (Gen0002857EOwner::*typed)(Gen0002857E *);
+		} notify;
+		notify.raw = &j_00008a62;
+		(m_owner->*notify.typed)(this);
 	}
 }
