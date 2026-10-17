@@ -16,8 +16,25 @@ struct Rva008B6D70Obj {
 	char m_rect[0x20];
 	char m_extra[0x20];
 	void* m_context;
-	void refresh(void* rect, void* extra, void* context);
 };
+// Each setter's refresh call reaches retail 0x008B65E0, whose ledger row is the
+// matched gen dump ?d_008b65e0@@YAXXZ (game/gen_asm/d_008af650.asm), as
+// tools/callees.py 0x8b6d70 68 prints for the callee (inferred __thiscall,
+// three stack slots).  Nothing defines the pinned
+// ?refresh@Rva008B6D70Obj@@QAEXPAX00@Z, so the call names the dump through a
+// raw pointer bridge that keeps the thiscall shape; the bridge has internal
+// linkage, so no body is emitted under the pinned name.
+void d_008b65e0();
+static __forceinline void refreshFields(Rva008B6D70Obj* self)
+{
+	union
+	{
+		void (*raw)(void);
+		void (Rva008B6D70Obj::*typed)(void* rect, void* extra, void* context);
+	} refresh;
+	refresh.raw = &d_008b65e0;
+	(self->*refresh.typed)(self->m_rect, self->m_extra, self->m_context);
+}
 // Each retail tail calls the existing cdecl integer factory at RVA 0x008A11E0.
 class AptInteger { public: static AptInteger *Create(int value); };
 
@@ -27,7 +44,7 @@ AptValue* aptSetField008B6D70(Rva008B6D70Obj* self, int argc)
 		return g_bfmeFallbackDB;
 	AptValue** args = Rva008AE770TheStack.m_rva01338750;
 	*(int*)((char*)self + 0x30) = args[Rva008AE770TheStack.m_count - 1]->toInteger();
-	self->refresh(self->m_rect, self->m_extra, self->m_context);
+	refreshFields(self);
 	return reinterpret_cast<AptValue *>(AptInteger::Create(0));
 }
 
@@ -38,7 +55,7 @@ AptValue* aptSetField008B6E50(Rva008B6D70Obj* self, int argc)
 		return g_bfmeFallbackDB;
 	AptValue** args = Rva008AE770TheStack.m_rva01338750;
 	*(int*)((char*)self + 0x28) = args[Rva008AE770TheStack.m_count - 1]->toInteger();
-	self->refresh(self->m_rect, self->m_extra, self->m_context);
+	refreshFields(self);
 	return reinterpret_cast<AptValue *>(AptInteger::Create(0));
 }
 
@@ -49,7 +66,7 @@ AptValue* aptSetField008B6EA0(Rva008B6D70Obj* self, int argc)
 		return g_bfmeFallbackDB;
 	AptValue** args = Rva008AE770TheStack.m_rva01338750;
 	*(int*)((char*)self + 0x3C) = args[Rva008AE770TheStack.m_count - 1]->toInteger();
-	self->refresh(self->m_rect, self->m_extra, self->m_context);
+	refreshFields(self);
 	return reinterpret_cast<AptValue *>(AptInteger::Create(0));
 }
 
@@ -60,7 +77,7 @@ AptValue* aptSetField008B6EF0(Rva008B6D70Obj* self, int argc)
 		return g_bfmeFallbackDB;
 	AptValue** args = Rva008AE770TheStack.m_rva01338750;
 	*(int*)((char*)self + 0x24) = args[Rva008AE770TheStack.m_count - 1]->toInteger();
-	self->refresh(self->m_rect, self->m_extra, self->m_context);
+	refreshFields(self);
 	return reinterpret_cast<AptValue *>(AptInteger::Create(0));
 }
 
@@ -71,7 +88,7 @@ AptValue* aptSetField008B6F40(Rva008B6D70Obj* self, int argc)
 		return g_bfmeFallbackDB;
 	AptValue** args = Rva008AE770TheStack.m_rva01338750;
 	*(int*)((char*)self + 0x34) = args[Rva008AE770TheStack.m_count - 1]->toInteger();
-	self->refresh(self->m_rect, self->m_extra, self->m_context);
+	refreshFields(self);
 	return reinterpret_cast<AptValue *>(AptInteger::Create(0));
 }
 
@@ -82,6 +99,6 @@ AptValue* aptSetField008B7260(Rva008B6D70Obj* self, int argc)
 		return g_bfmeFallbackDB;
 	AptValue** args = Rva008AE770TheStack.m_rva01338750;
 	*(int*)((char*)self + 0x38) = args[Rva008AE770TheStack.m_count - 1]->toInteger();
-	self->refresh(self->m_rect, self->m_extra, self->m_context);
+	refreshFields(self);
 	return reinterpret_cast<AptValue *>(AptInteger::Create(0));
 }
