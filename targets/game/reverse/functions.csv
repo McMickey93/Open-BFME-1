@@ -36883,7 +36883,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_002c4910@@YAXXZ,,0x002C4910,86,game/gen_asm/d_002c38b0.asm,matched,gen-dump;ghidra=FUN_006c4910
 ?d_002cea90@@YAXXZ,,0x002CEA90,446,game/gen_asm/d_002c38b0.asm,matched,gen-dump;ghidra=FUN_006cea90
 ?d_002d9f90@@YAXXZ,,0x002D9F90,67,game/gen_asm/d_002cf8c0.asm,matched,gen-dump;ghidra=FUN_006d9f90
-?d_002daec0@@YAXXZ,,0x002DAEC0,392,game/gen_asm/d_002d3970.asm,matched,gen-dump;bounds=high
 ?d_002db5e0@@YAXXZ,,0x002DB5E0,495,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_006db5e0
 ?d_002de9b0@@YAXXZ,,0x002DE9B0,325,game/gen_asm/d_002db880.asm,matched,gen-dump;ghidra=FUN_006de9b0
 ?d_002defe0@@YAXXZ,,0x002DEFE0,229,game/gen_asm/d_002db880.asm,matched,gen-dump;ghidra=FUN_006defe0
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?Rva00C40760Cleanup@@YAXXZ,,0x00C40760,8,game/GameEngine/Source/GameNetwork/GameSpy/MainMenuUtilsStartPatchCheckBFME.cpp,matched,gen-funclet;object-symbol=$L494;parent=?StartPatchCheck@@YAX_N@Z;retail funclet 0x00C40760 is in the unwind map of FuncInfo whose handler is pushed at 0x006304A2 inside matched StartPatchCheck; $L494 byte-equal; jmp ILT 0x0003B304 = ~UnicodeString (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
 ?Rva00C54BB0Cleanup@@YAXXZ,,0x00C54BB0,25,game/Libraries/Source/STLport/LocaleComparison.cpp,matched,gen-funclet;object-symbol=$L13859;parent=0x008365B0;retail funclet 0x00C54BB0 is in the unwind map of the FuncInfo whose handler matched parent 0x008365B0 pushes; $L13859 byte-equal; jmp ILT 0x0001642D = ~basic_string<char> (ilt_oracle CONFIRMED);model=claude-opus-5-5;host=app
 ?Rva00C5ABC0Cleanup@@YAXXZ,,0x00C5ABC0,11,game/Libraries/Source/WWVegas/WW3D2/WW3DRenderScene.cpp,matched,gen-funclet;object-symbol=$L12392;parent=?Render@WW3D@@SA_NPAVSceneClass@@PAVCameraClass@@_N2ABVVector3@@@Z;retail funclet 0x00C5ABC0 is in the unwind map of matched WW3D::Render (0x008FE6xx); $L12392 byte-equal; jmp 0x00923880 = ~RenderInfoClass (pinned: same call from both matched callers);model=claude-opus-5-5;host=app
+?rva002DAEC0@BfmeThingUBA@@UBEXPBVDamageInfo@@PBUCoord3D@@@Z,,0x002DAEC0,392,game/GameEngine/Source/GameLogic/Object/WeaponDamageFieldNuggetRva002DAEC0.cpp,matched,slot 6 of vtable 0x010CE990 installed by ??0BfmeThingUBA@@QAE@XZ 0x002DB0B0 (DamageFieldNugget INI callback 0x001E5C90 object); method name address-derived; t=40min;model=claude-opus-5-5;host=app

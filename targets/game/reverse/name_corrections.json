@@ -20538,5 +20538,25 @@
   "after_sha256": "0c4d0c821d5af85d71a4b8f8c5fbcbbf80d2dd293a036359bc57ddea1597f057",
   "evidence": "targets/game/reverse/identity_evidence/rva00454760-parse-object-chunk-bank.md",
   "reason": "bank stand-in replaced by the view name the ILT 0x0002323B/0x00028560 pins already carry (matched reader 0x00088B70)"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x002daec0.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/WeaponDamageFieldNuggetRva002DAEC0.cpp",
+  "old_name": "DamageFieldNugget",
+  "new_name": "BfmeThingUBA",
+  "before_sha256": "2a542f60d3d2555531a6fef69981bbbae4fc151162be301e69905ea1d1c48356",
+  "after_sha256": "fdb714d4bc9b479087fd7ff5bc0566b3e3868f93694796b43a545c6f77081c48",
+  "evidence": "targets/game/reverse/identity_evidence/002daec0-bfmethinguba-slot6.md",
+  "reason": "vtable 0x010CE990 belongs to the matched ctor ??0BfmeThingUBA (0x002DB0B0); nothing in retail names the class DamageFieldNugget or the slot doNugget"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x002daec0.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/WeaponDamageFieldNuggetRva002DAEC0.cpp",
+  "old_name": "doNugget",
+  "new_name": "rva002DAEC0",
+  "before_sha256": "2a542f60d3d2555531a6fef69981bbbae4fc151162be301e69905ea1d1c48356",
+  "after_sha256": "fdb714d4bc9b479087fd7ff5bc0566b3e3868f93694796b43a545c6f77081c48",
+  "evidence": "targets/game/reverse/identity_evidence/002daec0-bfmethinguba-slot6.md",
+  "reason": "vtable 0x010CE990 belongs to the matched ctor ??0BfmeThingUBA (0x002DB0B0); nothing in retail names the class DamageFieldNugget or the slot doNugget"
  }
 ]
