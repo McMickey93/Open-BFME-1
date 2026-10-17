@@ -36846,7 +36846,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0027db50@@YAXXZ,,0x0027DB50,562,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_0067db50
 ?d_00284e70@@YAXXZ,,0x00284E70,443,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_00684e70
 ?d_002850a0@@YAXXZ,,0x002850A0,479,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_006850a0
-?d_0028cf30@@YAXXZ,,0x0028CF30,24,game/gen_asm/d_000d4500.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_0028f0c0@@YAXXZ,,0x0028F0C0,1,game/GameEngine/Source/Common/Rva0028F0E0Noop.cpp,matched,carved boundary contains only ret; no semantic identity evidence
 ?d_00290b90@@YAXXZ,,0x00290B90,536,game/gen_asm/d_0028fdf0.asm,matched,gen-dump;ghidra=FUN_00690b90
 ?d_00290e50@@YAXXZ,,0x00290E50,2052,game/gen_asm/d_002310f0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00690e50
@@ -172541,3 +172540,4 @@ _Rva0084E770LocaleDefault,,0x0084E770,5,game/stlport/LocaleCodePageQueries.c,mat
 ?IS_IMPASSABLE@@YA_NW4CellType@PathfindCell@@@Z,,0x003D5D80,20,game/GameEngine/Source/GameLogic/AI/AIPathfind.cpp,matched,ZH AIPathfind.cpp static inline IS_IMPASSABLE twin; EA source file pathfinder.cpp (retail-run brief); tests cell types 5/4/6 with the type in EAX (private static convention); BFME checks bridge-impassable first;model=claude-opus-5-5;host=app
 ?Rva004B21C0@@YAHPBVRva004B21C0Owner@@@Z,,0x004B21C0,23,game/GameEngine/Source/GameClient/GUI/Rva004B2260.cpp,matched,file-static rounded slot 0x18 float of the owner+0x200 object (owner in EAX; 0 when absent) next to the Rva004B2260 static; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app
 ?rva00699150@@YAHPBQAURva00699150Record@@@Z,,0x00699150,27,game/GameEngine/Source/Common/Rva00699180Volume.cpp,matched,file-static predicate on the holder's record +0x54 against g_bfmeElapsedScale (holder in EAX) beside the Miles volume helpers; TU-local absent-from-retail caller gives the private convention;model=claude-opus-5-5;host=app
+?rva0028CF30@@YAPAVBfmeDestroyable@@H@Z,,0x0028CF30,24,game/GameEngine/Source/Common/Bfme5OwnedObjectRelease.cpp,matched,file-static findObjectByID then bfmeFindModule tail call with retail private EAX convention; no direct retail caller;model=claude-opus-5-5;host=app

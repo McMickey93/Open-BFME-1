@@ -55,6 +55,24 @@ static __declspec(noinline) BfmeDestroyable *bfmeFindModule(Object *obj)
 	return 0;
 }
 
+// Retail 0x0028CF30 (24 B): looks the object up by ID and tail-calls the module scan.
+// Every retail use is inlined (no direct caller), so it keeps an address-derived name;
+// as a file-static it takes the ID in EAX like retail.
+static __declspec(noinline) BfmeDestroyable *rva0028CF30(int id)
+{
+	Object *object = TheGameLogic->findObjectByID(id);
+	if (object)
+		return bfmeFindModule(object);
+	return 0;
+}
+
+// ?rva0028CF30Caller@@YAPAVBfmeDestroyable@@H@Z absent-from-retail TU-local caller that
+// keeps the static above alive.
+BfmeDestroyable *rva0028CF30Caller(int id)
+{
+	return rva0028CF30(id);
+}
+
 // ?bfmeRelease@Gen_0028CF50@@QAEXXZ
 void Gen_0028CF50::bfmeRelease(void)
 {
