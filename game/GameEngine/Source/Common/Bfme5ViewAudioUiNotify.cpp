@@ -54,9 +54,13 @@ public:
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameClient/InGameUI.h
 class InGameUI
 {
-public:
-	void bfmeNotify(void);
 };
+
+// The UI notify is reached through ILT 0x00043DC9, the ledger's 5-byte row
+// ?j_00043dc9@@YAXXZ (symbols.csv pins ?bfmeNotify@InGameUI@@QAEXXZ there and
+// nothing defines it), through a raw pointer bridge that keeps the thiscall
+// shape.
+void j_00043dc9();
 
 extern View *TheTacticalView;
 extern AudioManager *TheAudio;
@@ -84,7 +88,9 @@ void Gen_00589940::bfmeNotify(void)
 			reinterpret_cast<char *>(TheAudio->bfmeCurrent()) + 0xBD0);
 	}
 
-	TheInGameUI->bfmeNotify();
+	union { void (*raw)(void); void (InGameUI::*typed)(void); } uiNotify;
+	uiNotify.raw = &j_00043dc9;
+	(TheInGameUI->*uiNotify.typed)();
 }
 
 #undef BFME_TEN_VIRTUALS
