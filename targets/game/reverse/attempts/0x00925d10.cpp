@@ -1,5 +1,5 @@
 // ?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z
-// partial score=0.9437 date=2026-10-13
+// partial score=0.9878 date=2026-10-17
 // cl: /DNDEBUG /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 // Open-BFME5 conversions.
 
@@ -93,9 +93,9 @@ void BfmeDst1016::bfmeSet1016(int a, int b, int r)
 			const Vector3 *pa;
 			const Vector3 *pb;
 			Vector3 *po;
-			pa = srcV[0];
-			pb = srcV[1];
 			po = dstV;
+			pb = srcV[1];
+			pa = srcV[0];
 			c = n;
 			while (c--) {
 				po->X = m0[0].X * pa->X + m0[0].Y * pa->Y + m0[0].Z * pa->Z + m0[0].W + m1[0].X * pb->X + m1[0].Y * pb->Y + m1[0].Z * pb->Z + m1[0].W;
