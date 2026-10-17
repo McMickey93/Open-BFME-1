@@ -1,6 +1,12 @@
 // ?findClosestPath@Pathfinder@@EAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@PAU5@_NM4@Z
-// partial score=0.891 date=2026-09-27
+// partial score=0.2621 date=2026-10-17
+// ?findClosestPath@Pathfinder@@EAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@PAU5@_NM4@Z
 // cl: /DNDEBUG /MD
+// 2026-10-17 (claude-opus-5-5): visible never-inlined worldToCell, clip,
+// getClippedCell and acquire copies plus BFME's Coord3D copy constructor take
+// the frame from 0xBC to 0xB8 (retail 0xB0) and shape 0.891 -> 0.895; the body
+// is still 46 bytes long (2747 vs 2701), so structure differs before slots.
+// getRadiusAndCenter is still opaque here (findSafePath's TU shows it visible).
 // stlport
 //
 // Retail 0x003F3460: Pathfinder::findClosestPath, the Zero Hour twin at
@@ -48,9 +54,25 @@ enum KindOfType { KINDOF_FS_AIRFIELD = 0x23 };
 enum PlayerType { PLAYER_HUMAN, PLAYER_COMPUTER };
 
 struct ICoord2D { Int x, y; };
+struct IRegion2D { ICoord2D lo, hi; };
+extern Bool ClipLine2D(ICoord2D *p1, ICoord2D *p2, ICoord2D *c1, ICoord2D *c2,
+	IRegion2D *clipRegion);
+extern "C" __declspec(dllimport) double __cdecl floor( double );
+__forceinline long fast_float2long_round( float value )
+{
+	long result;
+	__asm {
+		fld [value]
+		fistp [result]
+	}
+	return result;
+}
+#define REAL_TO_INT_FLOOR(x) (fast_float2long_round((Real)floor((double)(x))))
 
 struct Coord3D
 {
+	Coord3D() {}
+	Coord3D( const Coord3D &c ) : x(c.x), y(c.y), z(c.z) {}
 	Real x, y, z;
 	Real Normalize( void );
  void set(const Coord3D *a){x=a->x;y=a->y;z=a->z;}
@@ -179,8 +201,50 @@ public:
 };
 
 extern "C" PathfindCellInfo *g_bfmePathfindFreeList;
-PathfindCellInfo *bfmeAcquirePathfindCellInfo( PathfindCellInfo **freeList,
-	PathfindCell *cell, const ICoord2D *pos );
+struct BfmeCellInfoRecord
+{
+	ICoord2D m_pos;
+	BfmeCellInfoRecord *m_nextOpen;
+	BfmeCellInfoRecord *m_prevOpen;
+	UnsignedShort m_totalCost;
+	UnsignedShort m_costSoFar;
+	UnsignedInt m_pathParent;
+	UnsignedInt m_goalUnitID;
+	UnsignedInt m_posUnitID;
+	UnsignedInt m_goalAircraftID;
+	UnsignedInt m_flags;
+	PathfindCell *m_cell;
+	BfmeCellInfoRecord *m_freeNext;
+	BfmeCellInfoRecord **m_freePrevLink;
+};
+extern int g_rva012F1098;
+// Retail 0x003D7DB0 (PathfindCellInfoAcquire.cpp), visible beside its caller.
+inline __declspec(noinline) PathfindCellInfo *bfmeAcquirePathfindCellInfo( PathfindCellInfo **freeListHead,
+	PathfindCell *pathfindCell, const ICoord2D *cellPosition )
+{
+	BfmeCellInfoRecord *cellInfoRecord = *reinterpret_cast<BfmeCellInfoRecord **>(freeListHead);
+	if (cellInfoRecord->m_freePrevLink != 0)
+	{
+		*cellInfoRecord->m_freePrevLink = cellInfoRecord->m_freeNext;
+		if (cellInfoRecord->m_freeNext != 0)
+			cellInfoRecord->m_freeNext->m_freePrevLink = cellInfoRecord->m_freePrevLink;
+		cellInfoRecord->m_freePrevLink = 0;
+		cellInfoRecord->m_freeNext = 0;
+	}
+	cellInfoRecord->m_cell = pathfindCell;
+	cellInfoRecord->m_pos = *cellPosition;
+	cellInfoRecord->m_nextOpen = 0;
+	cellInfoRecord->m_prevOpen = 0;
+	cellInfoRecord->m_totalCost = 0;
+	cellInfoRecord->m_costSoFar = 0;
+	cellInfoRecord->m_pathParent = 0;
+	cellInfoRecord->m_goalUnitID = 0;
+	cellInfoRecord->m_posUnitID = 0;
+	cellInfoRecord->m_goalAircraftID = 0;
+	cellInfoRecord->m_flags &= 0xffffffe0;
+	++g_rva012F1098;
+	return reinterpret_cast<PathfindCellInfo *>(cellInfoRecord);
+}
 
 // Ledger names of the cell-list helpers (all __thiscall on the cell).
 struct BfmeNodeNO;
@@ -286,10 +350,10 @@ private:
 		Coord3D *rawTo, Bool blocked, Real pathCostMultiplier, Bool moveAllies );
 
 public:
-	Bool worldToCell( const Coord3D *pos, ICoord2D *cell );
+	__declspec(noinline) Bool worldToCell( const Coord3D *worldPosition, ICoord2D *cellIndex );
 	PathfindCell *getCell( PathfindLayerEnum layer, Int x, Int y );
-	PathfindCell *getClippedCell( PathfindLayerEnum layer, const Coord3D *pos );
-	void clip( Coord3D *from, Coord3D *to );
+	__declspec(noinline) PathfindCell *getClippedCell( PathfindLayerEnum layer, const Coord3D *pos );
+	__declspec(noinline) void clip( Coord3D *startPosition, Coord3D *endPosition );
 	void getRadiusAndCenter( const Object *obj, Int &iRadius, Bool &center );
 	Bool slowDoesPathExist( Object *obj, const Coord3D *from, const Coord3D *to, const void *movementProfile );
 	Bool bfmeStepD4F90( void *info, PathfindCell *cell );
@@ -319,7 +383,9 @@ public:
 private:
 	unsigned char m_pad004[0x08 - 0x04];
 	Bool m_isMapReady;						// +0x008
-	unsigned char m_pad009[0x34 - 0x09];
+	unsigned char m_pad009[0x14 - 0x09];
+	IRegion2D m_extent;						// +0x014
+	unsigned char m_pad024[0x34 - 0x24];
 	PathfindCellInfo *m_openBuckets[0x200];	// +0x034
 	Int m_openBucket;						// +0x834
 	BfmeNodeNO *m_closedList;				// +0x838
@@ -331,6 +397,45 @@ private:
 	unsigned char m_padc9d[0x2470c - 0xc9d];
 	_STL::vector<Rva003F3460Waypoint> m_bfmeWaypoints;	// +0x2470c
 };
+
+inline Bool Pathfinder::worldToCell(const Coord3D *worldPosition, ICoord2D *cellIndex)
+{
+	cellIndex->x = REAL_TO_INT_FLOOR(worldPosition->x/10);
+	cellIndex->y = REAL_TO_INT_FLOOR(worldPosition->y/10);
+	Bool overflow = false;
+	if (cellIndex->x < m_extent.lo.x) {overflow = true; cellIndex->x = m_extent.lo.x;}
+	if (cellIndex->y < m_extent.lo.y) {overflow = true; cellIndex->y = m_extent.lo.y;}
+	if (cellIndex->x > m_extent.hi.x) {overflow = true; cellIndex->x = m_extent.hi.x;}
+	if (cellIndex->y > m_extent.hi.y) {overflow = true; cellIndex->y = m_extent.hi.y;}
+	return overflow;
+}
+
+inline void Pathfinder::clip( Coord3D *startPosition, Coord3D *endPosition )
+{
+	ICoord2D fromCell, toCell;
+	ICoord2D clipFromCell, clipToCell;
+	fromCell.x = REAL_TO_INT_FLOOR(startPosition->x/10);
+	fromCell.y = REAL_TO_INT_FLOOR(startPosition->y/10);
+	toCell.x = REAL_TO_INT_FLOOR(endPosition->x/10);
+	toCell.y = REAL_TO_INT_FLOOR(endPosition->y/10);
+	if (ClipLine2D(&fromCell, &toCell, &clipFromCell, &clipToCell,&m_extent)) {
+		if (fromCell.x!=clipFromCell.x || fromCell.y != clipFromCell.y) {
+			startPosition->x = clipFromCell.x*10 + 0.05f;
+			startPosition->y = clipFromCell.y*10 + 0.05f;
+		}
+		if (toCell.x!=clipToCell.x || toCell.y != clipToCell.y) {
+			endPosition->x = clipToCell.x*10 + 0.05f;
+			endPosition->y = clipToCell.y*10 + 0.05f;
+		}
+	}
+}
+
+inline PathfindCell *Pathfinder::getClippedCell(PathfindLayerEnum layer, const Coord3D *pos)
+{
+	ICoord2D cell;
+	worldToCell(pos, &cell);
+	return getCell(layer, cell.x, cell.y);
+}
 
 Path *Pathfinder::findClosestPath( Object *obj, const LocomotorSet& locomotorSet, const Coord3D *from,
 	Coord3D *rawTo, Bool blocked, Real pathCostMultiplier, Bool moveAllies )
