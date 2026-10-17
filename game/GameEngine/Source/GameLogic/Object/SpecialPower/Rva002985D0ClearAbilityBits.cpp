@@ -30,17 +30,22 @@ public:
 	void clearAbilityBits(Bool a, Bool b);
 
 private:
-	void onExit(Bool a, Bool b);			// ILT 0x0000F975
-
 	void *m_vtable;
 	Rva002985D0ModuleData *m_moduleData;	// +0x04
 	Object *m_obj;							// +0x08
 };
 
 // ?clearAbilityBits@Rva002985D0Update@@QAEX_N0@Z
+// onExit is reached through ILT 0x0000F975, the ledger's 5-byte row
+// ?j_0000f975@@YAXXZ (symbols.csv pins the onExit name there and nothing
+// defines it), through a raw pointer bridge that keeps the thiscall shape.
+void j_0000f975();
+
 void Rva002985D0Update::clearAbilityBits(Bool a, Bool b)
 {
-	onExit(a, b);
+	union { void (*raw)(void); void (Rva002985D0Update::*typed)(Bool, Bool); } onExit;
+	onExit.raw = &j_0000f975;
+	(this->*onExit.typed)(a, b);
 
 	Object *obj = m_obj;
 	switch (m_moduleData->m_which)
