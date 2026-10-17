@@ -27,9 +27,9 @@ class Rva006549C0BuddyView {public:
 class GameSpyBuddyMessageQueueInterface;
 extern GameSpyBuddyMessageQueueInterface *TheGameSpyBuddyMessageQueue;
 extern "C" void PreAuthenticatePlayerPartner(int,char*,char*,void(__cdecl*)(int,int,int,char*,void*),void*);
-// Existing opaque symbol: independent retail body at 006517E0 is a cdecl
-// callback with five arguments; argument 5 is the thread, argument 3 is status.
-void d_006517e0();
+// Retail body at 006517E0 (PersistentAuthRva006517E0.cpp): the cdecl auth
+// callback; argument 5 is the thread, argument 3 is status.
+void rva006517E0PersAuthCallback(int,int,int,char*,void*);
 bool PSThreadClass::tryLogin(int id,std::string nick,std::string password,std::string email)
 {
  char validate[33];
@@ -37,7 +37,7 @@ bool PSThreadClass::tryLogin(int id,std::string nick,std::string password,std::s
  char *token=BFMEDuplicateString(reinterpret_cast<Rva006549C0BuddyView *>(TheGameSpyBuddyMessageQueue)->slot2C());
  char *challenge=BFMEDuplicateString(reinterpret_cast<Rva006549C0BuddyView *>(TheGameSpyBuddyMessageQueue)->slot30());
  GenerateAuthA(GetChallenge(0),challenge,validate);
- PreAuthenticatePlayerPartner(id,token,validate,(void(__cdecl*)(int,int,int,char*,void*))d_006517e0,this);
+ PreAuthenticatePlayerPartner(id,token,validate,rva006517E0PersAuthCallback,this);
  free(token);free(challenge);
  while(!m_doneTryingToLogin && IsStatsConnected())PersistThink();
  return m_loginOK;
