@@ -93,10 +93,14 @@ struct Rva00899560Pool {
 extern Rva00899560Pool *g_rva01337810GcRoots;
 struct Rva008AE770Stack;
 extern Rva008AE770Stack Rva008AE770TheStack;
+// Retail calls this seven-argument append at the body linked under
+// ?d_008cc690@@YAXXZ, so the call is spelled through a member-pointer union
+// (as in Rva00893270.cpp): the object references the linked name directly.
+extern void d_008cc690();
 class Rva008CF3C0State {
-public:
-    void append(void *owner, void *scope, BfmeStrVKI *name, Rva008A9B00 *node, int a, int b, int c);
 };
+typedef void (Rva008CF3C0State::*Rva008CF3C0Append)(void *owner, void *scope,
+    BfmeStrVKI *name, Rva008A9B00 *node, int a, int b, int c);
 
 struct Rva008AF650TextSource { char m_gap00[0x2c]; int m_unknown2c; int m_unknown30; };
 class Rva008AD530StringBinding {
@@ -230,7 +234,8 @@ bool rva008AF650Implementation(Rva008AF650Object *object, BfmeStrVKI *key, AptVa
                             node = new Rva008A9B00();
                         }
                         node->m_string = name;
-                        ((Rva008CF3C0State *)&Rva008AE770TheStack)->append(scope, 0, &text->m_string1c, node, 1, 1, 0);
+                        union { void (*fn)(); Rva008CF3C0Append call; } u = { d_008cc690 };
+                        (((Rva008CF3C0State *)&Rva008AE770TheStack)->*u.call)(scope, 0, &text->m_string1c, node, 1, 1, 0);
                     }
                     text->m_flags6c = 0x204;
                 }
