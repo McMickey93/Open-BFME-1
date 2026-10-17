@@ -54,9 +54,13 @@ public:
 };
 class Rva00899770;
 struct Rva008AE770Stack {
-public:
-    Rva00899770 *createString(void *value, int unused, BfmeStrVKI *name, int one, int another, int zero);
 };
+// Body at 0x008cc940: ?d_008cc940@@YAXXZ. The retail callee is linked as a
+// cdecl void() body, so the thiscall string-creation method is reached
+// through a member-pointer call (the pattern Rva8CEDA0PushConstantVariable.cpp
+// and Rva8CD520ConfigureState.cpp use).
+extern void d_008cc940();
+typedef Rva00899770 *(Rva008AE770Stack::*Rva008AE770CreateString)(void *, int, BfmeStrVKI *, int, int, int);
 extern Rva008AE770Stack Rva008AE770TheStack;
 struct Rva008AD750TextSource { char m_gap00[0x34]; const char *m_text34; };
 class Rva008AD750StringBinding {
@@ -83,7 +87,8 @@ void Rva008AD750StringBinding::refresh(Rva8CD130Value *scope)
         if (!next) break;
         scope = scope->parent();
     }
-    Rva8CD130Value *value = (Rva8CD130Value *)Rva008AE770TheStack.createString(scope, 0, &key, 1, 1, 0);
+    union { void (*fn)(); Rva008AE770CreateString call; } u = { d_008cc940 };
+    Rva8CD130Value *value = (Rva8CD130Value *)(Rva008AE770TheStack.*u.call)(scope, 0, &key, 1, 1, 0);
     if (value->undefined()) output = BfmeStrVKI(m_unknown0c->m_text34);
     else value->getName((Rva8CD130String *)&output);
     if (!(m_string18 == output)) {
