@@ -1,7 +1,4 @@
-// ?attemptDamage@ActiveBody@@UAEXPAVDamageInfo@@@Z
-// partial score=0.411 date=2026-10-17
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
-// readable body of ?attemptDamage@ActiveBody@@: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source/GameLogic/Object/Body/ActiveBody.cpp
 // Open-BFME: ActiveBody::attemptDamage, retail 0x00211D40, 1803 bytes.
 //
 // Identity: ilt_oracle confirms ?attemptDamage@ActiveBody@@UAEXPAVDamageInfo@@@Z
@@ -17,6 +14,15 @@
 // The method is a virtual of the body interface at +0x10 inside the module,
 // so this points there: the primary vtable is this-0x10, the module data
 // this-0x0C and the object this-0x08 (same view as attemptHealing).
+//
+// Shape notes (all read off the bytes): the last-damage else branch is Zero
+// Hour's nested srcObj2/srcObj1 form, whose three copies the compiler merges
+// into one tail; it reloads the GameLogic singleton into a local rather than
+// reusing the frame compare's load, which the TheBfmeGameLogic spelling of the
+// same 0x012F0898 global reproduces. The RespawnUpdate test is one condition
+// (findModule && health <= 1.01 && prev > 1.01) whose failure falls into the
+// death test. Zero Hour's inline accessors (getFrame, getID, getPlayerIndex,
+// getContainedBy/getContain) are kept: they decide the scratch registers.
 #define _STLP_USE_STATIC_LIB 1
 #define BFME_STLP_NODE_ALLOC 1
 #define __PLACEMENT_VEC_NEW_INLINE
@@ -111,6 +117,7 @@ public:
 	void setAttackedBy(Int playerIndex);
 	char m_unreconstructed000[0x24];
 	Int m_playerIndex;					// +0x24
+	Int getPlayerIndex() const { return m_playerIndex; }
 };
 
 class Object;
@@ -178,6 +185,7 @@ protected:
 public:
 	char m_unreconstructed004[0x74 - 0x04];
 	ObjectID m_id;						// +0x74
+	ObjectID getID() const { return m_id; }
 	char m_unreconstructed078[0x94 - 0x78];
 	UnsignedInt m_status94;					// +0x94
 	char m_unreconstructed098[0x134 - 0x98];
@@ -186,6 +194,8 @@ public:
 	BehaviorModule **m_behaviors;				// +0x1F0
 	char m_unreconstructed1F4[0x1fc - 0x1f4];
 	ContainModuleInterface *m_contain;			// +0x1FC
+	ContainModuleInterface *getContain() const { return m_contain; }
+	Object *getContainedBy() const { return m_containedBy; }
 	LinkedBodyInterface *m_body;				// +0x200
 	char m_unreconstructed204[0x214 - 0x204];
 	Object *m_containedBy;					// +0x214
@@ -237,10 +247,12 @@ class GameLogic
 {
 public:
 	Object *findObjectByID(Int id);
+	UnsignedInt getFrame() const { return m_frame; }
 	char m_unreconstructed000[0x3c];
 	UnsignedInt m_frame;					// +0x3C
 };
 extern GameLogic *TheGameLogic;
+extern GameLogic *TheBfmeGameLogic;			// same retail global as TheGameLogic
 
 struct AIData { char m_pad[0x64]; Bool m_flag64; };
 class AI { public: char m_pad[0x14]; AIData *m_data; };
@@ -267,7 +279,7 @@ public:
 	virtual void slot19();					// vtable +0x4C
 };
 
-class Rva00211890DamageInfo;
+struct Rva00211890DamageInfo;
 class Rva00211890Owner { public: void forwardSourcePosition(float amount, Rva00211890DamageInfo *damage); };
 
 class ActiveBody
@@ -358,23 +370,32 @@ void ActiveBody::attemptDamage(DamageInfo *damageInfo)
 			((Rva00211890Owner *)primary())->forwardSourcePosition(amount, (Rva00211890DamageInfo *)damageInfo);
 		internalChangeHealth(-amount, damageInfo);
 		if (data->m_damageTimerFrames > 0)
-			((Gen_001be760 *)obj)->m(data->m_damageTimerFrames + TheGameLogic->m_frame);
+			((Gen_001be760 *)obj)->m(data->m_damageTimerFrames + TheGameLogic->getFrame());
 		damageInfo->m_actualDamageDealt = amount;
 		damageInfo->m_actualDamageClipped = m_prevHealth - m_currentHealth;
 
-		if (m_lastDamageTimestamp != TheGameLogic->m_frame && m_lastDamageTimestamp != TheGameLogic->m_frame - 1) {
+		UnsignedInt now = TheGameLogic->getFrame();
+		if (m_lastDamageTimestamp != now && m_lastDamageTimestamp != now - 1) {
 			m_lastDamageInfo = *damageInfo;
 			m_lastDamageCleared = false;
-			m_lastDamageTimestamp = TheGameLogic->m_frame;
+			m_lastDamageTimestamp = TheGameLogic->getFrame();
 		} else {
-			GameLogic *logic = TheGameLogic;
+			GameLogic *logic = TheBfmeGameLogic;
 			Object *srcObj1 = logic->findObjectByID(m_lastDamageInfo.m_sourceID);
 			Object *srcObj2 = logic->findObjectByID(damageInfo->m_sourceID);
-			if (srcObj2 && (!srcObj1 || srcObj2->isKindOf(BFME_KINDOF_09) || srcObj2->isKindOf(BFME_KINDOF_08) ||
-					srcObj2->isFactionStructure())) {
-				m_lastDamageInfo = *damageInfo;
-				m_lastDamageCleared = false;
-				m_lastDamageTimestamp = TheGameLogic->m_frame;
+			if (srcObj2) {
+				if (srcObj1) {
+					if (srcObj2->isKindOf(BFME_KINDOF_09) || srcObj2->isKindOf(BFME_KINDOF_08) ||
+						srcObj2->isFactionStructure()) {
+						m_lastDamageInfo = *damageInfo;
+						m_lastDamageCleared = false;
+						m_lastDamageTimestamp = TheGameLogic->getFrame();
+					}
+				} else {
+					m_lastDamageInfo = *damageInfo;
+					m_lastDamageCleared = false;
+					m_lastDamageTimestamp = TheGameLogic->getFrame();
+				}
 			}
 		}
 
@@ -383,7 +404,7 @@ void ActiveBody::attemptDamage(DamageInfo *damageInfo)
 			srcObj = TheGameLogic->findObjectByID(m_lastDamageInfo.m_sourceID);
 			if (srcObj) {
 				Player *srcPlayer = srcObj->getControllingPlayer();
-				obj->getControllingPlayer()->setAttackedBy(srcPlayer->m_playerIndex);
+				obj->getControllingPlayer()->setAttackedBy(srcPlayer->getPlayerIndex());
 			}
 		}
 
@@ -404,19 +425,19 @@ void ActiveBody::attemptDamage(DamageInfo *damageInfo)
 				d->onBodyDamageStateChange(damageInfo, oldState, m_curDamageState);
 			}
 			if (m_curDamageState == 1 && (Real)data->m_damagedDisableFrames > 0.0f)
-				obj->setDisabledUntil(BFME_DISABLED_08, data->m_damagedDisableFrames + TheGameLogic->m_frame);
+				obj->setDisabledUntil(BFME_DISABLED_08, data->m_damagedDisableFrames + TheGameLogic->getFrame());
 			else if (m_curDamageState == 2 && (Real)data->m_reallyDamagedDisableFrames > 0.0f)
-				obj->setDisabledUntil(BFME_DISABLED_08, data->m_reallyDamagedDisableFrames + TheGameLogic->m_frame);
+				obj->setDisabledUntil(BFME_DISABLED_08, data->m_reallyDamagedDisableFrames + TheGameLogic->getFrame());
 
 			const ThingTemplate *tmpl = obj->getTemplate();
 			if (tmpl) {
 				if (m_curDamageState == 1) {
 					AudioEventRTS damaged = *tmpl->getSound(BFME_SOUND_DAMAGED);
-					damaged.setObjectID(obj->m_id);
+					damaged.setObjectID(obj->getID());
 					TheAudio->addAudioEvent(&damaged);
 				} else if (m_curDamageState == 2) {
 					AudioEventRTS reallyDamaged = *tmpl->getSound(BFME_SOUND_REALLY_DAMAGED);
-					reallyDamaged.setObjectID(obj->m_id);
+					reallyDamaged.setObjectID(obj->getID());
 					TheAudio->addAudioEvent(&reallyDamaged);
 				}
 			}
@@ -439,21 +460,18 @@ void ActiveBody::attemptDamage(DamageInfo *damageInfo)
 		}
 
 		static NameKeyType respawnKey = TheNameKeyGenerator->nameToKey("RespawnUpdate");
-		if (obj->findModule(respawnKey)) {
-			if (m_currentHealth <= 1.01f && m_prevHealth > 1.01f) {
-				if (damager)
-					((BFMEReportDamageSource *)damager)->report(obj, 1);
-			}
+		if (obj->findModule(respawnKey) && m_currentHealth <= 1.01f && m_prevHealth > 1.01f) {
+			if (damager)
+				((BFMEReportDamageSource *)damager)->report(obj, 1);
 		} else if (m_currentHealth <= 0.0f && m_prevHealth > 0.0f) {
 			if (damager)
 				((BFMEReportDamageSource *)damager)->report(obj, 1);
 			if (bfmeGo1004A((BfmeObj1004 *)obj)) {
 				m_currentHealth = 1.0f;
 			} else {
-				Bool contained = obj->m_containedBy != 0;
+				Bool contained = obj->getContainedBy() != 0;
 				if (contained) {
-					ContainModuleInterface *contain = obj->m_containedBy->m_contain;
-					if (contain && contain->slot64(0) < 2)
+					if (obj->getContainedBy()->getContain() && obj->getContainedBy()->getContain()->slot64(0) < 2)
 						contained = false;
 				}
 				obj->onDie(damageInfo);

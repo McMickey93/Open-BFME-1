@@ -2221,7 +2221,6 @@ functions	0x002102E0	?shouldRetaliate@ActiveBody@@KA_NPAVObject@@@Z
 functions	0x002109B0	?_M_insert_overflow@?$vector@UWeaponRecoilInfo@W3DModelDraw@@V?$allocator@UWeaponRecoilInfo@W3DModelDraw@@@_STL@@@_STL@@IAEXPAUWeaponRecoilInfo@W3DModelDraw@@ABU34@ABU__false_type@2@I_N@Z
 functions	0x00210B70	??_GActiveBody@@UAEPAXI@Z
 functions	0x00210BF0	?setCorrectDamageState@ActiveBody@@QAEX_N@Z
-functions	0x00211D40	??1RespawnBodyModuleData@@UAE@XZ
 functions	0x00212C10	??0BaikonurLaunchPowerModuleData@@QAE@XZ
 functions	0x002131B0	??0FlightDeckBehaviorModuleData@@QAE@XZ
 functions	0x002131F0	??_GFlightDeckBehaviorModuleData@@UAEPAXI@Z

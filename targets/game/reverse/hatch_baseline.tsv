@@ -2088,7 +2088,6 @@ emit	game/GameEngine/Source/GameLogic/Object/Behavior/ReplenishUnitsBehaviorDest
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/ShareExperienceBehaviorDestructorThunk.cpp	*	630
 emit	game/GameEngine/Source/GameLogic/Object/Behavior/SlowDeathBehavior_onDie_Thunk.cpp	*	842
 emit	game/GameEngine/Source/GameLogic/Object/Body/InactiveBodyDestructorThunk.cpp	*	1493
-emit	game/GameEngine/Source/GameLogic/Object/Body/RespawnBodyModuleDataDestructorThunk.cpp	*	1803
 emit	game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContain.cpp	*	732
 emit	game/GameEngine/Source/GameLogic/Object/Contain/GarrisonContain_xfer_Thunk.cpp	*	72
 emit	game/GameEngine/Source/GameLogic/Object/Contain/HordeContain/HordeTransportContainDestructorThunk.cpp	*	820
