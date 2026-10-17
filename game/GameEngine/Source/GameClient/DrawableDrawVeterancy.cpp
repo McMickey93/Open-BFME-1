@@ -58,8 +58,11 @@ public:
 
 	const ThingTemplate *getTemplate() const
 	{
+		// spelled as Thing_isKindOf.cpp's copy, which is retail's 0x00098E50
 		const ThingTemplate *thingTemplate = m_template;
-		if ( thingTemplate && thingTemplate->m_nextOverride )
+		if ( thingTemplate == 0 )
+			return 0;
+		if ( thingTemplate->m_nextOverride )
 			thingTemplate = (const ThingTemplate *)thingTemplate->m_nextOverride->getFinalOverride();
 		return thingTemplate;
 	}
