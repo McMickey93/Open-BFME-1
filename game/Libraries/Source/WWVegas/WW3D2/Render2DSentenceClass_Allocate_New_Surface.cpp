@@ -96,6 +96,7 @@ class SurfaceClass
 {
 public:
 	SurfaceClass(unsigned width, unsigned height, WW3DFormat format, D3DPOOL pool);
+	~SurfaceClass();
 	void Unlock();
 };
 
