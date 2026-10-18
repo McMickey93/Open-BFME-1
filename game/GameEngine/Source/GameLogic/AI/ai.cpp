@@ -603,20 +603,6 @@ void AI::parseAiDataDefinition(INI *ini)
 /**
  * Create a new AI Group
  */
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/AI/AI_createGroup.cpp
-// ?createGroup@AI@@QAEPAVAIGroup@@XZ present-unmatched
-AIGroup *AI::createGroup( void )
-{
-	// create a new instance
-	AIGroup *group = newInstance(AIGroup);
-
-	// add it to the list
-//	DEBUG_LOG(("***AIGROUP %x is being added to m_groupList.\n", group ));
-	m_groupList.push_back( group );
-
-	return group;
-}
-
 /**
  * Destroy the given AI Group
  */

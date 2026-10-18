@@ -36,7 +36,7 @@ multi_name.different = 0
 size_outlier.indicted = 1
 ctor_vtable.contradicted = 19
 ctor_vtable.unreadable = 0
-one_identity.surplus = 2105
+one_identity.surplus = 2104
 # Retail registration proves DynamicPortalBehaviour owns ctor 001F8B80 and factory 001156B0; four false aliases retired.
 # fcf825b4f7 retired the false FXNugget zero-store claim; the body still has aliases.
 # 4c8346b3c9 retired the GDIFileStream ctor over-claim at 0x00087A50 (a zero-store body).
@@ -1931,7 +1931,6 @@ null_reloc.max_unreadable = 1000
 @ one_identity.surplus 0x007EFFF0 ??3AIFollowPathState@@SAXPAXW4AIFollowPathStateMagicEnum@0@@Z
 @ one_identity.surplus 0x007EFFF0 ??3AIFollowWaypointPathExactState@@SAXPAXW4AIFollowWaypointPathExactStateMagicEnum@0@@Z
 @ one_identity.surplus 0x007EFFF0 ??3AIFollowWaypointPathState@@SAXPAXW4AIFollowWaypointPathStateMagicEnum@0@@Z
-@ one_identity.surplus 0x007EFFF0 ??3AIGroup@@SAXPAXW4AIGroupMagicEnum@0@@Z
 @ one_identity.surplus 0x007EFFF0 ??3AIGuardAttackAggressorState@@SAXPAXW4AIGuardAttackAggressorStateMagicEnum@0@@Z
 @ one_identity.surplus 0x007EFFF0 ??3AIGuardIdleState@@SAXPAXW4AIGuardIdleStateMagicEnum@0@@Z
 @ one_identity.surplus 0x007EFFF0 ??3AIGuardInnerState@@SAXPAXW4AIGuardInnerStateMagicEnum@0@@Z
