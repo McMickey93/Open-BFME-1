@@ -317,37 +317,7 @@ void Shell::pop( void )
 	* from the shutdown() for the screen, it will be immediately popped off
 	* the stack */
 //-------------------------------------------------------------------------------------------------
-// ?popImmediate@Shell@@QAEXXZ present-unmatched
-void Shell::popImmediate( void )
-{
-	WindowLayout *screen = top();
-
-	// sanity
-	if( screen == NULL )
-		return;
-
-#ifdef DEBUG_LOGGING
-	DEBUG_LOG(("Shell:popImmediate() - stack was\n"));
-	for (Int i=0; i<m_screenCount; ++i)
-	{
-		DEBUG_LOG(("\t\t%s\n", m_screenStack[i]->getFilename().str()));
-	}
-#endif
-
-	// do NOT set pending pop, we are going to force a pop after the shutdown is run
-	m_pendingPop = FALSE;
-
-	// run the shutdown
-	Bool immediatePop = TRUE;
-	screen->runShutdown( &immediatePop );
-
-	// pop the screen of the stack
-	doPop( FALSE );
-
-	if (TheIMEManager)
-		TheIMEManager->detatch();
-
-}  // end popImmediate
+// Shell::popImmediate (retail 0x0057F4E0) is matched in Shell_popImmediate.cpp.
 
 //-------------------------------------------------------------------------------------------------
 /** Run the initialize function for the top of the stack just as though it was pushed
