@@ -60,6 +60,7 @@ public:
 	bool rva003F5E20(const Object *, const Coord3D *, const Weapon *, int);
 };
 void j_00032b46();
+void j_00003f58();
 
 class AI
 {
@@ -90,7 +91,6 @@ class AIUpdateInterface
 public:
 	Object *getCurrentVictim() const;
 	void friend_setGoalObject(Object *object);
-	Object *getNextMoodTarget(bool a, bool b);
 	void destroyPath();
 
 	bool rva0027ACF0MoodTargetCheck();
@@ -255,7 +255,11 @@ bool AIUpdateInterface::rva0027ACF0MoodTargetCheck()
         Object *victim = getCurrentVictim();
         if(victim && victim->isKindOf((KindOfType)7))
         {
-            Object *candidate = getNextMoodTarget(true,false);
+            typedef Object *(AIUpdateInterface::*NextMoodTargetFunction)(bool, bool);
+            union { void (*raw)(void); NextMoodTargetFunction member; }
+                nextMoodTarget;
+            nextMoodTarget.raw = j_00003f58;
+            Object *candidate = (this->*nextMoodTarget.member)(true,false);
             if(candidate && candidate != victim && !candidate->isKindOf((KindOfType)7))
             {
                 BfmePathfinderMethods *pathfinder = TheAI->m_pathfinder;
