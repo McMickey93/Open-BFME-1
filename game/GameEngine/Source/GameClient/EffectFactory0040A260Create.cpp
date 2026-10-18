@@ -1,8 +1,9 @@
-// ?create001B0E90@EffectFactory0040A260@@QAEPAUSnapshot0040A260@@PBVThingTemplate@@PAX@Z
-// partial score=0.1632 date=2026-10-01
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
-// ?create001B0E90@EffectFactory0040A260@@QAEPAUSnapshot0040A260@@PBVThingTemplate@@PAX@Z
-// The matched call in BuffTransfer0040A260 names this body at RVA 0x001B0E90.
+// Retail 0x001B0E90 (337 bytes, ret 8 at +0x14E): the Buff effect factory
+// helper the matched BuffTransfer0040A260 caller reaches through ILT 0x000397FC.
+// The first draw-module record is read with Zero Hour's ModuleInfo::getNthData
+// idiom (index test against an unsigned size), so a missing record and a null
+// module share the formatted-warning path.
 #include "ascii_string.h"
 
 typedef int Int;
@@ -44,7 +45,14 @@ struct Rva001B0E90Range
 	Rva001B0E90Record *m_begin;
 	Rva001B0E90Record *m_end;
 	Rva001B0E90Record *begin() const { return m_begin; }
-	int size() const { return (int)(m_end - m_begin); }
+	unsigned int size() const { return m_end - m_begin; }
+	// ZH ThingTemplate.h ModuleInfo::getNthData
+	Rva001B0E90EntryObject *getNthData(Int i) const
+	{
+		if (i >= 0 && i < size())
+			return m_begin[i].m_object;
+		return 0;
+	}
 };
 
 struct Rva001B0E90ThingTemplateView
@@ -155,7 +163,7 @@ public:
 	virtual Snapshot0040A260 *slot90(void *, void *) = 0;
 };
 
-extern void *g_Rva00F36E5C;
+extern BfmeAwakenDebug *TheBfmeAwakenDebug;
 extern void _bfme_debugRecordCallsite(Int kind);
 extern bool _bfme_debugReportingEnabled(void);
 class TerrainVisual;
@@ -164,25 +172,26 @@ extern TerrainVisual *TheTerrainVisual;
 Snapshot0040A260 *EffectFactory0040A260::create001B0E90(const ThingTemplate *thingTemplate, void *context)
 {
 	const Rva001B0E90ThingTemplateView *self = (const Rva001B0E90ThingTemplateView *)thingTemplate;
-	if (self->m_records.size() == 0 || !self->m_records.begin()->m_object)
+	Rva001B0E90EntryObject *data = self->m_records.getNthData(0);
+	if (data == 0)
 	{
 		AsciiString message;
-		message.format(AsciiString((const char *)0x0109C918),
+		message.format(AsciiString("No draw module specified for Buff! In Buff (%s)"),
 			self->m_name.str());
 		return 0;
 	}
 
-	void *result = self->m_records.begin()->m_object->slot28();
+	void *result = data->slot28();
 	if (result == 0)
 	{
 		if (_bfme_debugReportingEnabled())
 		{
 			_bfme_debugRecordCallsite(1);
-			reinterpret_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot60();
-			reinterpret_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot6C(0, 0)
-				->slot38((const char *)0x0109C910)
+			TheBfmeAwakenDebug->slot60();
+			TheBfmeAwakenDebug->slot6C(0, 0)
+				->slot38("Buff ")
 				->slot38(self->m_name.str())
-				->slot38((const char *)0x0109C8E8)
+				->slot38(" requires a W3DBuffDrawModule.\n")
 				->slot4C(2);
 		}
 		return 0;
