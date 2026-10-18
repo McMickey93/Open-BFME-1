@@ -65,7 +65,7 @@ class GameWindow;
 class GameWindow
 {
 public:
-	UnsignedInt winSetStatus( UnsignedInt status );
+	UnsignedInt _bfme_winSetStatus( UnsignedInt status );
 
 	Bool winIsHidden()
 	{
@@ -379,7 +379,7 @@ void ControlBar::updateContextCommand()
 
 		if ( command->getCommandType() == 0x0F )
 		{
-			win->winSetStatus( WIN_STATUS_ALWAYS_COLOR );
+			win->_bfme_winSetStatus( WIN_STATUS_ALWAYS_COLOR );
 			if ( availability == COMMAND_HIDDEN )
 				win->winHide( true );
 			continue;
@@ -400,19 +400,19 @@ void ControlBar::updateContextCommand()
 			case COMMAND_RESTRICTED:
 			case COMMAND_UNAVAILABLE:
 				win->winEnable( false );
-				win->winSetStatus( WIN_STATUS_RVA4A5950_80000000 );
+				win->_bfme_winSetStatus( WIN_STATUS_RVA4A5950_80000000 );
 				if ( availability == COMMAND_UNAVAILABLE )
-					win->winSetStatus( WIN_STATUS_ALWAYS_COLOR );
+					win->_bfme_winSetStatus( WIN_STATUS_ALWAYS_COLOR );
 				break;
 			case COMMAND_NOT_READY:
 				clockColor = m_buildUpClockColor;
 				win->winEnable( false );
-				win->winSetStatus( WIN_STATUS_NOT_READY );
+				win->_bfme_winSetStatus( WIN_STATUS_NOT_READY );
 				break;
 			case COMMAND_CANT_AFFORD:
 			case COMMAND_DISABLED:
 				win->winEnable( false );
-				win->winSetStatus( WIN_STATUS_ALWAYS_COLOR );
+				win->_bfme_winSetStatus( WIN_STATUS_ALWAYS_COLOR );
 				break;
 			default:
 				win->winEnable( true );
@@ -425,7 +425,7 @@ void ControlBar::updateContextCommand()
 		if ( inactive && ( win->winGetStatus() & WIN_STATUS_RVA4A5950_8 ) )
 		{
 			win->winEnable( false );
-			win->winSetStatus( WIN_STATUS_RVA4A5950_40000000 );
+			win->_bfme_winSetStatus( WIN_STATUS_RVA4A5950_40000000 );
 		}
 
 		win->winHide( hide );
