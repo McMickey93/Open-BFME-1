@@ -37502,7 +37502,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_002b32a0@@YAXXZ,,0x002B32A0,3352,game/gen_asm/d_002afb20.asm,matched,gen-dump;ghidra=FUN_006b32a0
 ?d_002ba390@@YAXXZ,,0x002BA390,1159,game/gen_asm/d_002afb20.asm,matched,gen-dump;ghidra=FUN_006ba390
 ?d_002be4a0@@YAXXZ,,0x002BE4A0,1160,game/gen_asm/d_002baa40.asm,matched,gen-dump;ghidra=FUN_006be4a0
-?d_002c0fe0@@YAXXZ,,0x002C0FE0,290,game/gen_asm/d_002bbb80.asm,matched,gen-dump;bounds=high
 ?d_002c11d0@@YAXXZ,,0x002C11D0,5,game/GameEngine/Source/Common/Rva002C11D0Thunk.cpp,matched,unconditional tail thunk to shared destructor body
 ?d_002c3550@@YAXXZ,,0x002C3550,689,game/gen_asm/d_002bbb80.asm,matched,gen-dump;bounds=high
 ?d_002c38b0@@YAXXZ,,0x002C38B0,578,game/gen_asm/d_002c38b0.asm,matched,gen-dump;ghidra=FUN_006c38b0
@@ -172538,3 +172537,4 @@ uw_00c62070,,0x00C62070,19,game/GameEngine/Source/Common/Rva00C62070PlacementCle
 ?Rva00C6B120Init@@YAXXZ,,0x00C6B120,22,game/GameEngine/Source/GameLogic/Object/Update/LargeGroupAudioUpdateRegistryGlobal.cpp,matched,object-symbol=_$E1;$E dynamic initializer for the LargeGroupAudio registry tree;global VA 0x012EFFA0;model=claude-opus-5-5;host=app
 ?behavior@Rva001BA1C0Handler@@QAE_NPAXPBUCoord3D@@@Z,,0x001BA1C0,1615,game/GameEngine/Source/GameLogic/Object/LocomotorHandleBehaviorZ.cpp,matched,BFME Locomotor::handleBehaviorZ per ZH twin switch on behaviorZ; caller maintainCurrentPosition passes m_maintainPos via ILT 0xFEBB; native OVERRIDE recursive getFinalOverride;model=claude-opus-5-5;host=app
 ?rva003F5E20@Pathfinder@@QAE_NPAVObject@@PBUCoord3D@@PAVWeapon@@_N@Z,,0x003F5E20,345,game/GameEngine/Source/GameLogic/AI/PathfinderRva003F5E20.cpp,matched,Pathfinder attack-range neighbour cell-line check via ILT 0x32B46; member-wise sample copy then += keeps goal x/y on the x87 stack as retail;model=claude-opus-5-5;host=app
+?update@GiantBirdGuardIdleState@@UAE?AW4StateReturnType@@XZ,,0x002C0FE0,290,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/GiantBirdGuardIdleState.cpp,matched,GiantBird idle state slot; native Team average visibility fixes full position copy; RET at2C1101 ends290B; t=17min; evidence=identity_evidence/002c0fe0-visible-team-position.md;model=gpt-6.1-sol;host=cal-desktop

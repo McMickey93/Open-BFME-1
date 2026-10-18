@@ -1926,3 +1926,15 @@ update. A normal inline declaration remained a call under this TU's options;
 __forceinline expands it and reproduces all120 bytes. Both volatile reads in
 the old bank can then be removed. The existing owned registry pointer passes
 strict DIR32 checks. See identity_evidence/008991e0-inline-root-pool.md.
+
+## Visible team-position output can fix a coordinate copy
+
+At002C0FE0, GiantBirdGuardIdleState::update kept14 differing bytes in a
+290-byte body: retail loads all three object-position components before
+storing the first two, while the bank interleaves them. Exposing the genuine
+186-byte Team::getEstimateTeamPosition_000EDCD0 with inline
+__declspec(noinline) fixes the entire caller. The helper writes its output
+without retaining that pointer. Native coordinate/Object layouts and lookup
+visibility alone do not fix it. Both bodies pass strict byte and DIR32 checks;
+the helper's original ledger owner remains unchanged. Evidence:
+identity_evidence/002c0fe0-visible-team-position.md.
