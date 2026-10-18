@@ -20848,5 +20848,15 @@
   "after_sha256": "db73c6d75e2166f44f1c58fdd110f8b766a52e3b6a8ceaff054a3e88a259975c",
   "evidence": "targets/game/reverse/identity_evidence/0x000fbb40-vector4-default-ctor.md",
   "reason": "ilt_oracle CONFIRMS ??0Vector4@@QAE@XZ exactly at 0x000FBB40 (ILT 0x00045561) and CONTRADICTS it at 0x007A62E0; the 3-byte body at 0x007A62E0 is a different function, so it keeps an address-derived placeholder while the real identity moves to 0x000FBB40 in the follow-up commit."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "erase",
+  "new_name": "dup_00095ca0",
+  "before_sha256": "c1f7f57dea61dc62c7e862722953ccbf131471ca74a8ed2e75fd0510951cf1b7",
+  "after_sha256": "b73d0e66ccb0fba86c22895b3f4351b9ec1119258d44d05d11f7872b51c66ddd",
+  "evidence": "targets/game/reverse/identity_evidence/0000890e-00095ca0-vector-erase-swap.md",
+  "reason": "0x00095CA0 is reached only by uncalled ILT thunk 0x00013656, whose slot window 10942-10946 is contradicted by both vector<ICoord2D>::erase and vector<INILine>::erase; the proven vector<ICoord2D>::erase body is 0x00451E10 through ILT 0x0000890E, so the old row name was the ledger's swapped claim. The body keeps an address name until a caller or slot names it."
  }
 ]

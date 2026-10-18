@@ -81874,7 +81874,7 @@ name,address,notes
 ?erase@?$vector@UGen_t_003ab360_p12cd@@V?$allocator@UGen_t_003ab360_p12cd@@@_STL@@@_STL@@QAEPAUGen_t_003ab360_p12cd@@PAU3@0@Z,0x00011E28,ILT to 0x003B0E30 vector erase callee of Rva003B6680 converting ctor mcc
 ?erase@?$vector@UGeometryRecord@@V?$allocator@UGeometryRecord@@@_STL@@@_STL@@QAEPAUGeometryRecord@@PAU3@0@Z,0x0001BD38,route=0x000FF890; GeometryInfo five-argument constructor calls this vector erase through the retail ILT
 ?erase@?$vector@UGeometryRecord@@V?$allocator@UGeometryRecord@@@_STL@@@_STL@@QAEPAUGeometryRecord@@PAU3@0@Z,0x000FF890,canonical 16-byte GeometryRecord erase body identified by the exact GeometryInfo constructor
-?erase@?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@_STL@@QAEPAUICoord2D@@PAU3@0@Z,0x0000890E,ICF alias: this thunk fronts 0x00451E10 which the ledger already names the vector<INILine> erase; both elements are eight bytes so the two folded
+?erase@?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@_STL@@QAEPAUICoord2D@@PAU3@0@Z,0x0000890E,ILT thunk fronting the vector<ICoord2D> erase body; route=0x00451E10
 ?erase@?$vector@UPrereqUnitRec@ProductionPrerequisite@@V?$allocator@UPrereqUnitRec@ProductionPrerequisite@@@_STL@@@_STL@@QAEPAUPrereqUnitRec@ProductionPrerequisite@@PAU34@0@Z,0x0001E632
 ?erase@?$vector@UQ3SortElem4@@V?$allocator@UQ3SortElem4@@@_STL@@@_STL@@QAEPAUQ3SortElem4@@PAU3@0@Z,0x00024C17
 ?erase@?$vector@URva003A35A0Element@@V?$allocator@URva003A35A0Element@@@_STL@@@_STL@@QAEPAURva003A35A0Element@@PAU3@0@Z,0x003A3280,Record-view specialization of the existing range erase; full native STLport 4.6 body and caller ABI verified; proof=identity_evidence/003a3770-linked-record-rebuild.md
