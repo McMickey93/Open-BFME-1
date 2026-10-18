@@ -67,12 +67,18 @@ int Gen_0029A650::bfmeCap(void) const
 	return 0x3FFFFFFF;
 }
 
+// Retail's constructor at 0x001EACF0 installs the vtable at VA 0x010A1678,
+// which is WeaponSet's four-slot table.  No class here declares those
+// entries, so a C++ virtual would emit a wrong COMDAT; the extern carries the
+// retail symbol itself and the store relocates against the defining copy.
+extern "C" const void *__identifier("??_7WeaponSet@@6B@")[];
+
 class Gen_001EACF0
 {
 public:
 	Gen_001EACF0(void);
-	virtual void bfmeTick(void) = 0;
 private:
+	void *m_bfmeVtable;							// +0x00
 	int m_bfmeA;								// +0x04
 	int m_bfmeSlots[4];							// +0x08
 	int m_bfmeB;								// +0x18
@@ -89,6 +95,7 @@ private:
 
 Gen_001EACF0::Gen_001EACF0(void)
 {
+	m_bfmeVtable = (void *)__identifier("??_7WeaponSet@@6B@");
 	m_bfmeB = 0;
 	m_bfmeC = 0;
 	m_bfmeA = 0;
