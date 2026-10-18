@@ -52,6 +52,7 @@ import collections
 import concurrent.futures
 import csv
 import json
+import locale
 import hashlib
 import functools
 import io
@@ -76,6 +77,15 @@ sys.modules.setdefault("link_census", sys.modules[__name__])
 import build  # noqa: E402
 
 OUT = ROOT / "build" / "link_census"
+# A link that hangs must not consume the workflow's whole step timeout. The
+# hosted census linked in about 45 minutes on four cores before 2026-10-18,
+# when Wine left a compiler behind and the census produced no output for more
+# than four hours. Each attempt is bounded; a timeout kills its process tree,
+# resets the Wine server and retries once. The two links a recording census
+# runs (plain and /MAP) then still fit inside the 315-minute step even when
+# both need a retry.
+LINK_TIMEOUT = float(os.environ.get("BFME_LINK_TIMEOUT", "3000"))
+LINK_ATTEMPTS = max(1, int(os.environ.get("BFME_LINK_ATTEMPTS", "2")))
 # The linker prints `"<demangled>" (<mangled>)` for a C++ name and the bare name for a C one.
 UNRESOLVED = re.compile(r'error LNK20(?:01|19): unresolved external symbol (?:"[^"]*" \((\S+)\)|(\S+))')
 DUPLICATE = re.compile(r'^(\S+\.obj) : (?:error LNK2005|warning LNK4006): (?:"[^"]*" \((\S+)\)|(\S+)) '
@@ -382,6 +392,26 @@ def _arg(path):
     return Path(path).resolve().relative_to(ROOT.resolve()).as_posix()
 
 
+def wine_reset(reason):
+    """End this prefix's Wine server so a detached compiler cannot block a link.
+
+    WineHQ 11 has left cl.exe behind after its launcher exited (the hosted
+    census found one still running when the step was killed). A later link
+    then waited on that process for hours. The census is exclusive, so
+    restarting the prefix between phases is safe and gives the retry a clean
+    slate.
+    """
+    if sys.platform == "win32":
+        return
+    print(f"link_census: resetting the Wine server ({reason})", flush=True)
+    for command in (["wineserver", "-k"], ["wineserver", "-w"]):
+        try:
+            subprocess.run(command, env=os.environ.copy(), timeout=30,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            print(f"link_census: {' '.join(command)} failed: {exc}", file=sys.stderr, flush=True)
+
+
 def link(objs, aliases=None, tag="census", extra=(), options=()):
     OUT.mkdir(parents=True, exist_ok=True)
     rsp = OUT / "objects.rsp"
@@ -395,18 +425,45 @@ def link(objs, aliases=None, tag="census", extra=(), options=()):
                "/SUBSYSTEM:WINDOWS", "/ENTRY:WinMainCRTStartup", f"/OUT:{_arg(OUT / (tag + '.exe'))}", f"@{_arg(rsp)}", *extra]
     if sys.platform != "win32":
         command.insert(0, "wine")
+    env = build.compiler_environment(root)
+    timeout_note = (f"\nlink timed out after {LINK_TIMEOUT:g}s; killed the process tree\n").encode()
     started = time.time()
     # LNK1104 on the output (a scanner holding the new .exe) failed one run on
     # 2026-09-29 and linked on the next try: retry that one error, nothing else.
-    for attempt in range(3):
-        result = subprocess.run(command, capture_output=True, text=True, errors="replace",
-                                env=build.compiler_environment(root), cwd=ROOT)
-        if f"LNK1104: cannot open file '{_arg(OUT / (tag + '.exe'))}'" not in result.stdout + result.stderr:
-            break
-        if attempt < 2:
+    # A hang is bounded separately: watch_compiler kills the whole process tree
+    # at LINK_TIMEOUT, wine_reset clears a detached Wine child, and the attempt
+    # is retried. Without this, one stuck link consumed the workflow's 315-minute
+    # step timeout and no census was published (2026-10-18).
+    timeouts = lnk1104 = 0
+    while True:
+        attempt = timeouts + lnk1104 + 1
+        print(f"link_census: {tag} link attempt {attempt} ({len(objs):,} objects, "
+              f"timeout {LINK_TIMEOUT:g}s)", flush=True)
+        attempt_started = time.time()
+        result = build.watch_compiler(command, env, merge_output=True,
+                                      timeout=LINK_TIMEOUT, timeout_note=timeout_note)
+        log = (result.stdout + result.stderr).decode(locale.getpreferredencoding(False), errors="replace")
+        log = log.replace("\r\n", "\n").replace("\r", "\n")
+        print(f"link_census: {tag} link attempt {attempt} finished in "
+              f"{time.time() - attempt_started:.0f}s (exit {result.returncode})", flush=True)
+        if result.returncode == 124:
+            timeouts += 1
+            if timeouts >= LINK_ATTEMPTS:
+                (OUT / f"{tag}.log").write_text(log, encoding="utf-8")
+                wine_reset(f"after the {tag} link timed out for the last time")
+                raise SystemExit(
+                    f"link_census: {tag} link timed out after {LINK_TIMEOUT:g}s on "
+                    f"{timeouts} attempt(s); no census recorded")
+            wine_reset(f"after the {tag} link timed out")
+            continue
+        if f"LNK1104: cannot open file '{_arg(OUT / (tag + '.exe'))}'" in log and lnk1104 < 2:
+            lnk1104 += 1
+            print(f"link_census: {tag} link hit LNK1104; retrying in 10s", flush=True)
             time.sleep(10)
-    (OUT / f"{tag}.log").write_text(result.stdout + result.stderr, encoding="utf-8")
-    return result.stdout + result.stderr, time.time() - started, result.returncode
+            continue
+        break
+    (OUT / f"{tag}.log").write_text(log, encoding="utf-8")
+    return log, time.time() - started, result.returncode
 
 
 def fresh_outputs(*paths):
@@ -1713,8 +1770,11 @@ def main(argv=None):
         _INPUT_RECEIPTS.save()
         print(f"link_census: compile {time.time() - started:.0f}s", flush=True)
     verify_data_objects()
+    print("link_census: data provider objects verified", flush=True)
     present, missing = objects(rows)
     sources = _object_sources(rows)
+    print(f"link_census: {len(present):,} objects present, {len(missing):,} missing; checking staleness",
+          flush=True)
     why = {}
     stale = stale_objects(present, sources, why)
     if stale:
@@ -1723,7 +1783,10 @@ def main(argv=None):
         print(f"link_census: {len(missing):,} objects missing (run the full ./build.sh first); "
               f"linking the {len(present):,} present", file=sys.stderr)
     fresh_outputs(OUT / "census.exe")
+    wine_reset("after compiling and before the census link")
+    print("link_census: starting the census link", flush=True)
     log, seconds, code = link(present)
+    print(f"link_census: census link finished in {seconds:.0f}s (exit {code}); classifying", flush=True)
     unexplained_exit(code, log, OUT / "census.exe")
     why = {}
     stale = stale_objects(present, sources, why)
@@ -1735,6 +1798,7 @@ def main(argv=None):
         # A linker that dies prints no per-symbol errors, which would read as
         # "0 unresolved": never report counts from a crashed link.
         raise SystemExit(f"link_census: the link died ({crashed.group(0).strip()}); no counts recorded")
+    print("link_census: classifying the link log", flush=True)
     classes, detail, dup_kinds, dups = classify(log, rows)
     census = {"when": time.strftime("%Y-%m-%d %H:%M"), "objects": len(present), "missing": len(missing),
               "seconds": seconds, "unresolved_classes": dict(classes), "duplicate_classes": dict(dup_kinds),
@@ -1759,10 +1823,12 @@ def main(argv=None):
                               "unresolved": {n: e for n, e in after_detail.items()
                                              if e["kind"] in ("alias", "dump", "pinned-elsewhere")}}
     OUT.mkdir(parents=True, exist_ok=True)
+    print("link_census: writing census.json", flush=True)
     path.write_text(json.dumps(census, indent=1), encoding="utf-8")
     report(census)
     if args.history:
         # record rechecks currency after the link, which can take minutes.
+        print("link_census: recording the census", flush=True)
         record(census, rows, fresh=args.build)
     return 0
 
@@ -1788,7 +1854,10 @@ def selected_main():
     if stale:
         raise SystemExit(f"link_census: objects are not current for their source: {describe_stale(stale, why)}")
     log = final_log(None)  # the census's own link says which names nothing defines
+    print("link_census: --selected: reading object facts", flush=True)
     facts = read_facts(present, rows)
+    print("link_census: --selected: running the /MAP selection link", flush=True)
+    wine_reset("before the selection link")
     map_text = selection_link(present, log)
     validate_fact_snapshots(present, facts)
     if subprocess.run(["git", "diff", "--quiet", history[-1]["commit"], "--", *CENSUS_INPUTS],
@@ -2336,6 +2405,7 @@ def record(census, rows, rerun=False, fresh=False):
     """
     if isinstance(rows, LedgerRows):
         rows.validate()
+    print("link_census: record: checking data objects and currency", flush=True)
     verify_data_objects()
     if census["missing"]:
         raise SystemExit(f"link_census: {census['missing']:,} objects were missing from the link; "
@@ -2374,8 +2444,12 @@ def record(census, rows, rerun=False, fresh=False):
                 or sum(dup_kinds.values()) != sum(census["duplicate_classes"].values())):
             raise SystemExit("link_census: census.log no longer reproduces census.json's counts; rerun the census")
     import link_debt
+    print("link_census: record: reading object facts", flush=True)
     facts = read_facts(present, rows)
+    print("link_census: record: running the /MAP selection link", flush=True)
+    wine_reset("before the selection link")
     kept = selected_definitions(selection_link(present, log))
+    print("link_census: record: writing LINKED status", flush=True)
     validate_fact_snapshots(present, facts)
     if subprocess.run(["git", "diff", "--quiet", commit, "--", *CENSUS_INPUTS], cwd=ROOT).returncode:
         raise SystemExit("link_census: source inputs or objects changed during the selection link; nothing recorded")
@@ -2403,6 +2477,7 @@ def record(census, rows, rerun=False, fresh=False):
               "addresses": sum(count for count, _ in link_debt.per_file(link_debt.addresses)),
               **linked_figures(clean), "files_linked_prev_rule": len(clean_prev),
               "linked_bytes_prev_rule": before["linked_bytes"], "linked_authored_prev_rule": before["linked_authored"]}
+    print("link_census: record: appending the history row", flush=True)
     if rerun:
         history[-1].update(figure)
     else:
