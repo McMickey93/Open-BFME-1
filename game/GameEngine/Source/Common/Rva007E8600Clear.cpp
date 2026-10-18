@@ -12,7 +12,7 @@ extern "C" __declspec(dllimport) void __cdecl free(void *block);
 
 void __stdcall rva007e8530_bar(void *self, void *g);
 
-void *g_rva007e8530;
+extern void *g_rva007e8530;
 
 namespace ATL
 {
