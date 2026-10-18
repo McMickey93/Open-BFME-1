@@ -116,6 +116,7 @@ class PSRequest
 {
 public:
 	PSRequest();
+	PSRequest(const PSRequest& other);	///< out of line in BFME (0x006588B0)
 	~PSRequest();	///< out of line in BFME (0x000A5490)
 	enum
 	{
