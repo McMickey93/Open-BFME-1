@@ -1,16 +1,18 @@
-// ?getHealthBoxPosition@Drawable@@QAEXPAUCoord3D@@@Z
-// partial score=0.86 date=2026-09-10
-// ?getHealthBoxPosition@Drawable@@QAEXPAUCoord3D@@@Z
+// ?getHealthBoxPosition@Drawable@@QBEXAAVCoord3D@@@Z (ilt_oracle CONFIRMED exact at ILT 0x000239ED)
 // Retail BFME Drawable health-box anchor at 0x0041FCE0 (212 bytes).
 // The body is called by the Drawable health/construct indicator family.
+// Both template reads are Zero Hour's OVERRIDE<ThingTemplate> operator->
+// over the inline recursive Overridable::getFinalOverride (ILT 0x000022BB).
 // cl: /DNDEBUG /MD /EHs-c-
 
 typedef unsigned char UnsignedByte;
 typedef unsigned int UnsignedInt;
 typedef bool Bool;
 
-struct Coord3D
+// class-gate: allow Coord3D canonical header is struct-keyed; retail ILT 0x000239ED proves the class-keyed mangling (ilt_oracle CONFIRMED)
+class Coord3D
 {
+public:
 	float x;
 	float y;
 	float z;
@@ -24,18 +26,39 @@ public:
 	UnsignedByte m_bfmeData[0x34];
 };
 
-class ThingTemplate
+class Overridable
 {
 public:
-	ThingTemplate *getFinalOverride();
+	const Overridable *getFinalOverride() const
+	{
+		if (m_nextOverride)
+			return m_nextOverride->getFinalOverride();
+		return this;
+	}
 	void *m_vtable;
-	ThingTemplate *m_nextOverride;
+	Overridable *m_nextOverride;
+};
+class ThingTemplate : public Overridable
+{
+public:
 	UnsignedByte m_pad008[0xcc];
 	UnsignedInt m_flags;
 	UnsignedByte m_pad0d8[0x33c];
 	float m_healthBoxHeight;
 };
-
+template <class T>
+class OVERRIDE
+{
+public:
+	const T *operator->() const
+	{
+		if (!m_obj)
+			return 0;
+		return (T *)m_obj->getFinalOverride();
+	}
+	operator const T *() const { return operator->(); }
+	T *m_obj;
+};
 #define BFME_HEALTH_BOX_SLOT(n) virtual void slot##n();
 
 class BfmeHealthBoxAnchor
@@ -131,7 +154,7 @@ class BfmeHealthBoxObject
 {
 public:
 	UnsignedByte m_pad000[4];
-	ThingTemplate *m_template;
+	OVERRIDE<ThingTemplate> m_template;
 	UnsignedByte m_pad008[0xa4];
 	GeometryInfo m_geometry;
 	UnsignedByte m_pad0e0[0x11c];
@@ -142,7 +165,7 @@ class Thing
 {
 public:
 	virtual void slot00();
-	ThingTemplate *m_template;
+	OVERRIDE<ThingTemplate> m_template;
 };
 
 class BfmeObjZC
@@ -161,61 +184,30 @@ class Snapshot
 class Drawable : public Thing, public Snapshot
 {
 public:
-	void getHealthBoxPosition(Coord3D *position);
+	void getHealthBoxPosition(Coord3D &position) const;
 
 	UnsignedByte m_pad00c[0xf0];
 	BfmeHealthBoxObject *m_object;
 };
 
-void Drawable::getHealthBoxPosition(Coord3D *position)
+void Drawable::getHealthBoxPosition(Coord3D &position) const
 {
-	const Drawable *draw = this;
-	register BfmeHealthBoxObject *object = m_object;
-	register Coord3D *out = position;
+	BfmeHealthBoxObject *object = m_object;
 	if (object == 0)
 		return;
-
-	const ThingTemplate *drawableTemplate = draw->m_template;
-	if (drawableTemplate != 0 && drawableTemplate->m_nextOverride != 0)
-		drawableTemplate = drawableTemplate->m_nextOverride->getFinalOverride();
-
-	UnsignedInt drawableFlags = drawableTemplate->m_flags;
-	if (((drawableFlags >> 8) & 0x10) != 0 && object->m_drawBridge != 0)
+	Bool placed = false;
+	if ((m_template->m_flags & 0x1000) != 0)
 	{
-		if (object->m_drawBridge->getAnchor() != 0 &&
-			object->m_drawBridge->getAnchor()->write(out))
-			return;
+		BfmeHealthBoxDrawBridge *bridge = object->m_drawBridge;
+		if (bridge != 0 && bridge->getAnchor() != 0 && object->m_drawBridge->getAnchor()->write(&position))
+			placed = true;
 	}
-
-	Coord3D *base = ((BfmeObjZC *)draw)->bfmePosZC();
-	out->x = base->x;
-	out->y = base->y;
-	out->z = base->z;
-
+	if (!placed)
+		position = *((BfmeObjZC *)this)->bfmePosZC();
 	float healthBoxHeight;
 	if (object->m_template == 0)
-		goto defaultHealthBoxHeight;
-	if (object->m_template->m_nextOverride == 0)
-		goto defaultHealthBoxHeight;
-	if (object->m_template->m_nextOverride->getFinalOverride() == 0)
-		goto defaultHealthBoxHeight;
-	goto resolvedHealthBoxHeight;
-
-defaultHealthBoxHeight:
 		healthBoxHeight = 10.0f;
-	goto healthBoxHeightDone;
-
-resolvedHealthBoxHeight:
-	ThingTemplate *normalTemplate = object->m_template;
-	if (normalTemplate != 0)
-	{
-		ThingTemplate *nextOverride = normalTemplate->m_nextOverride;
-		if (nextOverride != 0)
-			normalTemplate = nextOverride->getFinalOverride();
-	}
-	healthBoxHeight = normalTemplate->m_healthBoxHeight;
-
-healthBoxHeightDone:
-	out->z += object->m_geometry.getMaxHeightAbovePosition();
-	out->z += healthBoxHeight;
+	else
+		healthBoxHeight = object->m_template->m_healthBoxHeight;
+	position.z = object->m_geometry.getMaxHeightAbovePosition() + position.z + healthBoxHeight;
 }
