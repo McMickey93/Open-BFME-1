@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/stringbaseunicode /Igame/Libraries/Source/WWVegas/WWLib
 
 typedef int Int;
 typedef unsigned int UnsignedInt;
@@ -12,28 +12,8 @@ typedef bool Bool;
 #define FALSE 0
 #define NULL 0
 
-template <typename T>
-class StringBase
-{
-    friend class UnicodeString;
-
-private:
-    StringBase(void) : m_data(0) {}
-    StringBase(const StringBase<T> &other);
-    ~StringBase(void);
-
-    void *m_data;
-};
-
-class UnicodeString : private StringBase<WideChar>
-{
-public:
-    UnicodeString(void) : StringBase<WideChar>() {}
-    UnicodeString(const UnicodeString &other) : StringBase<WideChar>(other) {}
-    ~UnicodeString(void) {}
-
-    static UnicodeString TheEmptyString;
-};
+#include <stddef.h>
+#include "Common/UnicodeString.h"
 
 struct ICoord2D
 {

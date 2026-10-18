@@ -14,15 +14,23 @@ typedef float Real;
 
 struct RGBColor;
 
+#include <stddef.h>
 #include "string_base.h"
 
-class UnicodeString : public StringBase<unsigned short>
+class UnicodeString
 {
 public:
-	UnicodeString(const UnicodeString &other) : StringBase<unsigned short>(other) {}
-	~UnicodeString() { releaseBuffer(); }
+	UnicodeString(const UnicodeString &other)
+	{
+		((StringBase<wchar_t> *)this)->StringBase<wchar_t>::StringBase(
+			*(const StringBase<wchar_t> *)&other );
+	}
+	~UnicodeString() { ((StringBase<wchar_t> *)this)->releaseBuffer(); }
 
 	static UnicodeString TheEmptyString;
+
+private:
+	wchar_t *m_text;
 };
 
 class Mouse
