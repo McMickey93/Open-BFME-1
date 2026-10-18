@@ -26,12 +26,6 @@ class __node_alloc
 };
 }
 
-class WorkerAIUpdateModuleData
-{
-public:
-    virtual ~WorkerAIUpdateModuleData();
-};
-
 class Rva000FD010 { public: void invoke(); };
 
 static __forceinline void bfmeRelease(void *block, unsigned int bytes)
@@ -45,6 +39,7 @@ static __forceinline void bfmeRelease(void *block, unsigned int bytes)
 class BfmeVecElem_000FAFF0
 {
 public:
+	~BfmeVecElem_000FAFF0();
 
 private:
 	char m_bfmePad[0x60];
@@ -167,7 +162,7 @@ void Gen_000FAFF0::bfmeDestroy(void)
 	BfmeVecElem_000FAFF0 *first = m_bfmeStart;
 
 	for (; first != last; ++first)
-		((WorkerAIUpdateModuleData *)first)->WorkerAIUpdateModuleData::~WorkerAIUpdateModuleData();
+		first->~BfmeVecElem_000FAFF0();
 
 	BfmeVecElem_000FAFF0 *start = m_bfmeStart;
 
