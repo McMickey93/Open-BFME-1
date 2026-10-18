@@ -1,11 +1,21 @@
 // Row-less leaf, unclaimed-boundary sweep. Same forty-byte-checksum family
-// as Bfme5ThirtyNine.cpp (g_bfmeTableDH lookup, 0x012C7128) but the input is
+// as Bfme5ThirtyNine.cpp (_S_bit_count lookup, 0x012C7128) but the input is
 // not the raw object bytes: it masks this->m_field0 against the other
 // instance's field first (~a & b, then & 0x1fffffff), stores the result to
 // a stack local, and sums the table lookup over that local's four raw
 // bytes. IDENTITY IS NOT RECOVERED; class name is derived from address.
 
-extern unsigned char g_bfmeTableDH[];				// retail 0x012C7128
+#ifndef _STLP_BITSET_H
+namespace _STL
+{
+template <class _Dummy>
+class _Bs_G
+{
+public:
+	static unsigned char _S_bit_count[256];
+};
+}
+#endif
 
 class T4Host001409F0
 {
@@ -27,7 +37,7 @@ int T4Host001409F0::checksum( const T4Host001409F0 *other ) const
 
 	while ( first < last )
 	{
-		total += g_bfmeTableDH[ *first ];
+		total += _STL::_Bs_G<bool>::_S_bit_count[ *first ];
 		++first;
 	}
 

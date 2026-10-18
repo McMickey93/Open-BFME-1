@@ -24,7 +24,6 @@ class Player;
 class Team;
 class Object;
 
-extern unsigned char g_bfmeTableDH[];
 
 extern "C" int __cdecl memcmp(const void *buf1, const void *buf2,
 	UnsignedInt count);
@@ -346,7 +345,7 @@ public:
 		const unsigned char *last = first + sizeof(m_bits);
 		while (first < last)
 		{
-			total += g_bfmeTableDH[*first];
+			total += _STL::_Bs_G<bool>::_S_bit_count[*first];
 			++first;
 		}
 		return total;

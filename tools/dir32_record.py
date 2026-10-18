@@ -48,7 +48,8 @@ def read(path):
 
 def write_adding(path, added):
     """Append ADDED lines, leaving every recorded byte as it is."""
-    text = Path(path).read_text(newline="")
+    with open(path, newline="") as handle:
+        text = handle.read()
     if text and not text.endswith("\n"):
         text += "\n"
     text += "".join(f"{name},0x{va:08X}\n" for name, va in sorted(added.items()))
@@ -57,7 +58,8 @@ def write_adding(path, added):
 
 def write_dropping(path, name):
     """Delete one line, leaving every other byte as it is."""
-    lines = Path(path).read_text(newline="").splitlines(keepends=True)
+    with open(path, newline="") as handle:
+        lines = handle.read().splitlines(keepends=True)
     kept = [line for line in lines if line.split(",", 1)[0] != name]
     Path(path).write_text("".join(kept), newline="")
 

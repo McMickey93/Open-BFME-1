@@ -86,7 +86,6 @@ private:
 	static const char *s_bitNameList[];
 };
 
-extern unsigned char g_bfmeTableDH[];
 extern int __cdecl bfmeLookup_001c6340(void *name);
 class XferException
 {

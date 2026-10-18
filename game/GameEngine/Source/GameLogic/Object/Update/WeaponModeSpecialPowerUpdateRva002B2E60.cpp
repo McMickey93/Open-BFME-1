@@ -4,7 +4,17 @@ typedef int Int;
 typedef unsigned int UnsignedInt;
 typedef bool Bool;
 
-extern unsigned char g_bfmeTableDH[];
+#ifndef _STLP_BITSET_H
+namespace _STL
+{
+template <class _Dummy>
+class _Bs_G
+{
+public:
+	static unsigned char _S_bit_count[256];
+};
+}
+#endif
 
 #include "ascii_string.h"
 
@@ -110,7 +120,7 @@ void Rva002B2E60WeaponModeSpecialPowerUpdate::rva002B2E60(
 		Int total = 0;
 		while (first < last)
 		{
-			total += g_bfmeTableDH[*first];
+			total += _STL::_Bs_G<bool>::_S_bit_count[*first];
 			++first;
 		}
 		if (total != 0)

@@ -5,7 +5,17 @@
 
 typedef unsigned int UnsignedInt;
 
-extern unsigned char g_bfmeTableDH[];
+#ifndef _STLP_BITSET_H
+namespace _STL
+{
+template <class _Dummy>
+class _Bs_G
+{
+public:
+	static unsigned char _S_bit_count[256];
+};
+}
+#endif
 
 struct UpgradeMaskType
 {
@@ -18,7 +28,7 @@ struct UpgradeMaskType
 		const unsigned char *last = first + sizeof(m_bits);
 		while (first < last)
 		{
-			total += g_bfmeTableDH[*first];
+			total += _STL::_Bs_G<bool>::_S_bit_count[*first];
 			++first;
 		}
 		return total;

@@ -91061,7 +91061,6 @@ g_bfmeTableC7E0,0x0134C7E0,table pushed by bfmeGo7820 first call
 g_bfmeTableC800,0x0134C800,table pushed by bfmeGo7820 second call
 g_bfmeTableCN,0x012ACB50,Open-BFME5 the table the lookup at 0x0018ED80 walks
 g_bfmeTableCV,0x010F77AC,Open-BFME5 the table the detach at 0x00479A30 stores
-g_bfmeTableDH,0x012C7128,Open-BFME5 the byte table the checksums at 0x001C0AA0 read through
 g_bfmeTableDJa,0x012A9200,Open-BFME5 the table the masked read at 0x001C3F80 indexes
 g_bfmeTableDJb,0x012A68D8,Open-BFME5 the table the masked read at 0x0020EC30 indexes
 g_bfmeTableDJc,0x012AD6B0,Open-BFME5 the table the masked read at 0x001C3FF0 indexes

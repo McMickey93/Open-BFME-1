@@ -88,7 +88,17 @@ public:
 	void xfer(Xfer *xfer);
 };
 
-extern unsigned char g_bfmeTableDH[];
+#ifndef _STLP_BITSET_H
+namespace _STL
+{
+template <class _Dummy>
+class _Bs_G
+{
+public:
+	static unsigned char _S_bit_count[256];
+};
+}
+#endif
 extern int g_bfmeTableDJc[];
 int __cdecl bfmeLookupB(void *name);
 
@@ -126,7 +136,7 @@ void BfmeWeaponSetFlags::xfer(BfmeWeaponSetXferView *xfer)
 		int total = 0;
 		while (cursor < end)
 		{
-			total += g_bfmeTableDH[*cursor];
+			total += _STL::_Bs_G<bool>::_S_bit_count[*cursor];
 			++cursor;
 		}
 		int checksum = total;

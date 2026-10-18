@@ -4,7 +4,11 @@
 
 // BFME2 BitFlags11Any.cpp and vendored STLport _bitset.c provide the
 // population-count table; BFME1 VA 0x012C7128 matches all 256 entries.
-unsigned char g_bfmeTableDH[256] = {
+// stlport
+#include <bitset>
+
+template <>
+unsigned char _STL::_Bs_G<bool>::_S_bit_count[256] = {
 	0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
 	1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
 	1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
@@ -42,7 +46,7 @@ int Gen_001C0AA0::bfmeSum(void) const
 
 	while (first < last)
 	{
-		total += g_bfmeTableDH[*first];
+		total += _STL::_Bs_G<bool>::_S_bit_count[*first];
 
 		++first;
 	}
@@ -69,7 +73,7 @@ int Gen_001C2BD0::bfmeSum(void) const
 
 	while (first < last)
 	{
-		total += g_bfmeTableDH[*first];
+		total += _STL::_Bs_G<bool>::_S_bit_count[*first];
 
 		++first;
 	}
@@ -96,7 +100,7 @@ int Gen_001C4060::bfmeSum(void) const
 
 	while (first < last)
 	{
-		total += g_bfmeTableDH[*first];
+		total += _STL::_Bs_G<bool>::_S_bit_count[*first];
 
 		++first;
 	}

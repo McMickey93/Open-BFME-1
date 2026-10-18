@@ -74,7 +74,7 @@ public:
 	void xfer(Xfer *xfer);
 };
 
-extern unsigned char g_bfmeTableDH[];
+#include <bitset>
 #include "Common/BitFlags.h"
 int __cdecl bfmeLookupC(void *name);
 
@@ -106,7 +106,7 @@ void BitFlagSnapshot0020F000::xfer(FlagXfer0020F000 *xfer)
 		int total = 0;
 		while (cursor < end)
 		{
-			total += g_bfmeTableDH[*cursor];
+			total += _STL::_Bs_G<bool>::_S_bit_count[*cursor];
 			++cursor;
 		}
 		int checksum = total;
