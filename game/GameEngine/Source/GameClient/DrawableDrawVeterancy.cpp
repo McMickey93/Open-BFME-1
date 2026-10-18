@@ -56,7 +56,7 @@ class Thing
 public:
 	Bool isKindOf( KindOfType kind ) const;
 
-	const ThingTemplate *getTemplate() const
+	const ThingTemplate *getTemplateBfme() const
 	{
 		// spelled as Thing_isKindOf.cpp's copy, which is retail's 0x00098E50
 		const ThingTemplate *thingTemplate = m_template;
@@ -214,9 +214,9 @@ extern void j_0001fc53();
 // ?drawableSideFlag@@YA_NPBVThing@@@Z
 static Bool drawableSideFlag( const Thing *thing )
 {
-	if ( thing->getTemplate() )
+	if ( thing->getTemplateBfme() )
 	{
-		const AsciiString &side = thing->getTemplate()->m_defaultOwningSide;
+		const AsciiString &side = thing->getTemplateBfme()->m_defaultOwningSide;
 		for ( Int i = 0; i < ThePlayerTemplateStore->getPlayerTemplateCount(); ++i )
 		{
 			const PlayerTemplate *playerTemplate = ThePlayerTemplateStore->getNthPlayerTemplate( i );
