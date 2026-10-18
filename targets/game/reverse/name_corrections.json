@@ -20788,5 +20788,25 @@
   "after_sha256": "9c98c170f68b5d5b3ccdfc663fbb2e2bb0a48e7453d363941a0237a218060e0a",
   "evidence": "targets/game/reverse/attempts/0x003f0340.cpp",
   "reason": "Token-alignment artifact of a bank edit, not a rename: field() and bfmeIsComputerControlled() are both still called; the profile is now filled by an inline init whose argument list evaluates them in retail's order (see the bank's 2026-10-17 note)."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00284e70.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateParseExpLevelDraw.cpp",
+  "old_name": "BannerCarrierString",
+  "new_name": "Rva00284E70SubObject",
+  "before_sha256": "da5625b06797f1ef7089f75e9815d261f4cead6afef35a672751963f9ba530ff",
+  "after_sha256": "c50d292ebf767a61c1618bac34885ed800cb7bfd67f23c8ab639cc088ed02288",
+  "evidence": "targets/game/reverse/identity_evidence/0x00284e70-expleveldraw-element-types.md",
+  "reason": "ilt_oracle CONTRADICTS vector<BannerCarrierString *> (struct and class) at the sub-object vector's _M_insert_overflow ILT 0x0003918A; no oracle-consistent name was found, so the element type keeps its address."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00284e70.cpp",
+  "new_path": "game/GameEngine/Source/GameLogic/Object/Update/BannerCarrierUpdateParseExpLevelDraw.cpp",
+  "old_name": "BannerCarrierSubObject",
+  "new_name": "Rva00284E70SubObject",
+  "before_sha256": "da5625b06797f1ef7089f75e9815d261f4cead6afef35a672751963f9ba530ff",
+  "after_sha256": "c50d292ebf767a61c1618bac34885ed800cb7bfd67f23c8ab639cc088ed02288",
+  "evidence": "targets/game/reverse/identity_evidence/0x00284e70-expleveldraw-element-types.md",
+  "reason": "ilt_oracle CONTRADICTS vector<BannerCarrierSubObject *> (struct and class) at the sub-object vector's _M_insert_overflow ILT 0x0003918A; no oracle-consistent name was found, so the element type keeps its address."
  }
 ]
