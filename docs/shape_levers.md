@@ -1938,3 +1938,11 @@ without retaining that pointer. Native coordinate/Object layouts and lookup
 visibility alone do not fix it. Both bodies pass strict byte and DIR32 checks;
 the helper's original ledger owner remains unchanged. Evidence:
 identity_evidence/002c0fe0-visible-team-position.md.
+
+The same verified Team helper also recovers AIGuardIdleState::update at
+0015E510 (290 bytes). Its old drop-in bank used a ZH State layout with the
+machine at+20; retail reads+1C. In the existing complete-destructor TU, the
+correct BFME state view plus helper visibility reproduces every update byte
+while retaining the five-byte destructor. A declaration-only control keeps
+the same14-byte position-copy residue as the GiantBird case. See
+identity_evidence/0015e510-visible-team-position.md.
