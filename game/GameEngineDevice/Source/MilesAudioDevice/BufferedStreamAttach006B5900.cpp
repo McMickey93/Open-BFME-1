@@ -62,7 +62,7 @@ public:
 };
 class Rva006910F0Handle : public Rva00691140Handle {
 public:
- ~Rva006910F0Handle() { typedef void (Rva006910F0Handle::*Fn)(); (this->*member006B7E70<Fn>(j_000298e8))(); }
+ ~Rva006910F0Handle(); // retail 0x00691130 (R1GuardedPointerTailCalls.cpp)
 };
 class AudioEventRTS;
 class AudioEventRef { public: AudioEventRTS *ptr; };
