@@ -126,9 +126,15 @@ struct ModelConditionFlags
 	// Returns the masked word, not a bool: retail keeps the mask in a register
 	// for the test and the set that follows.
 	unsigned int test( int i ) const { return m_bits[i >> 5] & (1u << (i & 31)); }
-	void set( int i ) { m_bits[i >> 5] |= (1u << (i & 31)); }
 	unsigned int m_bits[10];
 };
+
+// File-static so this TU does not emit a non-retail
+// ?set@ModelConditionFlags@@QAEXH@Z COMDAT ahead of the bitset copy.
+static inline void setModelConditionBit( ModelConditionFlags &flags, int i )
+{
+	flags.m_bits[i >> 5] |= (1u << (i & 31));
+}
 
 class Object
 {
@@ -137,7 +143,7 @@ public:
 	{
 		if (!m_modelConditionFlags.test( bit ))
 		{
-			m_modelConditionFlags.set( bit );
+			setModelConditionBit( m_modelConditionFlags, bit );
 			notifyModelConditionChanged();
 		}
 	}
