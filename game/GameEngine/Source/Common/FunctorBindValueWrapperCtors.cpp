@@ -37,6 +37,13 @@ public:
 	unsigned int m_unmodelled_04;
 };
 
+// ?functorValueWrapperAnchor@FunctorValueWrapperHead@@UAEXXZ absent-from-retail
+// Synthetic slot-0 target for the reproduced vftable; the constructors below
+// only need the slot resolved to link.
+void FunctorValueWrapperHead::functorValueWrapperAnchor()
+{
+}
+
 #define BFME_FUNCTOR_VALUE_WRAPPER_CTOR( NAME )                               \
 	class NAME : public FunctorValueWrapperHead                               \
 	{                                                                         \

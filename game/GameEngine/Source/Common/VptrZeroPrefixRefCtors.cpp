@@ -52,6 +52,13 @@ public:
 	unsigned int m_unmodelled_04;
 };
 
+// ?vptrZeroRefAnchor@VptrZeroRefHead@@UAEXXZ absent-from-retail
+// Synthetic slot-0 target for the reproduced vftable; the constructors below
+// only need the slot resolved to link.
+void VptrZeroRefHead::vptrZeroRefAnchor()
+{
+}
+
 #define BFME_VPTR_ZERO_REF_ONE_CTOR( NAME )                                   \
 	class NAME : public VptrZeroRefHead                                       \
 	{                                                                         \
