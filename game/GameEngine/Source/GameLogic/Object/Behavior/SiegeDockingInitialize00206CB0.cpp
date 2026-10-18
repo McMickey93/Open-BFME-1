@@ -3,8 +3,9 @@
 // 0x00206FF0: Object+8, pointer-vector+0x24, enabled flag+0x30.
 // The original method spelling is unproved; the address is retained.
 // Coordinate array callbacks are retail Coord3D ctor/dtor at 0x83330/0x5BC40.
-// MatrixRows is the witnessed 3x16-byte row ABI with non-inlined row ctor,
-// shared with SpawnPointProductionExitUpdateInitializeBonePositions.cpp.
+// MatrixRows is the witnessed 3x16-byte Vector4 ABI: retail pushes the
+// Vector4 default-ctor ILT 0x00045561, shared with
+// SpawnPointProductionExitUpdateInitializeBonePositions.cpp.
 // The second coordinate array is constructed and destroyed even though unused.
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWMath
 // stlport
@@ -13,8 +14,8 @@
 struct Coord3D;
 #include "coord3d.h"
 class Matrix3D;
-class SpawnBoneRow { public: SpawnBoneRow(); float x,y,z,w; };
-struct MatrixRows00206CB0 { SpawnBoneRow row[3]; };
+class Vector4 { public: Vector4(); float x,y,z,w; };
+struct MatrixRows00206CB0 { Vector4 row[3]; };
 struct Position00206CB0 { float x,y,z; void setNegated(float a,float b,float c) { x=-a;y=-b;z=-c; } };
 struct SiegeDockEntry00206FF0 { int index00,type04; Position00206CB0 position08,direction14; int objectID20; };
 class Object { public: int getMultiLogicalBonePosition(const char*,int,Coord3D*,Matrix3D*,bool,int) const; };

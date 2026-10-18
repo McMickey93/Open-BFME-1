@@ -3824,7 +3824,7 @@ name,address,notes
 ??0SortingVertexBufferClass@@QAE@G@Z,0x0091DFD0,object-symbol of matched ?d_0091dfd0@@YAXXZ; BoxDynamicVBAccess sorting allocate callee
 ??0SpawnBehaviorFourthBase@@QAE@XZ,0x0003D24E,SpawnBehavior fourth interface base constructor ILT
 ??0SpawnBehaviorModuleDataMemberC@@QAE@XZ,0x000071E4,Open-BFME5 constructor callee pin
-??0SpawnBoneRow@@QAE@XZ,0x00045561,empty 16-byte row ctor ILT used by SpawnPointProductionExitUpdate::initializeBonePositions ehvec_ctor
+??0Vector4@@QAE@XZ,0x00045561,ILT thunk for retail Vector4 default ctor body 0x000FBB40; ilt_oracle CONFIRMED exact; encoded by SortingRendererClass::Flush ehvec_ctor callback and matrix row arrays
 ??0SpawnPointProductionExitUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00023858,module ctor (friend_newModuleInstance retail call target)
 ??0SpawnUnitBehaviorGrandBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000170E4,SpawnUnitBehavior ctor grandbase call; ILT thunk for ObjectModule ctor
 ??0SpecialAbilityUpdate@@QAE@PAVThing@@PBVModuleData@@@Z,0x00013462,FellBeastSwoopPower constructor call-site ILT to the proven SpecialAbilityUpdate constructor

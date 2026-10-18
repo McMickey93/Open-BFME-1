@@ -268,6 +268,18 @@ void *Rva000FBB40::get()
 	return this;
 }
 
+class Rva007A62E0
+{
+public:
+	void *get();
+};
+
+// ?get@Rva007A62E0@@QAEPAXXZ
+void *Rva007A62E0::get()
+{
+	return this;
+}
+
 class Rva000FBDB0
 {
 public:

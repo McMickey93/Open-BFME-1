@@ -3,9 +3,11 @@
 // stlport
 #define Matrix4x4 Matrix4
 #define __PLACEMENT_VEC_NEW_INLINE
+#define Vector4 BfmeMatrixRowVector4
 #include "Libraries/Source/WWVegas/WW3D2/dx8wrapper.h"
 #include "Libraries/Source/WWVegas/WWMath/matrix4.h"
 #include "vertmaterial.h"
+#undef Vector4
 
 extern int BfmeRenderWidth;
 extern int BfmeRenderHeight;
@@ -19,14 +21,16 @@ struct Rva0078B4F0DX8State : DX8Wrapper
     static __forceinline Matrix4 &world() { return render_state.world; }
 };
 
-class SpawnBoneRow
+// Retail pushes ILT 0x00045561 (Vector4's default constructor) for an unused
+// 4x16-byte temporary. The header's Vector4 constructor is __forceinline and
+// would let the array disappear, so keep this one out of line. The TU's
+// Matrix4 rows use the renamed header type above.
+class Vector4
 {
 public:
-    SpawnBoneRow();
+    Vector4();
     float X, Y, Z, W;
 };
-
-typedef SpawnBoneRow SpawnBoneRow000FBB40;
 
 class BfmeHandleCX { void *m_resource; };
 class BfmeHub982
@@ -66,7 +70,7 @@ void BfmeHub982::bfmeEnd982C0078B4F0()
     DX8Wrapper::Set_Transform(D3DTS_PROJECTION, view);
     {
         Matrix4 transposedWorld = m_world.Transpose();
-        SpawnBoneRow000FBB40 unusedWorldRows[4];
+        Vector4 unusedWorldRows[4];
         Rva0078B4F0DX8State::world() = transposedWorld;
         Rva0078B4F0DX8State::dirty() = (Rva0078B4F0DX8State::dirty() & ~0x40000) | 1;
     }

@@ -5,20 +5,20 @@
 // this constructor through ILT 0x0003B700 at +0x313; the next field starts
 // at +0x3AC, proving this subobject's 0x90-byte extent. Its semantic class
 // is not established, so the owner name retains this body's address.
-// The 16-byte row constructor at ILT 0x00045561 is also used by the
+// The 16-byte row constructor at ILT 0x00045561 is retail Vector4's default
+// constructor (ilt_oracle CONFIRMED), also used by the
 // SpawnPointProductionExitUpdate matrix-array constructor. This declaration
-// retains its existing pinned name and layout without asserting this owner's
-// semantic class.
-class SpawnBoneRow
+// retains the witnessed layout without asserting this owner's semantic class.
+class Vector4
 {
 public:
-    SpawnBoneRow();
+    Vector4();
     float X, Y, Z, W;
 };
 
 struct Rva00413400Matrix
 {
-    SpawnBoneRow rows[3];
+    Vector4 rows[3];
 };
 
 struct Rva00413400Owner

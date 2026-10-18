@@ -2,8 +2,8 @@
 // Reloc-named body of SpawnPointProductionExitUpdate::initializeBonePositions,
 // incremental-link target of the 5-byte thunk at 0x0003B566.
 // Retail 0x002D18F0, 1457 bytes: 10x Matrix3D on the stack, getObject at
-// [this+8], getDrawable vslot +0x28, ehvec_ctor of three 16-byte rows at
-// ILT 0x0000AE5C, then unrolled Make_Identity stores. m_bonesInitialized is
+// [this+8], getDrawable vslot +0x28, ehvec_ctor of three 16-byte Vector4
+// rows through ILT 0x00045561, then unrolled Make_Identity stores. m_bonesInitialized is
 // [this+0x24]. BFME getPristineBonePositions takes six stack args.
 
 enum { MAX_SPAWN_POINTS = 10 };
@@ -25,10 +25,10 @@ struct BfmeAsciiStringData
 
 #include "ascii_string.h"
 
-class SpawnBoneRow
+class Vector4
 {
 public:
-	SpawnBoneRow();
+	Vector4();
 	void Set(float x, float y, float z, float w)
 	{
 		X = x;
@@ -57,7 +57,7 @@ public:
 	float Get_Y_Translation(void) const { return Row[1].W; }
 	float Get_Z_Rotation(void) const;
 
-	SpawnBoneRow Row[3];
+	Vector4 Row[3];
 };
 
 class Drawable

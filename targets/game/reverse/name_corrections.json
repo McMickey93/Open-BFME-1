@@ -20809,34 +20809,44 @@
   "evidence": "targets/game/reverse/identity_evidence/0x00284e70-expleveldraw-element-types.md",
   "reason": "ilt_oracle CONTRADICTS vector<BannerCarrierSubObject *> (struct and class) at the sub-object vector's _M_insert_overflow ILT 0x0003918A; no oracle-consistent name was found, so the element type keeps its address."
  },
-{
- "old_path": "game/GameEngine/Source/Common/Bfme5VectorDestroysWide.cpp",
- "new_path": "game/GameEngine/Source/Common/Bfme5VectorDestroysWide.cpp",
- "old_name": "WorkerAIUpdateModuleData",
- "new_name": "BfmeVecElem_000FAFF0",
- "before_sha256": "b4902b87d0b4c6199713ae2df97e495c597828013e2fd831fc39714526c6f700",
- "after_sha256": "b65523217f278123e878bd240cc0bf6bff5339045bc74b2bc0575164648e1ec0",
- "evidence": "targets/game/reverse/identity_evidence/000d1690-bfmevecelem-destructor.md",
- "reason": "The WorkerAIUpdateModuleData stand-in was a wrong COMDAT for 0x000D1690: retail's non-virtual body destroys the 96-byte element's Gen_000F9C60 at +0x44 through 0x0002671F and its AsciiString at +0x00 through 0x00887940, the layout proven by the matched Rva000FB2E0Insert vector bodies; the real Worker destructor is the matched 79-byte 0x00124510 body. The vector destroy call now names the address-derived element destructor used by its callers."
-},
-{
- "old_path": "targets/game/reverse/functions.csv",
- "new_path": "targets/game/reverse/functions.csv",
- "old_name": "WorkerAIUpdateModuleData",
- "new_name": "BfmeVecElem_000FAFF0",
- "before_sha256": "a2116635438122bbc56699f19283190d5292f5e70a603e3fcc24b6dfbed754cc",
- "after_sha256": "47b7340274faaa64107aa3f12901202fd44a5df2a4f9e77960268451210dbf89",
- "evidence": "targets/game/reverse/identity_evidence/000d1690-bfmevecelem-destructor.md",
- "reason": "The WorkerAIUpdateModuleData stand-in was a wrong COMDAT for 0x000D1690: retail's non-virtual body destroys the 96-byte element's Gen_000F9C60 at +0x44 through 0x0002671F and its AsciiString at +0x00 through 0x00887940, the layout proven by the matched Rva000FB2E0Insert vector bodies; the real Worker destructor is the matched 79-byte 0x00124510 body. The vector destroy call now names the address-derived element destructor used by its callers."
-},
-{
- "old_path": "targets/game/reverse/functions.csv",
- "new_path": "targets/game/reverse/functions.csv",
- "old_name": "WorkerAIUpdateModuleData",
- "new_name": "BfmeVecElem_000FAFF0",
- "before_sha256": "7b38eb9298d7be1e5e3cd5975858e73de09b29b7b1da36f9c40a3473de2070c5",
- "after_sha256": "40a8b4d3fdcbe874b48784a8052f5529468f878456e671cefbfb9bb008c77d60",
- "evidence": "targets/game/reverse/identity_evidence/000d1690-bfmevecelem-destructor.md",
- "reason": "The WorkerAIUpdateModuleData deleting-destructor stand-in was the wrong COMDAT for 0x000D3E80: retail's 30-byte body calls ILT 0x0002C3BD to the 0x000D1690 element destructor and then operator delete 0x00881EB0, and MSVC 7.1 emits exactly that shape as the non-virtual ??_G...@@QAEPAXI@Z scalar deleting destructor; the ZH Worker stand-in's call target 0xD1690 was a false candidate pin."
-}
+ {
+  "old_path": "game/GameEngine/Source/Common/Bfme5VectorDestroysWide.cpp",
+  "new_path": "game/GameEngine/Source/Common/Bfme5VectorDestroysWide.cpp",
+  "old_name": "WorkerAIUpdateModuleData",
+  "new_name": "BfmeVecElem_000FAFF0",
+  "before_sha256": "b4902b87d0b4c6199713ae2df97e495c597828013e2fd831fc39714526c6f700",
+  "after_sha256": "b65523217f278123e878bd240cc0bf6bff5339045bc74b2bc0575164648e1ec0",
+  "evidence": "targets/game/reverse/identity_evidence/000d1690-bfmevecelem-destructor.md",
+  "reason": "The WorkerAIUpdateModuleData stand-in was a wrong COMDAT for 0x000D1690: retail's non-virtual body destroys the 96-byte element's Gen_000F9C60 at +0x44 through 0x0002671F and its AsciiString at +0x00 through 0x00887940, the layout proven by the matched Rva000FB2E0Insert vector bodies; the real Worker destructor is the matched 79-byte 0x00124510 body. The vector destroy call now names the address-derived element destructor used by its callers."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "WorkerAIUpdateModuleData",
+  "new_name": "BfmeVecElem_000FAFF0",
+  "before_sha256": "a2116635438122bbc56699f19283190d5292f5e70a603e3fcc24b6dfbed754cc",
+  "after_sha256": "47b7340274faaa64107aa3f12901202fd44a5df2a4f9e77960268451210dbf89",
+  "evidence": "targets/game/reverse/identity_evidence/000d1690-bfmevecelem-destructor.md",
+  "reason": "The WorkerAIUpdateModuleData stand-in was a wrong COMDAT for 0x000D1690: retail's non-virtual body destroys the 96-byte element's Gen_000F9C60 at +0x44 through 0x0002671F and its AsciiString at +0x00 through 0x00887940, the layout proven by the matched Rva000FB2E0Insert vector bodies; the real Worker destructor is the matched 79-byte 0x00124510 body. The vector destroy call now names the address-derived element destructor used by its callers."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "WorkerAIUpdateModuleData",
+  "new_name": "BfmeVecElem_000FAFF0",
+  "before_sha256": "7b38eb9298d7be1e5e3cd5975858e73de09b29b7b1da36f9c40a3473de2070c5",
+  "after_sha256": "40a8b4d3fdcbe874b48784a8052f5529468f878456e671cefbfb9bb008c77d60",
+  "evidence": "targets/game/reverse/identity_evidence/000d1690-bfmevecelem-destructor.md",
+  "reason": "The WorkerAIUpdateModuleData deleting-destructor stand-in was the wrong COMDAT for 0x000D3E80: retail's 30-byte body calls ILT 0x0002C3BD to the 0x000D1690 element destructor and then operator delete 0x00881EB0, and MSVC 7.1 emits exactly that shape as the non-virtual ??_G...@@QAEPAXI@Z scalar deleting destructor; the ZH Worker stand-in's call target 0xD1690 was a false candidate pin."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "Vector4",
+  "new_name": "Rva007A62E0",
+  "before_sha256": "af63516d89fb552589b9e11518b7844f225600cab37262327242b3d6d11a1fec",
+  "after_sha256": "db73c6d75e2166f44f1c58fdd110f8b766a52e3b6a8ceaff054a3e88a259975c",
+  "evidence": "targets/game/reverse/identity_evidence/0x000fbb40-vector4-default-ctor.md",
+  "reason": "ilt_oracle CONFIRMS ??0Vector4@@QAE@XZ exactly at 0x000FBB40 (ILT 0x00045561) and CONTRADICTS it at 0x007A62E0; the 3-byte body at 0x007A62E0 is a different function, so it keeps an address-derived placeholder while the real identity moves to 0x000FBB40 in the follow-up commit."
+ }
 ]
