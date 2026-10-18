@@ -1,14 +1,8 @@
-// ?d_0081de40@@YAXXZ
-// partial score=0.0 date=2026-09-28
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/stringinline /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib
 // stlport
-// Banked attempt for retail 0x0081DE40 (1590 B). Place next to parseSubtitle.cpp in
-// game/GameEngine/Source/GameClient/ to compile (relative include as in that sibling).
-
-// VideoPlayer::init passes the retail callback at 0x0081D7C0 to INI::load.
-// The callback looks up a subtitle manager through TheVideoPlayer's virtual
-// slot at +0x58, then fills it with the subtitle field table at 0x0112CDA0.
-// The error text at 0x0112CF14 identifies the callback as parseSubtitle.
+// FieldParse callback for the "SubTitle" entry of the subtitle field table at
+// 0x0112CDA0, the table parseSubtitle (0x0081D7C0, parseSubtitle.cpp) hands to
+// INI::initFromINI. Its real name is not proven, so the address stays in it.
 
 #include "../../Include/GameClient/Video.h"
 // BFME's UnicodeString mirrors ascii_string.h's AsciiString: it derives from
@@ -46,6 +40,9 @@ public:
 	{
 		return m_filename;
 	}
+
+	const char *getSeps( void ) const { return m_seps; }
+	const char *getSepsColon( void ) const { return m_sepsColon; }
 
 	char m_prefix[ 4 ];
 	AsciiString m_filename;
@@ -99,14 +96,18 @@ public:
 
 
 
-// The subtitle manager's first member after its vtable-less header is the
-// label lookup callback the "Label" field uses to resolve localized text.
-class Rva0081DE40SubtitleManager
+class SubtitleManager
 {
 public:
-	void addSubtitle( const AsciiString &text, unsigned int color, int style, int align,
-		int line, int startFrame, int endFrame );
-	int m_unknown00;
+	void addSubtitle( const AsciiString &label, unsigned int color, int style,
+		int alignment, int line, int startFrame, int endFrame );
+};
+
+// What this body proves about the manager's second word: the "Label" field
+// calls it as bool (const char *label, UnicodeString *text).
+struct Rva0081DE40SubtitleManagerView
+{
+	void *m_createEntry;
 	bool ( *m_fetchLabel )( const char *label, UnicodeString *text );
 };
 
@@ -119,17 +120,14 @@ enum
 	SUBTITLE_MAX_LINES = 15
 };
 
-// FieldParse callback for the "SubTitle" entry of the subtitle table at
-// 0x0112CDA0 (see parseSubtitle.cpp): parses Label/Color/Style/Align/Line/
-// StartFrame/EndFrame and adds one subtitle to the video's manager.
+// Parses Label/Color/Style/Align/Line/StartFrame/EndFrame and adds one
+// subtitle to the video's manager. Copying store first lets text take its dead
+// argument slot as retail does; the no-manager throw comes last (EH state 0xC).
 void rva0081DE40ParseSubTitleEntry( INI *ini, void *, void *store, const void * )
 {
-	Rva0081DE40SubtitleManager *manager =
-		(Rva0081DE40SubtitleManager *)TheVideoPlayer->getSubTitleMgrForVideo( ini->getFilename() );
-	if ( manager == 0 || store == 0 )
-	{
-		throw INIException( 9, "Could not locate SubTitleManager for %s", ini->getFilename() );
-	}
+	void *target = store;
+	SubtitleManager *manager = TheVideoPlayer->getSubTitleMgrForVideo( ini->getFilename() );
+	if ( manager != 0 && target != 0 )
 	{
 	UnicodeString text;
 	unsigned int color = 0;
@@ -138,13 +136,13 @@ void rva0081DE40ParseSubTitleEntry( INI *ini, void *, void *store, const void * 
 	int line = SUBTITLE_FIELD_UNSET;
 	int startFrame = SUBTITLE_FIELD_UNSET;
 	int endFrame = SUBTITLE_FIELD_UNSET;
-	for ( const char *token = ini->getNextTokenOrNull( ini->m_sepsColon ); token != 0;
-		token = ini->getNextTokenOrNull( ini->m_sepsColon ) )
+	for ( const char *token = ini->getNextTokenOrNull( ini->getSepsColon() ); token != 0;
+		token = ini->getNextTokenOrNull( ini->getSepsColon() ) )
 	{
 		if ( _stricmp( token, "Label" ) == 0 && text.isEmpty() )
 		{
-			const char *label = ini->getNextTokenOrNull( ini->m_seps );
-			if ( label == 0 || !text.isEmpty() || !manager->m_fetchLabel( label, &text ) )
+			const char *label = ini->getNextTokenOrNull( ini->getSeps() );
+			if ( label == 0 || !text.isEmpty() || !( (Rva0081DE40SubtitleManagerView *)manager )->m_fetchLabel( label, &text ) )
 			{
 				throw INIException( 8, "Invalid text label while parsing %s on line %d",
 					ini->getFilename(), ini->getLineNum() );
@@ -167,7 +165,7 @@ void rva0081DE40ParseSubTitleEntry( INI *ini, void *, void *store, const void * 
 		}
 		else if ( _stricmp( token, "Style" ) == 0 && style == SUBTITLE_FIELD_UNSET )
 		{
-			const char *value = ini->getNextTokenOrNull( ini->m_sepsColon );
+			const char *value = ini->getNextTokenOrNull( ini->getSepsColon() );
 			if ( value == 0 )
 			{
 				throw INIException( 8, "Expected subtitle style type not found in %s on line %d",
@@ -177,7 +175,7 @@ void rva0081DE40ParseSubTitleEntry( INI *ini, void *, void *store, const void * 
 		}
 		else if ( _stricmp( token, "Align" ) == 0 && align == SUBTITLE_FIELD_UNSET )
 		{
-			const char *value = ini->getNextTokenOrNull( ini->m_sepsColon );
+			const char *value = ini->getNextTokenOrNull( ini->getSepsColon() );
 			if ( value == 0 )
 			{
 				throw INIException( 8, "Expected subtitle alignment type not found in %s on line %d",
@@ -187,46 +185,55 @@ void rva0081DE40ParseSubTitleEntry( INI *ini, void *, void *store, const void * 
 		}
 		else if ( _stricmp( token, "Line" ) == 0 && line == SUBTITLE_FIELD_UNSET )
 		{
-			const char *value = ini->getNextTokenOrNull( ini->m_sepsColon );
-			if ( value == 0 )
+			const char *value = ini->getNextTokenOrNull( ini->getSepsColon() );
+			if ( value != 0 )
+			{
+				line = INI::scanInt( value ) - 1;
+				if ( line < 0 || line >= SUBTITLE_MAX_LINES )
+				{
+					throw INIException( 3, "Subtitle Line value %d out of range (%d..%d) in %s on line %d",
+						line, 1, SUBTITLE_MAX_LINES, ini->getFilename(), ini->getLineNum() );
+				}
+			}
+			else
 			{
 				throw INIException( 8, "Expected subtitle line value for Line: not found in %s on line %d",
 					ini->getFilename(), ini->getLineNum() );
 			}
-			line = INI::scanInt( value ) - 1;
-			if ( line < 0 || line >= SUBTITLE_MAX_LINES )
-			{
-				throw INIException( 3, "Subtitle Line value %d out of range (%d..%d) in %s on line %d",
-					line, 1, SUBTITLE_MAX_LINES, ini->getFilename(), ini->getLineNum() );
-			}
 		}
 		else if ( _stricmp( token, "StartFrame" ) == 0 && startFrame == SUBTITLE_FIELD_UNSET )
 		{
-			const char *value = ini->getNextTokenOrNull( ini->m_sepsColon );
-			if ( value == 0 )
+			const char *value = ini->getNextTokenOrNull( ini->getSepsColon() );
+			if ( value != 0 )
+			{
+				startFrame = INI::scanInt( value );
+				if ( startFrame < 0 )
+				{
+					throw INIException( 3, "Subtitle StartFrame must be greater than 0 in %s on line %d",
+						ini->getFilename(), ini->getLineNum() );
+				}
+			}
+			else
 			{
 				throw INIException( 8, "Expected subtitle StartFrame value for StartFrame: not found in %s on line %d",
-					ini->getFilename(), ini->getLineNum() );
-			}
-			startFrame = INI::scanInt( value );
-			if ( startFrame < 0 )
-			{
-				throw INIException( 3, "Subtitle StartFrame must be greater than 0 in %s on line %d",
 					ini->getFilename(), ini->getLineNum() );
 			}
 		}
 		else if ( _stricmp( token, "EndFrame" ) == 0 && endFrame == SUBTITLE_FIELD_UNSET )
 		{
-			const char *value = ini->getNextTokenOrNull( ini->m_sepsColon );
-			if ( value == 0 )
+			const char *value = ini->getNextTokenOrNull( ini->getSepsColon() );
+			if ( value != 0 )
+			{
+				endFrame = INI::scanInt( value );
+				if ( endFrame < 0 )
+				{
+					throw INIException( 3, "Subtitle EndFrame must be greater than 0 in %s on line %d",
+						ini->getFilename(), ini->getLineNum() );
+				}
+			}
+			else
 			{
 				throw INIException( 8, "Expected subtitle EndFrame value for EndFrame: not found in %s on line %d",
-					ini->getFilename(), ini->getLineNum() );
-			}
-			endFrame = INI::scanInt( value );
-			if ( endFrame < 0 )
-			{
-				throw INIException( 3, "Subtitle EndFrame must be greater than 0 in %s on line %d",
 					ini->getFilename(), ini->getLineNum() );
 			}
 		}
@@ -235,6 +242,12 @@ void rva0081DE40ParseSubTitleEntry( INI *ini, void *, void *store, const void * 
 			throw INIException( 3, "bad colon spacing, or unexpected token in TransitionDamageFXModuleData::NeighborIDSubobjectNameDataAppend" );
 		}
 	}
+	// The ledger types addSubtitle's first argument as AsciiString; retail
+	// passes this UnicodeString.
 	manager->addSubtitle( *(const AsciiString *)&text, color, style, align, line, startFrame, endFrame );
+	}
+	else
+	{
+		throw INIException( 9, "Could not locate SubTitleManager for %s", ini->getFilename() );
 	}
 }
