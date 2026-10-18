@@ -256,18 +256,6 @@ unsigned Rva000FB8E0::get() const
 	return m_value;
 }
 
-class Rva000FBB40
-{
-public:
-	void *get();
-};
-
-// ?get@Rva000FBB40@@QAEPAXXZ
-void *Rva000FBB40::get()
-{
-	return this;
-}
-
 class Rva007A62E0
 {
 public:
