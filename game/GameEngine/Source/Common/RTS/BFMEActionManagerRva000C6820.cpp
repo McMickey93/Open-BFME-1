@@ -13,8 +13,9 @@
 //
 // Shape notes measured against retail: the special-power type test sits in
 // its own nested if, the options are computed into a local before the module
-// test, and the template goes through a getFinalOverride inline over the
-// recursive friend_getFinalOverride (two inlined levels, then the call).
+// test, and the template goes through the const friend_getFinalOverride
+// inline over the recursive non-const friend (two inlined levels, then the
+// call).
 #include "command_source_type.h"
 
 enum SpecialPowerType
@@ -40,6 +41,12 @@ public:
 	const Overridable *getFinalOverride() const
 	{
 		if( m_nextOverride )
+			return m_nextOverride->getFinalOverride();
+		return this;
+	}
+	const Overridable *friend_getFinalOverride() const
+	{
+		if( m_nextOverride )
 			return m_nextOverride->friend_getFinalOverride();
 		return this;
 	}
@@ -51,7 +58,7 @@ class SpecialPowerTemplate : public Overridable
 public:
 	SpecialPowerType getSpecialPowerType() const
 	{
-		return ( (const SpecialPowerTemplate *)getFinalOverride() )->m_type;
+		return ( (const SpecialPowerTemplate *)friend_getFinalOverride() )->m_type;
 	}
 	char m_rva08[ 0x14 - 8 ];
 	SpecialPowerType m_type;
