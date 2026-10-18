@@ -6,7 +6,42 @@
 // This TU models only the pointer at MeshGeometryClass+0x5c, not the full class.
 
 #include "always.h"
-#include "sharebuf.h"
+#include "refcount.h"
+
+// This TU only needs the ShareBufferClass<unsigned short> ABI.  Keep the
+// declaration local: including sharebuf.h instantiates the Zero Hour dtor
+// inline, and that COMDAT loses retail truth.  The ctor and dtor symbols are
+// defined by their matched out-of-line owners.
+template <class T>
+class ShareBufferClass : public RefCountClass
+{
+public:
+	ShareBufferClass(int count, const char* msg, int alignment = 0);
+	virtual ~ShareBufferClass(void);
+
+	T *Get_Array(void) { return Array; }
+
+protected:
+	T *RawBuffer;
+	T *Array;
+	int Count;
+	int Alignment;
+};
+
+template <class T>
+ShareBufferClass<T>::ShareBufferClass(int count, const char* msg, int alignment) :
+	Count(count),
+	Alignment(alignment)
+{
+	assert(Count > 0);
+	if (Alignment == 0) {
+		RawBuffer = MSGW3DNEWARRAY(msg) T[Count];
+		Array = RawBuffer;
+	} else {
+		RawBuffer = (T *)MSGW3DNEWARRAY(msg) char[Count * sizeof(T) + Alignment];
+		Array = (T *)(((unsigned int)RawBuffer + Alignment - 1) & ~(Alignment - 1));
+	}
+}
 
 class MeshGeometryClass
 {
