@@ -159,6 +159,25 @@ DEFAULT_VC71_ROOT = (
 )
 _WINE_PATH_CACHE = {}
 _WINE_PATH_LOCK = threading.Lock()
+WINE_PATH_TIMEOUT = float(os.environ.get("BFME_WINEPATH_TIMEOUT", "60"))
+
+
+def wine_reset(reason, *, label="build"):
+    """End this prefix's Wine server so a detached process cannot block the next step.
+
+    WineHQ 11 can leave cl.exe behind after its launcher exits, and a stale
+    wineserver then hangs the next Wine call for hours. The census is
+    exclusive, so restarting the prefix between phases is safe.
+    """
+    if sys.platform == "win32":
+        return
+    print(f"{label}: resetting the Wine server ({reason})", flush=True)
+    for command in (["wineserver", "-k"], ["wineserver", "-w"]):
+        try:
+            subprocess.run(command, env=os.environ.copy(), timeout=30,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            print(f"{label}: {' '.join(command)} failed: {exc}", file=sys.stderr, flush=True)
 
 
 def u16(data, offset):
@@ -525,7 +544,17 @@ def wine_path(path):
         winepath = shutil.which("winepath")
         if winepath is None:
             raise SystemExit("winepath not found. Install Wine to run MSVC 7.1 on this host.")
-        converted = subprocess.check_output([winepath, "-w", key], text=True).strip()
+        converted = None
+        for attempt in range(2):
+            try:
+                converted = subprocess.check_output([winepath, "-w", key], text=True,
+                                                    timeout=WINE_PATH_TIMEOUT).strip()
+                break
+            except subprocess.TimeoutExpired:
+                if attempt:
+                    raise SystemExit(f"winepath -w {key} timed out after {WINE_PATH_TIMEOUT:g}s twice; "
+                                     "Wine is stuck")
+                wine_reset(f"after winepath -w {key} timed out")
         # winepath has exited 0 with no output; cached, that empty path reached link.exe as a bare
         # "/OUT:" and failed a mod build with LNK1146, nowhere near the cause.
         if not re.match(r"^[A-Za-z]:\\", converted):

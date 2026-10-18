@@ -393,23 +393,8 @@ def _arg(path):
 
 
 def wine_reset(reason):
-    """End this prefix's Wine server so a detached compiler cannot block a link.
-
-    WineHQ 11 has left cl.exe behind after its launcher exited (the hosted
-    census found one still running when the step was killed). A later link
-    then waited on that process for hours. The census is exclusive, so
-    restarting the prefix between phases is safe and gives the retry a clean
-    slate.
-    """
-    if sys.platform == "win32":
-        return
-    print(f"link_census: resetting the Wine server ({reason})", flush=True)
-    for command in (["wineserver", "-k"], ["wineserver", "-w"]):
-        try:
-            subprocess.run(command, env=os.environ.copy(), timeout=30,
-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except (OSError, subprocess.TimeoutExpired) as exc:
-            print(f"link_census: {' '.join(command)} failed: {exc}", file=sys.stderr, flush=True)
+    """End this prefix's Wine server so a detached process cannot block a phase."""
+    build.wine_reset(reason, label="link_census")
 
 
 def link(objs, aliases=None, tag="census", extra=(), options=()):
@@ -1769,6 +1754,7 @@ def main(argv=None):
         _refresh_missing_search_root_receipts(rows, source_outputs, _INPUT_RECEIPTS)
         _INPUT_RECEIPTS.save()
         print(f"link_census: compile {time.time() - started:.0f}s", flush=True)
+    wine_reset("after compiling and before data provider verification")
     verify_data_objects()
     print("link_census: data provider objects verified", flush=True)
     present, missing = objects(rows)
@@ -1844,6 +1830,7 @@ def selected_main():
         raise SystemExit("link_census: --selected needs the last census's sources and ledger "
                          f"({history[-1]['commit'] if history else 'no census'}); this tree differs")
     rows = ledger()
+    wine_reset("before data provider verification")
     verify_data_objects()
     present, missing = objects(rows)
     if missing:
@@ -2406,6 +2393,7 @@ def record(census, rows, rerun=False, fresh=False):
     if isinstance(rows, LedgerRows):
         rows.validate()
     print("link_census: record: checking data objects and currency", flush=True)
+    wine_reset("before data provider verification")
     verify_data_objects()
     if census["missing"]:
         raise SystemExit(f"link_census: {census['missing']:,} objects were missing from the link; "

@@ -44,6 +44,8 @@ Verification (build.py, per source and in the full gate), per row:
 import argparse
 import csv
 import io
+import locale
+import os
 import re
 import struct
 import sys
@@ -264,20 +266,47 @@ def _protected_probe_name(source, symbol, tag):
     return f"data_row_protected_access_{zlib.crc32(key):08x}"
 
 
+PROBE_TIMEOUT = float(os.environ.get("BFME_PROBE_TIMEOUT", "180"))
+PROBE_ATTEMPTS = max(1, int(os.environ.get("BFME_PROBE_ATTEMPTS", "2")))
+
+
+def _bounded_probe(build, command, env):
+    """watch_compiler with a bound: a probe that hangs must not stop the census.
+
+    subprocess.run with pipes waits for every inherited handle to close; a
+    Wine service that outlives cl.exe can keep those handles open forever.
+    watch_compiler writes to regular files instead and kills the process tree
+    at the timeout. A timeout resets the Wine server and retries once.
+    """
+    import subprocess
+    note = f"\ndata-row probe timed out after {PROBE_TIMEOUT:g}s; killed the process tree\n".encode()
+    for attempt in range(PROBE_ATTEMPTS):
+        result = build.watch_compiler(command, env, merge_output=True,
+                                      timeout=PROBE_TIMEOUT, timeout_note=note)
+        text = (result.stdout + result.stderr).decode(locale.getpreferredencoding(False), errors="replace")
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
+        proc = subprocess.CompletedProcess(command, result.returncode, text, "")
+        if result.returncode != 124:
+            return proc
+        build.wine_reset("after a data-row probe timed out", label="data_rows")
+        if attempt + 1 == PROBE_ATTEMPTS:
+            return proc
+    return proc
+
+
 def _run_probe(build, command, env):
     """Compile a probe exactly as build.try_compile_source compiles its source:
     a missing include retries once with the sweep include dirs (header
     resolution only). Without that retry a TU the byte gate compiles, such as
     Win32GameEngine_update.cpp's <windows.h>, failed every probe with C1083
     (re_attempts 59857)."""
-    import subprocess
-    proc = subprocess.run(command, capture_output=True, text=True, errors="replace", env=env, cwd=str(ROOT))
+    proc = _bounded_probe(build, command, env)
     dirs = [d for d in build._SWEEP_INCLUDE_DIRS if d.exists()]
     if proc.returncode and dirs and "Cannot open include file" in proc.stdout + proc.stderr:
         env = dict(env)
         env["INCLUDE"] = env["INCLUDE"] + ";" + ";".join(build.wine_path(d) for d in dirs)
         command = list(command) + [f"-I{build.wine_path(d)}" for d in dirs]
-        proc = subprocess.run(command, capture_output=True, text=True, errors="replace", env=env, cwd=str(ROOT))
+        proc = _bounded_probe(build, command, env)
     return proc
 
 
