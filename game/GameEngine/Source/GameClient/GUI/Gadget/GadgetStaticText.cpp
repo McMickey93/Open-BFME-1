@@ -56,11 +56,11 @@
 #include "GameClient/Gadget.h"
 #include "GameClient/GameWindowManager.h"
 
-// UnicodeString is StringBase<WideChar>, and retail inlined its one-line
-// forwarders away: the call sites below encode the StringBase<WideChar> bodies
-// directly, not the ZH UnicodeString spellings (which resolve to the NARROW
-// StringBase<char> bodies). The stringbaseunicode shim supplies the same
-// forwarders inline.
+// UnicodeString is StringBase<unsigned short>, and retail inlined its one-line
+// forwarders away: the GGM_GET_LABEL site below encodes the
+// StringBase<unsigned short> body directly, not the out-of-line
+// UnicodeString::operator= forwarder (the 19-byte wrapper lives on at
+// 0x000680A0 for retail call sites that really call it; ours must not).
 #include "string_base.h"
 
 // DEFINES ////////////////////////////////////////////////////////////////////
@@ -165,7 +165,10 @@ WindowMsgHandledType GadgetStaticTextSystem( GameWindow *window, UnsignedInt msg
 		{
 			TextData *tData = (TextData *)window->winGetUserData();
 			if (tData && tData->text)
-				*(UnicodeString*)mData2 = ((BFMEStaticTextDisplayString *)tData->text)->getText();
+				// ?set@?$StringBase@G@@QAEXABV1@@Z at 0x00888530: retail call
+				// sites encode the StringBase<unsigned short> body directly,
+				// not the UnicodeString::operator= forwarder at 0x000680A0.
+				((StringBase<unsigned short> *)mData2)->set( *(const StringBase<unsigned short> *)&(const UnicodeString &)((BFMEStaticTextDisplayString *)tData->text)->getText() );
 			break;
 		
 		}  // end get label
