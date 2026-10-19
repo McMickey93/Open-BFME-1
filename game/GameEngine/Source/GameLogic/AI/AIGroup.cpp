@@ -434,18 +434,8 @@ Bool AIGroup::checkSpecial(const Coord3D *position, Int commandSource)
 	return m_groundPath;
 }
 
-// Typed views of existing ILT addresses; the names make no semantic claim.
-// 003F2160 consumes Object*, from*, to*, radius and returns with ret 16.
-extern void j_00048c57(void);
-// ?rva003F2160@Pathfinder@@QAEPAVPath@@PAVObject@@PBUCoord3D@@0H_N@Z absent-from-retail
-__forceinline Path *Pathfinder::rva003F2160(Object *object,
-	const Coord3D *from, const Coord3D *to, Int radius)
-{
-	typedef Path *(Pathfinder::*Call)(Object *, const Coord3D *, const Coord3D *, Int);
-	union { void (*function)(void); Call member; } target;
-	target.function = j_00048c57;
-	return (this->*target.member)(object, from, to, radius);
-}
+// Pathfinder::rva003F2160 (0x003F2160, PathfinderFindGroundPath.cpp) is called
+// through retail's ILT 0x00048C57; the symbols.csv pin routes the name there.
 
 // Independent caller 00177915 supplies TheAI in ECX before ILT 0003F990.
 extern void j_0003f990(void);
