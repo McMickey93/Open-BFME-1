@@ -2169,7 +2169,6 @@ emit	game/Libraries/Source/WWVegas/WWLib/NameKeyPristineInsertUniqueThunk.cpp	*	
 emit	game/Libraries/Source/WWVegas/WWLib/VectorClassMixFileInfoResizeThunk.cpp	*	403
 emit	game/Libraries/Source/WWVegas/WWLib/VideoVectorDestructorThunk.cpp	*	165
 emit	game/Libraries/Source/WWVegas/WWLib/vector_ICoord2D_M_allocate_and_copyThunk.cpp	*	94
-emit	game/Libraries/Source/debug/DebugIOFlat_ExpandMagic_Thunk.cpp	*	701
 emit	game/Libraries/Source/debug/debug_debug.cpp	*	1353
 emit	game/Libraries/Source/ini/INIPrepFileThunk.cpp	*	1037
 emit	game/gen_small/dumps_000.cpp	*	126285
@@ -18278,7 +18277,6 @@ object_symbol	targets/game/reverse/functions.csv	0x0088F930	1
 object_symbol	targets/game/reverse/functions.csv	0x0088F9E0	1
 object_symbol	targets/game/reverse/functions.csv	0x0088FA70	1
 object_symbol	targets/game/reverse/functions.csv	0x0088FE80	1
-object_symbol	targets/game/reverse/functions.csv	0x008900A0	1
 object_symbol	targets/game/reverse/functions.csv	0x00890410	1
 object_symbol	targets/game/reverse/functions.csv	0x00890480	1
 object_symbol	targets/game/reverse/functions.csv	0x00890E30	1
