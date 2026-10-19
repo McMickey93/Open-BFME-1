@@ -1098,8 +1098,76 @@ static CHAT chatConnectDoit(CILoginType loginType,
 	return (CHAT)connection;
 }
 
-/* chatConnectSecureA and chatConnectLoginA call the static constructor
-   above, so they live in this TU as in the SDK. */
+/* chatConnectA, chatConnectSpecialA, chatConnectSecureA and chatConnectLoginA
+   call the static constructor above, so they live in this TU as in the SDK. */
+CHAT chatConnectA(const char *serverAddress,
+	int port,
+	const char *nick,
+	const char *user,
+	const char *name,
+	chatGlobalCallbacks *callbacks,
+	chatNickErrorCallback nickErrorCallback,
+	chatConnectCallback connectCallback,
+	void *param,
+	CHATBool blocking)
+{
+	return chatConnectDoit(CINoLogin,
+		serverAddress,
+		port,
+		nick,
+		user,
+		name,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		callbacks,
+		nickErrorCallback,
+		0,
+		connectCallback,
+		param,
+		blocking);
+}
+
+CHAT chatConnectSpecialA(const char *serverAddress,
+	int port,
+	const char *nick,
+	const char *name,
+	chatGlobalCallbacks *callbacks,
+	chatNickErrorCallback nickErrorCallback,
+	chatFillInUserCallback fillInUserCallback,
+	chatConnectCallback connectCallback,
+	void *param,
+	CHATBool blocking)
+{
+	return chatConnectDoit(CINoLogin,
+		serverAddress,
+		port,
+		nick,
+		0,
+		name,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		callbacks,
+		nickErrorCallback,
+		fillInUserCallback,
+		connectCallback,
+		param,
+		blocking);
+}
+
 CHAT chatConnectSecureA(const char *serverAddress,
 	int port,
 	const char *nick,
