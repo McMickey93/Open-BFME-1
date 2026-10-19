@@ -96,9 +96,12 @@ public:
 	int m_bfmeID;				// 0x74
 };
 
+class Team;
+
 struct SequentialScript
 {
-	unsigned char m_bfmeHead[8];		// 0x00
+	unsigned char m_bfmeHead[4];		// 0x00
+	Team *m_teamToExecOn;			// 0x04
 	int m_objectID;				// 0x08
 	unsigned char m_bfmeBody[0x14];		// 0x0c
 	int m_framesToWait;			// 0x20
@@ -108,6 +111,7 @@ class ScriptEngine
 {
 public:
 	void setSequentialTimer(Object *obj, int frameCount);
+	void setSequentialTimer(Team *team, int frameCount);
 
 private:
 	unsigned char m_bfmeHead[0xc];		// 0x00
@@ -129,6 +133,31 @@ void ScriptEngine::setSequentialTimer(Object *obj, int frameCount)
 		SequentialScript *seq = *at;
 
 		if (seq != 0 && seq->m_objectID == key)
+		{
+			seq->m_framesToWait = frameCount;
+			return;
+		}
+
+		++at;
+	}
+}
+
+// ScriptEngine::setSequentialTimer(Team *, Int) (retail 0x003399D0, ILT
+// 0x00010DC5; ilt_oracle CONFIRMED exact): the Team overload, matched by the
+// script's m_teamToExecOn. doTeamIdleForFramecount calls it through the ILT.
+void ScriptEngine::setSequentialTimer(Team *team, int frameCount)
+{
+	if (team == 0)
+		return;
+
+	SequentialScript **at = m_bfmeBegin;
+	SequentialScript **end = m_bfmeEnd;
+
+	while (at != end)
+	{
+		SequentialScript *seq = *at;
+
+		if (seq != 0 && seq->m_teamToExecOn == team)
 		{
 			seq->m_framesToWait = frameCount;
 			return;

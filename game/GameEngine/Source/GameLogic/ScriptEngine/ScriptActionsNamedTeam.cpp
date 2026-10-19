@@ -138,13 +138,6 @@ public:
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/ScriptEngine.h
-// Retail tail ILT 0x00010DC5 reaches the existing 0x003399D0 entry.
-class Gen_003399D0
-{
-public:
-	void bfmeAssign(void *key, int value);
-};
-
 class ScriptEngine
 {
 public:
@@ -169,6 +162,7 @@ public:
 
 	// Not slots.
 	void removeAllSequentialScripts(Team *);
+	void setSequentialTimer(Team *team, Int frameCount);
 };
 
 extern ScriptEngine *TheScriptEngine;
@@ -270,7 +264,7 @@ void ScriptActions::doTeamSpinForFramecount(
 		return;
 	}
 
-	reinterpret_cast<Gen_003399D0 *>(TheScriptEngine)->bfmeAssign(team, waitForFrames);
+	TheScriptEngine->setSequentialTimer(team, waitForFrames);
 }
 
 // ?doCreateTeamFromCapturedUnits@ScriptActions@@IAEXABVAsciiString@@0@Z
