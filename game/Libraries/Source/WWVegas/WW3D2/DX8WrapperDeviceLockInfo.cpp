@@ -10,7 +10,7 @@ void W3DRadarResetLock(void);
 extern unsigned long g_013405D4;
 extern const char *g_013405D8;
 extern int g_013405DC;
-extern unsigned long g_013405E0;
+unsigned long g_013405E0;
 
 class DX8Wrapper
 {
