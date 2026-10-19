@@ -22,7 +22,10 @@ struct Rva009AA8F0Block
 };
 
 extern void __cdecl d_009a8c50();
-extern void __cdecl d_009aa4f0();
+struct Rva009AA4F0PostProc;
+struct Rva009AA4F0Planes;
+int __cdecl rva009AA4F0FrameScale(Rva009AA4F0PostProc *pp, unsigned char *frame,
+	Rva009AA4F0Planes *config, int yOffset, int uvOffset);
 
 struct Rva009AA750Context;
 struct Rva009AA750Block;
@@ -48,6 +51,6 @@ void __cdecl Rva009AA8F0Dispatch(
 	int halfX = (int)x >> 1;
 	int outputOffset = halfWidth * block->m_step + halfX;
 	int length = (int)width * block->m_width + x;
-	((void (__cdecl *)(Rva009AA8F0Context *, int, Rva009AA8F0Block *, int, int))d_009aa4f0)(
-		context, offset, block, length, outputOffset);
+	rva009AA4F0FrameScale((Rva009AA4F0PostProc *)context, (unsigned char *)offset,
+		(Rva009AA4F0Planes *)block, length, outputOffset);
 }

@@ -81425,7 +81425,6 @@ name,address,notes
 ?d_009a8430@@YAXXZ,0x009A8430,alias kept for callers of the former dump; body converted as Get_RDTSC_CPU_Speed
 ?d_009a9980@@YAXXZ,0x009A9980,Address-only compatibility for withdrawn dump; Rva009A9980 eight-dword cdecl sampler; landed Rva009A9AD0Scale2D still calls this name; evidence=targets/game/reverse/identity_evidence/0x009a9980-donor-port.md
 ?d_009a9a20@@YAXXZ,0x009A9A20,Address-only compatibility for withdrawn dump; Rva009A9A20 eight-dword cdecl sampler; landed Rva009A9AD0Scale2D still calls this name; evidence=targets/game/reverse/identity_evidence/0x009a9a20-donor-port.md
-?d_009aa4f0@@YAXXZ,0x009AA4F0,address-derived callee of the codec dispatch body at 0x009AA8F0; target read from the REL32 at its call site; unclaimed in the ledger
 ?d_009ab530@@YAXXZ,0x009AB530,Address-only compatibility for withdrawn dump; native Rva009AB530BuildProbabilityTables body; landed Rva009ABFC0DecodeFrame still calls this name
 ?d_009ab9d0@@YAXXZ,0x009AB9D0,address-only compatibility pin for retired dump name; no signature identity claim
 ?d_009acc80@@YAXXZ,0x009ACC80,Address-only compatibility for withdrawn dump; native Rva009ACC80Filter body (game/GameEngine/Source/Common/Rva009ACC80Filter.cpp since d00c861ce1); the dispatch tables in game/gen_asm/d_009a5b80.asm and d_009a7b00.asm still name it by DIR32 at retail 0x00DACC80; no semantic identity claim

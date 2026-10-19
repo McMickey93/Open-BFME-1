@@ -249,3 +249,91 @@ void __cdecl Rva009A97B0(
             dest + i * dest_pitch, dest_width);
     rva009AA260LastVertical35()(dest, dest_pitch, dest_width);
 }
+
+// Retail 0x009AA4F0 (606 B), cdecl: scale one decoded frame into the output
+// planes. The source extent is the destination's scaled back by each axis
+// ratio, the padded extent rounds it up to the ratio's block (3 or 8); luma
+// goes through Rva009AA260Scale, the padding right of and below it is
+// cleared, and only a successful luma pass scales the two half-size chroma
+// planes. Byte-identical to Open-BFME-2's matched 0x001BAF30, ported from
+// there; field names are structural.
+extern "C" void *__cdecl memset(void *, int, unsigned int);
+#pragma intrinsic(memset)
+
+struct Rva009AA4F0PostProc
+{
+	unsigned char m_pad00[0x40];
+	unsigned int m_frameWidth;
+	unsigned char m_pad44[0x58 - 0x44];
+	int m_hScale;
+	int m_hRatio;
+	int m_vScale;
+	int m_vRatio;
+	unsigned char m_pad68[0x70 - 0x68];
+	unsigned int m_expandedWidth;
+	unsigned int m_expandedHeight;
+	int m_reconY;
+	int m_reconU;
+	int m_reconV;
+	unsigned char m_pad84[0xB4 - 0x84];
+	int m_border;
+};
+
+struct Rva009AA4F0Planes
+{
+	int m_yWidth;
+	int m_yHeight;
+	int m_yStride;
+	int m_uvWidth;
+	int m_uvHeight;
+	int m_uvStride;
+	unsigned char *m_y;
+	unsigned char *m_u;
+	unsigned char *m_v;
+};
+
+int __cdecl rva009AA4F0FrameScale(Rva009AA4F0PostProc *pp, unsigned char *frame,
+	Rva009AA4F0Planes *config, int yOffset, int uvOffset)
+{
+	int destWidth = pp->m_expandedWidth;
+	int hRatio = pp->m_hRatio;
+	int vRatio = pp->m_vRatio;
+	int vScale = pp->m_vScale;
+	int hScale = pp->m_hScale;
+	int sourceWidth = (pp->m_expandedWidth * hRatio + (hScale - 1)) / hScale;
+	int destHeight = pp->m_expandedHeight;
+	int sourceHeight = (pp->m_expandedHeight * vRatio + (vScale - 1)) / vScale;
+	int paddedWidth;
+	int paddedHeight;
+	int result;
+	int i;
+	if (hRatio == 3)
+		paddedWidth = (sourceWidth + 2) / 3 * 3 * pp->m_hScale / hRatio;
+	else
+		paddedWidth = (sourceWidth + 7) / 8 * 8 * pp->m_hScale / hRatio;
+	if (vRatio == 3)
+		paddedHeight = (sourceHeight + 2) / 3 * 3 * pp->m_vScale / vRatio;
+	else
+		paddedHeight = (sourceHeight + 7) / 8 * 8 * pp->m_vScale / vRatio;
+	result = Rva009AA260Scale((Rva009AA260Context *)pp, frame + pp->m_reconY,
+		pp->m_frameWidth + pp->m_border * 2, sourceWidth, sourceHeight,
+		config->m_y + yOffset, config->m_yStride, destWidth, destHeight);
+	for (i = 0; i < paddedHeight; i++)
+		memset(config->m_y + i * config->m_yStride + destWidth + yOffset, 0,
+			paddedWidth - destWidth);
+	for (i = destHeight; i < paddedHeight; i++)
+		memset(config->m_y + i * config->m_yStride + yOffset, 0, paddedWidth);
+	if (result == 0)
+		return 0;
+	sourceWidth = (sourceWidth + 1) >> 1;
+	sourceHeight = (sourceHeight + 1) >> 1;
+	destWidth = (destWidth + 1) >> 1;
+	destHeight = (destHeight + 1) >> 1;
+	Rva009AA260Scale((Rva009AA260Context *)pp, frame + pp->m_reconU,
+		(pp->m_frameWidth >> 1) + pp->m_border, sourceWidth, sourceHeight,
+		config->m_u + uvOffset, config->m_uvStride, destWidth, destHeight);
+	Rva009AA260Scale((Rva009AA260Context *)pp, frame + pp->m_reconV,
+		(pp->m_frameWidth >> 1) + pp->m_border, sourceWidth, sourceHeight,
+		config->m_v + uvOffset, config->m_uvStride, destWidth, destHeight);
+	return result;
+}
