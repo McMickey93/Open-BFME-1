@@ -329,7 +329,10 @@ static __forceinline TempIndexStruct* Get_Temp_Index_Array(unsigned count)
 //
 // ----------------------------------------------------------------------------
 
-// ?Insert_Triangles@SortingRendererClass@@ present-unmatched
+// ?Insert_Triangles@SortingRendererClass@@SAXABVSphereClass@@GGGG@Z
+// The retail-matched body (0x0093B340) is SortingRendererInsertTriangles.cpp;
+// this upstream copy would be a second strong definition.
+#if 0
 void SortingRendererClass::Insert_Triangles(
 	const SphereClass& bounding_sphere,
 	unsigned short start_index, 
@@ -410,6 +413,7 @@ void SortingRendererClass::Insert_Triangles(
 	}
 #endif // WWDEBUG
 }
+#endif
 
 // ----------------------------------------------------------------------------
 //

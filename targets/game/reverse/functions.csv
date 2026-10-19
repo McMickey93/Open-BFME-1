@@ -10136,7 +10136,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ??AVector3i@Strip@@QBEABHH@Z,,0x000FBAF0,10,game/Libraries/Source/WWVegas/WW3D2/stripoptimizer.cpp,matched,
 ??AVector4@@QAEAAMH@Z,,0x000FBAF0,10,game/GameEngine/Source/GameClient/Drawable.cpp,matched,
 ??AVector4@@QBEABMH@Z,,0x000FBB80,10,game/GameEngine/Source/GameClient/System/ParticleSys.cpp,matched,
-??A_D3DXVECTOR4@@QAEAAMH@Z,,0x008D6700,10,game/Libraries/Source/WWVegas/WW3D2/sortingrenderer.cpp,matched,
 ??B?$OVERRIDE@VCrateTemplate@@@@QBEPBVCrateTemplate@@XZ,,0x001B4FC0,19,game/GameEngine/Source/GameLogic/System/CrateSystem.cpp,matched,
 ??B?$OVERRIDE@VLocomotorTemplate@@@@QBEPBVLocomotorTemplate@@XZ,,0x000C3930,19,game/GameEngine/Source/GameLogic/Object/Locomotor.cpp,matched,
 ??B?$OVERRIDE@VThingTemplate@@@@QBEPBVThingTemplate@@XZ,,0x000C36F0,19,game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBar.cpp,matched,
@@ -172537,3 +172536,4 @@ uw_00c62070,,0x00C62070,19,game/GameEngine/Source/Common/Rva00C62070PlacementCle
 ??0Rva009A45A0CollisionData@@QAE@XZ,,0x009A45A0,117,game/Libraries/Source/collisionmanager/Rva009A45A0CollisionDataCtor.cpp,matched,constructor of the 0xC070 collision object CollisionManager ctor 0x009A25B0 allocates (existing pin); byte-identical to Open-BFME-2 matched 0x0075A000 and ported from it; tail word 3 is the +0xC068 axis count UpdateSort reads; address-derived id;model=claude-opus-5-5;host=ymo-workstation
 ?rva009C8240DeringBlock@@YAXPAXPAEIII@Z,,0x009C8240,655,game/GameEngine/Source/Common/Rva009C8240DeringBlock.cpp,matched,unreferenced cdecl block dering filter; byte-identical to Open-BFME-2 matched 0x001D8B40 (VP6 clean-room spec 001d8b40) and ported from it; address-derived id;model=claude-opus-5-5;host=ymo-workstation
 ?rva009AA4F0FrameScale@@YAHPAURva009AA4F0PostProc@@PAEPAURva009AA4F0Planes@@HH@Z,,0x009AA4F0,606,game/GameEngine/Source/Common/Rva009AA260Scale.cpp,matched,cdecl frame scaler calling Rva009AA260Scale x3 (luma then two chroma planes); byte-identical to Open-BFME-2 matched 0x001BAF30 and ported from it; address-derived id;model=claude-opus-5-5;host=ymo-workstation
+?at@Rva008D6700FloatArray@@QAEAAMH@Z,,0x008D6700,10,game/Libraries/Source/WWVegas/WWMath/Rva008D6700FloatIndex.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/008d6700-shim-only-d3dxvector4-index.md;unreferenced thiscall float-array index accessor; the old name came from a shim-only D3DXVECTOR4 operator[]; address-derived id;model=claude-opus-5-5;host=ymo-workstation
