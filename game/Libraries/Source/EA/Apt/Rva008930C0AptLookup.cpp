@@ -7,7 +7,16 @@ extern void *(*Rva008C5D70Alloc)(unsigned int bytes);
 class BfmeItemDX;
 void __cdecl bfmePush(BfmeItemDX *item);
 
-class BfmeNestedBE
+// Retail's cleanup funclet for the creation below calls the sized, headered
+// class operator delete at 0x00891650 (tools/eh_info.py 0x008930C0: push 0x64
+// / push block / call 0x00C91650), defined in HeaderedDeleteOperators.cpp.
+class Rva00891650HeaderedDelete
+{
+public:
+	static void operator delete(void *storage, unsigned int size);
+};
+
+class BfmeNestedBE : public Rva00891650HeaderedDelete
 {
 public:
 	BfmeNestedBE(int kind, unsigned int marker, int value);
@@ -20,8 +29,6 @@ public:
 		bfmePush((BfmeItemDX *)block);
 		return block;
 	}
-
-	void operator delete(void *block);
 
 	__forceinline void setLookupFlags()
 	{
