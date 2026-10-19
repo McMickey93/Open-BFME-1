@@ -11,10 +11,10 @@ typedef int Int;
 class ThingTemplate;
 struct Snapshot0040A260;
 
-class EffectFactory0040A260
+class BuffLogic
 {
 public:
-	Snapshot0040A260 *create001B0E90(const ThingTemplate *thingTemplate, void *context);
+	Snapshot0040A260 *addBuff(const ThingTemplate *thingTemplate, void *context);
 };
 
 class Rva001B0E90EntryObject
@@ -169,7 +169,7 @@ extern bool _bfme_debugReportingEnabled(void);
 class TerrainVisual;
 extern TerrainVisual *TheTerrainVisual;
 
-Snapshot0040A260 *EffectFactory0040A260::create001B0E90(const ThingTemplate *thingTemplate, void *context)
+Snapshot0040A260 *BuffLogic::addBuff(const ThingTemplate *thingTemplate, void *context)
 {
 	const Rva001B0E90ThingTemplateView *self = (const Rva001B0E90ThingTemplateView *)thingTemplate;
 	Rva001B0E90EntryObject *data = self->m_records.getNthData(0);
