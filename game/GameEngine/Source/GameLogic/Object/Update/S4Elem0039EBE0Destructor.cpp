@@ -9,8 +9,27 @@
 // at the 0x80 node_alloc threshold.
 
 void __cdecl operator delete(void *block);
+class AsciiString;
+
 namespace _STL
 {
+// The 12-byte members are STLport vector<AsciiString>. Only the destructor is
+// reached, and its retail body (0x000658A0, through the ILT at 0x00026AB2) is
+// owned by AsciiStringVectorDestructor.cpp, so it is declared here and not
+// defined: this TU emits no copy of it.
+template <class T> class allocator;
+template <class T, class A = allocator<T> >
+class vector
+{
+public:
+	~vector();
+
+private:
+	T *m_bfmeStart;
+	T *m_bfmeFinish;
+	T *m_bfmeEnd;
+};
+
 // The node allocator's pool entry points are private STLport members
 // (_STL::__node_alloc<true, 0>::_M_allocate at 0x0082E540, _M_deallocate at
 // 0x0082E5F0); these TU-local helpers reach them under their real names.
@@ -51,23 +70,14 @@ private:
 	int *m_bfmeEnd;
 };
 
-class AttributeModifierAuraUpdateModuleDataMemberB
-{
-public:
-	~AttributeModifierAuraUpdateModuleDataMemberB(void);
-
-private:
-	int m_bfmePad[3];
-};
-
 class S4Elem0039EBE0
 {
 public:
 	~S4Elem0039EBE0(void);
 
 private:
-	AttributeModifierAuraUpdateModuleDataMemberB m_bfmeNames;
-	AttributeModifierAuraUpdateModuleDataMemberB m_bfmeValues;
+	_STL::vector<AsciiString> m_bfmeNames;
+	_STL::vector<AsciiString> m_bfmeValues;
 	BfmeVecMember m_bfmeList0;
 	BfmeVecMember m_bfmeList1;
 	BfmeVecMember m_bfmeList2;
