@@ -1,22 +1,16 @@
 // ?rva009A4740@Rva009A45A0CollisionData@@QAEXXZ
-// partial score=1.0 date=2026-10-19
-// ?rva009A4740@Rva009A45A0CollisionData@@QAEXXZ
 // cl: /O2 /G6 /MD /EHs /D_BFME_RETAIL_TREE_INSERT_LAYOUT /D_CRTIMP= /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /DBFME_STLP_NODE_ALLOC=1
 // stlport
-// Retail 0x0075A1A0..0x0075A48E (750 B; Ghidra's 747 cut the add esp,0x18 / ret epilogue), thiscall, EH.
-// Sited just before the rowed bfmeGoCGD driver 0x0075A490 (BfmeConv597.cpp); the object is the 0xC070-byte
-// collision data the constructor 0x0075A000 builds (RetailCollisionManagerDataCtorRva0075A000.cpp): two
-// bucket tables (0x2B7B and 0x493 buckets) with their active/index/cursor words. WorldBuilder twin
-// 0x018062E0 is the same walk with "collisionmanager_stat" / "Contacts:" / "max on obj " debug output;
-// retail keeps only the counting: every node's two sub-object pointers are counted in a local map, the
-// unsigned maximum is scanned (result unused) and the map is cleared between the tables.
-// Codegen facts: no /arch:SSE (retail's max scans use jbe/mov, SSE gives cmova); /EHs, not /EHsc (with
-// /EHsc ~_Rb_tree drops the inlined first _M_erase level: 114 B vs retail 122 B); the retail tree insert
-// layout define. The map<Rva009A2FE0Sub*, unsigned> instantiation this unit emits is byte-identical to
-// retail's folded bodies: operator[] 0x0075A120, insert_unique 0x00759DB0 / 0x00759C80, _M_insert
-// 0x00759BC0, _Construct 0x006204B0, _M_erase 0x007590B0, ~_Rb_tree 0x00759B40 (fold-proof pins).
-// The key/value spelling and all names are address-derived placeholders; retail folds every
-// pointer->int map onto these bodies.
+// BFME1 retail 0x009A4740 (750 B, thiscall, EH); ported from Open-BFME-2 0x0075A1A0 (byte-identical).
+// Walks both collision bucket tables and counts each node's two sub-object pointers
+// in a local map<Rva009A2FE0Sub *, unsigned>. The unsigned maximum is scanned
+// (result unused), and the map is cleared between tables.
+// Codegen: no /arch:SSE; /EHs retains the retail destructor shape; the retail
+// tree insert layout define reproduces the map helpers at 0x009A34A0,
+// 0x009A3520, 0x009A4010, 0x009A4130, 0x009A41E0, 0x009A4350,
+// 0x009A46A0 and 0x009A46C0. Retail has one identity per body, without ICF.
+// Identity evidence: targets/game/reverse/identity_evidence/009a4740-collision-count-map-family.md
+// The sub-object type stays address-derived because its original name is unproven.
 
 struct Rva009A2FE0Node;
 
@@ -64,17 +58,10 @@ public:
 
 void bfmeGlobalCGD();
 
-// Retail 0x0075A1A0 (747B, RET0 thiscall), sited just before the rowed
-// bfmeGoCGD driver 0x0075A490. WorldBuilder twin 0x018062E0 (1212B) is the
-// same walk with "collisionmanager_stat" / "Contacts:" / "max on obj "
-// debug output; retail keeps only the counting. Target instruction facts:
-// both bucket tables are walked through their +0xC060/+0xC064 and
-// +0xAE08/+0xAE0C cursors, every node's two sub-object pointers (+0, +4) are
-// counted in a local map (find, else operator[] 0x0075A120 = 1), the unsigned
-// maximum is scanned (result unused) and the map is cleared between tables
-// (_M_erase 0x007590B0) and destroyed at exit (0x00759B40). The key type is
-// the address-named sub-object view; the original key/value spelling is
-// unproven (retail folds every pointer->unsigned map onto those bodies).
+// The BFME2 twin is 0x0075A1A0; WorldBuilder's 0x018062E0 adds
+// "collisionmanager_stat" / "Contacts:" / "max on obj " debug output.
+// BFME1 walks the tables through +0xC060/+0xC064 and +0xAE08/+0xAE0C,
+// counts each node's pointers at +0 and +4, and destroys the map at exit.
 
 #include <map>
 

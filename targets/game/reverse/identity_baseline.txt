@@ -36,7 +36,7 @@ multi_name.different = 0
 size_outlier.indicted = 1
 ctor_vtable.contradicted = 19
 ctor_vtable.unreadable = 0
-one_identity.surplus = 2104
+one_identity.surplus = 2103
 # Retail registration proves DynamicPortalBehaviour owns ctor 001F8B80 and factory 001156B0; four false aliases retired.
 # fcf825b4f7 retired the false FXNugget zero-store claim; the body still has aliases.
 # 4c8346b3c9 retired the GDIFileStream ctor over-claim at 0x00087A50 (a zero-store body).
@@ -2577,8 +2577,6 @@ null_reloc.max_unreadable = 1000
 @ one_identity.surplus 0x0097E3F0 ?Get_Noise_Amplitude@ParticleEmitterClass@@QBEMXZ
 @ one_identity.surplus 0x00988EC0 ?Get_Merge_Abort_Factor@ParticleBufferClass@@QBEMXZ
 @ one_identity.surplus 0x00988EC0 ?Get_Noise_Amplitude@ParticleBufferClass@@QBEMXZ
-@ one_identity.surplus 0x009A41E0 ?insert_unique@?$_Rb_tree@IU?$pair@$$CBIPAVState@@@_STL@@U?$_Select1st@U?$pair@$$CBIPAVState@@@_STL@@@2@U?$less@I@2@V?$allocator@U?$pair@$$CBIPAVState@@@_STL@@@2@@_STL@@QAE?AU?$pair@U?$_Rb_tree_iterator@U?$pair@$$CBIPAVState@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBIPAVState@@@_STL@@@2@@_STL@@_N@2@ABU?$pair@$$CBIPAVState@@@2@@Z
-@ one_identity.surplus 0x009A41E0 ?insert_unique@?$_Rb_tree@PBVThingTemplate@@PBV1@U?$_Identity@PBVThingTemplate@@@_STL@@U?$less@PBVThingTemplate@@@3@V?$allocator@PBVThingTemplate@@@3@@_STL@@QAE?AU?$pair@U?$_Rb_tree_iterator@PBVThingTemplate@@U?$_Nonconst_traits@PBVThingTemplate@@@_STL@@@_STL@@_N@2@ABQBVThingTemplate@@@Z
 @ one_identity.surplus 0x009DB3B0 ??0BFMEAutoLockRef@@QAE@PAVBFMENetworkLock@@I@Z
 @ one_identity.surplus 0x009DB3B0 ??0LockClass@MutexClass@@QAE@AAV1@H@Z
 @ one_identity.surplus 0x009DB400 ??1BFMEAutoLockRef@@QAE@XZ
