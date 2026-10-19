@@ -6,8 +6,13 @@
 // frame and register lifetimes. Moving its result to a C++ local emits 192B
 // instead of160B (parent-cpu160 probe), so this short hardware-specific block
 // also retains its conditional store and alignment nop.
+// The 208-byte row covers the __except filter (0x009C4C10) and handler
+// (0x009C4C20) funclets retail places after the body; the handler shape is
+// the one Open-BFME-2 matched for the same bytes at its 0x001D5470.
 
 #include <excpt.h>
+extern "C" unsigned long __cdecl _exception_code(void);
+#define GetExceptionCode _exception_code
 
 extern "C" __declspec(dllimport) int __cdecl strncmp(
 	const char *, const char *, unsigned int);
@@ -33,8 +38,9 @@ int __cdecl Rva009C4B70CpuFeatureProbe(void)
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		if (GetExceptionCode() == 0xc000001dU)
-			return 0;
+		unsigned long code = GetExceptionCode();
+		if (code)
+			return result;
 		return result;
 	}
 
