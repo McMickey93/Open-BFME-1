@@ -51,7 +51,8 @@
 ** RenderInfoClass Implementation
 **
 ***********************************************************************************************/
-// RenderInfoClass::~RenderInfoClass: no standalone retail body; the TUs that destroy one emit it inline.
+// RenderInfoClass::~RenderInfoClass (retail 0x00923880) lives in RenderInfoClassDestructorBfme.cpp
+// with BFME's layout, beside the constructor's RenderInfoClassConstructorBfme.cpp.
 
 void RenderInfoClass::Push_Material_Pass(MaterialPassClass * matpass)
 {
