@@ -363,6 +363,11 @@ WindowMsgHandledType GadgetRadioButtonInput( GameWindow *window, UnsignedInt msg
 
 }  // end GadgetRadioButtonInput
 
+// Retail inlines ~UnicodeString: the by-value text temporary is released by a
+// direct call to StringBase<wchar_t>::releaseBuffer (0x008881D0), not the
+// ??1UnicodeString stub, so this TU must not emit that call.
+inline UnicodeString::~UnicodeString() { ((StringBase<wchar_t> *)this)->releaseBuffer(); }
+
 // GadgetRadioSetText =========================================================
 /** Set the text for the control */
 //=============================================================================
