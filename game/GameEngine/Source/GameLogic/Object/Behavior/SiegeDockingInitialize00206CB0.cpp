@@ -11,8 +11,10 @@
 // stlport
 #define _STLP_NO_EXCEPTIONS 1
 #include <vector>
-struct Coord3D;
-#include "coord3d.h"
+// Struct-key Coord3D as the retail row spells it (?getMultiLogicalBonePosition@Object@@QBEHPBDHPAUCoord3D...);
+// coord3d.h declares the class key, which names an undefined PAV symbol.
+// class-gate: allow Coord3D struct-key view with the retail ctor/dtor (0x83330/0x5BC40) the arrays call; canonical Lib/Coord3D.h has neither
+struct Coord3D { float x,y,z; Coord3D(); ~Coord3D(); };
 class Matrix3D;
 class Vector4 { public: Vector4(); float x,y,z,w; };
 struct MatrixRows00206CB0 { Vector4 row[3]; };
