@@ -2158,7 +2158,6 @@ emit	game/GameEngineDevice/Source/W3DDevice/GameClient/W3DMouseLoadD3DCursorText
 emit	game/Libraries/Source/DirtySock/commudp.cpp	*	466
 emit	game/Libraries/Source/WWVegas/WW3D2/D3DXVec4TransformThunk.cpp	*	600
 emit	game/Libraries/Source/WWVegas/WW3D2/DX8CapsComputeCapsThunk.cpp	*	2220
-emit	game/Libraries/Source/WWVegas/WW3D2/DX8WrapperGetRenderStateNameThunk.cpp	*	673
 emit	game/Libraries/Source/WWVegas/WW3D2/FontCharsClass_Create_GDI_FontMethodThunk.cpp	*	398
 emit	game/Libraries/Source/WWVegas/WW3D2/Render2DRenderThunk.cpp	*	2015
 emit	game/Libraries/Source/WWVegas/WW3D2/Render2DSentenceBuildNotCenteredThunk.cpp	*	1934
@@ -18229,7 +18228,6 @@ object_symbol	targets/game/reverse/functions.csv	0x00869550	1
 object_symbol	targets/game/reverse/functions.csv	0x00869620	1
 object_symbol	targets/game/reverse/functions.csv	0x008698D0	1
 object_symbol	targets/game/reverse/functions.csv	0x00871690	1
-object_symbol	targets/game/reverse/functions.csv	0x00873DA0	1
 object_symbol	targets/game/reverse/functions.csv	0x0087A680	1
 object_symbol	targets/game/reverse/functions.csv	0x0087AC40	1
 object_symbol	targets/game/reverse/functions.csv	0x0087AE50	1

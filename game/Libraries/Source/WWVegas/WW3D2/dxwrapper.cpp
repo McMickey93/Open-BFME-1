@@ -3843,7 +3843,6 @@ void DX8Wrapper::Set_Gamma(float gamma,float bright,float contrast,bool calibrat
 //! Resets render device to default state
 /*!
 */
-// byte-exact reconstruction: game/Libraries/Source/WWVegas/WW3D2/DX8WrapperGetRenderStateNameThunk.cpp
 // ?Get_DX8_Render_State_Name@DX8Wrapper@@ present-unmatched
 const char* DX8Wrapper::Get_DX8_Render_State_Name(D3DRENDERSTATETYPE state)
 {

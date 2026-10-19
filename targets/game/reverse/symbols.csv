@@ -13873,17 +13873,6 @@ name,address,notes
 ?Rva0084B210Run@@YAHPAURva00841540Owner@@@Z,0x0084B210,U2 lane: cdecl callee of the 10-byte member at 0x00841540; unnamed dump elsewhere
 ?Rva00863C00@@YAXPAVRva00866770Owner@@@Z,0x00863C00,Open-BFME5 cdecl callee of one pointer that _peerStopGame at 0x00857E50 runs on the peer before looking at the field at +0xAF0; address-derived name
 ?Rva008667A0@@YAXPAVRva00866770Owner@@@Z,0x008667A0,Open-BFME5 cdecl callee of one pointer that _peerStopGame at 0x00857E50 runs on the peer when the field at +0x398 is set, where a clear field sends it to _piStopReporting instead; address-derived name
-?Rva00873960D0@@3HA,0x013564C4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D1@@3HA,0x013564A4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D2@@3HA,0x01356364,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D3@@3HA,0x01356564,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D4@@3HA,0x01356384,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D5@@3HA,0x01356484,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D6@@3HA,0x01356344,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D7@@3HA,0x01356464,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D8@@3HA,0x01356504,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960D9@@3HA,0x013564E4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
-?Rva00873960Src@@3HA,0x0135654C,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00873960 calls; autopin
 ?Rva008791E0Handles@@3URva008791E0Table@@A,0x013563A0,Open-BFME5 handle table base; vals[20] at +0 keys[20] at +0x50 count at +0xA0 as proven by the 0x008791E0 body absolute operands
 ?Rva00885430Address@@3PADA,0x01336CF4,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00885430 calls; autopin
 ?Rva00885430Resolved@@3HA,0x01336D00,Open-BFME7 retail REL32 target (ILT thunk) the body at 0x00885430 calls; autopin
