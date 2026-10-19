@@ -869,6 +869,30 @@ Bool ActionManager::canCaptureBuilding( const Object *obj, const Object *objectT
 }
 
 // ------------------------------------------------------------------------------------------------
+// Retail 0x000C5C90 (90 bytes, ILT 0x000424D8, no caller in retail): an enemy-target check that
+// follows canCaptureBuilding and calls the static isObjectShroudedForAction with its EDI/ESI
+// register ABI, so it lives in this TU. It returns a char and never reads ECX. Its identity is
+// unproven, hence the address-derived name. Open-BFME-2's 0x0041C96C twin follows canCaptureBuilding too.
+// ------------------------------------------------------------------------------------------------
+char __stdcall rva000C5C90(const Object *obj, const Object *target, CommandSourceType commandSource)
+{
+	if (obj != NULL && target != NULL &&
+			(*reinterpret_cast<const UnsignedByte *>(reinterpret_cast<const char *>(target) + 0x344) & 1) == 0 &&
+			!isObjectShroudedForAction(obj, target, commandSource) &&
+			obj->getRelationship(target) == ENEMIES &&
+			(*reinterpret_cast<const UnsignedByte *>(reinterpret_cast<const char *>(target) + 0x90) & 0x40) == 0)
+	{
+		UnsignedByte v = *reinterpret_cast<const UnsignedByte *>(reinterpret_cast<const char *>(target) + 0x1a4);
+
+		v >>= 5;
+		v = ~v;
+		v &= 1;
+		return (char)v;
+	}
+	return 0;
+}
+
+// ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 // ?canDisableVehicleViaHacking@ActionManager@@QAE_NPBVObject@@0W4CommandSourceType@@_N@Z present-unmatched
 Bool ActionManager::canDisableVehicleViaHacking( const Object *obj, const Object *objectToHack, CommandSourceType commandSource, Bool checkSourceRequirements)
