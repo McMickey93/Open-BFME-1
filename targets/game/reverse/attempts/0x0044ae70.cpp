@@ -1,54 +1,29 @@
 // ??1InGameUI@@UAE@XZ
-// partial score=0.90 date=2026-09-27
-// cl: /DNDEBUG /MD /EHsc
-// Stashed reconstruction, not a landed body: keep it out of game/ until the
-// two vtable stores below are reproducible. See the verdict row in
-// re_attempts.log for what is left.
+// partial score=0.969 date=2026-10-20
+// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /Igame/Libraries/Source/WWVegas/WWLib /Igame/GameEngine/Source/Common/System
 // Retail 0x0044AE70, 936 bytes.
-//
-// One user-declared destructor plus everything the compiler synthesises for
-// it: two vtable stores, thirty EH states, and the implicit destruction of
-// twenty-eight members in reverse declaration order. Both halves are
-// load-bearing, so the class below is a view whose every field sits where
-// retail reads it -- the offsets are checked at compile time at the bottom of
-// this file, because a destructor is exactly the body where a field in the
-// wrong place is invisible until the whole thing is compared.
-//
-// The two bases are ordered by the stores. 0x10F5B38 goes over the vptr at
-// +0x00 and nothing is called for that base, so it is polymorphic with no
-// destructor of its own and four bytes of payload, which puts the secondary
-// base at +0x08. There 0x10F5B24 is written first -- the secondary base as
-// seen through InGameUI -- and 0x1073744 replaces it immediately before the
-// base destructor call, which is the base's own table. So the base whose
-// destructor runs is the one at +0x08.
-//
-// The member view is measured, not invented: the twenty-eight offsets are the
-// twenty-eight `lea`/vector-`_M` cleanup sites in the retail body, and every
-// gap between them is an unreconstructed pad so the next site lands on its own
-// offset. Which member is *what* is not recoverable from a destructor alone,
-// so the types are named by offset and promise only what retail needs -- a
-// non-trivial destructor, so the implicit cleanup exists at all, and a size
-// that makes the element sizes in the `_M` pushes come out 0x04, 0x10, 0x14,
-// 0x20 and 0x30.
-//
-// Destructors are declared and never defined, here and in the siblings: a
-// definition in this TU would be inlined and the call retail makes would
-// disappear. None of them is defined anywhere, exactly as
-// BfmeMilitarySubtitleRecord's is not. The one exception is the secondary
-// base's non-destructor virtual below, which is defined on purpose: it is the
-// key function, and without a table in this object file the compiler drops the
-// vptr store that retail makes before the base call.
-//
-// The two members the body cleans up by hand, +0x081C and +0x0560, are held as
-// plain storage and reached through address-keyed casts, so the implicit pass
-// has no destructor to call for either. That is what retail shows: the delete
-// at +0x9C is the only visit to +0x081C and the release at +0xB8 the only
-// visit to +0x0560.
+// The primary vtable identifies InGameUI at +0. The Snapshot vtable sits at +8.
+// Retail cleanup sites set the member offsets. Compile-time checks verify each offset.
+// The destructor uses thirty EH states and destroys twenty-eight members in reverse order.
+// Element types match the sizes passed to the retail vector cleanup calls.
+// The destructor declarations stay undefined so MSVC emits calls instead of inlining them.
+// Snapshot's defined virtual method makes MSVC emit the secondary vtable store.
+// The members at +0x81C and +0x560 stay plain storage because the body deletes or releases them directly.
 
 typedef int Int;
 typedef unsigned int UnsignedInt;
 typedef bool Bool;
 typedef unsigned char UnsignedByte;
+extern "C" void _ReadWriteBarrier();
+#pragma intrinsic(_ReadWriteBarrier)
+
+#define _STLP_NO_EXCEPTIONS 1
+#include <list>
+#include <map>
+#include <new>
+#include "ascii_string.h"
+#include "subsystem_interface.h"
+#include "snapshot.h"
 
 // ---------------------------------------------------------------- members
 
@@ -92,79 +67,27 @@ struct Rva0044AE70Dtor12F8
 
 // The five member arrays. Size is the whole contract: `_M` takes the element
 // size as an argument and retail pushes 4, 0x10, 0x14, 0x20 and 0x30.
-struct Rva0044AE70Elem04 { ~Rva0044AE70Elem04(); UnsignedInt m_pad; };
-struct Rva0044AE70Elem10 { ~Rva0044AE70Elem10(); UnsignedInt m_pad[4]; };
-struct Rva0044AE70Elem14 { ~Rva0044AE70Elem14(); UnsignedInt m_pad[5]; };
-struct Rva0044AE70Elem20 { ~Rva0044AE70Elem20(); UnsignedInt m_pad[8]; };
-struct Rva0044AE70Elem30 { ~Rva0044AE70Elem30(); UnsignedInt m_pad[12]; };
+struct MoveHint0043AAD0 { ~MoveHint0043AAD0(); UnsignedInt field_00, field_04, field_08, field_0c; Bool field_10; };
+struct Message0043DBA0 { ~Message0043DBA0(); UnsignedInt text, displayString, timestamp, color; };
+struct Map0044B780 { ~Map0044B780(); UnsignedInt storage[3]; };
+struct List00442C90 { ~List00442C90(); void *head; };
+class RadiusDecalTemplate { public: ~RadiusDecalTemplate(); UnsignedInt storage[12]; };
 
 // ------------------------------------------------------------------ bases
 
-// +0x00..+0x07. No destructor is called for this base: retail's four direct
-// calls at +0x170..+0x185 clean it up from the body instead.
-class BfmeBaseShim
-{
-public:
-	virtual void baseSlot00();
-	UnsignedInt m_pad;
-};
-
-// +0x08..+0x0B holds this base's own vptr, and its destructor is the one
-// retail calls at the end -- `this` at +0x00, the table at +0x08, and
-// 0x1073744 replacing the 0x10F5B24 the derived view wrote there at the top.
-// That is the whole reason the hierarchy is a chain and not a pair of
-// siblings: a second base with a destructor would have had its `this` at
-// +0x08, and MSVC would have had to keep that address in a frame slot, which
-// retail's 8-byte frame has no room for. The chain puts the second vptr at
-// +0x08 while the base itself still starts at +0x00.
-//
-// `subsystemInit` is the key function and the only reason it exists:
-// defining it puts ??_7SubsystemInterface@@6B@ in this object file, which is
-// what lets the destructor store it before the base call.
-class SubsystemInterface : public BfmeBaseShim
-{
-public:
-	virtual ~SubsystemInterface();
-	virtual void subsystemInit();
-
-private:
-	void subsystemRelease();
-};
-
-void SubsystemInterface::subsystemInit()
-{
-	subsystemRelease();
-}
-
-
 // ------------------------------------------------------------- the globals
 
-class Rva0044AE70Glo12F33F8
-{
-public:
-	virtual ~Rva0044AE70Glo12F33F8();
-};
-
-class Rva0044AE70Glo12F4B98Type
-{
-public:
-	virtual ~Rva0044AE70Glo12F4B98Type();
-};
-
-class Rva0044AE70Glo12F4B70
-{
-public:
-	virtual ~Rva0044AE70Glo12F4B70();
-};
-
-class Rva0044AE70Glo12F4B78
-{
-public:
-	virtual ~Rva0044AE70Glo12F4B78();
-};
+class ControlBar { public: virtual ~ControlBar(); };
+class Glo012F4B98Type { public: virtual ~Glo012F4B98Type(); };
+class BfmeGlobal_012f4b70 { public: virtual ~BfmeGlobal_012f4b70(); };
+class Rva0044AE70Glo12F4B78 { public: virtual ~Rva0044AE70Glo12F4B78(); };
+extern ControlBar *TheControlBar;
+extern Glo012F4B98Type *Glo012F4B98;
+extern BfmeGlobal_012f4b70 *TheBfmeGlobal_012f4b70;
+extern void *g_bfmeSubsystem012F4B78;
 
 // TheMouse: capture at slot 16 (+0x40), setCursor(int) at slot 14 (+0x38).
-class MouseShim
+class Mouse
 {
 public:
 	virtual void mouseSlot00();
@@ -248,27 +171,27 @@ public:
 #undef RVA0044AE70_VSLOT
 };
 
-extern Rva0044AE70Glo12F33F8 *Rva0044AE70The12F33F8;
-extern Rva0044AE70Glo12F4B98Type *Rva0044AE70The12F4B98;
-extern Rva0044AE70Glo12F4B70 *Rva0044AE70The12F4B70;
-extern Rva0044AE70Glo12F4B78 *Rva0044AE70The12F4B78;
-extern MouseShim *TheMouse;
+extern ControlBar *TheControlBar;
+extern Glo012F4B98Type *Glo012F4B98;
+extern BfmeGlobal_012f4b70 *TheBfmeGlobal_012f4b70;
+extern void *g_bfmeSubsystem012F4B78;
+extern Mouse *TheMouse;
 
 // -------------------------------------------------------------- the class
 
 // Every field is public on purpose: a destructor is the one body where the
 // access specifiers buy nothing, and uniform access is what keeps MSVC from
 // being free to reorder the layout.
-class InGameUI : public SubsystemInterface
+class InGameUI : public SubsystemInterface, public Snapshot
 {
 public:
 	virtual ~InGameUI();
-	// Overriding a virtual of the +0x08 base is what makes the compiler emit a
-	// second table for that vptr. Without an override it can reuse the primary
-	// one and skips the store at +0x08 entirely, which is the store retail
-	// opens the body with.
-	virtual void subsystemInit();
-
+	virtual void init();
+	virtual void reset();
+	virtual void update();
+	virtual const char *GetSnapshotName();
+	virtual void LoadPostProcess();
+	virtual void DoXfer(Xfer &);
 	void removeMilitarySubtitle();
 	void stopCameoMovie();
 	void destroyPlacementIcons();
@@ -278,11 +201,7 @@ public:
 	void clearHint();
 	void clearFloatingText();
 
-	// +0x08..+0x0F. MSVC 7.1 gives the base chain eight bytes -- the second
-	// vptr lands at +0x04, not +0x08 -- so the first four are padding and the
-	// saved/loaded flags sit where retail has them, at +0x0C. These are the
-	// only own fields before the first member with a destructor.
-	UnsignedInt m_pad008;
+	// The two bases occupy +0x00..+0x0B.
 	Bool m_superweaponHiddenByScript;		// +0x00C
 	Bool m_inputEnabled;					// +0x00D
 	unsigned short m_pad00E;					// +0x00E
@@ -292,7 +211,7 @@ public:
 	Rva0044AE70Dtor m_rva00018;				// +0x018
 	Rva0044AE70Dtor m_rva0001C;				// +0x01C
 	UnsignedInt m_pad020[6];					// +0x020 .. +0x037
-	Rva0044AE70Elem14 m_rva00038[25];			// +0x038, 25 * 0x14
+	MoveHint0043AAD0 m_rva00038[25];			// +0x038, 25 * 0x14
 	UnsignedInt m_pad22C[194];				// +0x22C .. +0x533
 	const void *m_pendingPlaceType;				// +0x534
 	UnsignedInt m_pendingPlaceSourceObjectID;	// +0x538
@@ -300,8 +219,8 @@ public:
 	UnsignedInt m_pad540[8];					// +0x540 .. +0x55F
 	CommandButtonShim *m_pendingGUICommand;	// +0x560
 	UnsignedInt m_pad564[2];					// +0x564 .. +0x56B
-	Rva0044AE70Elem10 m_rva0056C[6];			// +0x56C, 6 * 0x10
-	Rva0044AE70Elem20 m_rva005CC[12];			// +0x5CC, 12 * 0x20
+	Message0043DBA0 m_rva0056C[6];			// +0x56C, 6 * 0x10
+	Map0044B780 m_rva005CC[32];			// +0x5CC, 32 * 0x0C
 	UnsignedInt m_pad74C[3];					// +0x74C .. +0x757
 	BfmeDtorString m_rva00758;				// +0x758
 	UnsignedInt m_pad75C[2];					// +0x75C .. +0x763
@@ -336,7 +255,7 @@ public:
 	UnsignedInt m_pad87C[2];					// +0x87C .. +0x883
 	BfmeDtorString m_rva00884;				// +0x884
 	UnsignedInt m_pad888[3];					// +0x888 .. +0x893
-	Rva0044AE70Elem30 m_rva00894[53];			// +0x894, 53 * 0x30
+	RadiusDecalTemplate m_rva00894[53];			// +0x894, 53 * 0x30
 	Rva0044AE70Dtor m_rva01284;				// +0x1284
 	UnsignedInt m_pad1288[4];				// +0x1288 .. +0x1297
 	Rva0044AE70Dtor m_rva01298;				// +0x1298
@@ -348,7 +267,7 @@ public:
 	UnsignedInt m_pad12FC[2];				// +0x12FC .. +0x1303
 	Rva0044AE70Dtor m_rva01304;				// +0x1304
 	UnsignedInt m_pad1308[5];				// +0x1308 .. +0x131B
-	Rva0044AE70Elem04 m_rva0131C[32];			// +0x131C, 32 * 0x04
+	List00442C90 m_rva0131C[32];			// +0x131C, 32 * 0x04
 	DrawableShim *m_idleWorkerWin;			// +0x139C, no destructor
 };
 
@@ -358,17 +277,17 @@ public:
 // the four clearing helpers.
 InGameUI::~InGameUI()
 {
-	delete Rva0044AE70The12F33F8;
-	Rva0044AE70The12F33F8 = 0;
+	delete TheControlBar;
+	TheControlBar = 0;
 
-	delete Rva0044AE70The12F4B98;
-	Rva0044AE70The12F4B98 = 0;
+	delete Glo012F4B98;
+	Glo012F4B98 = 0;
 
-	delete Rva0044AE70The12F4B70;
-	Rva0044AE70The12F4B70 = 0;
+	delete TheBfmeGlobal_012f4b70;
+	TheBfmeGlobal_012f4b70 = 0;
 
-	delete Rva0044AE70The12F4B78;
-	Rva0044AE70The12F4B78 = 0;
+	delete (Rva0044AE70Glo12F4B78 *)g_bfmeSubsystem012F4B78;
+	g_bfmeSubsystem012F4B78 = 0;
 
 	removeMilitarySubtitle();
 
@@ -376,8 +295,10 @@ InGameUI::~InGameUI()
 	m_militarySubtitle = 0;
 
 	if (m_pendingGUICommand != 0)
+	{
 		m_pendingGUICommand->release();
-	m_pendingGUICommand = 0;
+		m_pendingGUICommand = 0;
+	}
 
 	if (m_currentlyPlayingMovie.m_data != 0 &&
 		*(const unsigned short *)(m_currentlyPlayingMovie.m_data + 4) != 0)
@@ -394,15 +315,15 @@ InGameUI::~InGameUI()
 		{
 			m_mouseMode = 0;
 			m_mouseModeCursor = 2;
-			TheMouse->capture();
-			if (TheMouse != 0)
-				TheMouse->setCursor(2);
 		}
+		TheMouse->capture();
+		if (TheMouse != 0)
+			TheMouse->setCursor(2);
+
+		((BfmeInGameUIVtable *)this)->vslot0CC(0);
+
+		destroyPlacementIcons();
 	}
-
-	((BfmeInGameUIVtable *)this)->vslot0CC(0);
-
-	destroyPlacementIcons();
 
 	((BfmeInGameUIVtable *)this)->vslot118(0, 0, 0, 1);
 
