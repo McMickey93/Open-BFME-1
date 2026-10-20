@@ -1,4 +1,4 @@
-// ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
+// ?rva0077AB30@W3DModelDraw@@QAEXXZ
 // partial score=1.0 date=2026-10-20
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/shims
 // stlport
@@ -15,7 +15,7 @@
 // countdown.  While the countdown is positive the object follows the rotated
 // bone; once it runs out the bone name is handed to the vector at +0x13C, the
 // object leaves the scene and the entry is erased.  The angles are one Vector3:
-// its user-declared copy constructor gives retail's entry copy in stopClientParticleSystems.  The entry type keeps the
+// its user-declared copy constructor gives retail's entry copy in rva0077AB30.  The entry type keeps the
 // ledger's name, which the out-of-line __copy (0x007748D0) and element
 // destructor (0x00769D90) are pinned under.
 
@@ -53,9 +53,7 @@ class W3DModelDraw
 {
 public:
 	void rva00779910();
-	protected:
-	void stopClientParticleSystems();
-public:
+	void rva0077AB30();
 
 private:
 	unsigned char m_unmodelled00[0x10];
@@ -99,13 +97,13 @@ void W3DModelDraw::rva00779910()
 	}
 }
 
-// ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
+// ?rva0077AB30@W3DModelDraw@@QAEXXZ
 // Retail 0x0077AB30 (475 bytes), reached from the W3DModelDraw destructor
 // through ILT 0x0001B798. It takes every bone follower above out of the
 // scene, drops its render object, then empties the vector. symbols.csv pins
 // Zero Hour's stopClientParticleSystems here, but retail's thunk table
 // contradicts that name (ilt_oracle), so the method keeps its address.
-void W3DModelDraw::stopClientParticleSystems()
+void W3DModelDraw::rva0077AB30()
 {
 	for (std::vector<Gen_t_00777e90_p32cd>::iterator it = m_boneFollowers.begin();
 		it != m_boneFollowers.end(); ++it)
