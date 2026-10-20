@@ -67,11 +67,12 @@ public:
 //
 // These are plain named float objects so that the store is a `fstp` of a value
 // MSVC chose on the x87 stack.
-extern float g_milesVolume012BA12C;
-extern float g_milesVolume012BA130;
-extern float g_milesVolume012BA134;
-extern float g_milesVolume012BA138;
-extern float g_milesVolume012BA13C;
+// Defined here: retail .data holds 1.0f (0000803f) in all five.
+float g_milesVolume012BA12C = 1.0f;
+float g_milesVolume012BA130 = 1.0f;
+float g_milesVolume012BA134 = 1.0f;
+float g_milesVolume012BA138 = 1.0f;
+float g_milesVolume012BA13C = 1.0f;
 
 // The pushed float fallbacks: 0x0109F748 is __real@3f400000 (0.75) and
 // 0x010B933C is __real@3f0ccccd (0.55) per dir32_addresses.csv.
