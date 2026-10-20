@@ -3,14 +3,24 @@
 
 #define Rva006AE150Zero (0.0f)
 
+class AudioEventRTS
+{
+public:
+	float getPitchShift() const;
+	float getVolumeShift() const;
+	float getVolume() const;
+	bool isPositionalAudio() const;
+};
+
+class Rva0069B040Owner
+{
+public:
+	float getAttenuation(AudioEventRTS *event);
+};
+
 class Rva006AE150Argument
 {
 public:
-	float base();
-	float scale();
-	float limit();
-	bool enabled();
-
 	char m_pad08[8];
 	void *m_value;
 	char m_pad0c[0x1c];
@@ -38,7 +48,6 @@ class Rva006AE150Owner
 {
 public:
 	float compute(Rva006AE150Argument *argument, int apply);
-	float adjust(Rva006AE150Argument *argument);
 
 private:
 	char m_padb8[0xb8];
@@ -60,13 +69,14 @@ float Rva006AE150Owner::compute(Rva006AE150Argument *argument, int apply)
 		break;
 	}
 
-	float result = argument->base();
-	result *= argument->scale();
+	AudioEventRTS *event = reinterpret_cast<AudioEventRTS *>(argument);
+	float result = event->getPitchShift();
+	result *= event->getVolumeShift();
 	Rva006AE150Value *value = (Rva006AE150Value *)argument->m_value;
-	if (value->m_type == 2 && argument->enabled())
+	if (value->m_type == 2 && event->isPositionalAudio())
 	{
-		result *= adjust(argument);
-		float limit = argument->limit();
+		result *= reinterpret_cast<Rva0069B040Owner *>(this)->getAttenuation(event);
+		float limit = event->getVolume();
 		if (result < limit)
 			result = limit;
 	}
