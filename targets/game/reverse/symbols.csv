@@ -87378,7 +87378,6 @@ name,address,notes
 ?render007B6520@W3DProjectedShadowManager@@QAEHAAVRenderInfoClass@@@Z,0x007B6520,RVA-derived member ABI from retail callee ret and ECX callers; renderShadows 007B6D30; body pin with automatically discovered ILT
 ?render@BaseHeightMapRenderTreesShim@@QAEXPAVCameraClass@@@Z,0x006CD990,BaseHeightMapRenderObjClass renderTrees incremental-link thunk target through a TU-local forwarding shim
 ?render@BfmeShadowBufferEntry@@QAEXPAXG0PAG@Z,0x0003D253,render buffer entry helper ILT
-?render@W3DFloorBuffer@@QAEXXZ,0x006F9CD0,W3DFloorBuffer render slot from vtable 0x01120360
 ?renderAsQuads@W3DSnowManager@@QAEXAAVRenderInfoClass@@HHHH@Z,0x00724A20,Full2388 RET20 thiscall ends725374 not truncated inventory2360; ILT499B8 from render725710; upstream camera-oriented quad offsets UVs dynamic vertices and indexed batching; same owner resource layout as matched ReAcquireResources723FB0
 ?renderBuffer@BfmeVolumetricShadowBufferOwner@@QAEXXZ,0x000465C9,render buffer helper ILT
 ?renderBuffer@W3DVolumetricShadow@@QAEXXZ,0x000465C9,render helper ILT

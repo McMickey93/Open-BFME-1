@@ -9162,7 +9162,6 @@ pins	0x006F9140	?size@?$list@PAVBaseHeightMapFloorElement@@V?$allocator@PAVBaseH
 pins	0x006F9160	?push_front@?$list@PAVBaseHeightMapFloorElement@@V?$allocator@PAVBaseHeightMapFloorElement@@@_STL@@@_STL@@QAEXABQAVBaseHeightMapFloorElement@@@Z
 pins	0x006F91A0	?push_back@?$list@PAVBaseHeightMapFloorElement@@V?$allocator@PAVBaseHeightMapFloorElement@@@_STL@@@_STL@@QAEXABQAVBaseHeightMapFloorElement@@@Z
 pins	0x006F9290	?get@W3DFloorBuffer@@QAEPADXZ
-pins	0x006F9CD0	?render@W3DFloorBuffer@@QAEXXZ
 pins	0x006FA270	?copy@AsciiStringCopyShim@_STL@@SAPAVAsciiString@@PAV3@00ABUrandom_access_iterator_tag@2@PAH@Z
 pins	0x006FA420	?destroy@AsciiStringDestroyAuxShim@_STL@@SAXPAX0ABU__false_type@2@@Z
 pins	0x007073D0	?insertY@W3DRoadBufferInsertYShim@@QAE_NVVector2@@HM@Z
