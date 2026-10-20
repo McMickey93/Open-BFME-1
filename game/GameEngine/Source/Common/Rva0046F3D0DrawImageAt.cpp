@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /O2 /Ob2
+// cl: /DNDEBUG /MD /EHsc /O2 /Ob2 /Igame/Libraries/Source/WWVegas/WWLib
 
 typedef int Int;
 typedef float Real;
@@ -109,19 +109,51 @@ class WindowManager;
 // local view of the one method it needs.
 extern WindowManager *g_rva012F19E8WindowManager;
 
-// The direct (non-thunked) callee at 0x0046F280: still a dump, 257 bytes,
-// no trustworthy owner. Retail calls it thiscall with no explicit stack
-// args and uses the eax result as drawImageCore's mode operand. The call
-// target is the body itself, so the body's own ledger spelling is what
-// links: ?d_0046f280@@YAXXZ (game/gen_asm/d_0046b490.asm). getMode() below
-// is declaration-only and supplies the call's type.
-void d_0046f280();
+// The direct (non-thunked) callee at 0x0046F280 (257 bytes): the draw-mode
+// lookup. Retail calls it without the ILT, so it is a file-static of this TU,
+// and it only compiles to retail's bytes as one (as a member or external
+// function MSVC rotates one scratch register). The source object is the
+// query string handed to bfmeGetParamVMZ (0x0046EFA0 via ILT 0x0003C1B4) for
+// key "_mode"; the value is matched case-insensitively against the six-entry
+// {mode, name} table at VA 0x010F738C; no value or no match is mode 2.
+#include "string_base.h"
+template<> inline bool StringBase<char>::isEmpty() const { return !m_data || m_data->length == 0; }
+#include "ascii_string.h"
 
-class Rva0046F3D0ModeSource
+extern "C" __declspec(dllimport) int __cdecl _stricmp(const char *, const char *);
+
+class BfmeStrVMZ;
+char bfmeGetParamVMZ(const char *hay, const char *key, BfmeStrVMZ *out);
+
+class Rva0046F3D0ModeSource;
+
+struct Rva0046F280ModeName
 {
-public:
-	Int getMode(void);
+	Int mode;
+	const char *name;
 };
+
+extern const Rva0046F280ModeName g_Va010F738C[6] = {
+	{ 0, "SOLID" },
+	{ 1, "GRAYSCALE" },
+	{ 2, "ALPHA" },
+	{ 3, "ADDITIVE" },
+	{ 4, "SOLID_GRAYSCALE" },
+	{ 5, "SOLID_TEXTURE" },
+};
+
+static Int getMode0046F280( Rva0046F3D0ModeSource *source )
+{
+	AsciiString value;
+	if (!bfmeGetParamVMZ((const char *)source, "_mode", (BfmeStrVMZ *)&value) || value.isEmpty())
+		return 2;
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		if (_stricmp(g_Va010F738C[i].name, value.str()) == 0)
+			return g_Va010F738C[i].mode;
+	}
+	return 2;
+}
 
 void Rva0046F3D0DrawImageAt(const Coord2D *pos, const Coord2D *size,
 	Int imageKey, Rva0046F3D0ModeSource *modeSource)
@@ -136,12 +168,7 @@ void Rva0046F3D0DrawImageAt(const Coord2D *pos, const Coord2D *size,
 	if (!image)
 		return;
 
-	Int mode;
-	{
-		union { void (*raw)(); Int (Rva0046F3D0ModeSource::*m)(void); } call;
-		call.raw = d_0046f280;
-		mode = (modeSource->*call.m)();
-	}
+	Int mode = getMode0046F280( modeSource );
 
 	drawImage(TheDisplay, image, pos->x, pos->y,
 		pos->x + size->x, pos->y + size->y, -1, mode);
