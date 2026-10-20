@@ -7,10 +7,13 @@
 // (0x00658340) differing in one slot: the assignment operator of the large
 // member at +4.
 
-class Open2Stats6589E0
+// Retail reaches the stats copy through ILT 0x0001C783, which jumps to the
+// 1896-byte body ledgered as ??0PSPlayerStats@@QAE@ABV0@@Z (0x006577D0), so
+// the member is that class and the call is its copy constructor.
+class PSPlayerStats
 {
 public:
-	Open2Stats6589E0 &operator=(const Open2Stats6589E0 &other);
+	PSPlayerStats(const PSPlayerStats &other);
 
 private:
 	char m_storage[0x1C4];
@@ -31,7 +34,7 @@ public:
 	Open2QueueItem6589E0 &operator=(const Open2QueueItem6589E0 &other);
 
 	int m_kind;					// +0x000
-	Open2Stats6589E0 m_stats;			// +0x004
+	PSPlayerStats m_stats;			// +0x004
 	Open2Record6589E0 m_record;			// +0x1C8
 	int m_extra0;					// +0x1DC
 	int m_extra1;					// +0x1E0
@@ -44,7 +47,7 @@ public:
 Open2QueueItem6589E0 &Open2QueueItem6589E0::operator=(const Open2QueueItem6589E0 &other)
 {
 	m_kind = other.m_kind;
-	m_stats = other.m_stats;
+	m_stats.PSPlayerStats::PSPlayerStats(other.m_stats);
 	m_record = other.m_record;
 	m_extra0 = other.m_extra0;
 	m_extra1 = other.m_extra1;
