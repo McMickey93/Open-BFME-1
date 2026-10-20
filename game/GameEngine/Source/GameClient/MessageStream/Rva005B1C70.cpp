@@ -408,7 +408,10 @@ public: bool isBeyondRange(const Rva005A49E0Point *, const Rva005A49E0Point *) c
 extern Rva005A49E0RangeTest *Rva00EF4C5C;
 class Rva005B5440 { public: void clearFlags(); };
 extern Rva005B5440 *Rva00EF4C84;
-extern unsigned char *Rva00EED5C8;
+// Retail reads byte +0x60 of TheWritableGlobalData (0x012ED5C8), the BFME
+// mouse-button swap flag; no BFME witness names that member yet.
+class GlobalData;
+extern GlobalData *TheWritableGlobalData;
 
 static CommandStatus doAttackMoveCommand(const CommandButton *command, const ICoord2D *mouse) {
     if (!command || !mouse) return COMMAND_COMPLETE;
@@ -495,7 +498,7 @@ int Rva005B1C70::dispatch(const GameMessage *msg) {
     bool right = (type == 28 || type == 27) && !at030;
     bool raw = type == 4;
     bool accept, cancel;
-    if (Rva00EED5C8[0x60]) { cancel=left; accept=right; }
+    if (((const unsigned char *)TheWritableGlobalData)[0x60]) { cancel=left; accept=right; }
     else { cancel=right; accept=left; }
     if (!accept && !cancel && !raw) return disposition;
     if (raw) { disposition=1; }
