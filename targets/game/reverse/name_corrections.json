@@ -20878,5 +20878,15 @@
   "after_sha256": "bf1c5d77533944f7a1e1be6a32031d65c7fe478ba4e7ba87d40bdfe1b33ce702",
   "evidence": "targets/game/reverse/identity_evidence/004b2330-007921e0-bank-renames.md",
   "reason": "The W3DListBox.cpp static drawHiliteBar is replaced by the retail 0x007921E0 helper, which takes three images where the Zero Hour drawHiliteBar takes four (smallCenter is only null-tested by the caller), so the Zero Hour symbol is not this body; the row keeps its recorded address-derived name ?Rva007921E0@@YAXPBVImage@@00HHHH@Z. See targets/game/reverse/identity_evidence/004b2330-007921e0-bank-renames.md."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "a_00c409f0",
+  "new_name": "Rva00C409F0Cleanup",
+  "before_sha256": "ef0f0e84d4fdb9ea09ddbbde2d4e84868653b5b2dd817b3712429d94d347d99f",
+  "after_sha256": "d93ce9d8d9d607342fa0a695e36b48defacf8b32559c00771277d72d3db9bb78",
+  "evidence": "targets/game/reverse/identity_evidence/00c409f0-playerinfomap-insert-cleanup.md",
+  "reason": "The a_00c409f0 row aliased GetStringFromRegistry's $L3421 funclet (0x00BFD098); retail FuncInfo 0x01230598 names 0x00C409F0 as state 0 of the matched PlayerInfoMap _M_insert at 0x00633C70, so the row is re-homed to that TU's state-0 label with an address-derived cleanup name."
  }
 ]
