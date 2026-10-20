@@ -824,7 +824,6 @@ dir32,0x012C743C,?g_012C743C@@3Vid@locale@_STL@@A,"nothing in the ledger owns 0x
 dir32,0x012C7440,?g_012C7440@@3Vid@locale@_STL@@A,"nothing in the ledger owns 0x012C7440. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012C7454,?g_012C7454@@3Vid@locale@_STL@@A,"nothing in the ledger owns 0x012C7454. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012C7458,?g_012C7458@@3Vid@locale@_STL@@A,"nothing in the ledger owns 0x012C7458. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012C7B85,?_S_was_synced@ios_base@_STL@@1_NA,"nothing in the ledger owns 0x012C7B85. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012C8398,___category_name,"nothing in the ledger owns 0x012C8398. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012C83A0,_g_Rva012C83A0,"retail 0x012C83A0 is already recorded as ?g_Rva012C83A0@@3PBDB; reference that name, not a new one"
 dir32,0x012D4CB8,?g_rva012D4CB8@@3HA,"retail 0x012D4CB8 is already recorded as ?g_bfmeSeed790B0@@3HA (+1 more); reference that name, not a new one"
