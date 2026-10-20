@@ -63,6 +63,14 @@
 // 0x000680A0 for retail call sites that really call it; ours must not).
 #include "string_base.h"
 
+// Retail's by-value cleanup calls StringBase<wchar_t>::releaseBuffer directly
+// (GadgetStaticTextSetText +0x4D), rather than the UnicodeString destructor
+// wrapper. Keep its forwarding body visible in this translation unit.
+inline UnicodeString::~UnicodeString()
+{
+	clear();
+}
+
 // DEFINES ////////////////////////////////////////////////////////////////////
 
 // PRIVATE TYPES //////////////////////////////////////////////////////////////
