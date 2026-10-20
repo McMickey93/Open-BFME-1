@@ -75,7 +75,7 @@ public:
 extern Display *TheDisplay;
 extern char g_bfmeInitDYB;
 extern unsigned __int64 g_bfmeElapsedDYB;
-extern unsigned __int64 g_012ED898;
+extern unsigned __int64 g_Va012ED898;
 extern "C" __declspec(dllimport) UnsignedInt __stdcall timeGetTime( void );
 
 extern "C" __declspec(noinline) UnsignedInt __stdcall bfme_timeGetTime( void )
@@ -85,10 +85,10 @@ extern "C" __declspec(noinline) UnsignedInt __stdcall bfme_timeGetTime( void )
 		const unsigned __int64 elapsed =
 			static_cast<unsigned __int64>(timeGetTime()) -
 			g_bfmeElapsedDYB;
-		g_012ED898 = elapsed;
+		g_Va012ED898 = elapsed;
 		return static_cast<UnsignedInt>(elapsed);
 	}
-	return static_cast<UnsignedInt>(g_012ED898);
+	return static_cast<UnsignedInt>(g_Va012ED898);
 }
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameClient/ProcessAnimateWindow.h

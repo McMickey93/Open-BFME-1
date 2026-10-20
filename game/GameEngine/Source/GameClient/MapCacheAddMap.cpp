@@ -57,7 +57,7 @@ class Gen_00C6FFF0Target; class Gen_00C70010Target; class Gen_00C70020Target;
 extern Gen_00C6FFF0Target TheBfmeObject_00C6FFF0;
 extern Gen_00C70010Target TheBfmeObject_00C70010;
 extern Gen_00C70020Target TheBfmeObject_00C70020;
-extern StaticNameKey g_012A79A0, g_012A79A8, g_012A79E8;
+extern StaticNameKey g_Va012A79A0, g_Va012A79A8, g_Va012A79E8;
 class MapCache {
 private:
  bool addMap(AsciiString dirName,AsciiString fname,FileInfo *fileInfo,bool isOfficial);
@@ -89,9 +89,9 @@ bool MapCache::addMap(AsciiString dirName,AsciiString fname,FileInfo *fileInfo,b
  (md.m_techPositions.*rvaCall<Assign>(j_000044f8))(*(Rva004570F0List *)&TheBfmeObject_00C70020);
  md.m_CRC=calcCRC(dirName,fname);
  bool exists=false;
- md.m_isScenarioMP=((Dict *)&TheBfmeObject_00C6FFF0)->getBool(g_012A79E8.key(),&exists);
+ md.m_isScenarioMP=((Dict *)&TheBfmeObject_00C6FFF0)->getBool(g_Va012A79E8.key(),&exists);
  if(!exists) md.m_isScenarioMP=false;
- AsciiString munkee=((Dict *)&TheBfmeObject_00C6FFF0)->getAsciiString(g_012A79A0.key(),&exists);
+ AsciiString munkee=((Dict *)&TheBfmeObject_00C6FFF0)->getAsciiString(g_Va012A79A0.key(),&exists);
  if(!exists || munkee.isEmpty()) {
   AsciiString tempdisplayname(fname.reverseFind('\\')+1);
   const char *p=tempdisplayname.str();
@@ -99,7 +99,7 @@ bool MapCache::addMap(AsciiString dirName,AsciiString fname,FileInfo *fileInfo,b
   while(*p && *p!='.') { if(*p!=' ') lookup.concat(*p); ++p; }
   md.m_displayName.translate(lookup);
  } else md.m_displayName.translate(munkee);
- AsciiString description=((Dict *)&TheBfmeObject_00C6FFF0)->getAsciiString(g_012A79A8.key(),&exists);
+ AsciiString description=((Dict *)&TheBfmeObject_00C6FFF0)->getAsciiString(g_Va012A79A8.key(),&exists);
  if(!exists || description.isEmpty()) {
   AsciiString tempdisplayname(fname.reverseFind('\\')+1);
   const char *p=tempdisplayname.str();

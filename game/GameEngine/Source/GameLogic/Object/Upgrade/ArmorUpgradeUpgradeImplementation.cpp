@@ -14,7 +14,7 @@
 typedef unsigned int UnsignedInt;
 typedef int ArmorSetType;
 
-extern UnsignedInt g_012B2C98[];
+extern UnsignedInt g_Va012B2C98[];
 
 
 class BodyModuleInterface
@@ -120,7 +120,7 @@ void ArmorUpgrade::upgradeImplementation()
 		body->clearArmorSetFlag(data->armorSetFlag);
 
 		UnsignedInt condition =
-			g_012B2C98[data->armorSetFlag];
+			g_Va012B2C98[data->armorSetFlag];
 		if (object->hasModelCondition(condition))
 		{
 			object->clearModelCondition(condition);
@@ -132,7 +132,7 @@ void ArmorUpgrade::upgradeImplementation()
 		body->setArmorSetFlag(data->armorSetFlag);
 
 		UnsignedInt condition =
-			g_012B2C98[data->armorSetFlag];
+			g_Va012B2C98[data->armorSetFlag];
 		if (!object->hasModelCondition(condition))
 		{
 			object->setModelCondition(condition);

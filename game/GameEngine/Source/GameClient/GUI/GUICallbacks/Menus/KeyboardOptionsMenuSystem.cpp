@@ -66,32 +66,32 @@ struct BfmeKeyboardSystemEntryData
 };
 
 // These are the private KeyboardOptionsMenu objects in the retail compiland.
-extern NameKeyType g_012F3AAC;
-extern NameKeyType g_012F3ABC;
+extern NameKeyType g_Va012F3AAC;
+extern NameKeyType g_Va012F3ABC;
 extern GameWindow *g_012F3AC0;
-extern NameKeyType g_012F3AC4;
-extern GameWindow *g_012F3AC8;
-extern GameWindow *g_012F3AD0;
-extern GameWindow *g_012F3AD8;
-extern NameKeyType g_012F3ADC;
-extern GameWindow *g_012F3AE8;
-extern NameKeyType g_012F3AEC;
+extern NameKeyType g_Va012F3AC4;
+extern GameWindow *g_Va012F3AC8;
+extern GameWindow *g_Va012F3AD0;
+extern GameWindow *g_Va012F3AD8;
+extern NameKeyType g_Va012F3ADC;
+extern GameWindow *g_Va012F3AE8;
+extern NameKeyType g_Va012F3AEC;
 extern UnicodeString alt;
 extern UnicodeString ctrl;
 extern UnicodeString shift;
 extern const BfmeKeyboardSystemLookupListRec g_010FE7E0[];
 extern const BfmeKeyboardSystemLookupListRec g_010FE828[];
 
-#define kButtonBackID g_012F3AAC
-#define kComboBoxCategoryListID g_012F3ABC
+#define kButtonBackID g_Va012F3AAC
+#define kComboBoxCategoryListID g_Va012F3ABC
 #define kComboBoxCategoryList g_012F3AC0
-#define kListBoxCommandListID g_012F3AC4
-#define kListBoxCommandList g_012F3AC8
-#define kStaticTextDescription g_012F3AD0
-#define kStaticTextCurrentHotkey g_012F3AD8
-#define kButtonResetAllID g_012F3ADC
-#define kTextEntryAssignHotkey g_012F3AE8
-#define kButtonAssignID g_012F3AEC
+#define kListBoxCommandListID g_Va012F3AC4
+#define kListBoxCommandList g_Va012F3AC8
+#define kStaticTextDescription g_Va012F3AD0
+#define kStaticTextCurrentHotkey g_Va012F3AD8
+#define kButtonResetAllID g_Va012F3ADC
+#define kTextEntryAssignHotkey g_Va012F3AE8
+#define kButtonAssignID g_Va012F3AEC
 #define kAlt alt
 #define kCtrl ctrl
 #define kShift shift

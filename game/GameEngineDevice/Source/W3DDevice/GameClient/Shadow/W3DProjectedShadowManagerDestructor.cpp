@@ -86,8 +86,8 @@ public:
 	virtual void __stdcall release();
 };
 
-extern ShadowBuffer *g_01306E04;
-extern ShadowBuffer *g_01306E08;
+extern ShadowBuffer *g_Va01306E04;
+extern ShadowBuffer *g_Va01306E08;
 
 class ProjectedShadowManager
 {
@@ -120,12 +120,12 @@ W3DProjectedShadowManager::~W3DProjectedShadowManager()
 	((BfmeThing928F *)this)->bfmeTwo928F();
 
 	((W3DShadowContainerShim *)m_textureManager)->release();
-	if (g_01306E08)
-		g_01306E08->release();
-	if (g_01306E04)
-		g_01306E04->release();
-	g_01306E08 = 0;
-	g_01306E04 = 0;
+	if (g_Va01306E08)
+		g_Va01306E08->release();
+	if (g_Va01306E04)
+		g_Va01306E04->release();
+	g_Va01306E08 = 0;
+	g_Va01306E04 = 0;
 
 	if (m_renderTarget)
 	{

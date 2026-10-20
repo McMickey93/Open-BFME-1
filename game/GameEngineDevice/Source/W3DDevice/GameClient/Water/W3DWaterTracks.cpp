@@ -192,14 +192,14 @@ public:
 extern Rva009EBCE0AssetReference Rva009EBCE0_GetPrototype(const char *name);
 extern void __cdecl Add_Prototype(void *prototype);
 
-extern const void *g_0113A6F8[];
+extern const void *g_Va0113A6F8[];
 
 class WaterTrackThing : public BfmeThingSJ
 {
 public:
 	WaterTrackThing(int what) : BfmeThingSJ(what)
 	{
-		*(unsigned int *)this = (unsigned int)g_0113A6F8;
+		*(unsigned int *)this = (unsigned int)g_Va0113A6F8;
 	}
 };
 

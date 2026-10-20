@@ -201,7 +201,7 @@ extern GameClient *TheGameClient;
 extern GlobalData *TheWritableGlobalData;
 extern BfmeDebugManager *TheGen001336E5C;
 
-extern int *g_012A7244;
+extern int *g_Va012A7244;
 extern int BfmeSavedClientFrame;
 extern UnsignedInt g_012ED510;
 extern UnsignedInt g_012ED514;
@@ -221,7 +221,7 @@ extern bool g_liteCRC;
 #define SleepTimeTotal (*(UnsignedInt *)0x012ED50C)
 #define LimitFrameRate (*(bool *)0x012ED520)
 
-#define LogicFrameAdjustment (*g_012A7244)
+#define LogicFrameAdjustment (*g_Va012A7244)
 #define SavedClientFrame BfmeSavedClientFrame
 #define SleepTimeRemaining g_012ED510
 #define FrameElapsedTime g_012ED514

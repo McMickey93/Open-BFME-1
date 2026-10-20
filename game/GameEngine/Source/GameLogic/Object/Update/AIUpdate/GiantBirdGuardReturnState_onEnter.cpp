@@ -123,7 +123,7 @@ private:
 
 // The assertion's source path, retail VA 0x010C7710 ("F:\\bfme\\Code\\gameeng...").
 // dir32_addresses.csv records no name for it, so it keeps its address.
-extern char g_010C7710[];
+extern char g_Va010C7710[];
 
 extern GameLogic *TheGameLogic;
 extern AI *TheAI;
@@ -141,7 +141,7 @@ StateReturnType GiantBirdGuardReturnState::onEnter()
 	TAiData *aiData = TheAI->m_aiData;
 	m_frameToSleepUntil = now + GetGameLogicRandomValue(
 		0, aiData->m_guardEnemyReturnScanRate,
-		g_010C7710, 0xABB);
+		g_Va010C7710, 0xABB);
 
 	{
 		GiantBirdGuardMachine *machine = state->m_machine;

@@ -126,7 +126,7 @@ extern Mouse *TheMouse;
 
 // Rank-name tables indexed by getRank(): evil sides at 0x012B8018, good at 0x012B7FF0.
 extern const char *g_012B8018[];
-extern const char *g_012B7FF0[];
+extern const char *g_Va012B7FF0[];
 
 class BfmeAptScreenSkirmish
 {
@@ -159,7 +159,7 @@ void BfmeAptScreenSkirmish::tooltipPlayerLevelIcon( void * )
 		if( player->m_isEvil )
 			rankName = g_012B8018[ rank ];
 		else
-			rankName = g_012B7FF0[ rank ];
+			rankName = g_Va012B7FF0[ rank ];
 		((StringBase<char> *)&tooltipKey)->concat(
 			*(const StringBase<char> *)&rankName );
 

@@ -74,7 +74,7 @@ int __cdecl strncmp( const char *left, const char *right,
 
 struct Rva0081BD40Comm;
 extern "C" void __cdecl Rva0081B700( struct Rva0081BD40Comm *comm );
-extern char g_0130B18C[];
+extern char g_Va0130B18C[];
 
 extern "C" int Rva0081B010( struct Rva0081B010Comm *comm, char *argument )
 {
@@ -118,7 +118,7 @@ extern "C" int Rva0081B010( struct Rva0081B010Comm *comm, char *argument )
 	}
 	else
 	{
-		argument = g_0130B18C;
+		argument = g_Va0130B18C;
 	}
 
 	if ( strncmp( device, "TAPI", 4 ) == 0 )

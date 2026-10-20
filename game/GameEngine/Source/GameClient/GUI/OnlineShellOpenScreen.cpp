@@ -66,7 +66,7 @@ struct Gen_t_012b7c58_entry
     BfmeAptScreenFactory m_factory;
 };
 
-extern Gen_t_012b7c58_entry g_012B7C58[];
+extern Gen_t_012b7c58_entry g_Va012B7C58[];
 
 class BfmeAptScreenOnlineShell : public _bfme_AptGameWindow
 {
@@ -93,7 +93,7 @@ void BfmeAptScreenOnlineShell::openScreen( const char *name )
     }
 
     const char *screenName =
-        g_012B7C58[ 0 ].m_name;
+        g_Va012B7C58[ 0 ].m_name;
     unsigned int index = 0;
     if( screenName == 0 )
         return;
@@ -102,7 +102,7 @@ void BfmeAptScreenOnlineShell::openScreen( const char *name )
     {
         if( strcmp( screenName, name ) == 0 )
         {
-            m_current.m_value = g_012B7C58[ index ].m_factory( this );
+            m_current.m_value = g_Va012B7C58[ index ].m_factory( this );
             if( m_current.m_value == 0 )
                 return;
 
@@ -112,6 +112,6 @@ void BfmeAptScreenOnlineShell::openScreen( const char *name )
             return;
         }
 
-        screenName = g_012B7C58[ index + 1 ].m_name;
+        screenName = g_Va012B7C58[ index + 1 ].m_name;
     }
 }

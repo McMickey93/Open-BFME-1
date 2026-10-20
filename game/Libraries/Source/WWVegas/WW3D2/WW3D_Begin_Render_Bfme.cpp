@@ -92,8 +92,8 @@ private:
 	static bool RecordNextFrame;
 };
 
-extern int g_0133F414;
-extern int g_0133F41C;
+extern int g_Va0133F414;
+extern int g_Va0133F41C;
 
 bool WW3D::Begin_Render(bool clear, bool clearz, const Vector3 &color,
 	float dest_alpha, void (*network_callback)(void))
@@ -122,8 +122,8 @@ bool WW3D::Begin_Render(bool clear, bool clearz, const Vector3 &color,
 		}
 	}
 
-	g_0133F41C = Rva00AFE950Get();
-	g_0133F414 = Rva00AFE960Get();
+	g_Va0133F41C = Rva00AFE950Get();
+	g_Va0133F414 = Rva00AFE960Get();
 	Rva00AFE940();
 	DynamicVBAccessClass::_Reset(true);
 	DynamicIBAccessClass::_Reset(true);

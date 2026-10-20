@@ -2,10 +2,10 @@
 // stlport
 #include <locale>
 
-extern _STL::locale::id g_012C743C;
-extern _STL::locale::id g_012C7440;
-extern _STL::locale::id g_012C7454;
-extern _STL::locale::id g_012C7458;
+extern _STL::locale::id g_Va012C743C;
+extern _STL::locale::id g_Va012C7440;
+extern _STL::locale::id g_Va012C7454;
+extern _STL::locale::id g_Va012C7458;
 
 // Four adjacent locale facet lookups. Retail carved them as one 75-byte
 // span, but each 15-byte lookup ends in its own ret with an int3 pad (the
@@ -16,20 +16,20 @@ extern _STL::locale::id g_012C7458;
 // bytes, the facet semantic identities are not claimed.
 _STL::locale::facet *Rva008483A0Facet0(const _STL::locale &loc)
 {
-    return loc._M_use_facet(g_012C7440);
+    return loc._M_use_facet(g_Va012C7440);
 }
 
 _STL::locale::facet *Rva008483B0Facet1(const _STL::locale &loc)
 {
-    return loc._M_use_facet(g_012C743C);
+    return loc._M_use_facet(g_Va012C743C);
 }
 
 _STL::locale::facet *Rva008483C0Facet2(const _STL::locale &loc)
 {
-    return loc._M_use_facet(g_012C7458);
+    return loc._M_use_facet(g_Va012C7458);
 }
 
 _STL::locale::facet *Rva008483D0Facet3(const _STL::locale &loc)
 {
-    return loc._M_use_facet(g_012C7454);
+    return loc._M_use_facet(g_Va012C7454);
 }

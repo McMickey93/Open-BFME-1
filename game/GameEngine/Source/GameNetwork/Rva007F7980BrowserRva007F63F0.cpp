@@ -4,8 +4,8 @@
 
 #include <new>
 
-extern const char g_0112B7D0[];
-extern const char g_0112B6B0[];
+extern const char g_Va0112B7D0[];
+extern const char g_Va0112B6B0[];
 
 class Rva007E8810Message;
 class Rva007F51D0Ticket
@@ -120,8 +120,8 @@ void Rva007F7980Browser::rva007f63f0(void *message)
     Rva00802680Owner *freeSlot = field2d8->findFree();
     if (freeSlot == 0)
     {
-        Rva007EB810Get()->fail(g_0112B7D0,
-                               g_0112B6B0, 0x57d);
+        Rva007EB810Get()->fail(g_Va0112B7D0,
+                               g_Va0112B6B0, 0x57d);
         return;
     }
     ((BfmeA1251 *)freeSlot)->bfmeInit1251((BfmeB1251 *)&ticket, (BfmeS1251 *)this);

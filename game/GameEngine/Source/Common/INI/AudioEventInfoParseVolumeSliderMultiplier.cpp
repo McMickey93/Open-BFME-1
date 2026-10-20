@@ -29,7 +29,7 @@ typedef int (__cdecl *LookupFn)( const char *, const char * );
 extern "C" LookupFn g_lookup;
 
 #include "Common/INIException.h"
-extern const char *const g_012A8280[];
+extern const char *const g_Va012A8280[];
 
 struct Gen_t_000b0910_p8pod
 {
@@ -60,7 +60,7 @@ void AudioEventInfo::parseVolumeSliderMultiplier( INI *ini, void *, void *store,
 	if ( compare( token, "Slider" ) == 0 )
 	{
 		const char *slider = ini->getNextToken( ini->getSepsColon() );
-		entry.m_slider = INI::scanIndexList( slider, g_012A8280 );
+		entry.m_slider = INI::scanIndexList( slider, g_Va012A8280 );
 		token = ini->getNextTokenOrNull( ini->getSepsColon() );
 		if ( token != 0 && compare( token, "Multiplier" ) == 0 )
 		{

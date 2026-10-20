@@ -12,7 +12,7 @@
 typedef unsigned int UnsignedInt;
 typedef int ArmorSetType;
 
-extern UnsignedInt g_012B2C98[];
+extern UnsignedInt g_Va012B2C98[];
 
 // Retail routes both calls through ILT thunks 0x0002191D (Object's
 // notifyModelConditionChanged) and 0x00041970 (BfmeBaseZJ's bfmeClearZJ).
@@ -118,7 +118,7 @@ void ArmorUpgrade::removeUpgrade()
 			body->clearArmorSetFlag(data->armorSetFlag);
 
 			UnsignedInt condition =
-				g_012B2C98[data->armorSetFlag];
+				g_Va012B2C98[data->armorSetFlag];
 			if (object->hasModelCondition(condition))
 			{
 				object->clearModelCondition(condition);
@@ -130,7 +130,7 @@ void ArmorUpgrade::removeUpgrade()
 			body->setArmorSetFlag(data->armorSetFlag);
 
 			UnsignedInt condition =
-				g_012B2C98[data->armorSetFlag];
+				g_Va012B2C98[data->armorSetFlag];
 			if (!object->hasModelCondition(condition))
 			{
 				object->setModelCondition(condition);

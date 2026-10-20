@@ -74,8 +74,8 @@ struct Rva007F1220Record
 	int downloadCount;
 };
 
-extern void *g_0130A5D0;
-#define g_Rva0130A5D0 g_0130A5D0
+extern void *g_Va0130A5D0;
+#define g_Rva0130A5D0 g_Va0130A5D0
 
 class Rva007F1220BlobWriter
 {

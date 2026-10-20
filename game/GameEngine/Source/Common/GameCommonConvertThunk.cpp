@@ -27,9 +27,9 @@
 // address. Referencing it the same way (a named extern) reproduces that.
 typedef float Real;
 
-extern const Real g_012A86A8;
+extern const Real g_Va012A86A8;
 
-#define SECONDS_PER_LOGICFRAME_REAL (g_012A86A8)
+#define SECONDS_PER_LOGICFRAME_REAL (g_Va012A86A8)
 #define RADS_PER_DEGREE (0.017453292f)
 
 // Reading the SAME global through a `volatile`-qualified pointer forces the
@@ -39,7 +39,7 @@ extern const Real g_012A86A8;
 // both of which the non-volatile macro above lets the optimizer do. The
 // read itself is the only volatile-qualified step; the value it produces is
 // then used as an ordinary float, so the rest of each expression is untouched.
-#define SECONDS_PER_LOGICFRAME_REAL_VOL (*reinterpret_cast<const volatile Real *>(&g_012A86A8))
+#define SECONDS_PER_LOGICFRAME_REAL_VOL (*reinterpret_cast<const volatile Real *>(&g_Va012A86A8))
 
 Real ConvertVelocityInSecsToFrames(Real distPerMsec)
 {

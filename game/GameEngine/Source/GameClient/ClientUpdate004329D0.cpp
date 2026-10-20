@@ -274,7 +274,7 @@ extern WindowManager *g_rva012F19E8WindowManager;
 extern InGameUI *TheInGameUI;
 extern HeaderTemplateManager *TheHeaderTemplateManager;
 extern Shell *TheShell;
-extern bool g_012B534C;
+extern bool g_Va012B534C;
 extern unsigned int g_012F1468, g_012B5348;
 struct Player004329D0 {
     char pad00[0x24]; int m_at0024;
@@ -299,13 +299,13 @@ public:
 void ClientUpdate004329D0::update() {
     ((Calls004329D0 *)g_bfmeSingletonVVD)->rva005B5590();
     ((Calls004329D0 *)g_bfmeInstanceXE)->rva005B4D40();
-    if (g_012B534C) {
+    if (g_Va012B534C) {
         postTimedOp(LoadGameFadeSlot((void *)j_00048b03),&fadeQueueKey);
         postTimedOp(LoadGameFadeSlot((void *)j_00049977),&fadeQueueKey);
         postTimedOp(LoadGameFadeSlot((void *)j_00012ac6),&fadeQueueKey);
         postTimedOp(LoadGameFadeSlot((void *)j_0000743c),&fadeQueueKey);
     }
-    g_012B534C = false;
+    g_Va012B534C = false;
     if (TheSnowManager) ((Dispatch004329D0 *)TheSnowManager)->v14();
     if (TheCloudEffectSystem) ((Dispatch004329D0 *)TheCloudEffectSystem)->v14();
     if (TheCloudSystem) ((Dispatch004329D0 *)TheCloudSystem)->v14();

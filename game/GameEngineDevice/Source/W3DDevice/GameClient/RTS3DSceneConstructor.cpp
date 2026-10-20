@@ -84,7 +84,7 @@ struct BfmeSceneListNode
 	void *m_list;
 };
 
-extern const void *g_01120A4C[];
+extern const void *g_Va01120A4C[];
 
 class BfmeRefSceneList
 {
@@ -101,7 +101,7 @@ public:
 		m_head.m_next = &m_head;
 		m_head.m_objectLink = 0;
 		m_head.m_nextList = 0;
-		m_vtable = (unsigned int)g_01120A4C;
+		m_vtable = (unsigned int)g_Va01120A4C;
 	}
 	~BfmeRefSceneList();
 

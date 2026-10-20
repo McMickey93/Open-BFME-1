@@ -8,7 +8,7 @@ typedef int Int;
 // ?BFMEEmptyUnicodeString@@3GB.  The wcstok delimiter string at 0x01084C10
 // is not in dir32_addresses.csv, so it keeps an address-derived name.
 extern const WideChar BFMEEmptyUnicodeString[];
-extern const WideChar g_01084C10[];
+extern const WideChar g_Va01084C10[];
 
 class UnicodeString;
 class Rva00434810SubtitleEntry;
@@ -140,14 +140,14 @@ Rva00434810SubtitleEntry::Rva00434810SubtitleEntry(GameFont *font,
 	m_displayStrings[2] = 0;
 	WideChar buffer[0x400];
 	wcscpy(buffer, text.str());
-	WideChar *token = wcstok(buffer, g_01084C10);
+	WideChar *token = wcstok(buffer, g_Va01084C10);
 	while (token)
 	{
 		m_displayStrings[m_displayStringCount] =
 			theDisplayStringManagerView()->newDisplayString();
 		m_displayStrings[m_displayStringCount]->setFont(font);
 		m_displayStrings[m_displayStringCount]->setText(UnicodeString(token));
-		token = wcstok(0, g_01084C10);
+		token = wcstok(0, g_Va01084C10);
 		++m_displayStringCount;
 	}
 }

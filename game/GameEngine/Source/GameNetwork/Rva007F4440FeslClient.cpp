@@ -95,9 +95,9 @@ public:
 extern char *g_Rva012C3A18;
 
 // The second send() argument, the FESL message-type global at 0x00BF4520. No
-// name is recorded for it yet, so the address-derived g_00BF4520 stands in;
+// name is recorded for it yet, so the address-derived g_Va00BF4520 stands in;
 // declaring it keeps the argument relocatable in a linked build.
-extern char g_00BF4520[];
+extern char g_Va00BF4520[];
 
 void Rva007F4440Runner::run( int mode, int, int )
 {
@@ -118,6 +118,6 @@ void Rva007F4440Runner::run( int mode, int, int )
 		g_Rva012C3A18,
 		( (Gen_007ea670 *)owner )->bfmePlatform(),
 		clientType );
-	primary->getService()->send( &message, (void *)g_00BF4520, primary, 10000 );
+	primary->getService()->send( &message, (void *)g_Va00BF4520, primary, 10000 );
 	reinterpret_cast< Gen_007e86c0 * >( &message )->m();
 }

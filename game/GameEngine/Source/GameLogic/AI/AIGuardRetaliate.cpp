@@ -111,7 +111,7 @@ public:
 };
 
 extern PartitionManager *ThePartitionManager;
-extern const double g_010965B8;
+extern const double g_Va010965B8;
 
 static __forceinline void setGuardFilterVptr(void *filter, UnsignedInt value)
 {
@@ -369,7 +369,7 @@ Bool AIGuardRetaliateMachine::lookForInnerTarget(void)
 		GuardRangeData *m_aiData;
 	};
 	const GuardRangeAI *ai = reinterpret_cast<const GuardRangeAI *>(TheAI);
-	Real visionRange = ai->m_aiData->m_guardInnerRange * g_010965B8;
+	Real visionRange = ai->m_aiData->m_guardInnerRange * g_Va010965B8;
 
 	struct GuardOwnerPosition
 	{

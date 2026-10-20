@@ -29,9 +29,9 @@
 ////////////////////////////////////////////////////////////////////////////
 #include "prerts.h"
 extern const unsigned short BFMEEmptyUnicodeString;
-extern char g_012ED8D8[];
-extern char g_012EDDA8[];
-extern unsigned char g_012EEC18[];
+extern char g_Va012ED8D8[];
+extern char g_Va012EDDA8[];
+extern unsigned char g_Va012EEC18[];
 
 // The retail WWLib StringBase header is four fields wide: its character data
 // starts eight bytes after the object-owned data header.  Keep this TU-local
@@ -100,7 +100,7 @@ static int hexDigitToInt(char c)
 // Convert unicode strings into ascii quoted-printable strings
 AsciiString UnicodeStringToQuotedPrintable(UnicodeString original)
 {
-	static char *const dest = g_012ED8D8;
+	static char *const dest = g_Va012ED8D8;
 	const char *src = (const char *)original.str();
 	int i=0;
 	while ( !(src[0]=='\0' && src[1]=='\0') && i<1021 )
@@ -135,7 +135,7 @@ AsciiString UnicodeStringToQuotedPrintable(UnicodeString original)
 // Convert ascii strings into ascii quoted-printable strings
 AsciiString AsciiStringToQuotedPrintable(AsciiString original)
 {
-	static char *const dest = g_012EDDA8;
+	static char *const dest = g_Va012EDDA8;
 	const char *src = (const char *)original.str();
 	int i=0;
 	while ( src[0]!='\0' && i<1021 )
@@ -212,7 +212,7 @@ UnicodeString QuotedPrintableToUnicodeString(AsciiString original)
 // Convert ascii quoted-printable strings into ascii strings
 AsciiString QuotedPrintableToAsciiString(AsciiString original)
 {
-	static unsigned char *const dest = g_012EEC18;
+	static unsigned char *const dest = g_Va012EEC18;
 	int i=0;
 
 	unsigned char *c = (unsigned char *)dest;

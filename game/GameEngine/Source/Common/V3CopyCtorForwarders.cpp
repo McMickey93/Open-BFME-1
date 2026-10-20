@@ -155,7 +155,7 @@ extern "C" void *bfmeVftCUAb[];
 extern const char g_0110F9AC[], g_011106F4[];
 extern const char g_0111182C[], g_01111828[], g_01111824[];
 extern const char g_011132F0[], g_011132EC[], g_011132E8[], g_011132D4[];
-extern const char g_01112420[], g_0111241C[], g_01112418[], g_01112404[];
+extern const char g_Va01112420[], g_Va0111241C[], g_Va01112418[], g_Va01112404[];
 
 struct GenNode_006fa270
 {
@@ -266,10 +266,10 @@ public:
 Rva005EDF60::Rva005EDF60( const Rva005EDF60 &other )
 	: Rva005EDFA0( other )
 {
-	Rva005EDFA0FirstBase::m_vftable = (void *)g_01112420;
-	Rva005EDFA0SecondBase::m_vftable = (void *)g_0111241C;
-	Rva005EDFA0ThirdBase::m_vftable = (void *)g_01112418;
-	FXParticleSystem::LightningEmissionInfo::m_vftable = (void *)g_01112404;
+	Rva005EDFA0FirstBase::m_vftable = (void *)g_Va01112420;
+	Rva005EDFA0SecondBase::m_vftable = (void *)g_Va0111241C;
+	Rva005EDFA0ThirdBase::m_vftable = (void *)g_Va01112418;
+	FXParticleSystem::LightningEmissionInfo::m_vftable = (void *)g_Va01112404;
 }
 
 // ------------------------------------- shape B over narrower base layouts

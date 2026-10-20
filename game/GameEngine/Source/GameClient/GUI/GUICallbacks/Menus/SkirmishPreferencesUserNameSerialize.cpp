@@ -15,7 +15,7 @@ typedef unsigned short WideChar;
 // between user names, retail 0x010806D8 (no recorded name, so the address
 // keeps it).
 extern const unsigned short BFMEEmptyUnicodeString;
-extern const WideChar g_010806D8[];
+extern const WideChar g_Va010806D8[];
 
 template <class T> struct StringInlineData
 {
@@ -151,7 +151,7 @@ void Gen0009FC90Owner::Rva0009FC90(void)
 	{
 		names.concat(it->m_value.str(), it->m_value.getLength());
 
-		const WideChar *comma = g_010806D8;
+		const WideChar *comma = g_Va010806D8;
 		names.concat(comma, wcslen(comma));
 		it = it->m_next;
 	}

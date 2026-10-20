@@ -14,7 +14,7 @@ extern void __cdecl initBlocksRva009B3E40(void *self);
 typedef int (__cdecl *Fn009A8430)();
 
 extern int g_bfmeSharedJX;
-extern int g_0134C6D8[];
+extern int g_Va0134C6D8[];
 extern const unsigned short g_bfmeApplyTableC[64];
 
 static int *const g_013571E0 = &g_bfmeSharedJX;
@@ -68,11 +68,11 @@ void Rva009A4D00Init(void)
 	*g_013571E0 = reinterpret_cast<Fn009A8430>(d_009a8430)();
 	Rva009A8550Init();
 
-	int *dst = g_0134C6D8;
+	int *dst = g_Va0134C6D8;
 	for (const short *src = g_01141D08; (int)src < (int)g_01141D88; ++src, ++dst)
 		*dst = *src / 2 + 2;
 
-	Rva009A5AA0InstallFilter(g_0134C6D8, g_0134C6D8, g_0134C6D8, 7);
+	Rva009A5AA0InstallFilter(g_Va0134C6D8, g_Va0134C6D8, g_Va0134C6D8, 7);
 	bfmeRun_009A75E0();
 }
 

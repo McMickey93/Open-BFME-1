@@ -246,7 +246,7 @@ extern AudioManager *TheAudio;
 class CDManagerInterface;
 extern CDManagerInterface *TheCDManager;
 #define AuxiliarySubsystem ((ClientSubsystem *)TheCDManager)
-extern int *g_012A7244;
+extern int *g_Va012A7244;
 extern int BfmeSavedClientFrame;
 extern int BfmeSkippedClientFrames;
 #define SavedClientFrame BfmeSavedClientFrame
@@ -336,7 +336,7 @@ void GameEngine::_bfme_updateClientSubsystems(void)
 	}
 
 	WindowManagerSubsystem->update();
-	if (*g_012A7244 == 0 &&_bfme_shouldSkipClientFrame())
+	if (*g_Va012A7244 == 0 &&_bfme_shouldSkipClientFrame())
 	{
 		int skippedClientFrames = SkippedClientFrames;
 		ClientFrameSubsystem *client = GameClientSubsystem;

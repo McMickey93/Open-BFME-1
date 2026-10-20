@@ -128,9 +128,9 @@ extern GlobalData *TheWritableGlobalData;
 
 #define BFME_GLOBAL_DATA TheWritableGlobalData
 
-extern Bool g_012F9C31;
+extern Bool g_Va012F9C31;
 
-#define BFME_ROAD_DYNAMIC g_012F9C31
+#define BFME_ROAD_DYNAMIC g_Va012F9C31
 
 class RoadType
 {

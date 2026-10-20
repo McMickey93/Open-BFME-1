@@ -44,13 +44,13 @@ struct LookupListRec
 	int value;
 };
 
-extern LookupListRec g_01116F40[];
+extern LookupListRec g_Va01116F40[];
 
 // ?Rva00619FF0LookupByName@@YAHABVAsciiString@@@Z
 int __cdecl Rva00619FF0LookupByName(const AsciiString &name)
 {
-	const char *recordName = g_01116F40[0].name;
-	LookupListRec *record = g_01116F40;
+	const char *recordName = g_Va01116F40[0].name;
+	LookupListRec *record = g_Va01116F40;
 	for (; recordName; ++record)
 	{
 		if (name.compare(recordName) == 0)

@@ -22,7 +22,7 @@ class Module;
 #undef BFME_HAVE_ASCIISTRING
 
 class Dict;
-extern const StaticNameKey g_012A7838;
+extern const StaticNameKey g_Va012A7838;
 
 struct Rva00374610StringData
 {
@@ -98,7 +98,7 @@ void CastleMemberBehavior::onLevelStart(Dict *properties)
 	Bool exists = false;
 	BfmeStringPresenceValue name =
 		((const BfmeStringPresenceDict *)properties)->getAsciiString(
-			g_012A7838.key(), &exists);
+			g_Va012A7838.key(), &exists);
 	if (!exists)
 		return;
 

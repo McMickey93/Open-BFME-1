@@ -16,8 +16,8 @@
 //
 // The two device buffers live at fixed addresses rather than in the object,
 // and the pair is what ties these two bodies together: ReAcquireResources
-// creates the index buffer into g_01306E08 and the vertex buffer into
-// g_01306E04, and ReleaseResources releases and clears exactly those two.
+// creates the index buffer into g_Va01306E08 and the vertex buffer into
+// g_Va01306E04, and ReleaseResources releases and clears exactly those two.
 
 typedef long HRESULT;
 
@@ -63,8 +63,8 @@ protected:
 	static IDirect3DDevice8 *D3DDevice;
 };
 
-extern ShadowBuffer *g_01306E04;
-extern ShadowBuffer *g_01306E08;
+extern ShadowBuffer *g_Va01306E04;
+extern ShadowBuffer *g_Va01306E08;
 
 class ShadowLightEnvironment007AF5A0
 {
@@ -169,13 +169,13 @@ void W3DProjectedShadowManager::removeAllShadows(void)
 bool W3DProjectedShadowManager::ReAcquireResources()
 {
 	ShadowDevice *device = (ShadowDevice *)DX8Wrapper::D3DDevice;
-	ShadowBuffer **indexBuffer = &g_01306E08;
+	ShadowBuffer **indexBuffer = &g_Va01306E08;
 	if (device->createIndexBuffer(0x20000, 0x208, 101, 0, indexBuffer, 0) < 0)
 		return false;
 
-	if (g_01306E04 == 0
+	if (g_Va01306E04 == 0
 		&& device->createVertexBuffer(0x100000, 0x208, 0, 0,
-			&g_01306E04, 0) < 0)
+			&g_Va01306E04, 0) < 0)
 		return false;
 
 	return true;
@@ -187,13 +187,13 @@ void W3DProjectedShadowManager::ReleaseResources(void)
 	W3DShadowContainerShim *container = m_24C;
 	container->release();
 	ShadowBuffer *first =
-		g_01306E08;
+		g_Va01306E08;
 	if (first)
 		((ShadowBufferRelease)(*(void ***)first)[2])(first);
 	ShadowBuffer *second =
-		g_01306E04;
+		g_Va01306E04;
 	if (second)
 		((ShadowBufferRelease)(*(void ***)second)[2])(second);
-	g_01306E08 = 0;
-	g_01306E04 = 0;
+	g_Va01306E08 = 0;
+	g_Va01306E04 = 0;
 }

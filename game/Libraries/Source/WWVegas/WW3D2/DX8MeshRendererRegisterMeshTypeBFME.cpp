@@ -45,11 +45,11 @@ public:
 };
 
 // Registered-mesh list head, retail VA 0x0134B0E4 (not in dir32_addresses.csv).
-extern MeshModelClass *g_0134B0E4;
+extern MeshModelClass *g_Va0134B0E4;
 
 static __forceinline MeshModelClass *& Bfme_Registered_Mesh_Head()
 {
-	return g_0134B0E4;
+	return g_Va0134B0E4;
 }
 
 extern void Add_Rigid_Mesh_To_Container(

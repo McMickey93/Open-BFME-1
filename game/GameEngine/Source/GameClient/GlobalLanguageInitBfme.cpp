@@ -17,7 +17,7 @@
 #include <list>
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTempPathA(unsigned long,char*);
 AsciiString GetRegistryLanguage();
-extern const char *g_012B53A8;
+extern const char *g_Va012B53A8;
 // BFME File omits the reference MemoryPoolObject pool-query virtual slot.
 // Native File still supplies the independently valid deleteOnClose inline.
 class Rva00439560FileView {public:
@@ -62,7 +62,7 @@ void Rva00439560GlobalLanguage::init()
 			if(GetTempPathA(MAX_PATH,tempPath))
 			{
 				strcat(tempPath,"\\");
-				strcat(tempPath,g_012B53A8);
+				strcat(tempPath,g_Va012B53A8);
 				CreateDirectoryA(tempPath,0);
 				if(addFont)
 				{

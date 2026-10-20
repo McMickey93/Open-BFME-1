@@ -58,7 +58,7 @@ struct Rva009F4130Node;
 struct Rva009F4130DistanceContext;
 class BfmeThingEQ;
 typedef float (__cdecl *Rva009F4130Distance)(void *, void *, float);
-extern Rva009F4130Distance g_012DBD60[];
+extern Rva009F4130Distance g_Va012DBD60[];
 
 class Rva009F4130Owner
 {
@@ -150,7 +150,7 @@ BfmeWideResult PartitionManagerImpl::GetObjectsInRange(int position, int radius,
 				m_vectors[0].size() / 4,
 				xMin, yMin, xMax, yMax, 0, 0, m_fieldEC,
 				(void *)point, *(float *)&radius, range,
-				g_012DBD60[distanceType],
+				g_Va012DBD60[distanceType],
 				(BfmeThingEQ *)filters);
 		}
 		++nodes;

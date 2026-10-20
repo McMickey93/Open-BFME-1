@@ -204,9 +204,9 @@ inline const Real &bfmeMax(const Real &left, const Real &right)
 }
 
 #define BFME_ACTION_SLOP 15.0f
-extern const Real g_010C6788;
+extern const Real g_Va010C6788;
 
-#define BFME_MIN_ACTION_TOLERANCE g_010C6788
+#define BFME_MIN_ACTION_TOLERANCE g_Va010C6788
 
 StateReturnType DozerActionMoveToActionPosState::update()
 {

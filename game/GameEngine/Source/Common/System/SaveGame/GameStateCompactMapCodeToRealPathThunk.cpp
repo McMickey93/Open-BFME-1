@@ -80,7 +80,7 @@ public:
 };
 
 extern const char *PORTABLE_SAVE;
-extern const char *g_012ABFC8;
+extern const char *g_Va012ABFC8;
 
 static __forceinline const char *rva0010e580String(const char *const &value)
 {
@@ -111,9 +111,9 @@ AsciiString Rva0010E580GameState::rva0010e580MapPathCode(
     } appendThunk = { j_000326d2 };
 
     if (((const StringBase<char> *)&path)->startsWithNoCase(
-            rva0010e580String(g_012ABFC8),
-            rva0010e580String(g_012ABFC8)
-                ? (int)strlen(rva0010e580String(g_012ABFC8)) : 0))
+            rva0010e580String(g_Va012ABFC8),
+            rva0010e580String(g_Va012ABFC8)
+                ? (int)strlen(rva0010e580String(g_Va012ABFC8)) : 0))
     {
         ((StringBase<char> *)&prefix)->concat(
             rva0010e580String(PORTABLE_SAVE),
@@ -121,7 +121,7 @@ AsciiString Rva0010E580GameState::rva0010e580MapPathCode(
                 ? (int)strlen(rva0010e580String(PORTABLE_SAVE)) : 0);
 
         const int tailOffset =
-            (int)strlen(rva0010e580String(g_012ABFC8));
+            (int)strlen(rva0010e580String(g_Va012ABFC8));
         const char *tail = path.str() + tailOffset;
         const int tailLength = tail ? (int)strlen(tail) : 0;
         ((StringBase<char> *)&prefix)->concat(tail, tailLength);
