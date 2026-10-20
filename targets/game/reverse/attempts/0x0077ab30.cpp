@@ -1,16 +1,23 @@
 // ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
-// partial score=0.1579 date=2026-10-20
-// ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
-// cl: /DNDEBUG /DWIN32 /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC /MD /EHsc /Iinputs/reference/shims/stlp_nodealloc /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/shims
+// partial score=1.0 date=2026-10-20
+// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/shims
 // stlport
-// Retail 0x0077AB30, 475 bytes, thiscall, no arguments.
+// Retail 0x00779910, 770 bytes, thiscall, no arguments.
 //
-// Identity: the matched W3DModelDraw destructor (0x0077B090) calls this body
-// through ILT 0x0001B798 where Zero Hour's destructor calls
-// stopClientParticleSystems; symbols.csv pins the name here. BFME's version
-// tears down the bone-follower entries at +0x130 (the 32-byte records that
-// W3DModelDrawRva00779910.cpp walks): each entry's render object leaves the
-// scene and is released, then the vector is cleared.
+// Owner: the matched W3DModelDraw destructor at 0x0077B090 tears down the
+// vectors at +0x130 (ILT 0x0000B073) and +0x13C (ILT 0x00006730/0x0000B109),
+// and name_oracle witnesses +0x34 as W3DModelDraw::m_renderObject.  The sole
+// caller, 0x00779F10 through ILT 0x0000CB80, passes its own receiver.  No
+// surviving name proves the method spelling, so it stays address-derived.
+//
+// Each 0x20-byte entry holds a render object, the name of a bone on the
+// drawable's model, three rotation angles fed to Rotate_X/Y/Z, and a
+// countdown.  While the countdown is positive the object follows the rotated
+// bone; once it runs out the bone name is handed to the vector at +0x13C, the
+// object leaves the scene and the entry is erased.  The angles are one Vector3:
+// its user-declared copy constructor gives retail's entry copy in stopClientParticleSystems.  The entry type keeps the
+// ledger's name, which the out-of-line __copy (0x007748D0) and element
+// destructor (0x00769D90) are pinned under.
 
 #define __PLACEMENT_VEC_NEW_INLINE  // always.h defines array placement-new itself
 #include "rendobj.h"
@@ -38,31 +45,75 @@ struct Gen_t_00777e90_p32cd
 {
 	RenderObjClass *m_renderObject;  // +0x00
 	std::string m_boneName;          // +0x04
-	float m_rotateX;                 // +0x10
-	float m_rotateY;                 // +0x14
-	float m_rotateZ;                 // +0x18
+	Vector3 m_rotate;                // +0x10: angles for Rotate_X/Y/Z
 	int m_countdown;                 // +0x1C
 };
 
 class W3DModelDraw
 {
-protected:
+public:
+	void rva00779910();
+	protected:
 	void stopClientParticleSystems();
+public:
 
 private:
-	unsigned char m_beforeSystems[0x130];
+	unsigned char m_unmodelled00[0x10];
+	void *m_pointer10;                                      // +0x010
+	unsigned char m_unmodelled14[0x34 - 0x14];
+	RenderObjClass *m_renderObject;                         // +0x034
+	unsigned char m_unmodelled38[0x130 - 0x38];
 	std::vector<Gen_t_00777e90_p32cd> m_boneFollowers;      // +0x130
+	std::vector<std::string> m_releasedBoneNames;           // +0x13C
 };
 
+// ?rva00779910@W3DModelDraw@@QAEXXZ
+void W3DModelDraw::rva00779910()
+{
+	if (m_pointer10 == 0 || m_renderObject == 0)
+		return;
+
+	std::vector<Gen_t_00777e90_p32cd>::iterator it = m_boneFollowers.begin();
+	while (it != m_boneFollowers.end())
+	{
+		if (it->m_countdown <= 0)
+		{
+			m_releasedBoneNames.push_back(it->m_boneName);
+			W3DDisplay::m_3DScene->Remove_Render_Object(it->m_renderObject);
+			it->m_renderObject->Release_Ref();
+			it = m_boneFollowers.erase(it);
+			continue;
+		}
+
+		Gen_t_00777e90_p32cd &follower = *it;
+		if (!follower.m_boneName.empty())
+		{
+			Matrix3D transform = m_renderObject->Get_Bone_Transform(follower.m_boneName.c_str());
+			transform.Rotate_X(follower.m_rotate.X);
+			transform.Rotate_Y(follower.m_rotate.Y);
+			transform.Rotate_Z(follower.m_rotate.Z);
+			follower.m_renderObject->Set_Transform(transform);
+		}
+		--follower.m_countdown;
+		++it;
+	}
+}
+
+// ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
+// Retail 0x0077AB30 (475 bytes), reached from the W3DModelDraw destructor
+// through ILT 0x0001B798. It takes every bone follower above out of the
+// scene, drops its render object, then empties the vector. symbols.csv pins
+// Zero Hour's stopClientParticleSystems here, but retail's thunk table
+// contradicts that name (ilt_oracle), so the method keeps its address.
 void W3DModelDraw::stopClientParticleSystems()
 {
 	for (std::vector<Gen_t_00777e90_p32cd>::iterator it = m_boneFollowers.begin();
 		it != m_boneFollowers.end(); ++it)
 	{
-		Gen_t_00777e90_p32cd entry = *it;
-		W3DDisplay::m_3DScene->Remove_Render_Object(entry.m_renderObject);
-		entry.m_renderObject->Release_Ref();
-		entry.m_renderObject = 0;
+		Gen_t_00777e90_p32cd follower = *it;
+		W3DDisplay::m_3DScene->Remove_Render_Object(follower.m_renderObject);
+		follower.m_renderObject->Release_Ref();
+		follower.m_renderObject = 0;
 	}
 	m_boneFollowers.clear();
 }
