@@ -355,18 +355,6 @@ inline __declspec(noinline) void Pathfinder::clip( Coord3D *startPosition, Coord
 	}
 }
 
-inline __declspec(noinline) Rva003D54E0::Rva003D54E0()
-{
-	m_00 = 0; m_04 = 0; m_08 = 0; m_0c = 0;
-	m_10 = 0; m_11 = 0;
-	m_14 = 0; m_18 = 0; m_1c = 0;
-	m_20 = 0; m_21 = 0;
-	m_24 = -1;
-	m_28 = 0;
-	m_2d = 0; m_2e = 0; m_2c = 0;
-	m_30 = 0;
-}
-
 extern int g_bfmePathfindInfoIssued;
 inline __declspec(noinline) PathfindCellInfo *__cdecl bfmeAcquirePathfindCellInfo(
 	PathfindCellInfo **freeListHead, PathfindCell *pathfindCell, const ICoord2D *cellPosition)
