@@ -12,11 +12,14 @@ class StringClass
 {
 public:
 	StringClass(const StringClass &string, bool hint_temporary = false);
-	~StringClass();
+	// Retail inlines ~StringClass: the scope exit calls Free_String (0x009DB7A0)
+	// directly, not the 0x0013A050 out-of-line destructor stub.
+	~StringClass() { Free_String(); }
 	const StringClass &operator+=(const char *string);
 	operator const char *() const { return m_buffer; }
 
 private:
+	void Free_String();
 	char *m_buffer;
 };
 
