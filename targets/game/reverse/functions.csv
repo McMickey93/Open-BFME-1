@@ -38343,7 +38343,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0074d461@@YAXXZ,,0x0074D461,52,game/gen_asm/d_00745b10.asm,matched,gen-dump;ghidra=Catch@00b4d461
 ?d_0074d6d0@@YAXXZ,,0x0074D6D0,1,game/GameEngine/Source/Common/Rva0074D6D0TinyBody.cpp,matched,one-byte carved return at a proven ret boundary
 ?d_0074f1f0@@YAXXZ,,0x0074F1F0,2683,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp end=ret+int3 callers=1
-?d_00754c60@@YAXXZ,,0x00754C60,121,game/gen_asm/d_00753460.asm,matched,gen-dump;ghidra=FUN_00b54c60
 ?d_00755a70@@YAXXZ,,0x00755A70,416,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=jmp+int3 callers=1;ghidra=FUN_00b55a70
 ?d_00755f70@@YAXXZ,,0x00755F70,2572,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00b55f70
 ?d_0075d0c0@@YAXXZ,,0x0075D0C0,1,game/GameEngine/Source/Common/Rva0075D0C0Noop.cpp,matched,carved ret boundary; address-derived identity
@@ -172534,3 +172533,4 @@ uw_00c0ae48,,0x00C0AE48,22,game/GameEngine/Source/GameLogic/Object/Behavior/Buil
 ?groundCellsAlongLine003E2620@Pathfinder@@QAEHABUICoord2D@@0W4PathfindLayerEnum@@PAURva003E2620GroundCellsStruct@@@Z,,0x003E2620,773,game/GameEngine/Source/GameLogic/AI/PathfinderFindGroundPath.cpp,matched,findGroundPath caller via ILT 0x00035A2B proves the line-walk identity; keep the existing retail-exact copy visible in the caller TU and remove the redundant strong emitter; link queue rank 14;model=gpt-6.1-sol;host=ymo-workstation
 ?rva005C3A90@@YGIPBVParticleSystemTemplate@@PAVObject@@_N@Z,,0x005C3A90,119,game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005C3A90CreateAttachedParticleSystem.cpp,matched,nullable particle handle factory and optional object attachment; complete RET12 extent; identity remains address-derived;model=gpt-6;host=ICE
 ?rva0010fe90@Rva00110790Receiver@@QAEXPAX0@Z,,0x0010FE90,204,game/GameEngine/Source/GameLogic/Object/Rva0010FE90CallbackLists.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/0010fe90-callback-lists.md;Callback 00110790 proves thiscall ret8; visible exact STLport push_front preserves argument home;model=gpt-6;host=ICE
+??$__partial_sort@PAHHUQ4Sort00755050@@@_STL@@YAXPAH000UQ4Sort00755050@@@Z,,0x00754C60,121,game/GameEngine/Source/Common/Rva007527C0Comparator.cpp,matched,Native STLport partial_sort; visible exact comparator; existing heap body names preserve retail five-slot make_heap call;model=gpt-6;host=ICE
