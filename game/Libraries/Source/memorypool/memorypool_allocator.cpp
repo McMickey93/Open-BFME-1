@@ -98,3 +98,94 @@ void *Rva00882580Block::guardStart(void)
 {
 	return (char *)this - Rva0130EA00GuardWords * 4;
 }
+
+struct Rva00882BA0Block {
+    Rva00882BA0Block **m_field00;
+    Rva00882BA0Block *m_field04;
+    unsigned int m_size08;
+};
+static void memset32Local(void *ptr, int value, unsigned int bytesToFill)
+{
+	int *p = (int *)ptr;
+	for (; bytesToFill > 3; bytesToFill -= 4)
+		*p++ = value;
+	if (bytesToFill != 0)
+	{
+		char *d = (char *)p; const char *s = (const char *)&value;
+		for (unsigned int i = 0; i < bytesToFill; ++i) d[i] = s[i];
+	}
+}
+extern "C" __declspec(dllimport) void *__stdcall HeapAlloc(void *, unsigned long, unsigned int);
+extern "C" __declspec(dllimport) void *__stdcall HeapCreate(unsigned long, unsigned long, unsigned long);
+extern "C" __declspec(dllimport) int __stdcall HeapSetInformation(void *, int, void *, unsigned long);
+extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(void *);
+void Rva00105DF0();
+extern int g_Va0130E9FC;
+extern unsigned int g_Va012D4D10Count;
+extern unsigned int *g_Va0130E9F0Buf;
+extern void *g_Va0130E9C4;
+extern char g_Va0130E9D8[24];
+extern Rva00882BA0Block **g_Va0130E9CC;
+extern Rva00882BA0Block **g_Va0130E9D4;
+extern Rva00882580Block **g_Va0130E9D0;
+extern unsigned int *g_Va0130E9BC;
+extern unsigned int *g_Va0130E9B8;
+
+static __declspec(noinline) void rva00882630AddBucketBlocks(unsigned int index, unsigned int count)
+{
+    unsigned int blockSize = (index + 1) * 4;
+    unsigned int stride = blockSize + Rva0130EA00GuardWords * 8 + 0xc;
+    char *mem = (char *)HeapAlloc(g_Va0130E9C4, 0, stride * count);
+    if (count == 0)
+        return;
+    int guardWords = Rva0130EA00GuardWords;
+    char *first = mem + guardWords * 4;
+    char *raw = mem;
+    for (unsigned int i = 0; i != count; ++i) {
+        Rva00882BA0Block *block = (Rva00882BA0Block *)(first + i * stride);
+        unsigned int *sizeField = &block->m_size08;
+        block->m_field00 = 0;
+        *sizeField = blockSize;
+        if (guardWords != 0) {
+            memset32Local(raw, 0x0BADF00D, guardWords * 4);
+            memset32Local((char *)(block + 1) + *sizeField, 0x0BADF00D, Rva0130EA00GuardWords * 4);
+        }
+        if (g_rva0130EA04 != 0)
+            memset32Local(block + 1, 0xDEADC0DE, *sizeField);
+        block->m_field04 = (Rva00882BA0Block *)g_Va0130E9D4[index];
+        g_Va0130E9D4[index] = block;
+        raw += stride;
+        guardWords = Rva0130EA00GuardWords;
+    }
+}
+
+namespace MemoryPool { void _Init(); }
+void MemoryPool::_Init()
+{
+    if (g_Va0130E9FC != 0) {
+        ++g_Va0130E9FC;
+        return;
+    }
+    Rva00105DF0();
+    ++g_Va0130E9FC;
+    InitializeCriticalSection(g_Va0130E9D8);
+    unsigned int heapSize = (g_rva0130EA04 + g_Va012D4D10Count * 2) * 4;
+    if (g_Va0130E9F0Buf != 0) {
+        for (unsigned int i = 0; i < g_Va012D4D10Count; ++i)
+            heapSize += g_Va0130E9F0Buf[i] * ((i + 1) * 4 + Rva0130EA00GuardWords * 8 + 0xc);
+    }
+    g_Va0130E9C4 = HeapCreate(5, heapSize, 0);
+    unsigned long lowFragmentation = 2;
+    HeapSetInformation(g_Va0130E9C4, 0, &lowFragmentation, 4);
+    g_Va0130E9D4 = (Rva00882BA0Block **)HeapAlloc(g_Va0130E9C4, 8, g_Va012D4D10Count * 4);
+    g_Va0130E9D0 = (Rva00882580Block **)HeapAlloc(g_Va0130E9C4, 8, g_Va012D4D10Count * 4);
+    g_Va0130E9CC = (Rva00882BA0Block **)HeapAlloc(g_Va0130E9C4, 8, g_rva0130EA04 * 4);
+    g_Va0130E9BC = (unsigned int *)HeapAlloc(g_Va0130E9C4, 8, g_Va012D4D10Count * 4);
+    g_Va0130E9B8 = (unsigned int *)HeapAlloc(g_Va0130E9C4, 8, g_Va012D4D10Count * 4);
+    if (g_Va0130E9F0Buf != 0) {
+        for (unsigned int i = 0; i < g_Va012D4D10Count; ++i) {
+            if (g_Va0130E9F0Buf[i] != 0)
+                rva00882630AddBucketBlocks(i, g_Va0130E9F0Buf[i]);
+        }
+    }
+}
