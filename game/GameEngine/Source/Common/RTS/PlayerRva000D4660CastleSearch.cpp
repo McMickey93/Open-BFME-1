@@ -7,7 +7,7 @@ class Object;
 
 #define BFME_GAMELOGIC_LOOKUP_VISIBLE
 #include "Common/Thing/GameLogicObjectLookup.h"
-extern GameLogic *TheBfmeGameLogic;
+extern GameLogic *TheGameLogic;
 
 // The visitor obtains this module using the literal "CastleBehavior" and
 // reads its owner object ID at +0xA0. The full module layout is not needed.
@@ -51,7 +51,7 @@ Object *Player::rva000D4660(bool flag, Object **out) const
 	if (out)
 		*out = chosen;
 	if (info.special) {
-		Object *special = TheBfmeGameLogic->findObjectByID(info.special->m_ownerID);
+		Object *special = TheGameLogic->findObjectByID(info.special->m_ownerID);
 		if (special)
 			return special;
 	}
