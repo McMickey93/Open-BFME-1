@@ -1,5 +1,5 @@
 // ?applyPacket@Rva0015A190Owner@@QAEXPAURva0015A190Packet@@H@Z
-// partial score=0.22 date=2026-09-22
+// partial score=0.1817 date=2026-10-20
 // cl: /O2 /Ob2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_USE_STATIC_LIB
 
 #include <new>
@@ -420,7 +420,7 @@ void Rva0015A190Owner::applyPacket(Rva0015A190Packet *packet, Int command)
 		{
 			Object *object = ((BfmeMemberNode *)node)->m_value;
 			AIUpdateInterface *ai = object->getAIUpdateInterface();
-			if (ai && ai->isDoingGroundMovement())
+			if (ai && !ai->isDoingGroundMovement())
 				tightenGroup = false;
 		}
 
@@ -451,10 +451,13 @@ void Rva0015A190Owner::applyPacket(Rva0015A190Packet *packet, Int command)
 		if (ai == 0)
 			continue;
 
+		Coord2D objectPos;
+		objectPos.x=object->getPosition()->x;
+		objectPos.y=object->getPosition()->y;
 		TheAI->pathfinder()->removeGoal(object);
-		Real dx = object->getPosition()->x -
+		Real dx = objectPos.x -
 			((const Coord3D *)packet->m_first)->x;
-		Real dy = object->getPosition()->y -
+		Real dy = objectPos.y -
 			((const Coord3D *)packet->m_first)->y;
 		iter->insert(object, dx * dx + dy * dy);
 	}
