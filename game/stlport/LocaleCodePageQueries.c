@@ -384,7 +384,7 @@ char *Rva0084ECE0(LocaleCodePageObject_0084EED0 *object)
 }
 
 extern char locale_buffer_008504C0[];
-extern char locale_output_008504C0[];
+extern char g_Va0130C3A0[];
 extern char *__cdecl Rva0084ED20Tail(LocaleCodePageObject_0084EED0 *object);
 
 char *Rva008504C0(LocaleCodePageObject_0084EED0 *object)
@@ -394,15 +394,15 @@ char *Rva008504C0(LocaleCodePageObject_0084EED0 *object)
     {
         char *buffer = locale_buffer_008504C0;
         __ConvertFromACP(buffer, 0x50, object->codePage);
-        strcpy(locale_output_008504C0, Rva0084DE40Tail(buffer));
-        strcat(locale_output_008504C0, " ");
-        strcat(locale_output_008504C0, Rva0084ED20Tail(object));
-        return locale_output_008504C0;
+        strcpy(g_Va0130C3A0, Rva0084DE40Tail(buffer));
+        strcat(g_Va0130C3A0, " ");
+        strcat(g_Va0130C3A0, Rva0084ED20Tail(object));
+        return g_Va0130C3A0;
     }
 }
 
 extern char locale_buffer_00850560[];
-extern char locale_output_00850560[];
+extern char g_Va0130C140[];
 
 char *Rva00850560(LocaleCodePageObject_0084EED0 *object)
 {
@@ -411,10 +411,10 @@ char *Rva00850560(LocaleCodePageObject_0084EED0 *object)
     {
         char *buffer = locale_buffer_00850560;
         __ConvertFromACP(buffer, 0x50, object->codePage);
-        strcpy(locale_output_00850560, Rva0084DE40Tail(buffer));
-        strcat(locale_output_00850560, " ");
-        strcat(locale_output_00850560, Rva0084ED20Tail(object));
-        return locale_output_00850560;
+        strcpy(g_Va0130C140, Rva0084DE40Tail(buffer));
+        strcat(g_Va0130C140, " ");
+        strcat(g_Va0130C140, Rva0084ED20Tail(object));
+        return g_Va0130C140;
     }
 }
 

@@ -1115,8 +1115,6 @@ dir32,0x0130C0C8,?g_rva0130C0C8@@3VRva00C6DB00Init@@A,"retail 0x0130C0C8 is alre
 dir32,0x0130C0D4,?TheBfmeObject_00C70E50@@3VBfmeThingTB@@A,"retail 0x0130C0D4 is already recorded as ?TheBfmeObject_00C70E50@@3VGen_00C70E50Target@@A; reference that name, not a new one"
 dir32,0x0130C0D8,_locale_buffer_00850560,"retail 0x0130C0D8 is already recorded as _locale_buffer_0084ECE0; reference that name, not a new one"
 dir32,0x0130C128,_locale_format_0084EF30,"nothing in the ledger owns 0x0130C128. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x0130C140,_locale_output_00850560,"nothing in the ledger owns 0x0130C140. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x0130C3A0,_locale_output_008504C0,"nothing in the ledger owns 0x0130C3A0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0130C4E8,_locale_buffer_008504C0,"retail 0x0130C4E8 is already recorded as _locale_buffer_0084ECA0; reference that name, not a new one"
 dir32,0x0130C548,_locale_format_0084ED20,"nothing in the ledger owns 0x0130C548. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0130CE58,?g_rva0130CE58@@3VRva00C6DB80Init@@A,"retail 0x0130CE58 is already recorded as ?TheBfmeObject_00C70E60@@3VGen_00C70E60Target@@A (+1 more); reference that name, not a new one"
