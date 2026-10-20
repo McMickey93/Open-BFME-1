@@ -84,3 +84,68 @@ void Rva003A4FD0State::update( void *arg )
 	}
 	m_rva1C = 0;
 }
+
+// Retail 0x003BE020 (239 bytes, ret 4): the campaign half of the update above.
+// It asks the region manager (0x003C9470, through ILT 0x00033EBA) for the
+// region's map point, reads the living-world camera position (vslot +0x44 of
+// 0x012F7048), and times a camera move to the point (x, y, 0) from the
+// distance: 0.005 per unit, clamped to [1, 5], times 30 and rounded. The move
+// is vslot +0x60 (point, the float vslot +0x3C returns, rounded time). Names
+// stay address-derived.
+class Rva003C9470Key;
+struct Rva003C9470Output
+{
+	float m_x;
+	float m_y;
+};
+class Rva003C9470Owner
+{
+public:
+	bool fallback( Rva003C9470Key *key, Rva003C9470Output *output );
+};
+
+#define V(n) virtual void slot##n();
+class Rva003BE020Camera
+{
+public:
+	V(00) V(04) V(08) V(0C) V(10) V(14) V(18) V(1C)
+	V(20) V(24) V(28) V(2C) V(30) V(34) V(38)
+	virtual float slot3C();						// +0x3C
+	V(40)
+	virtual void getPosition( Coord3D *pos );
+	V(48) V(4C) V(50) V(54) V(58) V(5C)
+	virtual void slot60( Coord3D *pos, float value, int frames );
+};
+#undef V
+
+class Rva006092D0State;
+extern Rva006092D0State *g_rva012F7048LivingWorld;
+
+template <class T> inline const T &min003BE020( const T &a, const T &b ) { return a < b ? a : b; }
+
+extern "C" double __cdecl sqrt( double );
+#pragma intrinsic( sqrt )
+
+void Glo012F1028Type::rva003BE020( LivingWorldRegion *region )
+{
+	Rva003C9470Output target;
+	( (Rva003C9470Owner *)m_regionManager )->fallback( (Rva003C9470Key *)( (char *)region + 4 ), &target );
+	Coord3D pos;
+	( (Rva003BE020Camera *)g_rva012F7048LivingWorld )->getPosition( &pos );
+	Coord3D dest;
+	dest.x = target.m_x;
+	dest.y = target.m_y;
+	dest.z = 0;
+	pos.x -= dest.x;
+	pos.y -= dest.y;
+	pos.z -= dest.z;
+	float maxSeconds = 5.0f;
+	{
+		float seconds = (float)sqrt( pos.x * pos.x + pos.y * pos.y + pos.z * pos.z ) * 0.005f;
+		float clamped = min003BE020( seconds, maxSeconds );
+		if( clamped < 1.0f )
+			clamped = 1.0f;
+		( (Rva003BE020Camera *)g_rva012F7048LivingWorld )->slot60( &dest,
+			( (Rva003BE020Camera *)g_rva012F7048LivingWorld )->slot3C(), (int)( clamped * 30.0f ) );
+	}
+}
