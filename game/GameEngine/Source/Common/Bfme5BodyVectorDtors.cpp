@@ -56,21 +56,25 @@ public:
 	virtual ~BfmeOwnedT(void);				// slot +0x00
 };
 
-class BfmeBaseX
+class SubsystemInterface
 {
 public:
-	virtual ~BfmeBaseX(void);				// retail 0x009A1A40
+	virtual ~SubsystemInterface(void);				// retail 0x009A1A40
 
 private:
-	int m_bfmeField;					// +0x04
+	int m_name;					// +0x04
 };
 
-class Gen_00490100 : public BfmeBaseX
+class Gen_0048FA30
+{
+public:
+	void bfmeClear(void);					// retail 0x0048FA30
+};
+
+class Gen_00490100 : public SubsystemInterface
 {
 public:
 	virtual ~Gen_00490100(void);
-
-	void bfmeFinish(void);					// retail 0x00013421
 
 private:
 	BfmeOwnedT *m_bfmePtr;					// +0x08
@@ -80,7 +84,7 @@ private:
 // ??1Gen_00490100@@UAE@XZ
 Gen_00490100::~Gen_00490100(void)
 {
-	bfmeFinish();
+	reinterpret_cast<Gen_0048FA30 *>(this)->bfmeClear();
 
 	delete m_bfmePtr;
 
