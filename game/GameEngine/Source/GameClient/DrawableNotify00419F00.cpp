@@ -1,8 +1,9 @@
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/bfmekindof /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib
 // Retail RVA 0x00419F00, 647 bytes. Original method identity is unproved.
 // Enumerates the matched 0x00419E40 predicate with {Drawable*, message} context,
 // schedules EVA/radar events, then handles CastleMemberBehavior/CastleBehavior.
-// Object::nearest004182A0 is a niladic thiscall returning the nearest Object;
-// its full 271-byte body and both aligned caller sites establish its ABI.
+// Both castle sites call the file-static nearest-object query at 0x004182A0
+// directly (not through the ILT); it is defined below, beside them.
 // The 0x00410C90 callback is a 30-byte cdecl body: test Object, virtual getDrawable,
 // OR drawable status with 0x40, return 1; its second callback argument is unused.
 // Player::iterateObjects is declared with the void-predicate/int-result ABI
@@ -16,7 +17,14 @@ class Player;
 class Module;
 class Drawable;
 
-#include "../../../Libraries/Include/Lib/Coord3D.h"
+// stlport
+#define _STLP_USE_STATIC_LIB 1
+#define _STLP_NO_EXCEPTIONS 1
+#define BFME_STLP_NODE_ALLOC 1
+#define __PLACEMENT_VEC_NEW_INLINE
+#include <vector>
+#include "Lib/BaseType.h"
+#include "Common/BitFlags.h"
 
 enum KindOfType
 {
@@ -82,7 +90,6 @@ class Object
     {
         return &m_position;
     }
-    Object *nearest004182A0();
 };
 
 class Player
@@ -112,6 +119,9 @@ class Eva
 {
   public:
     bool setShouldPlay(EvaMessage, const Coord3D *);
+
+    char m_unmodelled00[0x60];
+    Real m_radius60;            // +0x60, the nearest-object query's radius
 };
 extern Eva *TheEva;
 
@@ -165,6 +175,125 @@ class Drawable
     }
 };
 
+
+typedef BitFlags<192> Rva004182A0KindOfMask;
+
+class PartitionFilter
+{
+public:
+	PartitionFilter() : m_next(0) {}
+	virtual ~PartitionFilter() {}
+	virtual Bool allow(Object *);
+	virtual Int getPlayerMask();
+	PartitionFilter *link(PartitionFilter *next);
+	PartitionFilter *m_next;
+};
+
+// The root table is the already-witnessed native table at 0x01083B80. Its
+// two-word base head is the complete stack object used by this body.
+class Rva0025ED50RootFilter : public PartitionFilter
+{
+public:
+	Rva0025ED50RootFilter() {}
+	virtual ~Rva0025ED50RootFilter() {}
+	virtual Bool allow(Object *);
+};
+
+// Retail vtable 0x0109687C is recorded as PartitionFilterOnMap's.
+class PartitionFilterOnMap : public PartitionFilter
+{
+public:
+	PartitionFilterOnMap() {}
+	virtual ~PartitionFilterOnMap() {}
+	virtual Bool allow(Object *);
+};
+
+class PartitionFilterPlayer : public PartitionFilter
+{
+public:
+	PartitionFilterPlayer(const Player *player, Bool match)
+		: m_player(player), m_match(match) {}
+	virtual ~PartitionFilterPlayer() {}
+	virtual Bool allow(Object *);
+	const Player *m_player;
+	Bool m_match;
+};
+
+struct BfmeSrc1196
+{
+	unsigned char m_pad0[0x38];
+	Coord3D m_position;
+	unsigned char m_pad1[0x78];
+	Real m_range;
+};
+
+// The matched constructor writes this exact 28-byte base-plus-payload shape:
+// vptr/next, Coord3D, Real, Bool, and three bytes of tail padding.
+class BfmeA1196 : public PartitionFilter
+{
+public:
+	BfmeA1196(BfmeSrc1196 *owner, char match);
+	virtual ~BfmeA1196() {}
+	virtual Bool allow(Object *);
+	Coord3D m_position;
+	Real m_range;
+	Bool m_match;
+	unsigned char m_tail[3];
+};
+
+// This is the native one-mask 192-bit filter evidenced by vtable
+// 0x010F11B4, recorded under the address-derived Rva00410750VptrZeroBlockObject. It is deliberately separate from the sibling two-mask
+// accept/reject declarations.
+class Rva00410750VptrZeroBlockObject : public PartitionFilter
+{
+public:
+	Rva00410750VptrZeroBlockObject(const Rva004182A0KindOfMask &mask)
+		: m_mask(mask) {}
+	virtual ~Rva00410750VptrZeroBlockObject() {}
+	virtual Bool allow(Object *);
+	Rva004182A0KindOfMask m_mask;
+};
+
+enum DistanceCalculationType
+{
+	RVA004182A0_FROM_CENTER_2D = 0
+};
+
+class PartitionManager
+{
+public:
+	Object *getClosestObject(const Coord3D *position, Real radius,
+		DistanceCalculationType distanceType, PartitionFilter *filters);
+};
+extern PartitionManager *ThePartitionManager;
+
+
+// Retail 0x004182A0 (271 bytes): the nearest-object query both castle sites
+// below make. Retail calls it directly, not through the ILT, so it is a
+// file-static of this TU; as one it compiles to retail's bytes, where the
+// former member spelling swapped the receiver's ESI/EDI. The kind-of, on-map,
+// player and shroud filters are linked behind the kind-of filter, and that
+// head is what the partition manager receives.
+static Object *nearest004182A0( BfmeSrc1196 *self )
+{
+	Rva0025ED50RootFilter rootFilter;
+	PartitionFilterOnMap onMapFilter;
+	PartitionFilterPlayer playerFilter(
+		(const Player *)ThePlayerList->m_local, true);
+	Rva00410750VptrZeroBlockObject kindOfFilter(
+		Rva004182A0KindOfMask(
+			Rva004182A0KindOfMask::kInit, 121, 157));
+	BfmeA1196 shroudFilter(self, true);
+
+	kindOfFilter.link(&rootFilter)
+		->link(&onMapFilter)
+		->link(&playerFilter)
+		->link(&shroudFilter);
+	return ThePartitionManager->getClosestObject(
+		&self->m_position, TheEva->m_radius60,
+		RVA004182A0_FROM_CENTER_2D, &kindOfFilter);
+}
+
 class Rva00419E40Context
 {
   public:
@@ -198,7 +327,7 @@ void Drawable::notify00419F00()
                 if (p->iterateObjects((void (*)(Object *, void *))bfmeDrawableFilter00419E40,
                                       &context) == 1)
                 {
-                    Object *nearby = object->nearest004182A0();
+                    Object *nearby = nearest004182A0( (BfmeSrc1196 *)object );
                     if (nearby)
                     {
                         EvaMessage message = (EvaMessage)t->m_45c;
@@ -229,7 +358,7 @@ void Drawable::notify00419F00()
 
             if (!(d->m_status & 0x40))
             {
-                Object *nearby = object->nearest004182A0();
+                Object *nearby = nearest004182A0( (BfmeSrc1196 *)object );
                 if (nearby && TheEva->setShouldPlay(EVA8, nearby->getPosition()))
                 {
                     TheRadar->createEvent(object->getPosition(), RADAR10, 4.0f);
