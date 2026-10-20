@@ -1,43 +1,14 @@
 // ?method@Rva0021D360Owner@@QAEXPAVObject@@@Z
-// partial score=0.43 date=2026-09-21
-// ?d_0021d360@@YAXXZ
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_USE_STATIC_LIB
+// partial score=0.3306 date=2026-10-20
+// cl: /O2 /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB
 // stlport
-//
-// Address-derived method; the retail owner class is unknown, so the class
-// itself and its unresolved vtable slots keep the address token, but the
-// layout is well evidenced: this body is reached through a SECONDARY
-// interface (ecx), with the PRIMARY module at ecx-0x20 -- the exact split
-// GarrisonContain_onRemoving.cpp documents for GarrisonContain's own
-// secondary interface.  It opens by direct-calling the known
-// GarrisonContain::onRemoving(Object*) thunk (0x0021F0A0) on itself before
-// doing its own cleanup, the usual Derived::onRemoving calling
-// Base::onRemoving shape.  The cleanup walks a std::map<int,{int,int}> at
-// secondary+0x9a4 (= primary+0x9c4, matching ContestableContain::m_objectData's
-// documented offset in ContestableContain.cpp exactly once the +0x20 split is
-// accounted for): find() with a key from a primary-vtable slot 0x6c query and
-// an AttachedState-like accessor (bfmeParentAS, still a dump) defaulting to 0,
-// then _M_increment (STLRbGlobalBoolIncrementThunk.cpp) forward through every
-// remaining node clearing whichever of its two int fields equals the incoming
-// Object* or that key.
-//
-// globals: none; callees: see reverse/functions.csv for 0x0021D360 neighbours.
-
 #include <map>
-
-class BfmeObjAS
-{
-public:
-	int bfmeParentAS(int flags);		// ?bfmeParentAS@BfmeObjAS@@QAEPAV1@H@Z, still a dump; result used only as an int key
-};
-
-class Object : public BfmeObjAS
-{
-};
-
-// Secondary interface vtable: onRemoving sits at +0x48 (matches
-// GarrisonContain_onRemoving.cpp's own count), and this body also reaches an
-// unresolved no-arg bool query at +0xC4.
+class Object;
+class RvaC4390First;
+class RvaC4390Second { public: RvaC4390First *resolve(int); };
+class GarrisonContain { public: virtual void onRemoving(Object *); };
+class ContestableContain { public: void updateContestStatus(); };
+class BfmeSubBDB { public: void bfmeDoBDB(void *, int); };
 class Rva0021D360Secondary
 {
 public:
@@ -90,7 +61,7 @@ public:
 	virtual void _sec_slot46();
 	virtual void _sec_slot47();
 	virtual void _sec_slot48();
-	void onRemoving(Object *object);		// +0x48, direct (non-virtual) call to the known thunk
+	void unusedRemoving(Object *object);		// +0x48, direct (non-virtual) call to the known thunk
 	virtual bool _sec_slotC4();			// +0xC4, unresolved
 };
 
@@ -128,68 +99,33 @@ public:
 	virtual int _pri_slot6c(Object *object);	// +0x6c, unresolved
 };
 
-struct Rva0021D360Entry
-{
-	int m_bfme00;			// +0x00 (node value +0x14): matched against the Object* or the key
-	unsigned char m_bfme04;	// +0x04 (node value +0x18): a second per-entry counter, byte-sized
-	char m_pad_05[3];
-};
 
-typedef _STL::pair<const int, Rva0021D360Entry> Rva0021D360Pair;
-
-typedef _STL::_Rb_tree<int,
-	Rva0021D360Pair,
-	_STL::_Select1st<Rva0021D360Pair>,
-	_STL::less<int>,
-	_STL::allocator<Rva0021D360Pair> > Rva0021D360Tree;
-
-class Rva0021D360Owner : public Rva0021D360Secondary
-{
+struct ContestableMapEntry { Object *m_object; unsigned char m_count; unsigned char m_pad[3]; };
+class Rva0021D360Owner: public Rva0021D360Secondary {
 public:
-	void method(Object *object);
-	void bfmeDoBDB(void *p, int h);	// ?bfmeDoBDB@BfmeSubBDB@@QAEXPAXH@Z, still a dump
-	void updateContestStatus(void);	// ?updateContestStatus@ContestableContain@@QAEXXZ, matched (ContestableContain.cpp)
-
+ void method(Object *);
 private:
-	char m_pad_04[0x14 - 4];
-	int m_bfme14;					// +0x14
-	unsigned char m_bfme18;			// +0x18
-	char m_pad_19[0x9a4 - 0x19];
-	Rva0021D360Tree m_objectData;			// +0x9a4
+ char m_unreconstructed[0x9a4-4];
+ _STL::map<Object *,ContestableMapEntry> m_objectData;
 };
-
-// ?d_0021d360@@YAXXZ
 void Rva0021D360Owner::method(Object *object)
 {
-	if (!object)
-		return;
-
-	onRemoving(object);
-
-	if (!_sec_slotC4())
-		return;
-
-	Rva0021D360Primary *primary = (Rva0021D360Primary *)((char *)this - 0x20);
-
-	int shape_frame_key_169[2];
-	shape_frame_key_169[1] = 0;
-	if (primary->_pri_slot6c(object))
-		shape_frame_key_169[1] = object->bfmeParentAS(0);
-
-	for (Rva0021D360Tree::iterator it = m_objectData.find(shape_frame_key_169[1]);
-		it != m_objectData.end(); ++it)
-	{
-		Rva0021D360Entry &entry = it->second;
-		if (entry.m_bfme00 == (int)object || entry.m_bfme00 == shape_frame_key_169[1])
-		{
-			entry.m_bfme00 = 0;
-			--m_bfme18;
-			if (shape_frame_key_169[1] == 0 && it->first == m_bfme14)
-				--entry.m_bfme04;
-		}
-	}
-
-	void *outParam;
-	bfmeDoBDB(&outParam, (int)object);
-	updateContestStatus();
+ if (!object) return;
+ ((GarrisonContain *)this)->GarrisonContain::onRemoving(object);
+ if (!_sec_slotC4()) return;
+ Rva0021D360Primary *primary=(Rva0021D360Primary *)((char *)this-0x20);
+ Object *related = primary->_pri_slot6c(object) ? (Object *)((RvaC4390Second *)object)->resolve(0) : 0;
+ typedef _STL::map<Object *, ContestableMapEntry> ObjectDataMap;
+ ObjectDataMap::iterator found = related ? m_objectData.find(related) : m_objectData.find(object);
+ if (found != m_objectData.end()) {
+  for (ObjectDataMap::iterator it=m_objectData.begin();it!=m_objectData.end();++it) {
+   if (it->second.m_object==object || it->second.m_object==related) {
+    it->second.m_object=0;
+    --found->second.m_count;
+   }
+   if (!related && it->first==found->second.m_object) --it->second.m_count;
+  }
+  ((BfmeSubBDB *)primary)->bfmeDoBDB(object,(int)&found);
+  ((ContestableContain *)primary)->updateContestStatus();
+ }
 }
