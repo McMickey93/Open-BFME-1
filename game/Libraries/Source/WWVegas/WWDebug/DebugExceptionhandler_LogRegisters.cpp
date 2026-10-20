@@ -16,7 +16,7 @@ extern "C" const char g_011343D4[];
 extern "C" const char g_01080294[];
 extern "C" const char g_011343CC[];
 extern "C" const char g_011343C4[];
-extern "C" const char g_011343BC[];
+extern "C" const char g_011343BC[] = " EDI:";
 extern "C" const char g_011343B4[];
 extern "C" const char g_011343AC[];
 extern "C" const char g_011343A4[];
