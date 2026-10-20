@@ -148,10 +148,13 @@ static __forceinline void setStatusBitOf(Object *object, Int bit, Bool set)
     mask.set(bit);
     object->setStatus(mask, set);
 }
-class BfmeObjE10 {
+class Gen001C9A10 {
 public:
-    void actionA(int value);
-    void actionB(int value);
+    void handle(int value);
+};
+class Gen001C9AC0 {
+public:
+    void handle(int value);
 };
 class Rva001FAE30Owner {
 public:
@@ -166,13 +169,13 @@ void Rva001FAE30Owner::rva001FAE30(Byte set)
     Object *object = m_object;
     if (set) {
         setStatusBitOf(object, 53, true);
-        ((BfmeObjE10 *)object)->actionA(0x16);
+        ((Gen001C9A10 *)object)->handle(0x16);
         BfmeSink *sink = *(BfmeSink **)((char *)object + 0x204);
         if (sink == 0) return;
         sink->slot127(8);
     } else {
         setStatusBitOf(object, 53, false);
-        ((BfmeObjE10 *)object)->actionB(0x16);
+        ((Gen001C9AC0 *)object)->handle(0x16);
         BfmeSink *sink = *(BfmeSink **)((char *)object + 0x204);
         if (sink == 0) return;
         sink->slot127(0);
