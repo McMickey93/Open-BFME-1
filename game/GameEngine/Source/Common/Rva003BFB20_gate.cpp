@@ -34,6 +34,20 @@ class LivingWorldCampaignManager;
 
 extern LivingWorldCampaignManager *TheLivingWorldCampaignManager;
 
+// Existing retail providers reached through ILTs 0000A754 and 0002DE89.
+// Both are niladic thiscall members; the receiver is passed unchanged.
+class Rva003BEED0
+{
+public:
+	void finish();
+};
+
+class Glo012F1028Sub
+{
+public:
+	void bfmeNotify();
+};
+
 class Gen003BFB20Owner
 {
 public:
@@ -70,8 +84,8 @@ void Rva003BFB20::run( int unused )
 	if( ok )
 	{
 		((Glo012F1024Type *)TheLivingWorldCampaignManager)->step();
-		finish();
+		((Rva003BEED0 *)this)->finish();
 	}
 	m_at28->m_at10 = true;
-	m_at28->notify();
+	((Glo012F1028Sub *)m_at28)->bfmeNotify();
 }
