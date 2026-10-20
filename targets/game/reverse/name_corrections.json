@@ -20858,5 +20858,25 @@
   "after_sha256": "b73d0e66ccb0fba86c22895b3f4351b9ec1119258d44d05d11f7872b51c66ddd",
   "evidence": "targets/game/reverse/identity_evidence/0000890e-00095ca0-vector-erase-swap.md",
   "reason": "0x00095CA0 is reached only by uncalled ILT thunk 0x00013656, whose slot window 10942-10946 is contradicted by both vector<ICoord2D>::erase and vector<INILine>::erase; the proven vector<ICoord2D>::erase body is 0x00451E10 through ILT 0x0000890E, so the old row name was the ledger's swapped claim. The body keeps an address name until a caller or slot names it."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00792350.cpp",
+  "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Gadget/W3DListBox.cpp",
+  "old_name": "drawHiliteBar",
+  "new_name": "Rva007921E0",
+  "before_sha256": "d20d3f657488bcc12b3f7ddd2b34c7fd57c76ef3f08acb4ddf3565e8dec69efd",
+  "after_sha256": "bf1c5d77533944f7a1e1be6a32031d65c7fe478ba4e7ba87d40bdfe1b33ce702",
+  "evidence": "targets/game/reverse/identity_evidence/004b2330-007921e0-bank-renames.md",
+  "reason": "The W3DListBox.cpp static drawHiliteBar is replaced by the retail 0x007921E0 helper, which takes three images where the Zero Hour drawHiliteBar takes four (smallCenter is only null-tested by the caller), so the Zero Hour symbol is not this body; the row keeps its recorded address-derived name ?Rva007921E0@@YAXPBVImage@@00HHHH@Z. See targets/game/reverse/identity_evidence/004b2330-007921e0-bank-renames.md."
+ },
+ {
+  "old_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Gadget/W3DListBox.cpp",
+  "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Gadget/W3DListBox.cpp",
+  "old_name": "drawHiliteBar",
+  "new_name": "Rva007921E0",
+  "before_sha256": "45d6a30cac7dd12801a7cb20d8d1f381ba9afc57562928abfbe5e16ddabe9ac4",
+  "after_sha256": "bf1c5d77533944f7a1e1be6a32031d65c7fe478ba4e7ba87d40bdfe1b33ce702",
+  "evidence": "targets/game/reverse/identity_evidence/004b2330-007921e0-bank-renames.md",
+  "reason": "The W3DListBox.cpp static drawHiliteBar is replaced by the retail 0x007921E0 helper, which takes three images where the Zero Hour drawHiliteBar takes four (smallCenter is only null-tested by the caller), so the Zero Hour symbol is not this body; the row keeps its recorded address-derived name ?Rva007921E0@@YAXPBVImage@@00HHHH@Z. See targets/game/reverse/identity_evidence/004b2330-007921e0-bank-renames.md."
  }
 ]

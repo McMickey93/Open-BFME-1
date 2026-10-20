@@ -14,7 +14,7 @@ ICoord2DBase &ICoord2DBase::operator=(const ICoord2DBase &that)
 // ICoord2D::ICoord2D() (0x00083360, 3 bytes) is an inline header ctor in
 // retail: eight TUs emit it as a pick-any COMDAT.  An out-of-line copy here
 // was an exclusive duplicate; its row lives with an inline emitter
-// (W3DDevice/GameClient/GUI/Gadget/Rva007921E0.cpp).
+// (W3DDevice/GameClient/GUI/Gadget/W3DGadgetTextEntryDraw.cpp).
 
 ICoord2D::ICoord2D(const ICoord2DBase &that)
 {
