@@ -68,6 +68,7 @@ struct Coord3D
 class GeometryInfo
 {
 public:
+	GeometryInfo();
 	Real getMaxHeightAbovePosition() const;
 	Real getMaxHeightBelowPosition() const;
 	Bool bfmeIntersects(const Coord3D &thisPosition, Real thisAngle,
@@ -86,7 +87,6 @@ private:
 // pinned as: ?bfmeAssign@BfmeCopyElementA@@QAEPAU1@PAU1@@Z.
 struct BfmeCopyElementA
 {
-	BfmeCopyElementA();
 	BfmeCopyElementA *bfmeAssign(BfmeCopyElementA *other);
 
 private:
@@ -122,10 +122,10 @@ public:
 };
 
 // The object at +0x80, which ObjectModelConditions.cpp names m_drawable.
-class BfmeBCNG
+class Rva00411700
 {
 public:
-	void bfmeThreeCNG();
+	void broadcast();
 };
 
 class ObjectGeometryBoundsShim;
@@ -146,7 +146,7 @@ private:
 	Coord3D m_position;				// +0x038
 	Real m_orientation;				// +0x044
 	unsigned char m_unmodelled_048[0x80 - 0x48];
-	BfmeBCNG *m_drawable;				// +0x080
+	Rva00411700 *m_drawable;				// +0x080
 	unsigned char m_unmodelled_084[0xac - 0x84];
 	GeometryInfo m_geometryInfo;			// +0x0AC, 0x5C bytes
 	BfmeCopyElementA *m_geometryClone;		// +0x108
@@ -223,7 +223,7 @@ Bool Object::bfmeGeometryIntersects(const Object *other) const
 void Object::lazySet(void *arg)
 {
 	if (m_geometryClone == reinterpret_cast<BfmeCopyElementA *>(&m_geometryInfo))
-		m_geometryClone = new BfmeCopyElementA;
+		m_geometryClone = reinterpret_cast<BfmeCopyElementA *>(new GeometryInfo);
 	m_geometryClone->bfmeAssign((BfmeCopyElementA *)arg);
 }
 
@@ -246,7 +246,7 @@ void Object::setGeometryInfo(const GeometryInfo &geom)
 		m_helper3b4->init();
 
 	if (m_drawable)
-		m_drawable->bfmeThreeCNG();
+		m_drawable->broadcast();
 }
 
 // ?setGeometryInfoZ@Object@@QAEXM@Z
@@ -263,5 +263,5 @@ void Object::setGeometryInfoZ(Real newZ)
 		m_helper3b8->init();
 
 	if (m_drawable)
-		m_drawable->bfmeThreeCNG();
+		m_drawable->broadcast();
 }
