@@ -21,6 +21,9 @@ int g_Va0130E9FC;
 unsigned int g_Va0130E9F4;
 void *g_Va0130E9C4;
 char g_Va0130E9D8[24];
+// Retail _Init (0x008827D0+0x12F) stores its bucket-array allocation here.
+// The four-byte pointer is initially zero in retail .data.
+unsigned int *g_Va0130E9B8;
 unsigned int *g_Va0130E9BC;
 unsigned int g_Va0130EA08, g_Va0130E9C8;
 unsigned int g_Va012D4D0C = 0x1000;
