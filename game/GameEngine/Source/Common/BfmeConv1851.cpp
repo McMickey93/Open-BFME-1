@@ -18,11 +18,15 @@ inline void *__cdecl operator new(unsigned int size, void *place)
 	return place;
 }
 
+class Overridable
+{
+public:
+	Overridable *friend_getFinalOverride();
+};
+
 class BfmeThingXR
 {
 public:
-	BfmeThingXR *bfmeResolveXR();
-
 	unsigned char m_bfmeHeadXR[4];
 	BfmeThingXR *m_bfmeSubXR;
 	unsigned char m_bfmePadXR[8];
@@ -64,7 +68,7 @@ void BfmeOwnerXR::bfmePushXR(BfmeThingXR *thing, void *extra)
 	if (node != 0)
 	{
 		if (node->m_bfmeSubXR != 0)
-			node = node->m_bfmeSubXR->bfmeResolveXR();
+			node = (BfmeThingXR *)((Overridable *)node->m_bfmeSubXR)->friend_getFinalOverride();
 	}
 	else
 	{
