@@ -1,50 +1,47 @@
 // ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
-// partial score=0.70 date=2026-09-18
-// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB
+// partial score=0.1579 date=2026-10-20
+// ?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
+// cl: /DNDEBUG /DWIN32 /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC /MD /EHsc /Iinputs/reference/shims/stlp_nodealloc /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/shims
 // stlport
-// BFME retail vector element is 0x20 bytes: a retained object pointer, an
-// STLport string, three words and a final word.  The loop copies the record
-// inline, sends its object to the client manager, releases that temporary
-// reference, then lets the temporary string destruct before clearing the
-// original vector.
+// Retail 0x0077AB30, 475 bytes, thiscall, no arguments.
+//
+// Identity: the matched W3DModelDraw destructor (0x0077B090) calls this body
+// through ILT 0x0001B798 where Zero Hour's destructor calls
+// stopClientParticleSystems; symbols.csv pins the name here. BFME's version
+// tears down the bone-follower entries at +0x130 (the 32-byte records that
+// W3DModelDrawRva00779910.cpp walks): each entry's render object leaves the
+// scene and is released, then the vector is cleared.
 
+#define __PLACEMENT_VEC_NEW_INLINE  // always.h defines array placement-new itself
+#include "rendobj.h"
 #include <string>
 #include <vector>
 
-extern "C" void _ReadWriteBarrier(void);
-#pragma intrinsic(_ReadWriteBarrier)
-
-class RenderObjClass
+// W3DDisplay::m_3DScene is the global at VA 0x012F8058; slot 3 removes a
+// render object, as in W3DModelDrawNukeCurrentRender.cpp.
+class RTS3DScene
 {
 public:
-	virtual void Delete_This();
-	int m_references;
+	virtual void slot00();
+	virtual void slot01();
+	virtual void slot02();
+	virtual void Remove_Render_Object(RenderObjClass *obj);
 };
 
-class SceneClass
+class W3DDisplay
 {
 public:
-	virtual void slot0();
-	virtual void slot1();
-	virtual void slot2();
-	virtual void Remove_Render_Object(RenderObjClass *object);
+	static RTS3DScene *m_3DScene;
 };
 
-struct Rva0077AB30Record
+struct Gen_t_00777e90_p32cd
 {
-	Rva0077AB30Record(const Rva0077AB30Record &other) :
-		m_object(other.m_object), m_name(other.m_name), m_last(other.m_last)
-	{
-		m_tail[0] = other.m_tail[0];
-		m_tail[1] = other.m_tail[1];
-		m_tail[2] = other.m_tail[2];
-		_ReadWriteBarrier();
-	}
-
-	RenderObjClass *m_object;
-	_STL::basic_string<char> m_name;
-	int m_tail[3];
-	int m_last;
+	RenderObjClass *m_renderObject;  // +0x00
+	std::string m_boneName;          // +0x04
+	float m_rotateX;                 // +0x10
+	float m_rotateY;                 // +0x14
+	float m_rotateZ;                 // +0x18
+	int m_countdown;                 // +0x1C
 };
 
 class W3DModelDraw
@@ -53,23 +50,19 @@ protected:
 	void stopClientParticleSystems();
 
 private:
-	char m_beforeSystems[0x130];
-	_STL::vector<Rva0077AB30Record> m_systems;
+	unsigned char m_beforeSystems[0x130];
+	std::vector<Gen_t_00777e90_p32cd> m_boneFollowers;      // +0x130
 };
-
-#define TheRva0077AB30Scene (*(SceneClass **)0x012F8058)
 
 void W3DModelDraw::stopClientParticleSystems()
 {
-	for (_STL::vector<Rva0077AB30Record>::iterator it = m_systems.begin();
-		it != m_systems.end(); ++it)
+	for (std::vector<Gen_t_00777e90_p32cd>::iterator it = m_boneFollowers.begin();
+		it != m_boneFollowers.end(); ++it)
 	{
-		Rva0077AB30Record record = *it;
-		TheRva0077AB30Scene->Remove_Render_Object(record.m_object);
-		if (--record.m_object->m_references == 0)
-			record.m_object->Delete_This();
+		Gen_t_00777e90_p32cd entry = *it;
+		W3DDisplay::m_3DScene->Remove_Render_Object(entry.m_renderObject);
+		entry.m_renderObject->Release_Ref();
+		entry.m_renderObject = 0;
 	}
-	m_systems.clear();
+	m_boneFollowers.clear();
 }
-
-#undef TheRva0077AB30Scene
