@@ -38369,7 +38369,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00765b70@@YAXXZ,,0x00765B70,473,game/gen_asm/d_0075fb90.asm,matched,gen-dump;ghidra=FUN_00b65b70
 ?d_00765fb0@@YAXXZ,,0x00765FB0,2190,game/gen_asm/d_0075fb90.asm,matched,gen-dump;ghidra=FUN_00b65fb0
 ?d_00767fb0@@YAXXZ,,0x00767FB0,639,game/gen_asm/d_0075fb90.asm,matched,gen-dump;ghidra=FUN_00b67fb0
-?d_0076b6e0@@YAXXZ,,0x0076B6E0,231,game/gen_asm/d_00752a20.asm,matched,gen-dump;bounds=high
 ?d_0076b980@@YAXXZ,,0x0076B980,953,game/gen_asm/d_00752a20.asm,matched,gen-dump;bounds=high
 ?d_0076bf20@@YAXXZ,,0x0076BF20,278,game/gen_asm/d_007690f0.asm,matched,gen-dump;ghidra=FUN_00b6bf20
 ?d_0076cb10@@YAXXZ,,0x0076CB10,554,game/gen_asm/d_007690f0.asm,matched,gen-dump;ghidra=FUN_00b6cb10
@@ -172536,3 +172535,4 @@ uw_00c0ae48,,0x00C0AE48,22,game/GameEngine/Source/GameLogic/Object/Behavior/Buil
 ?nearest004182A0@@YAPAVObject@@PAUBfmeSrc1196@@@Z,,0x004182A0,271,game/GameEngine/Source/GameClient/DrawableNotify00419F00.cpp,matched,file-static nearest-object partition query beside its matched direct caller notify00419F00 0x00419F00; exact only with internal linkage; filter chain headed by the kind-of filter;model=claude-opus-5-5;host=vm
 ??RQ4Sort00755050@@QBE_NHH@Z,,0x00752B80,465,game/GameEngine/Source/Common/Rva007527C0Comparator.cpp,matched,record-pointer sort functor; ILT 0x0002952D target of matched Q4Sort00755050 median 0x00753340; same ordering as twin Rva007527C0::method 0x007527C0 inlined through a forceinline helper with retail key and state operand order;model=claude-opus-5-5;host=Desktop
 ?rva00752A20@Rva007527C0@@QBE_NABU1@M@Z,,0x00752A20,281,game/GameEngine/Source/Common/Rva007527C0Comparator.cpp,matched,address-derived matching-record test over the Rva007527C0 layout; RET8 at +0x116 then INT3; ILT 0x00004D4A; shares the matched compare helper 0x00751F50 via ILT 0x0001938A and the comparator twins' field order;model=claude-opus-5-5;host=Desktop
+?rva0076B6E0@Rva0076B6E0View@@QAEXPBVRadiusDecalTemplate@@@Z,,0x0076B6E0,231,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/Select0076B800.cpp,matched,W3DScriptedModelDraw primary slot 20 via ILT 0x00002180 (owner evidence identity_evidence/0076b6e0-w3dscriptedmodeldraw-radius-decal.md); RET4 at +0xE4 then INT3; method spelling unproven so the view keeps the address;model=claude-opus-5-5;host=Desktop

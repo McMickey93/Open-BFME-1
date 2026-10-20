@@ -1,4 +1,220 @@
 // cl: /O2 /Ob2 /DNDEBUG /MD
+// Retail 0x0076B6E0: W3DScriptedModelDraw primary vtable slot 20 (ILT
+// 0x00002180; owner proof in targets/game/reverse/identity_evidence/
+// 0076b6e0-w3dscriptedmodeldraw-radius-decal.md). It copies the radius-decal
+// template into +0x188 and refreshes the decal colour through slot 24. The
+// method spelling is unknown, so the view keeps the address.
+enum KindOfType { KINDOF_7 = 7 };
+struct Rva0076B6E0Drawable;
+class Thing
+{
+public:
+ virtual void thingSlot00();
+ virtual void thingSlot01();
+ virtual void thingSlot02();
+ virtual void thingSlot03();
+ virtual void thingSlot04();
+ virtual void thingSlot05();
+ virtual void thingSlot06();
+ virtual void thingSlot07();
+ virtual void thingSlot08();
+ virtual void thingSlot09();
+ virtual Rva0076B6E0Drawable *thingSlot10() const;
+ bool isKindOf(KindOfType kind) const;
+};
+class Object : public Thing
+{
+public:
+ int bfmeGetHordeMemberCount() const;
+ Object *bfmeResolveMeleeTarget(int which);
+ void *unidentified_001BFE20() const;
+};
+class ObjectAttemptDamageFlagHook
+{
+public:
+ int value();
+};
+class Rva0076B6E0ColorSource
+{
+public:
+ virtual void colorSlot00();
+ virtual void colorSlot01();
+ virtual void colorSlot02();
+ virtual void colorSlot03();
+ virtual void colorSlot04();
+ virtual void colorSlot05();
+ virtual void colorSlot06();
+ virtual void colorSlot07();
+ virtual void colorSlot08();
+ virtual void colorSlot09();
+ virtual void colorSlot10();
+ virtual void colorSlot11();
+ virtual void colorSlot12();
+ virtual void colorSlot13();
+ virtual void colorSlot14();
+ virtual void colorSlot15();
+ virtual void colorSlot16();
+ virtual void colorSlot17();
+ virtual void colorSlot18();
+ virtual void colorSlot19();
+ virtual void colorSlot20();
+ virtual void colorSlot21();
+ virtual void colorSlot22();
+ virtual void colorSlot23();
+ virtual void colorSlot24();
+ virtual void colorSlot25();
+ virtual void colorSlot26();
+ virtual void colorSlot27();
+ virtual void colorSlot28();
+ virtual void colorSlot29();
+ virtual void colorSlot30();
+ virtual void colorSlot31();
+ virtual void colorSlot32();
+ virtual void colorSlot33();
+ virtual void colorSlot34();
+ virtual void colorSlot35();
+ virtual void colorSlot36();
+ virtual void colorSlot37();
+ virtual void colorSlot38();
+ virtual void colorSlot39();
+ virtual void colorSlot40();
+ virtual void colorSlot41();
+ virtual void colorSlot42();
+ virtual void colorSlot43();
+ virtual void colorSlot44();
+ virtual void colorSlot45();
+ virtual void colorSlot46();
+ virtual void colorSlot47();
+ virtual void colorSlot48();
+ virtual void colorSlot49();
+ virtual void colorSlot50();
+ virtual void colorSlot51();
+ virtual void colorSlot52();
+ virtual void colorSlot53();
+ virtual void colorSlot54();
+ virtual void colorSlot55();
+ virtual void colorSlot56();
+ virtual void colorSlot57();
+ virtual void colorSlot58();
+ virtual void colorSlot59();
+ virtual void colorSlot60();
+ virtual void colorSlot61();
+ virtual void colorSlot62();
+ virtual void colorSlot63();
+ virtual void colorSlot64();
+ virtual void colorSlot65();
+ virtual void colorSlot66();
+ virtual void colorSlot67();
+ virtual void colorSlot68();
+ virtual void colorSlot69();
+ virtual void colorSlot70();
+ virtual void colorSlot71();
+ virtual void colorSlot72();
+ virtual void colorSlot73();
+ virtual void colorSlot74();
+ virtual void colorSlot75();
+ virtual void colorSlot76();
+ virtual void colorSlot77();
+ virtual void colorSlot78();
+ virtual void colorSlot79();
+ virtual void colorSlot80();
+ virtual void colorSlot81();
+ virtual void colorSlot82();
+ virtual void colorSlot83();
+ virtual void colorSlot84();
+ virtual void colorSlot85();
+ virtual void colorSlot86();
+ virtual void colorSlot87();
+ virtual void colorSlot88();
+ virtual int colorSlot89(Object *object);
+};
+struct Rva0076B6E0Drawable
+{
+ char m_pad000[0xfc];
+ Object *m_object;
+ char m_pad100[0x3ac - 0x100];
+ bool m_flag3ac;
+};
+struct Rva006C9270GlobalData
+{
+ char m_pad000[0xa76];
+ bool m_flagA76;
+};
+extern Rva006C9270GlobalData *TheWritableGlobalData;
+class RadiusDecalTemplate
+{
+public:
+ void operator=(const RadiusDecalTemplate &other);
+ char m_pad[0x40];
+};
+class Rva0076B6E0View
+{
+public:
+ virtual void drawSlot00();
+ virtual void drawSlot01();
+ virtual void drawSlot02();
+ virtual void drawSlot03();
+ virtual void drawSlot04();
+ virtual void drawSlot05();
+ virtual void drawSlot06();
+ virtual void drawSlot07();
+ virtual void drawSlot08();
+ virtual void drawSlot09();
+ virtual void drawSlot10();
+ virtual void drawSlot11();
+ virtual void drawSlot12();
+ virtual void drawSlot13();
+ virtual void drawSlot14();
+ virtual void drawSlot15();
+ virtual void drawSlot16();
+ virtual void drawSlot17();
+ virtual void drawSlot18();
+ virtual void drawSlot19();
+ virtual void drawSlot20();
+ virtual void drawSlot21();
+ virtual void drawSlot22();
+ virtual void drawSlot23();
+ virtual void drawSlot24(int mode, int color);
+ void rva0076B6E0(const RadiusDecalTemplate *decal);
+ int m_field04;
+ Rva0076B6E0Drawable *m_drawable;
+ char m_pad0c[0x188 - 0x0c];
+ RadiusDecalTemplate m_decal;
+};
+// ?rva0076B6E0@Rva0076B6E0View@@QAEXPBVRadiusDecalTemplate@@@Z
+void Rva0076B6E0View::rva0076B6E0(const RadiusDecalTemplate *decal)
+{
+ if (decal == 0)
+  return;
+ m_decal = *decal;
+ Rva0076B6E0Drawable *drawable = m_drawable;
+ Object *object = drawable->m_object;
+ if (object == 0 || object->isKindOf(KINDOF_7))
+  return;
+ if (TheWritableGlobalData->m_flagA76)
+ {
+  if (drawable->m_flag3ac)
+   drawSlot24(object->bfmeGetHordeMemberCount(), ((ObjectAttemptDamageFlagHook *)object)->value());
+  return;
+ }
+ Object *other = object->bfmeResolveMeleeTarget(0);
+ bool otherShown = false;
+ int color = ((ObjectAttemptDamageFlagHook *)object)->value();
+ if (other != 0)
+ {
+  Rva0076B6E0Drawable *otherDrawable = other->thingSlot10();
+  if (otherDrawable != 0 && otherDrawable->m_flag3ac)
+  {
+   otherShown = true;
+   Rva0076B6E0ColorSource *source = (Rva0076B6E0ColorSource *)other->unidentified_001BFE20();
+   if (source != 0)
+    color = source->colorSlot89(other);
+  }
+ }
+ if (m_drawable->m_flag3ac || otherShown)
+  drawSlot24(1, color);
+}
+
 // Retail 0x0076B800: normal thiscall, three stack arguments, boolean result.
 // EDI is saved at +0x5b and initialized from m_curState at +0x65, not an input.
 // W3DModelDraw+0x14 and Drawable+0xfc names are layout-witnessed by name_oracle.
