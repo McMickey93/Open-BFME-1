@@ -675,7 +675,8 @@ extern "C" void _ReadWriteBarrier(void);
 void Rva0090F260Nop(void);
 void Rva00912CF0(void);
 void bfmeGo911C(void);
-extern DX8MeshRendererClass *g_bfmeMeshRendererSingleton;
+// Defined below: reads the TheDX8MeshRenderer pointer slot (0x0134B0E8).
+template <class T> static __forceinline T *dx8_mesh_renderer(void);
 
 class Gen_00944c30 { public: void m(void); };
 class Gen_00944c40 { public: void m(void); };
@@ -731,8 +732,8 @@ void DX8Wrapper::Do_Onetime_Device_Dependent_Shutdowns(void)
 	Rva0090F260Nop();
 	VertexMaterialClass::Shutdown();
 	bfmeGo911C();
-	g_bfmeMeshRendererSingleton->Shutdown();
-	((Gen_00944c30 *)g_bfmeMeshRendererSingleton)->m();
+	dx8_mesh_renderer<DX8MeshRendererClass>()->Shutdown();
+	dx8_mesh_renderer<Gen_00944c30>()->m();
 
 	if (CurrentCaps) {
 		BfmeCapsShutdownShim *caps = reinterpret_cast<BfmeCapsShutdownShim *>(CurrentCaps);
