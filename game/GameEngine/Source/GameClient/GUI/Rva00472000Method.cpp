@@ -10,6 +10,7 @@
 #include "GameClient/Display.h"
 class FontLibraryBFMERetail {public: GameFont *getFont(AsciiString*,float,unsigned char); };
 #include "GameClient/Anim2D.h"
+inline AsciiString::~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 #include <new>
 // The canonical Anim2D prefix omits the two cached Int tail fields which
 // the independently matched native constructor writes at +0x2c/+0x30.
