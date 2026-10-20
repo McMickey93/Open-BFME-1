@@ -36823,7 +36823,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_000ee7f0@@YAXXZ,,0x000EE7F0,279,game/gen_asm/d_000e5b30.asm,matched,gen-dump;ghidra=FUN_004ee7f0
 ?d_000ee9a0@@YAXXZ,,0x000EE9A0,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getFortieth@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
 ?d_000eea20@@YAXXZ,,0x000EEA20,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getFortyFirst@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
-?d_000f1950@@YAXXZ,,0x000F1950,277,game/gen_asm/d_000e5b30.asm,matched,gen-dump;ghidra=FUN_004f1950
 ?d_000f2a00@@YAXXZ,,0x000F2A00,674,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_004f2a00
 ?d_000f2d50@@YAXXZ,,0x000F2D50,468,game/gen_asm/d_000e5b30.asm,matched,gen-dump;ghidra=FUN_004f2d50
 ?d_000f2fb0@@YAXXZ,,0x000F2FB0,528,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004f2fb0
@@ -172536,3 +172535,4 @@ uw_00c0ae48,,0x00C0AE48,22,game/GameEngine/Source/GameLogic/Object/Behavior/Buil
 ?drawListBoxText@@YAXPAVGameWindow@@PAVWinInstanceData@@HHHH_N@Z,,0x00792350,1388,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Gadget/W3DListBox.cpp,matched,model=claude-opus-5-5;host=vm
 ?Rva007921E0@@YAXPBVImage@@00HHHH@Z,,0x007921E0,293,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Gadget/W3DListBox.cpp,matched,converted from the 0x007921E0 gen-dump row at this address; body byte-identical to retail outside its relocation slots; identity address-derived;model=openai-codex;host=chalco.vps;model=claude-opus-5-5;host=vm
 ??0ICoord2D@@QAE@XZ,0x00039130,0x00083360,3,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/Gadget/W3DGadgetTextEntryDraw.cpp,matched,empty constructor returns self; inline header ctor emitted as pick-any COMDAT (8 TUs); sole exclusive copy in icoord.cpp removed;model=claude-opus-5-5;host=GreatFaram;model=claude-opus-5-5;host=vm
+?bfmeSetNeedsGateOpenRaw@Team@@QAEXHH@Z,,0x000F1950,277,game/GameEngine/Source/Common/RTS/Team_bfmeSetNeedsGateOpenRaw.cpp,matched,retail thunk 0x0000E6B5 and callers Team::~Team and ScriptActions::doTeamNeedsOpenGate identify the body; Team+0x104 gate-request set; find via ILT 0x00016C70 (identity_evidence/000eef40-set-find-identity.md);model=claude-opus-5-5;host=Desktop

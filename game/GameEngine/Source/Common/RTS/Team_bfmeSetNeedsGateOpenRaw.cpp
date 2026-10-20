@@ -1,8 +1,9 @@
-// ?bfmeSetNeedsGateOpenRaw@Team@@QAEXHH@Z
-// partial score=1.0 date=2026-10-18
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad
 // stlport
-// BFME Team::bfmeSetNeedsGateOpenRaw, retail RVA 0x000F1950.
+// BFME Team::bfmeSetNeedsGateOpenRaw, retail RVA 0x000F1950 (277 bytes).
+// Retail thunk 0x0000E6B5; callers Team::~Team and
+// ScriptActions::doTeamNeedsOpenGate identify it. The set find goes through
+// ILT 0x00016C70 to the 71-byte const _Rb_tree find at 0x000EEF40.
 // The Team keeps one object-ID set for gates that this team asks to stay open.
 // A change in membership adjusts the matching GateOpenAndCloseBehavior request.
 
@@ -71,6 +72,7 @@ public:
 	void bfmeSetNeedsGateOpenRaw(Int gateID, Int needsOpen);
 };
 
+// ?bfmeSetNeedsGateOpenRaw@Team@@QAEXHH@Z
 void Team::bfmeSetNeedsGateOpenRaw(Int gateID, Int needsOpen)
 {
 	BfmeGateRequestSet::const_iterator it = m_gateRequests.find((const GateIDKey &)gateID);
@@ -94,7 +96,3 @@ void Team::bfmeSetNeedsGateOpenRaw(Int gateID, Int needsOpen)
 	if (behavior != 0)
 		((Rva001FC440 *)behavior)->set(needsOpenByte ? 1 : -1);
 }
-
-// try build/a1_f1.cpp
-
-// try build/a1_f2.cpp
