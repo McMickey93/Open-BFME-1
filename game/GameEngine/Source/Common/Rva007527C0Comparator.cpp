@@ -1,6 +1,8 @@
 // Opaque record comparator with the decoded retail layout.
 // cl: /O2 /Ob2 /GR- /EHsc- /MD /DNDEBUG
 
+#include <math.h>
+
 enum DrawableID
 {
 	INVALID_DRAWABLE_ID = 0
@@ -75,6 +77,7 @@ struct Rva007527C0 {
  void *m_00; Rva007527C0Data *m_04; int m_08;
  bool method(const Rva007527C0 &) const;
  bool lessThan(const Rva007527C0 &) const;
+ bool rva00752A20(const Rva007527C0 &, float) const;
 };
 // ?method@Rva007527C0@@QBE_NABU1@@Z
 bool Rva007527C0::method(const Rva007527C0 &o) const {
@@ -147,6 +150,37 @@ __forceinline bool Rva007527C0::lessThan(const Rva007527C0 &o) const {
  float y=(tailRight->m_dc[1].m_00 ? tailRight->m_dc[1].m_04 : 0.0f)+tailRight->m_dc[0].m_04;
  if(x!=y) return x<y;
  return leftBase<rightBase;
+}
+
+// Retail 0x00752A20 (ILT 0x00004D4A): the matching-record test over the same
+// layout. It refuses at LOD level 4, requires equal keys, equal +0x08 fields
+// and equal Drawable +0x1F8 floats, defers to the shared compare helper when
+// both nested records exist, then requires equal entry fields and the entry
+// floats within the tolerance.
+// ?rva00752A20@Rva007527C0@@QBE_NABU1@M@Z
+bool Rva007527C0::rva00752A20(const Rva007527C0 &o, float tolerance) const
+{
+ if(TheGameLODManager->m_level == 4) return false;
+ if(m_00 != o.m_00) return false;
+ if(m_08 != o.m_08) return false;
+ if(m_04->m_08->m_1f8 != o.m_04->m_08->m_1f8) return false;
+ if(m_04 && o.m_04) {
+  int a,b;
+  if(((Q4Sort00751F50Record *)m_04)->compare(*(Q4Sort00751F50Record *)o.m_04,&a,&b))
+   return a == b;
+ }
+ for(int i=0;i<=1;++i) {
+  const Rva007527C0Sub &left=m_04->m_dc[i];
+  const Rva007527C0Sub &right=o.m_04->m_dc[i];
+  if(left.m_00 != right.m_00) return false;
+  if(left.m_00) {
+   if(left.m_14 != right.m_14) return false;
+   if(left.m_10 != right.m_10) return false;
+  }
+ }
+ if(fabs(m_04->m_dc[0].m_04 - o.m_04->m_dc[0].m_04) > tolerance) return false;
+ if(m_04->m_dc[1].m_00 && fabs(m_04->m_dc[1].m_04 - o.m_04->m_dc[1].m_04) > tolerance) return false;
+ return true;
 }
 
 // Sort functor over four-byte record pointers; the matched median, insertion
