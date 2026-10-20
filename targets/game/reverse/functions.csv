@@ -38315,7 +38315,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_006f3fc0@@YAXXZ,,0x006F3FC0,1184,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00af3fc0
 ?d_006f83f0@@YAXXZ,,0x006F83F0,618,game/gen_asm/d_006f2cc0.asm,matched,gen-dump;ghidra=FUN_00af83f0
 ?d_006f9a30@@YAXXZ,,0x006F9A30,76,game/gen_asm/d_006f2cc0.asm,matched,gen-dump;ghidra=FUN_00af9a30
-?d_006f9cd0@@YAXXZ,,0x006F9CD0,589,game/gen_asm/d_006e7d70.asm,matched,gen-dump;bounds=high
 ?d_006fb0b0@@YAXXZ,,0x006FB0B0,835,game/gen_asm/d_006f2cc0.asm,matched,gen-dump;ghidra=FUN_00afb0b0
 ?d_006fd700@@YAXXZ,,0x006FD700,524,game/gen_asm/d_006fb8e0.asm,matched,gen-dump;ghidra=FUN_00afd700
 ?d_006ff160@@YAXXZ,,0x006FF160,3023,game/gen_asm/d_006fb8e0.asm,matched,gen-dump;ghidra=FUN_00aff160
@@ -172536,3 +172535,4 @@ uw_00c0ae48,,0x00C0AE48,22,game/GameEngine/Source/GameLogic/Object/Behavior/Buil
 ?bfmeSetNeedsGateOpenRaw@Team@@QAEXHH@Z,,0x000F1950,277,game/GameEngine/Source/Common/RTS/Team_bfmeSetNeedsGateOpenRaw.cpp,matched,retail thunk 0x0000E6B5 and callers Team::~Team and ScriptActions::doTeamNeedsOpenGate identify the body; Team+0x104 gate-request set; find via ILT 0x00016C70 (identity_evidence/000eef40-set-find-identity.md);model=claude-opus-5-5;host=Desktop
 ?rva00609710@Rva00609710Owner@@QAEXXZ,,0x00609710,181,game/GameEngine/Source/Common/U4Blend00609600.cpp,matched,address-derived blend-time step; RET at +0xB4 then INT3; only caller the Rva00609850 guard; blend3 0x00609600 via ILT 0x0003C08D and the curve evaluator 0x0006A520 via ILT 0x00038EBF through the TU's raw-pointer bridge with its real float parameter; 10.0f is the pooled literal at 0x01075C74;model=claude-opus-5-5;host=Desktop
 ?DoXfer@Team@@MAEXAAVXfer@@@Z,,0x000F3550,843,game/GameEngine/Source/Common/RTS/Team_DoXfer.cpp,matched,clean C++ GeneralsMD Team::xfer; vftable 0x01085F88 slot 3 via ILT 0x00013007 beside ??_GTeam slot 0 and loadPostProcess slot 1 (ILT oracle CONFIRMED DoXfer MAE Xfer&); DLINK_ITERATOR PMF walk over the vbptr Object view; real throw XferException(5 0);model=claude-opus-5-5;host=Chartreuse
+?DoXfer@W3DFloorBuffer@@MAEXAAVXfer@@@Z,,0x006F9CD0,589,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DFloorBufferDoXfer.cpp,matched,W3DFloorBuffer vftable 0x01120360 (ctor 0x006F92D0 dtor 0x006F91F0) slot 3 via ILT 0x0000242D; ilt_oracle confirms DoXfer; body by the 0x006F9CD0 bank (stale render pin retired in ed8c110bb0);model=claude-opus-5-5;host=Desktop

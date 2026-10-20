@@ -1,5 +1,3 @@
-// ?DoXfer@W3DFloorBuffer@@MAEXAAVXfer@@@Z
-// partial score=0.0 date=2026-10-20
 // cl: /DNDEBUG /MD /EHsc /O2 /D_STLP_USE_STATIC_LIB
 // stlport
 // W3DFloorBuffer::DoXfer, retail RVA 0x006F9CD0, 589 bytes (ret 4 at +0x24A).
@@ -7,7 +5,6 @@
 // install vftable 0x01120360. Its slot 0 is ??_GW3DFloorBuffer (0x006F92A0)
 // and slot 3, the BFME Snapshot DoXfer slot, reaches this body through ILT
 // 0x0000242D. tools/ilt_oracle.py check confirms
-// ?DoXfer@W3DFloorBuffer@@MAEXAAVXfer@@@Z (exact).
 // Body: skip a light-CRC pass, version {1, 2}, then the element count of the
 // +0x20 floor list. Loading resets the buffer (0x006F9050), then per element
 // transfers a stack BaseHeightMapFloorElement (constructor 0x006F81E0,
@@ -88,7 +85,6 @@ private:
 	_STL::list<BaseHeightMapFloorElement *> m_elements;	// +0x20
 };
 
-// ?DoXfer@W3DFloorBuffer@@MAEXAAVXfer@@@Z
 void W3DFloorBuffer::DoXfer(Xfer &xfer)
 {
 	if (xfer.IsLightCRC())
