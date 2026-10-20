@@ -50,6 +50,7 @@ enum { WIN_COLOR_UNDEFINED = 0x00FFFFFF };
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include/Lib/BaseType.h
 struct ICoord2D
 {
+	ICoord2D() {}											// see drawStaticTextText
 	Int x;
 	Int y;
 };
@@ -242,11 +243,17 @@ inline const Image *GadgetStaticTextGetEnabledImage( GameWindow *g ) { return g-
 // ?drawStaticTextText@@YAXPAVGameWindow@@HH@Z
 //
 // BFME's body differs from the vendored ZH one in four witnessed ways: three
-// parameters, not four (no WinInstanceData); no centeredVertically branch, the
-// vertical centering is unconditional; the horizontal else-branch adds the
-// literal 7 rather than tData->leftMargin; and the single ZH
+// parameters, not four (no WinInstanceData); no centeredVertically branch, so
+// both arms centre vertically the same way; the horizontal else-branch adds
+// the literal 7 rather than tData->leftMargin; and the single ZH
 // draw(x,y,color,dropColor) becomes a two-colour setter at vtable +0x28
 // followed by draw(x,y,1,1) at +0x38.
+//
+// Shape: the vertical centring is written in BOTH arms, as in the matched
+// drawTypeText (0x005A0450) of the same family; MSVC tail-merges it into the
+// one retail join, but only the duplicated spelling leaves tData spilled and
+// EBX/EBP saved late as retail does. That also needs the empty ICoord2D
+// constructor below.
 static void drawStaticTextText( GameWindow *window,
 																Color textColor, Color textDropColor )
 {
@@ -289,14 +296,13 @@ static void drawStaticTextText( GameWindow *window,
 	if( tData->centered )
 	{
 		textPos.x = origin.x + (size.x / 2) - (textWidth / 2);
+		textPos.y = origin.y + (size.y / 2) - (textHeight / 2);
 	}
 	else
 	{
 		textPos.x = origin.x + 7;
+		textPos.y = origin.y + (size.y / 2) - (textHeight / 2);
 	}
-
-	// vertical centering is unconditional in BFME
-	textPos.y = origin.y + (size.y / 2) - (textHeight / 2);
 
 	// draw the text
 	text->setClipRegion( &clipRegion );
