@@ -163,7 +163,9 @@ public:
 	virtual Snapshot0040A260 *slot90(void *, void *) = 0;
 };
 
-extern BfmeAwakenDebug *TheBfmeAwakenDebug;
+// Retail's debug singleton pointer cell is owned by debug/Rva00F36E5C.cpp.
+// BfmeAwakenDebug is only this caller's virtual-interface view of that pointer.
+extern void *g_Rva00F36E5C;
 extern void _bfme_debugRecordCallsite(Int kind);
 extern bool _bfme_debugReportingEnabled(void);
 class TerrainVisual;
@@ -187,8 +189,8 @@ Snapshot0040A260 *BuffLogic::addBuff(const ThingTemplate *thingTemplate, void *c
 		if (_bfme_debugReportingEnabled())
 		{
 			_bfme_debugRecordCallsite(1);
-			TheBfmeAwakenDebug->slot60();
-			TheBfmeAwakenDebug->slot6C(0, 0)
+			static_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot60();
+			static_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot6C(0, 0)
 				->slot38("Buff ")
 				->slot38(self->m_name.str())
 				->slot38(" requires a W3DBuffDrawModule.\n")
