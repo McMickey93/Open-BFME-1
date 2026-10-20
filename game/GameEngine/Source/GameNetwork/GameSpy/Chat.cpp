@@ -53,36 +53,42 @@
 #endif
 
 #define OFFSET(x) (sizeof(Int) * (x))
+// Retail .rdata 0x01117700: BFME's color array carries two offline-player
+// slots the reference enum lacks, one after PlayerBuddy and one after
+// PlayerIgnored, so every later slot sits one or two Ints further on.
+#define RETAIL_SLOT(x) ((x) + ((x) > GSCOLOR_PLAYER_BUDDY) + ((x) > GSCOLOR_PLAYER_IGNORED))
 static const FieldParse GameSpyColorFieldParse[] = 
 {
 
-	{ "Default",						INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_DEFAULT) },
-	{ "CurrentRoom",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CURRENTROOM) },
-	{ "ChatRoom",						INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_ROOM) },
-	{ "Game",								INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_GAME) },
-	{ "GameFull",						INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_GAME_FULL) },
-	{ "GameCRCMismatch",		INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_GAME_CRCMISMATCH) },
-	{ "PlayerNormal",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_PLAYER_NORMAL) },
-	{ "PlayerOwner",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_PLAYER_OWNER) },
-	{ "PlayerBuddy",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_PLAYER_BUDDY) },
-	{ "PlayerSelf",					INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_PLAYER_SELF) },
-	{ "PlayerIgnored",			INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_PLAYER_IGNORED) },
-	{ "ChatNormal",					INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_NORMAL) },
-	{ "ChatEmote",					INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_EMOTE) },
-	{ "ChatOwner",					INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_OWNER) },
-	{ "ChatOwnerEmote",			INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_OWNER_EMOTE) },
-	{ "ChatPriv",						INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_PRIVATE) },
-	{ "ChatPrivEmote",			INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_PRIVATE_EMOTE) },
-	{ "ChatPrivOwner",			INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_PRIVATE_OWNER) },
-	{ "ChatPrivOwnerEmote",	INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_PRIVATE_OWNER_EMOTE) },
-	{ "ChatBuddy",					INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_BUDDY) },
-	{ "ChatSelf",						INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_CHAT_SELF) },
-	{ "AcceptTrue",					INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_ACCEPT_TRUE) },
-	{ "AcceptFalse",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_ACCEPT_FALSE) },
-	{ "MapSelected",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_MAP_SELECTED) },
-	{ "MapUnselected",			INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_MAP_UNSELECTED) },
-	{ "MOTD",								INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_MOTD) },
-	{ "MOTDHeading",				INI::parseColorInt,	NULL,	OFFSET(GSCOLOR_MOTD_HEADING) },
+	{ "Default",						INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_DEFAULT)) },
+	{ "CurrentRoom",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CURRENTROOM)) },
+	{ "ChatRoom",						INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_ROOM)) },
+	{ "Game",								INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_GAME)) },
+	{ "GameFull",						INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_GAME_FULL)) },
+	{ "GameCRCMismatch",		INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_GAME_CRCMISMATCH)) },
+	{ "PlayerNormal",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_NORMAL)) },
+	{ "PlayerOwner",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_OWNER)) },
+	{ "PlayerBuddy",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_BUDDY)) },
+	{ "OfflinePlayerBuddy",	INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_BUDDY) + 1) },
+	{ "PlayerSelf",					INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_SELF)) },
+	{ "PlayerIgnored",			INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_IGNORED)) },
+	{ "OfflinePlayerIgnored",	INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_PLAYER_IGNORED) + 1) },
+	{ "ChatNormal",					INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_NORMAL)) },
+	{ "ChatEmote",					INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_EMOTE)) },
+	{ "ChatOwner",					INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_OWNER)) },
+	{ "ChatOwnerEmote",			INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_OWNER_EMOTE)) },
+	{ "ChatPriv",						INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_PRIVATE)) },
+	{ "ChatPrivEmote",			INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_PRIVATE_EMOTE)) },
+	{ "ChatPrivOwner",			INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_PRIVATE_OWNER)) },
+	{ "ChatPrivOwnerEmote",	INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_PRIVATE_OWNER_EMOTE)) },
+	{ "ChatBuddy",					INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_BUDDY)) },
+	{ "ChatSelf",						INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_CHAT_SELF)) },
+	{ "AcceptTrue",					INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_ACCEPT_TRUE)) },
+	{ "AcceptFalse",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_ACCEPT_FALSE)) },
+	{ "MapSelected",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_MAP_SELECTED)) },
+	{ "MapUnselected",			INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_MAP_UNSELECTED)) },
+	{ "MOTD",								INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_MOTD)) },
+	{ "MOTDHeading",				INI::parseColorInt,	NULL,	OFFSET(RETAIL_SLOT(GSCOLOR_MOTD_HEADING)) },
 
 	{ NULL,					NULL,						NULL,						0 }  // keep this last
 
