@@ -20918,5 +20918,25 @@
   "after_sha256": "6da28a94681d37a96df48901e14dc7781498a47a708b29e4465532db05d5fe39",
   "evidence": "targets/game/reverse/identity_evidence/0010fe90-callback-lists.md",
   "reason": "The matched 00110790 callback passes ECX and two stack arguments to 0010FE90 which returns ret8; this refutes the static four-argument WeaponTemplateSet INI parser claim. The owner remains address-derived. The source pairing to Rva0010FE90Named is a token-alignment artifact: that separate type models only the item vslot8 name call."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00693ec0.cpp",
+  "new_path": "targets/game/reverse/attempts/0x00693ec0.cpp",
+  "old_name": "AsciiString",
+  "new_name": "Rva00691ED0Key",
+  "before_sha256": "9bc58825ab1f376f62cf5499d60a19cb19e6c7e879300def0067dc34017049fd",
+  "after_sha256": "a32b44a3dc577429ea09501d5ba24afb5e53cda08cd40735d48ccaa5f12f31ab",
+  "evidence": "targets/game/reverse/identity_evidence/00693ec0-canonical-string-bank.md",
+  "reason": "False pairing: the bank adopts canonical StringInline.h AsciiString; existing independent key views are not renames of AsciiString. Evidence-only partial source; no production identity changes."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00693ec0.cpp",
+  "new_path": "targets/game/reverse/attempts/0x00693ec0.cpp",
+  "old_name": "AsciiString",
+  "new_name": "Rva006934C0Key",
+  "before_sha256": "9bc58825ab1f376f62cf5499d60a19cb19e6c7e879300def0067dc34017049fd",
+  "after_sha256": "a32b44a3dc577429ea09501d5ba24afb5e53cda08cd40735d48ccaa5f12f31ab",
+  "evidence": "targets/game/reverse/identity_evidence/00693ec0-canonical-string-bank.md",
+  "reason": "False pairing: the bank adopts canonical StringInline.h AsciiString; existing independent key views are not renames of AsciiString. Evidence-only partial source; no production identity changes."
  }
 ]
