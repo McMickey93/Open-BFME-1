@@ -68,7 +68,7 @@
 // wrapper. Keep its forwarding body visible in this translation unit.
 inline UnicodeString::~UnicodeString()
 {
-	clear();
+	((StringBase<wchar_t> *)this)->clear();
 }
 
 // DEFINES ////////////////////////////////////////////////////////////////////
