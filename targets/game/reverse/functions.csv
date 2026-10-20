@@ -57529,7 +57529,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?getCursorXPos@DebugDisplay@@UAEHXZ,,0x005BD0B0,4,game/GameEngine/Source/GameClient/System/DebugDisplay.cpp,matched,
 ?getCursorYPos@DebugDisplay@@UAEHXZ,,0x005BD0C0,4,game/GameEngine/Source/GameClient/System/DebugDisplay.cpp,matched,
 ?getCustomData@Condition@@QBEHXZ,,0x002ED4C0,4,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions.cpp,matched,
-?getDX8Format@W3DBufferManager@@SAHW4VBM_FVF_TYPES@1@@Z,,0x0013A450,12,game/GameEngineDevice/Source/W3DDevice/GameClient/Shadow/W3DBufferManager.cpp,matched,
 ?getDamage@BehaviorModule@@UAEPAVDamageModuleInterface@@XZ,,0x006CF680,3,game/GameEngine/Source/GameLogic/Object/Behavior/AutoHealBehavior.cpp,matched,icf-owner=?Get_Sort_Level@RenderObjClass@@UBEHXZ
 ?getDamage@DamageModule@@UAEPAVDamageModuleInterface@@XZ,,0x0011A150,14,game/GameEngine/Source/GameLogic/Object/Damage/TransitionDamageFX.cpp,matched,
 ?getDamageCoefficient@ArmorTemplate@@QBEMABUDamageInfoInput@@@Z,,0x001AFC20,13,game/GameEngine/Source/GameLogic/Object/Armor.cpp,matched,

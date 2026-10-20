@@ -1105,7 +1105,6 @@ dir32,0x0134FBA4,__newmode,"nothing in the ledger owns 0x0134FBA4. Give the datu
 dir32,0x0134FBA8,__commode,"nothing in the ledger owns 0x0134FBA8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0134FBAC,__fmode,"nothing in the ledger owns 0x0134FBAC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x013571F8,__adjust_fdiv,"nothing in the ledger owns 0x013571F8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-static,0x0013A450,?getDX8Format@W3DBufferManager@@SAHW4VBM_FVF_TYPES@1@@Z,"+7 _FVFTypeIndexList@0x012AC510: 68 byte(s) differ, first +0: source 020000004200000002010000420100000202000042020000 retail 1429090104290901f0280901e0280901cc2"
 static,0x0058AE70,?getFieldParseTable@AudioManager@@QBEPBUFieldParse@@XZ,+1 _audioSettingsFieldParseTable outside the retail image
 tail,0x00853B30,?load@INI@@QAE_NVBFMERetailAsciiString@@00HH@Z,"compiled=377 ledger=250 tail=127: 18 byte(s) differ from retail, first +287"
 tail,0x00C23607,?dup_00C23607@@YAXXZ,"compiled=32 ledger=24 tail=8: 3 byte(s) differ from retail, first +24"

@@ -1462,7 +1462,6 @@ functions	0x00135A10	??0?$vector@PAVObject@@V?$allocator@PAVObject@@@_STL@@@_STL
 functions	0x00136A00	?erase@?$hashtable@U?$pair@$$CBVAsciiString@@PAVThingTemplate@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVThingTemplate@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@PAVThingTemplate@@@_STL@@@2@@_STL@@QAEIABVAsciiString@@@Z
 functions	0x00138520	?newObject@ThingFactory@@QAEPAVObject@@PBVThingTemplate@@PAVTeam@@ABV?$BitFlags@$0FG@@@I@Z
 functions	0x0013A450	?Get_Category_Name@WWMemoryLogClass@@SAPBDH@Z
-functions	0x0013A450	?getDX8Format@W3DBufferManager@@SAHW4VBM_FVF_TYPES@1@@Z
 functions	0x0013A450	?getMod3@Stripify@Strip@@CAHH@Z
 functions	0x0013A580	??0?$VectorClass@UFileInfoStruct@MixFileCreator@@@@QAE@HPBUFileInfoStruct@MixFileCreator@@@Z
 functions	0x0013A580	??0?$VectorClass@VHashItem@?$UniqueArrayClass@VFaceClass@MeshBuilderClass@@@@@@QAE@HPBVHashItem@?$UniqueArrayClass@VFaceClass@MeshBuilderClass@@@@@Z

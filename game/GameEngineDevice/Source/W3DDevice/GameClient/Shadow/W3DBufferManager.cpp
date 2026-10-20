@@ -61,11 +61,6 @@ static int FVFTypeIndexList[W3DBufferManager::MAX_FVF]=
 	D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX2
 };
 
-Int W3DBufferManager::getDX8Format(VBM_FVF_TYPES format)
-{
-	return FVFTypeIndexList[format];
-}
-
 // header's declarations.  Keep that drift local to this body so the matched
 // ZH-era methods below continue to compile against their vendored header.
 W3DBufferManager::W3DBufferManager(void)
