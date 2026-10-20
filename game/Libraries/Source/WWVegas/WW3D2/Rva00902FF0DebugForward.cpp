@@ -1,7 +1,8 @@
 // cl: /O2 /G7 /arch:SSE /MD /DNDEBUG
 
-class BfmeAwakenDebug;
-extern BfmeAwakenDebug *TheBfmeAwakenDebug;
+// Retail reads the pointer cell at VA 0x01336E5C. Its single verified
+// definition is in debug/Rva00F36E5C.cpp; this class is only a caller view.
+extern void *g_Rva00F36E5C;
 
 class Rva00902FF0DebugView
 {
@@ -21,5 +22,5 @@ public:
 // Open BFME 2: Code/GameEngine/Source/Common/GapBodiesGE41.cpp
 void rva00902FF0(int a, int b, int c)
 {
-    ((Rva00902FF0DebugView *)TheBfmeAwakenDebug)->slot30(a, b, c);
+    static_cast<Rva00902FF0DebugView *>(g_Rva00F36E5C)->slot30(a, b, c);
 }
