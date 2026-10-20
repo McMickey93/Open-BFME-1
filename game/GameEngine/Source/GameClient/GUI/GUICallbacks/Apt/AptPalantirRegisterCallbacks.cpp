@@ -126,26 +126,27 @@ extern unsigned char g_aptPalantirClosed;		// retail 0x012B7D84
 // Native filename global constructed by retail initializer 0x00C6BCB0.
 extern AsciiString g_rva012F4B00;
 
-// Apt callback entry points.  None has a recorded name, so each keeps the
-// address in its name rather than a guessed one.
-void g_0041F62C();		// retail 0x0041F62C, OnInitialized
-void g_00434022();		// retail 0x00434022, OnClosed
-void g_004127BA();		// retail 0x004127BA, OnBttnAlert
-void g_00401942();		// retail 0x00401942, OnBttnCommand
-void g_00420428();		// retail 0x00420428, OnRollOverBttnCommand
-void g_0043B0C5();		// retail 0x0043B0C5, OnBttnSkillUpgrade
-void g_0043F6E8();		// retail 0x0043F6E8, OnBttnSpell
-void g_00441597();		// retail 0x00441597, OnBttnSpellStore
-void g_00448C07();		// retail 0x00448C07, OnBttnOptions
-void g_0044A606();		// retail 0x0044A606, OnBttnHeroSelect
-void g_0042F01D();		// retail 0x0042F01D, OnSpellBookUIShown
-void g_0041CFF3();		// retail 0x0041CFF3, OnRegionPortraitClosed
-void g_00415253();		// retail 0x00415253, player-side functor
-void g_00444544();		// retail 0x00444544, RenderRadar functor
-void g_00419501();		// retail 0x00419501, RenderRadarViewBox functor
-void g_0043E4E6();		// retail 0x0043E4E6, ClipRadar functor
-void g_0041A0F0();		// retail 0x0041A0F0, RenderMovie functor
-void g_0042D09C();		// retail 0x0042D09C, RenderGlobe functor
+// Apt callback entry points.  Retail stores the address of each callback's
+// incremental-link thunk, so each reference names the thunk the ledger owns
+// at that address; the comment names the matched body the thunk jumps to.
+void j_0001f62c();		// ILT 0x0041F62C -> aptPalantirOnInitialized, OnInitialized
+void j_00034022();		// ILT 0x00434022 -> aptPalantirOnClosed, OnClosed
+void j_000127ba();		// ILT 0x004127BA -> aptPalantirOnButtonAlert, OnBttnAlert
+void j_00001942();		// ILT 0x00401942 -> aptPalantirOnButtonCommand, OnBttnCommand
+void j_00020428();		// ILT 0x00420428 -> aptPalantirOnRollOverButtonCommand, OnRollOverBttnCommand
+void j_0003b0c5();		// ILT 0x0043B0C5 -> aptPalantirOnButtonSkillUpgrade, OnBttnSkillUpgrade
+void j_0003f6e8();		// ILT 0x0043F6E8 -> aptPalantirOnButtonSpell, OnBttnSpell
+void j_00041597();		// ILT 0x00441597 -> aptPalantirOnButtonSpellStore, OnBttnSpellStore
+void j_00048c07();		// ILT 0x00448C07 -> aptPalantirOnButtonOptions, OnBttnOptions
+void j_0004a606();		// ILT 0x0044A606 -> aptPalantirOnButtonHeroSelect, OnBttnHeroSelect
+void j_0002f01d();		// ILT 0x0042F01D -> aptPalantirOnSpellBookUIShown, OnSpellBookUIShown
+void j_0001cff3();		// ILT 0x0041CFF3 -> aptPalantirOnRegionPortraitClosed, OnRegionPortraitClosed
+void j_00015253();		// ILT 0x00415253 -> rva005655C0CopyDefaultText, player-side functor
+void j_00044544();		// ILT 0x00444544 -> aptPalantirRenderRadar, RenderRadar functor
+void j_00019501();		// ILT 0x00419501 -> aptPalantirRenderRadarViewBox, RenderRadarViewBox functor
+void j_0003e4e6();		// ILT 0x0043E4E6 -> aptPalantirClipRadar, ClipRadar functor
+void j_0001a0f0();		// ILT 0x0041A0F0 -> aptPalantirRenderMovie, RenderMovie functor
+void j_0002d09c();		// ILT 0x0042D09C -> aptPalantirRenderGlobe, RenderGlobe functor
 
 void d_00565f30()
 {
@@ -167,73 +168,73 @@ void d_00565f30()
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnInitialized" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_0041F62C ) );
+			reinterpret_cast<BannerAptCallback>( &j_0001f62c ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnClosed" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_00434022 ) );
+			reinterpret_cast<BannerAptCallback>( &j_00034022 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnAlert" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_004127BA ) );
+			reinterpret_cast<BannerAptCallback>( &j_000127ba ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnCommand" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_00401942 ) );
+			reinterpret_cast<BannerAptCallback>( &j_00001942 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnRollOverBttnCommand" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_00420428 ) );
+			reinterpret_cast<BannerAptCallback>( &j_00020428 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnSkillUpgrade" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_0043B0C5 ) );
+			reinterpret_cast<BannerAptCallback>( &j_0003b0c5 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnSpell" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_0043F6E8 ) );
+			reinterpret_cast<BannerAptCallback>( &j_0003f6e8 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnSpellStore" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_00441597 ) );
+			reinterpret_cast<BannerAptCallback>( &j_00041597 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnOptions" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_00448C07 ) );
+			reinterpret_cast<BannerAptCallback>( &j_00048c07 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnBttnHeroSelect" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_0044A606 ) );
+			reinterpret_cast<BannerAptCallback>( &j_0004a606 ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnSpellBookUIShown" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_0042F01D ) );
+			reinterpret_cast<BannerAptCallback>( &j_0002f01d ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::OnRegionPortraitClosed" );
 		g_rva012F19E8WindowManager->registerAptCallback( name,
-			reinterpret_cast<BannerAptCallback>( &g_0041CFF3 ) );
+			reinterpret_cast<BannerAptCallback>( &j_0001cff3 ) );
 	}
 
 	{
@@ -244,7 +245,7 @@ void d_00565f30()
 		union { void (*fn)(); RegisterPalantirPlayerSideFn call; }
 			registerPalantirPlayerSide = { j_0003a0bc };
 		(g_rva012F19E8WindowManager->*registerPalantirPlayerSide.call)( name, 0,
-			PalantirFunctorSlot( reinterpret_cast<void *>( &g_00415253 ) ) );
+			PalantirFunctorSlot( reinterpret_cast<void *>( &j_00015253 ) ) );
 	}
 
 	typedef void (WindowManager::*RegisterPalantirCallbackFn)(
@@ -256,31 +257,31 @@ void d_00565f30()
 	{
 		BFMERetailAsciiString name( "AptPalantir::RenderRadar" );
 		(g_rva012F19E8WindowManager->*registerPalantirCallback.call)( name,
-			PalantirFunctorSlot( reinterpret_cast<void *>( &g_00444544 ) ) );
+			PalantirFunctorSlot( reinterpret_cast<void *>( &j_00044544 ) ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::RenderRadarViewBox" );
 		(g_rva012F19E8WindowManager->*registerPalantirCallback.call)( name,
-			PalantirFunctorSlot( reinterpret_cast<void *>( &g_00419501 ) ) );
+			PalantirFunctorSlot( reinterpret_cast<void *>( &j_00019501 ) ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::ClipRadar" );
 		(g_rva012F19E8WindowManager->*registerPalantirCallback.call)( name,
-			PalantirFunctorSlot( reinterpret_cast<void *>( &g_0043E4E6 ) ) );
+			PalantirFunctorSlot( reinterpret_cast<void *>( &j_0003e4e6 ) ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::RenderMovie" );
 		(g_rva012F19E8WindowManager->*registerPalantirCallback.call)( name,
-			PalantirFunctorSlot( reinterpret_cast<void *>( &g_0041A0F0 ) ) );
+			PalantirFunctorSlot( reinterpret_cast<void *>( &j_0001a0f0 ) ) );
 	}
 	if( g_rva012F19E8WindowManager )
 	{
 		BFMERetailAsciiString name( "AptPalantir::RenderGlobe" );
 		(g_rva012F19E8WindowManager->*registerPalantirCallback.call)( name,
-			PalantirFunctorSlot( reinterpret_cast<void *>( &g_0042D09C ) ) );
+			PalantirFunctorSlot( reinterpret_cast<void *>( &j_0002d09c ) ) );
 	}
 
 	g_aptPalantirShowRequested = 0;
