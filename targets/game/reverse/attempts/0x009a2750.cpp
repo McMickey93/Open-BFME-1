@@ -1,85 +1,97 @@
-// ?merge@Rva009A2750Owner@@QAEXXZ
-// partial score=0.428261 date=2026-09-28
-// Address-preserving bottom-up endpoint-list merge at 0x009A2750.
-struct Rva009A2750Endpoint {
-    Rva009A2750Endpoint *prev, *next;
-    void *field08;
-    unsigned field0c;
-    float value;
+// ?rva009A2750@CollisionManagerImpl@@QAEXXZ
+// partial score=0.9304 date=2026-10-20
+// CollisionManagerImpl::rva009A2750, retail 0x009A2750 (460 B): the
+// bottom-up merge sort of each axis endpoint list that UpdateSort (0x009A3AD0)
+// calls on its rebuild path. Four 12-byte {head,tail,count} queues on the
+// stack; the list is dealt alternately into queues 0/1, merged in runs of
+// 1,2,4.. into 2/3 and back, then the prev links are rebuilt.
+// State (2026-10-20): this spelling is 460/460 bytes with 32 differing, all at
+// +0x88..+0xa6: retail computes b as `lea ebx,[esp+eax+0x38]` before the count
+// resets, ours `lea ebx,[edi+0xc]` after the a->count test (b=&a[1]).
+// Writing b=&lists[source+1] gives the right lea but flips the whole body's
+// callee-saved assignment (zero/right ebp->ebx, head/b ebx->ebp/edi; 283 B).
+// Tried without effect: decl order (C89 permutations), references, pointer
+// head cursor, inline SortChain methods, __forceinline helper, loop shapes,
+// all /Ob /G flags (flag_sweep), rotation_sweep.
+// cl: /O2 /Ob1
+typedef float Real;
+class Rva009A45A0CollisionData;
+struct Rva009A3AD0Endpoint
+{
+	Rva009A3AD0Endpoint *m_prev;	// +0x00
+	Rva009A3AD0Endpoint *m_next;	// +0x04
+	class Rva009A45A0CollisionData *m_node;	// +0x08
+	unsigned int m_isMax : 1;	// +0x0c
+	Real m_value;	// +0x10
 };
-struct Rva009A2750Run {
-    Rva009A2750Endpoint *head, *tail;
+class CollisionManagerImpl
+{
+public:
+	void rva009A2750();
+	Rva009A45A0CollisionData *m_root;	// +0x00
+	unsigned int m_nodeCount;	// +0x04
+	Rva009A45A0CollisionData *m_dirty;	// +0x08
+	Rva009A3AD0Endpoint *m_axisHeads[3];	// +0x0c
+	unsigned char m_table[0xAE10 - 0x18];
+	unsigned char m_table2[0xC068 - 0xAE10];
+	unsigned int m_axisCount;	// +0xc068
+	bool m_rebuild;	// +0xc06c
+};
+
+struct SortChain {
+    Rva009A3AD0Endpoint *head, *tail;
     unsigned count;
 };
-class Rva009A2750Owner {
-public:
-    char pad00[0xc];
-    Rva009A2750Endpoint *heads[3];
-    char pad18[0xc068-0x18];
-    unsigned fieldc068;
-    void merge();
-};
-void Rva009A2750Owner::merge()
+void CollisionManagerImpl::rva009A2750()
 {
-    for (unsigned axis=0; axis<fieldc068; ++axis) {
-        Rva009A2750Run runs[4];
-        runs[1].count=0;
-        runs[0].count=0;
-        runs[0].head=0;
-        unsigned slot=0;
-        Rva009A2750Endpoint *p=heads[axis];
-        while(p) {
-            Rva009A2750Endpoint *next=p->next;
-            p->next=runs[slot].head;
-            runs[slot].head=p;
-            ++runs[slot].count;
-            slot ^= 1;
-            p=next;
+    for(unsigned index=0;index<m_axisCount;++index) {
+        SortChain lists[4];
+        unsigned side=0;
+        lists[0].count=lists[1].count=0;
+        lists[0].head=0;
+        Rva009A3AD0Endpoint *node=m_axisHeads[index];
+        while(node) {
+            Rva009A3AD0Endpoint *next=node->m_next;
+            node->m_next=lists[side].head;
+            lists[side].head=node;
+            ++lists[side].count;
+            side ^= 1;
+            node=next;
         }
-        unsigned input=0;
-        unsigned width=1;
-        while(runs[input+1].count) {
-            Rva009A2750Run *left=&runs[input];
-            Rva009A2750Run *right=&runs[input+1];
-            input ^= 2;
-            runs[input+1].count=0;
-            runs[input].count=0;
-            unsigned out=input;
-            while(left->count) {
-                unsigned a=width,b=width;
-                Rva009A2750Run *dest=&runs[out];
-                for (;;) {
-                    Rva009A2750Run *from;
-                    if(a && left->count) {
-                        if(b && right->count && left->head->value > right->head->value) {
-                            from=right; --b;
-                        } else {
-                            from=left; --a;
-                        }
-                    } else if(b && right->count) {
-                        from=right; --b;
+        unsigned source=0;
+        unsigned run=1;
+        while(lists[source+1].count) {
+            SortChain *a=&lists[source];
+            unsigned output=source^2;
+            SortChain *b=&a[1];
+            lists[output].count=lists[output+1].count=0;
+            while(a->count) {
+                unsigned right=run, left=run;
+                SortChain *d=&lists[output];
+                for(;;) {
+                    SortChain *chosen;
+                    if(left && a->count) {
+                        if(right && b->count && a->head->m_value>b->head->m_value) { chosen=b; --right; }
+                        else { chosen=a; --left; }
+                    } else if(right && b->count) {
+                        chosen=b; --right;
                     } else break;
-                    --from->count;
-                    Rva009A2750Endpoint *node=from->head;
-                    from->head=node->next;
-                    if(!dest->count) {
-                        dest->head=node; dest->tail=node; dest->count=1;
-                    } else {
-                        dest->tail->next=node; dest->tail=node; ++dest->count;
-                    }
+                    --chosen->count;
+                    Rva009A3AD0Endpoint *picked=chosen->head;
+                    chosen->head=picked->m_next;
+                    if(d->count==0) d->head=picked; else d->tail->m_next=picked;
+                    d->tail=picked;
+                    ++d->count;
                 }
-                out ^= 1;
+                output^=1;
             }
-            width <<= 1;
+            source^=2;
+            run<<=1;
         }
-        if(runs[input].count > 1) runs[input].tail->next=0;
-        heads[axis]=runs[input].head;
-        heads[axis]->prev=0;
-        Rva009A2750Endpoint *node=heads[axis];
-        Rva009A2750Endpoint *next;
-        while ((next=node->next)!=0) {
-            next->prev=node;
-            node=node->next;
-        }
+        if(lists[source].count>1) lists[source].tail->m_next=0;
+        m_axisHeads[index]=lists[source].head;
+        m_axisHeads[index]->m_prev=0;
+        for(Rva009A3AD0Endpoint *p=m_axisHeads[index];p->m_next;p=p->m_next)
+            p->m_next->m_prev=p;
     }
 }
