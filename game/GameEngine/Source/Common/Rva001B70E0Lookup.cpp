@@ -32,7 +32,7 @@ public:
 	NameKeyType nameToKey(const char *name);
 };
 
-extern NameKeyGenerator *g_bfmeKeyGenERA;
+extern NameKeyGenerator *TheNameKeyGenerator;
 
 class BfmeNodeERA
 {
@@ -68,7 +68,7 @@ public:
 void * __stdcall Rva001B70E0Lookup(BfmeStrERA *name)
 {
 	// The map shim keys on int; the value is the same 32-bit NameKeyType.
-	int key = (int)g_bfmeKeyGenERA->nameToKey(name->bfmeTextERA());
+	int key = (int)TheNameKeyGenerator->nameToKey(name->bfmeTextERA());
 
 	if (key == 0)
 	{

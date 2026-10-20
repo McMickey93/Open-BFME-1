@@ -82,14 +82,14 @@ public:
 	NameKeyType nameToKey(const char *s);
 };
 
-extern NameKeyGenerator *g_bfmeMap996;
+extern NameKeyGenerator *TheNameKeyGenerator;
 
 void __stdcall bfmeGo996A(BfmeThing996 *t)
 {
 	BfmeX996 *x = t->bfmeGet996();
 	char *s = x ? x->bfmeName996() : "(NULL)";
 
-	t->m_bfmeSlot->m_bfmeVal = (int)g_bfmeMap996->nameToKey(s);
+	t->m_bfmeSlot->m_bfmeVal = (int)TheNameKeyGenerator->nameToKey(s);
 }
 
 class BfmeDev996

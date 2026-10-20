@@ -64,7 +64,7 @@ public:
 	NameKeyType nameToKey(const char *name);	///< ILT thunk at 0x0003ADD7
 };
 
-extern NameKeyGenerator *TheNameKeyGeneratorShim;	///< retail [0x012ED600]
+extern NameKeyGenerator *TheNameKeyGenerator;	///< retail [0x012ED600]
 
 struct CostMapNodeShim
 {
@@ -112,7 +112,7 @@ Bool Player::canAffordBuild(const ThingTemplate *whatToBuild) const
 // ?getProductionCostChangePercent@Player@@QBEMABVAsciiString@@@Z
 Real Player::getProductionCostChangePercent(const AsciiString &name) const
 {
-	Int key = (Int)TheNameKeyGeneratorShim->nameToKey(name.str());
+	Int key = (Int)TheNameKeyGenerator->nameToKey(name.str());
 
 	CostMapShim *map = (CostMapShim *)&m_costMap;
 	CostMapIteratorShim it = map->find(key);

@@ -19,7 +19,7 @@ public:
 	NameKeyType nameToKey(const char *name);
 };
 
-extern NameKeyGenerator *g_bfmeKeyGenERK;
+extern NameKeyGenerator *TheNameKeyGenerator;
 
 void bfmeDoERK(BfmeThingERK *first, BfmeModERK *firstMod,
 	BfmeThingERK *second, BfmeModERK *secondMod);
@@ -27,7 +27,7 @@ void bfmeDoERK(BfmeThingERK *first, BfmeModERK *firstMod,
 void bfmeApplyERK(BfmeThingERK *first, BfmeThingERK *second)
 {
 	static int s_bfmeKeyERK =
-		g_bfmeKeyGenERK->nameToKey("CastleBehavior");
+		TheNameKeyGenerator->nameToKey("CastleBehavior");
 
 	BfmeModERK *firstMod = first->bfmeFindERK(s_bfmeKeyERK);
 	BfmeModERK *secondMod = second->bfmeFindERK(s_bfmeKeyERK);

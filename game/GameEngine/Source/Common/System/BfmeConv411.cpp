@@ -77,7 +77,7 @@ public:
 };
 
 extern BfmeOneAOA *g_bfmeOneAOA;
-extern NameKeyGenerator *g_bfmeTwoAOA;
+extern NameKeyGenerator *TheNameKeyGenerator;
 class GameWindowManager;
 extern GameWindowManager *TheWindowManager;
 
@@ -99,6 +99,6 @@ void BfmeThingAOA::bfmeGoAOA()
 	}
 	// The key is stored through a void* hand-off; the retail body returns the
 	// NameKeyType in eax and this file only forwards it, so the cast is free.
-	void *got = (void *)g_bfmeTwoAOA->nameToKey((const char *)bfmeTextAOA);
+	void *got = (void *)TheNameKeyGenerator->nameToKey((const char *)bfmeTextAOA);
 	m_bfmeWhat = reinterpret_cast<BfmeThreeAOA *>(TheWindowManager)->bfmeMakeAOA(0, got);
 }

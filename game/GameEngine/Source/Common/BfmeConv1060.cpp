@@ -62,7 +62,7 @@ public:
 	NameKeyType nameToKey(const char *a);
 };
 
-extern NameKeyGenerator *g_bfmeQ1060;
+extern NameKeyGenerator *TheNameKeyGenerator;
 
 struct BfmeFn1060
 {
@@ -88,7 +88,7 @@ void bfmeGo1060D(BfmeO1060 *o, int b, int c, int d)
 {
 	// The stand-in bfmeGet1060 returns the name pointer; its int spelling is
 	// TU-local, so cast at the call and keep the pushed bytes identical.
-	int t = (int)g_bfmeQ1060->nameToKey((const char *)o->bfmeGet1060(0));
+	int t = (int)TheNameKeyGenerator->nameToKey((const char *)o->bfmeGet1060(0));
 
 	g_bfmeW1060->m_bfmeSub.bfmeFind1060(&t)->m_bfmeFn(o, b, c, d);
 }
