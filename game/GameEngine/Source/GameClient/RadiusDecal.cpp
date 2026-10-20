@@ -72,15 +72,23 @@ void RadiusDecalTemplate::xferRadiusDecalTemplate( Xfer *xfer )
 // ------------------------------------------------------------------------------------------------
 /*static*/ void RadiusDecalTemplate::parseRadiusDecalTemplate(INI* ini, void *instance, void * store, const void* /*userData*/)
 {
+	// Retail .rdata 0x010F6440 holds BFME's twelve entries. BFME's template
+	// differs from the reference class after m_name, so the other offsets are
+	// retail's own: no BFME witness names those members yet.
 	static const FieldParse dataFieldParse[] = 
 	{
 		{ "Texture",										INI::parseAsciiString,				NULL,							offsetof( RadiusDecalTemplate, m_name ) },
-		{ "Style",											INI::parseBitString32,				TheShadowNames,		offsetof( RadiusDecalTemplate, m_shadowType ) },
-		{ "OpacityMin",									INI::parsePercentToReal,			NULL,							offsetof( RadiusDecalTemplate, m_minOpacity ) },
-		{ "OpacityMax",									INI::parsePercentToReal,			NULL,							offsetof( RadiusDecalTemplate, m_maxOpacity) },
-		{ "OpacityThrobTime",						INI::parseDurationUnsignedInt,NULL,							offsetof( RadiusDecalTemplate, m_opacityThrobTime ) },
-		{ "Color",											INI::parseColorInt,						NULL,							offsetof( RadiusDecalTemplate, m_color ) },
-		{ "OnlyVisibleToOwningPlayer",	INI::parseBool,								NULL,							offsetof( RadiusDecalTemplate, m_onlyVisibleToOwningPlayer ) },
+		{ "Texture2",										INI::parseAsciiString,				NULL,							0x04 },
+		{ "Style",											INI::parseBitString32,				TheShadowNames,		0x08 },
+		{ "OpacityMin",									INI::parsePercentToReal,			NULL,							0x0C },
+		{ "OpacityMax",									INI::parsePercentToReal,			NULL,							0x10 },
+		{ "OpacityThrobTime",						INI::parseReal,							NULL,							0x14 },
+		{ "RotationsPerMinute",					INI::parseReal,							NULL,							0x2C },
+		{ "Color",											INI::parseColorInt,						NULL,							0x18 },
+		{ "OnlyVisibleToOwningPlayer",	INI::parseBool,								NULL,							0x1C },
+		{ "MaxRadius",									INI::parseReal,							NULL,							0x24 },
+		{ "MinRadius",									INI::parseReal,							NULL,							0x20 },
+		{ "MaxSelectedUnits",						INI::parseUnsignedInt,				NULL,							0x28 },
 		{ 0, 0, 0, 0 }
 	};
 

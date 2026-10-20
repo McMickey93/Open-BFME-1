@@ -3795,7 +3795,6 @@ functions	0x00455DC0	?erase@?$_Rb_tree@JU?$pair@$$CBJVLadderPref@@@_STL@@U?$_Sel
 functions	0x004564A0	?positionStartSpots@@YAXPAVGameInfo@@QAPAVGameWindow@@PAV2@_N@Z
 functions	0x00456570	?erase@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@@_STL@@QAEXU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@V1@@_STL@@@2@@2@0@Z
 functions	0x00456690	?erase@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@@_STL@@QAEIABVAsciiString@@@Z
-functions	0x004582D0	?parseGeneralPersona@ChallengeGenerals@@CAXPAVINI@@PAX1PBX@Z
 functions	0x004583A0	?setPosition@RadiusDecal@@QAEXABUCoord3D@@@Z
 functions	0x004588D0	?createRadiusDecal@RadiusDecalTemplate@@QAEXMMMIHAAVRadiusDecal@@M@Z
 functions	0x00458C80	?createRadiusDecal@RadiusDecalTemplate@@QBEXABUCoord3D@@MPBVPlayer@@AAVRadiusDecal@@@Z

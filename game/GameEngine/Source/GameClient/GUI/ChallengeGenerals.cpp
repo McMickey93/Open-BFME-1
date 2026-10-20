@@ -72,43 +72,6 @@ void ChallengeGenerals::init( void )
 }
 
 
-void ChallengeGenerals::parseGeneralPersona(INI *ini, void *instance, void *store, const void *userData)
-{
-	static const FieldParse dataFieldParse[] = 
-	{
-		{ "StartsEnabled",			INI::parseBool, NULL, offsetof( GeneralPersona, m_bStartsEnabled ) },
-		{ "BioNameString",			INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioName ) },
-		{ "BioDOBString",			INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioDOB ) },
-		{ "BioBirthplaceString",	INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioBirthplace ) },
-		{ "BioStrategyString",		INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioStrategy ) },
-		{ "BioRankString",			INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioRank ) },
-		{ "BioBranchString",		INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioBranch ) },
-		{ "BioClassNumberString",	INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strBioClassNumber ) },
-		{ "BioPortraitSmall",		INI::parseMappedImage, NULL, offsetof( GeneralPersona, m_imageBioPortraitSmall ) },
-		{ "BioPortraitLarge",		INI::parseMappedImage, NULL, offsetof( GeneralPersona, m_imageBioPortraitLarge ) },
-		{ "Campaign",				INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strCampaign ) },
-		{ "PlayerTemplate",			INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strPlayerTemplateName ) },
-		{ "PortraitMovieLeftName",		INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strPortraitMovieLeftName ) },
-		{ "PortraitMovieRightName",		INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strPortraitMovieRightName ) },
-		{ "DefeatedImage",			INI::parseMappedImage, NULL, offsetof( GeneralPersona, m_imageDefeated ) },
-		{ "VictoriousImage",		INI::parseMappedImage, NULL, offsetof( GeneralPersona, m_imageVictorious ) },
-		{ "DefeatedString",			INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strDefeated ) },
-		{ "VictoriousString",		INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strVictorious ) },
-		{ "SelectionSound",			INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strSelectionSound ) },
-		{ "TauntSound1",				INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strTauntSound1 ) },
-		{ "TauntSound2",				INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strTauntSound2 ) },
-		{ "TauntSound3",				INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strTauntSound3 ) },
-		{ "WinSound",						INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strWinSound ) },
-		{ "LossSound",					INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strLossSound ) },
-		{ "PreviewSound",					INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strPreviewSound ) },
-		{ "NameSound",					INI::parseAsciiString, NULL, offsetof( GeneralPersona, m_strNameSound ) },
-		
-		{ 0, 0, 0, 0 }
-	};
-	ini->initFromINI(store, dataFieldParse);
-}
-
-
 extern "C" const FieldParse __identifier("?m_creditsFieldParseTable@CreditsManager@@2QBUFieldParse@@B")[];
 
 

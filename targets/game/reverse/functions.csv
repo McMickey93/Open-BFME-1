@@ -127836,7 +127836,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?parseGameClientRandomVariable@INI@@SAXPAV1@PAX1PBX@Z,,0x000B8F60,113,game/GameEngine/Source/Common/INI/ini.cpp,matched,
 ?parseGameDataDefinition@GlobalData@@SAXPAVINI@@@Z,,0x00085C20,1171,game/GameEngine/Source/Common/GlobalDataParseDefinition.cpp,matched,
 ?parseGameLogicRandomDelay@@YAXPAVINI@@PAXPAVGameLogicRandomVariable@@@Z,,0x00287750,59,game/GameEngine/Source/GameLogic/Object/Update/BoneFXUpdate.cpp,matched,
-?parseGeneralPersona@ChallengeGenerals@@CAXPAVINI@@PAX1PBX@Z,,0x004582D0,20,game/GameEngine/Source/GameClient/GUI/ChallengeGenerals.cpp,matched,
 ?parseGeometryActive@GeometryInfo@@SAXPAVINI@@PAX1PBX@Z,,0x0087DE10,61,game/GameEngine/Source/Common/System/GeometryParseActiveAndOffset.cpp,matched,object FieldParse table 0x010913E0 GeometryActive
 ?parseGeometryHeight@GeometryInfo@@SAXPAVINI@@PAX1PBX@Z,,0x0087F180,78,game/GameEngine/Source/Common/System/GeometryParseHeightAndMajorRadius.cpp,matched,object FieldParse table 0x010913E0 GeometryHeight; sibling of parseGeometryIsSmall at 0x0087F160
 ?parseGeometryIsSmall@GeometryInfo@@SAXPAVINI@@PAX1PBX@Z,,0x0087F160,32,game/GameEngine/Source/Common/System/GeometryIsSmall_Thunk.cpp,matched,clean C++ thunk; retail scanBool returns bool not int (shared ini.h header disagrees) and GeometryInfo has no vptr (shared geometry.h wrongly derives from Snapshot); local replica sidesteps both
