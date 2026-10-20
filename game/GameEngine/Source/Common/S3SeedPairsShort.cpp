@@ -1,5 +1,5 @@
-// Four short stack-pair seeders: 0x000C8830, 0x0015BB80, 0x0015E860 and
-// 0x0018CC20.
+// Three short stack-pair seeders: 0x0015BB80, 0x0015E860 and 0x0018CC20.
+// (0x000C8830 is Money::DoXfer, now in Common/RTS/Money_xfer.cpp.)
 //
 // The narrowest member of the family: fill the two-byte pair from one mov al,1,
 // hand its address to virtual slot ten, then make exactly ONE further virtual
@@ -55,16 +55,6 @@ struct BfmeSubObject
 };
 
 
-class Gen_000C8830
-{
-public:
-	void bfmeSeed(BfmeSeedTarget *target);
-
-private:
-	char m_bfmeHead[0x04];
-	BfmeSubObject m_bfmeItem;				// +0x04
-};
-
 class Gen_0015BB80
 {
 public:
@@ -94,18 +84,6 @@ private:
 	char m_bfmeHead[0x24];
 	BfmeSubObject m_bfmeItem;				// +0x24
 };
-
-// ?bfmeSeed@Gen_000C8830@@QAEXPAVBfmeSeedTarget@@@Z
-void Gen_000C8830::bfmeSeed(BfmeSeedTarget *target)
-{
-	BfmeSeedPair pair;
-
-	pair.m_bfmeFirst = 1;
-	pair.m_bfmeSecond = 1;
-
-	target->bfmeSeed(&pair);
-	target->bfmeTakeAt74(&m_bfmeItem);
-}
 
 // ?bfmeSeed@Gen_0015BB80@@QAEXPAVBfmeSeedTarget@@@Z
 void Gen_0015BB80::bfmeSeed(BfmeSeedTarget *target)
