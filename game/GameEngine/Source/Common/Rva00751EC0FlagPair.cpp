@@ -42,13 +42,25 @@ public:
 	virtual bool bind( void *configuration );
 };
 
+// The existing retail provider owns the direct call through ILT 00011CBB.
+class Xfer;
+class Rva00776AC0Owner
+{
+public:
+	void rva00776AC0(Xfer *xfer);
+};
+
 class Rva00751EC0Owner
 {
 public:
 	void updateTarget( Rva00751EC0Target *target );
 
 private:
-	void prepare( Rva00751EC0Target *target );
+	void prepare( Rva00751EC0Target *target )
+	{
+		reinterpret_cast<Rva00776AC0Owner *>(this)->rva00776AC0(
+			reinterpret_cast<Xfer *>(target));
+	}
 	unsigned char m_opaque[0x280];
 	unsigned char m_configuration;
 };
