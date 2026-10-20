@@ -141,7 +141,7 @@ extern void *g_vtbl_0110F9E8[];
 extern void *g_vtbl_0110FA14[];
 extern void *g_vtbl_0111098C[];
 extern void *g_vtbl_011109CC[];
-extern void *g_vtbl_01110A0C[];
+extern "C" void *__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_01110A4C[];
 extern "C" char DefaultModuleTemplate6Concrete_vtbl8;
 extern "C" char DefaultModuleTemplate6Concrete_vtbl4;
@@ -1096,7 +1096,7 @@ public:
     {
         *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_0110F9AC;
         *((volatile unsigned char *)this + 0x0c) = 0;
-        *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)g_vtbl_01110A0C;
+        *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)this + 0x10) = 0;
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111200;
         *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_011111FC;
@@ -2543,7 +2543,7 @@ SphereEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, SPHERE_EMIS
     if (result != 0) {
         *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
         *((volatile unsigned char *)result + 0x0c) = 0;
-        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_01110A0C;
+        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
         *(volatile unsigned int *)result = (unsigned int)g_vtbl_01111200;
         *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_011111FC;
@@ -3789,7 +3789,7 @@ ConcreteModuleTemplate<ModuleTag<5, SPHERE_EMISSION_VOLUME_MODULE_KEY, SPHERE_EM
     slots[1] = (unsigned int)g_vtbl_0110F9AC;
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
-    slots[2] = (unsigned int)g_vtbl_01110A0C;
+    slots[2] = (unsigned int)__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@");
     slots[4] = 0;
     slots[0] = (unsigned int)g_vtbl_01111200;
     slots[1] = (unsigned int)g_vtbl_011111FC;
