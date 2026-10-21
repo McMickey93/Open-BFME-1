@@ -127,106 +127,19 @@ OCLUpdate::~OCLUpdate( void )
 {
 }
 
-//-------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------
-// ?update@OCLUpdate@@UAE?AW4UpdateSleepTime@@XZ present-unmatched
-UpdateSleepTime OCLUpdate::update( void )
-{
-	if( getObject()->isDisabled() )
-	{
-		m_nextCreationFrame++;
-		return UPDATE_SLEEP_NONE;
-	}
-
-	const OCLUpdateModuleData *data = getOCLUpdateModuleData();
-
-	// Test if the OCL update is faction dependant. If so, check for faction changes
-	if (data->m_isFactionTriggered)
-	{
-		Player *player = getObject()->getControllingPlayer();
-
-		// Test for when a player captures the building
-		if (m_isFactionNeutral)
-		{
-			if( player && player->isPlayableSide() )
-			{
-				m_currentPlayerColor = player->getPlayerColor();
-				m_isFactionNeutral = FALSE;
-				setNextCreationFrame();
-			}
-		}
-		// Test for when the building has been made neutral or when it changes faction
-		else
-		{
-			// If this is no longer under player control, then we set the faction to neutral
-			if( !player || !player->isPlayableSide() )
-			{
-				m_isFactionNeutral = TRUE;
-			}
-			// If another player has taken control, reset the timer
-			else if( player && player->getPlayerColor() != m_currentPlayerColor)
-			{
-				m_currentPlayerColor = player->getPlayerColor();
-				setNextCreationFrame();
-			}
-		}
-
-		// If the building is neutal, skip futher update
-		if (m_isFactionNeutral)
-			return UPDATE_SLEEP_NONE;
-	}
-
-/// @todo srj use SLEEPY_UPDATE here
-	if( shouldCreate() )
-	{
-		if( m_nextCreationFrame == 0 )
-		{
-			// You don't get to actually spread the first try, you start on a timer, then go
-			setNextCreationFrame();
-			return UPDATE_SLEEP_NONE;
-		}
-
-		setNextCreationFrame();
-
-		Coord3D creationCoord;
-		if( getOCLUpdateModuleData()->m_isCreateAtEdge )
-			creationCoord = TheTerrainLogic->findClosestEdgePoint( getObject()->getPosition() );
-		else
-			creationCoord = *getObject()->getPosition();
-
-		// If this is faction triggered, search through the faction specific OCLs to find the match
-		if (data->m_isFactionTriggered)
-		{
-			std::string playerFactionName("");
-
-			Player *player = getObject()->getControllingPlayer();
-			if (!player) return UPDATE_SLEEP_NONE;
-			
-			const PlayerTemplate *playerT = player->getPlayerTemplate();
-			if (!playerT) return UPDATE_SLEEP_NONE;
-
-			// Get and store the faction side to compare with the faction ocl list
-			if (playerT->getSide().str()) playerFactionName = playerT->getSide().str();
-
-			// Loop through the list of faction ocls to find the matching faction that triggeres the specific ocls
-			for (OCLUpdateModuleData::FactionOCLList::const_iterator it = data->m_factionOCL.begin(); it != data->m_factionOCL.end(); ++it)
-			{
-				OCLUpdateModuleData::FactionOCLInfo info = *it;
-				if (playerFactionName == info.m_factionName)
-				{
-					ObjectCreationList::create( info.m_ocl, getObject(), &creationCoord, getObject()->getPosition(), getObject()->getOrientation() );
-					break;
-				}
-			}
-		}
-		// Use the non faction OCL information
-		else
-		{
-			ObjectCreationList::create( data->m_ocl, getObject(), &creationCoord, getObject()->getPosition(), getObject()->getOrientation() );
-		}
-	}
-	return UPDATE_SLEEP_NONE;
-}
+// Retail OCLUpdate::update (0x00298BB0) is implemented in OCLUpdateUpdate.cpp.
+// Preserve the existing native string equality body at 0x00832760 in this TU.
+template bool _STL::operator==<char, _STL::char_traits<char>, _STL::allocator<char> >(
+    const _STL::string &, const _STL::string &);
+// Keep the unique native const-iterator helpers when removing their old caller.
+template OCLUpdateModuleData::FactionOCLList::const_iterator
+    OCLUpdateModuleData::FactionOCLList::begin() const;
+template OCLUpdateModuleData::FactionOCLList::const_iterator
+    OCLUpdateModuleData::FactionOCLList::end() const;
+template const OCLUpdateModuleData::FactionOCLInfo &
+    OCLUpdateModuleData::FactionOCLList::const_iterator::operator*() const;
+template OCLUpdateModuleData::FactionOCLList::const_iterator &
+    OCLUpdateModuleData::FactionOCLList::const_iterator::operator++();
 
 //-------------------------------------------------------------------------------------------------
 // ?resetTimer@OCLUpdate@@QAEXXZ present-unmatched
