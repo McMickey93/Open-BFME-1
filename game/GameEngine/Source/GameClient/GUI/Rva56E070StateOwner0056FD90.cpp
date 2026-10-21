@@ -3,6 +3,7 @@
 // Full control flow and six-state outgoing-argument EH choreography are reconstructed.
 // cl: /O2 /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/GameEngine/Source/GameClient
 #include "unicode_string.h"
+#include "ascii_string.h"
 #include "game_window.h"
 // Same inline destructor as the canonical implementation; no duplicate type.
 inline UnicodeString::~UnicodeString() { ((StringBase<unsigned short> *)this)->releaseBuffer(); }
@@ -15,7 +16,7 @@ class Rva56E070StateOwner : public BfmeThingME {
 public:
  char pad0[0x258]; int state; int direction; char pad260[4];
  GameWindow *arg264,*arg268,*context26c;
- void finishCurrent(); void rva0056D070(); int rva0056FD90();
+ void finishCurrent(); void rva0056D070(); int rva0056FD90(); void finishState15();
 };
 class __multiple_inheritance FunctorTarget;
 typedef void (FunctorTarget::*FunctorMethod)();
@@ -72,4 +73,36 @@ int Rva56E070StateOwner::rva0056FD90() {
  }
  else if(state==6)rva0056D070();
  return 1;
+}
+
+// Retail 0x0056DB70 (467 bytes): the save-disk check the late-state dispatcher
+// runs for state 15. It asks GetDiskFreeSpaceExA about the save directory (or
+// C:\ without one); under 15 MB free it shows GUI:Error / APT:SaveFileDiskFull
+// with the same bound callback as rva0056FD90 and moves to state 0x12,
+// otherwise to state 4.
+class GameState { public: AsciiString getSaveDirectory() const; };
+extern GameState *TheGameState;
+extern "C" __declspec(dllimport) int __stdcall GetDiskFreeSpaceExA(const char *,
+ unsigned __int64 *, unsigned __int64 *, unsigned __int64 *);
+// Retail tests the returned string inline: data present and its 16-bit
+// length non-zero, compared as a word. StringBase<char>::Header (refcount,
+// then the length) is private to the string classes, hence this view.
+struct Rva0056DB70StringData { int refCount; unsigned short length; };
+static inline bool hasText(const AsciiString &s) {
+ const Rva0056DB70StringData *data = *(const Rva0056DB70StringData *const *)&s;
+ return data && data->length != 0;
+}
+void Rva56E070StateOwner::finishState15() {
+ AsciiString path("C:\\");
+ if(TheGameState && hasText(TheGameState->getSaveDirectory()))
+  path = TheGameState->getSaveDirectory();
+ unsigned __int64 freeBytes = 0;
+ if(GetDiskFreeSpaceExA(path.str(),&freeBytes,0,0) && freeBytes < 0xF00000) {
+  ((Rva0056FD90MessageCall)&Rva00522990ConfigureMessageBox)(0,
+    ((Rva0056FD90Text *)TheGameText)->slot10("GUI:Error",0),
+    ((Rva0056FD90Text *)TheGameText)->slot10("APT:SaveFileDiskFull",0),
+    Rva0056FD90NullHolder(),Rva0056DB00FunctorHolder(bind56FD90(this)));
+  state=0x12;
+ }
+ else state=4;
 }
