@@ -1,6 +1,7 @@
-// ?rva009A2750@CollisionManagerImpl@@QAEXXZ
+// ?merge@CollisionManagerImpl@@QAEXXZ
 // partial score=0.9304 date=2026-10-20
-// CollisionManagerImpl::rva009A2750, retail 0x009A2750 (460 B): the
+// CollisionManagerImpl::merge, retail 0x009A2750 (460 B; UpdateSort in
+// collisionmanager_impl.cpp declares it as rva009A2750 -- rename on landing): the
 // bottom-up merge sort of each axis endpoint list that UpdateSort (0x009A3AD0)
 // calls on its rebuild path. Four 12-byte {head,tail,count} queues on the
 // stack; the list is dealt alternately into queues 0/1, merged in runs of
@@ -22,12 +23,12 @@ struct Rva009A3AD0Endpoint
 	Rva009A3AD0Endpoint *m_next;	// +0x04
 	class Rva009A45A0CollisionData *m_node;	// +0x08
 	unsigned int m_isMax : 1;	// +0x0c
-	Real m_value;	// +0x10
+	Real value;	// +0x10
 };
 class CollisionManagerImpl
 {
 public:
-	void rva009A2750();
+	void merge();
 	Rva009A45A0CollisionData *m_root;	// +0x00
 	unsigned int m_nodeCount;	// +0x04
 	Rva009A45A0CollisionData *m_dirty;	// +0x08
@@ -42,7 +43,7 @@ struct SortChain {
     Rva009A3AD0Endpoint *head, *tail;
     unsigned count;
 };
-void CollisionManagerImpl::rva009A2750()
+void CollisionManagerImpl::merge()
 {
     for(unsigned index=0;index<m_axisCount;++index) {
         SortChain lists[4];
@@ -71,7 +72,7 @@ void CollisionManagerImpl::rva009A2750()
                 for(;;) {
                     SortChain *chosen;
                     if(left && a->count) {
-                        if(right && b->count && a->head->m_value>b->head->m_value) { chosen=b; --right; }
+                        if(right && b->count && a->head->value>b->head->value) { chosen=b; --right; }
                         else { chosen=a; --left; }
                     } else if(right && b->count) {
                         chosen=b; --right;
