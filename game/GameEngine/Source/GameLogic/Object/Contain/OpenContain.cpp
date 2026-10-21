@@ -139,41 +139,10 @@ OpenContainModuleData::OpenContainModuleData( void )
 //-------------------------------------------------------------------------------------------------
 // byte-exact reconstruction: game/GameEngine/Source/GameLogic/Object/Contain/OpenContainConstructorThunk.cpp
 // ??0OpenContain@@ present-unmatched
-OpenContain::OpenContain( Thing *thing, const ModuleData* moduleData ) : UpdateModule( thing, moduleData )
-{
+// The BFME constructor is owned by OpenContainConstructorThunk.cpp.
+// The Zero Hour layout here emitted an unclaimed competing definition;
+// callers must use the existing BFME provider.
 
-	// initialize our lists
-	m_containList.clear();
-	m_objectEnterExitInfo.clear();
-	m_playerEnteredMask = 0;
-	m_lastUnloadSoundFrame = 0;
-	m_lastLoadSoundFrame = 0;
-	m_containListSize = 0;
-	m_stealthUnitsContained = 0;
-	m_doorCloseCountdown = 0;
-
-	//Added By Sadullah Nader
-	//Initializations inserted
-	m_rallyPoint.zero();
-	m_rallyPointExists = FALSE;
-	//
-	m_conditionState.clear();
-	m_firePointStart = -1;
-	m_firePointNext = 0;
-	m_firePointSize = 0;
-	m_noFirePointsInArt = false;
-	m_whichExitPath = 1;
-	m_loadSoundsEnabled = TRUE;
-  
-  m_passengerAllowedToFire = getOpenContainModuleData()->m_passengersAllowedToFire; 
-  // overridable by setPass...()  in the parent interface (for use by upgrade module)
-
-	for( Int i = 0; i < MAX_FIRE_POINTS; i++ )
-	{		
-		m_firePoints[ i ].Make_Identity();
-	}  // end for i
-
-}
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
