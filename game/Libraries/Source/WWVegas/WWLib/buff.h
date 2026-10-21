@@ -64,7 +64,10 @@ class Buffer {
 #ifdef BFME_BUFFER_DTOR_OUT_OF_LINE
 	~Buffer(void);
 #else
-	~Buffer(void) { Reset(); }
+	// Scope exits inline to Reset; only buff.cpp owns the 40-byte destructor.
+	// Imported-inline suppresses the non-retail Reset tail-jump COMDAT that
+	// MSVC otherwise exports here. Force-inline keeps calls out of the IAT.
+	__declspec(dllimport) __forceinline ~Buffer(void) { Reset(); }
 #endif
 
 		Buffer & operator = (Buffer const & buffer);
