@@ -1,6 +1,8 @@
-// Retail 0x00110790 forwards callback arguments one and three to the
-// receiver at ILT 0x0001F546, which accepts two stack arguments and ECX.
-class Rva00110790Receiver
+// Retail 0x00110790 forwards callback arguments one and three to
+// GameState::addPostProcessSnapshot through its ILT slot 0x0001F546.
+class Snapshot;
+
+class GameState
 {
 };
 
@@ -9,13 +11,13 @@ extern void j_0001f546();
 template <class R, class A, class B>
 __forceinline R call2(void (*p)(), void *self, A a, B b)
 {
-	typedef R (Rva00110790Receiver::*F)(A, B);
+	typedef R (GameState::*F)(A, B);
 	union { void (*p)(); F f; } u;
 	u.p = p;
-	return (((Rva00110790Receiver *)self)->*u.f)(a, b);
+	return (((GameState *)self)->*u.f)(a, b);
 }
 
-void __cdecl rva00110790Forward(void *first, Rva00110790Receiver *receiver, void *third)
+void __cdecl rva00110790Forward(Snapshot *snapshot, GameState *state, unsigned int sequence)
 {
-	call2<void>(j_0001f546, receiver, first, third);
+	call2<void>(j_0001f546, state, snapshot, sequence);
 }

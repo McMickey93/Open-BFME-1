@@ -1,7 +1,10 @@
 // cl: /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
 // stlport
-// Retail 0x0010FE90, 204 bytes. The callback at 0x00110790 proves the
-// receiver and two-argument thiscall ABI; the owner's semantic name is unknown.
+// GameState::addPostProcessSnapshot, retail 0x0010FE90, 204 bytes. EA's
+// WorldBuilder labels name it; the callback at 0x00110790 proves the receiver
+// and two-argument thiscall ABI, and the ILT slot fits (Snapshot *, unsigned).
+// Open-BFME-2's twin (0x002DCF6C) reads the second argument as a load
+// sequence number stored beside each snapshot.
 #define _STLP_NO_EXCEPTIONS 1
 #include <list>
 #include <string.h>
@@ -12,10 +15,12 @@ struct Rva0010EBE0Element
 	Rva0010EBE0Element(void *body) : m_body((int)body) {}
 };
 
+class Snapshot;
+
 struct Rva0010ECA0Elem
 {
-	void *m_a;
-	void *m_b;
+	Snapshot *m_snapshot;
+	unsigned int m_sequence;
 };
 
 // Keep STLport's real push_front visible, but out of line as in retail.
@@ -43,31 +48,31 @@ public:
 	virtual const char *name();
 };
 
-class Rva00110790Receiver
+class GameState
 {
 public:
-	void rva0010fe90(void *item, void *value);
+	void addPostProcessSnapshot(Snapshot *snapshot, unsigned int sequence);
 private:
 	unsigned char m_unmodelled_00[0x48];
 	_STL::list<Rva0010EBE0Element> m_items; // +0x48
 	Rva0010ECA0List m_pairs;               // +0x4C
 };
 
-void Rva00110790Receiver::rva0010fe90(void *item, void *value)
+void GameState::addPostProcessSnapshot(Snapshot *snapshot, unsigned int sequence)
 {
-	if (item == 0)
+	if (snapshot == 0)
 		return;
 
-	const char *name = ((Rva0010FE90Named *)item)->name();
+	const char *name = ((Rva0010FE90Named *)snapshot)->name();
 	if (name != 0)
 	{
 		if (strcmp(name, "Object") == 0)
 		{
 			// Retail passes the address of the original four-byte argument.
-			m_items.push_front(reinterpret_cast<const Rva0010EBE0Element &>(item));
+			m_items.push_front(reinterpret_cast<const Rva0010EBE0Element &>(snapshot));
 			Rva0010ECA0Elem pair;
-			pair.m_a = item;
-			pair.m_b = value;
+			pair.m_snapshot = snapshot;
+			pair.m_sequence = sequence;
 			m_pairs.push_back(pair);
 			return;
 		}
@@ -75,9 +80,9 @@ void Rva00110790Receiver::rva0010fe90(void *item, void *value)
 			return;
 	}
 
-	m_items.push_back(Rva0010EBE0Element(item));
+	m_items.push_back(Rva0010EBE0Element(snapshot));
 	Rva0010ECA0Elem pair;
-	pair.m_a = item;
-	pair.m_b = value;
+	pair.m_snapshot = snapshot;
+	pair.m_sequence = sequence;
 	m_pairs.m_list.push_back(pair);
 }
