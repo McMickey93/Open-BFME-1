@@ -85,7 +85,7 @@ class Rva006DE5A0LodRenderSlot
 	{
 		for( int i = 0; i < m_count; ++i )
 		{
-			if( m_entries[ i ].m_name.compareNoCase( name ) == 0 )
+			if( ((const StringBase<char> *)&m_entries[ i ].m_name)->compareNoCase( *(const StringBase<char> *)&name ) == 0 )
 				return i;
 		}
 		return -1;
