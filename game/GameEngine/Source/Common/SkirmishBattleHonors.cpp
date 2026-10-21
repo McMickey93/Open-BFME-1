@@ -5,6 +5,13 @@
 #include "Common/AsciiString.h"
 #include "Common/UnicodeString.h"
 
+// Retail cleanup calls releaseBuffer directly; keep the genuine forwarding
+// destructor visible, as in unicode_string.cpp.
+inline UnicodeString::~UnicodeString()
+{
+    ((StringBase<wchar_t> *)this)->releaseBuffer();
+}
+
 extern UnicodeString getUnicodeDateBuffer( SYSTEMTIME timeValue );
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/SkirmishBattleHonors.h
