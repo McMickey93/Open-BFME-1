@@ -1,10 +1,14 @@
 // ?advanceAnimation@Rva0076C080@@QAEXXZ
 // cl: /O2 /Ob2 /DNDEBUG /MD /Iinputs/reference/shims/sweep /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug
+// stlport
 // BFME model-draw animation step (Zero Hour twin: the animation half of W3DModelDraw::doDrawModule).
 // Distance fade, per-track frame advance and the transition/idle restart; owner layout is address-derived.
+#define __PLACEMENT_VEC_NEW_INLINE
 #include "wwmath.h"
 #include "ww3d.h"
 #include <stddef.h>
+#include "hanim.h"
+#include <algorithm>
 #pragma intrinsic(sqrt, fabs)
 typedef unsigned int U32;
 struct Coord0076C080 { float x,y,z; };
@@ -471,3 +475,81 @@ typedef char CheckFlags0076C080[offsetof(Rva0076C080,u148)==0x148?1:-1];
 typedef char CheckTransition0076C080[offsetof(Rva0076C080,b173)==0x173?1:-1];
 typedef char CheckSync0076C080[offsetof(Rva0076C080,b1fc)==0x1fc?1:-1];
 typedef char CheckTail0076C080[offsetof(Rva0076C080,b231)==0x231?1:-1];
+
+// Retail 0x0076BF20: 278-byte construction-animation update.
+// Both clamps use the native reference-returning min; the first reference
+// survives Get_Num_Frames. The 0.01f constant is retail 0x01076C24 (0x3c23d70a).
+struct Engine0076BF20 {
+    unsigned char unknown00[0x30];
+    int mode30;
+    unsigned int unknown34;
+    float value38;
+};
+class GameEngine;
+extern GameEngine *TheGameEngine;
+
+class Rva0076BF20ObjectBuildRate;
+struct ClientObject0076BF20 {
+    unsigned char unknown00[0xFC];
+    Rva0076BF20ObjectBuildRate *animationStateFC;
+};
+
+class Rva0076BF20AnimationUpdate {
+public:
+    unsigned char unknown00[8];
+    ClientObject0076BF20 *object08;
+    unsigned char unknown0C[0xD0];
+    HAnimClass *animationDC;
+    float currentFrameE0;
+    float previousFrameE4;
+    unsigned char unknownE8[0x68];
+    unsigned char enabled150;
+    unsigned char unknown151[0xBB];
+    float animationValue20C;
+
+    void update();
+};
+
+// Object storage observed at retail +0x220; the named BfmeHostYA callee
+// below is independently matched at 0x001C3460 (ECX receiver; ST0 result).
+class Rva0076BF20ObjectBuildRate {
+public:
+    unsigned char unknown00[0x220];
+    float value220;
+};
+class BfmeHostYA { public: float bfmeGetYA(); };
+
+void Rva0076BF20AnimationUpdate::update()
+{
+    if ((enabled150 & 0x10) == 0)
+        return;
+    if (!animationDC)
+        return;
+    Rva0076BF20ObjectBuildRate *buildRate = object08->animationStateFC;
+    if (!buildRate)
+        return;
+
+    if (((Engine0076BF20 *)TheGameEngine)->mode30 == 1)
+        animationValue20C = buildRate->value220;
+
+    if (animationValue20C == 0.0f) {
+        previousFrameE4 = 0.0f;
+        currentFrameE0 = 0.0f;
+        return;
+    }
+
+    float nextFrame = ((BfmeHostYA *)buildRate)->bfmeGetYA() * ((Engine0076BF20 *)TheGameEngine)->value38
+        + animationValue20C * 0.01f;
+
+    const float one = 1.0f;
+    const float &clamped = std::min(nextFrame, one);
+    int lastFrame = animationDC->Get_Num_Frames() - 1;
+    float lastFrameAsFloat = static_cast<float>(lastFrame);
+    float product = lastFrameAsFloat * clamped;
+    float frameLimit = std::min(product, lastFrameAsFloat);
+
+    if (frameLimit > currentFrameE0) {
+        previousFrameE4 = currentFrameE0;
+        currentFrameE0 = frameLimit;
+    }
+}
