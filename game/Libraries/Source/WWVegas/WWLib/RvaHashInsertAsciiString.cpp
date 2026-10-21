@@ -229,6 +229,11 @@ typedef _STL::hashtable<Rva00461250Value, AsciiString, rts::hash<AsciiString>,
 	Rva00461250ExtractKey, _STL::equal_to<AsciiString>,
 	_STL::allocator<Rva00461250Value> > AsciiStringIntHash00461250;
 
+// The independently verified resize owner is RvaHashResizeAsciiString0045FDC0.cpp.
+// Retain that out-of-line specialization instead of emitting an inline copy
+// under this translation unit's insertion optimization settings.
+template <> void AsciiStringIntHash00461250::resize(unsigned int);
+
 // retail 0x00461250
 void BfmeHashInsertAnchor00461250( AsciiStringIntHash00461250 &table, const Rva00461250Value &value )
 {
