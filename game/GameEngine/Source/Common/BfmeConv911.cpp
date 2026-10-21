@@ -25,39 +25,6 @@ void bfmeGo911A(void)
 	}
 }
 
-class RayCollisionTestClass;
-
-// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2/aabtree.h
-class AABTreeClass
-{
-public:
-	struct CullNodeStruct;
-	char m_bfmePad[0xc];
-	CullNodeStruct *Nodes;
-private:
-	bool Cast_Ray_Recursive(CullNodeStruct *n, RayCollisionTestClass &r);
-	friend class BfmeThing911B;
-};
-
-class BfmeThing911B
-{
-public:
-	void bfmeGo911B(void *a);
-	void bfmeElse911B(void *a);
-	char m_bfmePad[0x90];
-	AABTreeClass *m_bfmeSub;
-};
-
-void BfmeThing911B::bfmeGo911B(void *a)
-{
-	AABTreeClass *s = m_bfmeSub;
-	if (s) {
-		s->Cast_Ray_Recursive(s->Nodes, *(RayCollisionTestClass *)a);
-		return;
-	}
-	bfmeElse911B(a);
-}
-
 class BfmeObj911C
 {
 public:
