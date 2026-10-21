@@ -1,5 +1,9 @@
 // ?gen008CBDF0@@YAXPAX0H0@Z
-// partial score=0.0364 date=2026-09-28
+// partial score=0.0381 date=2026-10-22
+extern "C" void _ReadWriteBarrier(void);
+extern "C" void _WriteBarrier(void);
+#pragma intrinsic(_ReadWriteBarrier)
+#pragma intrinsic(_WriteBarrier)
 // ?gen008CBDF0@@YAXPAEPADPAURva008CBDF0Movie@@PAH@Z
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD
 // Retail 0x008CBDF0: Apt serialized-block pointer walker, 1757 bytes, cdecl
@@ -17,11 +21,20 @@
 // only when un-relocating. Idle step (d_008A30C0 on the registry) runs every
 // 16 values and after every tag. Case bodies are in retail's layout order and
 // the align+4 case falls through into the +4 case.
-// Measured: code ret at +0x6D8 vs retail +0x6DC; 1487 non-reloc diffs; shape
-// 0.847 (prior bank 764B, shape 0.224). Residue: cursor EBX / array EBP where
-// retail has cursor EBP / array EBX; the array case's un-relocate block sits
-// before the relocate block (retail places it after the kind==1 arm);
-// 0x12345678 kept in EBP.
+// Measured: code ret at +0x6D8 vs retail +0x6DC; 1484 non-reloc diffs; shape
+// 0.849 (prior bank 764B, shape 0.224). The five null-value return tails now
+// match retail's three distinct blocks (createFloat alone; createInteger and
+// createBoolean sharing; kind==8 and kind==4 sharing): MSVC 7.1 cross-jumps
+// identical tails, so the createFloat `return 0` carries _ReadWriteBarrier()
+// while the kind==8/kind==4 null arms carry _WriteBarrier() and the kind==4
+// arm is spelled in the same if/else form as the kind==8 arm. Residue: cursor
+// EBX / array EBP where retail has cursor EBP / array EBX (and retail spills
+// the array to [esp+0x20] while ours spills the cursor); the array case's
+// un-relocate block sits before the relocate block (retail lays out the
+// relocate arm as the fall-through, +0085, with un-relocate at +0106);
+// 0x12345678 kept in EBP; retail's createFloat tail also reloads
+// `mov edi,[esp+0x28]`. Ruled out here: the /O1 /Ox /Ob0-2 /G5-G7 /GB /Oy-
+// flag sweep (best 0.532) and an int-returning placeholder ABI (same mirror).
 struct AptPoolNode
 {
 	void *m_vtable;
@@ -115,6 +128,7 @@ static __forceinline AptValue *createFloat(float value)
 		object->m_float = value;
 		return (AptValue *)object;
 	}
+	_ReadWriteBarrier();
 	return 0;
 }
 
@@ -235,12 +249,12 @@ static __forceinline unsigned char *align4(unsigned char *cursor)
 	return (unsigned char *)(((unsigned int)cursor + 3) & ~3u);
 }
 
-void __cdecl gen008CBDF0(unsigned char *block, char *base, Rva008CBDF0Movie *movie, int *serial)
+void __cdecl gen008CBDF0(void *block, void *base, int movie, void *serial)
 {
 	int unrelocate = movie == 0;
 	g_rva8CD130IdleHook->step();
-	int tag = *block;
-	unsigned char *cursor = block + 1;
+	int tag = *(unsigned char *)block;
+	unsigned char *cursor = (unsigned char *)block + 1;
 	if (tag == 0)
 		return;
 	do
@@ -273,8 +287,8 @@ void __cdecl gen008CBDF0(unsigned char *block, char *base, Rva008CBDF0Movie *mov
 					{
 						value->release();
 					}
-					array->items[i] = (AptValue *)*serial;
-					++*serial;
+					array->items[i] = (AptValue *)*(int *)serial;
+					++*(int *)serial;
 					if (i % 16 == 0)
 						g_rva8CD130IdleHook->step();
 				}
@@ -288,27 +302,45 @@ void __cdecl gen008CBDF0(unsigned char *block, char *base, Rva008CBDF0Movie *mov
 				for (int i = 0; i < array->count; ++i)
 				{
 					int index = (int)array->items[i];
-					++*serial;
-					Rva008CBDF0Constant *constant = &movie->constants[index];
+					++*(int *)serial;
+					Rva008CBDF0Constant *constant = &((Rva008CBDF0Movie *)movie)->constants[index];
 					AptValue *value = 0;
 					if (constant->kind == 1)
 					{
-						if (movie->constants[index].text)
-							movie->constants[index].text += (unsigned int)movie;
-						value = ((AptValue *(__cdecl *)(char *))d_008c3c00)(movie->constants[index].text);
-						if (movie->constants[index].text)
-							movie->constants[index].text -= (unsigned int)movie;
+						if (((Rva008CBDF0Movie *)movie)->constants[index].text)
+							((Rva008CBDF0Movie *)movie)->constants[index].text += (unsigned int)movie;
+						value = ((AptValue *(__cdecl *)(char *))d_008c3c00)(((Rva008CBDF0Movie *)movie)->constants[index].text);
+						if (((Rva008CBDF0Movie *)movie)->constants[index].text)
+							((Rva008CBDF0Movie *)movie)->constants[index].text -= (unsigned int)movie;
 					}
 					else if (constant->kind == 6)
 						value = createFloat(constant->floatValue);
 					else if (constant->kind == 7)
 						value = createInteger(constant->intValue);
 					else if (constant->kind == 8)
-						{ void *raw = Rva008C5D70Alloc(12); value = raw ? (AptValue *)new (raw) BfmeDerivedVNF(movie->constants[index].intValue) : 0; }
+					{
+						void *raw = Rva008C5D70Alloc(12);
+						if (raw)
+							value = (AptValue *)new (raw) BfmeDerivedVNF(((Rva008CBDF0Movie *)movie)->constants[index].intValue);
+						else
+						{
+							_WriteBarrier();
+							value = 0;
+						}
+					}
 					else if (constant->kind == 5)
 						value = createBoolean(constant->intValue != 0);
 					else if (constant->kind == 4)
-						{ void *raw = Rva008C5D70Alloc(12); value = raw ? (AptValue *)new (raw) BfmeDerivedVN4(movie->constants[index].intValue) : 0; }
+					{
+						void *raw = Rva008C5D70Alloc(12);
+						if (raw)
+							value = (AptValue *)new (raw) BfmeDerivedVN4(((Rva008CBDF0Movie *)movie)->constants[index].intValue);
+						else
+						{
+							_WriteBarrier();
+							value = 0;
+						}
+					}
 					else if (constant->kind == 3)
 						value = g_bfmeFallbackDB;
 					array->items[i] = value;

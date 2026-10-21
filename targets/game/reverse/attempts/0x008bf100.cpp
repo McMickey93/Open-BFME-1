@@ -1,5 +1,5 @@
 // ?d_008bf100@@YAXXZ
-// partial score=0.9991959260251944 date=2026-09-26
+// partial score=0.9992 date=2026-09-26
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 // Address-derived APT registry initializer; reconstructed ABI consumes one int.
 // Probe symbol: ?d_008bf100@@YAXH@Z (the dump ledger still has the no-arg name).

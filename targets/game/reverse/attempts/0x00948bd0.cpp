@@ -194,14 +194,16 @@ public:
     char pad04[0x14-4]; Vector2 field14; Vector2 field1c; unsigned field24;
 };
 struct Rva00948BD0MaterialOverride { int tag; Vector2 field04; };
+class Rva00948BD0RenderState : public DX8Wrapper {
+public:
+    static __forceinline RenderStateStruct &RS() { return render_state; }
+    static __forceinline unsigned &RC() { return render_state_changed; }
+};
 static __forceinline void Rva00948BD0SetIndexBaseOffset(unsigned offset)
 {
-    RenderStateStruct *state = (RenderStateStruct *)0x01340EC0;
-    if (state->index_base_offset == offset) return;
-    unsigned changed = *(unsigned *)0x0133F49C;
-    changed |= 0x00020000;
-    state->index_base_offset = (unsigned short)offset;
-    *(unsigned *)0x0133F49C = changed;
+    if (Rva00948BD0RenderState::RS().index_base_offset == offset) return;
+    Rva00948BD0RenderState::RS().index_base_offset = offset;
+    Rva00948BD0RenderState::RC() |= 0x00020000;
 }
 class DX8PolygonRendererClass : public MultiListObjectClass {
 public:
