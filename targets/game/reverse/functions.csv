@@ -30716,7 +30716,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?bfmeGoBEH@BfmeThingBEH@@QAEXXZ,,0x00589020,18,game/GameEngine/Source/Common/BfmeConv451.cpp,matched,
 ?bfmeGoBFA@BfmeThingBPA@@QAEXPAX00@Z,,0x00093F20,19,game/GameEngine/Source/Common/BfmeConv439.cpp,matched,identity repair: real BfmeThingBPA member; thiscall ECX is the Rva00093E60Map receiver; second argument is const AsciiString pointer forwarded through ILT 0x00036CFA to matched map operator[] body 0x00093E60; full 19-byte body returns 12
 ?bfmeGoBFD@BfmeThingBFD@@QAEHXZ,,0x0017CA00,19,game/GameEngine/Source/Common/BfmeConv453.cpp,matched,
-?bfmeGoBFF@BfmeThingBFF@@QAEXXZ,,0x0040FF90,19,game/GameEngine/Source/Common/BfmeConv454.cpp,matched,
 ?bfmeGoBFG@BfmeThingBFG@@QAEXXZ,,0x0045C470,19,game/GameEngine/Source/Common/BfmeConv455.cpp,matched,
 ?bfmeGoBFH@BfmeThingBFH@@QAEXPAX@Z,,0x005898C0,19,game/GameEngine/Source/Common/BfmeConv456.cpp,matched,
 ?bfmeGoBGB@@YAHPAVBfmeSubBGB@@@Z,,0x002EFCD0,20,game/GameEngine/Source/Common/BfmeConv458.cpp,matched,
@@ -172533,3 +172532,4 @@ _CommUdpProcess,,0x00817B30,2207,game/Libraries/Source/DirtySock/commudp.cpp,mat
 ?zeroOutStats@StatsCollector@@AAEXXZ,,0x000A22F0,63,game/GameEngine/Source/Common/StatsCollector.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/bfme2-twin-ilt-confirmed-names.md;model=claude-opus-5-5;host=ymo-workstation
 ??0AssistedTargetingUpdateModuleData@@QAE@XZ,,0x00123780,27,game/GameEngine/Source/GameLogic/Object/Update/AssistedTargetingUpdateFriendNewModuleDataThunk.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/bfme2-twin-ilt-confirmed-names.md;model=claude-opus-5-5;host=ymo-workstation
 ??0TeamInQueue@@QAE@XZ,,0x00161220,50,game/GameEngine/Source/Common/Rva00161220Ctor.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/bfme2-twin-ilt-confirmed-names.md;model=claude-opus-5-5;host=ymo-workstation
+?removeLastChar@DisplayString@@UAEXXZ,,0x0040FF90,19,game/GameEngine/Source/Common/BfmeConv454.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/bfme2-twin-ilt-confirmed-names.md;model=claude-opus-5-5;host=ymo-workstation
