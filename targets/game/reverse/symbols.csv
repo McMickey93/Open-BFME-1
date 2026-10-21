@@ -10393,7 +10393,7 @@ name,address,notes
 ??RBfmeScoreEntryLess@@QBE_NPBUBfmeScoreEntry@@0@Z,0x00570420,thiscall ret 8 functor operator()(a b) used by the STL sort/heap helpers of the AptScoreScreen (0x005724D0 0x00575450 ... 20 call sites): orders by TheVictoryConditions->hasAchievedVictory(entry+4 player) then getRelationship against entry player +0x230 team == ALLIES then isPlayerDead 0x000C9D00 then the +0x0C +0x08 ints and (*entry)+0x18
 ??RBfmeStringLocaleLess@@QBE_NVAsciiString@@0@Z,0x0000B4B0,Open-BFME5 lower_bound comparator thunk for AsciiString-keyed locale-compare set at 0x00631C70/0x004F18C0; target 0x00631350 still a dump
 ??RBfmeTreeCompare@@QBE_NPBX0@Z,0x0000A9A2,Open-BFME5 ILT the red-black tree find at 0x00141220 compares through
-??RGameSortStruct@@QAE_NPAVGameSpyStagingRoom@@0@Z,0x000317D7
+??RGameSortStruct@@QAE_NPAVGameSpyStagingRoom@@0@Z,0x000317D7,route=0x0053EDD0; ILT of the staging-room comparator body (ilt_oracle CONFIRMED exact)
 ??RGameSortStruct@@QBE_NPAVGameSpyStagingRoom@@0@Z,0x000317D7,ILT the staging-room tree insert calls at 0x0053F80B on its comparator subobject at this+8
 ??RGameTextStringCompare00437020@@QBE_NPBX0@Z,0x004367F0,TU-local stateless comparator ABI alias; raw caller materializes unused ECX and two stack arguments; ILT3285D routes to matched comparator ret8
 ??RHotKeyAsciiStringLess@@QBE_NABVAsciiString@@0@Z,0x00043D42,HotKey retail AsciiString comparator thunk
@@ -80990,7 +80990,7 @@ name,address,notes
 ?compare@AsciiString@@QBEHABV1@@Z,0x000220C5,HotKey retail StringBase compare thunk
 ?compare@AsciiString@@QBEHPBD@Z,0x0004B01A,ILT of StringBase<char>::compare(const char*) used by CustomMatch handleSlashCommands 0x00539E60
 ?compare@AsciiStringCompareShim@@QBEHABVAsciiString@@@Z,0x000220C5,AsciiString::compare via ILT thunk
-?compare@GameSortStructCallOperatorShim@@QAE_NPAVGameSpyStagingRoom@@0@Z,0x0053EDD0,GameSortStruct operator() incremental-link thunk target through a TU-local forwarding shim
+?b_0053edd0@@YAXXZ,0x0053EDD0,GameSortStruct::operator() body; route target of ILT 0x000317D7 (E9 rel32 -> 0x0053EDD0)
 ?compare@Gen_001eda90Sub@@QBEHABVAsciiString@@@Z,0x000220C5,Open-BFME5 the AsciiString compare ILT the guard at 0x001EDA90 uses on its sub-object
 ?compare@Gen_t_00062fa0_mc4@@QBEHABU1@@Z,0x0005FEB0,family-emit payload member
 ?compare@Gen_t_00093170_mc4@@QBEHABU1@@Z,0x00090570,family-emit payload member
