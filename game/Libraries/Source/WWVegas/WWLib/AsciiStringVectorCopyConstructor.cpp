@@ -8,5 +8,12 @@
 #include "ascii_string.h"
 #include <vector>
 
+// Assignment has a separate retail owner at 0x000DE2C0. Instantiating the
+// copy constructor's vector must not supply an incompatible assignment copy.
+namespace _STL {
+template <> vector<AsciiString> &vector<AsciiString>::operator=(
+    const vector<AsciiString> &);
+}
+
 template class _STL::vector<AsciiString,
 	_STL::allocator<AsciiString> >;

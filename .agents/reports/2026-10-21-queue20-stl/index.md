@@ -6,3 +6,4 @@ link are distinguished; a successful byte check alone does not establish LINKED.
 | Original queue rank | Evidence |
 | --- | --- |
 | 6 | [ICoord2D resize](task-06.md) |
+| 7 | [AsciiString vector assignment](task-07.md) |
