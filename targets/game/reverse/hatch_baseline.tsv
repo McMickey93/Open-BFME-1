@@ -1019,6 +1019,7 @@ address_global	game/Libraries/Source/DirtySock/Y4TextToValue.c	g_Rva0130A5ACEmpt
 address_global	game/Libraries/Source/DirtySock/Y5SmallHelpers.c	g_Rva012C47A4	2
 address_global	game/Libraries/Source/DirtySock/commudp.cpp	g_Rva0130AD08Count	3
 address_global	game/Libraries/Source/DirtySock/commudp.cpp	g_Rva0130AF38Lock	5
+address_global	game/Libraries/Source/DirtySock/commudp.cpp	g_Rva0130B188List	4	allow=3e8c2d6e2a46f6a9c0f3dde033729d2812d5a0b7
 address_global	game/Libraries/Source/EA/Apt/AptStringMethodLookup.cpp	g_Va01136744	2	allow=c4f249dfa55d1b196ac05c879471fbb3b317d7a4
 address_global	game/Libraries/Source/EA/Apt/AptStringMethodLookup.cpp	g_Va01136754	2	allow=c4f249dfa55d1b196ac05c879471fbb3b317d7a4
 address_global	game/Libraries/Source/EA/Apt/AptStringMethodLookup.cpp	g_Va01136760	2	allow=c4f249dfa55d1b196ac05c879471fbb3b317d7a4
@@ -2156,7 +2157,6 @@ emit	game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeBuffer.cpp	*	283
 emit	game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayGatherDebugStatsThunk.cpp	*	4490
 emit	game/GameEngineDevice/Source/W3DDevice/GameClient/W3DDisplayStringManagerNewDisplayStringThunk.cpp	*	774
 emit	game/GameEngineDevice/Source/W3DDevice/GameClient/W3DMouseLoadD3DCursorTexturesThunk.cpp	*	559
-emit	game/Libraries/Source/DirtySock/commudp.cpp	*	466
 emit	game/Libraries/Source/WWVegas/WW3D2/D3DXVec4TransformThunk.cpp	*	600
 emit	game/Libraries/Source/WWVegas/WW3D2/DX8CapsComputeCapsThunk.cpp	*	2220
 emit	game/Libraries/Source/WWVegas/WW3D2/FontCharsClass_Create_GDI_FontMethodThunk.cpp	*	398

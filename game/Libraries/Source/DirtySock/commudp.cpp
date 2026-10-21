@@ -185,6 +185,13 @@ struct CommUdpRef
 	void *m_value;           // +0x220
 };
 
+// The transport list head: the retail global at VA 0x0130B188 (.data), empty
+// at startup and pushed/popped by the C transport file
+// (Y4CommTransportLife.c), which declares it extern. The one definition
+// lives in this TU, the one that reads it; before this the symbol had no
+// definition at all and the link of both files failed on it.
+extern "C" struct CommUdpRef *g_Rva0130B188List = 0;
+
 struct CommUdpBuf
 {
 	int m_count;             // +0x00
@@ -220,7 +227,6 @@ extern "C" int Rva00818620(struct CommUdpRef *comm);
 extern "C" void Rva008186C0(struct CommUdpRef *comm, void *payload);
 extern "C" int Rva008187E0(struct CommUdpRef *comm, void *payload);
 extern "C" int Rva00818AD0(struct CommUdpRef *comm);
-extern "C" struct CommUdpRef *g_Rva0130B188List;
 
 int CommUdpProcess(unsigned int tick)
 {
