@@ -120,7 +120,7 @@ private:
 class ThingTemplate
 {
 public:
-	const ModuleInfo &getDrawModuleInfo() const { return m_drawModuleInfo; }
+	static __forceinline const ModuleInfo &localDrawModuleInfo(const ThingTemplate *thing) { return thing->m_drawModuleInfo; }
 
 private:
 	char m_pad000[0x2a0];
@@ -160,7 +160,7 @@ void W3DTerrainVisual::addProp(const ThingTemplate *tTemplate, const Coord3D *po
 		state.set(MODELCONDITION_NIGHT);
 
 	AsciiString modelName;
-	const ModuleInfo &mi = tTemplate->getDrawModuleInfo();
+	const ModuleInfo &mi = ThingTemplate::localDrawModuleInfo(tTemplate);
 	if (mi.getCount() > 0)
 	{
 		const Rva00731B70ModuleData *mdd = mi.getNthData(0);
