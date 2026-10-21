@@ -26,6 +26,7 @@ template <typename T> class StringBase
 public:
 	void set( const StringBase<T> &other );
 	void trim();
+	int compare( const T *text ) const;
 
 private:
 	StringBase() : m_data( 0 ) {}
@@ -296,6 +297,7 @@ public:
 	void _bfme_stopGameMovie();
 	void bfmeProvide( const char *name, void *argument, bool setting );
 	void _bfme_renderCredits();
+	void rva0051EFE0();
 
 private:
 	Bool m_b258;
@@ -540,3 +542,90 @@ BfmeAptScreenMainMenu::BfmeAptScreenMainMenu( void *context )
 }
 
 BfmeAptScreenMainMenu *g_rva012F49B4MainMenu;
+
+// ---------------------------------------------------------------------------
+// Retail 0x0051EFE0 (381 bytes): BfmeAptScreenMainMenu primary-vtable slot 12
+// (+0x30, through ILT 0x00026B2A). Unless the screen at +0x27C is
+// "CreditsMenu", it closes credits (helper 0x0051D690) or reverses the
+// PreParchmentMapFade_StartNew transition, clears TheShell+0x59, and while
+// +0x264 holds 8 (the resolution-change state the constructor sets) it puts
+// up the GUI:ValidateDisplayMode prompt with two bound-method callbacks
+// (ILTs 0x0001B932 / 0x0003512A), a 10-second timeout and a visible cursor.
+// No name survives for the slot, so the method keeps its address.
+class GameWindowTransitionsHandler
+{
+public:
+	void reverse( AsciiString groupName );
+};
+extern GameWindowTransitionsHandler *TheTransitionHandler;
+
+class Shell
+{
+public:
+	unsigned char m_pad[ 0x59 ];
+	Bool m_b59;
+};
+extern Shell *TheShell;
+
+class Rva0051D690
+{
+public:
+	void apply();
+};
+
+void bfmeSetVNH( float seconds );
+
+class Rva0051EF00FunctorHolder
+{
+public:
+	Rva0051EF00FunctorHolder( FunctorBinding binding );
+	Rva0051EF00FunctorHolder( const Rva0051EF00FunctorHolder & );
+	~Rva0051EF00FunctorHolder();
+	void *m_ptr;
+};
+
+class Rva0051EF70FunctorHolder
+{
+public:
+	Rva0051EF70FunctorHolder( FunctorBinding binding );
+	Rva0051EF70FunctorHolder( const Rva0051EF70FunctorHolder & );
+	~Rva0051EF70FunctorHolder();
+	void *m_ptr;
+};
+
+class UnicodeStringYX;
+struct Rva522990RefPtr;
+void Rva00522990ConfigureMessageBox( int, const UnicodeStringYX &,
+	const UnicodeStringYX &, Rva522990RefPtr, Rva522990RefPtr );
+typedef void (__cdecl *Rva0051EFE0MessageCall)( int, const UnicodeString &,
+	const UnicodeString &, Rva0051EF00FunctorHolder, Rva0051EF70FunctorHolder );
+
+void j_0001b932();	// existing 5-byte address identity, routes to 0x0051D2E0
+void j_0003512a();	// existing 5-byte address identity, routes to 0x0051D300
+
+void BfmeAptScreenMainMenu::rva0051EFE0()
+{
+	if( ((const StringBase<char> *)&m_p27c)->compare( "CreditsMenu" ) == 0 )
+		return;
+
+	if( m_b25b )
+		((Rva0051D690 *)this)->apply();
+	else if( m_b25c )
+		TheTransitionHandler->reverse( AsciiString( "PreParchmentMapFade_StartNew" ) );
+	TheShell->m_b59 = false;
+
+	if( m_i264 != 8 )
+		return;
+
+	union { FunctorMethod method; struct { unsigned code; int delta; } words; } a, c;
+	m_b25e = false;
+	a.words.code = (unsigned)&j_0003512a; a.words.delta = 0;
+	c.words.code = (unsigned)&j_0001b932; c.words.delta = 0;
+	((Rva0051EFE0MessageCall)&Rva00522990ConfigureMessageBox)( 2,
+		TheGameText->fetch( "GUI:ValidateDisplayModeTitle" ),
+		TheGameText->fetch( "GUI:ValidateDisplayModeMessage" ),
+		Rva0051EF00FunctorHolder( FunctorBinding( c.method, (FunctorTarget *)this ) ),
+		Rva0051EF70FunctorHolder( FunctorBinding( a.method, (FunctorTarget *)this ) ) );
+	bfmeSetVNH( 10.0f );
+	TheMouse->_bfme_setEngineVisibility( true );
+}
