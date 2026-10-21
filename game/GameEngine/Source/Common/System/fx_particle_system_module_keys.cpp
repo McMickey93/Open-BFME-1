@@ -7,14 +7,17 @@
 
 extern "C" unsigned int __cdecl strlen(const char *str);
 
-// Inline AsciiString: ctor/concat inline to the matched StringBase<char> machinery
-// (ctor 0x888bc0, concat 0x887d60), str() folds to the m_data+8 / "" the target uses.
+// Inline AsciiString: ctor/string operations inline to the matched
+// StringBase<char> machinery (ctor 0x888bc0, concat 0x887d60), str() folds to
+// the m_data+8 / "" the target uses.  Keep concat out of the class: an inline
+// AsciiString::concat member also emits a 50-byte COMDAT at 0x00061C30, a
+// second name on the body owned by StringBase<char>::concat.  The two call-site
+// statements below inline that same base conversion without emitting a symbol.
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
 class AsciiString {
 public:
     AsciiString(const char *s) { ((StringBase<char> *)this)->StringBase<char>::StringBase(s); }
     ~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
-    void concat(const char *s) { ((StringBase<char> *)this)->concat(s, s ? strlen(s) : 0); }
     const char *str() const { return m_text ? m_text + 8 : ""; }
 
 private:
@@ -38,7 +41,8 @@ const char *DefaultModuleKey<N>::GetValue()
     static AsciiString value("Default");
     static bool once;
     if (!once) {
-        value.concat(GetKey((ModuleCategory)N));
+        const char *key = GetKey((ModuleCategory)N);
+        ((StringBase<char> *)&value)->concat(key, key ? strlen(key) : 0);
         once = true;
     }
     return value.str();

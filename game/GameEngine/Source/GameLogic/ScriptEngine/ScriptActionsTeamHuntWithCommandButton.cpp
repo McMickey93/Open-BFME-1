@@ -257,8 +257,8 @@ void ScriptActions::doTeamHuntWithCommandButton(const AsciiString &teamName,
         if (!foundCommand)
         {
             AsciiString msg = "Error - Team hunt with command button - unit type '";
-            msg.concat(obj->getTemplate()->getName().str());
-            msg.concat("' is not valid for ability ");
+            msg.StringBase<char>::concat(obj->getTemplate()->getName().str());
+            msg.StringBase<char>::concat("' is not valid for ability ");
             msg.StringBase<char>::concat(ability);
             TheScriptEngine->AppendDebugMessage(msg, false);
             continue;
@@ -277,8 +277,8 @@ void ScriptActions::doTeamHuntWithCommandButton(const AsciiString &teamName,
             else
             {
                 AsciiString msg = "Error - Team hunt with command button - unit type '";
-                msg.concat(obj->getTemplate()->getName().str());
-                msg.concat("' requires CommandButtonHuntUpdate in .ini definition to hunt with ");
+                msg.StringBase<char>::concat(obj->getTemplate()->getName().str());
+                msg.StringBase<char>::concat("' requires CommandButtonHuntUpdate in .ini definition to hunt with ");
                 msg.StringBase<char>::concat(ability);
                 TheScriptEngine->AppendDebugMessage(msg, false);
             }

@@ -22,6 +22,7 @@ template <typename T> class StringBase
 
 public:
 	void concat(const StringBase<T> &other);
+	void concat(const T *text);
 
 private:
 	StringBase() : m_data(0) {}
@@ -40,7 +41,10 @@ public:
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
 	~AsciiString() {}
 
-	void concat(const char *text);
+	void concat(const char *text)
+	{
+		((StringBase<char> *)this)->StringBase<char>::concat(text);
+	}
 	void concat(const AsciiString &other)
 	{
 		StringBase<char>::concat(*(const StringBase<char> *)&other);

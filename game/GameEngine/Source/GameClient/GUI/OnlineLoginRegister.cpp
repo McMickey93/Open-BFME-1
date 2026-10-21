@@ -20,6 +20,9 @@ template <typename T> class StringBase
 	friend class AsciiString;
 	friend class UnicodeString;
 
+public:
+	void concat( const T *text );
+
 private:
 	StringBase() : m_data( 0 ) {}
 	StringBase( const T *text );
@@ -54,7 +57,10 @@ public:
 	AsciiString( const AsciiString &other ) : StringBase<char>( other ) {}
 	~AsciiString() {}
 
-	void concat( const char *text );
+	void concat( const char *text )
+	{
+		((StringBase<char> *)this)->StringBase<char>::concat( text );
+	}
 
 	bool isEmpty() const
 	{

@@ -35499,7 +35499,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?concat@?$StringBase@G@@QAEXG@Z,0x0000EA34,0x003968C0,15,game/Libraries/Source/string/StringBase.cpp,matched,concat single wchar_t
 ?concat@?$StringBase@G@@QAEXPBG@Z,0x00037D08,0x00086390,52,game/Libraries/Source/string/StringBase.cpp,matched,
 ?concat@?$StringBase@G@@QAEXPBGH@Z,0x00888600,0x888600,64,game/Libraries/Source/string/StringBase.cpp,matched,
-?concat@AsciiString@@QAEXPBD@Z,,0x00061C30,50,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,icf-owner=?concat@?$StringBase@D@@QAEXPBD@Z
 ?conditionalForward@BfmeThingAMA@@QAEXPAURva00248B40Object@@PAXPAUBfmeStateAMA@@@Z,,0x00248B40,26,game/GameEngine/Source/GameLogic/Object/Contain/HordeContainConditionalForward.cpp,matched,conditional forward when contained by pointer is null
 ?configCallback@@YA?AW4GHTTPBool@@HW4GHTTPResult@@PAD_JPAX@Z,,0x0062EEE0,464,game/GameEngine/Source/GameNetwork/GameSpy/MainMenuUtilsConfigCallback.cpp,matched,only ghttpGetA completedCallback push 0x00A2EEE0 at 0x0062F499 in the unclaimed configHead-shaped body; literal %sLoTRB4MEOnline Config.txt plus wb fopen/fwrite/fclose; ZH configCallback twin; param read at esp+0x24 so bufferLen is 64-bit GHTTPByteCount (_J not H); ret then int3 at +0x1D0
 ?configHeadCallback@@YA?AW4GHTTPBool@@HW4GHTTPResult@@PAD_JPAX@Z,,0x0062F130,1263,game/GameEngine/Source/GameNetwork/GameSpy/MainMenuUtilsConfigHeadCallback.cpp,matched,Exact retail and Zero Hour configHeadCallback twin BFME file and SDK ABI;model=gpt-6-sol
@@ -165518,7 +165517,7 @@ uw_00c3af50,,0x00C3AF50,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;obje
 uw_00c3af70,,0x00C3AF70,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L13516
 uw_00c3af78,,0x00C3AF78,8,game/gen_small/uw_gen_011.cpp,matched,gen-funclet;object-symbol=$L5797
 uw_00c3af90,,0x00C3AF90,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L13516
-uw_00c3afb0,,0x00C3AFB0,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$05@FXParticleSystem@@CAPBDXZ;object-symbol=$L913
+uw_00c3afb0,,0x00C3AFB0,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$05@FXParticleSystem@@CAPBDXZ;object-symbol=$L892
 uw_00c3aff0,,0x00C3AFF0,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
 uw_00c3affb,,0x00C3AFFB,8,game/gen_small/uw_gen_005.cpp,matched,gen-funclet;object-symbol=$L6936
 uw_00c3b020,,0x00C3B020,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
@@ -165532,11 +165531,11 @@ uw_00c3b0e0,,0x00C3B0E0,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;obj
 uw_00c3b0eb,,0x00C3B0EB,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4799
 uw_00c3b110,,0x00C3B110,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
 uw_00c3b130,,0x00C3B130,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
-uw_00c3b150,,0x00C3B150,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$00@FXParticleSystem@@CAPBDXZ;object-symbol=$L829
-uw_00c3b190,,0x00C3B190,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$0A@@FXParticleSystem@@CAPBDXZ;object-symbol=$L797
-uw_00c3b1d0,,0x00C3B1D0,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$02@FXParticleSystem@@CAPBDXZ;object-symbol=$L885
-uw_00c3b210,,0x00C3B210,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$01@FXParticleSystem@@CAPBDXZ;object-symbol=$L857
-uw_00c3b250,,0x00C3B250,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$06@FXParticleSystem@@CAPBDXZ;object-symbol=$L941
+uw_00c3b150,,0x00C3B150,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$00@FXParticleSystem@@CAPBDXZ;object-symbol=$L826
+uw_00c3b190,,0x00C3B190,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$0A@@FXParticleSystem@@CAPBDXZ;object-symbol=$L800
+uw_00c3b1d0,,0x00C3B1D0,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$02@FXParticleSystem@@CAPBDXZ;object-symbol=$L870
+uw_00c3b210,,0x00C3B210,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$01@FXParticleSystem@@CAPBDXZ;object-symbol=$L848
+uw_00c3b250,,0x00C3B250,14,game/GameEngine/Source/Common/System/fx_particle_system_module_keys.cpp,matched,gen-funclet;parent=?GetValue@?$DefaultModuleKey@$06@FXParticleSystem@@CAPBDXZ;object-symbol=$L914
 uw_00c3b290,,0x00C3B290,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
 uw_00c3b29b,,0x00C3B29B,8,game/gen_small/uw_gen_007.cpp,matched,gen-funclet;object-symbol=$L8345
 uw_00c3b2c0,,0x00C3B2C0,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
