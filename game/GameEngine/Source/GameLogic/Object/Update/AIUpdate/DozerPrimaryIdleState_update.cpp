@@ -1,4 +1,15 @@
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Include
+// stlport
+#define _STLP_USE_STATIC_LIB 1
+#define _STLP_NO_EXCEPTIONS 1
+#define BFME_STLP_NODE_ALLOC 1
+#define __PLACEMENT_VEC_NEW_INLINE
+#include <vector>
+#include <bitset>
+
+typedef bool Bool;
+typedef int Int;
+typedef float Real;
 
 enum StateReturnType
 {
@@ -7,6 +18,8 @@ enum StateReturnType
 };
 
 #include "../../../command_source_type.h"
+
+#include "Lib/Coord3D.h"
 
 class Object;
 class Player;
@@ -60,6 +73,13 @@ public:
 		return m_ai;
 	}
 
+	const Coord3D *getPosition() const
+	{
+		return (const Coord3D *)((const char *)this + 0x38);
+	}
+
+	Player *getControllingPlayer() const;
+
 
 
 	unsigned char m_beforeAI[0x200];
@@ -86,7 +106,7 @@ public:
 	virtual void slot000();
 	virtual void slot004();
 	virtual float getBoredTime() const;
-	virtual void slot00c();
+	virtual float getBoredRange() const;
 	virtual void slot010();
 	virtual void slot014();
 	virtual void slot018();
@@ -225,7 +245,177 @@ public:
 extern GameLogic *TheGameLogic;
 extern InGameUI *TheInGameUI;
 extern float g_bfmeUint32Scale;
-extern Object *findObjectToRepair(Object *object);
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/PartitionManager.h
+class PartitionFilter
+{
+public:
+	PartitionFilter() : m_next(0) {}
+	virtual ~PartitionFilter() {}
+	virtual Bool allow(Object *obj) = 0;
+	PartitionFilter *link(PartitionFilter *next);
+
+	PartitionFilter *m_next;
+};
+
+class PartitionFilterSamePlayer : public PartitionFilter
+{
+public:
+	PartitionFilterSamePlayer(const Player *player) : m_player(player) {}
+	virtual ~PartitionFilterSamePlayer() {}
+	virtual Bool allow(Object *obj);
+
+private:
+	const Player *m_player;
+};
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/BitFlags.h
+template <int NUMBITS>
+class BitFlags
+{
+	_STL::bitset<NUMBITS> m_bits;
+
+public:
+	enum BogusInitType { kInit = 0 };
+
+	BitFlags(BogusInitType, Int idx)
+	{
+		m_bits._Unchecked_set((size_t)idx);
+	}
+};
+
+typedef BitFlags<192> KindOfMaskType;
+extern const KindOfMaskType KINDOFMASK_NONE;
+
+class PartitionFilterAcceptByKindOf : public PartitionFilter
+{
+public:
+	// 0x000C3DD0 (ILT 0x000382FD). Visible but out of line, as in
+	// Weapon_bfmeCanAffect.cpp: seeing that the masks are only copied lets
+	// VC7.1 reuse the STRUCTURE mask's stack slot for the SamePlayer filter
+	// built after it, which is retail's 0x68-byte frame.
+	__declspec(noinline) PartitionFilterAcceptByKindOf(const KindOfMaskType &mustBeSet, const KindOfMaskType &mustBeClear)
+		: m_mustBeSet(mustBeSet), m_mustBeClear(mustBeClear) {}
+	virtual ~PartitionFilterAcceptByKindOf() {}
+	virtual Bool allow(Object *obj);
+
+private:
+	KindOfMaskType m_mustBeSet, m_mustBeClear;
+};
+
+class PartitionFilterSameMapStatus : public PartitionFilter
+{
+public:
+	PartitionFilterSameMapStatus(const Object *obj) : m_obj(obj) {}
+	virtual ~PartitionFilterSameMapStatus() {}
+	virtual Bool allow(Object *obj);
+
+private:
+	const Object *m_obj;
+};
+
+struct SimpleObjectIteratorClump
+{
+	Object *m_obj;
+	float m_numeric;
+};
+
+struct SimpleObjectIterator
+{
+	std::vector<SimpleObjectIteratorClump> m_entries;
+	SimpleObjectIteratorClump *m_cursor;
+	Int m_refCount;
+};
+
+struct BfmeWideResult
+{
+	SimpleObjectIterator *m_mpo;
+	BfmeWideResult();
+	BfmeWideResult(const BfmeWideResult &that);
+	~BfmeWideResult()
+	{
+		if (--m_mpo->m_refCount == 0)
+			delete m_mpo;
+	}
+	Object *next() const
+	{
+		if (m_mpo->m_cursor == m_mpo->m_entries.end())
+			return 0;
+		return (m_mpo->m_cursor++)->m_obj;
+	}
+};
+
+class BfmeWideForwardC
+{
+public:
+	BfmeWideResult bfmeForwardWideC(Int a, Real b, Int c, Int d, Int e);
+};
+
+class PartitionManager;
+extern PartitionManager *ThePartitionManager;
+
+class ActionManager
+{
+public:
+	bool canRepairObject(const Object *obj, const Object *objectToRepair, CommandSourceType commandSource);
+};
+extern ActionManager *TheActionManager;
+
+static inline Real distanceSquared2D(const Coord3D *a, const Coord3D *b)
+{
+	Real dx = a->x - b->x;
+	Real dy = a->y - b->y;
+	return dx * dx + dy * dy;
+}
+
+// Retail 0x002B82D0 (505 B). Zero Hour's file-static findObjectToRepair
+// (DozerAIUpdate.cpp); retail passes the dozer in EDI, VC7.1's private
+// convention for a static called from this TU only, and calls it directly
+// from update below. BFME chains the three filters with link as temporaries of
+// the range query (they die right after it, the iterator lives on), and
+// computes the 2D distance itself. The distance is written in both arms of
+// Zero Hour's first/closer test: VC7.1 hoists it and pops dx/dy per arm, as
+// retail does; the dozer position is re-read per object through one pointer.
+static Object *findObjectToRepair(Object *dozer)
+{
+	if (dozer == 0)
+		return 0;
+	if (!dozer->getAIUpdateInterface())
+		return 0;
+	const DozerAIInterface002B9970 *dozerAI = dozer->getAIUpdateInterface()->getDozerAIInterface();
+
+	Object *closestRepairTarget = 0;
+	Real closestRepairTargetDistSqr = 0.0f;
+	const BfmeWideResult &iter = ((BfmeWideForwardC *)ThePartitionManager)->bfmeForwardWideC(
+		(Int)dozer->getPosition(), dozerAI->getBoredRange(), 0,
+		(Int)PartitionFilterSamePlayer(dozer->getControllingPlayer()).link(
+			PartitionFilterAcceptByKindOf(KindOfMaskType(KindOfMaskType::kInit, 7), KINDOFMASK_NONE).link(
+				&PartitionFilterSameMapStatus(dozer))),
+		0);
+	Object *obj;
+	while ((obj = iter.next()) != 0)
+	{
+		if (!TheActionManager->canRepairObject(dozer, obj, CMD_FROM_AI))
+			continue;
+
+		const Coord3D *pos = dozer->getPosition();
+		if (closestRepairTarget == 0)
+		{
+			closestRepairTarget = obj;
+			closestRepairTargetDistSqr = distanceSquared2D(pos, obj->getPosition());
+		}
+		else
+		{
+			Real distSqr = distanceSquared2D(pos, obj->getPosition());
+			if (distSqr < closestRepairTargetDistSqr)
+			{
+				closestRepairTarget = obj;
+				closestRepairTargetDistSqr = distSqr;
+			}
+		}
+	}
+	return closestRepairTarget;
+}
 
 class Rva002B9970DozerPrimaryIdleState : public State002B9970
 {
@@ -275,8 +465,7 @@ StateReturnType Rva002B9970DozerPrimaryIdleState::update()
 		dozerAI->isAnyTaskPending() == false)
 	{
 		m_idleTooLongTimestamp = TheGameLogic->getFrame();
-		Object *repairTarget =
-			(reinterpret_cast<Object *(__cdecl *)(void)>(findObjectToRepair))();
+		Object *repairTarget = findObjectToRepair(dozer);
 		if (repairTarget)
 		{
 			typedef void (AICommandInterface::*RepairFn)(Object *, CommandSourceType);
