@@ -1946,3 +1946,24 @@ correct BFME state view plus helper visibility reproduces every update byte
 while retaining the five-byte destructor. A declaration-only control keeps
 the same14-byte position-copy residue as the GiantBird case. See
 identity_evidence/0015e510-visible-team-position.md.
+
+## A datum that is file-static in retail cannot stay a data row (2026-10-21)
+
+When a bank is exact only while a global is `static`, believe it: retail's
+datum had internal linkage, and MSVC 7.1 schedules around a datum nothing
+outside the TU can alias differently from an external one. Seen twice:
+
+* `INI::load` 0x00853CB0 and the 5-arg load's tail: with `s_xfer` (0x0130CE54)
+  external, the by-value parameter's `lea ecx,[ebp+8]` drops below the
+  `unPrepFile` stores (12 bytes). `ini.cpp` already had it as
+  `static Xfer *s_xfer`.
+* `MemoryPool::_Allocate` 0x00882960 and the bucket refill 0x00882630: the
+  guard-word count (0x0130EA00) is loaded ahead of two block stores only when
+  static, and only if no function in the TU takes its address (a
+  `*(volatile unsigned *)&guard` read in `check()` re-enables aliasing).
+
+Landing: make it `static` and delete its `data_rows.csv` row (a static has no
+EXTERNAL symbol, so `data_rows.py` reports "not defined once").
+`tools/gate_writers.py` accepts a deleted data row; say why in the commit.
+Callers elsewhere that reached the body through a retired `?d_` symbol must
+call it by name in the same commit, or the pre-commit dependency check fails.
