@@ -255,6 +255,7 @@ private:
 	void writeInitialFileInfo();
 	void writeStatInfo();
 	void collectScoreKeeperStats();
+	void zeroOutStats();
 	AsciiString m_statsFileName;
 	UnsignedInt m_moneyWithdrawn;
 	UnsignedInt m_moneyDeposited;
@@ -310,6 +311,33 @@ StatsCollector::StatsCollector()
 	m_timeCount = 0;
 	m_lastUpdate = 0;
 	m_startFrame = TheGameLogic->getFrame();
+}
+
+// StatsCollector::zeroOutStats, retail 0x000A22F0 (63 bytes). The ILT slot
+// fits this private name and Open-BFME-2's matched zeroOutStats is
+// byte-identical; the stores keep retail's order.
+void StatsCollector::zeroOutStats()
+{
+	m_buildCommands = 0;
+	m_moveCommands = 0;
+	m_attackCommands = 0;
+	m_scrollMapCommands = 0;
+	m_aiUnits = 0;
+	m_playerUnits = 0;
+	m_scrollTime = 0;
+	m_moneyDeposited = 0;
+	m_moneyWithdrawn = 0;
+	m_scoreKeeperMoneySpent = 0;
+	m_scoreKeeperMoneyEarned = 0;
+	m_scoreKeeperUnitsDestroyed = 0;
+	m_scoreKeeperUnitsBuilt = 0;
+	m_scoreKeeperUnitsLost = 0;
+	m_scoreKeeperBuildingsDestroyed = 0;
+	m_scoreKeeperBuildingsBuilt = 0;
+	m_scoreKeeperBuildingsLost = 0;
+	m_alliesKilled = 0;
+	m_neutralsKilled = 0;
+	m_enemiesKilled = 0;
 }
 
 void StatsCollector::update()
