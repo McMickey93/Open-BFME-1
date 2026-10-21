@@ -196,7 +196,7 @@ void Rva0037FE30::record(Arg1 *arg1, ObjectView *obj, Bool flag)
 	pay.flag = f;
 	m_list.insert(_STL::list<Payload>::iterator(sent), pay);
 
-	o->m_tracker->m_name.set(a->m_name);
+	o->m_tracker->m_name.StringBase<char>::set(a->m_name);
 	o->m_tracker->bfmeSetScalarIndex(a->m_index);
 
 	Slot1FC *slot = o->m_slot1FC;
