@@ -173,7 +173,7 @@ bool Gen003BFB20Owner::probe( void *key )
 		object->m_createdB4 = created;
 		BfmeObj923GState *state = object->m_stateEC;
 		state->m_active = 1;
-		object->m_messageB8.clear();
+		object->m_messageB8.StringBase<char>::clear();
 
 		for ( unsigned int index = 0; index < ((BfmePointerVector *)( owner + 0x14 ))->size(); ++index )
 		{
