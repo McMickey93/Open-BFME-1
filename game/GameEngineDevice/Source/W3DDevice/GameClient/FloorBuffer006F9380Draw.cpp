@@ -16,8 +16,8 @@
 // Retail keeps the flag update after the material store as one `or [mem]`;
 // without the compiler barrier MSVC hoists the flag load above the store into
 // a register (9 bytes longer).  The shader-manager texture stages are ZH
-// W3DShaderManager::m_Textures (W3DRoadBuffer::drawRoads sets 1 = cloud and
-// 2 = noise/lightmap after getShaderPasses, exactly as here).
+// W3DShaderManager::m_Textures; W3DRoadBuffer::drawRoads fills stages 1..3
+// after getShaderPasses, exactly as here.
 extern "C" void _ReadWriteBarrier(void);
 #pragma intrinsic(_ReadWriteBarrier)
 #define _STLP_NO_EXCEPTIONS 1
@@ -46,7 +46,6 @@ class W3DShaderManager { public:
  static int setShader(ShaderTypes,int);
  static int setShroudTex(int);
  static void resetShader(ShaderTypes);
- static TextureBaseClass *m_Textures[8];
 };
 class Player { public: char m_unmodelled00[0x24]; int m_playerIndex; };
 class PlayerList { public: char m_unmodelled00[0xc]; Player *m_local; };
@@ -92,6 +91,13 @@ struct FloorElement006F9380 {
   }
  }
 };
+// The shader manager's eight texture stages are the handle table at 0x012F9D28
+// (Rva00C6C520StaticInit.cpp); retail writes stages 1..3 here, 0x012F9D2C..34.
+class BfmeHandleCX;
+extern BfmeHandleCX g_bfmeTableDU[8];
+static __forceinline TextureBaseClass *&shaderStage006F9380(int stage) {
+ return ((TextureBaseClass **)g_bfmeTableDU)[stage];
+}
 static __forceinline void assignTexture006F9380(TextureBaseClass *&slot,TextureBaseClass *&value) {
  if(value) ++*(unsigned short *)((char *)value+4);
  TextureBaseClass *old=slot;
@@ -180,9 +186,9 @@ void FloorBuffer006F9380::draw(void *unused,bool skipTexture,TextureBaseClass *&
    if(lightmap && globalData->m_useLightMap) shader=W3DShaderManager::ST_ROAD_BASE_NOISE12;
   } else if(lightmap && globalData->m_useLightMap) shader=W3DShaderManager::ST_ROAD_BASE_NOISE2;
   int passes=Rva00716970Lookup(shader);
-  if(!W3DShaderManager::setShroudTex(1)) assignTexture006F9380(W3DShaderManager::m_Textures[0],field1c);
-  assignTexture006F9380(W3DShaderManager::m_Textures[1],cloudmap);
-  assignTexture006F9380(W3DShaderManager::m_Textures[2],lightmap);
+  if(!W3DShaderManager::setShroudTex(1)) assignTexture006F9380(shaderStage006F9380(1),field1c);
+  assignTexture006F9380(shaderStage006F9380(2),cloudmap);
+  assignTexture006F9380(shaderStage006F9380(3),lightmap);
   for(int pass=0;pass<passes;++pass) {
    W3DShaderManager::setShader(shader,pass);
    for(_STL::list<FloorElement006F9380 *>::iterator drawIt=elements.begin();drawIt!=elements.end();++drawIt) {
