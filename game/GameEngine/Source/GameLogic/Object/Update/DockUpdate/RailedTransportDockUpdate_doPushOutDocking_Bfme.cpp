@@ -1,11 +1,16 @@
-// ?doPushOutDocking@RailedTransportDockUpdate@@IAEXXZ
-// partial score=0.9843 date=2026-09-15
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc-
 
+// RailedTransportDockUpdate::doPushOutDocking (retail 0x002CEA90, 446 B).
 // BFME's RailedTransportDockUpdate is four bytes narrower than the Zero Hour
-// class at the dock interface boundary.  Keep this ABI view TU-local: the
-// body is the retail RailedTransportDockUpdate::doPushOutDocking operation,
-// while its class spelling is only a linker-safe source shim.
+// class at the dock interface boundary, so this TU keeps a local ABI view of
+// the class, like its sibling doPullInDocking at 0x002CE900.
+//
+// The body is Zero Hour's: the *=/+= spelling of the push step inside the
+// block that Zero Hour opens with "if( unloader )".  VC7.1 keeps both
+// products on the x87 stack and stores v.z between them only while v lives
+// in that inner block; with v in the outer scope it spills v.x and v.y after
+// each product (460 B).  The redundant test itself is not in retail, so the
+// block stands without it.
 
 typedef float Real;
 typedef unsigned int ObjectID;
@@ -30,16 +35,13 @@ enum ModelConditionFlagType
 	MODELCONDITION_MOVING = 60
 };
 
-struct Coord3DBase
+// class-gate: allow Coord3D the canonical header is the bare 12-byte layout; this body calls Coord3D::normalize (ILT 0x2BD82 -> 0x000FB930), a member it omits (446/446, 0 non-reloc diffs).
+struct Coord3D
 {
 	Real x;
 	Real y;
 	Real z;
-};
 
-struct Coord3D : public Coord3DBase
-{
-public:
 	void normalize();
 };
 
@@ -62,12 +64,12 @@ public:
 
 	const Coord3D *getPosition() const
 	{
-		return &m_position;
+		return &m_cachedPos;
 	}
 
 private:
 	unsigned char m_beforePosition[0x34];
-	Coord3D m_position;
+	Coord3D m_cachedPos;
 };
 
 class ModelConditionFlags
@@ -213,16 +215,11 @@ public:
 	virtual void getExitPosition(Object *docker, Coord3D *position);
 };
 
-class RailedTransportDockUpdateUnloadNextShim
-{
-public:
-	void unloadNext();
-};
-
 class RailedTransportDockUpdate
 {
 protected:
 	void doPushOutDocking();
+	void unloadNext();
 public:
 
 	Object *getObject() const
@@ -254,65 +251,63 @@ void RailedTransportDockUpdate::doPushOutDocking()
 		Object *unloader = TheGameLogic->findObjectByID(m_unloadingObjectID);
 		if (unloader == 0)
 		{
-			reinterpret_cast<RailedTransportDockUpdateUnloadNextShim *>(this)->unloadNext();
+			unloadNext();
 			return;
 		}
 
-		const Coord3D *unloaderPos =
-			(const Coord3D *)((const char *)unloader + 0x38);
-
-		Coord3D destPos;
-		m_dockInterface.getExitPosition(unloader, &destPos);
-		destPos.z = TheTerrainLogic->getGroundHeight(destPos.x, destPos.y);
-
-		Coord3D v;
-		v.x = destPos.x - unloaderPos->x;
-		v.y = destPos.y - unloaderPos->y;
-		v.z = destPos.z - unloaderPos->z;
-		v.normalize();
-
-		// The pair preserves the two retail products before either position sum.
-		Real xy[2] = {
-			v.x * m_pushOutsideDistancePerFrame,
-			v.y * m_pushOutsideDistancePerFrame
-		};
-		v.x = xy[0] + unloaderPos->x;
-		v.z = destPos.z;
-		v.y = xy[1] + unloaderPos->y;
-
-		unloader->setPosition(&v);
-
-		unloader->setModelConditionState();
-
-		Real dx = destPos.x - v.x;
-		Real dy = destPos.y - v.y;
-		Real dz = destPos.z - v.z;
-		Real distSq = sqr(dx) + sqr(dy) + sqr(dz);
-		Real closeEnoughDistance = 3.0f;
-		if (distSq <= sqr(closeEnoughDistance))
 		{
-			Object *us = getObject();
+			const Coord3D *unloaderPos = unloader->getPosition();
 
-			unloader->clearModelConditionState();
+			Coord3D destPos;
+			m_dockInterface.getExitPosition(unloader, &destPos);
+			destPos.z = TheTerrainLogic->getGroundHeight(destPos.x, destPos.y);
 
-			AIUpdateInterface *unloaderAI = unloader->getAIUpdateInterface();
-			if (unloaderAI)
-				unloaderAI->aiIdle(CMD_FROM_AI);
+			Coord3D v;
+			v.x = destPos.x - unloaderPos->x;
+			v.y = destPos.y - unloaderPos->y;
+			v.z = destPos.z - unloaderPos->z;
+			v.normalize();
 
-			unloader->clearDisabled(DISABLED_HELD);
-			unloader->clearStatus(OBJECT_STATUS_UNSELECTABLE);
+			v.x *= m_pushOutsideDistancePerFrame;
+			v.y *= m_pushOutsideDistancePerFrame;
+			v.x += unloaderPos->x;
+			v.y += unloaderPos->y;
+			v.z = destPos.z;
 
-			BFMEDrawableBoneQuery *draw = us->getDrawable();
-			if (unloaderAI && draw)
+			unloader->setPosition(&v);
+
+			unloader->setModelConditionState();
+
+			Real dx = destPos.x - v.x;
+			Real dy = destPos.y - v.y;
+			Real dz = destPos.z - v.z;
+			Real distSq = sqr(dx) + sqr(dy) + sqr(dz);
+			Real closeEnoughDistance = 3.0f;
+			if (distSq <= sqr(closeEnoughDistance))
 			{
-				Coord3D finalPos;
-				draw->getPristineBonePositions("DOCKWAITING07", 0,
-					&finalPos, 0, 1);
-				us->convertBonePosToWorldPos(&finalPos, 0, &finalPos, 0);
-				unloaderAI->aiMoveToPosition(&finalPos, CMD_FROM_AI);
-			}
+				Object *us = getObject();
 
-			reinterpret_cast<RailedTransportDockUpdateUnloadNextShim *>(this)->unloadNext();
+				unloader->clearModelConditionState();
+
+				AIUpdateInterface *unloaderAI = unloader->getAIUpdateInterface();
+				if (unloaderAI)
+					unloaderAI->aiIdle(CMD_FROM_AI);
+
+				unloader->clearDisabled(DISABLED_HELD);
+				unloader->clearStatus(OBJECT_STATUS_UNSELECTABLE);
+
+				BFMEDrawableBoneQuery *draw = us->getDrawable();
+				if (unloaderAI && draw)
+				{
+					Coord3D finalPos;
+					draw->getPristineBonePositions("DOCKWAITING07", 0,
+						&finalPos, 0, 1);
+					us->convertBonePosToWorldPos(&finalPos, 0, &finalPos, 0);
+					unloaderAI->aiMoveToPosition(&finalPos, CMD_FROM_AI);
+				}
+
+				unloadNext();
+			}
 		}
 	}
 }
