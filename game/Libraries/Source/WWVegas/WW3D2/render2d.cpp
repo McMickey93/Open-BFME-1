@@ -46,6 +46,13 @@
 // 0x00881F30/0x00881EB0), as in hash.cpp.  Template instances retail took
 // from objects that did declare them are emitted elsewhere (see the ledger).
 #define _OPERATOR_NEW_DEFINED_
+// Keep the retail Vector2 Clear provider from pointgr.cpp. This TU's
+// array-delete environment emits a different body (operator delete rather
+// than operator delete[]); declare this specialization without defining it.
+#include "vector.h"
+#include "vector2.h"
+template <> void VectorClass<Vector2>::Clear(void);
+
 #include "render2d.h"
 #include "mutex.h"
 #include "ww3d.h"
