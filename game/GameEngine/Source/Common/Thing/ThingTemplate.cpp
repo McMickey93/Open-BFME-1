@@ -1244,69 +1244,10 @@ ThingTemplate::~ThingTemplate()
 } 
 
 //=============================================================================
-// ?resolveNames@ThingTemplate@@QAEXXZ present-unmatched
-void ThingTemplate::resolveNames()
-{
-	Int i, j;
-	
-	//Kris: July 31, 2003
-	//NOTE: Make sure that all code in this function supports caching properly. For example,
-	//      templates can be partially overridden by map.ini files. When this happens, strings
-	//      that have been parsed are looked up, cached, then cleared. The problem is if a string
-	//      gets cached, but not overridden, it will be clear the next time we call this function.
-	//      so we will want to make sure we don't NULL out cached data if the string is empty. A
-	//      concrete example is overriding an object with prerequisites. We just override the portrait.
-	//      So the 1st time we call this function, we get the standard template data. During this first
-	//      call, the strings are looked up, cached, and cleared. Then we override the portrait in the 
-	//      map.ini. The next time we call this function, we look up all the strings again. The prereq
-	//      names didn't used to check for empty strings so they would NULL out all the previous prereqs
-	//      the object had. So be sure to make sure all string lookups don't blindly lookup things -- check
-	//      if the string isNotEmpty first!
-
-	for (i = 0; i < m_prereqInfo.size(); i++)
-	{
-		m_prereqInfo[i].resolveNames();
-	}
-
-	const Int MAX_BF = 32;
-	const ThingTemplate* tmpls[MAX_BF];
-	for (i = 0; i < m_prereqInfo.size(); i++)
-	{
-		Int count = m_prereqInfo[i].getAllPossibleBuildFacilityTemplates(tmpls, MAX_BF);
-		for (j = 0; j < count; j++)
-		{
-			// casting const away is a little evil, but justified in this case:
-			// PropductionPrerequisite should only be allowed 'const' access,
-			// but ThingTemplate can muck with stuff with gleeful abandon. (srj)
-			if( tmpls[ j ] )
-				const_cast<ThingTemplate*>(tmpls[j])->m_isBuildFacility = true;
-			// DEBUG_LOG(("BF: %s is a buildfacility for %s\n",tmpls[j]->m_nameString.str(),this->m_nameString.str()));
-		}
-	}
-	
-	if (isKindOf(KINDOF_COMMANDCENTER)) {
-		// Command centers are considered factories. jba.
-		m_isBuildFacility = true;
-	}
-
-	// keep a pointer to portrait and button image if present for speed later
-	if( TheMappedImageCollection )
-	{
-		if( m_selectedPortraitImageName.isNotEmpty() )
-		{
-			m_selectedPortraitImage = TheMappedImageCollection->findImageByName( m_selectedPortraitImageName );
-			DEBUG_ASSERTCRASH( m_selectedPortraitImage, ("%s is looking for Portrait %s but can't find it. Skipping...", getName().str(), m_buttonImageName.str() ) );
-			m_selectedPortraitImageName.clear();	// we're done with this, so nuke it
-		}
-		if( m_buttonImageName.isNotEmpty() )
-		{
-			m_buttonImage = TheMappedImageCollection->findImageByName( m_buttonImageName );
-			DEBUG_ASSERTCRASH( m_buttonImage, ("%s is looking for ButtonImage %s but can't find it. Skipping...", getName().str(), m_buttonImageName.str() ) );
-			m_buttonImageName.clear();	// we're done with this, so nuke it
-		}
-	}
-
-}
+// The retail resolveNames body is owned by ThingTemplateResolveNames.cpp.
+// Keep the existing native indexing body (0x001DE690) in its original TU.
+template ProductionPrerequisite &
+    _STL::vector<ProductionPrerequisite>::operator[](unsigned int);
 
 //=============================================================================
 #ifdef LOAD_TEST_ASSETS
