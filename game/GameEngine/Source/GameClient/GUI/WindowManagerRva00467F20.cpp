@@ -56,7 +56,7 @@ Bool WindowManager::bfmeRva00467F20(Int index)
 	if (record->m_flags & 2)
 		return false;
 	AsciiString path = record->m_at00;
-	const char *dot = path.find('.');
+	const char *dot = path.StringBase<char>::find('.');
 	if (dot) {
 		Int count = strlen(dot);
 		while (count--)
