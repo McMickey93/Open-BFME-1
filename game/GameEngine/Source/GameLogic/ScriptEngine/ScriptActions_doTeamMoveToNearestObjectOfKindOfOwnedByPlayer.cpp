@@ -1,4 +1,5 @@
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/stringinline /Igame/Libraries/Source/WWVegas/WWLib
+#pragma comment(linker, "/alternatename:?applyPacket@Rva0015A190Owner@@QAEXPAURva0015A190Packet@@H@Z=?d_00159ad0@@YAXXZ")
 // stlport
 // TEAM_MOVE_TO_NEAREST_OBJECT_OF_KINDOF_OWNED_BY_PLAYER (action template 392).
 // Retail RVA 0x002FCA30 walks the player mask from a Parameter, finds each

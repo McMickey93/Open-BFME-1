@@ -1,4 +1,5 @@
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/stringinline /Igame/Libraries/Source/WWVegas/WWLib
+#pragma comment(linker, "/alternatename:?applyPacket@Rva0015A190Owner@@QAEXPAURva0015A190Packet@@H@Z=?d_00159ad0@@YAXXZ")
 // stlport
 // The action template names TEAM_MOVE_TO_NEAREST_OBJECT_OF_KINDOF.
 // Retail RVA 0x002FC800 finds the nearest object with the requested kind bit

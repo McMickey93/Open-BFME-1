@@ -1,4 +1,5 @@
 // cl: /DNDEBUG /MD /EHsc
+#pragma comment(linker, "/alternatename:?applyPacket@Rva0015A190Owner@@QAEXPAURva0015A190Packet@@H@Z=?d_00159ad0@@YAXXZ")
 // Open-BFME: leftover of d_00153d10.asm at 0x0015A130, 66 bytes, ret 8.
 // Only caller is GameLogic::logicMessageDispatcher (0x00397540 via ILT
 // 0x0000DD0A), which passes the looked-up object and 0. The body reads the
