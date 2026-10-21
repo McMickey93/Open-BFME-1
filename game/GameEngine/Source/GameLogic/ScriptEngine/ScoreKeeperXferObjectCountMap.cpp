@@ -72,6 +72,17 @@ public:
 
 typedef _STL::map<const ThingTemplate *, Int> ObjectCountMap;
 
+// Retail calls ILT 0x00017111 -> 0x000EA510. Its ledger provider uses
+// this address-scoped comparator spelling (zhstl_007.cpp); the default
+// comparator's object-symbol is attached to a different body at 0x005D3380.
+// Declare the existing provider without emitting another instantiation.
+struct Gen_lt_000ea510 : public _STL::less<const ThingTemplate *> {};
+typedef _STL::map<const ThingTemplate *, Int, Gen_lt_000ea510> Rva000EA510Map;
+namespace _STL
+{
+	template <> Int &map<const ThingTemplate *, Int, Gen_lt_000ea510>::operator[](const ThingTemplate *const &key);
+}
+
 class ThingFactory;
 
 // TU-local view of the singleton's findTemplate entry point.
@@ -111,7 +122,6 @@ void ScoreKeeper::xferObjectCountMap(Xfer *xfer, ObjectCountMap *map)
 	xfer->xferUnsignedShort(&mapSize);
 
 	Int count;
-	const ThingTemplate *thingTemplate;
 	AsciiString thingTemplateName;
 
 	if (xfer->isStoring())
@@ -119,7 +129,7 @@ void ScoreKeeper::xferObjectCountMap(Xfer *xfer, ObjectCountMap *map)
 		ObjectCountMap::iterator it;
 		for (it = map->begin(); it != map->end(); ++it)
 		{
-			thingTemplate = it->first;
+			const ThingTemplate *thingTemplate = it->first;
 			thingTemplateName = thingTemplate->m_name;
 			xfer->xferAsciiString(&thingTemplateName);
 
@@ -132,14 +142,14 @@ void ScoreKeeper::xferObjectCountMap(Xfer *xfer, ObjectCountMap *map)
 		for (UnsignedShort i = 0; i < mapSize; ++i)
 		{
 			xfer->xferAsciiString(&thingTemplateName);
-			thingTemplate = localTheThingFactory()->findTemplate(thingTemplateName);
+			const ThingTemplate *thingTemplate = localTheThingFactory()->findTemplate(thingTemplateName);
 			if (thingTemplate == 0)
 			{
 				throw XferException(5, 0);
 			}
 
 			xfer->xferInt(&count);
-			(*map)[thingTemplate] = count;
+			(*reinterpret_cast<Rva000EA510Map *>(map))[thingTemplate] = count;
 		}
 	}
 }
