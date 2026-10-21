@@ -835,7 +835,6 @@ dir32,0x012F2578,?theTooltipString@@3VAsciiString@@A,"retail 0x012F2578 is alrea
 dir32,0x012F333C,?TheHeaderTemplateManager@@3PAVGen_0048C5B0@@A,"retail 0x012F333C is already recorded as ?TheHeaderTemplateManager@@3PAVHeaderTemplateManager@@A; reference that name, not a new one"
 dir32,0x012F3638,?g_Va012F3638@@3HA,"retail 0x012F3638 is already recorded as ?g_buttonFlashNumber@@3HA; reference that name, not a new one"
 dir32,0x012F3930,_g_012F3930,"nothing in the ledger owns 0x012F3930. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012F3934,?g_012F3934@@3HA,"nothing in the ledger owns 0x012F3934. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3934,_g_012F3934,"nothing in the ledger owns 0x012F3934. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3EFC,?textEntryGameDescriptionID@@3W4NameKeyType@@A,"nothing in the ledger owns 0x012F3EFC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3F04,?textEntryLadderPasswordID@@3W4NameKeyType@@A,"nothing in the ledger owns 0x012F3F04. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
