@@ -92,6 +92,15 @@ public:
 	ObjectID m_id3f8;
 };
 
+// Locomotor +0x44 is read as a length by the airspace sampler below; ZH has
+// m_offsetIncrement there, which BFME may have moved, so it keeps its offset.
+class Locomotor
+{
+public:
+	unsigned char m_pad[0x44];
+	Real m_unknown44;
+};
+
 class AIUpdateInterface
 {
 public:
@@ -179,6 +188,9 @@ public:
 	virtual void slot81();
 	virtual void slot82();
 	virtual Rva00148C70AIPartner *slot83();
+
+	unsigned char m_pad004[0x1cc - 4];
+	Locomotor *m_curLocomotor;
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Thing.h
@@ -371,6 +383,9 @@ public:
 	Bool rva00149010Query(Object *obj, class BfmeObjGK *query, Real range,
 		Real lowering);
 	Bool rva00148800(class BfmeObjGK *query, Real range, Coord3D *result);
+	Real getNoFlyZoneHeight(Real x, Real y);
+	Int rva00149130SampleAirspace(Object *object, const Coord3D *position,
+		Coord3D *result);
 };
 
 // ?rva00148C70SeparationPush@AerialPathfinder@@QAE_NPAVObject@@PBUCoord3D@@PAMPAU3@@Z
@@ -510,3 +525,79 @@ Bool AerialPathfinder::rva00149010Query(Object *obj, BfmeObjGK *query,
 
 // ?g_rva01094A50@@3MB
 extern const Real g_rva01094A50 = 0.5f;
+
+// Height of the higher of terrain and no-fly ceiling above pt.z.
+inline Real Rva00149130HeightAbove(AerialPathfinder *self, const Coord3D &pt)
+{
+	Real terrain = TheTerrainLogic->getGroundHeight(pt.x, pt.y, 0);
+	Real noFly = self->getNoFlyZoneHeight(pt.x, pt.y);
+	return (noFly > terrain ? noFly : terrain) - pt.z;
+}
+
+// Retail 0x00149130 (657 bytes, ret 0x0C), called five times by 0x00149470.
+// Samples terrain and no-fly ceiling at the centre and four corners offset by
+// the object's bounding-sphere radius, lifts the result by the highest
+// clearance found, lets rva00148C70SeparationPush add its push, and returns
+// whether any clearance was needed. It shares this TU with the separation
+// push: with that body visible VC7.1 knows `best` does not escape through it
+// and hoists TheTerrainLogic's vtable load above best = 0, as retail does.
+// The method's real name is not proven, so it keeps the address token.
+// ?rva00149130SampleAirspace@AerialPathfinder@@QAEHPAVObject@@PBUCoord3D@@PAU3@@Z
+Int AerialPathfinder::rva00149130SampleAirspace(Object *object,
+	const Coord3D *position, Coord3D *result)
+{
+	AIUpdateInterface *ai = object->getAI();
+	if (ai == 0)
+		return 2;
+
+	result->x = 0.0f;
+	result->y = 0.0f;
+	result->z = 0.0f;
+
+	Real best;
+	Real sampleRadius = ai->m_curLocomotor->m_unknown44;
+	Real halfRadius = sampleRadius * 0.5f;
+	Real objectRadius = object->getGeometryInfo().getBoundingSphereRadius();
+	Coord3D pt;
+	Real height;
+	{
+		pt.x = position->x;
+		pt.y = position->y;
+		pt.z = position->z - halfRadius;
+		best = 0.0f;
+		height = Rva00149130HeightAbove(this, pt);
+		if (0.0f < height)
+			best = height;
+	}
+	{
+		pt.x = position->x - objectRadius;
+		pt.y = position->y - objectRadius;
+		pt.z = position->z - sampleRadius * 0.3885f;
+		height = Rva00149130HeightAbove(this, pt);
+		if (best < height)
+			best = height;
+	}
+	{
+		pt.y = position->y + objectRadius;
+		height = Rva00149130HeightAbove(this, pt);
+		if (best < height)
+			best = height;
+	}
+	{
+		pt.x = position->x + objectRadius;
+		height = Rva00149130HeightAbove(this, pt);
+		if (best < height)
+			best = height;
+	}
+	{
+		Real sampleY = position->y - objectRadius;
+		Real terrain = TheTerrainLogic->getGroundHeight(pt.x, sampleY, 0);
+		Real noFly = getNoFlyZoneHeight(pt.x, sampleY);
+		height = (noFly > terrain ? noFly : terrain) - pt.z;
+		if (best < height)
+			best = height;
+	}
+	result->z += best;
+	rva00148C70SeparationPush(object, position, &best, result);
+	return best > 0.0f;
+}
