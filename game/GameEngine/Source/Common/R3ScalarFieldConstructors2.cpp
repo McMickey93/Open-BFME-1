@@ -419,15 +419,18 @@ Rva00651840::Rva00651840()
 	m_0C = 0;
 }
 
-class Rva007BA110
+// Geometry::Geometry, retail 0x007BA110 (32 bytes): the W3D volumetric shadow
+// geometry record. Open-BFME-2's matched Geometry constructor is
+// byte-identical and BFME1's ILT slot confirms the decoration.
+class Geometry
 {
 public:
-	Rva007BA110();
+	Geometry();
 	int m_00, m_04, m_08, m_0C, m_10, m_14, m_18;
 	char m_pad1C[0x44 - 0x1C];
 	int m_44;
 };
-Rva007BA110::Rva007BA110()
+Geometry::Geometry()
 {
 	m_00 = 0;
 	m_04 = 0;
