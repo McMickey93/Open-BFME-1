@@ -63,6 +63,13 @@ const StaticNameKey TheKey_playerAIType("playerAIType");
 
 #include "Common/file.h"
 
+// Keep the independently matched one-argument resize in vector_ICoord2D_resize.cpp.
+// Its retail ABI uses an uninitialized by-value default element.
+namespace _STL {
+template <> void vector<ICoord2D, allocator<ICoord2D> >::resize(size_type);
+}
+
+
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
