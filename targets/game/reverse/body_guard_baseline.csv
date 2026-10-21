@@ -609,7 +609,6 @@ dir32,0x0111BD80,??_7Rva00694E00@@6BSubsystemInterface@@@,"retail 0x0111BD80 is 
 dir32,0x0111C0AC,??_7MilesAudioManager@@6BSnapshot@@@,"nothing in the ledger owns 0x0111C0AC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0111C0C0,??_7MilesAudioManager@@6BSubsystemInterface@@@,"nothing in the ledger owns 0x0111C0C0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0111C2A0,?g_rva0111C2A0@@3QBDB,"retail 0x0111C2A0 is already recorded as ?g_bfmeMsgUVB@@3PADA; reference that name, not a new one"
-dir32,0x0111D770,?g_111d770@@3QBDB,"nothing in the ledger owns 0x0111D770. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0111EDD0,??_7Gen006EF850@@6B@,"retail 0x0111EDD0 is already recorded as ??_7W3DDisplay@@6B@; reference that name, not a new one"
 dir32,0x011217A0,??_7Rva00745B10Owner@@6BView@@@,"retail 0x011217A0 is already recorded as ??_7Rva00745B10Owner@@6BRva0045C1B0Base@@@; reference that name, not a new one"
 dir32,0x01121AE8,??_7GDIFileStream@@6B@,"retail 0x01121AE8 is already recorded as ??_7Gen_00749740@@6B@; reference that name, not a new one"

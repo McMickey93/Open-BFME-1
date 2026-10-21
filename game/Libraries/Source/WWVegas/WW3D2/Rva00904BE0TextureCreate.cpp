@@ -81,7 +81,7 @@ extern Rva00889690Obj *g_rva00889690;
 
 // retail VA 0x0111D770: the "DX8 error " literal the debug stream reports.
 // Not recorded in dir32_addresses.csv, so it keeps an address-derived name.
-extern const char g_111d770[];
+extern const char g_Va0111D770[];
 
 static __forceinline void Rva00904BE0Report(long result)
 {
@@ -90,7 +90,7 @@ static __forceinline void Rva00904BE0Report(long result)
 		_bfme_debugRecordCallsite(1);
 		g_rva00889690->slot60();
 		g_rva00889690->slot6c(0, 0)
-			->slot38((const void *)g_111d770)
+			->slot38((const void *)g_Va0111D770)
 			->slot00((void *)result)
 			->slot4c(1);
 	}
