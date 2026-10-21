@@ -9206,7 +9206,6 @@ pins	0x00771870	?insert_overflow@ObjectIDObjectIDOverflowShim@_STL@@QAEXPAU?$pai
 pins	0x007719C0	?insert_overflow@DeliverPayloadNuggetPayloadInsertOverflowShim@_STL@@QAEXPAUPayload@DeliverPayloadNugget@@ABU34@ABU__false_type@2@I_N@Z
 pins	0x00771D00	?clear@NuggetInsertOverflowShim@_STL@@QAEXXZ
 pins	0x00775470	?getProjectileLaunchOffset@W3DModelDraw@@UBE_NABV?$BitFlags@$0HF@@@W4WeaponSlotType@@HPAVMatrix3D@@W4WhichTurretType@@PAUCoord3D@@4@Z
-pins	0x0077AB30	?stopClientParticleSystems@W3DModelDraw@@IAEXXZ
 pins	0x0077AEA0	?insert_overflow@NuggetInsertOverflowShim@_STL@@QAEXPAUNugget@ModuleInfo@@ABU34@ABU__false_type@2@I_N@Z
 pins	0x00784DB0	?construct@ProductionPrerequisiteConstructShim@_STL@@SAXPAVProductionPrerequisite@@ABV3@@Z
 pins	0x00786BD0	?run@BitFlagsCountInverseIntersectionShim@@QBEHABV1@@Z

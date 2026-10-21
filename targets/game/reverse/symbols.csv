@@ -88693,7 +88693,6 @@ name,address,notes
 ?stop@Rva00592A10Owner@@QAEXXZ,0x000193CB,address-derived active-state stop thunk called by the 0x00592A10 reset
 ?stop@Rva0069AEB0Node@@QAEXH@Z,0x0002C5CF,AEB0 release callee via ILT
 ?stopAllBoneFX@BoneFXUpdate@@QAEXXZ,0x0002728C
-?stopClientParticleSystems@W3DModelDraw@@IAEXXZ,0x0077AB30,destructor route through ILT 0x0001B798 and BFME 20-byte records at this+0x130 identify W3DModelDraw::stopClientParticleSystems
 ?stopDocking@SiegeDockingBehavior@@AAEXXZ,0x00018F89,SiegeDockingBehavior destructor body call target
 ?stopHostingAlready@PeerThreadClass@@QAEXPAX@Z,0x00029FBE,Open-BFME5 zh_sweep packet 0064e570 callee pin
 ?stopMoveDebris@W3DTankDraw@@IAEXXZ,0x00042D52,Open-BFME5 ILT called by W3DTankDraw shroud transition
