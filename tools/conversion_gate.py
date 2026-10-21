@@ -113,7 +113,7 @@ def added_lift_lines(old, new, lines=None):
             path = line[6:]
         elif line.startswith("---") or line.startswith("+++"):
             continue
-        elif line[:1] in "+-":
+        elif line[:1] and line[:1] in "+-":
             if path is None or not path.startswith(("game/", SHIMS)) \
                     or path.startswith("game/gen_small/"):
                 continue
