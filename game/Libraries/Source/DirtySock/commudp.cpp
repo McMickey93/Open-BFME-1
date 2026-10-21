@@ -149,1013 +149,305 @@ extern "C" {
 // The CommUDP tick. Logs "CommUdpProcess: got RAW_PACKET_INIT", closes the
 // connection on timeout, and handles poke packets -- including retargeting the
 // peer when one arrives from an address other than the expected one.
-__declspec(naked) int CommUdpProcess(unsigned int tick)
+// Ported from Open-BFME-2, which rebuilt it as real C from this repo's former
+// lift; the bodies are byte-identical.
+
+// The receive buffer and its state words are one .data region; the ledger names
+// its head g_Rva0130AD08Count (VA 0xe0a720, provisional in commudp.cpp). The
+// transmit-side state the tick touches sits in g_Rva0130AF38Lock's region.
+struct CommUdpRef
 {
-	__asm {
-		push ebp
-		mov ebp, esp
-		sub esp, 44h
-		push esi
-		push edi
-		lea edi,  [ebp-44h]
-		mov ecx, 11h
-		mov eax, 0CCCCCCCCh
-		rep stosd
-		__emit 0A1h
-		__emit 0B0h
-		__emit 0BDh
-		__emit 02Dh
-		__emit 001h   // mov eax, dword ptr [0x12dbdb0]
-		mov dword ptr [ebp-4h], eax
-		mov dword ptr [ebp-14h], 0h
-		mov dword ptr [ebp-1Ch], 0h
-		push 10h
-		push 0h
-		lea eax,  [ebp-30h]
-		push eax
-		__emit 0E8h
-		__emit 05Ah
-		__emit 0FAh
-		__emit 01Dh
-		__emit 000h   // call 0x9F75C4
-		add esp, 0Ch
-		__emit 0C7h
-		__emit 005h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 0FFh
-		__emit 0FFh
-		__emit 0FFh
-		__emit 0FFh   // mov dword ptr [0x130ad10], 0xffffffff
-		mov dword ptr [ebp-38h], 0h
-		__emit 08Bh
-		__emit 00Dh
-		__emit 088h
-		__emit 0B1h
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130b188]
-		mov dword ptr [ebp-18h], ecx
-		jmp L00_817B92
-L05_817B89:
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+78h]
-		mov dword ptr [ebp-18h], eax
-L00_817B92:
-		cmp dword ptr [ebp-18h], 0h
-		je L01_817C5D
-		mov ecx, dword ptr [ebp-18h]
-		cmp dword ptr [ecx+7Ch], 0h
-		je L02_817C58
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+7Ch]
-		cmp eax, dword ptr [ebp-38h]
-		je L02_817C58
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+7Ch]
-		mov dword ptr [ebp-38h], edx
-		mov dword ptr [ebp-0Ch], 10h
-		lea eax,  [ebp-0Ch]
-		push eax
-		lea ecx,  [ebp-30h]
-		push ecx
-		push 0h
-		push 220h
-		push 130AD18h
-		mov edx, dword ptr [ebp-38h]
-		push edx
-		__emit 0E8h
-		__emit 06Bh
-		__emit 05Eh
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FDA50
-		add esp, 18h
-		mov dword ptr [ebp-0Ch], eax
-		cmp dword ptr [ebp-0Ch], 0h
-		jle L02_817C58
-		mov eax, dword ptr [ebp-0Ch]
-		sub eax, 8h
-		__emit 0A3h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130ad10], eax
-		movzx ecx, byte ptr [ebp-28h]
-		shl ecx, 8h
-		movzx edx, byte ptr [ebp-27h]
-		or ecx, edx
-		shl ecx, 8h
-		movzx eax, byte ptr [ebp-26h]
-		or ecx, eax
-		shl ecx, 8h
-		movzx edx, byte ptr [ebp-25h]
-		or ecx, edx
-		__emit 089h
-		__emit 00Dh
-		__emit 014h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130ad14], ecx
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 001h   // cmp dword ptr [0x130ad18], 1
-		jne L03_817C37
-		push 12C4E3Ch
-		__emit 0E8h
-		__emit 04Ch
-		__emit 06Bh
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 4h
-L03_817C37:
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 002h   // cmp dword ptr [0x130ad18], 2
-		jne L04_817C4D
-		push 12C4E64h
-		__emit 0E8h
-		__emit 036h
-		__emit 06Bh
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 4h
-L04_817C4D:
-		mov eax, dword ptr [ebp-14h]
-		add eax, 1h
-		mov dword ptr [ebp-14h], eax
-		jmp L01_817C5D
-L02_817C58:
-		jmp L05_817B89
-L01_817C5D:
-		__emit 08Bh
-		__emit 00Dh
-		__emit 088h
-		__emit 0B1h
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130b188]
-		mov dword ptr [ebp-18h], ecx
-		jmp L06_817C71
-L34_817C68:
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+78h]
-		mov dword ptr [ebp-18h], eax
-L06_817C71:
-		cmp dword ptr [ebp-18h], 0h
-		je L07_818199
-		__emit 0E8h
-		__emit 080h
-		__emit 06Dh
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FEA00
-		mov dword ptr [ebp+8h], eax
-		cmp dword ptr [ebp-1Ch], 0h
-		jne L08_817CC9
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ebp-38h]
-		cmp edx, dword ptr [ecx+7Ch]
-		jne L08_817CC9
-		mov eax, dword ptr [ebp-18h]
-		cmp dword ptr [eax+90h], 3h
-		jne L08_817CC9
-		__emit 083h
-		__emit 03Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 000h   // cmp dword ptr [0x130ad10], 0
-		jne L08_817CC9
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 001h   // cmp dword ptr [0x130ad18], 1
-		jne L08_817CC9
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+94h]
-		__emit 03Bh
-		__emit 015h
-		__emit 01Ch
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // cmp edx, dword ptr [0x130ad1c]
-		jne L08_817CC9
-		mov eax, dword ptr [ebp-18h]
-		mov dword ptr [ebp-1Ch], eax
-L08_817CC9:
-		__emit 083h
-		__emit 03Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 000h   // cmp dword ptr [0x130ad10], 0
-		jl L09_817F32
-		mov ecx, dword ptr [ebp-18h]
-		cmp dword ptr [ecx+90h], 3h
-		je L09_817F32
-		mov edx, dword ptr [ebp-18h]
-		cmp dword ptr [edx+90h], 5h
-		je L09_817F32
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [ebp-38h]
-		cmp ecx, dword ptr [eax+7Ch]
-		jne L09_817F32
-		lea edx,  [ebp-30h]
-		push edx
-		mov eax, dword ptr [ebp-18h]
-		add eax, 80h
-		push eax
-		__emit 0E8h
-		__emit 009h
-		__emit 07Ah
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FF720
-		add esp, 8h
-		test eax, eax
-		jne L09_817F32
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+60h]
-		__emit 003h
-		__emit 015h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // add edx, dword ptr [0x130ad10]
-		mov eax, dword ptr [ebp-18h]
-		mov dword ptr [eax+60h], edx
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+68h]
-		add edx, 1h
-		mov eax, dword ptr [ebp-18h]
-		mov dword ptr [eax+68h], edx
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 001h   // cmp dword ptr [0x130ad18], 1
-		je L10_817D5E
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 002h   // cmp dword ptr [0x130ad18], 2
-		je L10_817D5E
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 003h   // cmp dword ptr [0x130ad18], 3
-		jne L11_817D78
-L10_817D5E:
-		lea ecx,  [ebp-30h]
-		push ecx
-		push 130AD10h
-		mov edx, dword ptr [ebp-18h]
-		push edx
-		__emit 0E8h
-		__emit 090h
-		__emit 006h
-		__emit 000h
-		__emit 000h   // call 0x818400
-		add esp, 0Ch
-		jmp L12_817F28
-L11_817D78:
-		mov eax, dword ptr [ebp-18h]
-		cmp dword ptr [eax+90h], 4h
-		je L13_817D89
-		jmp L12_817F28
-L13_817D89:
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 004h   // cmp dword ptr [0x130ad18], 4
-		jne L14_817DB7
-		mov ecx, dword ptr [ebp-18h]
-		__emit 08Bh
-		__emit 015h
-		__emit 014h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130ad14]
-		mov dword ptr [ecx+0DCh], edx
-		push 130AD10h
-		mov eax, dword ptr [ebp-18h]
-		push eax
-		__emit 0E8h
-		__emit 011h
-		__emit 009h
-		__emit 000h
-		__emit 000h   // call 0x8186C0
-		add esp, 8h
-		jmp L12_817F28
-L14_817DB7:
-		__emit 081h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 000h
-		__emit 000h
-		__emit 000h
-		__emit 010h   // cmp dword ptr [0x130ad18], 0x10000000
-		jbe L15_817EF7
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+0ACh]
-		mov dword ptr [ebp-3Ch], edx
-		__emit 0A1h
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov eax, dword ptr [0x130ad18]
-		shr eax, 1Ch
-		mov dword ptr [ebp-40h], eax
-		__emit 08Bh
-		__emit 00Dh
-		__emit 014h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130ad14]
-		__emit 089h
-		__emit 00Dh
-		__emit 064h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130af64], ecx
-		__emit 08Bh
-		__emit 015h
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130ad18]
-		and edx, 0FFFFFFFh
-		sub edx, dword ptr [ebp-40h]
-		__emit 089h
-		__emit 015h
-		__emit 068h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130af68], edx
-		__emit 0A1h
-		__emit 01Ch
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov eax, dword ptr [0x130ad1c]
-		__emit 0A3h
-		__emit 06Ch
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130af6c], eax
-		mov ecx, dword ptr [ebp-18h]
-		__emit 08Bh
-		__emit 015h
-		__emit 014h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130ad14]
-		mov dword ptr [ecx+0DCh], edx
-		jmp L16_817E23
-L22_817E1A:
-		mov eax, dword ptr [ebp-40h]
-		sub eax, 1h
-		mov dword ptr [ebp-40h], eax
-L16_817E23:
-		cmp dword ptr [ebp-40h], 0h
-		jl L17_817EF5
-		cmp dword ptr [ebp-40h], 0h
-		jle L18_817E56
-		__emit 08Bh
-		__emit 00Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130ad10]
-		sub ecx, 1h
-		__emit 089h
-		__emit 00Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130ad10], ecx
-		__emit 08Bh
-		__emit 015h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130ad10]
-		movzx eax, byte ptr [edx+130AD20h]
-		__emit 0A3h
-		__emit 060h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130af60], eax
-		jmp L19_817E62
-L18_817E56:
-		__emit 08Bh
-		__emit 00Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130ad10]
-		__emit 089h
-		__emit 00Dh
-		__emit 060h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130af60], ecx
-L19_817E62:
-		__emit 08Bh
-		__emit 015h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130ad10]
-		__emit 02Bh
-		__emit 015h
-		__emit 060h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // sub edx, dword ptr [0x130af60]
-		__emit 089h
-		__emit 015h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130ad10], edx
-		__emit 0A1h
-		__emit 060h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov eax, dword ptr [0x130af60]
-		push eax
-		__emit 08Bh
-		__emit 00Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130ad10]
-		add ecx, 130AD20h
-		push ecx
-		push 130AF70h
-		__emit 0E8h
-		__emit 027h
-		__emit 0F7h
-		__emit 01Dh
-		__emit 000h   // call 0x9F75B8
-		add esp, 0Ch
-		push 130AF60h
-		mov edx, dword ptr [ebp-18h]
-		push edx
-		__emit 0E8h
-		__emit 01Eh
-		__emit 008h
-		__emit 000h
-		__emit 000h   // call 0x8186C0
-		add esp, 8h
-		push 130AF60h
-		mov eax, dword ptr [ebp-18h]
-		push eax
-		__emit 0E8h
-		__emit 02Dh
-		__emit 009h
-		__emit 000h
-		__emit 000h   // call 0x8187E0
-		add esp, 8h
-		test eax, eax
-		jge L20_817EC1
-		mov dword ptr [ebp-40h], 0h
-L20_817EC1:
-		cmp dword ptr [ebp-40h], 0h
-		jle L21_817EE1
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ebp-3Ch]
-		cmp edx, dword ptr [ecx+0ACh]
-		je L21_817EE1
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [eax+0ACh]
-		mov dword ptr [ebp-3Ch], ecx
-L21_817EE1:
-		__emit 08Bh
-		__emit 015h
-		__emit 068h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130af68]
-		add edx, 1h
-		__emit 089h
-		__emit 015h
-		__emit 068h
-		__emit 0AFh
-		__emit 030h
-		__emit 001h   // mov dword ptr [0x130af68], edx
-		jmp L22_817E1A
-L17_817EF5:
-		jmp L12_817F28
-L15_817EF7:
-		mov eax, dword ptr [ebp-18h]
-		__emit 08Bh
-		__emit 00Dh
-		__emit 014h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // mov ecx, dword ptr [0x130ad14]
-		mov dword ptr [eax+0DCh], ecx
-		push 130AD10h
-		mov edx, dword ptr [ebp-18h]
-		push edx
-		__emit 0E8h
-		__emit 0ACh
-		__emit 007h
-		__emit 000h
-		__emit 000h   // call 0x8186C0
-		add esp, 8h
-		push 130AD10h
-		mov eax, dword ptr [ebp-18h]
-		push eax
-		__emit 0E8h
-		__emit 0BBh
-		__emit 008h
-		__emit 000h
-		__emit 000h   // call 0x8187E0
-		add esp, 8h
-L12_817F28:
-		__emit 0C7h
-		__emit 005h
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 0FFh
-		__emit 0FFh
-		__emit 0FFh
-		__emit 0FFh   // mov dword ptr [0x130ad10], 0xffffffff
-L09_817F32:
-		mov ecx, dword ptr [ebp-18h]
-		cmp dword ptr [ecx+90h], 2h
-		jne L23_817F5D
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [ebp+8h]
-		sub eax, dword ptr [edx+0D8h]
-		cmp eax, 3E8h
-		jbe L23_817F5D
-		mov ecx, dword ptr [ebp-18h]
-		push ecx
-		__emit 0E8h
-		__emit 0C6h
-		__emit 006h
-		__emit 000h
-		__emit 000h   // call 0x818620
-		add esp, 4h
-L23_817F5D:
-		mov edx, dword ptr [ebp-18h]
-		cmp dword ptr [edx+90h], 4h
-		jne L24_817F89
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [eax+0C8h]
-		cmp edx, dword ptr [ecx+0C0h]
-		je L24_817F89
-		mov eax, dword ptr [ebp-18h]
-		push eax
-		__emit 0E8h
-		__emit 0BAh
-		__emit 0F6h
-		__emit 0FFh
-		__emit 0FFh   // call 0x817640
-		add esp, 4h
-L24_817F89:
-		mov ecx, dword ptr [ebp-18h]
-		cmp dword ptr [ecx+90h], 4h
-		jne L25_817FFA
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [ebp+8h]
-		sub eax, dword ptr [edx+0DCh]
-		cmp eax, 1D4C0h
-		jbe L25_817FFA
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ebp+8h]
-		sub edx, dword ptr [ecx+0D8h]
-		cmp edx, 7D0h
-		jae L25_817FFA
-		push 12C4E8Ch
-		__emit 0E8h
-		__emit 0BAh
-		__emit 067h
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 4h
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [eax+0D8h]
-		push ecx
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+0DCh]
-		push eax
-		mov ecx, dword ptr [ebp+8h]
-		push ecx
-		push 12C4EB8h
-		__emit 0E8h
-		__emit 095h
-		__emit 067h
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 10h
-		mov edx, dword ptr [ebp-18h]
-		push edx
-		__emit 0E8h
-		__emit 069h
-		__emit 0EFh
-		__emit 0FFh
-		__emit 0FFh   // call 0x816F60
-		add esp, 4h
-L25_817FFA:
-		mov eax, dword ptr [ebp-18h]
-		cmp dword ptr [eax+90h], 3h
-		jne L26_818035
-		mov ecx, dword ptr [ebp-18h]
-		movzx edx, word ptr [ecx+80h]
-		cmp edx, 2h
-		jne L26_818035
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [eax+0D8h]
-		add ecx, 3E8h
-		cmp dword ptr [ebp+8h], ecx
-		jbe L26_818035
-		mov edx, dword ptr [ebp-18h]
-		push edx
-		__emit 0E8h
-		__emit 0EEh
-		__emit 009h
-		__emit 000h
-		__emit 000h   // call 0x818A20
-		add esp, 4h
-L26_818035:
-		mov eax, dword ptr [ebp-18h]
-		cmp dword ptr [eax+21Ch], 0h
-		jne L27_818076
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+0E0h]
-		add edx, 0FAh
-		cmp dword ptr [ebp+8h], edx
-		jbe L27_818076
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [ebp+8h]
-		mov dword ptr [eax+0E0h], ecx
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+21Ch]
-		or eax, 4h
-		mov ecx, dword ptr [ebp-18h]
-		mov dword ptr [ecx+21Ch], eax
-L27_818076:
-		mov edx, dword ptr [ebp-18h]
-		cmp dword ptr [edx+218h], 0h
-		jne L28_8180FC
-		mov eax, dword ptr [ebp-18h]
-		cmp dword ptr [eax+21Ch], 0h
-		je L28_8180FC
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+218h]
-		add edx, 1h
-		mov eax, dword ptr [ebp-18h]
-		mov dword ptr [eax+218h], edx
-		mov ecx, dword ptr [ebp-18h]
-		cmp dword ptr [ecx+220h], 0h
-		je L29_8180D2
-		mov esi, esp
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+21Ch]
-		push eax
-		mov ecx, dword ptr [ebp-18h]
-		push ecx
-		mov edx, dword ptr [ebp-18h]
-		call dword ptr [edx+220h]
-		add esp, 8h
-		cmp esi, esp
-		__emit 0E8h
-		__emit 030h
-		__emit 0F4h
-		__emit 01Dh
-		__emit 000h   // call 0x9F7502
-L29_8180D2:
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+218h]
-		sub edx, 1h
-		mov eax, dword ptr [ebp-18h]
-		mov dword ptr [eax+218h], edx
-		mov ecx, dword ptr [ebp-18h]
-		mov dword ptr [ecx+21Ch], 0h
-		__emit 0E8h
-		__emit 007h
-		__emit 069h
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FEA00
-		mov dword ptr [ebp+8h], eax
-L28_8180FC:
-		mov edx, dword ptr [ebp-18h]
-		cmp dword ptr [edx+90h], 4h
-		jne L30_818194
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [eax+0C8h]
-		cmp edx, dword ptr [ecx+0C0h]
-		jne L30_818194
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [ebp+8h]
-		sub ecx, dword ptr [eax+0D8h]
-		mov dword ptr [ebp-44h], ecx
-		cmp dword ptr [ebp-44h], 64h
-		jbe L31_818149
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [edx+0B0h]
-		cmp ecx, dword ptr [eax+0ACh]
-		jne L32_81817B
-L31_818149:
-		cmp dword ptr [ebp-44h], 64h
-		jbe L33_818163
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [edx+0C0h]
-		cmp ecx, dword ptr [eax+0C4h]
-		jne L32_81817B
-L33_818163:
-		cmp dword ptr [ebp-44h], 9C4h
-		ja L32_81817B
-		mov edx, dword ptr [ebp-18h]
-		cmp dword ptr [edx+0B4h], 800h
-		jl L30_818194
-L32_81817B:
-		mov eax, dword ptr [ebp-18h]
-		mov dword ptr [eax+0B4h], 0h
-		mov ecx, dword ptr [ebp-18h]
-		push ecx
-		__emit 0E8h
-		__emit 03Fh
-		__emit 009h
-		__emit 000h
-		__emit 000h   // call 0x818AD0
-		add esp, 4h
-L30_818194:
-		jmp L34_817C68
-L07_818199:
-		__emit 083h
-		__emit 03Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 000h   // cmp dword ptr [0x130ad10], 0
-		jl L35_818343
-		__emit 083h
-		__emit 03Dh
-		__emit 018h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 005h   // cmp dword ptr [0x130ad18], 5
-		jne L35_818343
-		movzx edx, word ptr [ebp-30h]
-		cmp edx, 2h
-		jne L35_818343
-		movzx eax, byte ptr [ebp-2Ch]
-		shl eax, 8h
-		movzx ecx, byte ptr [ebp-2Bh]
-		or eax, ecx
-		shl eax, 8h
-		movzx edx, byte ptr [ebp-2Ah]
-		or eax, edx
-		shl eax, 8h
-		movzx ecx, byte ptr [ebp-29h]
-		or eax, ecx
-		push eax
-		push 12C4EE0h
-		__emit 0E8h
-		__emit 096h
-		__emit 065h
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 8h
-		__emit 08Bh
-		__emit 015h
-		__emit 088h
-		__emit 0B1h
-		__emit 030h
-		__emit 001h   // mov edx, dword ptr [0x130b188]
-		mov dword ptr [ebp-18h], edx
-		jmp L36_818201
-L38_8181F8:
-		mov eax, dword ptr [ebp-18h]
-		mov ecx, dword ptr [eax+78h]
-		mov dword ptr [ebp-18h], ecx
-L36_818201:
-		cmp dword ptr [ebp-18h], 0h
-		je L35_818343
-		mov edx, dword ptr [ebp-18h]
-		cmp dword ptr [edx+90h], 2h
-		jne L37_81833E
-		mov eax, dword ptr [ebp-18h]
-		movzx ecx, word ptr [eax+80h]
-		cmp ecx, 2h
-		jne L37_81833E
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [edx+94h]
-		__emit 03Bh
-		__emit 005h
-		__emit 01Ch
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // cmp eax, dword ptr [0x130ad1c]
-		jne L37_81833E
-		mov ecx, dword ptr [ebp-18h]
-		movzx edx, byte ptr [ecx+84h]
-		shl edx, 8h
-		mov eax, dword ptr [ebp-18h]
-		movzx ecx, byte ptr [eax+85h]
-		or edx, ecx
-		shl edx, 8h
-		mov eax, dword ptr [ebp-18h]
-		movzx ecx, byte ptr [eax+86h]
-		or edx, ecx
-		shl edx, 8h
-		mov eax, dword ptr [ebp-18h]
-		movzx ecx, byte ptr [eax+87h]
-		or edx, ecx
-		push edx
-		push 12C4F0Ch
-		__emit 0E8h
-		__emit 0FBh
-		__emit 064h
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 8h
-		mov edx, dword ptr [ebp-18h]
-		mov eax, dword ptr [ebp-38h]
-		cmp eax, dword ptr [edx+7Ch]
-		jne L37_81833E
-		mov ecx, dword ptr [ebp-18h]
-		movzx edx, byte ptr [ecx+82h]
-		shl edx, 8h
-		mov eax, dword ptr [ebp-18h]
-		movzx ecx, byte ptr [eax+83h]
-		or edx, ecx
-		push edx
-		mov edx, dword ptr [ebp-18h]
-		movzx eax, byte ptr [edx+84h]
-		shl eax, 8h
-		mov ecx, dword ptr [ebp-18h]
-		movzx edx, byte ptr [ecx+85h]
-		or eax, edx
-		shl eax, 8h
-		mov ecx, dword ptr [ebp-18h]
-		movzx edx, byte ptr [ecx+86h]
-		or eax, edx
-		shl eax, 8h
-		mov ecx, dword ptr [ebp-18h]
-		movzx edx, byte ptr [ecx+87h]
-		or eax, edx
-		push eax
-		movzx eax, byte ptr [ebp-2Eh]
-		shl eax, 8h
-		movzx ecx, byte ptr [ebp-2Dh]
-		or eax, ecx
-		push eax
-		movzx edx, byte ptr [ebp-2Ch]
-		shl edx, 8h
-		movzx eax, byte ptr [ebp-2Bh]
-		or edx, eax
-		shl edx, 8h
-		movzx ecx, byte ptr [ebp-2Ah]
-		or edx, ecx
-		shl edx, 8h
-		movzx eax, byte ptr [ebp-29h]
-		or edx, eax
-		push edx
-		push 12C4F40h
-		__emit 0E8h
-		__emit 05Fh
-		__emit 064h
-		__emit 0FEh
-		__emit 0FFh   // call 0x7FE780
-		add esp, 14h
-		push 10h
-		lea ecx,  [ebp-30h]
-		push ecx
-		mov edx, dword ptr [ebp-18h]
-		add edx, 80h
-		push edx
-		__emit 0E8h
-		__emit 07Fh
-		__emit 0F2h
-		__emit 01Dh
-		__emit 000h   // call 0x9F75B8
-		add esp, 0Ch
-		jmp L35_818343
-L37_81833E:
-		jmp L38_8181F8
-L35_818343:
-		cmp dword ptr [ebp-1Ch], 0h
-		je L39_8183A3
-		__emit 083h
-		__emit 03Dh
-		__emit 010h
-		__emit 0ADh
-		__emit 030h
-		__emit 001h
-		__emit 000h   // cmp dword ptr [0x130ad10], 0
-		jne L39_8183A3
-		mov eax, dword ptr [ebp-1Ch]
-		mov dword ptr [ebp-18h], eax
-		mov ecx, dword ptr [ebp-18h]
-		mov edx, dword ptr [ecx+94h]
-		__emit 03Bh
-		__emit 015h
-		__emit 01Ch
-		__emit 0ADh
-		__emit 030h
-		__emit 001h   // cmp edx, dword ptr [0x130ad1c]
-		jne L39_8183A3
-		push 10h
-		lea eax,  [ebp-30h]
-		push eax
-		mov ecx, dword ptr [ebp-18h]
-		add ecx, 80h
-		push ecx
-		__emit 0E8h
-		__emit 03Ah
-		__emit 0F2h
-		__emit 01Dh
-		__emit 000h   // call 0x9F75B8
-		add esp, 0Ch
-		mov edx, dword ptr [ebp-18h]
-		mov dword ptr [edx+90h], 4h
-		lea eax,  [ebp-30h]
-		push eax
-		push 130AD10h
-		mov ecx, dword ptr [ebp-18h]
-		push ecx
-		__emit 0E8h
-		__emit 060h
-		__emit 000h
-		__emit 000h
-		__emit 000h   // call 0x818400
-		add esp, 0Ch
-L39_8183A3:
-		mov eax, dword ptr [ebp-14h]
-		push edx
-		mov ecx, ebp
-		push eax
-		__emit 08Dh
-		__emit 015h
-		__emit 0CFh
-		__emit 083h
-		__emit 0C1h
-		__emit 000h   // lea edx, [0xc183cf]
-		__emit 0E8h
-		__emit 070h
-		__emit 0F1h
-		__emit 01Dh
-		__emit 000h   // call 0x9F7525
-		pop eax
-		pop edx
-		mov ecx, dword ptr [ebp-4h]
-		__emit 0E8h
-		__emit 035h
-		__emit 0F1h
-		__emit 01Dh
-		__emit 000h   // call 0x9F74F4
-		pop edi
-		pop esi
-		add esp, 44h
-		cmp ebp, esp
-		__emit 0E8h
-		__emit 037h
-		__emit 0F1h
-		__emit 01Dh
-		__emit 000h   // call 0x9F7502
-		mov esp, ebp
-		pop ebp
-		ret
+	unsigned char m_gap[0x60];
+	int m_60;                // +0x60
+	int m_64;                // +0x64
+	int m_68;                // +0x68
+	unsigned char m_gap2[0x0C];
+	struct CommUdpRef *m_next;      // +0x78
+	void *m_socket;          // +0x7C
+	unsigned char m_peer[0x10];     // +0x80
+	int m_state;             // +0x90
+	int m_sessionHash;       // +0x94
+	unsigned char m_gap3[0x14];
+	int m_recvSequence;      // +0xAC
+	int m_reportedSequence;  // +0xB0
+	int m_recvCounter;       // +0xB4
+	unsigned char m_gap4[0x08];
+	int m_sendWriteOffset;   // +0xC0
+	int m_sendReadOffset;    // +0xC4
+	int m_sendAckOffset;     // +0xC8
+	unsigned char m_gap5[0x0C];
+	unsigned int m_tickA;    // +0xD8
+	unsigned int m_tickB;    // +0xDC
+	unsigned int m_lastPoke; // +0xE0
+	unsigned char m_gap6[0x134];
+	int m_depth;             // +0x218
+	int m_flags;             // +0x21C
+	void *m_value;           // +0x220
+};
+
+struct CommUdpBuf
+{
+	int m_count;             // +0x00
+	int m_reserved;          // +0x04
+	int m_length;            // +0x08
+	int m_ident;             // +0x0C
+	unsigned int m_type;     // +0x10
+	int m_typeExtra;         // +0x14
+	unsigned char m_data[0x1000];   // +0x18
+};
+
+struct CommUdpLockRegion
+{
+	unsigned char m_gap[0x28];
+	int m_978;               // +0x28
+	int m_97c;               // +0x2C
+	int m_980;               // +0x30
+	int m_984;               // +0x34
+	unsigned char m_payload[0x1F0];
+};
+
+#define g_commUdpLock (*(CommUdpLockRegion *)g_Rva0130AF38Lock)
+
+// The receive buffer's head is g_Rva0130AD08Count (VA 0xe0a720); its fields are
+// reached through the region view so the ledger's symbol keeps its own spelling.
+#define g_commUdpPacket (*(CommUdpBuf *)&g_Rva0130AD08Count)
+
+extern "C" int Rva007FDA50(void *socket, char *buffer, int length, int flags,
+                           void *address, int *addressLength);
+extern "C" int Rva007FF720(const void *first, const void *second);
+extern "C" int Rva00816F60(struct CommUdpRef *comm);
+extern "C" int Rva00818620(struct CommUdpRef *comm);
+extern "C" void Rva008186C0(struct CommUdpRef *comm, void *payload);
+extern "C" int Rva008187E0(struct CommUdpRef *comm, void *payload);
+extern "C" int Rva00818AD0(struct CommUdpRef *comm);
+extern "C" struct CommUdpRef *g_Rva0130B188List;
+
+int CommUdpProcess(unsigned int tick)
+{
+	int len;
+	int count;
+	struct CommUdpRef *cur;
+	struct CommUdpRef *ready;
+	char sin[0x10];   // retail's /GZ descriptor names this local "sin" (a sockaddr_in)
+	void *lastSocket;
+	unsigned int lastTick;
+	int index;
+	unsigned int elapsed;
+
+	count = 0;
+	ready = 0;
+	memset(sin, 0, 0x10);
+	g_commUdpPacket.m_length = -1;
+	lastSocket = 0;
+
+	for (cur = g_Rva0130B188List; cur != 0; cur = cur->m_next)
+	{
+		if (cur->m_socket != 0)
+		{
+			if (cur->m_socket != lastSocket)
+			{
+				lastSocket = cur->m_socket;
+				len = 0x10;
+				// The packet header overlays the receive buffer: retail passes
+				// the buffer head at +0x10 (native 0x683AD7 pushes VA 0xe0a730),
+				// and m_type/m_typeExtra are the packet's first two dwords.
+				len = Rva007FDA50(lastSocket, (char *)&g_commUdpPacket.m_type,
+				                  0x220, 0, sin, &len);
+				if (len > 0)
+				{
+					g_commUdpPacket.m_length = len - 8;
+					g_commUdpPacket.m_ident =
+						((((unsigned char)sin[8] << 8) | (unsigned char)sin[9]) << 8 |
+						 (unsigned char)sin[10]) << 8 | (unsigned char)sin[11];
+					if (g_commUdpPacket.m_type == 1)
+						Rva007FE780("CommUdpProcess: got RAW_PACKET_INIT\n");
+					if (g_commUdpPacket.m_type == 2)
+						Rva007FE780("CommUdpProcess: got RAW_PACKET_CONN\n");
+					count = count + 1;
+					break;
+				}
+			}
+		}
 	}
+
+	for (cur = g_Rva0130B188List; cur != 0; cur = cur->m_next)
+	{
+		tick = Rva007FEA00();
+		if (ready == 0 && lastSocket == cur->m_socket && cur->m_state == 3 &&
+		    g_commUdpPacket.m_length == 0 && g_commUdpPacket.m_type == 1 &&
+		    cur->m_sessionHash == g_commUdpPacket.m_typeExtra)
+		{
+			ready = cur;
+		}
+		if (g_commUdpPacket.m_length >= 0)
+		{
+			if (cur->m_state != 3 && cur->m_state != 5 &&
+			    lastSocket == cur->m_socket &&
+			    Rva007FF720(cur->m_peer, sin) == 0)
+			{
+				cur->m_60 = cur->m_60 + g_commUdpPacket.m_length;
+				cur->m_68 = cur->m_68 + 1;
+				if (g_commUdpPacket.m_type == 1 || g_commUdpPacket.m_type == 2 ||
+				    g_commUdpPacket.m_type == 3)
+				{
+					CommUdpSetup(cur, &g_commUdpPacket.m_length, sin);
+				}
+				else
+				{
+					if (cur->m_state != 4)
+					{
+					}
+					else
+					{
+						if (g_commUdpPacket.m_type == 4)
+						{
+							cur->m_tickB = g_commUdpPacket.m_ident;
+							Rva008186C0(cur, &g_commUdpPacket.m_length);
+						}
+						else if (g_commUdpPacket.m_type > 0x10000000)
+						{
+							lastTick = cur->m_recvSequence;
+							index = g_commUdpPacket.m_type >> 28;
+							g_commUdpLock.m_97c = g_commUdpPacket.m_ident;
+							g_commUdpLock.m_980 =
+								(g_commUdpPacket.m_type & 0x0FFFFFFF) - index;
+							g_commUdpLock.m_984 = g_commUdpPacket.m_typeExtra;
+							cur->m_tickB = g_commUdpPacket.m_ident;
+							for (; index >= 0; index--)
+							{
+								if (index > 0)
+								{
+									g_commUdpPacket.m_length =
+										g_commUdpPacket.m_length - 1;
+									g_commUdpLock.m_978 =
+										g_commUdpPacket.m_data[g_commUdpPacket.m_length];
+								}
+								else
+								{
+									g_commUdpLock.m_978 = g_commUdpPacket.m_length;
+								}
+								g_commUdpPacket.m_length =
+									g_commUdpPacket.m_length - g_commUdpLock.m_978;
+								memcpy(&g_commUdpLock.m_payload[0],
+								       &g_commUdpPacket.m_data[g_commUdpPacket.m_length],
+								       g_commUdpLock.m_978);
+								Rva008186C0(cur, &g_commUdpLock.m_978);
+								if (Rva008187E0(cur, &g_commUdpLock.m_978) < 0)
+								{
+									index = 0;
+								}
+								if (index > 0 && lastTick != cur->m_recvSequence)
+								{
+									lastTick = cur->m_recvSequence;
+								}
+								g_commUdpLock.m_980 = g_commUdpLock.m_980 + 1;
+							}
+						}
+						else
+						{
+							cur->m_tickB = g_commUdpPacket.m_ident;
+							Rva008186C0(cur, &g_commUdpPacket.m_length);
+							Rva008187E0(cur, &g_commUdpPacket.m_length);
+						}
+					}
+				}
+				g_commUdpPacket.m_length = -1;
+			}
+		}
+		if (cur->m_state == 2 && tick - cur->m_tickA > 0x3E8)
+		{
+			Rva00818620(cur);
+		}
+		if (cur->m_state == 4 && cur->m_sendAckOffset != cur->m_sendWriteOffset)
+		{
+			Rva00817640(cur);
+		}
+		if (cur->m_state == 4 && tick - cur->m_tickB > 0x1D4C0 &&
+		    tick - cur->m_tickA < 0x7D0)
+		{
+			Rva007FE780("CommUDP: closing connection due to timeout\n");
+			Rva007FE780("CommUDP: tick=%d, rtick=%d, stick=%d\n", tick,
+			            cur->m_tickB, cur->m_tickA);
+			Rva00816F60(cur);
+		}
+		if (cur->m_state == 3 && *(unsigned short *)cur->m_peer == 2 &&
+		    tick > cur->m_tickA + 0x3E8)
+		{
+			CommUdpPoke(cur);
+		}
+		if (cur->m_flags == 0 && tick > cur->m_lastPoke + 0xFA)
+		{
+			cur->m_lastPoke = tick;
+			cur->m_flags = cur->m_flags | 4;
+		}
+		if (cur->m_depth == 0 && cur->m_flags != 0)
+		{
+			cur->m_depth = cur->m_depth + 1;
+			if (cur->m_value != 0)
+			{
+				((void (__cdecl *)(void *, int))cur->m_value)(cur, cur->m_flags);
+			}
+			// Empty dead block: retail's /Od register rotation for the two
+			// statements below is one slot ahead of this spelling's; a
+			// compiled-out if advances that counter without emitting code.
+			if (0) { }
+			cur->m_depth = cur->m_depth - 1;
+			cur->m_flags = 0;
+			tick = Rva007FEA00();
+		}
+		if (cur->m_state == 4 && cur->m_sendAckOffset == cur->m_sendWriteOffset)
+		{
+			elapsed = tick - cur->m_tickA;
+			if ((elapsed > 0x64 && cur->m_reportedSequence != cur->m_recvSequence) ||
+			    (elapsed > 0x64 && cur->m_sendWriteOffset != cur->m_sendReadOffset) ||
+			    (elapsed > 0x9C4 || cur->m_recvCounter >= 0x800))
+			{
+				cur->m_recvCounter = 0;
+				Rva00818AD0(cur);
+			}
+		}
+	}
+
+	if (g_commUdpPacket.m_length >= 0 && g_commUdpPacket.m_type == 5 &&
+	    *(unsigned short *)sin == 2)
+	{
+		Rva007FE780("CommUDP: received poke packet (from=%08x)\n",
+			((((unsigned char)sin[4] << 8) | (unsigned char)sin[5]) << 8 |
+			 (unsigned char)sin[6]) << 8 | (unsigned char)sin[7]);
+		for (cur = g_Rva0130B188List; cur != 0; cur = cur->m_next)
+		{
+			if (cur->m_state == 2 && *(unsigned short *)cur->m_peer == 2 &&
+			    cur->m_sessionHash == g_commUdpPacket.m_typeExtra)
+			{
+				Rva007FE780("CommUdp: poke source = %08x -- forcing match\n",
+					((((unsigned char)cur->m_peer[4] << 8) | (unsigned char)cur->m_peer[5]) << 8 |
+					 (unsigned char)cur->m_peer[6]) << 8 | (unsigned char)cur->m_peer[7]);
+				if (lastSocket == cur->m_socket)
+				{
+					Rva007FE780("CommUDP: changing peer to %08x:%d due to poke (was expecting %08x:%d)\n",
+						((((unsigned char)sin[4] << 8) | (unsigned char)sin[5]) << 8 |
+						 (unsigned char)sin[6]) << 8 | (unsigned char)sin[7],
+						((unsigned char)sin[2] << 8) | (unsigned char)sin[3],
+						((((unsigned char)cur->m_peer[4] << 8) | (unsigned char)cur->m_peer[5]) << 8 |
+						 (unsigned char)cur->m_peer[6]) << 8 | (unsigned char)cur->m_peer[7],
+						((unsigned char)cur->m_peer[2] << 8) | (unsigned char)cur->m_peer[3]);
+					memcpy(cur->m_peer, sin, 0x10);
+					break;
+				}
+			}
+		}
+	}
+	if (ready != 0 && g_commUdpPacket.m_length == 0)
+	{
+		cur = ready;
+		if (cur->m_sessionHash == g_commUdpPacket.m_typeExtra)
+		{
+			memcpy(cur->m_peer, sin, 0x10);
+			cur->m_state = 4;
+			CommUdpSetup(cur, &g_commUdpPacket.m_length, sin);
+		}
+	}
+	return count;
 }
 
 // Answers an INIT with a CONN, and warns "commudp: warning - connident
