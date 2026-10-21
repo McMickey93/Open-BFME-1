@@ -1,5 +1,5 @@
 // ?RenderStreak@StreakRendererClass@@QAEXAAVRenderInfoClass@@ABVMatrix3D@@IPAVVector3@@PAVVector4@@PAMABVSphereClass@@PAI@Z
-// partial score=0.61 date=2026-09-25
+// partial score=0.3373 date=2026-09-25
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main
 // stlport
 #define Matrix4x4 Matrix4  // BFME renamed it
@@ -449,6 +449,8 @@ void StreakRendererClass::RenderStreak
 				u_values[1] = 0.0f;
 				break;
 			default:
+				((void)0);
+			case TILED_TEXTURE_MAP:
 				for (pointIndex = 0; pointIndex < point_cnt; pointIndex++) 
 				{
 					base_tex_v[pointIndex] = (float)(pointIndex + chunkIndex) * TextureTileFactor;
@@ -512,7 +514,10 @@ void StreakRendererClass::RenderStreak
 			Vector3 &segdir = segment[segmentIndex].StartPlane;
 			segdir = next_point - curr_point;
 			segdir.Normalize();
-			Vector3 nearest = curr_point + segdir * -Vector3::Dot_Product(segdir, curr_point);
+			float segdir_dot = segdir.X * curr_point.X;
+			segdir_dot += segdir.Y * curr_point.Y;
+			segdir_dot += segdir.Z * curr_point.Z;
+			Vector3 nearest = curr_point + segdir * -segdir_dot;
 			Vector3 offset;
 			Vector3::Cross_Product(segdir, nearest, &offset);
 			offset.Normalize();
