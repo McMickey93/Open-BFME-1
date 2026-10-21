@@ -2417,7 +2417,7 @@ name,address,notes
 ??0AsciiStringYV@@QAE@PBD@Z,0x00888BC0,pin
 ??0AssaultTransportAIUpdateBase@@QAE@PAVThing@@PBVModuleData@@@Z,0x000292A3,AssaultTransportAIUpdate ctor base call
 ??0AssetManagerImpl@@QAE@XZ,0x009F2140,Rva009EB960 allocated member constructor paired with the destructor at RVA 0x009F23C0
-??0AssistedTargetingUpdateModuleData@@QAE@XZ,0x000104B5,pinharvest x1 (thunk)
+??0AssistedTargetingUpdateModuleData@@QAE@XZ,0x00013E8A,ILT route=0x00123780; the old pinharvest 0x000104B5 jumps to FireSpreadUpdateModuleData's ctor
 ??0AttackNugget@@QAE@XZ,0x00022B42,Open-BFME5 retail ILT target for AttackNugget parser constructor call
 ??0AttributeHandleStandIn@@QAE@XZ,0x0003747A,AttributeModifierAuraUpdateModuleData +0x24 handle constructor; ICF-folded empty initialization body, paired with the matched 0x0039D550 destructor
 ??0AttributeModifierAuraUpdateInterface@@QAE@XZ,0x0003D24E,AttributeModifierAuraUpdate +0x20 base constructor calls the shared UpgradeMux ILT whose body 0x002D9B80 is matched as ??0Rva002D9B80@@QAE@XZ; the class name is the ledger's own ??_7AttributeModifierAuraUpdate@@6BAttributeModifierAuraUpdateInterface@@@ = 0x010BAD08 which this constructor installs at +0x20
