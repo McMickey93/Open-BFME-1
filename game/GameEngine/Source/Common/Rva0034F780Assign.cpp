@@ -1,4 +1,7 @@
 // cl: /O2 /Ob0
+// ObjectTypes::operator=, retail 0x0034F780 (39 bytes): copies the list name
+// and the object-type vector. Open-BFME-2's matched ObjectTypes::operator= is
+// byte-identical and BFME1's ILT slot confirms the decoration.
 
 #include "../../../Libraries/Source/WWVegas/WWLib/string_base.h"
 
@@ -22,21 +25,22 @@ union Rva0076F980MidAssign
 	Rva0076F980Mid &(Rva0076F980Mid::*member)(const Rva0076F980Mid &);
 };
 
-class Rva0034F780
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/ObjectTypes.h
+class ObjectTypes
 {
 	virtual void handle();
-	StringBase<char> m_04;
-	Rva0076F980Mid m_08;
+	StringBase<char> m_listName;		// +0x04
+	Rva0076F980Mid m_objectTypes;		// +0x08
 
 public:
-	Rva0034F780 &operator=(const Rva0034F780 &other);
+	ObjectTypes &operator=(const ObjectTypes &that);
 };
 
-Rva0034F780 &Rva0034F780::operator=(const Rva0034F780 &other)
+ObjectTypes &ObjectTypes::operator=(const ObjectTypes &that)
 {
-	m_04.set(other.m_04);
+	m_listName.set(that.m_listName);
 	Rva0076F980MidAssign assign;
 	assign.function = &j_00007a63;
-	(m_08.*assign.member)(other.m_08);
+	(m_objectTypes.*assign.member)(that.m_objectTypes);
 	return *this;
 }
