@@ -48,6 +48,19 @@ public:
 
 class Rva8CD130String;
 class Rva8CD130Value;
+// 0x008CC690 has no converted body yet: symbols.csv names it as the Apt stack
+// append helper this TU's interpreter calls, and the retail bytes are already
+// in the link as the gen-dump row ?d_008cc690@@YAXXZ (687 B,
+// game/gen_asm/d_008cb600.asm). The body is thiscall with six stack
+// arguments (it reads context/scope/name/value and the three flags at
+// [esp+0x10..0x40] and leaves a plain ret), which is exactly the call shape
+// the two sites below emit: push value, name, scope, context and the three
+// ints, this in ecx. Bind the ledger name to the retail body rather than
+// inventing a second definition; alias_guard compares both pins at
+// 0x008CC690 and sees one body. This links the interpreter; it is not
+// conversion progress for the helper itself.
+#pragma comment(linker, "/alternatename:?append@Rva8CD130State@@QAEXPAX0PAVRva8CD130String@@PAVRva8CD130Value@@HHH@Z=?d_008cc690@@YAXXZ")
+
 class Rva8CD130State
 {
 public:
