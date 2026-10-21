@@ -2,6 +2,8 @@
 // stlport
 #define Matrix4x4 Matrix4
 
+#include "../../../../Libraries/Source/WWVegas/WWLib/ascii_string.h"
+#define ASCIISTRING_H
 #include "PreRTS.h"
 #include "Common/RandomValue.h"
 #include "Common/Xfer.h"

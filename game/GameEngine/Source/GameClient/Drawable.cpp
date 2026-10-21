@@ -36,6 +36,8 @@
 // class for this TU gives that call its own pinnable symbol instead of a second
 // address under a name another TU already resolves elsewhere.
 #define Snapshot BfmeDrawableSnapshot
+#include "../../../Libraries/Source/WWVegas/WWLib/ascii_string.h"
+#define ASCIISTRING_H
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
 // BFME's placement operator delete is one shared 12-byte body that calls the
