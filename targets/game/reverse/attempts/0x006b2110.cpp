@@ -1,5 +1,5 @@
 // ?isPlayingLowerPriority@Rva006B2110Owner@@QAE_NPAURva006B2110AudioEvent@@@Z
-// partial score=0.86 date=2026-09-06
+// partial score=0.364 date=2026-09-06
 // cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD /D_STLP_USE_STATIC_LIB
 // stlport
 // Audio preemption tests from the BFME Miles audio manager.
