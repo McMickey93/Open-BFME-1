@@ -200,39 +200,8 @@ void populateSideInfo( UnicodeString side,ScoreGather *sg, Int pos, Color color)
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 
-void startNextCampaignGame(void)
-{
-	TheShell->popImmediate();
-	TheShell->hideShell();
-	TheWritableGlobalData->m_pendingFile = TheCampaignManager->getCurrentMap();
-	if (TheCampaignManager->getCurrentCampaign() && TheCampaignManager->getCurrentCampaign()->isChallengeCampaign())
-	{
-		DEBUG_ASSERTCRASH( TheChallengeGameInfo, ("TheChallengeGameInfo doesn't exist.\n") );
-		TheChallengeGameInfo->init();  
-		TheChallengeGameInfo->clearSlotList();
-		TheChallengeGameInfo->reset();
-		TheChallengeGameInfo->enterGame();
-		TheChallengeGameInfo->setMap(TheCampaignManager->getCurrentMap());
-
-		Int templateNum = TheChallengeGenerals->getCurrentPlayerTemplateNum();
-		const PlayerTemplate *playerTemplate = ThePlayerTemplateStore->getNthPlayerTemplate(templateNum);
-		GameSlot slot;
-		slot.setState(SLOT_PLAYER, playerTemplate->getDisplayName());
-		slot.setPlayerTemplate(templateNum);
-		TheChallengeGameInfo->setSlot(0, slot);
-		
-		if (TheGameLogic->isInGame())
-			TheGameLogic->clearGameData();
-	}
-
-	// send a message to the logic for a new game
-	GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_NEW_GAME );
-	msg->appendIntegerArgument(GAME_SINGLE_PLAYER);
-	msg->appendIntegerArgument(TheCampaignManager->getGameDifficulty());
-	msg->appendIntegerArgument(TheCampaignManager->getRankPoints());
-	
-	InitRandom(0);
-}
+// Retail implementation is in ScoreScreenStartNextCampaignGame.cpp.
+void startNextCampaignGame(void);
 
 
 void ScoreScreenEnableControls(Bool enable)
