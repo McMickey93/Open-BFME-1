@@ -181,7 +181,6 @@ dir32,0x01080294,_g_01080294,"nothing in the ledger owns 0x01080294. Give the da
 dir32,0x01080FC0,?g_rva01080FC0@@3QBDB,"retail 0x01080FC0 is already recorded as ?g_aptPalantirBrightJewel@@3PADA (+5 more); reference that name, not a new one"
 dir32,0x01081238,?g_rva01081238@@3QBDB,"retail 0x01081238 is already recorded as ?g_aptPalantirNormalJewel@@3PADA (+5 more); reference that name, not a new one"
 dir32,0x0108132C,?g_0108132C@@3QBUFieldParse@@B,"retail 0x0108132C is already recorded as ?g_0108132C@@3QBDB; reference that name, not a new one"
-dir32,0x01081D60,?g_01081D60@@3QBUFieldParse@@B,"nothing in the ledger owns 0x01081D60. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01083B5C,?g_FilterVtable001AEA80@@3QBEB,"retail 0x01083B5C is already recorded as ??_7BfmeBaseS@@6B@ (+5 more); reference that name, not a new one"
 dir32,0x01083CFC,??_7Rva000CBA50@@6B@,"retail 0x01083CFC is already recorded as ?R2Data01083CFC@@3HA; reference that name, not a new one"
 dir32,0x01083D34,??_7Rva000CBAF0@@6B@,"retail 0x01083D34 is already recorded as ?Gen01083D34@@3HA; reference that name, not a new one"
