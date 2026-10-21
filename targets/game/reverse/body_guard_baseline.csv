@@ -639,7 +639,6 @@ dir32,0x0112B3AC,??_7Rva007F48B0VtableReseat@@6B@,"retail 0x0112B3AC is already 
 dir32,0x0112B3B8,??_7Rva007FA670VtableReseat@@6B@,"retail 0x0112B3B8 is already recorded as ??_7Rva007FA8E0Deleting@@6B@ (+2 more); reference that name, not a new one"
 dir32,0x0112B3C8,??_7Rva007F48A0ReseatTailDtor@@6B@,"retail 0x0112B3C8 is already recorded as ??_7Rva007F4900CleanupDeleting@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B3E4,??_7Rva007F48C0VtableReseat@@6B@,"retail 0x0112B3E4 is already recorded as ??_7Rva007F48D0Deleting@@6B@; reference that name, not a new one"
-dir32,0x0112B568,?g_0112B568@@3PADA,"nothing in the ledger owns 0x0112B568. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0112B568,?g_0112B568@@3QBDB,"nothing in the ledger owns 0x0112B568. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0112B598,??_7Rva007F5540VfptrCtor@@6B@,"retail 0x0112B598 is already recorded as ?g_bfmeVftBTWB@@3PAPAXA; reference that name, not a new one"
 dir32,0x0112B680,?Rva0112B680@@3PAPBXA,"retail 0x0112B680 is already recorded as ?g_0112B680@@3PAPBXA; reference that name, not a new one"
