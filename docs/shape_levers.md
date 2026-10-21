@@ -1967,3 +1967,19 @@ EXTERNAL symbol, so `data_rows.py` reports "not defined once").
 `tools/gate_writers.py` accepts a deleted data row; say why in the commit.
 Callers elsewhere that reached the body through a retired `?d_` symbol must
 call it by name in the same commit, or the pre-commit dependency check fails.
+
+## A visible out-of-line constructor lets VC7.1 reuse an argument temporary's slot (2026-10-21)
+
+Symptom: frame 12+ bytes bigger than retail, everything else structurally equal,
+and retail's listing shows a later temporary written over the slot of an earlier
+argument temporary (here a 24-byte KindOf mask passed by const reference to
+`PartitionFilterAcceptByKindOf`'s constructor, then the `SamePlayer` filter built
+at the same address). With the constructor only declared, VC7.1 keeps the mask's
+slot for the whole full-expression: it cannot see that the callee only copies it.
+Give the constructor its body in the class but keep it out of line
+(`__declspec(noinline) Ctor(const Mask &a, const Mask &b) : m_a(a), m_b(b) {}`,
+as `Weapon_bfmeCanAffect.cpp` already did); the call still targets retail's body
+and the mask's slot is reused. Ruled out first: named locals, reference-bound
+temporaries, factories, mem-initializer wrappers, implicit conversions (none
+share). Witness: `findObjectToRepair` 0x002B82D0 in
+`DozerPrimaryIdleState_update.cpp`.
