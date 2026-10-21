@@ -69,12 +69,13 @@ public:
 };
 extern Keyboard *TheKeyboard;
 
-struct Rva006C9270GlobalData
+class GlobalData
 {
+public:
 	char m_pad000[0x90];
 	bool m_flag90;
 };
-extern Rva006C9270GlobalData *TheWritableGlobalData;
+extern GlobalData *TheWritableGlobalData;
 extern float g_bfmeDefaultBU;
 
 // Retail 0x00609710 (181B), reached only through the address-derived guard
