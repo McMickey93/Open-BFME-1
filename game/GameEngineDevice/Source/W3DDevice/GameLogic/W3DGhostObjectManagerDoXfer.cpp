@@ -115,13 +115,30 @@ public:
 
 extern GameLogic *TheGameLogic;
 
+class ShroudManagerImpl
+{
+public:
+	void rva008F8C70(CDEProvider *first, CDEProvider *second);
+};
+
 class ShroudManager
 {
 public:
 	// 0x008F73B0: mov ecx,[ecx+0Ch]; jmp 0x008F8C70, the matched
 	// ShroudManagerImpl::rva008F8C70(CDEProvider *, CDEProvider *) (RET 8).
-	void rva008F73B0(CDEProvider *objectProvider, CDEProvider *ghostProvider);
+	__declspec(noinline) void rva008F73B0(CDEProvider *objectProvider, CDEProvider *ghostProvider);
 };
+
+// Retail 0x008F73B0: mov ecx,[ecx+0x0c]; jmp 0x008F8C70.
+// DoXfer supplies two provider pointers, preserved by the tail jump.
+// The matched implementation returns with ret 8. Keep the forwarder out
+// of line so this TU's DoXfer retains its retail call rather than inlining it.
+void ShroudManager::rva008F73B0(CDEProvider *objectProvider, CDEProvider *ghostProvider)
+{
+	ShroudManagerImpl *implementation =
+		*reinterpret_cast<ShroudManagerImpl **>(reinterpret_cast<char *>(this) + 0x0c);
+	implementation->rva008F8C70(objectProvider, ghostProvider);
+}
 
 extern ShroudManager *TheShroudManager;
 

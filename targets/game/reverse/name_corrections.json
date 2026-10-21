@@ -20948,5 +20948,17 @@
   "after_sha256": "13f9c6070f9ce88959042b4b886b904bfa791ad4e620120bde993c16baa326ed",
   "evidence": "targets/game/reverse/identity_evidence/00773360-particle-list-element.md",
   "reason": "False pairing: ParticleSystemID remains an int typedef and the first field of the address-derived 20-byte list payload. Retail constructor allocation and destructor deallocation both use 28-byte nodes (8-byte links plus 20-byte payload), refuting the old list<ParticleSystemID> element size. The correction applies only to this bank snapshot; no production identity is renamed."
- }
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "m",
+  "new_name": "rva008F73B0",
+  "before_sha256": "c616e0654ad49331d29ed3d432591bff3be0cbc17d618cd0b2d888082ccba97d",
+  "after_sha256": "3db41e40267a6bcdd373846bd93845bd29087965521f93acfe076842f58e9992",
+  "evidence": "targets/game/reverse/identity_evidence/008f73b0-shroud-forwarder-abi.md",
+  "reason": "Generated zero-argument delegate m is not a semantic identity. Matched DoXfer supplies two CDEProvider pointers and the matched tail target returns ret8; preserve the unknown member identity with its retail address. See docs/naming_evidence.md snapshot-specific correction process.",
+  "old_source_sha256": "7f93cb3ff00a682b97d58aff7027203efc8c6792268d89f8f7427587310bded0",
+  "new_source_sha256": "7f4def889d3a3810be357156d22591d18eedcb7040fbb8993ea4daa1b5a1278a"
+}
 ]
