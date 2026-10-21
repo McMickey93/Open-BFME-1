@@ -91132,3 +91132,10 @@ rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ?b_00784b50@@YAXXZ,0x00784B50,matched body; route target of ILT 0x0003DBBD (E9 rel32 -> 0x00784B50)
 ?b_0059a680@@YAXXZ,0x0059A680,matched body; route target of ILT 0x00041010 (E9 rel32 -> 0x0059A680)
 ?b_0059a6b0@@YAXXZ,0x0059A6B0,matched body; route target of ILT 0x00045D77 (E9 rel32 -> 0x0059A6B0)
+?b_00883cc0@@YAXXZ,0x00883CC0,teardown registered by the atexit initializer at 0x00883CF0; same body as ?rva00883c0@Rva008838F0Owner@@SAXXZ
+?b_00c6ffe0@@YAXXZ,0x00C6FFE0,teardown registered by the atexit initializer at 0x00C6B710; same body as ?m@Gen_00c6ffe0@@QAEXXZ
+?b_00c70bf0@@YAXXZ,0x00C70BF0,teardown registered by the atexit initializer at 0x00C6C7F0; same body as ?m@Gen_00c70bf0@@QAEXXZ
+?b_00c70c90@@YAXXZ,0x00C70C90,teardown registered by the atexit initializer at 0x00C6D8A0; same body as ?bfmeForward@Gen_00C70C90@@QAEXXZ
+?b_00c70e70@@YAXXZ,0x00C70E70,teardown registered by the atexit initializer at 0x00C6DBA0; same body as ?m@Gen_00c70e70@@QAEXXZ
+??_EOpen2Store880FC0@@UAEPAXI@Z,0x00881180,weak alias of the scalar deleting dtor ??_G at this address; target of the W7 adjustor thunk at 0x00880F90
+??_EOpen2Store8F75D0@@UAEPAXI@Z,0x008F7890,weak alias of the scalar deleting dtor ??_G at this address; target of the W7 adjustor thunk at 0x008F75A0
