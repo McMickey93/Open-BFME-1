@@ -1,16 +1,35 @@
 // cl: /DNDEBUG /MD /EHsc
-// Retail replaces the selected high bit-field while preserving all other bits.
+// ShaderClass::Set_Cull_Mode, retail 0x006C5310 (21 bytes): Zero Hour's inline
+// setter, emitted out of line. It replaces the cull-mode bit of ShaderBits
+// (bit 20 here, bit 19 in Zero Hour) and keeps every other bit. Open-BFME-2's
+// matched Set_Cull_Mode is byte-identical and BFME1's ILT slot confirms the
+// decoration.
 
-class Rva006C5310
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2/shader.h
+class ShaderClass
 {
 public:
-	void set( unsigned int value );
+	enum CullModeType
+	{
+		CULL_MODE_DISABLE = 0,
+		CULL_MODE_ENABLE,
+		CULL_MODE_MAX
+	};
+
+	void Set_Cull_Mode( CullModeType x );
 
 private:
-	unsigned int m_value;
+	enum
+	{
+		SHIFT_CULLMODE = 20,
+		MASK_CULLMODE = ( 1 << SHIFT_CULLMODE )
+	};
+
+	unsigned int ShaderBits;
 };
 
-void Rva006C5310::set( unsigned int value )
+void ShaderClass::Set_Cull_Mode( CullModeType x )
 {
-	m_value = (m_value & 0xFFEFFFFFu) | (value << 20);
+	ShaderBits &= ~MASK_CULLMODE;
+	ShaderBits |= x << SHIFT_CULLMODE;
 }
