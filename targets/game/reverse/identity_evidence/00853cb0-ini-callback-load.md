@@ -9,7 +9,17 @@ Session a2/48, 2026-10-17, model=claude-opus-5-5.
 - The gen-dump row's 345 B cuts `mov esi,[esi+4]` at +0x157, so the verifier refuses that extent. 394 B (up to the first outer catch) verifies.
 - Callers that spell it as the unresolved link-queue #17 name `?load@INI@@QAEXVAsciiString@@HHPAX@Z`: VideoPlayer::init (0x0081CB30), Gen_0081DBE0::bfmeLoad_0081DD20, INI::loadSubsystemFiles (0x000BB310), MapCache::loadStandardMaps (0x004507A0).
 
-## Why it is not landed
+## Landed 2026-10-21 (claude-opus-5-5)
+
+Landed without touching INI.h, in game/Libraries/Source/ini/INILoadBFMERetail.cpp
+(the TU of the 5-arg load), which now includes the ini AsciiString and
+INIException shims so the row carries the pinned name. The lever the TU-local
+port first missed: retail's s_xfer (0x0130CE54) is file-static; an external
+definition moves the parameter-dtor `lea ecx,[ebp+8]` below the unPrepFile
+stores (12 bytes). The static retires data row ?g_Va0130CE54@@3PAXA. The recipe
+below (ini.cpp + header edits) is kept for whoever moves both loads to ini.cpp.
+
+## Why it was not landed in ini.cpp
 
 The declaration has to go into inputs/reference/shims/ini_parser/Common/INI.h and game/GameEngine/Include/Common/INI/INI.h. Either edit makes tools/header_dependents.py reach 1,646 sources, INIMapCache.cpp among them. INIMapCache.cpp's two insert_unique rows at 0x0064CBD0 are already red on origin: their less<AsciiString> call resolves to 0x62FA0, but retail calls ILT 0x1C01C (pin retired in fdfa67e1f9). The pre-commit scoped header gate therefore fails, even with every changed TU green (ini.cpp 58/58 plus both catch rows; caller TUs 1/1, 1/1, 2/2 and 3/3).
 

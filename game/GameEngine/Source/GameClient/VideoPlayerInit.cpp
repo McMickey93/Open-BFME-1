@@ -67,21 +67,20 @@ extern Video *g_bfmeVideoTableEnd;   // retail 0x0130B1A0
 // pinned spelling carries as an int and retail pushes as zero.
 extern void j_0001bb4e();
 
+class Xfer;
+
 class INI
 {
 public:
 	INI();
 	~INI();
+	// 0x00853CB0, matched in INILoadBFMERetail.cpp.
+	void load(AsciiString filename, int loadType, Xfer *pXfer, void (*parse)(INI *ini));
 
 private:
 	char m_storage[0x848];
 };
 
-// INI::load at 0x00853CB0 is linked as the gen-dump ?d_00853cb0@@YAXXZ, so
-// the thiscall load is reached through a member-pointer call (the pattern the
-// Apt callers of ?d_008cc940 use).
-extern void d_00853cb0();
-typedef void (INI::*VideoPlayerIniLoad)(AsciiString filename, int loadType, int reload, void *parseVideo);
 
 // parseSubtitle (0x0081D7C0) is the callback for the per-movie subtitle INI.
 extern void parseSubtitle(INI *, void *, void *, const void *);
@@ -152,11 +151,10 @@ void VideoPlayer::init(void)
 	if (s_videoPlayerInitialised == 0)
 	{
 		INI ini;
-		union { void (*fn)(); VideoPlayerIniLoad call; } u = { d_00853cb0 };
-		(ini.*u.call)(AsciiString("Data\\INI\\Default\\Video.ini"),
-			INI_LOAD_OVERWRITE, 0, (void *)j_0001bb4e);
-		(ini.*u.call)(AsciiString("Data\\INI\\Video.ini"),
-			INI_LOAD_OVERWRITE, 0, (void *)j_0001bb4e);
+		ini.load(AsciiString("Data\\INI\\Default\\Video.ini"),
+			INI_LOAD_OVERWRITE, 0, (void (*)(INI *))j_0001bb4e);
+		ini.load(AsciiString("Data\\INI\\Video.ini"),
+			INI_LOAD_OVERWRITE, 0, (void (*)(INI *))j_0001bb4e);
 
 		for (unsigned int index = 0;
 			index < (unsigned int)(g_bfmeVideoTableEnd - g_bfmeVideoTableBegin);
@@ -183,8 +181,8 @@ void VideoPlayer::init(void)
 
 					{
 						INI subtitleIni;
-						(subtitleIni.*u.call)(path, INI_LOAD_OVERWRITE, 0,
-							(void *)parseSubtitle);
+						subtitleIni.load(path, INI_LOAD_OVERWRITE, 0,
+							(void (*)(INI *))parseSubtitle);
 					}
 				}
 			}
