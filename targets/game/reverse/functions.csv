@@ -25710,7 +25710,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?XferRawBytes@XferSaveAsText@@QAEPAV1@PBXI@Z,,0x009D9220,312,game/Libraries/Source/xfer/xfer_debug.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/ea-worldbuilder-labels.md;model=claude-opus-5-5;host=ymo-workstation
 ?YFlip@Targa@@QAEXXZ,,0x009E0360,144,game/Libraries/Source/WWVegas/WWLib/TARGA.CPP,matched,identity-correction=targets/game/reverse/identity_evidence/009e0360-targa-yflip.md;proven by matched Targa::Load 0x009E0BF0 direct call; see identity_evidence/009e0360-targa-yflip.md;model=claude-opus-5-5;host=GreatFaram
 ?ZeroStuff@Cftp@@AAEXXZ,,0x008853C0,109,game/Libraries/Source/WWVegas/WWDownload/CftpConstructorThunk.cpp,matched,
-?_Allocate@MemoryPool@@YAPAXIW4AllocType@1@@Z,0x00882960,0x00882960,433,game/GameEngine/Source/Common/System/memory_pool.cpp,matched,allocate block from pool
 ?_AtlVerifyStackAvailable@_ATL_SAFE_ALLOCA_IMPL@ATL@@YA_NK@Z,,0x0005B6E0,133,game/GameEngine/Source/Common/T3AtlCImageCreateFromGdiplusBitmap.cpp,matched,VS2003 atlalloc.h _AtlVerifyStackAvailable emitted byte-exact by the ATL CImage TU; matches the existing direct body pin
 ?_Byte_Precision@@YAHK@Z,,0x009E8150,34,game/Libraries/Source/WWVegas/WWLib/mpmath.cpp,matched,
 ?_Create_DX8_Surface@DX8Wrapper@@SAPAVIDirect3DSurface9@@IIW4WW3DFormat@@W4_D3DPOOL@@@Z,,0x00904CE0,61,game/Libraries/Source/WWVegas/WW3D2/DX8Wrapper_D3DCalls.cpp,matched,D3D9 CreateOffscreenPlainSurface wrap
@@ -38437,7 +38436,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00881fd0@@YGPAXPBG@Z,,0x00881FD0,25,game/GameEngine/Source/Common/System/Rva00881D70CrtShims.cpp,matched,model=muse-spark-1.3-contributor
 ?d_00881ff0@@YGPAXPBDPAXK@Z,,0x00881FF0,35,game/GameEngine/Source/Common/System/Rva00881D70CrtShims.cpp,matched,model=muse-spark-1.3-contributor
 ?d_00882020@@YGPAXPBGPAXK@Z,,0x00882020,35,game/GameEngine/Source/Common/System/Rva00881D70CrtShims.cpp,matched,model=muse-spark-1.3-contributor
-?d_00882630@@YAXXZ,,0x00882630,415,game/gen_asm/d_00882630.asm,matched,gen-dump;carved start=ghidra-start end=ret+int3 callers=0;ghidra=FUN_00c82630
 ?d_00882e90@@YAPAXI@Z,,0x00882E90,17,game/GameEngine/Source/Common/System/Rva00881D70CrtShims.cpp,matched,model=muse-spark-1.3-contributor
 ?d_00882eb0@@YAPAXPAXI@Z,,0x00882EB0,22,game/GameEngine/Source/Common/System/Rva00881D70CrtShims.cpp,matched,model=muse-spark-1.3-contributor
 ?d_00882ed0@@YAXPAX@Z,,0x00882ED0,17,game/GameEngine/Source/Common/System/Rva00881D70CrtShims.cpp,matched,model=muse-spark-1.3-contributor
@@ -126032,7 +126030,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?member@Rva0037A910Object@@QAEPADXZ,,0x0037A910,4,game/GameEngine/Source/Common/Rva0037A7D0TinyAccessors.cpp,matched,address-derived member address returns this plus 0x7C
 ?member@Rva0037AAB0Object@@QAEPADXZ,,0x0037AAB0,6,game/GameEngine/Source/Common/Rva0037A7D0TinyAccessors.cpp,matched,address-derived member address adds 0x10 to the dword at this
 ?memrev@@YAXPADI@Z,,0x009E8C50,33,game/Libraries/Source/WWVegas/WWLib/mpmath.cpp,matched,
-?memset32@@YAXPAXHI@Z,,0x008823E0,70,game/GameEngine/Source/Common/System/memory_pool.cpp,matched,reference memset32 body and MemoryPool guard-fill callers
 ?merge@LList@@QAEXPAV1@@Z,,0x00105890,49,game/GameEngine/Source/Common/System/List.cpp,matched,
 ?merge@PairMerge00406EC0@@QAEXPBUCell00406EC0@@0@Z,,0x00406EC0,283,game/GameEngine/Source/GameLogic/AI/PathfindCellPairMerge00406EC0.cpp,matched,zone-worker callers 00407030 and 004085F0; native bitfield access and STLport iterator copy ABI; opaque method identity;model=gpt-6-astra
 ?merge@Rva000F93A0@@QAEXABU1@@Z,,0x000F93A0,53,game/GameEngine/Source/Common/Bfme/Rva000F93A0_merge.cpp,matched,
@@ -172534,3 +172531,6 @@ uw_00c0ae48,,0x00C0AE48,22,game/GameEngine/Source/GameLogic/Object/Behavior/Buil
 ?dup_00853E5E@@YAXXZ,,0x00853E5E,17,game/Libraries/Source/ini/INILoadBFMERetail.cpp,matched,gen-funclet;object-symbol=$L1313;parent=?load@INI@@QAEXVAsciiString@@HPAVXfer@@P6AXPAV1@@Z@Z;outer catch(...) unPrepFile rethrow of the callback INI::load (FuncInfo 0x00E45944);model=claude-opus-5-5;host=Desktop
 ?dup_00853C2A@@YAXXZ,,0x00853C2A,17,game/Libraries/Source/ini/INILoadBFMERetail.cpp,matched,gen-funclet;object-symbol=$L1380;parent=?load@INI@@QAE_NVBFMERetailAsciiString@@00HH@Z;model=gpt-6-astra;host=Desktop
 ?rva0077AB30@W3DModelDraw@@QAEXXZ,,0x0077AB30,475,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDrawRva00779910.cpp,matched,Real C++ 475; W3DModelDraw destructor reaches it through ILT 0x0001B798; walks bone followers at +0x130 (copy entry via Vector3 copy ctor) then W3DDisplay::m_3DScene Remove_Render_Object and Release_Ref then clear(); ZH stopClientParticleSystems spelling is ILT-contradicted so the name is address-derived;model=claude-opus-5-5;host=vm
+?memset32@@YAXPAXHI@Z,,0x008823E0,70,game/Libraries/Source/memorypool/memorypool_allocator.cpp,matched,reference memset32 body and MemoryPool guard-fill callers; moved beside them in the block TU (retail order 0x008823E0 precedes guardStart) where MSVC inlines it into rva00882630AddBucketBlocks only;model=claude-opus-5-5;host=Desktop
+?rva00882630AddBucketBlocks@@YAXII@Z,,0x00882630,415,game/Libraries/Source/memorypool/memorypool_allocator.cpp,matched,file-static bucket refill called by _Init and _Allocate with count in EAX; address-derived name; exact beside them with the file-static guard count;model=claude-opus-5-5;host=Desktop
+?_Allocate@MemoryPool@@YAPAXIW4AllocType@1@@Z,0x00882960,0x00882960,433,game/Libraries/Source/memorypool/memorypool_allocator.cpp,matched,allocate block from pool; export ordinal 1361; clean C++ replaces the naked lift; needs the file-static guard count shared with the block helpers and optimize(a off);model=claude-opus-5-5;host=Desktop
