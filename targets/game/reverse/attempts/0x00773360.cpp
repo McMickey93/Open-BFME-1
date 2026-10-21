@@ -1,17 +1,28 @@
 // ??0W3DModelDraw@@QAE@PAVThing@@PBVModuleData@@@Z
-// partial score=0.45 date=2026-09-28
-// cl: /DNDEBUG /MD /EHsc /O2 /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC
+// partial score=0.9274 date=2026-10-20
+// ??0W3DModelDraw@@QAE@PAVThing@@PBVModuleData@@@Z
+// cl: /DNDEBUG /MD /EHsc /O2 /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug
 // stlport
-// BFME W3DModelDraw constructor, retail 0x00773360 (1185B).
-//
-// This is the BFME-sized W3D model-draw base used by the scripted and vehicle
-// draw modules.  The public ZH header stops at the first few pointers; the
-// member ordering below follows the retail constructor/destructor packet:
-// intrusive particle tracker list at +0x48, tree at +0x8c, four 12-byte
-// recoil vectors at +0xac, three slot records at +0xdc, the ten-dword zero
-// packet at +0x148, decal pairs at +0x178/+0x1bc and the two layout strings at
-// +0x200.
+// Partial reconstruction of retail 0x00773360, complete extent 1185 bytes.
+// Identity: constructor and destructor install W3DModelDraw primary/secondary
+// vtables; constructor calls DrawableModule(Thing*, ModuleData*) at 00113DA0.
+// Improved from preserved alternative c8b1c49e94ecda6b after verified sibling
+// 8cbb9ab0 established the exact +130 follower and +13C string-vector layouts.
+// Native Vector3, the typed Drawable::getObject accessor, and Matrix3D copy/
+// Make_Identity produce 1183 bytes, 82 differing non-relocation bytes, 32
+// relocations (three sites drift), first byte mismatch +43A. Shape is 0.989,
+// one structural difference: final LOD branch chain instead of the retail
+// five-entry jump table. Source equality/identity of all legacy declarations
+// is NOT asserted: production landing needs canonical owning-header adoption
+// and the full dependent verification gate. No assembly or production edits.
+// Native signed/unsigned five-distinct-case and volatile pending-LOD variants
+// give 1168 bytes/896 differences; preferred grouped unsigned tail retained.
+// Receipts: build/worker2-773360-*-probe.log. model=gpt-6, 2026-10-20.
 
+#define __PLACEMENT_VEC_NEW_INLINE
+#include "vector3.h"
+#include "matrix3d.h"
+#include <string>
 #include <list>
 #include <set>
 #include <vector>
@@ -21,6 +32,18 @@
 
 typedef bool Bool;
 typedef int ParticleSystemID;
+
+// Retail allocates a 0x1C list node at this+0x48 (the 0x0077B090 destructor
+// frees the same node with `push 0x1C`), so the element is 20 bytes with the
+// particle-system ID as its first dword -- the value the matched
+// W3DModelDraw_updateSubObjectsFromShroud reads at node+8.  The remaining
+// 16 bytes are not witnessed by any matched body, so the type keeps the
+// address token rather than a guessed name.
+struct Rva00773360ParticleEntry
+{
+	ParticleSystemID m_id;
+	unsigned char m_unwitnessed[16];
+};
 
 class Thing;
 class ModuleData;
@@ -161,13 +184,15 @@ struct BfmeSlot
 	int m_pad[6];
 };
 
+class Object;
 class Drawable
 {
 public:
 	const Matrix3D *getTransformMatrix() const;
 
 	unsigned char m_data[0xfc];
-	void *m_object;
+	Object *m_object;
+ Object *getObject() { return m_object; }
 };
 
 class Object
@@ -194,6 +219,17 @@ public:
 extern GlobalData *TheWritableGlobalData;
 extern GameLODManager *TheGameLODManager;
 
+
+class RenderObjClass;
+struct Gen_t_00777e90_p32cd
+{
+ RenderObjClass *m_renderObject;
+ std::string m_boneName;
+ Vector3 m_rotate;
+ int m_countdown;
+};
+typedef char verifiedFollowerSize[(sizeof(Gen_t_00777e90_p32cd)==32)?1:-1];
+
 class W3DModelDraw : public DrawableModule, public W3DModelDrawInterface
 {
 public:
@@ -218,7 +254,7 @@ public:
 	void *m_shadow;
 	void *m_terrainDecal;
 	void *m_trackRenderObject;
-	_STL::list<ParticleSystemID> m_particleSystemIDs;
+	_STL::list<Rva00773360ParticleEntry> m_particleSystemIDs;
 	Gen_uwm_00034329 m_member4c;
 	Gen_uwm_00034329 m_member58;
 	Bool m_ready;
@@ -242,8 +278,8 @@ public:
 	int m_fielda8;
 	_STL::vector<Gen_p12cd> m_recoil[4];
 	BfmeSlot m_slots[3];
-	Gen_uwm_0000b073 m_field130;
-	Gen_uwm_0000b109 m_field13c;
+	std::vector<Gen_t_00777e90_p32cd> m_field130;
+	std::vector<std::string> m_field13c;
 	BfmeZeroFields10 m_zero148;
 	Bool m_field170;
 	Bool m_field171;
@@ -268,7 +304,8 @@ public:
 	Bool m_field231;
 	Bool m_field232;
 	unsigned char m_pad233;
-	float m_matrix[13];
+	Matrix3D m_matrix;
+ float m_field264;
 	int m_field268;
 	float m_bounds[4];
 };
@@ -363,7 +400,7 @@ W3DModelDraw::W3DModelDraw(Thing *thing,
 	m_bounds[2] = -9999.0f;
 	m_bounds[3] = -9999.0f;
 
-	Object *object = drawable ? (Object *)drawable->m_object : 0;
+	Object *object = drawable ? drawable->getObject() : 0;
 	if (object)
 	{
 		if (TheWritableGlobalData->m_timeOfDay == 4)
@@ -389,52 +426,30 @@ W3DModelDraw::W3DModelDraw(Thing *thing,
 	m_field21c = 0;
 
 	if (drawable)
-	{
-		const float *matrix = (const float *)drawable->getTransformMatrix();
-		m_matrix[0] = matrix[0];
-		m_matrix[1] = matrix[1];
-		m_matrix[2] = matrix[2];
-		m_matrix[3] = matrix[3];
-		m_matrix[4] = matrix[4];
-		m_matrix[5] = matrix[5];
-		m_matrix[6] = matrix[6];
-		m_matrix[7] = matrix[7];
-		m_matrix[8] = matrix[8];
-		m_matrix[9] = matrix[9];
-		m_matrix[10] = matrix[10];
-		m_matrix[11] = matrix[11];
-	}
+		m_matrix = *drawable->getTransformMatrix();
 	else
-	{
-		m_matrix[1] = 0.0f;
-		m_matrix[2] = 0.0f;
-		m_matrix[3] = 0.0f;
-		m_matrix[0] = 1.0f;
-		m_matrix[4] = 0.0f;
-		m_matrix[5] = 1.0f;
-		m_matrix[6] = 0.0f;
-		m_matrix[7] = 0.0f;
-		m_matrix[8] = 0.0f;
-		m_matrix[9] = 0.0f;
-		m_matrix[10] = 1.0f;
-		m_matrix[11] = 0.0f;
-	}
-	m_matrix[12] = 1.0f;
+		m_matrix.Make_Identity();
+	m_field264 = 1.0f;
 	m_field268 = -1;
 
-	switch (TheGameLODManager->m_level)
 	{
-	case 0:
-	case 1:
-		m_lodResult = 2;
-		break;
-	case 2:
-		m_lodResult = 1;
-		break;
-	case 3:
-	case 4:
-	default:
-		m_lodResult = 0;
-		break;
+		int r;
+		switch ((unsigned int)TheGameLODManager->m_level)
+		{
+		case 0:
+		case 1:
+			r = 2;
+			goto done;
+		case 2:
+			r = 1;
+			goto done;
+		case 3:
+		case 4:
+		default:
+			r = 0;
+			break;
+		}
+	done:
+		m_lodResult = r;
 	}
 }

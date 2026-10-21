@@ -20938,5 +20938,15 @@
   "after_sha256": "a32b44a3dc577429ea09501d5ba24afb5e53cda08cd40735d48ccaa5f12f31ab",
   "evidence": "targets/game/reverse/identity_evidence/00693ec0-canonical-string-bank.md",
   "reason": "False pairing: the bank adopts canonical StringInline.h AsciiString; existing independent key views are not renames of AsciiString. Evidence-only partial source; no production identity changes."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x00773360.cpp",
+  "new_path": "targets/game/reverse/attempts/0x00773360.cpp",
+  "old_name": "ParticleSystemID",
+  "new_name": "Rva00773360ParticleEntry",
+  "before_sha256": "b083ef245f835ecd2d68e7457996d71c21f24d95aff4bac0875edfc57a2296d7",
+  "after_sha256": "13f9c6070f9ce88959042b4b886b904bfa791ad4e620120bde993c16baa326ed",
+  "evidence": "targets/game/reverse/identity_evidence/00773360-particle-list-element.md",
+  "reason": "False pairing: ParticleSystemID remains an int typedef and the first field of the address-derived 20-byte list payload. Retail constructor allocation and destructor deallocation both use 28-byte nodes (8-byte links plus 20-byte payload), refuting the old list<ParticleSystemID> element size. The correction applies only to this bank snapshot; no production identity is renamed."
  }
 ]
