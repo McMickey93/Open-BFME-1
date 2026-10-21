@@ -5,7 +5,8 @@ extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(
 	void *handle, unsigned long milliseconds);
 extern "C" __declspec(dllimport) int __stdcall ReleaseMutex(void *handle);
 
-extern void __stdcall initializeRva006B3C50(void *buffer);
+// Retail ILT 0004AC82 -> 006B2FC0; use the existing thunk row.
+extern void j_0004ac82();
 extern void j_00047f3c();
 
 // Miles channel volume globals, declared as AudioManagerInit.cpp declares them.
@@ -67,10 +68,10 @@ void Rva006B3C50ClientOwner::set006B4970(int value)
 	typedef void (Rva006B3C50ClientOwner::*RvaInit)(void *);
 	union
 	{
-		void (__stdcall *freeInit)(void *);
+		void (__cdecl *freeInit)();
 		RvaInit memberInit;
 	} init;
-	init.freeInit = ::initializeRva006B3C50;
+	init.freeInit = ::j_0004ac82;
 	(self->*init.memberInit)(buffer);
 }
 
@@ -88,10 +89,10 @@ void Rva006B3C50ClientOwner::set006B4A30(int value)
 	typedef void (Rva006B3C50ClientOwner::*RvaInit)(void *);
 	union
 	{
-		void (__stdcall *freeInit)(void *);
+		void (__cdecl *freeInit)();
 		RvaInit memberInit;
 	} init;
-	init.freeInit = ::initializeRva006B3C50;
+	init.freeInit = ::j_0004ac82;
 	(self->*init.memberInit)(buffer);
 }
 
@@ -109,10 +110,10 @@ void Rva006B3C50ClientOwner::set006B4AF0(int value)
 	typedef void (Rva006B3C50ClientOwner::*RvaInit)(void *);
 	union
 	{
-		void (__stdcall *freeInit)(void *);
+		void (__cdecl *freeInit)();
 		RvaInit memberInit;
 	} init;
-	init.freeInit = ::initializeRva006B3C50;
+	init.freeInit = ::j_0004ac82;
 	(self->*init.memberInit)(buffer);
 }
 
@@ -130,10 +131,10 @@ void Rva006B3C50ClientOwner::set006B4BB0(int value)
 	typedef void (Rva006B3C50ClientOwner::*RvaInit)(void *);
 	union
 	{
-		void (__stdcall *freeInit)(void *);
+		void (__cdecl *freeInit)();
 		RvaInit memberInit;
 	} init;
-	init.freeInit = ::initializeRva006B3C50;
+	init.freeInit = ::j_0004ac82;
 	(self->*init.memberInit)(buffer);
 }
 
@@ -151,9 +152,9 @@ void Rva006B3C50ClientOwner::set006B4C70(int value)
 	typedef void (Rva006B3C50ClientOwner::*RvaInit)(void *);
 	union
 	{
-		void (__stdcall *freeInit)(void *);
+		void (__cdecl *freeInit)();
 		RvaInit memberInit;
 	} init;
-	init.freeInit = ::initializeRva006B3C50;
+	init.freeInit = ::j_0004ac82;
 	(self->*init.memberInit)(buffer);
 }
