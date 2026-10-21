@@ -494,6 +494,11 @@ void j_00036615();
 extern const float g_rva01075350;
 
 void b_005f8b40();
+// Index-list keyword tables at retail VAs 0x01110180, 0x011101B0 and
+// 0x01110208; their data rows live in Rva00D10180.cpp.
+extern const char *const g_rva01110180Names[];
+extern const char *const g_rva011101B0Names[];
+extern const char *const g_rva01110208Names[];
 namespace FXParticleSystem {
 void Rva005F8FC0WriteVelocityHeader(const void *self, File *file,
     unsigned int *flags);
@@ -1771,10 +1776,7 @@ extern const char g_0111490C[];
 extern const char g_01114900[];
 extern const char g_01114504[];
 extern const char g_011144EC[];
-extern void *g_01110208;
-extern void *g_01110180;
-extern void *g_011101B0;
-extern void *g_01110258;
+extern const char *const RotationTypeNames[];
 extern const char g_01110838[];
 extern const char g_0111085C[];
 extern const char g_01110850[];
@@ -8808,10 +8810,10 @@ void ParticleSystemTemplate::parse(INI *ini, void *data, void *store, const void
     // reached through its retail ILT at 0x00436615 -> 0x004B8F60;
     // the other parser routes are their named INI bodies.
     Field fields[] = {
-        { "Priority", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&g_01110208, 0x7c },
+        { "Priority", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva01110208Names, 0x7c },
         { "IsOneShot", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x04 },
-        { "Shader", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&g_01110180, 0x08 },
-        { "Type", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&g_011101B0, 0x0c },
+        { "Shader", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva01110180Names, 0x08 },
+        { "Type", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva011101B0Names, 0x0c },
         { "ParticleName", reinterpret_cast<ParseProc>(bfmeINIParseAsciiString), 0, 0x10 },
         { "SlaveSystem", reinterpret_cast<ParseProc>(bfmeINIParseAsciiString), 0, 0x68 },
         { "SlavePosOffset", reinterpret_cast<ParseProc>(bfmeINIParseCoord3D), 0, 0x6c },
@@ -10847,7 +10849,7 @@ void RenderObjectDrawModuleTemplate::writeINI(File &file, unsigned int flags) co
     unsigned int enum0 = *(unsigned int *)((unsigned char *)this + 0x24);
     if (enum0 != 8)
         u1Call_005C7110((void *)&stream, (void *)flags, ( void *)g_0111385C,
-            (void **)((unsigned char *)&g_01110180 + enum0 * 4));
+            (void **)((unsigned char *)&::g_rva01110180Names + enum0 * 4));
 
     U1CountedHolder *renderGroup2 = (U1CountedHolder *)((unsigned char *)this + 0x28);
     U1Counted *item4 = renderGroup2->m_item;
@@ -10865,7 +10867,7 @@ void RenderObjectDrawModuleTemplate::writeINI(File &file, unsigned int flags) co
     unsigned int enum1 = *(unsigned int *)((unsigned char *)this + 0x34);
     if (enum1 != 8)
         u1Call_005C7110((void *)&stream, (void *)flags, ( void *)g_01113824,
-            (void **)((unsigned char *)&g_01110180 + enum1 * 4));
+            (void **)((unsigned char *)&::g_rva01110180Names + enum1 * 4));
 
     U1CountedHolder *renderGroup3 = (U1CountedHolder *)((unsigned char *)this + 0x38);
     U1Counted *item7 = renderGroup3->m_item;
@@ -10883,7 +10885,7 @@ void RenderObjectDrawModuleTemplate::writeINI(File &file, unsigned int flags) co
     unsigned int enum2 = *(unsigned int *)((unsigned char *)this + 0x44);
     if (enum2 != 8)
         u1Call_005C7110((void *)&stream, (void *)flags, ( void *)g_011137EC,
-            (void **)((unsigned char *)&g_01110180 + enum2 * 4));
+            (void **)((unsigned char *)&::g_rva01110180Names + enum2 * 4));
 
     U1ByteFlagged *sinkOnTerrainCollision = (U1ByteFlagged *)((unsigned char *)this + 0x0c);
     if (sinkOnTerrainCollision->m_flag)
@@ -10961,7 +10963,7 @@ void RenderObjectUpdateModuleTemplate::writeINI(File &file, unsigned int flags) 
     unsigned int rotation = *(unsigned int *)((unsigned char *)this + 0x9c);
     if (rotation != 1)
         u1Call_005C7110((void *)&stream, (void *)flags, ( void *)g_01114900,
-            (void **)((unsigned char *)&g_01110258 + rotation * 4));
+            (void **)((unsigned char *)&RotationTypeNames + rotation * 4));
 
     {
         writeStreamText(file,
