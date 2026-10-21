@@ -15,6 +15,13 @@
 // The two callees whose ledger rows still carry opaque placeholder owners
 // (BfmeHostBG::bfmeSaveBG, Rva006F9900Owner::addElement006F9A90) are called
 // through their ledger names.
+// The element constructor has no provider in this tree: the body at 0x006F81E0
+// is the ledger's ??0BfmeHostBG row, and the constructor name is only a pin
+// (symbols.csv, 0x006F81E0). Retail spells the call through the
+// incremental-link thunk 0x000253F6 (the stack element is built at +0x97 and
+// destroyed through 0x00011C3E), so link the constructor name to that thunk:
+// alias_guard follows the gen-thunk row to FUN_00af81e0, the same body the
+// name is pinned to, and the call bytes stay the ones the body was matched on.
 
 #include <list>
 
@@ -55,6 +62,8 @@ public:
 	unsigned char m_94;
 	Bool m_95;
 };
+
+#pragma comment(linker, "/alternatename:??0BaseHeightMapFloorElement@@QAE@XZ=?j_000253f6@@YAXXZ")
 
 // 0x006F87D0: the element's own transfer (ledger row keeps the opaque name).
 class BfmeAgentBG;
