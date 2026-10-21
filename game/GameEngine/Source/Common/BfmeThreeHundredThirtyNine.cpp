@@ -1,16 +1,29 @@
-extern "C" unsigned char bfmeVftSK[];
+// MouseThreadClass::MouseThreadClass, retail 0x00700240 (20 bytes): runs the
+// ThreadClass base constructor with a null name (Zero Hour's defaulted
+// argument) and installs ??_7MouseThreadClass@@6B@.
+// Open-BFME-2's matched MouseThreadClass constructor is byte-identical and
+// BFME1's ILT slot confirms the decoration.
 
-class BfmeThingSK
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib/thread.h
+class ThreadClass
 {
 public:
-	void bfmeBaseSK(int what);
-	BfmeThingSK *bfmeDropSK();
-	void *m_bfmeVft;
+	ThreadClass(const char *name);
+
+protected:
+	void *m_vptr;	// +0x00
 };
 
-BfmeThingSK *BfmeThingSK::bfmeDropSK()
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Source/W3DDevice/GameClient/W3DMouse.cpp
+class MouseThreadClass : public ThreadClass
 {
-	bfmeBaseSK(0);
-	m_bfmeVft = bfmeVftSK;
-	return this;
+public:
+	MouseThreadClass();
+};
+
+extern "C" void *__identifier("??_7MouseThreadClass@@6B@")[];
+
+MouseThreadClass::MouseThreadClass() : ThreadClass(0)
+{
+	m_vptr = __identifier("??_7MouseThreadClass@@6B@");
 }
