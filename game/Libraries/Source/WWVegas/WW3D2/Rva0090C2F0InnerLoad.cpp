@@ -142,6 +142,25 @@ protected:
 	static IDirect3DDevice8 *D3DDevice;
 };
 
+// The surface-adopting constructor this TU calls is retail 0x008FC590: it
+// stores its argument at receiver offset zero and, when the pointer is not
+// null, retains it through the resource's AddRef slot (vtable offset four),
+// then returns the receiver and pops its argument.  Those 25 bytes occur
+// exactly once in the retail image, and retail's callers at 0x0090CD00 (this
+// file) and 0x0090D320 pass a D3D surface, DrawPixel through the result and
+// destroy it with the 13-byte destructor at 0x008FC5B0 that reads the same
+// pointer and releases it through vtable offset eight.  The ledger owns those
+// bytes under ??0BfmeThingDC@@QAE@PAUBfmeItemDC@@@Z (game/GameEngine/Source/
+// Common/BfmeOneHundredEightySix.cpp), whose body is byte-identical: it
+// stores the pointer and calls the same slot-four method of the same table.
+// So the SurfaceClass name is an alias of that one body, exactly as the twin
+// destructor at 0x008FC5B0 aliases ??1SurfaceClass@@QAE@XZ to
+// ??1W3DRadarResetSurface@@QAE@XZ (both names are pinned to 0x008FC590 and
+// 0x008FC5B0 in symbols.csv).  tools/alias_guard.py judges this alias "ok":
+// the pinned address of ??0SurfaceClass@@QAE@PAUIDirect3DSurface9@@@Z and the
+// address of its target are one body.
+#pragma comment(linker, "/alternatename:??0SurfaceClass@@QAE@PAUIDirect3DSurface9@@@Z=??0BfmeThingDC@@QAE@PAUBfmeItemDC@@@Z")
+
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2/surfaceclass.h
 class SurfaceClass
 {
