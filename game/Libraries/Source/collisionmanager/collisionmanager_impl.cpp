@@ -251,6 +251,19 @@ public:
 // is dropped, the lists are merge-sorted (0x009A2750) and swept again.
 // Ported from Open-BFME-2's matched copy (0x00759600), which is byte-identical
 // and was itself finished from this repo's banked draft.
+//
+// 0x009A2750 has no converted body yet. The repo's banked attempt (and
+// Open-BFME-2's, at its 0x007586F0 twin) stops at 0.990: every spelling that
+// places the second queue's lea where retail puts it also permutes the
+// callee-saved colouring of the whole body. The retail bytes are already in
+// the link as the gen-dump row ?d_009a2750@@YAXXZ (0x009A2750, 460 B,
+// game/gen_asm/d_0099d0c0.asm), and thiscall void(void) and cdecl void(void)
+// share the same machine interface here (this in ecx, plain ret, no stack
+// arguments). Bind the ledger name to that body rather than invent a second
+// definition: alias_guard compares both pins at 0x009A2750 and sees one body.
+// This links UpdateSort; it is not conversion progress for the sort itself.
+#pragma comment(linker, "/alternatename:?rva009A2750@CollisionManagerImpl@@QAEXXZ=?d_009a2750@@YAXXZ")
+
 class CollisionManagerImpl
 {
 public:
