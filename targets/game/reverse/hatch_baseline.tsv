@@ -681,6 +681,9 @@ address_global	game/GameEngine/Source/Common/SmallLeafBodies2.cpp	g_Va01336E7C	2
 address_global	game/GameEngine/Source/Common/SmallLeafBodies2.cpp	g_Va0133F42C	2
 address_global	game/GameEngine/Source/Common/SmallLeafBodies2.cpp	g_Va0133F451	2
 address_global	game/GameEngine/Source/Common/StateSelfNamingCtorsWithFields.cpp	g_Va0109B558	2
+address_global	game/GameEngine/Source/Common/StaticInit/Rva00C6BC70BlockInitializers.cpp	g_Va012F48CC	2	allow=d5bbc30acd59e93b9182cf8febc385e07435c0dc
+address_global	game/GameEngine/Source/Common/StaticInit/Rva00C6BC70BlockInitializers.cpp	g_Va012F48EC	2	allow=d5bbc30acd59e93b9182cf8febc385e07435c0dc
+address_global	game/GameEngine/Source/Common/StaticInit/Rva00C6BC70BlockInitializers.cpp	g_Va012F490C	2	allow=d5bbc30acd59e93b9182cf8febc385e07435c0dc
 address_global	game/GameEngine/Source/Common/System/GameCommon.cpp	g_Va01073A98	2	allow=80a657459f87a3041c532eef7231d26209b057b8
 address_global	game/GameEngine/Source/Common/System/GameCommon.cpp	g_Va01073AA0	2	allow=80a657459f87a3041c532eef7231d26209b057b8
 address_global	game/GameEngine/Source/Common/System/GameCommon.cpp	g_Va01087AF8	2	allow=80a657459f87a3041c532eef7231d26209b057b8
