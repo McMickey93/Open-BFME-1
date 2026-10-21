@@ -179,34 +179,11 @@ Bool TunnelTracker::isInContainer( Object *obj )
 // tryToSetCaveIndex tail-call path. The 48-byte reference emitter here called
 // _M_create_node out of line and competed with that verified definition.
 
-// ------------------------------------------------------------------------
-// ?onTunnelDestroyed@TunnelTracker@@ present-unmatched
-void TunnelTracker::onTunnelDestroyed( const Object *deadTunnel )
-{
-	m_tunnelCount--;
-	m_tunnelIDs.remove( deadTunnel->getID() );
-
-	if( m_tunnelCount == 0 )
-	{
-		// Kill everyone in our contain list.  Cave in!
-		iterateContained( destroyObject, NULL, FALSE );
-		m_containList.clear();
-		m_containListSize = 0;
-	}
-	else
-	{
-		Object *validTunnel = TheGameLogic->findObjectByID( m_tunnelIDs.front() );
-		// Otherwise, make sure nobody inside remembers the dead tunnel as the one they entered 
-		// (scripts need to use so there must be something valid here)
-		for(ContainedItemsList::iterator it = m_containList.begin(); it != m_containList.end(); )
-		{
-			Object* obj = *it;
-			++it;
-			if( obj->getContainedBy() == deadTunnel )
-				obj->onContainedBy( validTunnel );
-		}
-	}
-}
+// Retail onTunnelDestroyed is implemented in TunnelTrackerOnTunnelDestroyed.cpp.
+// Preserve this native 8-byte helper for the ten existing matched alias rows.
+template ObjectID &_STL::list<ObjectID>::front();
+// Retain the original remove/erase/iterator helper chain as well.
+template void _STL::list<ObjectID>::remove(const ObjectID &);
 
 // ------------------------------------------------------------------------
 // ?destroyObject@TunnelTracker@@ present-unmatched
