@@ -10,3 +10,4 @@ link are distinguished; a successful byte check alone does not establish LINKED.
 | 9 | [Coord3D resize](task-09.md) |
 | 11 | [AudioRequest allocator conflict](task-11.md) |
 | 13 | [Terrain-cache provider identity](task-13.md) |
+| 19 | [Unsigned-short tree provider](task-19.md) |
