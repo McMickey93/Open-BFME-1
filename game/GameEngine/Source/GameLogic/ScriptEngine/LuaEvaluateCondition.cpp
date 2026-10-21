@@ -81,7 +81,6 @@ public:
 class Parameter
 {
 public:
-	void friend_setInt(int value) { m_int = value; }
 	void friend_setReal(float value) { m_real = value; }
 
 private:
@@ -97,6 +96,14 @@ private:
 	Coord3D m_coord;
 	ObjectStatusMask m_objectStatus;
 };
+
+// This callback's partial Parameter layout stores the integer at +8.
+// Keep the accessor local, as in LuaExecuteAction.cpp, so it cannot compete
+// with Scripts.h's Parameter accessor (whose integer is at +0x0c).
+static __forceinline void friend_setInt(Parameter *parameter, int value)
+{
+	*reinterpret_cast<int *>(reinterpret_cast<char *>(parameter) + 8) = value;
+}
 
 class Condition
 {
@@ -200,7 +207,7 @@ int EvaluateCondition(lua_State *state)
 		{
 			double value = lua_tonumber(state, i + 2);
 			parameter->friend_setReal(value);
-			parameter->friend_setInt(value);
+			friend_setInt(parameter, value);
 		}
 		else if (lua_isstring(state, i + 2))
 		{
@@ -209,7 +216,7 @@ int EvaluateCondition(lua_State *state)
 		}
 		else if (lua_type(state, i + 2) == 1)
 		{
-			parameter->friend_setInt(0);
+			friend_setInt(parameter, 0);
 		}
 		else
 		{
