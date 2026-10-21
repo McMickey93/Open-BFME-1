@@ -47,7 +47,7 @@ void __stdcall rva0037dfd0(Rva0037DFD0Container *container, Object *primary)
     for (unsigned i = 0; i < container->begin.size(); ++i)
     {
         FXEntry *entry = &container->begin[i];
-        if (!entry->name.isEmpty() && primary->getDrawable())
+        if (!entry->name.StringBase<char>::isEmpty() && primary->getDrawable())
         {
             Matrix3D transform(true);
             primary->getDrawable()->getCurrentWorldspaceClientBonePositions(entry->name.str(), transform);

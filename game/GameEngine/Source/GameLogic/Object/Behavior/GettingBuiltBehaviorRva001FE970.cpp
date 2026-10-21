@@ -97,7 +97,7 @@ void GettingBuiltBehavior::rva001FE970()
         recent = false;
     else
         recent = true;
-    if (data->m_workerName.isEmpty())
+    if (data->m_workerName.StringBase<char>::isEmpty())
     {
         if (!recent && !m_secondary.slot14() && !(m_field28 < 0.0f))
             m_secondary.slot04(1);

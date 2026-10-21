@@ -294,7 +294,7 @@ void SlavedUpdate::setRepairState(RepairStates repairState)
 			"F:\\bfme\\Code\\gameengine\\Source\\GameLogic\\Object\\Update\\SlavedUpdate.cpp",
 			0x27b);
 
-		if (!data->m_weldingSysName.isEmpty())
+		if (!data->m_weldingSysName.StringBase<char>::isEmpty())
 		{
 			const ParticleSystemTemplate *tmp =
 				TheParticleSystemManager->findTemplate(data->m_weldingSysName);
