@@ -58,18 +58,8 @@
 /**
  * Constructor
  */
-// byte-exact reconstruction: game/GameEngine/Source/Common/StateConstructor.cpp
-// ??0State@@ present-unmatched
-State::State( StateMachine *machine, AsciiString name )	
-#ifdef STATE_MACHINE_DEBUG
-: m_name(name)
-#endif
-{
-	m_ID = INVALID_STATE_ID;
-	m_successStateID = INVALID_STATE_ID;
-	m_failureStateID = INVALID_STATE_ID;
-	m_machine = machine;
-}
+// State::State is defined by the retail-matching StateConstructor.cpp.
+// Keep this TU from emitting a second strong definition with the ZH layout.
 
 //-----------------------------------------------------------------------------
 /**
