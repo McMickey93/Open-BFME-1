@@ -34,6 +34,13 @@
 
 #include <D3DX8Math.h>
 
+// Retail's one-argument resize is owned by Coord3DVectorDefaultResizeThunk.cpp.
+// Preserve its 22-byte default-value forwarding body instead of emitting the
+// 32-byte Zero Hour variant while instantiating the remaining vector members.
+namespace _STL {
+template <> void vector<Coord3D, allocator<Coord3D> >::resize(size_type);
+}
+
 template class _STL::vector<Coord3D, _STL::allocator<Coord3D> >;
 
 // Retail BezierSegment::BezierSegment (0x000B6D00) is implemented in BezierSegmentConstructionAndLength.cpp.
