@@ -374,7 +374,6 @@ dir32,0x0110FE78,??_7ParticleInfo@@6B@,"retail 0x0110FE78 is already recorded as
 dir32,0x01110180,?g_01110180@FXParticleSystem@@3PAXA,"nothing in the ledger owns 0x01110180. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011101B0,?g_011101B0@FXParticleSystem@@3PAXA,"nothing in the ledger owns 0x011101B0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01110208,?g_01110208@FXParticleSystem@@3PAXA,"nothing in the ledger owns 0x01110208. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01110258,?RotationTypeNames@FXParticleSystem@@3QBQBDB,"nothing in the ledger owns 0x01110258. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01110258,?g_01110258@FXParticleSystem@@3PAXA,"nothing in the ledger owns 0x01110258. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01110500,?g_01110500@FXParticleSystem@@3QBUModuleCategoryEntry@1@B,"nothing in the ledger owns 0x01110500. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011106F4,?g_011106F4@@3QBDB,"retail 0x011106F4 is already recorded as ??_7ParticleModuleSnapshotSlice@FXParticleSystem@@6B@ (+4 more); reference that name, not a new one"
