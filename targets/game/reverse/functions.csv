@@ -172537,3 +172537,5 @@ _CommUdpProcess,,0x00817B30,2207,game/Libraries/Source/DirtySock/commudp.cpp,mat
 ?j_00024131@@YAXXZ,,0x00024131,5,game/GameEngine/Source/Common/IltThunks00001F96To0004887E.cpp,matched,unclaimed five-byte ILT thunk claimed by address; E9 rel32 to matched body 0x00483310;model=claude-opus-5-5;host=vm
 ?j_00040a1b@@YAXXZ,,0x00040A1B,5,game/GameEngine/Source/Common/IltThunks00001F96To0004887E.cpp,matched,unclaimed five-byte ILT thunk claimed by address; E9 rel32 to matched body 0x0008B600;model=claude-opus-5-5;host=vm
 ?j_0004887e@@YAXXZ,,0x0004887E,5,game/GameEngine/Source/Common/IltThunks00001F96To0004887E.cpp,matched,unclaimed five-byte ILT thunk claimed by address; E9 rel32 to matched body 0x000AA7B0;model=claude-opus-5-5;host=vm
+?Rva007AE2D0_mbslen@@YAIPBE@Z,,0x007AE2D0,6,game/Libraries/Source/WWVegas/WWLib/Rva007AE2D0ImportStubs.cpp,matched,MSVCR71 _mbslen import stub FF 25 [0x0135930C]; carved unclaimed;model=claude-opus-5-5;host=vm
+?Rva007E4810timeGetTime@@YGKXZ,,0x007E4810,6,game/Libraries/Source/WWVegas/WWLib/Rva007AE2D0ImportStubs.cpp,matched,WINMM timeGetTime import stub FF 25 [0x01359544]; carved unclaimed;model=claude-opus-5-5;host=vm
