@@ -28,7 +28,7 @@ class Snapshot
 {
 public:
 	Snapshot() {}
-	virtual ~Snapshot();
+	virtual ~Snapshot() {}
 protected:
 	virtual void crc(Xfer *xfer) = 0;
 	virtual void xfer(Xfer *xfer) = 0;

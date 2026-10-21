@@ -4,6 +4,7 @@
 #define SNAPSHOT_CPP
 #include "fx_particle_system.h"
 inline Snapshot::Snapshot() {}
+inline Snapshot::~Snapshot() {}
 
 namespace FXParticleSystem {
 DefaultPhysicsModuleInfo::DefaultPhysicsModuleInfo()
