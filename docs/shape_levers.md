@@ -1983,3 +1983,19 @@ and the mask's slot is reused. Ruled out first: named locals, reference-bound
 temporaries, factories, mem-initializer wrappers, implicit conversions (none
 share). Witness: `findObjectToRepair` 0x002B82D0 in
 `DozerPrimaryIdleState_update.cpp`.
+
+## An inner block scope keeps x87 products on the stack (2026-10-21)
+
+Symptom: Zero Hour's natural `v.x *= k; v.y *= k; v.x += p->x; v.y += p->y;`
+spells retail's operations but VC7.1 stores each product back to `v` and
+reloads it (+14 bytes), while hand-built temporaries (a two-element array)
+get within one scheduling slot of retail and no closer. Retail keeps both
+products on the x87 stack, `fxch`, then stores the integer `v.z` before the
+first `fadd`. Cause: `v` declared in the function's outer block. Put the
+locals in the inner block Zero Hour opens (`if( unloader ) { ... }` after an
+early return); a bare `{ ... }` reproduces it, because the redundant test is
+not in retail. Witness: `RailedTransportDockUpdate::doPushOutDocking`
+0x002CEA90 (0.9843 bank to exact), next to its sibling `doPullInDocking`
+0x002CE900, whose `if (docker)` block already had the scope. When a
+float-heavy bank's ZH spelling "costs" stores, diff its block structure
+against the ZH source before tuning statements.
