@@ -1606,20 +1606,7 @@ m_nextAndCondition(NULL)
 	}
 }
 
-Condition::Condition(enum ConditionType type):
-m_conditionType(type),
-m_hasWarnings(false),
-m_customData(0),
-m_customFrame(0),
-m_numParms(0),
-m_nextAndCondition(NULL)
-{
-	Int i;
-	for (i=0; i<MAX_PARMS; i++) {
-		m_parms[i] = NULL;
-	}
-	setConditionType(type);
-}
+// Retail Condition::Condition (0x00357CC0) is implemented in Condition_duplicate.cpp.
 
 // byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/Condition_setConditionType_Thunk.cpp
 // ?setConditionType@Condition@@QAEXW4ConditionType@1@@Z present-unmatched
