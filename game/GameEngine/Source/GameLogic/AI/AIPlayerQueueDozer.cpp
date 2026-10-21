@@ -218,6 +218,9 @@ public:
 class TeamInQueue
 {
 public:
+	// Out of line at 0x00161220 (ILT 0x0001F7A8).
+	TeamInQueue() throw();
+
 	Bool dlink_isInList_TeamBuildQueue(TeamInQueue *const *pListHead) const
 	{
 		return *pListHead == this || m_dlink_TeamBuildQueue_prev || m_dlink_TeamBuildQueue_next;
@@ -243,15 +246,6 @@ public:
 	char m_unmodelled028[0x30 - 0x28];
 };
 
-// The retail TeamInQueue constructor at 0x00161220 (ILT 0x0001F7A8), whose
-// owner name the ledger keeps address-derived.
-class Rva00161220
-{
-public:
-	Rva00161220() throw();
-private:
-	char m_storage[0x30];
-};
 
 class Object;
 
@@ -316,7 +310,7 @@ void AIPlayer::queueDozer( void )
 				order->m_isResourceGatherer = FALSE;
 				// prepend to head of list
 				order->m_next = NULL;
-				TeamInQueue *team = (TeamInQueue *)new Rva00161220;
+				TeamInQueue *team = new TeamInQueue;
 				// Put in front of queue.
 				prependTo_TeamBuildQueue(team);
 				team->m_priorityBuild = true;

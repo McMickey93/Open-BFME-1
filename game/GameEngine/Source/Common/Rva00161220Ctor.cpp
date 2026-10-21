@@ -1,6 +1,9 @@
 // cl: /O2 /Ob0
+// TeamInQueue::TeamInQueue, retail 0x00161220 (50 bytes): installs the
+// TeamInQueue vtable and clears the 0x30-byte queue node. Open-BFME-2's matched
+// constructor is byte-identical and BFME1's ILT slot confirms the name.
 
-class Rva00161220
+class TeamInQueue
 {
 	void *m_vptr;
 	int m_04;
@@ -18,13 +21,13 @@ class Rva00161220
 	int m_2C;
 
 public:
-	Rva00161220();
+	TeamInQueue();
 };
 
 // Retail vtable VA 0x01096940; the alternate name defines no table.
 extern "C" void *__identifier("??_7TeamInQueue@@6B@")[];
 
-Rva00161220::Rva00161220()
+TeamInQueue::TeamInQueue()
 {
 	m_vptr = __identifier("??_7TeamInQueue@@6B@");
 	m_04 = 0;
