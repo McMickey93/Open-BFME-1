@@ -565,3 +565,4 @@ game/GameEngine/Source/Common/RTS/ProductionPrerequisiteResolveNames.cpp	StringB
 game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogicReset.cpp	StringBase	game\GameEngine\Source\GameLogic\LivingWorld\LivingWorldLogicReset.cpp(27) : error C2876: 'StringBase<T>' : not all overloads are accessible
 game/GameEngine/Source/Common/S4MakeHeapElem12.cpp	StringBase	game\GameEngine\Source\Common\S4MakeHeapElem12.cpp(18) : error C2248: 'StringBase<T>::StringBase' : cannot access private member declared in class 'StringBase<T>'
 game/GameEngineDevice/Source/W3DDevice/GameClient/Rva00609940CursorTarget.cpp	UnicodeString	Functions: FAIL 1/1
+game/GameEngine/Source/GameClient/GUI/BfmeAptScreenObjectivesProvide.cpp	AsciiString	game\GameEngine\Source\GameClient\GUI\BfmeAptScreenObjectivesProvide.cpp(206) : error C2248: 'StringBase<T>::m_data' : cannot access private member declared in class 'StringBase<T>'
