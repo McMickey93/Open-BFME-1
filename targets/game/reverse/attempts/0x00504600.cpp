@@ -1,5 +1,5 @@
 // ?WOLMapSelectMenuSystem@@YA?AW4WindowMsgHandledType@@PAVGameWindow@@III@Z
-// partial score=0.48 date=2026-09-26
+// partial score=0.5117 date=2026-10-21
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/stringbaseunicode /Iinputs/reference/shims/stringbaseascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/debug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 #define Matrix4x4 Matrix4  // BFME renamed it
@@ -67,6 +67,103 @@ public:
 	virtual void hide( Bool immediate ) = 0;
 };
 
+// BFME's GameInfo vtable has two leading slots that are absent from the
+// vendored header, so resetAccepted / resetStartSpots / adjustSlotsForMap sit
+// at 0x18 / 0x1C / 0x20 in retail (witness: ?adjustSlotsForMap@GameInfo@@UAEXXZ
+// pinned at ??_7GameInfo@@6B@ slot 8, and the sibling WOLGameSetupMenu.cpp
+// callback's BfmeTemplateSelectionGameInfo with resetAccepted at 0x18).
+class BfmeMapSelectGameInfo
+{
+public:
+	virtual Int slot000() = 0;
+	virtual Int slot004() = 0;
+	virtual void reset() = 0;
+	virtual void startGame( Int gameID ) = 0;
+	virtual Bool amIHost() const = 0;
+	virtual Int getLocalSlotNum() const = 0;
+	virtual void resetAccepted() = 0;
+	virtual void resetStartSpots() = 0;
+	virtual void adjustSlotsForMap() = 0;
+};
+
+// GameSpyInfo's BFME vtable carries eight more slots than the vendored header,
+// putting setGameOptions at 0xCC; this view is the one the matched sibling
+// WOLGameSetupMenu.cpp already uses.
+class BfmeVirtualGameSpyInfo
+{
+public:
+	virtual void slot000() = 0;
+	virtual void slot004() = 0;
+	virtual void slot008() = 0;
+	virtual void slot00C() = 0;
+	virtual void slot010() = 0;
+	virtual void slot014() = 0;
+	virtual void slot018() = 0;
+	virtual void slot01C() = 0;
+	virtual void slot020() = 0;
+	virtual void slot024() = 0;
+	virtual void slot028() = 0;
+	virtual void slot02C() = 0;
+	virtual void slot030() = 0;
+	virtual void slot034() = 0;
+	virtual void slot038() = 0;
+	virtual void slot03C() = 0;
+	virtual void slot040() = 0;
+	virtual void slot044() = 0;
+	virtual void slot048() = 0;
+	virtual PlayerInfo *findPlayerName( const char *name ) = 0;
+	virtual void slot050() = 0;
+	virtual BuddyInfoMap *getBuddyMap() = 0;
+	virtual void slot058() = 0;
+	virtual void slot05C() = 0;
+	virtual void slot060() = 0;
+	virtual void slot064() = 0;
+	virtual AsciiString getLocalName() = 0;
+	virtual void slot06C() = 0;
+	virtual void slot070() = 0;
+	virtual void slot074() = 0;
+	virtual void slot078() = 0;
+	virtual void slot07C() = 0;
+	virtual void slot080() = 0;
+	virtual void slot084() = 0;
+	virtual void slot088() = 0;
+	virtual void slot08C() = 0;
+	virtual void slot090() = 0;
+	virtual void slot094() = 0;
+	virtual void slot098() = 0;
+	virtual void slot09C() = 0;
+	virtual void slot0A0() = 0;
+	virtual void slot0A4() = 0;
+	virtual void slot0A8() = 0;
+	virtual void slot0AC() = 0;
+	virtual void leaveStagingRoom() = 0;
+	virtual void slot0B4() = 0;
+	virtual void slot0B8() = 0;
+	virtual void slot0BC() = 0;
+	virtual Bool amIHost() = 0;
+	virtual GameSpyStagingRoom *getCurrentStagingRoom() = 0;
+	virtual void slot0C8() = 0;
+	virtual void setGameOptions() = 0;
+	virtual void slot0D0() = 0;
+	virtual void slot0D4() = 0;
+	virtual void slot0D8() = 0;
+	virtual void slot0DC() = 0;
+	virtual void slot0E0() = 0;
+	virtual void slot0E4() = 0;
+	virtual void unregisterTextWindow( GameWindow *window ) = 0;
+	virtual Int addText( UnicodeString message, Color c, GameWindow *win ) = 0;
+	virtual void slot0F0() = 0;
+	virtual void slot0F4() = 0;
+	virtual void slot0F8() = 0;
+	virtual void slot0FC() = 0;
+	virtual void slot100() = 0;
+	virtual void slot104() = 0;
+	virtual void slot108() = 0;
+	virtual void slot10C() = 0;
+	virtual void slot110() = 0;
+	virtual const AsciiString &getPingString() = 0;
+};
+
 class BfmeWOLMapSelectLayout
 {
 public:
@@ -81,13 +178,14 @@ public:
 	virtual void destroyWindows() = 0;
 };
 
-class Rva00098E70GameInfoView
-{
-public:
-	AsciiString getMap() const throw();
-};
-
-#pragma comment(linker, "/alternatename:?getMap@Rva00098E70GameInfoView@@QBE?AVAsciiString@@XZ=?getMap@GameInfo@@QBE?AVAsciiString@@XZ")
+// ILT 00029CEE -> 00457090 takes four cdecl stack arguments. Its final
+// argument is a pointer to a caller-owned AsciiString temporary, which the
+// caller destroys after return (unlike the ZH by-value API). Same pattern as
+// the matched WOLMapSelectInitialize00503FA0 sibling.
+extern void j_00029cee();
+inline void populateMapListboxByRef(GameWindow *w, bool system, bool multiplayer, const AsciiString &map) {
+ ((void (__cdecl *)(GameWindow*,bool,bool,const AsciiString&))j_00029cee)(w,system,multiplayer,map);
+}
 
 
 #ifdef _INTERNAL
@@ -448,38 +546,38 @@ WindowMsgHandledType WOLMapSelectMenuSystem( GameWindow *window, UnsignedInt msg
 			{
 				if (TheMapCache)
 					TheMapCache->updateCache();
-				populateMapListbox( mapList, TRUE, TRUE, ((Rva00098E70GameInfoView *)TheGameSpyGame)->getMap() );
+				populateMapListboxByRef( mapList, TRUE, TRUE, reinterpret_cast<GameInfo *>(TheGameSpyGame)->getMap() );
 				CustomMatchPreferences pref;
 				pref.setUsesSystemMapDir(TRUE);
-				pref.write();
+				((UserPreferences&)pref).write();
 			}
 			else if ( controlID == radioButtonUserMapsID )
 			{
 				if (TheMapCache)
 					TheMapCache->updateCache();
-				populateMapListbox( mapList, FALSE, TRUE, ((Rva00098E70GameInfoView *)TheGameSpyGame)->getMap() );
+				populateMapListboxByRef( mapList, FALSE, TRUE, reinterpret_cast<GameInfo *>(TheGameSpyGame)->getMap() );
 				CustomMatchPreferences pref;
 				pref.setUsesSystemMapDir(FALSE);
-				pref.write();
+				((UserPreferences&)pref).write();
 			}
 			else if( controlID == buttonOK )
 			{
-				Int selected[3];
+				Int selected;
 				UnicodeString map;
 				
 				// get the selected index
-				GadgetListBoxGetSelected( winMapWindow, &selected[2] );
+				GadgetListBoxGetSelected( winMapWindow, &selected );
 
-				if( selected[2] != -1 )
+				if( selected >= 0 )
 				{
 
 					// get text of the map to load
-					map = GadgetListBoxGetText( winMapWindow, selected[2], 0 );
+					map = GadgetListBoxGetText( winMapWindow, selected, 0 );
 					
 					
 					// set the map name in the global data map name
 					AsciiString asciiMap;
-					const char *mapFname = (const char *)GadgetListBoxGetItemData( winMapWindow, selected[2] );
+					const char *mapFname = (const char *)GadgetListBoxGetItemData( winMapWindow, selected );
 					DEBUG_ASSERTCRASH(mapFname, ("No map item data"));
 					if (mapFname)
 						asciiMap = mapFname;
@@ -495,10 +593,10 @@ WindowMsgHandledType WOLMapSelectMenuSystem( GameWindow *window, UnsignedInt msg
 						TheGameSpyGame->setMapSize( it->second.m_filesize );
 					}
 
-					TheGameSpyGame->adjustSlotsForMap(); // BGC- adjust the slots for the new map.
-					TheGameSpyGame->resetAccepted();
-					TheGameSpyGame->resetStartSpots();
-					TheGameSpyInfo->setGameOptions();
+					((BfmeMapSelectGameInfo *)TheGameSpyGame)->adjustSlotsForMap(); // BGC- adjust the slots for the new map.
+					((BfmeMapSelectGameInfo *)TheGameSpyGame)->resetAccepted();
+					((BfmeMapSelectGameInfo *)TheGameSpyGame)->resetStartSpots();
+					((BfmeVirtualGameSpyInfo *)TheGameSpyInfo)->setGameOptions();
 
 					WOLDisplaySlotList();
 					WOLDisplayGameOptions();

@@ -20960,5 +20960,15 @@
   "reason": "Generated zero-argument delegate m is not a semantic identity. Matched DoXfer supplies two CDEProvider pointers and the matched tail target returns ret8; preserve the unknown member identity with its retail address. See docs/naming_evidence.md snapshot-specific correction process.",
   "old_source_sha256": "7f93cb3ff00a682b97d58aff7027203efc8c6792268d89f8f7427587310bded0",
   "new_source_sha256": "7f4def889d3a3810be357156d22591d18eedcb7040fbb8993ea4daa1b5a1278a"
+},
+ {
+  "old_path": "targets/game/reverse/attempts/0x00504600.cpp",
+  "new_path": "targets/game/reverse/attempts/0x00504600.cpp",
+  "old_name": "throw",
+  "new_name": "j_00029cee",
+  "before_sha256": "83568d9aaf3ba48369c7fd0c09e1acf647d0f60cb4d8493adae28e3226687f2a",
+  "after_sha256": "015ab2ef98673521cb47fe0d8b0e070af8f6e4113b8b32190cab4f6fb86e7438",
+  "evidence": "targets/game/reverse/identity_evidence/0x00504600-mapselect-call-targets.md",
+  "reason": "The dropped token is the throw() specification of the bank's own Rva00098E70GameInfoView workaround class, removed with the class when the two menu call sites were rebound to ILT 0x00029CEE -> 0x00457090 and to GameInfo::getMap(). Every matched sibling declares AsciiString getMap() const; without it. The token pairing against the new import stub is a diff artefact, not an identity claim."
 }
 ]
