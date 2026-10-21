@@ -16,6 +16,16 @@
 
 #include <map>
 
+// The matching four-argument insertion body is owned by
+// stlport_rb_tree_ushort_int_insert.cpp (retail 0x0037B600).
+typedef _STL::pair<const unsigned short, int> RetailUShortIntPair;
+typedef _STL::_Rb_tree<unsigned short, RetailUShortIntPair,
+    _STL::_Select1st<RetailUShortIntPair>, _STL::less<unsigned short>,
+    _STL::allocator<RetailUShortIntPair> > RetailUShortIntTree;
+template <> RetailUShortIntTree::iterator RetailUShortIntTree::_M_insert(
+    _STL::_Rb_tree_node_base *, _STL::_Rb_tree_node_base *,
+    const RetailUShortIntPair &, _STL::_Rb_tree_node_base *);
+
 #include "ascii_string.h"
 
 class Rva003A4390Owner
