@@ -722,7 +722,6 @@ dir32,0x012A77D8,?g_Key001ABC90_012A77D8@@3VKey001ABC90@@A,"nothing in the ledge
 dir32,0x012A77E0,?g_Key001ABC90_012A77E0@@3VKey001ABC90@@A,"nothing in the ledger owns 0x012A77E0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012A7968,?TheKey_multiplayerStartIndex@@3VStaticNameKey@@B,"nothing in the ledger owns 0x012A7968. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012A7978,?TheKey_multiplayerIsLocal@@3VStaticNameKey@@B,"retail 0x012A7978 is already recorded as ?TheKey_multiplayerIsLocal@@3VStaticNameKey@@A; reference that name, not a new one"
-dir32,0x012AA008,?g_012AA008@@3PAPAXA,"nothing in the ledger owns 0x012AA008. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012AA068,?g_bfmeRva012AA068@@3PAPBDA,"retail 0x012AA068 is already recorded as ?TheKindOfBitNames@@3PAPBDA (+4 more); reference that name, not a new one"
 dir32,0x012ACC34,?g_rva001AF610RingSpacing@@3MA,the name encodes 0x001AF610 but retail reads 0x012ACC34
 dir32,0x012B3DC0,?TheShellHookNames@@3PAPADA,"retail 0x012B3DC0 is already recorded as ?TheShellHookNames@@3PAPBDA; reference that name, not a new one"
