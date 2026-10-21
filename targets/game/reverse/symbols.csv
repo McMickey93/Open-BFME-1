@@ -91106,3 +91106,8 @@ rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ??1Gen_t_00776080_p32cd@@QAE@XZ,0x00769D90,gen-tgrid payload member; scope-exit destructor of the 32B record in Rva00777B50Owner::rva00777B50 (retail call via ILT 0x0004429C); body destroys the STLport string at +4 like the sibling Gen_t_*_p32cd pins
 ??$_Construct@URva00477050Element@@U1@@_STL@@YAXPAURva00477050Element@@ABU1@@Z,0x00474090,gen-tgrid payload member; copy-construct of the 16B Rva00477050Element (three ints then the string at +0xC) called by the inlined push_back in Rva004776E0Parse via ILT 0x000410E2; same body as the Gen_t_00477580_p16cd construct pin
 ?rva008833C0@@YAXPAVRva008838F0Owner@@HPAXIPBD@Z,0x008833C0,address-derived __cdecl heap-tracker record call; MemoryPool::_Allocate 0x00882960 calls it twice with five stack slots (owner g_bfmeRva0130EA10Owner type block size 0) and never reads EAX; body still a dump
+?b_005dc1e0@@YAXXZ,0x005DC1E0,ConcreteModuleTemplate BoxEmissionVolumeModule destructor body; route target of ILT 0x00001F96 (E9 rel32 -> 0x005DC1E0)
+?b_006f63b0@@YAXXZ,0x006F63B0,GameFileClass::Set_Name body; route target of ILT 0x00006F05 (E9 rel32 -> 0x006F63B0)
+?b_00483310@@YAXXZ,0x00483310,list<GameWindow*>::erase body; route target of ILT 0x00024131 (E9 rel32 -> 0x00483310)
+?b_0008b600@@YAXXZ,0x0008B600,GameMessage::getCommandTypeAsAsciiString body; route target of ILT 0x00040A1B (E9 rel32 -> 0x0008B600)
+?b_000aa7b0@@YAXXZ,0x000AA7B0,_Rb_tree<int pair<const int AsciiString>>::_M_erase body; route target of ILT 0x0004887E (E9 rel32 -> 0x000AA7B0)
