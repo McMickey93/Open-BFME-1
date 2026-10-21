@@ -741,7 +741,6 @@ dir32,0x012C7388,?g_classicFacets012C7388@@3PAPAVfacet@locale@_STL@@A,"nothing i
 dir32,0x012C83A0,_g_Rva012C83A0,"retail 0x012C83A0 is already recorded as ?g_Rva012C83A0@@3PBDB; reference that name, not a new one"
 dir32,0x012D4CB8,?g_rva012D4CB8@@3HA,"retail 0x012D4CB8 is already recorded as ?g_bfmeSeed790B0@@3HA (+1 more); reference that name, not a new one"
 dir32,0x012D4CBC,?g_rva012D4CBC@@3HA,"retail 0x012D4CBC is already recorded as ?g_bfmeCarry790B0@@3HA (+1 more); reference that name, not a new one"
-dir32,0x012D4D14,?g_012D4D14@@3PAPAXA,"nothing in the ledger owns 0x012D4D14. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012D5298,?g_bfmeDefaultString1284@@3URva008CAAE0StringBlock@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
 dir32,0x012D5298,?g_default012D5298@@3UStringBlock008A73E0@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
 dir32,0x012D5298,?g_default012D5298@@3UStringBlock008B3AA0@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
