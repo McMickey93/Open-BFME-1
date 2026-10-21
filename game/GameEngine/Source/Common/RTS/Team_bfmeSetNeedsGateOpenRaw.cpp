@@ -41,6 +41,10 @@ public:
 
 extern GameLogic *TheBfmeGameLogic;
 
+// TheBfmeGameLogic is the ledger's typed spelling of TheGameLogic; both names
+// resolve to the same 4-byte GameLogic* slot at 0x012F0898.
+#pragma comment(linker, "/alternatename:?TheBfmeGameLogic@@3PAVGameLogic@@A=?TheGameLogic@@3PAVGameLogic@@A")
+
 class Module
 {
 public:
