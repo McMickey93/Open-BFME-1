@@ -1,5 +1,5 @@
-// ??1AutoAbilityBehaviorModuleData@@UAE@XZ
-// partial score=0.9660493827160493 date=2026-09-27
+// ?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ
+// partial score=0.966 date=2026-09-27
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWLib /Igame/GameEngine/Source/GameLogic
 // stlport
 #define _STLP_NO_EXCEPTIONS 1
