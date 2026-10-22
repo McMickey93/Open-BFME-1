@@ -38327,7 +38327,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00755f70@@YAXXZ,,0x00755F70,2572,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00b55f70
 ?d_0075d0c0@@YAXXZ,,0x0075D0C0,1,game/GameEngine/Source/Common/Rva0075D0C0Noop.cpp,matched,carved ret boundary; address-derived identity
 ?d_0075f210@@YAXXZ,,0x0075F210,349,game/gen_asm/d_00753460.asm,matched,gen-dump;ghidra=FUN_00b5f210
-?d_0075f400@@YAXXZ,,0x0075F400,823,game/gen_asm/d_00753460.asm,matched,gen-dump;ghidra=FUN_00b5f400
 ?d_00763ac0@@YAXXZ,,0x00763AC0,1500,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00b63ac0
 ?d_00765b70@@YAXXZ,,0x00765B70,473,game/gen_asm/d_0075fb90.asm,matched,gen-dump;ghidra=FUN_00b65b70
 ?d_00765fb0@@YAXXZ,,0x00765FB0,2190,game/gen_asm/d_0075fb90.asm,matched,gen-dump;ghidra=FUN_00b65fb0
@@ -173040,3 +173039,4 @@ _CommUdpProcess,,0x00817B30,2207,game/Libraries/Source/DirtySock/commudp.cpp,mat
 ?dup_00BF6F3B@@YAXXZ,,0x00BF6F3B,14,game/GameEngine/Source/GameNetwork/GameSpy/Thread/PSPlayerStats_Destructor.cpp,matched,gen-funclet;object-symbol=$L33936;parent=??1PSPlayerStats@@QAE@XZ;parent 000A5150 -> handler 00BF6F73 FuncInfo 00DE4700 unwind-map entry;model=claude-opus-5-5;host=vm
 ?dup_00C1FB50@@YAXXZ,,0x00C1FB50,11,game/GameEngine/Source/GameLogic/Pathfinder/PathfinderNewMap.cpp,matched,gen-funclet;object-symbol=$L630;parent=?NewMap@Pathfinder@@QAEXXZ;unwind-map funclet of FuncInfo 0x00E0FE4C handler 0x00C1FB5B;model=claude-opus-5-5;host=vm
 ?dup_00C22656@@YAXXZ,,0x00C22656,14,game/GameEngine/Source/GameClient/GlobalLanguageConstructor.cpp,matched,gen-funclet;object-symbol=$L538;parent=??0GlobalLanguage@@QAE@XZ;unwind-map funclet of FuncInfo 0x00E12934 handler 0x00C22664;model=claude-opus-5-5;host=vm
+?rva0075F400@Rva0077B3F0@@QAEXXZ,,0x0075F400,823,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/Rva0077B3F0.cpp,matched,chained pitch-history assignments from BFME2 donor 3c6a1bd5; exact 823 bytes;model=wave28-d;host=chalco.vps

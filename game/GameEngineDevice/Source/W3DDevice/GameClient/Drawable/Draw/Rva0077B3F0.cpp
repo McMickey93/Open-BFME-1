@@ -77,6 +77,11 @@ class Rva0077B3F0Render
 public:
     SLOTS_00_0C SLOTS_10_1C SLOTS_20_2C SLOTS_30_3C SLOTS_40_4C SLOT(50)
     virtual void slot54(const Matrix3D &);
+    SLOT(58) SLOT(5C) SLOTS_60_6C SLOTS_70_7C SLOTS_80_8C SLOTS_90_9C
+    SLOTS_A0_AC SLOTS_B0_BC SLOTS_C0_CC SLOT(D0)
+    virtual void slotD4(int bone);
+    SLOT(D8) SLOT(DC)
+    virtual void slotE0(int bone, const Matrix3D &, bool);
 };
 class Rva0077B3F0Secondary
 {
@@ -101,11 +106,20 @@ public:
     SLOTS_00_0C SLOTS_10_1C SLOT(20)
     virtual bool slot24();
 };
+// ILT 0x0000460B -> matched AIUpdateInterface::getTurretRotAndPitch (0x0026EAF0).
+enum WhichTurretType { TURRET_INVALID = -1 };
+class AIUpdateInterface
+{
+public:
+    bool getTurretRotAndPitch(WhichTurretType tur, float *turretAngle, float *turretPitch) const;
+};
 struct Rva0077B3F0Object
 {
     U8 unknown000[0x1fc];
     Rva0077B3F0Contain *p1fc;
-    U8 unknown200[0x14];
+    U8 unknown200[4];
+    AIUpdateInterface *p204;
+    U8 unknown208[0xc];
     Rva0077B3F0Object *p214;
     U8 unknown218[0x344-0x218];
     U8 b344;
@@ -199,6 +213,27 @@ inline bool rva0077B3F0NameNotEmpty(const AsciiString &s)
     return data && *(const unsigned short *)(data+4) != 0;
 }
 
+// The state record at owner+0x10: two 0x18-byte turret entries at +0xF0
+// (two words, two floats, two bone indices) and a ready byte at +0x124.
+struct Rva0075F400Turret
+{
+    U32 unknown000[2];
+    float f008, f00c;
+    int i010, i014;
+};
+struct Rva0075F400State
+{
+    U8 unknown000[0xf0];
+    Rva0075F400Turret turrets[2];
+    U8 unknown120[4];
+    bool b124;
+};
+// Retail 0x012ED524 is EA's GameEngine *TheGameEngine; +0x38 is the float
+// AttachmentTransform007629F0.cpp reads as value38.
+class GameEngine;
+extern GameEngine *TheGameEngine;
+struct Rva0075F400Engine { U8 unknown000[0x38]; float f038; };
+
 class Rva0077B3F0
 {
 public:
@@ -215,7 +250,7 @@ public:
     Rva0077B3F0Data *p004;
     Rva0077B3F0Drawable *p008;
     Rva0077B3F0Secondary s00c;
-    U32 unknown010;
+    const Rva0075F400State *p010;
     void *p014;
     Rva0077B3F0Handle h018;
     U8 unknown024[0x2e-0x24];
@@ -244,6 +279,8 @@ public:
     U8 unknown211[3];
     U32 u214, u218, u21c;
     float f220, f224, f228;
+    U8 unknown22c[0x26c-0x22c];
+    float f26c, f270, f274, f278;
 };
 typedef char check_handle_size[sizeof(Rva0077B3F0Handle)==12 ? 1 : -1];
 typedef char check_matrix_size[sizeof(Matrix3D)==48 ? 1 : -1];
@@ -252,6 +289,9 @@ typedef char check_owner_018[offsetof(Rva0077B3F0,h018)==0x18 ? 1 : -1];
 typedef char check_owner_034[offsetof(Rva0077B3F0,p034)==0x34 ? 1 : -1];
 typedef char check_owner_178[offsetof(Rva0077B3F0,s178)==0x178 ? 1 : -1];
 typedef char check_owner_210[offsetof(Rva0077B3F0,b210)==0x210 ? 1 : -1];
+typedef char check_owner_26c[offsetof(Rva0077B3F0,f26c)==0x26c ? 1 : -1];
+typedef char check_object_204[offsetof(Rva0077B3F0Object,p204)==0x204 ? 1 : -1];
+typedef char check_state_124[offsetof(Rva0075F400State,b124)==0x124 ? 1 : -1];
 
 void Rva0077B3F0::method(const Matrix3D *transform)
 {
@@ -349,4 +389,90 @@ void Rva0077B3F0::method(const Matrix3D *transform)
     rva0075C9F0(p034);
     s178.rva004585F0();
     rva0075F810();
+}
+
+// Retail 0x0075F400 (823 bytes), reached from method() through ILT 0x00043329.
+// For each of the two turret entries with a bone, it asks the object's AI for
+// the turret angle and pitch and poses the bones on the render object. With
+// owner+0x14 set, it adds the entry's base angle and pitch and keeps a
+// previous/current pair per axis (+0x26C/+0x274 angle, +0x270/+0x278 pitch,
+// below -1000 means unset). Each new 1.0 engine fraction shifts the pair;
+// between frames the angle is interpolated along the short arc.
+void Rva0077B3F0::rva0075F400()
+{
+    if (!p010 || !p010->b124)
+        return;
+
+    for (int slot = 0; slot < 2; ++slot)
+    {
+        const Rva0075F400Turret &tur = p010->turrets[slot];
+        float angle = 0;
+        float pitch = 0;
+        if (tur.i010 || tur.i014)
+        {
+            float fraction = ((Rva0075F400Engine *)TheGameEngine)->f038;
+            Rva0077B3F0Object *obj = p008->p0fc;
+            if (obj && obj->p204)
+                obj->p204->getTurretRotAndPitch((WhichTurretType)slot, &angle, &pitch);
+
+            if (tur.i010)
+            {
+                float rotation = 0.0f;
+                if (p014)
+                {
+                    angle += tur.f008;
+                    if (f26c < -1000.0f)
+                    {
+                        f274 = angle;
+                        f26c = angle;
+                        rotation = angle;
+                    }
+                    else if (fraction == 1.0f)
+                    {
+                        f26c = f274;
+                        f274 = angle;
+                        rotation = f26c;
+                    }
+                    else
+                    {
+                        float delta = f274 - f26c;
+                        if (delta > 3.14159265f)
+                            delta -= 6.28318531f;
+                        else if (delta < -3.14159265f)
+                            delta += 6.28318531f;
+                        rotation = delta * fraction + f26c;
+                    }
+                }
+                Matrix3D turretXfrm(1);
+                turretXfrm.Rotate_Z(rotation);
+                if (p034)
+                {
+                    p034->slotD4(tur.i010);
+                    p034->slotE0(tur.i010, turretXfrm, false);
+                }
+            }
+
+            if (tur.i014)
+            {
+                if (p014)
+                {
+                    pitch += tur.f00c;
+                    if (f270 < -1000.0f)
+                        f270 = f278 = pitch;
+                    else if (fraction == 1.0f)
+                    {
+                        f270 = f278;
+                        f278 = pitch;
+                    }
+                }
+                Matrix3D turretPitchXfrm(1);
+                turretPitchXfrm.Rotate_Y(-pitch);
+                if (p034)
+                {
+                    p034->slotD4(tur.i014);
+                    p034->slotE0(tur.i014, turretPitchXfrm, false);
+                }
+            }
+        }
+    }
 }
