@@ -652,8 +652,10 @@ def descriptor_libs(dlls, out):
         stem = dll.rsplit(".", 1)[0]
         d, lib = out / f"desc_{stem}.def", out / f"desc_{stem}.lib"
         d.write_text(f"LIBRARY {dll}\nEXPORTS\n  boot_descriptor_{stem}\n", encoding="latin-1")
-        res = subprocess.run([str(root / "Vc7/bin/lib.exe"), "/NOLOGO", "/MACHINE:X86", f"/DEF:{d}", f"/OUT:{lib}"],
-                             capture_output=True, text=True, errors="replace", env=build.compiler_environment(root))
+        cmd = [str(root / "Vc7/bin/lib.exe"), "/NOLOGO", "/MACHINE:X86", f"/DEF:{build.wine_path(d)}", f"/OUT:{build.wine_path(lib)}"]
+        if sys.platform != "win32":
+            cmd.insert(0, "wine")   # as link() runs link.exe: the toolchain's .exe files are not host executables
+        res = subprocess.run(cmd, capture_output=True, text=True, errors="replace", env=build.compiler_environment(root))
         if res.returncode or not lib.exists():
             raise SystemExit(f"boot_image: lib.exe failed for {dll}:\n{res.stdout}{res.stderr}")
         libs.append(lib)
@@ -1101,7 +1103,8 @@ def link_image(objs, base, out, tag, entry="boot_entry"):
     root = build.vc71_root()
     cmd = [str(root / "Vc7/bin/link.exe"), "/NOLOGO", "/NODEFAULTLIB", "/INCREMENTAL:NO", "/MACHINE:X86",
            "/SUBSYSTEM:WINDOWS", "/FIXED:NO", f"/BASE:0x{base:X}", "/OPT:NOREF", "/OPT:NOICF",
-           f"/ENTRY:{entry}", f"/MAP:{out / (tag + '.map')}", f"/OUT:{out / (tag + '.exe')}"] + [str(o) for o in objs]
+           f"/ENTRY:{entry}", f"/MAP:{build.wine_path(out / (tag + '.map'))}",
+           f"/OUT:{build.wine_path(out / (tag + '.exe'))}"] + [build.wine_path(o) for o in objs]
     if sys.platform != "win32":
         cmd.insert(0, "wine")
     for p in (out / (tag + ".map"), out / (tag + ".exe")):
