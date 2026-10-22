@@ -146,7 +146,7 @@ def make_bundle(run_dir, out, producer, *, root=ROOT, now=None, closure=None, pr
                     "components": {"closure_report": report, "cycle_diff": diff}}
         (tmp / ca.MANIFEST).write_text(ca.dumps(manifest), encoding="utf-8", newline="\n")
         ca.validate(tmp, root=root)
-        os.rename(tmp, out)
+        ca.publish_directory(tmp, out)
         return manifest
     except OSError as e:
         raise ca.Unavailable(f"cannot assemble local bundle: {e}") from None

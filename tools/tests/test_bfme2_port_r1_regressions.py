@@ -210,3 +210,38 @@ def test_r11_dirty_census_is_routed_as_committed(tmp_path, monkeypatch):
         rq.ledger.cache_clear()
 
 
+
+
+def test_r9_publisher_replaces_destination_created_during_validation(checkout, tmp_path, monkeypatch):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = tmp_path / "published"
+    validate = ca.validate
+    created = []
+    def race(directory, **kwargs):
+        result = validate(directory, **kwargs)
+        if Path(directory).name.startswith(".published.partial-"):
+            out.mkdir()
+            created.append(out.stat().st_ino)
+        return result
+    monkeypatch.setattr(ca, "validate", race)
+    with pytest.raises(ca.Unavailable):
+        freeze(run, out, root)
+    assert created and out.stat().st_ino == created[0]
+    assert list(out.iterdir()) == []
+    print("F9 publication race: pre-existing destination inode replaced=True")
+
+
+def test_r10_rehashed_closure_report_is_authoritative_before_queue_checks(checkout, tmp_path):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "bundle", root)
+    doc = ca.read_json(out / ca.CLOSURE_ROOTS)
+    assert doc["roots"] == []
+    doc["roots"] = [{"root": "0x00001000", "conditional_gain_bytes": 999999999}]
+    pc.gzip_bytes(ca.dumps(doc).encode(), out / ca.CLOSURE_ROOTS)
+    rehash(out, ca.CLOSURE_ROOTS)
+    with pytest.raises(ca.BundleError, match="closure root gains"):
+        ca.serve(out, root=root, now=NOW, need_closure=True)
+    assert rq.route_link_queue(out, closure=True, now=NOW)["reason"] == "corrupt"
+    print("F10 malformed closure score table: serve(need_closure=True) authoritative=True; repair queue alone detects corrupt")

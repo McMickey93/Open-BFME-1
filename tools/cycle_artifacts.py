@@ -401,6 +401,13 @@ def check_closure(d, manifest, receipt):
     if not count:
         raise Empty("cycle has no measured rows")
     same("reproduced credit", credit, receipt["series"].get("credit_unique_bytes"))
+    expected_body, blocker_rows = cr.analyze(*graph)
+    strip_verified = lambda roots: [dict(e, verified=None) for e in roots]
+    same("closure root gains reproduced from graph", strip_verified(doc["roots"]), expected_body["roots"])
+    same("closure summary reproduced from graph", doc["summary"], expected_body["summary"])
+    same("closure blockers reproduced from graph", read_member(d / CLOSURE_BLOCKERS), cr.blockers_csv(blocker_rows))
+    expected_doc = json.loads(cr.document(expected_body, blocker_rows, {})[0])
+    same("closure blockers metadata", doc["blockers"], expected_doc["blockers"])
     expected = {"included": True, "schema": cr.SCHEMA, "algorithm": cr.ALGORITHM, "graph": cr.BOUND}
     same("closure component", (manifest.get("components") or {}).get("closure_report"), expected)
 
@@ -727,6 +734,35 @@ def resolve(path, need_closure=False, root=ROOT):
     return path / ident / "bundle", notes
 
 
+def publish_directory(source, destination):
+    """Atomically reserve a new destination; never replace a concurrent creator.
+
+    Linux provides a single no-replace rename. The portable fallback reserves
+    with mkdir and installs manifest last, so incomplete bundles are never read
+    as published. Failure removes only the reservation this call created.
+    """
+    source, destination = Path(source), Path(destination)
+    if sys.platform.startswith("linux"):
+        import ctypes
+        import errno
+        libc = ctypes.CDLL(None, use_errno=True)
+        rename = getattr(libc, "renameat2", None)
+        if rename is not None:
+            if rename(-100, os.fsencode(source), -100, os.fsencode(destination), 1) == 0:
+                return
+            error = ctypes.get_errno()
+            if error not in (errno.ENOSYS, errno.EINVAL, errno.EOPNOTSUPP):
+                raise OSError(error, os.strerror(error), str(destination))
+    destination.mkdir()  # exclusive reservation, even when the competitor is empty
+    try:
+        for child in sorted(source.iterdir(), key=lambda p: (p.name == MANIFEST, p.name)):
+            os.rename(child, destination / child.name)
+        source.rmdir()
+    except BaseException:
+        shutil.rmtree(destination)
+        raise
+
+
 def install_local(directory, store, *, root=ROOT, now=None):
     """Copy and validate before one rename under the writer lock. Never overwrite an id."""
     source = load_bundle(directory, root=root)
@@ -742,7 +778,7 @@ def install_local(directory, store, *, root=ROOT, now=None):
         if final.exists():
             same("immutable installed manifest", validate(final / "bundle", root=root), copied.manifest)
         else:
-            os.rename(tmp, final)
+            publish_directory(tmp, final)
             tmp = None
         pointer = write_pointer(store, now, root)
         return copied.manifest, pointer
