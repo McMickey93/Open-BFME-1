@@ -88,19 +88,12 @@ public:
 	int m_pendingData;
 	bool isPendingObjectUnavailable() const;
 };
-class BfmeItemE63
-{
-public:
-	bool checkValid();
-};
 class CastleBehavior : public Module
 {
 public:
-	// ?isPendingObjectUnavailable00372090@CastleBehavior@@QBE_NXZ absent-from-retail
-	__forceinline bool isPendingObjectUnavailable00372090() const
-	{
-		return ((BfmeItemE63 *)this)->checkValid();
-	}
+	// Retail calls ILT 0x0004B015, whose jmp lands on this matched body
+	// (0x00372090, CastleBehaviorIsPendingObjectUnavailable.cpp).
+	bool isPendingObjectUnavailable() const;
 };
 class InGameUI
 {
@@ -173,7 +166,7 @@ public:
 };
 
 extern NameKeyGenerator *TheNameKeyGenerator;
-extern GameLogic *TheBfmeGameLogic;
+extern GameLogic *TheGameLogic;
 extern InGameUI *TheInGameUI;
 
 UpdateSleepTime FoundationAIUpdate::update()
@@ -189,7 +182,7 @@ UpdateSleepTime FoundationAIUpdate::update()
 		Module *member = owner->findModule(castleMemberKey);
 		if (member && !member->m_pending && member->m_pendingID)
 		{
-			Object *pending = TheBfmeGameLogic->findObjectByID(member->m_pendingID);
+			Object *pending = TheGameLogic->findObjectByID(member->m_pendingID);
 			if (pending)
 			{
 				static NameKeyType castleKey = TheNameKeyGenerator->nameToKey("CastleBehavior");
@@ -211,7 +204,7 @@ UpdateSleepTime FoundationAIUpdate::update()
 		}
 	}
 	{
-		if (m_currentID && TheBfmeGameLogic->findObjectByID(m_currentID))
+		if (m_currentID && TheGameLogic->findObjectByID(m_currentID))
 			return UPDATE_SLEEP_NONE;
 		if (m_currentID)
 		{
@@ -234,7 +227,7 @@ UpdateSleepTime FoundationAIUpdate::update()
 		{
 			bool unavailable;
 			if (member->m_pending)
-				unavailable = ((CastleBehavior *)member)->isPendingObjectUnavailable00372090();
+				unavailable = ((CastleBehavior *)member)->isPendingObjectUnavailable();
 			else
 				unavailable = false;
 			if (!unavailable)
