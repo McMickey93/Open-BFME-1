@@ -91144,3 +91144,4 @@ rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ??1BfmeStaticThingC@@QAE@XZ,0x005F4340,destructor of bfmeEnsure_005D9BC0's function static; its atexit teardown 0x00C70470 jumps here through ILT 0x000105D7
 ??1BfmeStaticThingB@@QAE@XZ,0x005F7FA0,destructor of bfmeEnsure_005D9B50's function static; its atexit teardown 0x00C70480 jumps here through ILT 0x0000FD94
 ??1BfmeStaticThingA@@QAE@XZ,0x005F3140,destructor of bfmeEnsure_005D9AE0's function static; its atexit teardown 0x00C70490 jumps here through ILT 0x0004B4B6
+??1?$vector@PBDV?$allocator@PBD@_STL@@@_STL@@QAE@XZ,0x006A02E0,destructor of the function-static vector<const char *> RoomTypeNames006A83F0::get builds; its atexit teardown 0x00C708E0 jumps here through ILT 0x00045CCD

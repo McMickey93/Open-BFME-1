@@ -28,6 +28,8 @@ Rva00387D90String *Rva00387D90Owner::at(int index)
 {
 	if (index >= 0 && (unsigned int)index < (unsigned int)m_slots.size())
 		return &m_slots[index];
-	static Rva00387D90String invalid("Invalid Slot");
-	return &invalid;
+	// The fallback is the plain string: its atexit teardown (0x00C6FE60)
+	// jumps straight to the string destructor ILT 0x0000D828.
+	static BFMERetailAsciiString invalid("Invalid Slot");
+	return (Rva00387D90String *)&invalid;
 }
