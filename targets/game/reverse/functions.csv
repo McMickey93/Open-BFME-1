@@ -123983,7 +123983,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_009eeaa0@@YAXXZ,,0x009EEAA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00dee630
 ?j_009eeab0@@YAXXZ,,0x009EEAB0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=FUN_00dee750
 ?j_009ef920@@YAXXZ,,0x009EF920,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009EF0D0
-?j_009ef94a@@YAXXZ,,0x009EF94A,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009EF140
 ?j_009f691c@@YAXXZ,,0x009F691C,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x009F68C6
 ?j_00a0f7f8@@YAXXZ,,0x00A0F7F8,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x00A09396
 ?j_00a0f822@@YAXXZ,,0x00A0F822,5,game/gen_small/gthunks_086.cpp,matched,gen-thunk;gap;target=0x00A0942C
@@ -173040,3 +173039,4 @@ _CommUdpProcess,,0x00817B30,2207,game/Libraries/Source/DirtySock/commudp.cpp,mat
 ??0Rva005EE8A0@@QAE@PAXPAVV3HostRva005E7420@@@Z,,0x005EE8A0,285,game/GameEngine/Source/GameClient/System/FXParticleSystem/Rva005EE8A0Ctor.cpp,matched,model=claude-opus-5-5;host=MacBook-Air-M2
 ?rva00784B10Deallocate@@YGXPAXI@Z,,0x00784B10,47,game/Libraries/Source/WWVegas/WWLib/Rva00784B10Deallocate.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/2026-10-22-00784b10-threshold-deallocator.md;address-derived four-byte-element STLport threshold deallocator; own retail body reached through ILT 0x00035FF8; replaces gen-alias of allocator<int>::deallocate 0x008F9D40;model=claude-opus-5-5;host=ymo-workstation
 ??1?$ShareBufferClass@G@@UAE@XZ,,0x009240D0,29,game/Libraries/Source/WWVegas/WW3D2/ShareBufferUnsignedShort.cpp,matched,real ShareBufferClass<unsigned short> destructor: delete[] RawBuffer with RefCountClass base vtable restore; replaces the ShareBufferClassUnsignedShort object-symbol shim;model=claude-opus-5-5;host=ymo-workstation
+?push_front@?$deque@PAVRva009EF0D0Element@@V?$allocator@PAVRva009EF0D0Element@@@_STL@@@_STL@@QAEXABQAVRva009EF0D0Element@@@Z,,0x009EF930,31,game/Libraries/Source/assetmanager/AssetRegistryQueueKeys009EFBF0.cpp,matched,boundary-interior-row=retail JMP at +0x1A is the final instruction of this 31-byte body;generated 0x009EF94A tail row retired via deleted_rows.csv;caller-TU COMDAT: the matched caller in this TU emits the byte-equal instantiation;identity evidence targets/game/reverse/identity_evidence/009eea50-deque-front.md;model=gpt-6.1-sol;host=chalco.vps
