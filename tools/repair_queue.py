@@ -345,12 +345,23 @@ def repair_items_from(path, kind, text):
 
 # ---------------------------------------------------------------- link tier
 
+def census_text(path):
+    """Read one committed fallback input, never its mutable worktree copy."""
+    got = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--show-toplevel"],
+                         capture_output=True, text=True)
+    if got.returncode or Path(got.stdout.strip()).resolve() != ROOT.resolve():
+        return None
+    got = subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:" + str(path)],
+                         capture_output=True, text=True)
+    return got.stdout if got.returncode == 0 else None
+
+
 def stored_census():
     """{"commit", "date", "when"} of the committed link census, or None when the repo has
     no reverse/link_status.csv or no history row saying what it measured."""
-    if not (ROOT / CENSUS_STATUS).exists():
+    if census_text(CENSUS_STATUS) is None:
         return None
-    rows = list(csv.DictReader(io.StringIO(_read(CENSUS_HISTORY))))
+    rows = list(csv.DictReader(io.StringIO(census_text(CENSUS_HISTORY) or "")))
     if not rows or not rows[-1].get("commit"):
         return None
     last = rows[-1]
@@ -405,28 +416,49 @@ def link_source(path=None):
                         f"committed census at {CENSUS_STATUS} with a {CENSUS_HISTORY} row")
 
 
-def census_items(path):
+def census_items(path, *, committed=False):
     """Units the stored census says do not link: fewest blockers first.
 
     Size is the unit's matched extent sum, not a proven unique-byte gain.
     """
-    by_rva, _ = ledger()
+    from link_census import STATUS_FIELDS
+    if committed:
+        functions = csv.DictReader(io.StringIO(census_text(LEDGER) or ""))
+        by_rva = {}
+        for row in functions:
+            if row.get("status") == "matched":
+                by_rva.setdefault(int(row["target_rva"], 16), []).append(row)
+    else:
+        by_rva, _ = ledger()
     rows_of = {}
     for rva, rows in by_rva.items():
         for row in rows:
             rows_of.setdefault(row["source"], []).append((rva, row))
+    data_path = "targets/game/reverse/data_rows.csv"
+    data_text = census_text(data_path) if committed else _read(data_path)
+    for row in csv.DictReader(io.StringIO(data_text or "")):
+        if row.get("status") != "matched":
+            continue
+        address = int(row["address"], 16)
+        if row["address_kind"] == "va":
+            address -= 0x400000
+        elif row["address_kind"] != "rva":
+            raise ValueError("unknown data address_kind")
+        rows_of.setdefault(row["source"], []).append((address, dict(row, target_size=0, data=True)))
     items = []
-    with Path(path).open(encoding="utf-8", newline="") as handle:
+    text = census_text(CENSUS_STATUS) if committed else Path(path).read_text(encoding="utf-8")
+    with io.StringIO(text or "") as handle:
         for row in csv.DictReader(handle):
             if row.get("linked") == "yes" or row["source"] not in rows_of:
                 continue
             owned = sorted(rows_of[row["source"]], key=lambda r: r[0])
             blockers = {k: int(row.get(k) or 0) for k in
-                        ("unresolved", "duplicates", "comdat_losers", "addresses", "wrong_selected")}
+                        STATUS_FIELDS[2:]}
             size = sum(int(r["target_size"] or 0) for _, r in owned)
             items.append({
                 "tier": "link", "target_rva": "0x%08X" % owned[0][0], "function": owned[0][1]["name"],
                 "source": row["source"], "size": size, "credit": 0, "placed": False,
+                "address_kind": "rva", "provider_kind": "data" if all(r.get("data") for _, r in owned) else "code",
                 "blockers": sum(blockers.values()),
                 "why": ("unit does not link (%d matched row(s)): " % len(owned)
                         + (", ".join("%s %d" % kv for kv in blockers.items() if kv[1]) or "linked=no")),
@@ -444,7 +476,7 @@ def link_items(path=None):
     if kind is None:
         return [], note
     if kind == "census":
-        items = census_items(path)
+        items = census_items(path, committed=True)
         return eligible_link_items(items), f"{len(items)} unit(s) that do not link, from the {note}"
     items = cycle_items(path)
     return eligible_link_items(items), f"{len(items)} row(s) from the {note}"
@@ -466,7 +498,9 @@ def cycle_items(path):
     items = []
     with open_status(path) as handle:
         for row in csv.DictReader(handle):
-            if row.get("kind") != "real" or (row["placed"] == "1" and row["self_strict"] == "1"):
+            if row.get("kind") != "real" or (row["placed"] == "1" and row["self_strict"] == "1"
+                                               and not int(row.get("hardcoded") or 0)
+                                               and not int(row.get("failure_count") or 0)):
                 continue
             placed = row["placed"] == "1"
             reason = (row["failures"] or "not self-strict") if placed else (row["placement_reason"] or "not placed")
@@ -562,7 +596,7 @@ def closure_queue(b):
     # non-unit root can be served by its own node identity, not a passing caller.
     with open_status(b.link_status) as handle:
         passing = {(int(r["retail_rva"], 16), r["name"], r["source"]) for r in csv.DictReader(handle)
-                   if r["placed"] == "1" and r["self_strict"] == "1"}
+                   if r["placed"] == "1" and r["self_strict"] == "1" and r["closed_strict"] == "1"}
     items, unaddressed = [], []
     for e in doc["roots"]:
         if not re.fullmatch(r"0x[0-9A-Fa-f]+", e["root"]):
@@ -659,7 +693,7 @@ def link_queue(bundle=None, *, closure=False, now=None, allow_stale=False, route
             if router and kind == "cycle":
                 raise ca.Refused("local cycle files are non-authoritative diagnostics; never routed",
                                  "not-authoritative", "diagnostic")
-            items = census_items(path) if kind == "census" else cycle_items(path)
+            items = census_items(path, committed=True) if kind == "census" else cycle_items(path)
             result.update(items=eligible_link_items(items), notes=[note], source_kind=kind)
         if not result["items"]:
             raise ca.Empty("no eligible unclaimed repairs in this source (passing rows are excluded)")

@@ -64,6 +64,10 @@ def census(rq, root):
     (rev / "functions.csv").write_text("name,target_rva,target_size,source,status\n"
                                        "wire,0x3000,40,game/wire.cpp,matched\n"
                                        "ok,0x1000,100,game/ok.cpp,matched\n")
+    import subprocess
+    for args in (["init", "-q"], ["add", "targets"],
+                 ["-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-qm", "census"]):
+        subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
     return rev
 
 
