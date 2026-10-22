@@ -219,11 +219,10 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(void *);
 extern "C" void * __cdecl memset(void *, int, unsigned int);
 #pragma intrinsic(memset)
 // Retail 0x008833C0 (still a dump): __cdecl, owner first, five stack
-// arguments, records an allocation with the heap tracker.
-void rva008833C0(Rva008838F0Owner *owner, int type, void *block, unsigned int size, const char *info);
-// The dump's placeholder name is decorated void(void), so it cannot spell the
-// five-argument ABI. The pin and that copy both resolve to retail 0x008833C0.
-#pragma comment(linker, "/alternatename:?rva008833C0@@YAXPAVRva008838F0Owner@@HPAXIPBD@Z=?d_008833c0@@YAXXZ")
+// arguments, records an allocation with the heap tracker. Use the retail
+// symbol verbatim so the five-argument ABI does not need an alias.
+extern "C" void __cdecl __identifier("?d_008833c0@@YAXXZ")(
+	Rva008838F0Owner *owner, int type, void *block, unsigned int size, const char *info);
 extern unsigned int g_Va0130E9F4;
 extern unsigned int g_Va0130E9C0;
 extern unsigned char g_Va0130E9F8;
@@ -250,7 +249,7 @@ void *MemoryPool::_Allocate(unsigned int size, MemoryPool::AllocType type)
         *large = size;
         LeaveCriticalSection(g_Va0130E9D8);
         if (g_rva0130E9F9)
-            rva008833C0(&g_bfmeRva0130EA10Owner, type, large + 1, size, 0);
+            __identifier("?d_008833c0@@YAXXZ")(&g_bfmeRva0130EA10Owner, type, large + 1, size, 0);
         return large + 1;
     }
 
@@ -277,7 +276,7 @@ void *MemoryPool::_Allocate(unsigned int size, MemoryPool::AllocType type)
         memset(block + 1, 0, size);
     LeaveCriticalSection(g_Va0130E9D8);
     if (g_rva0130E9F9)
-        rva008833C0(&g_bfmeRva0130EA10Owner, type, block + 1, size, 0);
+        __identifier("?d_008833c0@@YAXXZ")(&g_bfmeRva0130EA10Owner, type, block + 1, size, 0);
     return block + 1;
 }
 #pragma optimize("", on)
