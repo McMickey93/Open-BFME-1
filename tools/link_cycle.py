@@ -116,18 +116,20 @@ ROOT = Path(os.environ.get("LINK_CYCLE_ROOT") or Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build  # noqa: E402
 import link_census as census  # noqa: E402
+import link_cycle_context as context  # noqa: E402
 
 OUT = ROOT / "build" / "link_cycle"
 BASE = 0x400000
 SHIFT_BASE = 0x10000000
-# retail .text is four groups: .text | .text$x (EH funclets) | .text$yc (dynamic
-# initializers) | .text$yd (atexit dtors). /ORDER sorts only within a group, so
-# a filler carries its region's group name. Boundaries: retail BFME2 1.06.
+# BFME1 has one text group; funclets stay beside their functions.
 REGIONS = [(0x1000, ".text")]           # BFME1: funclets sit beside their functions
 ILT = (0x1000, 0x5B000)                  # retail's ILT: rel32 jumps only (no .reloc site below 0x5B000)
 REVERSE = ROOT / "targets" / "game" / "reverse"
 ABSOLUTE = {"__except_list": 0}          # exsup.asm: __except_list equ 0 (an FS: offset)
-TOOL_FILES = ("link_cycle.py", "link_census.py", "build.py", "dump_apply.py", "dump_relocs.py")
+RULES = context.RULES
+text_bytes = context.text_bytes
+text_sha256 = context.text_sha256
+measure_env = context.measure_env
 COMDAT, EXTERNAL, STATIC, WEAK = 0x1000, 2, 3, 105
 REL32, DIR32 = 0x14, 6
 
@@ -1299,12 +1301,7 @@ def git(*args, cwd=None):
 
 
 def tool_digest():
-    """This file as run, plus the tree's build and census modules it imports."""
-    h = hashlib.sha256()
-    h.update(b"link_cycle.py\0" + Path(__file__).read_bytes())
-    for n in TOOL_FILES[1:]:
-        h.update(n.encode() + b"\0" + (ROOT / "tools" / n).read_bytes())
-    return h.hexdigest()
+    return context.digest(context.tool_dependencies(ROOT, __file__))
 
 
 def object_identity(o):
@@ -1322,6 +1319,106 @@ def object_identity(o):
     for k in sorted(syms):
         y = syms[k]
         h.update(f"{y.name}\0{y.value}\0{y.sec}\0{y.cls}\n".encode("latin-1"))
+    return h.hexdigest()
+
+
+CANON_RULES = "coff-canon-1"
+ANON_NS = re.compile(rb"\?A0x[0-9a-f]{8}")
+ANON_CANON = b"?A0x########"
+ASSOCIATIVE = 5
+
+
+def canonical_identity(o):
+    """object_identity up to what two compiles of one TU in two trees may vary in
+    (VC7.1: research lc-repro-bfme2), and nothing else:
+      - the anonymous namespace's hash `?A0x<8 hex>` (it follows the path or the
+        compile). Renamed only when the object holds exactly one such hash, in
+        names and section bytes alike; an object holding two keeps them raw;
+      - section numbering: a section is named by what the linker binds it by: a
+        COMDAT by its leader symbol (adjustor thunks come out permuted), an
+        associative COMDAT by its parent, any other by its name and its rank
+        among same-named sections (their relative order is kept: it is link order);
+      - symbol table order: a relocation names its target (a section by that key,
+        a symbol by name, class and definition), not its table index, and the
+        relocations of a section are sorted by site.
+    Everything else is bound: every section's flags, size, bytes and relocation
+    (site, type, target), the COMDAT selection and parent, and every symbol's
+    name, value, section, type and class, a weak external's default. The time
+    stamp and debug records stay out, as in object_identity."""
+    secs, syms, raw = o
+    symptr = struct.unpack_from("<I", raw, 8)[0]
+    live = [s for s in secs if not s.name.startswith(".debug$")]
+    found = set(ANON_NS.findall("\0".join(y.name for y in syms.values()).encode("latin-1")))
+    for s in live:
+        if s.ptr:
+            found.update(ANON_NS.findall(raw[s.ptr:s.ptr + s.size]))
+    anon = found.pop() if len(found) == 1 else None
+
+    def rn(name):
+        return name.replace(anon.decode(), ANON_CANON.decode()) if anon else name
+
+    def aux(i):
+        o = symptr + 18 * i
+        return raw[o + 18:o + 18 + 18 * raw[o + 17]]
+    secdef, leader, sel, parent = set(), {}, {}, {}
+    for i in sorted(syms):
+        y = syms[i]
+        if not 0 < y.sec <= len(secs):
+            continue
+        s = secs[y.sec - 1]
+        a = aux(i)
+        if y.cls == STATIC and y.value == 0 and y.name == s.name and len(a) >= 18 and y.sec not in sel:
+            secdef.add(i)
+            sel[y.sec] = a[14]
+            parent[y.sec] = struct.unpack_from("<H", a, 12)[0] if a[14] == ASSOCIATIVE else 0
+        elif s.flags & COMDAT and y.sec not in leader:
+            leader[y.sec] = rn(y.name)
+    base, keys = {}, {}
+
+    def stem(k, seen=()):
+        if k not in base:
+            s = secs[k - 1]
+            if not s.flags & COMDAT:
+                base[k] = ("sec", s.name)
+            elif sel.get(k) == ASSOCIATIVE and 0 < parent[k] <= len(secs) and k not in seen:
+                base[k] = ("assoc", stem(parent[k], seen + (k,)), s.name)
+            else:
+                base[k] = ("comdat", leader.get(k), s.name)
+        return base[k]
+    rank = collections.Counter()
+    for s in secs:
+        b = stem(s.idx)
+        keys[s.idx] = b + (rank[b],)
+        rank[b] += 1
+
+    def where(sec):
+        return keys[sec] if 0 < sec <= len(secs) else sec
+
+    def ref(i):
+        y = syms.get(i)
+        if y is None:
+            return ("raw", i)
+        if i in secdef:
+            return ("S", keys[y.sec])
+        return ("D", rn(y.name), y.cls, where(y.sec), y.value)
+    srecs = []
+    for s in live:
+        body = raw[s.ptr:s.ptr + s.size] if s.ptr else b""
+        if anon:
+            body = body.replace(anon, ANON_CANON)
+        srecs.append(repr((keys[s.idx], s.flags, s.size, hashlib.sha256(body).hexdigest(), sel.get(s.idx),
+                           where(parent[s.idx]) if parent.get(s.idx) else None,
+                           sorted(((va, ty, ref(si)) for va, si, ty in s.relocs), key=repr))))
+    yrecs = []
+    for i, y in syms.items():
+        typ = struct.unpack_from("<H", raw, symptr + 18 * i + 14)[0]
+        a = aux(i)
+        weak = (ref(struct.unpack_from("<I", a, 0)[0]), struct.unpack_from("<I", a, 4)[0]) \
+            if y.cls == WEAK and len(a) >= 8 else None
+        yrecs.append(repr((rn(y.name), y.value, where(y.sec), typ, y.cls, i in secdef, weak)))
+    h = hashlib.sha256(CANON_RULES.encode())
+    for r in sorted(srecs) + ["--"] + sorted(yrecs):
+        h.update(r.encode("latin-1", "backslashreplace") + b"\n")
     return h.hexdigest()
 
 
@@ -1444,7 +1541,7 @@ def run_in_snapshot(args, argv):
     return subprocess.run([sys.executable, str(Path(__file__).resolve()), *rest], env=env, cwd=snap).returncode
 
 
-def input_state():
+def input_state(allow_dirty=False):
     """What a receipt binds, taken when the cycle STARTS and re-proved at its end:
     the commit (a snapshot's marker, else HEAD and the dirty diff), this tool,
     the toolchain, retail and the ledgers."""
@@ -1456,16 +1553,27 @@ def input_state():
         if commit["tree_manifest"] != meta["tree_manifest"]:
             raise SystemExit("link_cycle: the snapshot tree differs from its marker; refusing to measure it")
     else:
-        diff = subprocess.run(["git", "diff", "HEAD"], capture_output=True, cwd=ROOT).stdout
+        diff = subprocess.run(["git", "diff", "--binary", "HEAD"], capture_output=True, cwd=ROOT).stdout
+        untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "-z"],
+                                   capture_output=True, cwd=ROOT, check=True).stdout
+        untracked_hashes = {os.fsdecode(n): sha256(ROOT / os.fsdecode(n)) for n in untracked.split(b"\0") if n}
         commit = {"commit": git("rev-parse", "HEAD"), "snapshot": False,
-                  "dirty": bool(git("status", "--porcelain", "--untracked-files=no")),
+                  "untracked_sha256": digest_of(untracked_hashes),
+                  "submodules": git("submodule", "status", "--recursive"),
+                  "dirty": bool(git("status", "--porcelain", "--untracked-files=normal")),
                   "diff_sha256": hashlib.sha256(diff).hexdigest()}
+    if commit.get("dirty") and not allow_dirty:
+        raise SystemExit("link_cycle: dirty tree; use --allow-dirty for an explicitly non-authoritative diagnostic")
+    dependencies = context.tool_dependencies(ROOT, __file__)
+    target = context.target_identity(build.EXE)
+    if target["image_base"] != BASE or target["machine"] != 0x14C:
+        raise SystemExit("link_cycle: target is not the configured i386 BFME1 image base")
     root = build.vc71_root()
-    return dict(commit, tool_digest=tool_digest(), retail_sha256=sha256(build.EXE),
+    return dict(commit, allow_dirty=bool(allow_dirty), rule_identity=context.rule_identity(dependencies),
+                tool_dependencies=dependencies, tool_digest=context.digest(dependencies),
+                measure_env=measure_env(), target=target, retail_sha256=target["sha256"],
                 toolchain_sha256={n: sha256(root / "Vc7/bin" / n) for n in ("link.exe", "cl.exe", "lib.exe")},
-                inputs={"functions_csv": sha256(REVERSE / "functions.csv"),
-                        "symbols_csv": sha256(REVERSE / "symbols.csv"),
-                        "ghidra_functions_csv": sha256(REVERSE / "ghidra_functions.csv")})
+                inputs=context.input_hashes(ROOT))
 
 
 def provenance(rows, present, objs, out):
@@ -1485,12 +1593,12 @@ def provenance(rows, present, objs, out):
     for p in present:
         rel = Path(p).relative_to(ROOT).as_posix()
         o = objs.get(p)
-        rec = {"object": object_identity(o) if o else None}
+        rec = {"object": object_identity(o) if o else None, "object_canon": canonical_identity(o) if o else None}
         src = sources.get(p)
         if src is not None and Path(src).suffix.lower() != build.LIB_SUFFIX:
-            if build.compile_is_current(src, p, inventory_cache=inventory):
+            if context.current_object(src, p, inventory_cache=inventory):
                 rec["proof"] = "inventory"
-            elif build.compile_is_current(src, p):
+            elif context.current_object(src, p):
                 # the compile could not inventory its include search (macro or parent-traversing
                 # includes): source, command and every recorded header still prove it
                 rec["proof"] = "deps"
@@ -1511,7 +1619,20 @@ def provenance(rows, present, objs, out):
         raise SystemExit(f"link_cycle: {len(tampered)} object(s) changed with no compile behind the change, "
                          f"e.g. {tampered[:5]}; delete them (and their .deps.json) and run with --build")
     path.write_text(json.dumps(prov, indent=0, sort_keys=True), encoding="utf-8")
-    return sha256(path), dict(sorted(collections.Counter(r.get("proof", "no source") for r in prov.values()).items()))
+    return (sha256(path), dict(sorted(collections.Counter(r.get("proof", "no source") for r in prov.values()).items())),
+            canonical_digests(prov))
+
+
+def canonical_digests(prov):
+    """The objects' and the provenance's digests by canonical_identity: what two
+    builders of one tree agree on (object_identity also binds the compile's
+    anonymous-namespace hash and section and symbol numbering)."""
+    h = hashlib.sha256(CANON_RULES.encode())
+    for rel in sorted(prov):
+        h.update(f"{rel}\0{prov[rel].get('object_canon') or '-'}".encode())
+    canon = {rel: {k: v for k, v in rec.items() if k != "object"} for rel, rec in prov.items()}
+    return {"canon_rules": CANON_RULES, "objects_canon_digest": h.hexdigest(),
+            "provenance_canon_sha256": digest_of(canon)}
 
 
 def cache_file(path, stamp, allow_stale):
@@ -1538,13 +1659,65 @@ def save_cache(path, stamp, value):
 def receipt_core(receipt):
     """The reproducible part of a receipt: what a cold and a cached run of the same
     inputs must agree on. Times, dates, link history and the warm-start path are
-    left out; the core's sha256 is the receipt's identity."""
-    keep = ("rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
+    left out; the instance tag additionally binds exact receipt bytes."""
+    keep = ("rule_identity", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
+            "untracked_sha256", "closure_graph_sha256", "rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
             "retail_sha256", "toolchain_sha256", "inputs", "objects_digest", "provenance_sha256", "objects",
             "objects_missing", "compile_failed", "currency_proofs", "quarantine_sha256", "stubs_sha256",
             "not_ordered", "not_ordered_bytes", "analyze",
             "scaffold", "final_link", "series")
     return {k: receipt[k] for k in keep if k in receipt}
+
+
+def receipt_canon_core(receipt):
+    """receipt_core with the objects and the provenance bound by canonical_identity
+    (canonical_digests) in place of object_identity: two builders of one commit
+    compare `core_canon_sha256`; `core_sha256` stays the same-builder identity.
+    None for a receipt written before the canonical digests existed."""
+    if "objects_canon_digest" not in receipt:
+        return None
+    core = receipt_core(receipt)
+    core.pop("objects_digest", None)
+    core.pop("provenance_sha256", None)
+    core.update({k: receipt[k] for k in ("canon_rules", "objects_canon_digest", "provenance_canon_sha256")})
+    return core
+
+
+def stamp_cores(receipt):
+    receipt["core_sha256"] = digest_of(receipt_core(receipt))
+    canon = receipt_canon_core(receipt)
+    if canon is not None:
+        receipt["core_canon_sha256"] = digest_of(canon)
+
+
+def write_receipt(out, receipt, name="receipt.json"):
+    """Finalize once; tag binds exact bytes, while cores exclude instance timing.
+
+    The per-instance receipt archive is write-once. receipt.json is a convenience
+    pointer to the latest run, not its immutable identity or publication proof.
+    """
+    stamp_cores(receipt)
+    receipt["measured_end_ns"] = time.time_ns()
+    raw = (json.dumps(receipt, sort_keys=True, indent=1) + "\n").encode()
+    sha = hashlib.sha256(raw).hexdigest()
+    tag = f"{receipt['commit'][:12]}-{receipt['measured_end_ns']}-{sha[:16]}"
+    archive = Path(out) / "measurements" / tag
+    archive.mkdir(parents=True, exist_ok=False)
+    # Retain the small measurement substrate with the identity so reruns cannot
+    # orphan an archived receipt by replacing the latest graph/status/provenance.
+    import shutil
+    for member in (CLOSURE_GRAPH, "link_status.csv", "provenance.json"):
+        source = Path(out) / member
+        if source.exists():
+            shutil.copyfile(source, archive / member)
+    (archive / "receipt.json").write_bytes(raw)
+    identity = {"tag": tag, "receipt_sha256": sha, "commit": receipt["commit"],
+                "measured_end_ns": receipt["measured_end_ns"], "core_sha256": receipt["core_sha256"],
+                "core_canon_sha256": receipt.get("core_canon_sha256")}
+    (archive / "identity.json").write_text(json.dumps(identity, sort_keys=True) + "\n")
+    (Path(out) / name).write_bytes(raw)
+    (Path(out) / (name + ".identity.json")).write_text(json.dumps(identity, sort_keys=True) + "\n")
+    return identity
 
 
 def digest_of(value):
@@ -1594,7 +1767,7 @@ def cycle(args):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     getattr(census, "refuse_unsupported_ledgers", lambda: None)()
-    start = input_state()                      # bound at START, re-proved before recording
+    start = input_state(getattr(args, "allow_dirty", False))                      # bound at START, re-proved before recording
     rows = census.ledger()
     compile_failed = []
     if args.build:
@@ -1625,7 +1798,7 @@ def cycle(args):
     objs = Objects(present)
     units, astat = analyze(rows, objs)
     obj_digest = objects_digest(objs, present)
-    prov_digest, proofs = provenance(rows, present, objs, out)
+    prov_digest, proofs, canon = provenance(rows, present, objs, out)
     times["provenance"] = round(time.time() - t)
     pe_r, R, rsecs, rimp = pe_view(build.EXE)
     text0, textsz = rsecs[".text"]
@@ -1714,7 +1887,9 @@ def cycle(args):
     t = time.time()
     res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, shift_res is not None, args.shift_base)
     times["measure"] = round(time.time() - t)
-    receipt = dict(start, tool="link_cycle", rules="link-cycle-2",
+    receipt = dict(start, **canon, tool="link_cycle", rules=RULES,
+                   settings={"shift_base": args.shift_base, "raw_dumps": args.raw_dumps},
+                   closure_graph_sha256=res["closure_graph_sha256"],
                    date_utc=time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
                    objects_digest=obj_digest, provenance_sha256=prov_digest, objects=len(present),
                    objects_missing=len(missing), compile_failed=compile_failed, currency_proofs=proofs,
@@ -1732,25 +1907,31 @@ def cycle(args):
                                "force_duplicate_diagnostics": d["codes"].get("LNK4006", 0)},
                    series=res)
     # re-prove the start: the same commit/tree, tool, toolchain, retail, ledgers and objects
-    end = input_state()
+    end = input_state(getattr(args, "allow_dirty", False))
     moved = sorted(k for k in start if start[k] != end.get(k))
-    if objects_digest(Objects(present), present) != obj_digest:
+    current_objs = Objects(present)
+    if objects_digest(current_objs, present) != obj_digest:
         moved.append("objects_digest")
-    receipt["authoritative"] = bool(start.get("snapshot")) and not moved and not warm["stale"] and not compile_failed
+    end_prov, end_proofs, end_canon = provenance(rows, present, current_objs, out)
+    if (end_prov, end_proofs, end_canon) != (prov_digest, proofs, canon):
+        moved.append("provenance")
+    receipt["authoritative"] = bool(start.get("snapshot")) and not moved and not warm["stale"] and not compile_failed and not start.get("dirty")
     times["total"] = round(time.time() - t_all)
     receipt["seconds"] = times
-    receipt["core_sha256"] = digest_of(receipt_core(receipt))
+    stamp_cores(receipt)
     if moved:
         receipt["moved_during_run"] = moved
         (out / "receipt.rejected.json").write_text(json.dumps(receipt, indent=1), encoding="utf-8")
         raise SystemExit(f"link_cycle: inputs moved during the run ({', '.join(moved)}); no receipt recorded")
-    (out / "receipt.json").write_text(json.dumps(receipt, indent=1), encoding="utf-8")
+    write_receipt(out, receipt)
     print(json.dumps(res, indent=1))
     print(f"link_cycle: receipt {out / 'receipt.json'} core {receipt['core_sha256'][:16]}; wall {times}")
     return receipt
 
 
-def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_base):
+def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_base, artifact_out=None):
+    artifact_out = Path(artifact_out or out)
+    artifact_out.mkdir(parents=True, exist_ok=True)
     pe, I, isecs, limp = pe_view(out / (BASE_TAG + ".exe"))
     names, modified = zz_names(out)
     mapped = read_map((out / "base.map").read_text(encoding="latin-1"), BASE, names)
@@ -1809,7 +1990,7 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
         pilot_ok[n] = pilot_ok.get(n, True) and rec["measured"] and not rec["fails"]
     pilot_edges = {n: {e for e in es if e[0] == "unit"} for n, es in edges.items() if n[0] == "unit"}
     closed_pilot = greatest_closure(pilot_ok, pilot_edges, bad_targets=(), unknown_closes=True)
-    fold = out / "fold_list.csv"
+    fold = artifact_out / "fold_list.csv"
     with fold.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["linked_rva", "retail_rva", "symbol", "object", "verdict"])
@@ -1821,7 +2002,7 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
             "failures"]
     series = collections.Counter()
     spans = collections.defaultdict(list)
-    status = out / "link_status.csv"
+    status = artifact_out / "link_status.csv"
     with status.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(cols)
@@ -1884,7 +2065,85 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
     res["ilt_routes"] = dict(sorted(m.ilt_routes.items()))
     res["retail_text_bytes"] = textsz
     res["link_status_sha256"] = sha256(status)
+    res["data_back"] = {"address_kind": "rva", "collisions": [
+        {"retail_rva": rt, "linked_rvas": sorted(ls)} for rt, ls in sorted(m.back.items()) if len(ls) > 1]}
+    graph = closure_graph_doc(m, recs, hard, ok, src_edges)
+    write_closure_graph(artifact_out / CLOSURE_GRAPH, graph)
+    res["closure_graph_sha256"] = sha256(artifact_out / CLOSURE_GRAPH)
     return res
+
+
+CLOSURE_GRAPH = "closure_graph.json.gz"
+CLOSURE_GRAPH_SCHEMA = context.GRAPH_SCHEMA
+
+
+def node_key(n):
+    """A closure node as text: its kind and its numbers, nested keys flattened."""
+    def flat(v):
+        for x in v:
+            if isinstance(x, tuple):
+                yield from flat(x)
+            else:
+                yield str(x)
+    return ":".join(flat(n))
+
+
+def closure_graph_doc(m, recs, hard, ok, edges):
+    """The closure graph measure() judged, as plain sorted values: every node with its
+    verdict and what it is, every edge, and each ledger row with its unit node, placed and
+    self_strict. It READS the finished measure and asks nothing: no shift check runs here
+    (a twin or datum that failed with no failure of its own failed its shift check; one
+    with failures of its own was never asked), so no verdict or counter can move."""
+    nodes = {}
+    rows = []
+    for rec in recs:
+        r, u = rec["row"], rec["unit"]
+        n = ("unit", u["id"])
+        d = nodes.setdefault(node_key(n), {"kind": "unit", "ok": bool(ok[n]), "name": u.get("head") or r["name"],
+                                           "rva": r["rva"], "source": r["source"], "failures": set()})
+        d["rva"] = min(d["rva"], r["rva"])
+        d["name"] = min(d["name"], u.get("head") or r["name"])
+        d["source"] = min(d["source"], r["source"])
+        d["failures"].update(rec["fails"])
+        if id(rec) in hard:
+            d["failures"].add(f"shift:{hard[id(rec)]}")
+        if not rec["measured"]:
+            d["failures"].add("unmeasured")
+        rows.append([r["name"], r["kind"], r["source"], r["rva"], r["size"], node_key(n), int(bool(rec["placed"])),
+                     int(bool(rec["measured"] and not rec["fails"]))])
+    for n, v in ok.items():
+        kind, key = n[0], node_key(n)
+        if kind == "unit":
+            continue
+        d = nodes[key] = {"kind": kind, "ok": bool(v), "failures": set()}
+        if kind == "twin":
+            good, why = m.twins[(n[1], n[2])]
+            sym = m.sym_at(n[1])
+            d.update(rva=n[2], linked=n[1], name=sym[1] if sym else "", object=sym[2] if sym else "")
+            d["failures"].update((getattr(m, "twin_fails", {}).get((n[1], n[2])) or [why]) if not good else ([] if v else ["shift"]))
+        elif kind == "datum":
+            node = m.dnodes[n[1]]
+            d.update(rva=n[1][1], linked=n[1][0], size=n[1][2], name=node["name"])
+            d["failures"].update(node["fails"] or ([] if v else ["shift"]))
+        elif not v:
+            d["failures"].add("shift")
+    for d in nodes.values():
+        d["failures"] = sorted(d["failures"])
+    return {"schema": CLOSURE_GRAPH_SCHEMA, "bad_targets": list(context.BAD_TARGETS), "rules": RULES,
+            "nodes": dict(sorted(nodes.items())),
+            "edges": {node_key(n): sorted(node_key(t) for t in ts) for n, ts in sorted(edges.items(), key=lambda kv:
+                                                                                      node_key(kv[0])) if ts},
+            "rows": sorted(rows, key=lambda r: (r[3], r[0], r[2], r[1], r[4], r[5], r[6], r[7]))}
+
+
+def write_closure_graph(path, doc):
+    """closure_graph.json.gz: canonical JSON (sorted keys), gzip with no name and mtime 0, so
+    the same measure writes the same bytes."""
+    import gzip
+    data = json.dumps(doc, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    with open(path, "wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, compresslevel=6, mtime=0) as gz:
+            gz.write(data)
 
 
 class Shifted:
@@ -1975,6 +2234,7 @@ def eh_tables(m, fi, base):
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--allow-dirty", action="store_true", help="record a dirty diagnostic (never authoritative)")
     ap.add_argument("--build", action="store_true", help="compile stale objects first (BUILD_POOL = cores - 2)")
     ap.add_argument("--max-iter", type=int, default=6, help="links in the quarantine loop (default 6)")
     ap.add_argument("--shift-base", type=lambda s: int(s, 0), default=SHIFT_BASE,
@@ -2023,16 +2283,24 @@ def remeasure(args):
     placed, _, _ = plan_order(units, quarantine, text0, textsz)
     chunks = filler_chunks(placed, [a for a in ghidra + list(byaddr) if text0 <= a < text0 + textsz], text0, textsz)
     t = time.time()
-    res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, True, args.shift_base)
+    diagnostic = out / "remeasured" / str(time.time_ns())
+    diagnostic.mkdir(parents=True)
+    start = input_state(getattr(args, "allow_dirty", False))
+    obj_digest = objects_digest(objs, present)
+    prov_digest, proofs, canon = provenance(rows, present, objs, diagnostic)
+    res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, True, args.shift_base, artifact_out=diagnostic)
     print(json.dumps(res, indent=1))
     path = out / "receipt.json"
-    if path.exists():   # the links are the receipt's; the measure, its digest and series are replaced
-        receipt = json.loads(path.read_text(encoding="utf-8"))
-        receipt.update(series=res, tool_digest=tool_digest(), rules="link-cycle-2", authoritative=False,
-                       remeasured_utc=time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
-        receipt.setdefault("seconds", {})["measure"] = round(time.time() - t)
-        receipt["core_sha256"] = digest_of(receipt_core(receipt))
-        path.write_text(json.dumps(receipt, indent=1), encoding="utf-8")
+    receipt = dict(start, **canon, tool="link_cycle", rules=RULES, authoritative=False,
+                   source_receipt_sha256=sha256(path) if path.exists() else None,
+                   diagnostic="remeasured, link input currency not proven", series=res,
+                   objects_digest=obj_digest, provenance_sha256=prov_digest, currency_proofs=proofs,
+                   closure_graph_sha256=res["closure_graph_sha256"],
+                   settings={"shift_base": args.shift_base, "raw_dumps": args.raw_dumps},
+                   seconds={"measure": round(time.time() - t)})
+    if start != input_state(getattr(args, "allow_dirty", False)) or objects_digest(Objects(present), present) != obj_digest:
+        raise SystemExit("link_cycle: inputs moved during diagnostic remeasurement")
+    write_receipt(diagnostic, receipt)
     return 0
 
 
