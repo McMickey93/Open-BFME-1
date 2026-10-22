@@ -17,10 +17,17 @@ tools/next_work.py serves these as tiers; this module builds them.
           And boot-smoke crashes: rows `tools/boot_smoke.py --bisect` found break start-up
           when their authored code is overlaid (build/boot/boot_queue.json or REPAIR_BOOT;
           pass: `boot_smoke.py --overlay rva:RVA` reaches the menu).
-  link    BFME1 local diagnostic or committed census: rows the last link cycle did not place at their retail RVA, or
-          placed but not self-strict, with the reason (build/link_cycle/
+  link    Local diagnostic cycle rows not placed at retail RVA or not self-strict,
+          else the committed census's failing units, with the reason (build/link_cycle/
           link_status.csv, or REPAIR_LINK_STATUS). PASS TEST: the next cycle reports
           the row placed=1 self_strict=1 (`tools/link_cycle.py --measure-only`).
+          --bundle DIR|current validates integrity, rules, freshness and publication
+          evidence via cycle_artifacts. Empty BFME1 publisher trust refuses all
+          bundles; --local-unpublished permits labelled diagnostics, never routing.
+          --closure ranks conditional single-root unique gains from the measured
+          graph; joint-only bytes remain separate and scores must never be added.
+          --route (also --router) exposes the failure router; --json includes the
+          reason, route and cycle_artifacts.EXIT code. No automatic stale override.
   dest    for a NEW match: the translation unit the row belongs in. EA evidence of
           the source file first (BFME1 ea_evidence.csv `file` rows), then address
           contiguity: the unit both neighbouring rows come from, else the nearest
@@ -29,7 +36,7 @@ tools/next_work.py serves these as tiers; this module builds them.
           says so instead of inviting a fresh one-function file.
 
   python3 tools/repair_queue.py repair [--limit N]
-  python3 tools/repair_queue.py link [--limit N]
+  python3 tools/repair_queue.py link [--limit N] [--bundle DIR|current [--closure]] [--json] [--route]
   python3 tools/repair_queue.py dest 0xRVA
   python3 tools/repair_queue.py pass-test "<baseline line>"
   python3 tools/repair_queue.py verify-removed     # pre-commit, when a debt line is deleted:
@@ -399,8 +406,10 @@ def link_source(path=None):
 
 
 def census_items(path):
-    """Units the committed census says do not link: one item per source, credited with
-    its matched bytes, nearest to linking (fewest blockers) first."""
+    """Units the stored census says do not link: fewest blockers first.
+
+    Size is the unit's matched extent sum, not a proven unique-byte gain.
+    """
     by_rva, _ = ledger()
     rows_of = {}
     for rva, rows in by_rva.items():
@@ -467,7 +476,7 @@ def cycle_items(path):
                 "placed": placed, "why": reason[:300],
                 "pass_test": "python3 tools/link_cycle.py --measure-only: this row placed=1 self_strict=1",
             })
-    # placed-but-not-strict first: one relocation fix credits the whole row
+    # Placed-but-not-strict first; ordinary row extents make no closure gain claim.
     items.sort(key=lambda item: (not item["placed"], -item["size"]))
     return items
 
@@ -489,6 +498,191 @@ def eligible_link_items(items):
     return [dict(item, claim_required=True,
                  claim_command=f"python3 tools/claims.py claim {item['target_rva']}")
             for item in items if ok(int(item["target_rva"], 16))]
+
+
+def cycle_artifacts():
+    """Lazy import: the debt hook can execute this module through stdin."""
+    tools = str(Path(__file__).resolve().parent if "__file__" in globals() else ROOT / "tools")
+    if tools not in sys.path:
+        sys.path.insert(0, tools)
+    import cycle_artifacts as ca
+    return ca
+
+
+FAILURE_ROUTES = {
+    "corrupt": "tooling seat",
+    "unavailable": "use another work lane",
+    "empty": "use another work lane",
+    "stale": "use another work lane",
+    "incompatible-rules": "tooling seat / human review",
+    "unauthenticated": "refuse",
+    "no-closure-report": "ordinary link queue, no closure ranking",
+}
+
+
+def failure_route(reason):
+    """Pure routing decision for other selectors; never retries or relaxes validation."""
+    return {"reason": reason, "route": FAILURE_ROUTES[reason],
+            "exit_code": cycle_artifacts().EXIT[reason]}
+
+
+def bundle_path(bundle):
+    return cycle_artifacts().DEFAULT_STORE if str(bundle) == "current" else bundle
+
+
+def bundle_note(b, fr, what, allow_stale=False):
+    trust = ("UNAUTHENTICATED LOCAL DIAGNOSTIC (non-authoritative; never routed)"
+             if not b.evidence else "authenticated publication")
+    return (f"{what} from link-cycle bundle {b.tag} ({b.dir}; commit {b.commit[:12]}, measured "
+            f"{fr['measured_end_utc']} UTC, {fr['age_hours']:.2f} h ago; {trust}; "
+            f"allow_stale={allow_stale}; {fr['ancestry']})")
+
+
+def closure_queue(b):
+    """Read a receipt-bound report and reproduce its ranking from the measured graph.
+
+    Hashes alone do not prove the report's claimed gains. Compare its whole score
+    table (ignoring only the optional forced-closure annotation) with analyze().
+    Never add root scores, joint-only candidates, or overlapping own/beneficiary
+    sizes. A root names a failed node address, which can also be a datum.
+    """
+    ca = cycle_artifacts()
+    import closure_report as cr
+    try:
+        doc = cr.load_roots(b.closure_roots)
+        graph = cr.load_graph(b.closure_graph, b.receipt["closure_graph_sha256"])
+        expected, _ = cr.analyze(*graph)
+        strip_verified = lambda roots: [dict(e, verified=None) for e in roots]
+        ca.same("closure root gains reproduced from graph", strip_verified(doc["roots"]), expected["roots"])
+        ca.same("closure summary reproduced from graph", doc["summary"], expected["summary"])
+    except cr.ReportError as e:
+        raise ca.BundleError(f"closure ranking: {e}") from None
+    except (OSError, ValueError, TypeError, KeyError, IndexError) as e:
+        raise ca.BundleError(f"malformed closure ranking: {e}") from None
+    # A passing row must never be served as a repair. The failed datum or other
+    # non-unit root can be served by its own node identity, not a passing caller.
+    with open_status(b.link_status) as handle:
+        passing = {(int(r["retail_rva"], 16), r["name"], r["source"]) for r in csv.DictReader(handle)
+                   if r["placed"] == "1" and r["self_strict"] == "1"}
+    items, unaddressed = [], []
+    for e in doc["roots"]:
+        if not re.fullmatch(r"0x[0-9A-Fa-f]+", e["root"]):
+            unaddressed.append(e["root"])
+            continue
+        name, source = cr.root_line(e)
+        if (int(e["root"], 16), name, source) in passing:
+            continue
+        gain = e["conditional_gain_bytes"]
+        items.append({
+            "tier": "closure", "check": "closure", "target_rva": e["root"],
+            "function": name, "source": source or "(no unit)", "size": gain, "credit": gain,
+            "conditional_gain_bytes": gain, "non_additive": True,
+            "why": (f"conditional single-root unique gain {gain} B; beneficiaries {e['beneficiary_rows']} row(s) "
+                    f"/ {e['beneficiary_bytes']} B; own failing rows {e['direct_rows']} / {e['direct_bytes']} B; "
+                    + "; ".join(e["failures"])),
+            "pass_test": (f"a later validated bundle no longer lists root {e['root']} and its rows are "
+                          "closed_strict=1; claim the root before working on it"),
+        })
+    # analyze() is ranked, but make the ordering contract explicit to consumers.
+    items.sort(key=lambda item: (-item["conditional_gain_bytes"], item["target_rva"]))
+    joint = dict(doc["summary"]["joint_only"])
+    notes = [f"graph: {doc['graph']['label']}",
+             "CONDITIONAL single-root unique bytes on the frozen measured graph; root scores may overlap: "
+             "do not add them; not a repair proof.",
+             f"JOINT-ONLY candidate unique bytes: {joint['candidate_unique_bytes']} B (separate, non-additive; "
+             "never included in any single-root score).",
+             "limits: " + "; ".join(doc["limits"])]
+    if unaddressed:
+        notes.append(f"{len(unaddressed)} report root(s) have no retail address for eligibility/claims; "
+                     "not served: " + ", ".join(unaddressed))
+    return items, notes, joint
+
+
+def _bundle_queue(bundle, *, closure=False, now=None, allow_stale=False, local_unpublished=False):
+    ca = cycle_artifacts()
+    b, fr, lines = ca.serve(bundle_path(bundle), root=ROOT, now=now, allow_stale=allow_stale,
+                            local_unpublished=local_unpublished, need_closure=closure)
+    if closure:
+        items, notes, joint = closure_queue(b)
+    else:
+        items, notes, joint = cycle_items(b.link_status), [], None
+    items = eligible_link_items(items)
+    authoritative = bool(b.evidence) and b.manifest["publication"] != "local-unpublished"
+    for item in items:
+        item.update(authoritative=authoritative, diagnostic=not authoritative)
+    notes.insert(0, bundle_note(b, fr, f"{len(items)} {'closure root' if closure else 'row'}(s)", allow_stale))
+    warnings = [line for line in lines if line.startswith(("STALE", "UNAUTHENTICATED", "NOT THE NEWEST", "WARNING"))]
+    return {"items": items, "notes": notes, "warnings": warnings, "joint_only": joint,
+            "authoritative": authoritative, "diagnostic": not authoritative, "freshness": fr,
+            "source_kind": "bundle", "bundle": str(b.dir), "tag": b.tag, "commit": b.commit}
+
+
+def bundle_link_items(bundle, now=None, allow_stale=False, local_unpublished=False):
+    """BFME2-compatible diagnostic API; validation failures never use local files."""
+    result = _bundle_queue(bundle, now=now, allow_stale=allow_stale, local_unpublished=local_unpublished)
+    return result["items"], "\n".join(result["notes"]), result["warnings"]
+
+
+def closure_items(bundle, now=None, allow_stale=False, local_unpublished=False):
+    """Conditional roots only; joint-only gains are separate notes, never scores."""
+    result = _bundle_queue(bundle, closure=True, now=now, allow_stale=allow_stale,
+                           local_unpublished=local_unpublished)
+    return result["items"], result["notes"], result["warnings"]
+
+
+def link_queue(bundle=None, *, closure=False, now=None, allow_stale=False, local_unpublished=False,
+               router=False):
+    """Machine result for diagnostics or routing, with cycle_artifacts reason/exit codes.
+
+    The caller must explicitly request allow_stale; it is passed once, recorded,
+    and never retried. Explicit bundles have no local/census fallback. The router
+    cannot return diagnostic items, even when --local-unpublished was requested.
+    no-closure-report returns the ordinary-queue route, not a different source.
+    """
+    ca = cycle_artifacts()
+    result = {"items": [], "notes": [], "warnings": [], "joint_only": None,
+              "authoritative": False, "diagnostic": True, "router": router,
+              "allow_stale": allow_stale, "local_unpublished": local_unpublished,
+              "closure_requested": closure, "closure_ranking": False,
+              "requested_bundle": str(bundle) if bundle is not None else None,
+              "reason": None, "exit_code": 0, "route": None}
+    try:
+        if router and local_unpublished:
+            raise ca.Refused("--local-unpublished permits diagnostic inspection only; never routed", "unauthenticated")
+        if bundle is not None:
+            result.update(_bundle_queue(bundle, closure=closure, now=now, allow_stale=allow_stale,
+                                         local_unpublished=local_unpublished))
+            if router and not result["authoritative"]:
+                raise ca.Refused("unauthenticated bundle diagnostics are never routed", "unauthenticated")
+            result["closure_ranking"] = closure
+        else:
+            if closure or allow_stale or local_unpublished:
+                raise ca.Unavailable("--closure, --allow-stale and --local-unpublished require --bundle DIR|current")
+            kind, path, note = link_source()
+            if kind is None:
+                raise ca.Unavailable(note)
+            if router and kind == "cycle":
+                raise ca.Refused("local cycle files are non-authoritative diagnostics; never routed", "unauthenticated")
+            items = census_items(path) if kind == "census" else cycle_items(path)
+            result.update(items=eligible_link_items(items), notes=[note], source_kind=kind)
+        if not result["items"]:
+            raise ca.Empty("no eligible unclaimed repairs in this source (passing rows are excluded)")
+        result["status"] = "ok"
+        if router:
+            result["route"] = "closure link queue" if closure else "ordinary link queue"
+    except ca.Problem as e:
+        result.update(failure_route(e.reason), status="refused", message=str(e), items=[],
+                      closure_ranking=False,
+                      joint_only=result["joint_only"] if e.reason == "empty" else None)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, EOFError, csv.Error) as e:
+        result.update(failure_route("corrupt"), status="refused", message=str(e), items=[],
+                      closure_ranking=False, joint_only=None)
+    return result
+
+
+def route_link_queue(bundle=None, **kwargs):
+    """Router entry point: uses link_queue's checks, never routes diagnostic bundles."""
+    return link_queue(bundle, router=True, **kwargs)
 
 
 # ---------------------------------------------------------------- destination
@@ -581,6 +775,13 @@ def main(argv=None):
     for name in ("repair", "link"):
         p = sub.add_parser(name)
         p.add_argument("--limit", type=int, default=20)
+        if name == "link":
+            p.add_argument("--bundle", metavar="DIR|current", help="validated cycle bundle/store; never local fallback")
+            p.add_argument("--closure", action="store_true", help="rank conditional single-root gains in --bundle")
+            p.add_argument("--allow-stale", action="store_true", help="explicit human freshness override, recorded in output")
+            p.add_argument("--local-unpublished", action="store_true", help="non-authoritative diagnostics only; never routed")
+            p.add_argument("--route", "--router", dest="router", action="store_true", help="router mode: refuse diagnostic bundles")
+            p.add_argument("--json", action="store_true", help="machine result with reason, route and cycle_artifacts exit code")
     sub.add_parser("dest").add_argument("rva")
     sub.add_parser("pass-test").add_argument("line")
     sub.add_parser("verify-removed", help="hook: re-verify rows whose debt lines the index deletes")
@@ -598,7 +799,30 @@ def main(argv=None):
         ok, message = pass_test(args.line)
         print(message)
         return 0 if ok else 1
-    items, note = (all_repair_items(), f"{len(parse_debt())} baseline line(s), plus tier C / diffexec") if args.cmd == "repair" else link_items()
+    if args.cmd == "link":
+        result = link_queue(args.bundle, closure=args.closure, allow_stale=args.allow_stale,
+                            local_unpublished=args.local_unpublished, router=args.router)
+        if args.json:
+            print(json.dumps(dict(result, items=result["items"][:max(0, args.limit)]), sort_keys=True))
+        else:
+            for line in result["notes"]:
+                print(line)
+            for line in result["warnings"]:
+                print(f"repair_queue: {line}", file=sys.stderr)
+            if result["reason"]:
+                print(f"repair_queue: [reason={result['reason']}] {result['message']}; "
+                      f"route: {result['route']}; allow_stale={result['allow_stale']}", file=sys.stderr)
+            else:
+                if result["route"]:
+                    print(f"route: {result['route']}")
+                for item in result["items"][:max(0, args.limit)]:
+                    print(f"  {item['size']:>6}B {item.get('check', '')} {item['target_rva']} {item['function'][:80]}")
+                    print(f"         {item['source']}: {item['why'][:400]}")
+                    print(f"         pass test: {item['pass_test']}")
+                    if item.get("claim_required"):
+                        print(f"         claim first: {item['claim_command']}")
+        return result["exit_code"]
+    items, note = all_repair_items(), f"{len(parse_debt())} baseline line(s), plus tier C / diffexec"
     print(note)
     for item in items[:args.limit]:
         print(f"  {item['size']:>6}B {item.get('check', '')} {item['target_rva']} {item['function'][:80]}")
