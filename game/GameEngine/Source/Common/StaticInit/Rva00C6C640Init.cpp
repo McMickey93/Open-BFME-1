@@ -11,7 +11,7 @@ class Rva007D3580
 {
 public:
     Rva007D3580();
-    ~Rva007D3580() {}
+    ~Rva007D3580();   // out of line: the atexit teardown jumps to it
     unsigned char m_storage[0x10];
 };
 extern "C" int __cdecl atexit(void (__cdecl *callback)());

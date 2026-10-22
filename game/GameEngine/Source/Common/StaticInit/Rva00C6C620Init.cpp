@@ -13,7 +13,7 @@ class Rva007D2360
 {
 public:
     Rva007D2360();
-    ~Rva007D2360() {}
+    ~Rva007D2360();   // out of line: the atexit teardown jumps to it
     void *m_at00;
     int m_at04;
     int m_at08;
