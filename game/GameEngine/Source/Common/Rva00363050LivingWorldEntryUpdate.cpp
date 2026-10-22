@@ -27,7 +27,8 @@ class BfmeSharedString : private AsciiString
 {
 public:
     BfmeSharedString(const BfmeSharedString &other) : AsciiString(other) {}
-    ~BfmeSharedString() {}
+    // Retain inline cleanup without emitting a competing standalone destructor.
+    __declspec(dllimport) __forceinline ~BfmeSharedString() {}
     int compare(const BfmeSharedString &other) const
     {
         return StringBase<char>::compare(other);
