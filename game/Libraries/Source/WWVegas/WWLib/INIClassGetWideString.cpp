@@ -11,13 +11,15 @@
 #include "xpipe.h"
 #include <string.h>
 
-inline int INIClass::Get_String(char const * section, char const * entry,
-	char const * defvalue, char * buffer, int size) const
+// File-local so the expansion stays inline without a second
+// ?Get_String@INIClass COMDAT beside retail's body (0x009E3DA0, ini.cpp).
+static __forceinline int Get_String_Inline(const INIClass * ini, char const * section, char const * entry,
+	char const * defvalue, char * buffer, int size)
 {
 	if (buffer == NULL || size < 2 || section == NULL || entry == NULL)
 		return(0);
 
-	INIEntry * entryptr = Find_Entry(section, entry);
+	INIEntry * entryptr = ini->Find_Entry(section, entry);
 	if (entryptr != NULL && entryptr->Value != NULL)
 		defvalue = entryptr->Value;
 
@@ -42,7 +44,7 @@ const WideStringClass& INIClass::Get_Wide_String(WideStringClass& new_string,
 	BufferPipe bpipe(out, sizeof(out));
 	b64pipe.Put_To(&bpipe);
 
-	int length = Get_String(section, entry, "", buffer, sizeof(buffer));
+	int length = Get_String_Inline(this, section, entry, "", buffer, sizeof(buffer));
 	if (length == 0) {
 		new_string = defvalue;
 	} else {
