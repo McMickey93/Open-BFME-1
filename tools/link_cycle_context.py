@@ -35,7 +35,7 @@ MEASUREMENT_FILES = (
     "coffar.py", "gen_case_shims.py", "portable_lock.py", "target_guard.py",
     "dump_relocs.py", "dump_apply.py", "retail_relocs.py",
 )
-# Phase 2 must configure an authenticated publisher explicitly.
+# Publishing/authentication is deferred; no release trust is configured.
 RELEASE_TRUST = None
 
 
@@ -74,6 +74,7 @@ def rule_identity(dependencies):
     every provider (bundle validation enforces that completeness).
     """
     return {"id": RULES, "profile": PROFILE, "profile_sha256": digest(PROFILE),
+            "measurement_files": list(MEASUREMENT_FILES),
             "implementation_sha256": digest({name: dependencies.get(name) for name in MEASUREMENT_FILES})}
 
 
