@@ -355,35 +355,6 @@ inline __declspec(noinline) void Pathfinder::clip( Coord3D *startPosition, Coord
 	}
 }
 
-extern int g_bfmePathfindInfoIssued;
-inline __declspec(noinline) PathfindCellInfo *__cdecl bfmeAcquirePathfindCellInfo(
-	PathfindCellInfo **freeListHead, PathfindCell *pathfindCell, const ICoord2D *cellPosition)
-{
-	PathfindCellInfo *cellInfoRecord = *freeListHead;
-	if (cellInfoRecord->m_freePrevLink != 0)
-	{
-		*cellInfoRecord->m_freePrevLink = cellInfoRecord->m_freeNext;
-		if (cellInfoRecord->m_freeNext != 0)
-			cellInfoRecord->m_freeNext->m_freePrevLink = cellInfoRecord->m_freePrevLink;
-		cellInfoRecord->m_freePrevLink = 0;
-		cellInfoRecord->m_freeNext = 0;
-	}
-
-	cellInfoRecord->m_cell = pathfindCell;
-	cellInfoRecord->m_pos = *cellPosition;
-	cellInfoRecord->m_nextOpen = 0;
-	cellInfoRecord->m_prevOpen = 0;
-	cellInfoRecord->m_totalCost = 0;
-	cellInfoRecord->m_costSoFar = 0;
-	cellInfoRecord->m_pathParent = 0;
-	cellInfoRecord->m_goalUnitID = 0;
-	cellInfoRecord->m_posUnitID = 0;
-	cellInfoRecord->m_goalAircraftID = 0;
-	cellInfoRecord->m_flags &= 0xffffffe0;
-	++g_bfmePathfindInfoIssued;
-	return cellInfoRecord;
-}
-
 // ?internalFindPath@Pathfinder@@MAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
 inline __declspec(noinline) PathfindCell *Pathfinder::getClippedCell(PathfindLayerEnum layer, const Coord3D *pos)
 {
