@@ -221,6 +221,9 @@ extern "C" void * __cdecl memset(void *, int, unsigned int);
 // Retail 0x008833C0 (still a dump): __cdecl, owner first, five stack
 // arguments, records an allocation with the heap tracker.
 void rva008833C0(Rva008838F0Owner *owner, int type, void *block, unsigned int size, const char *info);
+// The dump's placeholder name is decorated void(void), so it cannot spell the
+// five-argument ABI. The pin and that copy both resolve to retail 0x008833C0.
+#pragma comment(linker, "/alternatename:?rva008833C0@@YAXPAVRva008838F0Owner@@HPAXIPBD@Z=?d_008833c0@@YAXXZ")
 extern unsigned int g_Va0130E9F4;
 extern unsigned int g_Va0130E9C0;
 extern unsigned char g_Va0130E9F8;
