@@ -9,7 +9,7 @@ Whole provider files are bound, including their optional measurement branches.
 CLI-only queues and gates never called by the cycle are not semantic dependencies merely because a provider imports them. The broad tools
 inventory remains tool_digest provenance: unrelated fleet edits warn, not refuse.
 New local imports in the driver require review of this explicit set (tested).
-No BFME2 policy, release identity or authority default belongs here.
+No BFME2 policy or authority default belongs here.
 """
 import hashlib
 import json
@@ -35,8 +35,43 @@ MEASUREMENT_FILES = (
     "coffar.py", "gen_case_shims.py", "portable_lock.py", "target_guard.py",
     "dump_relocs.py", "dump_apply.py", "retail_relocs.py",
 )
-# Publishing/authentication is deferred; no release trust is configured.
-RELEASE_TRUST = None
+RUN_OPTIONS = ("allow_dirty", "allow_stale_cache", "measure_only", "snapshot", "remeasure")
+
+
+def run_authority_failure(receipt):
+    """Recompute clean-run eligibility; a receipt's authority claim is insufficient.
+
+    Missing historical evidence fails closed. This is local evidence validation,
+    not a signature: mutually consistent fabricated evidence cannot prove execution.
+    Ancestry, integrity, rule compatibility and age are checked by the reader.
+    """
+    start, end = receipt.get("checkout_start"), receipt.get("checkout_end")
+    if not isinstance(start, dict) or not isinstance(end, dict):
+        return "missing-evidence"
+    for label, state in (("start", start), ("end", end)):
+        if state.get("dirty") is True:
+            return "dirty-" + label
+        if state.get("dirty") is not False or state.get("snapshot") not in (True, False):
+            return "missing-evidence"
+    options = receipt.get("run_options")
+    if not isinstance(options, dict) or any(type(options.get(k)) is not bool for k in RUN_OPTIONS):
+        return "missing-evidence"
+    if any(options.values()) or receipt.get("allow_dirty") or receipt.get("snapshot") \
+            or start["snapshot"] or end["snapshot"] or receipt.get("diagnostic") \
+            or receipt.get("remeasured_utc") or receipt.get("source_receipt_sha256"):
+        return "diagnostic"
+    if receipt.get("dirty") is not False:
+        return "dirty-start" if receipt.get("dirty") is True else "missing-evidence"
+    if start != end or start.get("commit") != receipt.get("commit") or receipt.get("moved_during_run"):
+        return "inputs-moved"
+    if "compile_failed" not in receipt or not isinstance(receipt.get("warm_start"), dict) \
+            or type(receipt["warm_start"].get("stale")) is not bool:
+        return "missing-evidence"
+    if receipt["compile_failed"]:
+        return "compile-failed"
+    if receipt["warm_start"]["stale"]:
+        return "diagnostic"
+    return None
 
 
 def text_bytes(path):

@@ -84,7 +84,9 @@ fixes of research 29, 31 and the round-2 review:
      stubs) are reused only for the objects they were computed from.
      `--snapshot REV` measures an immutable export of REV (git archive with
      submodules) in its own directory, with its own outputs and no shared
-     object store; only such a receipt is `authoritative`.
+     object store; snapshots remain diagnostic. Clean local runs record
+     checkout cleanliness at start and end; readers also require ancestry,
+     integrity, matching rules and freshness before granting authority.
      BFME1's rule tuple includes a profile and implementation digest; it is
      distinct from BFME2 link-cycle-2. Dirty diagnostics need --allow-dirty.
      The finalized source closure graph is serialized without asking another
@@ -1306,7 +1308,7 @@ def sha256(path):
 
 
 def git(*args, cwd=None):
-    return subprocess.run(["git", *args], capture_output=True, text=True, cwd=cwd or ROOT).stdout.strip()
+    return subprocess.run(["git", *args], capture_output=True, text=True, cwd=cwd or ROOT, check=True).stdout.strip()
 
 
 def tool_digest():
@@ -1550,7 +1552,7 @@ def run_in_snapshot(args, argv):
     return subprocess.run([sys.executable, str(Path(__file__).resolve()), *rest], env=env, cwd=snap).returncode
 
 
-def input_state(allow_dirty=False):
+def input_state(allow_dirty=False, *, final=False):
     """What a receipt binds, taken when the cycle STARTS and re-proved at its end:
     the commit (a snapshot's marker, else HEAD and the dirty diff), this tool,
     the toolchain, retail and the ledgers."""
@@ -1562,7 +1564,7 @@ def input_state(allow_dirty=False):
         if commit["tree_manifest"] != meta["tree_manifest"]:
             raise SystemExit("link_cycle: the snapshot tree differs from its marker; refusing to measure it")
     else:
-        diff = subprocess.run(["git", "diff", "--binary", "HEAD"], capture_output=True, cwd=ROOT).stdout
+        diff = subprocess.run(["git", "diff", "--binary", "HEAD"], capture_output=True, cwd=ROOT, check=True).stdout
         untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "-z"],
                                    capture_output=True, cwd=ROOT, check=True).stdout
         untracked_hashes = {os.fsdecode(n): sha256(ROOT / os.fsdecode(n)) for n in untracked.split(b"\0") if n}
@@ -1571,7 +1573,7 @@ def input_state(allow_dirty=False):
                   "submodules": git("submodule", "status", "--recursive"),
                   "dirty": bool(git("status", "--porcelain", "--untracked-files=normal")),
                   "diff_sha256": hashlib.sha256(diff).hexdigest()}
-    if commit.get("dirty") and not allow_dirty:
+    if commit.get("dirty") and not allow_dirty and not final:
         raise SystemExit("link_cycle: dirty tree; use --allow-dirty for an explicitly non-authoritative diagnostic")
     dependencies = context.tool_dependencies(ROOT, __file__)
     target = context.target_identity(build.EXE)
@@ -1667,11 +1669,23 @@ def save_cache(path, stamp, value):
     path.write_text(json.dumps({"objects_digest": stamp, "value": value}))
 
 
+def record_run_evidence(receipt, start, end, args, *, remeasure=False):
+    """Bind both checkout observations and diagnostic switches before core stamping."""
+    keys = ("commit", "snapshot", "dirty", "diff_sha256", "untracked_sha256", "submodules", "tree_manifest")
+    receipt["checkout_start"] = {k: start[k] for k in keys if k in start}
+    receipt["checkout_end"] = {k: end[k] for k in keys if k in end}
+    receipt["run_options"] = {k: bool(getattr(args, k, False)) for k in context.RUN_OPTIONS}
+    receipt["run_options"].update(snapshot=bool(start.get("snapshot")), remeasure=remeasure,
+                                  measure_only=remeasure or bool(getattr(args, "measure_only", False)))
+    receipt["authoritative"] = context.run_authority_failure(receipt) is None
+
+
 def receipt_core(receipt):
     """The reproducible part of a receipt: what a cold and a cached run of the same
     inputs must agree on. Times, dates, link history and the warm-start path are
     left out; the instance tag additionally binds exact receipt bytes."""
-    keep = ("rule_identity", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
+    keep = ("checkout_start", "checkout_end", "run_options", "diagnostic",
+            "rule_identity", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
             "untracked_sha256", "closure_graph_sha256", "rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
             "retail_sha256", "toolchain_sha256", "inputs", "objects_digest", "provenance_sha256", "objects",
             "objects_missing", "compile_failed", "currency_proofs", "quarantine_sha256", "stubs_sha256",
@@ -1923,7 +1937,7 @@ def cycle(args):
                                "force_duplicate_diagnostics": d["codes"].get("LNK4006", 0)},
                    series=res)
     # re-prove the start: the same commit/tree, tool, toolchain, retail, ledgers and objects
-    end = input_state(getattr(args, "allow_dirty", False))
+    end = input_state(getattr(args, "allow_dirty", False), final=True)
     moved = sorted(k for k in start if start[k] != end.get(k))
     current_objs = Objects(present)
     if objects_digest(current_objs, present) != obj_digest:
@@ -1931,7 +1945,8 @@ def cycle(args):
     end_prov, end_proofs, end_canon = provenance(rows, present, current_objs, out)
     if (end_prov, end_proofs, end_canon) != (prov_digest, proofs, canon):
         moved.append("provenance")
-    receipt["authoritative"] = bool(start.get("snapshot")) and not moved and not warm["stale"] and not compile_failed and not start.get("dirty")
+    record_run_evidence(receipt, start, end, args)
+    receipt["authoritative"] = receipt["authoritative"] and not moved
     times["total"] = round(time.time() - t_all)
     receipt["seconds"] = times
     stamp_cores(receipt)
@@ -2316,7 +2331,9 @@ def remeasure(args):
                    seconds={"measure": round(time.time() - t)})
     current_objs = Objects(present)
     end_prov = provenance(rows, present, current_objs, diagnostic)
-    if (start != input_state(getattr(args, "allow_dirty", False))
+    end = input_state(getattr(args, "allow_dirty", False), final=True)
+    record_run_evidence(receipt, start, end, args, remeasure=True)
+    if (start != end
             or objects_digest(current_objs, present) != obj_digest
             or end_prov != (prov_digest, proofs, canon)):
         raise SystemExit("link_cycle: inputs moved during diagnostic remeasurement")

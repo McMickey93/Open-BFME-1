@@ -352,6 +352,7 @@ def test_dirty_refusal_and_explicit_flag_are_bound(tmp_path, monkeypatch):
     import pytest
     with pytest.raises(SystemExit, match="dirty tree"):
         lc.input_state()
+    assert lc.input_state(final=True)["dirty"] is True
     state = lc.input_state(allow_dirty=True)
     assert state["dirty"] is True and state["allow_dirty"] is True
     assert state["rule_identity"]["id"] == ctx.RULES
@@ -383,7 +384,7 @@ def test_remeasurement_preserves_original_receipt_and_artifacts(tmp_path, monkey
     reverse.mkdir()
     (reverse / "ghidra_functions.csv").write_text("rva\n")
     monkeypatch.setattr(lc, "REVERSE", reverse)
-    monkeypatch.setattr(lc, "input_state", lambda *a: {"commit": "a" * 40})
+    monkeypatch.setattr(lc, "input_state", lambda *a, **kw: {"commit": "a" * 40})
     monkeypatch.setattr(lc.census, "ledger", lambda: [])
     monkeypatch.setattr(lc.census, "objects", lambda rows: ([], []))
     monkeypatch.setattr(lc, "analyze", lambda *a: ([], {}))
@@ -440,3 +441,57 @@ def test_driver_local_imports_are_declared_semantic_dependencies():
             if (tools / filename).is_file():
                 local.add(filename)
     assert local <= set(ctx.MEASUREMENT_FILES), local - set(ctx.MEASUREMENT_FILES)
+
+
+def test_clean_run_evidence_binds_both_observations_and_diagnostic_options():
+    import copy
+    import types
+    import link_cycle_context as ctx
+    start = {"commit": "a" * 40, "snapshot": False, "dirty": False}
+    args = types.SimpleNamespace()
+    base = dict(start, compile_failed=[], warm_start={"stale": False})
+    lc.record_run_evidence(base, start, dict(start), args)
+    assert base["authoritative"] is True
+    assert ctx.run_authority_failure(base) is None
+    original_core = lc.digest_of(lc.receipt_core(base))
+    for phase in ("start", "end"):
+        receipt = copy.deepcopy(base)
+        receipt["checkout_" + phase]["dirty"] = True
+        assert ctx.run_authority_failure(receipt) == "dirty-" + phase
+        assert lc.digest_of(lc.receipt_core(receipt)) != original_core
+    for flag in ctx.RUN_OPTIONS:
+        receipt = copy.deepcopy(base)
+        receipt["run_options"][flag] = True
+        assert ctx.run_authority_failure(receipt) == "diagnostic"
+        assert lc.digest_of(lc.receipt_core(receipt)) != original_core
+    for flag in ("allow_dirty", "allow_stale_cache", "measure_only"):
+        receipt = dict(start, compile_failed=[], warm_start={"stale": False})
+        lc.record_run_evidence(receipt, start, start, types.SimpleNamespace(**{flag: True}))
+        assert receipt["authoritative"] is False
+    snapshot = dict(start, snapshot=True)
+    receipt = dict(snapshot, compile_failed=[], warm_start={"stale": False})
+    lc.record_run_evidence(receipt, snapshot, snapshot, args)
+    assert receipt["authoritative"] is False
+    receipt = dict(start, compile_failed=[], warm_start={"stale": False})
+    lc.record_run_evidence(receipt, start, start, args, remeasure=True)
+    assert receipt["authoritative"] is False
+    receipt = dict(start, compile_failed=[], warm_start={"stale": False})
+    lc.record_run_evidence(receipt, start, dict(start, dirty=True), args)
+    assert receipt["authoritative"] is False
+
+
+def test_incomplete_or_changed_run_evidence_cannot_confer_authority():
+    import copy
+    import types
+    import link_cycle_context as ctx
+    start = {"commit": "a" * 40, "snapshot": False, "dirty": False}
+    base = dict(start, compile_failed=[], warm_start={"stale": False})
+    lc.record_run_evidence(base, start, start, types.SimpleNamespace())
+    for key in ("checkout_start", "checkout_end", "run_options", "compile_failed", "warm_start"):
+        r = copy.deepcopy(base)
+        del r[key]
+        assert ctx.run_authority_failure(r) == "missing-evidence"
+    for change, reason in (({"compile_failed": ["f.cpp"]}, "compile-failed"),
+                           ({"warm_start": {"stale": True}}, "diagnostic"),
+                           ({"moved_during_run": ["objects_digest"]}, "inputs-moved")):
+        assert ctx.run_authority_failure(dict(base, **change)) == reason
