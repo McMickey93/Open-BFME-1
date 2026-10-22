@@ -204,3 +204,35 @@ else:
 """
     subprocess.run(cycle_source.command(tools, program, sourceless), check=True,
                    env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+
+@pytest.mark.parametrize("initial_stamp", ["missing", "bad", "wrong-key"])
+def test_defect_unsigned_install_reserves_signed_measurement(checkout, tmp_path, initial_stamp):
+    root, _ = checkout
+    run, _ = failed_run(checkout, tmp_path / "run")
+    good = freeze(run, tmp_path / "signed", root)
+    unsigned = tmp_path / "unsigned"
+    shutil.copytree(good, unsigned)
+    if initial_stamp == "missing":
+        (unsigned / stamp.STAMP).unlink()
+    elif initial_stamp == "bad":
+        (unsigned / stamp.STAMP).write_text("{}")
+    else:
+        from cycle_fixture import host_stamp
+        host_stamp(unsigned, stamp.keygen(tmp_path / "untrusted-key"))
+    assert rq.route_link_queue(good, now=NOW)["status"] == "ok"
+    store = tmp_path / "store"
+    ca.install_local(unsigned, store, root=root, now=NOW)
+    installed = ca.resolve(store, root=root, now=NOW)[0]
+    payload = {p.name: (p.read_bytes(), p.stat().st_ino) for p in installed.iterdir() if p.name != stamp.STAMP}
+    manifest, pointer = ca.install_local(good, store, root=root, now=NOW)
+    installed = store / ca.bundle_id(manifest["tag"]) / "bundle"
+    assert stamp.verify(installed) is None
+    assert {p.name: (p.read_bytes(), p.stat().st_ino) for p in installed.iterdir() if p.name != stamp.STAMP} == payload
+    result = rq.route_link_queue(store, now=NOW)
+    assert result["status"] == "ok" and result["authoritative"] is True
+    assert pointer["latest_measurement"] == installed.parent.name
+    # Later unsigned or invalid stamps cannot downgrade the installed signature.
+    before = (installed / stamp.STAMP).read_bytes()
+    ca.install_local(unsigned, store, root=root, now=NOW)
+    assert (installed / stamp.STAMP).read_bytes() == before
+    assert ca.serve(store, root=root, now=NOW)[1]["authoritative"]

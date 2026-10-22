@@ -18,7 +18,8 @@ The stamp does not establish a security boundary against that account.
 Store/<measurement id>/bundle is installed by one directory rename; current.json
 is replaced atomically under a portable writer lock. Readers derive selection
 from validated installed receipts and warn about pointer rollback. Installed
-directories are never replaced or removed. Reason/exit slots:
+payload directories are never replaced or removed; a verified stamp may be
+attached atomically to an identical installed payload. Reason/exit slots:
 corrupt=1, unavailable=2, empty=3, stale=4, incompatible-rules=5,
 not-authoritative=6, no-closure-report=7. Age limit 24 h; future skew 600 s;
 closure lookback 5. Unknown ancestry fails closed.
@@ -862,8 +863,29 @@ def publish_directory(source, destination):
         raise
 
 
+def attach_verified_stamp(source, destination):
+    """Under the store writer lock, upgrade authentication only, never payload.
+
+    The caller has validated both payloads and proved manifest equality. The
+    manifest binds every member, so the incoming verified stamp covers exactly
+    the installed immutable bytes. Invalid/unsigned copies cannot downgrade it.
+    """
+    if cycle_stamp.verify(source) is not None or cycle_stamp.verify(destination) is None:
+        return
+    fd, temporary = tempfile.mkstemp(prefix=".stamp-", dir=destination.parent)
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write((source / cycle_stamp.STAMP).read_bytes())
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, destination / cycle_stamp.STAMP)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
 def install_local(directory, store, *, root=ROOT, now=None):
-    """Copy and validate before one rename under the writer lock. Never overwrite an id."""
+    """Install immutable payload; allow verified stamp upgrades under the writer lock."""
     source = load_bundle(directory, root=root)
     store = Path(store)
     handle = _writer(store)
@@ -876,6 +898,7 @@ def install_local(directory, store, *, root=ROOT, now=None):
         same("copied manifest", copied.manifest, source.manifest)
         if final.exists():
             same("immutable installed manifest", validate(final / "bundle", root=root), copied.manifest)
+            attach_verified_stamp(copied.dir, final / "bundle")
         else:
             publish_directory(tmp, final)
             tmp = None
