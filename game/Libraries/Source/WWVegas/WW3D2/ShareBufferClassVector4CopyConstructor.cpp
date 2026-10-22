@@ -44,6 +44,7 @@ class ShareBufferClass : public RefCountClass
 {
 public:
 	ShareBufferClass( const ShareBufferClass &that );
+	~ShareBufferClass( void );
 
 protected:
 	Type *RawBuffer;
@@ -71,6 +72,19 @@ ShareBufferClass<Type>::ShareBufferClass( const ShareBufferClass<Type> &that ) :
 	for( int index = 0; index < Count; ++index )
 	{
 		Array[ index ] = that.Array[ index ];
+	}
+}
+
+// The destructor as sharebuf.h defines it, so the implicit-virtual COMDAT body
+// this TU emits is the one every other ShareBufferClass<Vector4> TU does.
+template <class Type>
+ShareBufferClass<Type>::~ShareBufferClass( void )
+{
+	if( RawBuffer )
+	{
+		delete[] RawBuffer;
+		RawBuffer = 0;
+		Array = 0;
 	}
 }
 
