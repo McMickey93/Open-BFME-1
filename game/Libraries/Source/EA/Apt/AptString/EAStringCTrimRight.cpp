@@ -76,9 +76,9 @@ class EAStringC
 extern EAStringC::StringDataC g_rva012D5298Empty;
 
 __forceinline EAStringC::EAStringC()
+	: m_pData( &g_rva012D5298Empty )
 {
-	++g_rva012D5298Empty.m_uRefCount;
-	m_pData = &g_rva012D5298Empty;
+	++m_pData->m_uRefCount;
 }
 
 typedef char EAStringC_StringDataC_size_must_be_8[
