@@ -4,7 +4,7 @@
 keygen [--key PATH] creates a mode-0600 key outside every repository.
 measure --out DIR --producer LABEL [--rev origin/master] builds in a fresh
 snapshot subprocess; it never measures the caller's imported verifier modules.
-Readers opt into this host with BFME_CYCLE_KEYS, or use the default key path.
+Readers trust only the fixed account key path; --key selects a signing key.
 """
 import argparse
 import hashlib

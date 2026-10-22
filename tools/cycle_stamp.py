@@ -1,7 +1,7 @@
 """Host-local cycle stamps. Keys never belong in a repository.
 
-Readers use BFME_CYCLE_KEYS (os.pathsep-separated paths), or the default key.
-A configured key is an explicit trust grant to that measuring host.
+Readers trust only the fixed account key at ~/.config/open-bfme/cycle_key.
+The in-process test seam is never populated from CLI arguments or environment.
 """
 import hashlib
 import hmac
@@ -13,7 +13,14 @@ import subprocess
 
 STAMP = "host_stamp.json"
 SCHEMA = "bfme1-cycle-host-stamp/1"
-DEFAULT_KEY = Path.home() / ".config/open-bfme/cycle_key"
+# Resolve the account home independently of worker-controlled HOME on POSIX.
+try:
+    import pwd
+    _ACCOUNT_HOME = Path(pwd.getpwuid(os.getuid()).pw_dir)
+except ImportError:  # Windows has no pwd database.
+    _ACCOUNT_HOME = Path.home()
+DEFAULT_KEY = _ACCOUNT_HOME / ".config/open-bfme/cycle_key"
+_reader_key_for_tests = None  # Tests monkeypatch this; no production setter.
 
 
 class KeyError(ValueError):
@@ -39,6 +46,15 @@ def read_key(path):
     fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
     try:
         st = os.fstat(fd)
+        # Validate the opened inode, including aliases and a parent swapped
+        # between pathname validation and open. Linux exposes its actual path.
+        opened = Path(f"/proc/self/fd/{fd}")
+        key_path(opened.resolve(strict=True) if opened.exists() else path)
+        current = path.stat(follow_symlinks=False)
+        if (st.st_dev, st.st_ino) != (current.st_dev, current.st_ino):
+            raise KeyError("host key changed while opening")
+        if st.st_nlink != 1:
+            raise KeyError("host key must have exactly one hardlink")
         if path.is_symlink() or not stat.S_ISREG(st.st_mode) or stat.S_IMODE(st.st_mode) != 0o600:
             raise KeyError("host key must be a regular file with mode 0600")
         if hasattr(os, "getuid") and st.st_uid != os.getuid():
@@ -69,8 +85,7 @@ def keygen(path=DEFAULT_KEY):
 
 
 def configured_keys():
-    configured = os.environ.get("BFME_CYCLE_KEYS")
-    return [Path(p).expanduser() for p in configured.split(os.pathsep) if p] if configured is not None else [DEFAULT_KEY]
+    return [DEFAULT_KEY if _reader_key_for_tests is None else _reader_key_for_tests]
 
 
 def verify(directory):

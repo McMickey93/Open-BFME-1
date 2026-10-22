@@ -59,7 +59,7 @@ def checkout(tmp_path, monkeypatch):
     (root / "game").mkdir()
     (root / "game/f.cpp").write_text("// synthetic measured source\n")
     key = stamp.keygen(tmp_path / "host-key")
-    monkeypatch.setenv("BFME_CYCLE_KEYS", str(key))
+    monkeypatch.setattr(stamp, "_reader_key_for_tests", key)
     (root / ".gitignore").write_text("build/\n__pycache__/\n")
     git(root, "init", "-q")
     git(root, "add", "tools", "targets", "game", ".gitignore")
@@ -467,9 +467,9 @@ def test_r1_host_stamp_required_under_reader_keys(checkout, tmp_path, monkeypatc
     if attack == "missing":
         (out / stamp.STAMP).unlink()
     elif attack == "no-keys":
-        monkeypatch.setenv("BFME_CYCLE_KEYS", "")
+        monkeypatch.setattr(stamp, "_reader_key_for_tests", tmp_path / "absent-key")
     elif attack == "wrong-key":
-        monkeypatch.setenv("BFME_CYCLE_KEYS", str(stamp.keygen(tmp_path / "other-key")))
+        monkeypatch.setattr(stamp, "_reader_key_for_tests", stamp.keygen(tmp_path / "other-key"))
     elif attack == "mac":
         doc = ca.read_json(out / stamp.STAMP)
         doc["hmac_sha256"] = "0" * 64
@@ -659,7 +659,7 @@ def test_r1_unstamped_bundle_has_labelled_diagnostic_cli(checkout, tmp_path, mon
     assert "NOT AUTHORITATIVE: not-authoritative / unstamped" in capsys.readouterr().out
 
 
-def test_r1_reader_can_trust_multiple_host_keys(checkout, tmp_path, monkeypatch):
+def test_r1_reader_ignores_environment_host_keys(checkout, tmp_path, monkeypatch):
     root, _ = checkout
     run, _ = run_for(checkout, tmp_path / "run")
     out = freeze(run, tmp_path / "bundle", root)

@@ -1,0 +1,137 @@
+"""Round 2 regression tests for Review #1.
+
+Reviewer reproduction names are preserved; PASS now asserts the fix.
+Same-account signing is an explicitly accepted owner risk.
+Tests named sound assert a nearby case is correctly handled. Temporary Git
+repositories and temporary keys only. No compiler, linker, Wine, census, or
+real cycle(): the snapshot fixture removes cycle() before executing Python.
+"""
+import copy
+import hashlib
+import hmac
+import importlib.util
+import json
+import os
+from pathlib import Path
+import py_compile
+import shutil
+import sys
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import cycle_artifacts as ca
+import cycle_diff as cd
+import cycle_launch as launch
+import cycle_stamp as stamp
+import link_cycle as lc
+import link_cycle_context as ctx
+import publish_cycle as pc
+import repair_queue as rq
+from cycle_fixture import NOW, rehash, save_receipt
+from test_bfme2_port_r1_regressions import (
+    checkout, census_fixture, change_row, freeze, git, run_for, save_graph,
+    synthetic_snapshot_checkout,
+)
+
+
+def failed_run(checkout, path, **kwargs):
+    run, receipt = run_for(checkout, path, **kwargs)
+    graph = ca.read_json(run / ca.CLOSURE_GRAPH)
+    graph["nodes"]["unit:1"].update(ok=False, failures=["shift:hardcoded address"])
+    change_row(run, receipt, closed_strict=0, hardcoded=1, failure_count=1,
+               failures="shift:hardcoded address")
+    receipt["series"]["credit_unique_bytes"] = 0
+    save_graph(run, receipt, graph)
+    return run, receipt
+
+
+def commit_fixture(root, message):
+    git(root, "add", "-f", "tools")
+    git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R2 fixture",
+        "-c", "user.email=r2@example.invalid", "commit", "-qm", message)
+    git(root, "update-ref", "refs/remotes/origin/master", "HEAD")
+    return git(root, "rev-parse", "HEAD")
+
+
+@pytest.mark.parametrize("key_mode", ["existing-reader-key", "worker-env-key"])
+def test_defect_worker_can_stamp_without_launcher(checkout, tmp_path, monkeypatch, key_mode):
+    """Same-account signing is accepted; worker-selected reader keys are refused."""
+    root, _ = checkout
+    run, _ = failed_run(checkout, tmp_path / "invented-run")
+    out = freeze(run, tmp_path / "invented-bundle", root, sign=False)
+    assert rq.route_link_queue(out, now=NOW)["sub_reason"] == "unstamped"
+    key = stamp.configured_keys()[0]
+    if key_mode == "worker-env-key":
+        key = stamp.keygen(tmp_path / "worker-controlled-key")
+        monkeypatch.setenv("BFME_CYCLE_KEYS", str(key))
+    manifest = ca.read_manifest(out)
+    manifest["execution"] = {"launcher": "cycle_launch/1", "commit": manifest["commit"],
+                             "snapshot": True, "semantic_sha256": manifest["rules"]["implementation_sha256"]}
+    (out / ca.MANIFEST).write_text(ca.dumps(manifest))
+    # Ordinary same-UID worker code. No launch.measure() and no authority mocks.
+    secret = key.read_bytes()
+    digest = ca.sha256_file(out / ca.MANIFEST)
+    (out / stamp.STAMP).write_text(ca.dumps({
+        "schema": stamp.SCHEMA, "manifest_sha256": digest,
+        "key_id": hashlib.sha256(secret).hexdigest(),
+        "hmac_sha256": hmac.new(secret, bytes.fromhex(digest), hashlib.sha256).hexdigest(),
+    }))
+    result = rq.route_link_queue(out, now=NOW)
+    if key_mode == "existing-reader-key":
+        # Owner accepts deliberate same-user secret access. Keep this limit visible.
+        assert result["status"] == "ok" and result["authoritative"] is True
+        assert "owner-accepted residual risk" in ca.__doc__
+    else:
+        assert result["status"] == "refused" and result["sub_reason"] == "bad-stamp"
+        assert stamp.configured_keys() != [key]
+
+
+def test_defect_repository_key_hardlink_accepted(checkout, tmp_path):
+    root, _ = checkout
+    inside = root / "tracked-secret"
+    inside.write_bytes(b"repository-visible-key-material!!")
+    inside.chmod(0o600)
+    git(root, "add", "tracked-secret")
+    git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R2 fixture",
+        "-c", "user.email=r2@example.invalid", "commit", "-qm", "fixture repository key")
+    outside = tmp_path / "outside-hardlink"
+    os.link(inside, outside)
+    assert git(root, "show", "HEAD:tracked-secret").encode() == inside.read_bytes()
+    with pytest.raises(stamp.KeyError):
+        stamp.read_key(inside)
+    assert outside.stat().st_ino == inside.stat().st_ino
+    with pytest.raises(stamp.KeyError, match="exactly one hardlink"):
+        stamp.read_key(outside)
+
+
+
+def test_reader_key_location_ignores_worker_home_and_environment(checkout, tmp_path, monkeypatch):
+    import subprocess
+    env = dict(os.environ, HOME=str(tmp_path), BFME_CYCLE_KEYS=str(tmp_path / "worker-key"))
+    result = subprocess.run([sys.executable, "-I", "-B", "-c",
+        "import sys; sys.path.insert(0, sys.argv[1]); import cycle_stamp as s; "
+        "print(s.configured_keys()[0])", str(Path(stamp.__file__).parent)],
+        env=env, check=True, capture_output=True, text=True)
+    assert result.stdout.strip() == str(stamp.DEFAULT_KEY)
+
+
+def test_key_checks_opened_descriptor_after_parent_swap(checkout, tmp_path, monkeypatch):
+    root, _ = checkout
+    outside = tmp_path / "key-directory"
+    outside.mkdir()
+    stamp.keygen(outside / "key")
+    inside = root / "key-directory"
+    inside.mkdir()
+    (inside / "key").write_bytes(b"x" * 32)
+    (inside / "key").chmod(0o600)
+    alias = tmp_path / "key-alias"
+    alias.symlink_to(outside, target_is_directory=True)
+    original = os.open
+    def swap(path, *args, **kwargs):
+        alias.unlink()
+        alias.symlink_to(inside, target_is_directory=True)
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(stamp.os, "open", swap)
+    with pytest.raises(stamp.KeyError, match="outside every"):
+        stamp.read_key(alias / "key")

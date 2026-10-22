@@ -88,7 +88,7 @@ import pytest
 def synthetic_host(tmp_path, monkeypatch):
     import cycle_stamp
     key = cycle_stamp.keygen(tmp_path / "host-key")
-    monkeypatch.setenv("BFME_CYCLE_KEYS", str(key))
+    monkeypatch.setattr(cycle_stamp, "_reader_key_for_tests", key)
     monkeypatch.setattr(ca, "run_evidence_failure", lambda *a: None)
     original = pc.make_bundle
 

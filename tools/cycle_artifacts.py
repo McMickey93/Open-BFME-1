@@ -10,6 +10,10 @@ Authority is recomputed from clean local run evidence, local origin/master
 ancestry, integrity, matching rules and freshness. A manifest's own authority
 claim is ignored. Authority additionally requires a host-key stamp from the
 fresh-snapshot launcher, tracked Git input hashes, and bound object evidence.
+Readers trust the fixed account key at ~/.config/open-bfme/cycle_key (0600).
+Same-user key access is an owner-accepted residual risk: code running as that
+account can deliberately read the secret and sign fabricated measurements.
+The stamp does not establish a security boundary against that account.
 
 Store/<measurement id>/bundle is installed by one directory rename; current.json
 is replaced atomically under a portable writer lock. Readers derive selection
