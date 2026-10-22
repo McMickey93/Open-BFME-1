@@ -62,20 +62,6 @@ void Rva008AD330::release()
 class EAStringC { public: class StringDataC; };
 extern EAStringC::StringDataC g_rva012D5298Empty;	// shared empty string block 0x012D5298
 
-class Rva00891B40
-{
-	Rva00891B80Block *m_block;
-
-public:
-	Rva00891B40();
-};
-
-Rva00891B40::Rva00891B40()
-{
-	m_block = (Rva00891B80Block *)&g_rva012D5298Empty;
-	++(*(Rva00891B80Block *)&g_rva012D5298Empty).m_ref;
-}
-
 class Rva00891C10
 {
 	Rva00891B80Block *m_block;

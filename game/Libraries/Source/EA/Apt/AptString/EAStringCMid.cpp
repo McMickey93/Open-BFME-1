@@ -61,7 +61,10 @@ template <typename T> class StringBase
 
 class EAStringC : private StringBase<char>
 {
+public:
 	EAStringC();
+
+private:
 
 	EAStringC(const EAStringC &other) : StringBase<char>(other) {}
 
