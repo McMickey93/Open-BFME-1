@@ -9,11 +9,10 @@
 // top of the for(;;) loop - the while+goto spelling emits EDX at +0x29/+0x2E.
 // cl: /O2 /Ob0
 
-class BfmeMsgVJH
+class BfmeC994
 {
 public:
-	BfmeMsgVJH(char *buf, int n) throw();
-	~BfmeMsgVJH() throw();
+	BfmeC994(char *buf, int n) throw();
 	char m_pad[0x34];
 };
 
@@ -113,10 +112,14 @@ public:
 	virtual void v2c() throw();
 	virtual void v30() throw();
 	virtual void v34() throw();
-	virtual void send(BfmeMsgVJH *msg, int a1, int a2, int selected) throw();
+	virtual void send(BfmeC994 *msg, int a1, int a2, int selected) throw();
 };
 
-class Rva007E8810Message;
+class Rva007E8810Message
+{
+public:
+	~Rva007E8810Message() throw();
+};
 struct Rva007F5900Context;
 
 class BfmeNotifyVJT
@@ -124,7 +127,7 @@ class BfmeNotifyVJT
 public:
 	virtual void v00() throw();
 	virtual void v04() throw();
-	virtual void send(BfmeMsgVJH *msg,
+	virtual void send(BfmeC994 *msg,
 		void (__cdecl *callback)(Rva007E8810Message *, Rva007F5900Context *),
 		void *owner, int value) throw();
 };
@@ -219,10 +222,12 @@ found:
 	slot->m_14 = flag.value;
 	m_bfme1c->send(slot, (int)zero);
 
-	BfmeMsgVJH msg(m_bfmeBuf, 0x400);
+	BfmeC994 msg(m_bfmeBuf, 0x400);
 	int selected = m_bfme2c;
 	if (selected == 0)
 		selected = m_bfme28;
 	m_bfme10->send(&msg, a1, key2, selected);
 	m_bfme14->send(&msg, rva007F5900QueueCallback, slot, m_bfme6dc);
+	// The verified complete cleanup at 0x007E86C0 has this row name.
+	reinterpret_cast<Rva007E8810Message *>(&msg)->Rva007E8810Message::~Rva007E8810Message();
 }
