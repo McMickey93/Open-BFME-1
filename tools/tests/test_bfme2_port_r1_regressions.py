@@ -277,3 +277,43 @@ def test_r8_missing_historical_evidence_never_counts(tmp_path):
         cd.check_report(doc)
     doc.update(comparison_verified=False, totals=None, gained=None, lost=None)
     cd.check_report(doc)
+
+
+def test_r6_diagnostic_install_masks_authoritative_current(checkout, tmp_path):
+    root, _ = checkout
+    good_run, _ = run_for(checkout, tmp_path / "good-run")
+    good = freeze(good_run, tmp_path / "good", root)
+    bad_run, receipt = run_for(checkout, tmp_path / "diagnostic-run", now=NOW + 1)
+    receipt["run_options"]["allow_dirty"] = True
+    save_receipt(bad_run, receipt)
+    bad = freeze(bad_run, tmp_path / "diagnostic", root)
+    store = tmp_path / "store"
+    good_manifest, _ = ca.install_local(good, store, root=root, now=NOW + 1)
+    _, pointer = ca.install_local(bad, store, root=root, now=NOW + 1)
+    assert pointer["latest_measurement"] == ca.bundle_id(good_manifest["tag"])
+    for closure in (False, True):
+        b, fr, _ = ca.serve(store, root=root, now=NOW + 1, need_closure=closure)
+        assert fr["authoritative"] and b.tag == good_manifest["tag"]
+    print("F6 store: latest_measurement=clean bundle; ordinary and closure serving refuse the newer diagnostic")
+
+
+def test_r7_pointer_replay_returns_old_measurement_without_warning(checkout, tmp_path):
+    root, _ = checkout
+    old_run, _ = run_for(checkout, tmp_path / "old-run")
+    old = freeze(old_run, tmp_path / "old", root)
+    new_run, _ = run_for(checkout, tmp_path / "new-run", now=NOW + 100)
+    new = freeze(new_run, tmp_path / "new", root)
+    store = tmp_path / "store"
+    ca.install_local(old, store, root=root, now=NOW + 100)
+    saved_pointer = (store / ca.POINTER).read_bytes()
+    ca.install_local(new, store, root=root, now=NOW + 100)
+    assert ca.serve(store, root=root, now=NOW + 100)[0].receipt["measured_end_ns"] == (NOW + 100) * 10**9
+    (store / ca.POINTER).write_bytes(saved_pointer)
+    for closure in (False, True):
+        b, fr, lines = ca.serve(store, root=root, now=NOW + 100, need_closure=closure)
+        assert fr["authoritative"] and b.receipt["measured_end_ns"] == (NOW + 100) * 10**9
+        assert any("rollback" in line for line in lines)
+    print("F7 pointer replay: newer bundle remains installed; older bundle authoritative=True; rollback warning=False")
+    historical = store / ca.bundle_id(ca.read_manifest(old)["tag"]) / "bundle"
+    _, fr, notes = ca.serve(historical, root=root, now=NOW + 100)
+    assert fr["authoritative"] and any("explicit historical" in line for line in notes)

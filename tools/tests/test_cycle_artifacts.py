@@ -304,7 +304,7 @@ def test_unknown_local_rules_never_served(frozen, tmp_path):
 def test_closure_selection_respects_five_older_limit():
     mine = ca.local_rules()
     bad = dict(mine, id="other-rule")
-    entries = [{"id": str(i), "closure_report": True, "rules_tuple": bad}
+    entries = [{"id": str(i), "closure_report": True, "rules_tuple": bad, "authoritative": True}
                for i in range(7)]
     doc = {"bundles": entries}
     entries[5]["rules_tuple"] = mine

@@ -33,6 +33,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import zlib
 from pathlib import Path
 
 import link_cycle_context as context
@@ -131,7 +132,7 @@ def read_member(path):
     raw = Path(path).read_bytes()
     try:
         return gzip.decompress(raw) if str(path).endswith(".gz") else raw
-    except (OSError, EOFError) as e:
+    except (OSError, EOFError, zlib.error) as e:
         raise BundleError(f"{Path(path).name}: not a readable gzip stream ({e})") from None
 
 
@@ -711,29 +712,41 @@ def closure_choice(doc, root=ROOT):
     mine = local_rules(root)
     ready = [e for e in doc["bundles"] if e.get("closure_report")]
     for e in ready[:CLOSURE_LOOKBACK + 1]:
-        if mine is not None and e.get("rules_tuple") == mine:
+        if e.get("authoritative") is True and mine is not None and e.get("rules_tuple") == mine:
             return e["id"], True
     return (ready[0]["id"] if ready else None), False
 
 
-def resolve(path, need_closure=False, root=ROOT):
+def resolve(path, need_closure=False, root=ROOT, now=None):
     path = Path(path)
     if (path / MANIFEST).is_file():
-        return path, []
-    doc = read_pointer(path)
-    if not doc["bundles"]:
+        notes = []
+        store = path.parent.parent
+        if path.name == "bundle" and (store / POINTER).is_file():
+            entries = installed(store, root, now)
+            eligible = [e for e in entries if e["authoritative"]]
+            if eligible and path.parent.name != eligible[0]["id"]:
+                notes.append("NOT THE NEWEST: explicit historical selection " + path.parent.name)
+        return path, notes
+    pointer = read_pointer(path)
+    entries = installed(path, root, now)
+    if not entries:
         raise Empty("bundle store has no measurements")
+    eligible = [e for e in entries if e["authoritative"]]
     if need_closure:
-        ident, _ = closure_choice(doc, root)
+        # Diagnostic installs never consume the compatible history window.
+        candidates = [e for e in entries if e.get("reason") != "not-authoritative"]
+        ident, _ = closure_choice({"bundles": candidates or entries}, root)
         if ident is None:
             raise Refused("store has no closure report", "no-closure-report")
     else:
-        # Pointer authority claims can be stale or forged. Select by recorded
-        # measurement order, then serve() recomputes every check from the files.
-        ident = doc["bundles"][0]["id"]
+        ident = (eligible or entries)[0]["id"]
     notes = []
-    if ident != doc["bundles"][0]["id"]:
-        notes.append(f"NOT THE NEWEST: serving compatible closure measurement {ident}")
+    expected = eligible[0]["id"] if eligible else None
+    if pointer.get("latest_measurement") != expected or [e["id"] for e in pointer["bundles"]] != [e["id"] for e in entries]:
+        notes.append("WARNING: current pointer rollback or outdated inventory detected; using validated installed receipts")
+    if ident != entries[0]["id"]:
+        notes.append(f"NOT THE NEWEST: serving eligible measurement {ident}")
     return path / ident / "bundle", notes
 
 
@@ -795,7 +808,7 @@ def install_local(directory, store, *, root=ROOT, now=None):
 
 
 def serve(path, *, allow_stale=False, need_closure=False, need_rank=False, now=None, root=ROOT):
-    directory, notes = resolve(path, need_closure, root)
+    directory, notes = resolve(path, need_closure, root, now)
     if need_closure and (directory / MANIFEST).is_file():
         m = read_manifest(directory)
         if not {CLOSURE_ROOTS, CLOSURE_BLOCKERS} <= set(m.get("members") or {}):
@@ -824,11 +837,7 @@ def report(bundle, now=None, out=None, err=None, root=ROOT):
 
 def status(store, now=None, root=ROOT, out=None):
     doc = read_pointer(store)
-    # Recheck files and policy; pointer booleans never confer authority.
-    for entry in doc["bundles"]:
-        b = load_bundle(Path(store) / entry["id"] / "bundle", root=root)
-        fr = b.freshness(now=now)
-        entry.update(authoritative=fr["authoritative"], reason=fr["reason"], sub_reason=fr["sub_reason"])
+    doc["bundles"] = installed(store, root, now)
     trusted = [e for e in doc["bundles"] if e["authoritative"]]
     doc["latest_measurement"] = trusted[0]["id"] if trusted else None
     doc["latest_closure_ready"] = next((e["id"] for e in trusted if e["closure_report"]), None)
