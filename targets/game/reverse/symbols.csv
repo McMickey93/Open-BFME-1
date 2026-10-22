@@ -91138,3 +91138,9 @@ rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ?b_00c70e70@@YAXXZ,0x00C70E70,teardown registered by the atexit initializer at 0x00C6DBA0; same body as ?m@Gen_00c70e70@@QAEXXZ
 ??_EOpen2Store880FC0@@UAEPAXI@Z,0x00881180,weak alias of the scalar deleting dtor ??_G at this address; target of the W7 adjustor thunk at 0x00880F90
 ??_EOpen2Store8F75D0@@UAEPAXI@Z,0x008F7890,weak alias of the scalar deleting dtor ??_G at this address; target of the W7 adjustor thunk at 0x008F75A0
+??1BfmeStaticThingF@@QAE@XZ,0x005F7810,destructor of bfmeEnsure_005D9D10's function static; its atexit teardown 0x00C70440 jumps here through ILT 0x00049797
+??1BfmeStaticThingE@@QAE@XZ,0x005F0D10,destructor of bfmeEnsure_005D9CA0's function static; its atexit teardown 0x00C70450 jumps here through ILT 0x00015794
+??1BfmeStaticThingD@@QAE@XZ,0x005F5500,destructor of bfmeEnsure_005D9C30's function static; its atexit teardown 0x00C70460 jumps here through ILT 0x0000A858
+??1BfmeStaticThingC@@QAE@XZ,0x005F4340,destructor of bfmeEnsure_005D9BC0's function static; its atexit teardown 0x00C70470 jumps here through ILT 0x000105D7
+??1BfmeStaticThingB@@QAE@XZ,0x005F7FA0,destructor of bfmeEnsure_005D9B50's function static; its atexit teardown 0x00C70480 jumps here through ILT 0x0000FD94
+??1BfmeStaticThingA@@QAE@XZ,0x005F3140,destructor of bfmeEnsure_005D9AE0's function static; its atexit teardown 0x00C70490 jumps here through ILT 0x0004B4B6
