@@ -9989,8 +9989,8 @@ game/GameEngine/Source/Common/StaticInit/Rva00C6C570Init.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/Common/StaticInit/Rva00C6C5A0Init.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/Common/StaticInit/Rva00C6C5E0Init.cpp,no,1,0,0,0,0,0,0
 game/GameEngine/Source/Common/StaticInit/Rva00C6C600Init.cpp,no,1,0,0,0,0,0,0
-game/GameEngine/Source/Common/StaticInit/Rva00C6C620Init.cpp,yes,0,0,0,0,0,0,0
-game/GameEngine/Source/Common/StaticInit/Rva00C6C640Init.cpp,yes,0,0,0,0,0,0,0
+game/GameEngine/Source/Common/StaticInit/Rva00C6C620Init.cpp,no,1,0,0,0,0,0,0
+game/GameEngine/Source/Common/StaticInit/Rva00C6C640Init.cpp,no,1,0,0,0,0,0,0
 game/GameEngine/Source/Common/StaticInit/Rva00C6C680Init.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/Common/StaticInit/Rva00C6C6A0Init.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/Common/StaticInit/Rva00C6C6C0Init.cpp,yes,0,0,0,0,0,0,0
@@ -17094,7 +17094,7 @@ game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E33B0LuaStringSuffix.cpp,yes
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E3750LuaSetModule.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E4180ClearObjectGlobal.cpp,no,2,0,0,0,0,0,0
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E42C0LuaGlobalIdCheck.cpp,no,2,0,0,0,0,0,0
-game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E5090ScriptLogMessage.cpp,no,1,0,1,0,0,0,0
+game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E5090ScriptLogMessage.cpp,no,1,0,2,0,0,0,0
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E51C0LuaErrorFrame.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E55C0LuaFile.cpp,yes,0,0,0,0,0,0,0
 game/GameEngine/Source/GameLogic/ScriptEngine/Rva002E5790.cpp,no,2,0,0,0,0,0,0
@@ -20494,7 +20494,7 @@ game/Libraries/Source/WWVegas/WW3D2/MaterialRemapperCtor.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshClassBaseDestructor.cpp,no,1,1,0,0,2,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshClassConstructor.cpp,no,0,2,1,0,6,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshClassDeletingDestructor.cpp,no,0,1,1,0,2,0,0
-game/Libraries/Source/WWVegas/WW3D2/MeshClassRva0092D4B0.cpp,no,0,1,1,0,0,0,0
+game/Libraries/Source/WWVegas/WW3D2/MeshClassRva0092D4B0.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshClass_Load_W3D_Bool_Local.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshClass_Make_UniqueMethodThunk.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshClass_Render_Material_Pass_BFME.cpp,yes,0,0,0,0,0,0,0
@@ -20551,7 +20551,7 @@ game/Libraries/Source/WWVegas/WW3D2/MeshModelReadChunks.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshModelRegisterForRendering.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshModelReplaceTexture.cpp,no,4,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshModelVertexColors.cpp,yes,0,0,0,0,0,0,0
-game/Libraries/Source/WWVegas/WW3D2/MeshRecolor0092DF50.cpp,no,1,1,1,0,0,0,0
+game/Libraries/Source/WWVegas/WW3D2/MeshRecolor0092DF50.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshShaderFixup.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/MeshVectorScalarOpsInstances.cpp,no,0,0,9,0,3,0,0
 game/Libraries/Source/WWVegas/WW3D2/MungeRenderObjName.cpp,yes,0,0,0,0,0,0,0
@@ -20790,7 +20790,7 @@ game/Libraries/Source/WWVegas/WW3D2/Small03fFontTwin.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/Small03gUnlinkGuard.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/SortingIndexBufferDestructor0091D300.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/SortingRendererInsertTriangles.cpp,no,3,0,2,0,0,0,0
-game/Libraries/Source/WWVegas/WW3D2/SortingRendererInsertTrianglesNoSphere.cpp,no,0,0,1,0,0,0,0
+game/Libraries/Source/WWVegas/WW3D2/SortingRendererInsertTrianglesNoSphere.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/StreakLineAddPoint.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/StreakLineClass_Get_Obj_Space_Bounding_Box.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/StreakLineCtor.cpp,no,0,2,7,0,10,0,0
@@ -20901,7 +20901,7 @@ game/Libraries/Source/WWVegas/WW3D2/linegrp.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/mapper.cpp,no,11,56,1,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/matinfo.cpp,no,0,3,17,0,16,0,0
 game/Libraries/Source/WWVegas/WW3D2/matpass.cpp,yes,0,0,0,0,0,0,0
-game/Libraries/Source/WWVegas/WW3D2/mesh.cpp,no,1,4,12,0,14,0,0
+game/Libraries/Source/WWVegas/WW3D2/mesh.cpp,no,1,3,12,0,14,0,0
 game/Libraries/Source/WWVegas/WW3D2/meshbuild.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WW3D2/meshgeometry.cpp,no,1,3,6,0,6,0,0
 game/Libraries/Source/WWVegas/WW3D2/meshmatdesc.cpp,no,1,2,18,0,15,0,0
@@ -21069,7 +21069,7 @@ game/Libraries/Source/WWVegas/WWLib/Get_RDTSC_CPU_Speed.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/HashTemplateEntryDestructorThunk.cpp,no,1,1,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/HashtableAsciiUnicodeInsertUniqueNoresize006AB4A0.cpp,no,0,0,3,0,1,0,0
 game/Libraries/Source/WWVegas/WWLib/HashtableAsciiUnicodeResize006A7B60.cpp,no,0,0,0,0,1,0,0
-game/Libraries/Source/WWVegas/WWLib/INIClassGetWideString.cpp,no,0,1,0,0,0,0,0
+game/Libraries/Source/WWVegas/WWLib/INIClassGetWideString.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/INIClass_Put_String.cpp,no,1,0,4,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/INIEntryDeletingDestructor.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/INISectionListDeletingDestructor.cpp,yes,0,0,0,0,0,0,0
@@ -21586,7 +21586,7 @@ game/Libraries/Source/WWVegas/WWLib/draw.cpp,no,2,0,1,0,1,0,0
 game/Libraries/Source/WWVegas/WWLib/ffactory.cpp,no,0,0,2,0,2,0,0
 game/Libraries/Source/WWVegas/WWLib/gcd_lcm.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/hash.cpp,yes,0,0,0,0,0,0,0
-game/Libraries/Source/WWVegas/WWLib/ini.cpp,no,2,1,0,0,0,0,0
+game/Libraries/Source/WWVegas/WWLib/ini.cpp,no,2,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/int.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/md5.cpp,yes,0,0,0,0,0,0,0
 game/Libraries/Source/WWVegas/WWLib/mem_ops.cpp,yes,0,0,0,0,0,0,0
