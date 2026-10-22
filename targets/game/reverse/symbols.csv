@@ -91148,3 +91148,4 @@ rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ??1Rva007D2360@@QAE@XZ,0x007D2340,destructor of the 0x013071D4 static (Rva00C6C620Init.cpp): its atexit teardown 0x00C70B20 jumps here through ILT 0x0000F19B; releases the texture held at +8
 ??1Rva007D3580@@QAE@XZ,0x007D2350,destructor of the 0x013071E4 static (Rva00C6C640Init.cpp): its atexit teardown 0x00C70B30 jumps here through ILT 0x0003D69F; releases the texture held at +8
 ??1Rva00C6B450Init@@QAE@XZ,0x0040B830,destructor of the 0x012F1108/0x012F1198 statics (Rva00C6B390StaticInitializers.cpp): their atexit teardowns 0x00C6FF50/0x00C6FF40 jump here through ILT 0x00033CB2
+??1?$map@HIU?$less@H@_STL@@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAE@XZ,0x000A4B60,out-of-line map<int,unsigned> destructor: a single jmp (via ILT 0x00009895) to the matched _Rb_tree<int,pair<const int,unsigned>> destructor 0x000A3C70; the PSPlayerStats destructor funclets reach it through ILT 0x0001DB6F
