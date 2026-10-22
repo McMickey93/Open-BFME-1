@@ -108,6 +108,11 @@
 #include "rinfo.h"
 #include "camera.h"
 
+// BFME's ShareBufferClass<unsigned short> destructor is out of line in
+// ShareBufferUnsignedShort.cpp (retail 0x009240D0); never instantiate the
+// Zero Hour sharebuf.h body here.
+template<> ShareBufferClass<unsigned short>::~ShareBufferClass(void);
+
 
 #if (OPTIMIZE_PLANEEQ_RAM)
 static SimpleVecClass<Vector4> _PlaneEQArray(1024);

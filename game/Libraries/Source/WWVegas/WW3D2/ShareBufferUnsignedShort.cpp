@@ -1,30 +1,30 @@
-// cl: /DNDEBUG /MD /GX- /O2 /Ob2
+// cl: /DNDEBUG /MD /GX- /O2 /Ob2 /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/Wwutil /Igame/Libraries/Source/WWVegas/WWDownload /Igame/Libraries/Source/Compression /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 
-// Open-BFME5: ShareBufferClass<unsigned short> destructor
-// Load buffer, install interim vtbl, free buffer, install final vtbl.
+// ShareBufferClass<unsigned short>::~ShareBufferClass at retail 0x009240D0
+// (29 bytes): the only out-of-line ShareBufferClass destructor in retail.
+// BFME frees RawBuffer with no null test and no member resets, unlike the
+// Zero Hour sharebuf.h body, so the class is declared locally here.
 
-extern "C" char ShareBufferClassUnsignedShort_vtbl_interim;
-extern "C" char ShareBufferClassUnsignedShort_vtbl_final;
+#include "always.h"
+#include "refcount.h"
 
-void __cdecl operator_delete_sized(void *p);
-
-// object-symbol used by ledger: ShareBufferClassUnsignedShort dtor (QAE)
-class ShareBufferClassUnsignedShort
+template <class T>
+class ShareBufferClass : public RefCountClass
 {
 public:
-	~ShareBufferClassUnsignedShort();
+	virtual ~ShareBufferClass(void);
 
-private:
-	char *m_vtbl;
-	unsigned int m_04;
-	void *m_buf;
+protected:
+	T *RawBuffer;
+	T *Array;
+	int Count;
+	int Alignment;
 };
 
-// ??1?$ShareBufferClass@G@@UAE@XZ
-ShareBufferClassUnsignedShort::~ShareBufferClassUnsignedShort()
+template <class T>
+ShareBufferClass<T>::~ShareBufferClass(void)
 {
-	void *buf = m_buf;
-	m_vtbl = &ShareBufferClassUnsignedShort_vtbl_interim;
-	operator_delete_sized(buf);
-	m_vtbl = &ShareBufferClassUnsignedShort_vtbl_final;
+	delete[] RawBuffer;
 }
+
+template ShareBufferClass<unsigned short>::~ShareBufferClass(void);
