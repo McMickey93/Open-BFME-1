@@ -19,6 +19,11 @@ inline __declspec(noinline) const T *StringBase<T>::reverseFind(T c) const
 
 
 extern void j_00017bd9();
+class BFMERetailAsciiString
+{
+public:
+    ~BFMERetailAsciiString();
+};
 struct Rva002E5090CtorCall {};
 typedef void (Rva002E5090CtorCall::*Rva002E5090Ctor)(void);
 template<class P> __forceinline P Rva002E5090CtorPointer(void (*function)(void))
@@ -34,9 +39,11 @@ public:
     {
         (reinterpret_cast<Rva002E5090CtorCall *>(this)->*Rva002E5090CtorPointer<Rva002E5090Ctor>(j_00017bd9))();
     }
+    // The static's atexit teardown (0x00C6FE40, _$E2) jumps to the
+    // out-of-line string destructor through its ILT 0x0000D828.
     __forceinline ~Rva002E5090StaticMessage()
     {
-        ((StringBase<char> *)this)->clear();
+        ((BFMERetailAsciiString *)this)->~BFMERetailAsciiString();
     }
     void *m_data;
 };
