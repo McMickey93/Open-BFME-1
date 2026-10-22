@@ -1,4 +1,5 @@
 // cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringinline
+// stlport
 // Open-BFME7: the 131-byte method at 0x00435270.  When the readiness test
 // (0x00434690) passes the object refreshes itself (0x00435170) hands its four
 // floats at +0x4C..+0x58 the value at +0x2C and a literal 1 to the six-argument
@@ -15,6 +16,19 @@ typedef bool Bool;
 #define FALSE false
 
 #include "StringInline.h"
+#include <vector>
+
+extern "C" void _ReadWriteBarrier();
+#pragma intrinsic(_ReadWriteBarrier)
+
+struct Gen_t_00434fa0_p8cd
+{
+	Int a[2];
+	Gen_t_00434fa0_p8cd();
+	Gen_t_00434fa0_p8cd(const Gen_t_00434fa0_p8cd &);
+	~Gen_t_00434fa0_p8cd();
+	Gen_t_00434fa0_p8cd &operator=(const Gen_t_00434fa0_p8cd &);
+};
 
 class Rva00435270Receiver
 {
@@ -99,9 +113,7 @@ private:
 	void setRange( Int index, Int from, Int to );
 
 	char m_unreconstructed00[ 0x08 ];
-	Int m_unknown08;
-	Int m_unknown0c;
-	char m_unreconstructed10[ 0x04 ];
+	std::vector<Gen_t_00434fa0_p8cd> m_pending08;
 	Int m_state14;
 	char m_unreconstructed18[ 0x04 ];
 	Int m_timer1c;
@@ -109,11 +121,13 @@ private:
 	Int m_count24;
 	Int m_progress28;
 	Int m_owner2C;
-	char m_unreconstructed30[ 0x04 ];
+	Int m_count30;
 	Rva00435270Receiver **m_receivers34;
-	char m_unreconstructed38[ 0x04 ];
+	Int *m_values38;
 	Int m_cursor3C;
-	char m_unreconstructed40[ 0x0C ];
+	Int m_unreconstructed40;
+	Real m_timer44;
+	Real m_step48;
 	Real m_left4C;
 	Real m_top50;
 	Real m_right54;
@@ -178,7 +192,7 @@ bool Rva00435270Layout::isReady( void )
 	{
 		volatile Int &progress = m_progress28;
 		progress = 0xFF;
-		Int elapsed = m_unknown0c - m_unknown08;
+		Int elapsed = (char *)m_pending08.end() - (char *)m_pending08.begin();
 		if( (elapsed & ~7) == 0 )
 		{
 			Int timer = m_timer1c -= 0x21;
@@ -199,4 +213,37 @@ bool Rva00435270Layout::isReady( void )
 		return FALSE;
 	}
 	return result;
+}
+
+// Retail 0x00435170: the matched apply() caller reaches this through ILT
+// 0x0001CE9F. RET at +0xC2 and following INT3 prove the 195-byte extent.
+inline const Real &boundedTimer(const Real &value, const Real &zero)
+{
+	return zero > value ? zero : value;
+}
+
+void Rva00435270Layout::refresh()
+{
+	Real &timer = m_timer44;
+	if (timer > 0.0f || m_pending08.size() != 0)
+	{
+		const Real zero = 0.0f;
+		timer -= m_step48;
+		// Retail rounds the subtraction into the float member, then compares
+		// by loading zero and reading the member again. This compiler-only
+		// barrier prevents VC7.1 retaining the extended-precision x87 result.
+		_ReadWriteBarrier();
+		timer = boundedTimer(timer, zero);
+		if (timer == 0.0f && m_pending08.size() > 0)
+		{
+			m_receivers34[m_cursor3C % m_count24]->setState(
+				*(const UnicodeString *)&m_pending08[0]);
+			m_values38[m_cursor3C % m_count24] = m_pending08[0].a[1];
+			m_pending08.erase(m_pending08.begin());
+			Real delay = (Real)m_count30;
+			Int next = m_cursor3C + 1;
+			timer = delay;
+			m_cursor3C = next;
+		}
+	}
 }
