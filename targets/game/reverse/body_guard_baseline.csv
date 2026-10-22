@@ -620,7 +620,6 @@ dir32,0x01129758,??_7Rva007E9080ReseatTailDtor@@6B@,"retail 0x01129758 is alread
 dir32,0x01129808,??_7Rva007E92F0Object@@6BRva007E92F0BaseB@@@,"retail 0x01129808 is already recorded as ??_7Rva007E9B40Object@@6BQ3MakeBaseB@@@; reference that name, not a new one"
 dir32,0x01129810,??_7Rva007E92F0Object@@6BRva007E92F0BaseA@@@,"retail 0x01129810 is already recorded as ??_7Rva007E9B40Object@@6BQ3MakeBaseA@@@; reference that name, not a new one"
 dir32,0x01129AF4,??_7Rva007EA6C0VtableReseat@@6B@,"retail 0x01129AF4 is already recorded as ??_7Rva007EA6D0Deleting@@6B@ (+1 more); reference that name, not a new one"
-dir32,0x01129D1C,??_7Rva007EB730VfptrCtor@@6B@,the name encodes 0x007EB730 but retail reads 0x01129D1C
 dir32,0x01129D30,??_7Rva007EB850Log@@6B@,"retail 0x01129D30 is already recorded as ?g_bfmeVftTDA@@3PAPAXA (+3 more); reference that name, not a new one"
 dir32,0x0112A590,??_7Rva007EFF30VfptrCtor@@6B@,the name encodes 0x007EFF30 but retail reads 0x0112A590
 dir32,0x0112A5C4,??_7Rva007F0080Owner@@6B@,the name encodes 0x007F0080 but retail reads 0x0112A5C4
