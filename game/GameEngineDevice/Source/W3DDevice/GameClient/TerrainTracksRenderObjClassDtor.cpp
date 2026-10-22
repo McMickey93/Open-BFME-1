@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 // BFME retail 0x0072F110: TerrainTracksRenderObjClass destructor at the
 // retail 0x1304-byte layout (the Zero Hour header is larger).
 
@@ -14,17 +14,13 @@ public:
 	void Release_Ref();
 };
 
-class TerrainTrackRenderBase
-{
-public:
-	virtual ~TerrainTrackRenderBase() {}
-
-private:
-	int m_refCount;
-};
+// Retail vtable 0x011212A4 has Delete_This (ILT 0x00005D5D) before
+// the deleting destructor (ILT 0x00018C50). The shared RefCountClass
+// header preserves both slots and its witnessed eight-byte prefix.
+#include "refcount.h"
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include/W3DDevice/GameClient/W3DTerrainTracks.h
-class TerrainTracksRenderObjClass : public TerrainTrackRenderBase
+class TerrainTracksRenderObjClass : public RefCountClass
 {
 public:
 	virtual ~TerrainTracksRenderObjClass();
