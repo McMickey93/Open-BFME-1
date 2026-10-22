@@ -537,6 +537,7 @@ def report(graph, receipt, status, binding, verify=25, log=None):
     binding = dict(binding, commit=receipt["commit"], receipt_core_sha256=receipt.get("core_sha256"),
                    link_status_sha256=(receipt.get("series") or {}).get("link_status_sha256"),
                    link_cycle_tool_digest=receipt.get("tool_digest"), rules=receipt.get("rules"),
+                   rule_identity=receipt.get("rule_identity"),
                    tool={"path": "tools/closure_report.py",
                          "text_sha256": sha256_bytes(Path(__file__).read_bytes().replace(b"\r\n", b"\n"))})
     binding["checks"] = dict(binding.get("checks") or {}, credit_reproduced=credit,
@@ -555,12 +556,10 @@ def from_graph(run_dir, verify=25, log=None):
     except (OSError, ValueError) as e:
         raise ReportError(f"{run}: no readable receipt.json ({e})") from None
     import link_cycle as lc
-    identity = receipt.get("rule_identity") or {}
-    if receipt.get("rules") != context.RULES or identity.get("id") != context.RULES \
-            or identity.get("profile") != context.PROFILE \
-            or identity.get("profile_sha256") != context.digest(context.PROFILE) \
-            or identity.get("implementation_sha256") != context.digest(receipt.get("tool_dependencies")) \
-            or receipt.get("tool_digest") != identity.get("implementation_sha256"):
+    dependencies = receipt.get("tool_dependencies") or {}
+    if receipt.get("rules") != context.RULES \
+            or receipt.get("rule_identity") != context.rule_identity(dependencies) \
+            or receipt.get("tool_digest") != context.digest(dependencies):
         raise ReportError("incompatible or inconsistent BFME1 rule identity")
     if receipt.get("core_sha256") != lc.digest_of(lc.receipt_core(receipt)):
         raise ReportError("receipt core digest differs")

@@ -255,7 +255,7 @@ def test_profile_or_rule_provider_change_breaks_compatibility(monkeypatch):
     deps = {"link_cycle.py": "a", "link_census.py": "b"}
     before = ctx.rule_identity(deps)
     assert before["id"] != "link-cycle-2"
-    assert ctx.rule_identity(dict(deps, link_census="changed")) != before
+    assert ctx.rule_identity(dict(deps, **{"link_census.py": "changed"})) != before
     monkeypatch.setattr(ctx, "PROFILE", dict(ctx.PROFILE, credit="different"))
     assert ctx.rule_identity(deps) != before
 
@@ -413,3 +413,30 @@ def test_remeasurement_preserves_original_receipt_and_artifacts(tmp_path, monkey
     assert receipt["rules"] == lc.RULES
     assert receipt["authoritative"] is False
     assert receipt["source_receipt_sha256"] == lc.sha256(out / "receipt.json")
+
+
+def test_semantic_rules_ignore_unrelated_tools_but_bind_measurement_providers():
+    import link_cycle_context as ctx
+    deps = {name: "before" for name in ctx.MEASUREMENT_FILES}
+    before = ctx.rule_identity(deps)
+    unrelated = dict(deps, unrelated_fleet_tool="changed")
+    assert ctx.rule_identity(unrelated) == before
+    assert ctx.digest(unrelated) != ctx.digest(deps)
+    for name in ctx.MEASUREMENT_FILES:
+        assert ctx.rule_identity(dict(deps, **{name: "changed"})) != before, name
+
+
+def test_driver_local_imports_are_declared_semantic_dependencies():
+    import ast
+    import link_cycle_context as ctx
+    tools = Path(lc.__file__).parent
+    tree = ast.parse(Path(lc.__file__).read_text())
+    local = set()
+    for node in ast.walk(tree):
+        names = [a.name for a in node.names] if isinstance(node, ast.Import) else (
+            [node.module] if isinstance(node, ast.ImportFrom) and node.module else [])
+        for name in names:
+            filename = name.split(".")[0] + ".py"
+            if (tools / filename).is_file():
+                local.add(filename)
+    assert local <= set(ctx.MEASUREMENT_FILES), local - set(ctx.MEASUREMENT_FILES)

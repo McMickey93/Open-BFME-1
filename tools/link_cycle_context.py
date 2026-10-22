@@ -1,10 +1,16 @@
 """BFME1 measurement configuration; validity stays with build/link_census.
 
-Dependency hashing deliberately over-binds all production tools and their text
-configuration, including subprocess helpers and optional local imports. This is
-conservative (an unrelated tool edit can invalidate compatibility), but cannot
-silently miss a dynamically imported measurement dependency. No BFME2 policy,
-release identity or authority default belongs here.
+Rule identity hashes only MEASUREMENT_FILES, traced from link_cycle's executed
+providers: build/COFF/case-shim/locking and current-object receipts; census's
+verified-data, relocation, alias and pin owners (including ABI/import/ILT route
+proof); build's relocation/definition helpers; and dump/retail relocation
+producers for the swapped objects. gen_case_shims is also a snapshot subprocess.
+Whole provider files are bound, including their optional measurement branches.
+CLI-only queues, progress rendering and gates never called by the cycle are not
+semantic dependencies merely because a provider imports them. The broad tools
+inventory remains tool_digest provenance: unrelated fleet edits warn, not refuse.
+New local imports in the driver require review of this explicit set (tested).
+No BFME2 policy, release identity or authority default belongs here.
 """
 import hashlib
 import json
@@ -21,6 +27,15 @@ PROFILE = {"target": "bfme1-retail-1.03", "text_groups": [[0x1000, ".text"]],
            "ilt": [0x1000, 0x5B000], "bad_targets": list(BAD_TARGETS),
            "credit": "real/placed/closed_strict/interval-union", "copy_rule": "bfme1-keep_rule",
            "alias_rule": "bfme1-judge_selected", "fold_exemptions": []}
+# Explicit measurement-semantic closure; shared by receipts, bundles and diffs.
+MEASUREMENT_FILES = (
+    "link_cycle.py", "link_cycle_context.py", "link_census.py", "build.py",
+    "census_receipts.py", "data_rows.py", "reloc_ledger.py", "alias_guard.py",
+    "pin_consistency.py", "abi_view.py", "import_pin_guard.py", "ilt_oracle.py",
+    "body_guard.py", "dir32_record_guard.py", "archive_import.py",
+    "coffar.py", "gen_case_shims.py", "portable_lock.py", "target_guard.py",
+    "dump_relocs.py", "dump_apply.py", "retail_relocs.py",
+)
 # Phase 2 must configure an authenticated publisher explicitly.
 RELEASE_TRUST = None
 
@@ -54,9 +69,13 @@ def tool_dependencies(root=ROOT, measuring_file=None):
 
 
 def rule_identity(dependencies):
-    """Compare the whole tuple, never RULES alone. Provider/profile edits break it."""
+    """Compare the semantic tuple, never RULES alone or the broad tool digest.
+
+    Missing providers are explicitly bound as None; real receipts must carry
+    every provider (bundle validation enforces that completeness).
+    """
     return {"id": RULES, "profile": PROFILE, "profile_sha256": digest(PROFILE),
-            "implementation_sha256": digest(dependencies)}
+            "implementation_sha256": digest({name: dependencies.get(name) for name in MEASUREMENT_FILES})}
 
 
 def input_paths(root=ROOT):
