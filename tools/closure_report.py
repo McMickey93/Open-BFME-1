@@ -399,7 +399,8 @@ def graph_from_doc(doc):
     if doc.get("rules") != context.RULES:
         raise ReportError("closure graph rules are not BFME1's")
     info = doc["nodes"]
-    if any(not isinstance(v.get("ok"), bool) or v.get("kind") != k.split(":", 1)[0]
+    if any(not isinstance(v.get("ok"), bool) or v.get("kind") not in ("unit", "twin", "datum", "eh", *FORBIDDEN)
+           or v.get("kind") != k.split(":", 1)[0]
            for k, v in info.items()):
         raise ReportError("invalid node verdict or kind")
     dump_units = set()
@@ -570,8 +571,8 @@ def from_graph(run_dir, verify=25, log=None):
         raise ReportError("receipt graph digests disagree")
     if not want:
         raise ReportError(f"{run / 'receipt.json'} names no closure_graph_sha256: this run was measured before "
-                          "link_cycle wrote its graph (use `replay` on the measuring machine; its report is "
-                          f"labelled '{REPLAYED}')")
+                          "link_cycle wrote its graph (legacy diagnostics must retain the label "
+                          f"'{REPLAYED}')")
     status_path = run / "link_status.csv"
     if not status_path.exists():
         status_path = run / "link_status.csv.gz"
@@ -579,7 +580,8 @@ def from_graph(run_dir, verify=25, log=None):
         raise ReportError(f"{status_path} is not the file the receipt hashed")
     graph = load_graph(run / GRAPH_FILE, want)
     return report(graph, receipt, status_rows(status_path),
-                  {"source": "graph", "graph": {"bound": True, "label": BOUND, "sha256": want},
+                  {"source": "graph", "receipt_sha256": lc.sha256(run / "receipt.json"),
+                   "graph": {"bound": True, "label": BOUND, "sha256": want},
                    "authority": "integrity-bound diagnostic; not authenticated publication",
                    "row_columns": ("name", "kind", "source", "retail_rva", "size", "placed", "self_strict",
                                    "closed_strict")}, verify, log)

@@ -85,13 +85,22 @@ fixes of research 29, 31 and the round-2 review:
      `--snapshot REV` measures an immutable export of REV (git archive with
      submodules) in its own directory, with its own outputs and no shared
      object store; only such a receipt is `authoritative`.
+     BFME1's rule tuple includes a profile and implementation digest; it is
+     distinct from BFME2 link-cycle-2. Dirty diagnostics need --allow-dirty.
+     The finalized source closure graph is serialized without asking another
+     verdict. Its digest, all ledger/evidence inputs, decoder versions and
+     canonical per-object identities are bound by the receipt. Instance tags
+     bind exact receipt bytes; core/canonical core compare reproducible content.
+     measurements/<tag>/ retains each receipt, graph, status and provenance;
+     --measure-only writes a separate non-authoritative diagnostic directory.
 
   python3 tools/link_cycle.py [--build] [--max-iter 6] [--shift-base 0x10000000]
   python3 tools/link_cycle.py --snapshot HEAD --build [--reuse-quarantine --reuse-stubs]
   python3 tools/link_cycle.py --measure-only     # re-measure the last links (never authoritative)
 
 Outputs in build/link_cycle/: link_status.csv (one row per matched ledger
-row), fold_list.csv, provenance.json, receipt.json, base.map/.exe/.log, shift.*. Diagnostic:
+row), closure_graph.json.gz, fold_list.csv, provenance.json, receipt.json,
+receipt.json.identity.json, measurements/, base.map/.exe/.log, shft.*. Diagnostic:
 the image is not expected to run.
 """
 import argparse
@@ -1610,7 +1619,9 @@ def provenance(rows, present, objs, out):
         prov[rel] = rec
         old = before.get(rel)
         if (old and rec.get("deps_sha256") and old.get("deps_sha256") == rec["deps_sha256"]
-                and old.get("source_sha256") == rec["source_sha256"] and old.get("object") != rec["object"]):
+                and old.get("source_sha256") == rec["source_sha256"]
+                and (old.get("object") != rec["object"] or
+                     (old.get("object_canon") is not None and old["object_canon"] != rec["object_canon"]))):
             tampered.append(rel)
     if stale:
         raise SystemExit(f"link_cycle: {len(stale)} object(s) are not current for their sources (stale cache), "
@@ -1706,10 +1717,15 @@ def write_receipt(out, receipt, name="receipt.json"):
     # Retain the small measurement substrate with the identity so reruns cannot
     # orphan an archived receipt by replacing the latest graph/status/provenance.
     import shutil
-    for member in (CLOSURE_GRAPH, "link_status.csv", "provenance.json"):
+    expected = {CLOSURE_GRAPH: receipt.get("closure_graph_sha256"),
+                "link_status.csv": receipt.get("series", {}).get("link_status_sha256"),
+                "provenance.json": receipt.get("provenance_sha256")}
+    for member, want in expected.items():
         source = Path(out) / member
         if source.exists():
             shutil.copyfile(source, archive / member)
+        if want and (not (archive / member).exists() or sha256(archive / member) != want):
+            raise SystemExit(f"link_cycle: {member} moved before archival; no receipt finalized")
     (archive / "receipt.json").write_bytes(raw)
     identity = {"tag": tag, "receipt_sha256": sha, "commit": receipt["commit"],
                 "measured_end_ns": receipt["measured_end_ns"], "core_sha256": receipt["core_sha256"],
@@ -2266,6 +2282,7 @@ def main(argv=None):
 
 def remeasure(args):
     out = Path(args.out)
+    start = input_state(getattr(args, "allow_dirty", False))
     rows = census.ledger()
     present, _ = census.objects(rows)
     if not args.raw_dumps:
@@ -2285,7 +2302,6 @@ def remeasure(args):
     t = time.time()
     diagnostic = out / "remeasured" / str(time.time_ns())
     diagnostic.mkdir(parents=True)
-    start = input_state(getattr(args, "allow_dirty", False))
     obj_digest = objects_digest(objs, present)
     prov_digest, proofs, canon = provenance(rows, present, objs, diagnostic)
     res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, True, args.shift_base, artifact_out=diagnostic)
@@ -2298,7 +2314,11 @@ def remeasure(args):
                    closure_graph_sha256=res["closure_graph_sha256"],
                    settings={"shift_base": args.shift_base, "raw_dumps": args.raw_dumps},
                    seconds={"measure": round(time.time() - t)})
-    if start != input_state(getattr(args, "allow_dirty", False)) or objects_digest(Objects(present), present) != obj_digest:
+    current_objs = Objects(present)
+    end_prov = provenance(rows, present, current_objs, diagnostic)
+    if (start != input_state(getattr(args, "allow_dirty", False))
+            or objects_digest(current_objs, present) != obj_digest
+            or end_prov != (prov_digest, proofs, canon)):
         raise SystemExit("link_cycle: inputs moved during diagnostic remeasurement")
     write_receipt(diagnostic, receipt)
     return 0

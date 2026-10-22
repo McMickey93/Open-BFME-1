@@ -72,6 +72,12 @@ def input_paths(root=ROOT):
     for name in ("functions.csv", "symbols.csv", "data_rows.csv", "ghidra_functions.csv",
                  "dir32_addresses.csv", "dir32_consistency_whitelist.txt", "imports.csv", "exports.csv"):
         paths[f"targets/game/reverse/{name}"] = reverse / name
+    # Derive the target-manifest location from BFME1's owner, never a donor path.
+    import build
+    manifest = Path(build.MANIFEST).relative_to(build.ROOT)
+    paths[manifest.as_posix()] = root / manifest
+    for name in ("dir32_addresses.csv", "reloc_names.generated.csv"):
+        paths[f"build/{name}"] = root / "build" / name
     for directory in ("build/reloc_ledger", "build/dump_relocs", "build/startup"):
         top = root / directory
         # Generated object bytes are bound separately; these are their evidence/config.

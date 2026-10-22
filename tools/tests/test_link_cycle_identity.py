@@ -318,8 +318,16 @@ def test_provenance_uses_bfme1_current_object_owner_and_canonical_identity(tmp_p
     assert calls and proofs == {"inventory": 1}
     assert record["object_canon"] and canon["objects_canon_digest"]
     assert digest == lc.sha256(out / "provenance.json")
-    monkeypatch.setattr(ctx, "current_object", lambda *a, **kw: False)
+    # A COFF symbol-type mutation is invisible to the older identity but bound
+    # by the canonical one. Unchanged compile receipts must not excuse it.
     import pytest
+    raw = bytearray(obj.read_bytes())
+    table = struct.unpack_from("<I", raw, 8)[0]
+    raw[table + 14] ^= 0x20
+    obj.write_bytes(raw)
+    with pytest.raises(SystemExit, match="changed with no compile"):
+        lc.provenance([], [obj], lc.Objects([obj]), out)
+    monkeypatch.setattr(ctx, "current_object", lambda *a, **kw: False)
     with pytest.raises(SystemExit, match="not current"):
         lc.provenance([], [obj], lc.Objects([obj]), out)
 
@@ -349,3 +357,59 @@ def test_dirty_refusal_and_explicit_flag_are_bound(tmp_path, monkeypatch):
     assert state["rule_identity"]["id"] == ctx.RULES
     assert state["target"]["sha256"] == state["retail_sha256"] == "target"
     assert state["inputs"]["targets/game/reverse/data_rows.csv"]
+
+
+def test_archival_refuses_artifacts_that_changed_after_measurement(tmp_path):
+    import pytest
+    graph = tmp_path / lc.CLOSURE_GRAPH
+    graph.write_bytes(b"old graph")
+    receipt = {"commit": "a" * 40, "rules": lc.RULES, "closure_graph_sha256": lc.sha256(graph)}
+    graph.write_bytes(b"different graph")
+    with pytest.raises(SystemExit, match="moved before archival"):
+        lc.write_receipt(tmp_path, receipt)
+    assert not (tmp_path / "receipt.json").exists()
+
+
+def test_remeasurement_preserves_original_receipt_and_artifacts(tmp_path, monkeypatch):
+    import json
+    import types
+    out = tmp_path / "run"
+    out.mkdir()
+    originals = {"receipt.json": b'{"rules":"link-cycle-2"}', "link_status.csv": b"original status\n",
+                 lc.CLOSURE_GRAPH: b"original graph"}
+    for name, raw in originals.items():
+        (out / name).write_bytes(raw)
+    reverse = tmp_path / "reverse"
+    reverse.mkdir()
+    (reverse / "ghidra_functions.csv").write_text("rva\n")
+    monkeypatch.setattr(lc, "REVERSE", reverse)
+    monkeypatch.setattr(lc, "input_state", lambda *a: {"commit": "a" * 40})
+    monkeypatch.setattr(lc.census, "ledger", lambda: [])
+    monkeypatch.setattr(lc.census, "objects", lambda rows: ([], []))
+    monkeypatch.setattr(lc, "analyze", lambda *a: ([], {}))
+    monkeypatch.setattr(lc, "pe_view", lambda *a: (None, b"", {".text": (0x1000, 16)}, {}))
+    monkeypatch.setattr(lc, "load_pins", lambda: ({}, {}))
+    monkeypatch.setattr(lc, "plan_order", lambda *a: ([], {}, {}))
+    monkeypatch.setattr(lc, "filler_chunks", lambda *a: [])
+
+    def provenance(rows, present, objs, destination):
+        (destination / "provenance.json").write_text("{}")
+        return lc.sha256(destination / "provenance.json"), {}, {}
+
+    def measure(*args, artifact_out):
+        assert artifact_out != out
+        (artifact_out / lc.CLOSURE_GRAPH).write_bytes(b"diagnostic graph")
+        (artifact_out / "link_status.csv").write_bytes(b"diagnostic status\n")
+        return {"credit_unique_bytes": 0, "closure_graph_sha256": lc.sha256(artifact_out / lc.CLOSURE_GRAPH),
+                "link_status_sha256": lc.sha256(artifact_out / "link_status.csv")}
+    monkeypatch.setattr(lc, "provenance", provenance)
+    monkeypatch.setattr(lc, "measure", measure)
+    args = types.SimpleNamespace(out=str(out), raw_dumps=True, allow_dirty=False, shift_base=lc.SHIFT_BASE)
+    assert lc.remeasure(args) == 0
+    for name, raw in originals.items():
+        assert (out / name).read_bytes() == raw
+    (diagnostic,) = (out / "remeasured").iterdir()
+    receipt = json.loads((diagnostic / "receipt.json").read_text())
+    assert receipt["rules"] == lc.RULES
+    assert receipt["authoritative"] is False
+    assert receipt["source_receipt_sha256"] == lc.sha256(out / "receipt.json")
