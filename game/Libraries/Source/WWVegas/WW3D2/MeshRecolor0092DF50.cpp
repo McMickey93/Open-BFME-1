@@ -162,7 +162,6 @@ class MaterialInfoClass
         if (--refs == 0)
             Delete_This();
     }
-    BfmeHandleCX Get_Texture(int i) const;
     void Replace_Texture(int i, const BFMEWaterTrackTextureHandle &h)
     {
         TextureClass *&dest = textures[i];
@@ -172,6 +171,14 @@ class MaterialInfoClass
             dest->Release_Ref();
         dest = h.p;
     }
+};
+
+// Retail reaches MaterialInfoClass::Get_Texture through ILT 000366DD, whose
+// body is the matched Gen_007A0340::bfmeGet (0x007A0340).
+class Gen_007A0340
+{
+public:
+    BfmeHandleCX bfmeGet(int index) const;
 };
 class MeshClass
 {
@@ -263,12 +270,6 @@ class MeshClass
     virtual MaterialInfoClass *Get_Material_Info();
     char pad04[0xc4];
     MeshModelClass *Model;
-    MeshModelClass *Get_Model()
-    {
-        if (Model)
-            ++Model->refs;
-        return Model;
-    }
     virtual void slot154();
     virtual void slot158();
     virtual void slot15c();
@@ -312,10 +313,18 @@ class MeshClass
     virtual void slot1f4();
     virtual void Recolor0092DF50(unsigned color);
 };
+// Retail inlines MeshClass::Get_Model (0x0092CF80); a file-local helper keeps
+// the expansion without emitting a second COMDAT body under that name.
+static __forceinline MeshModelClass *meshModelRef(MeshClass *mesh)
+{
+    if (mesh->Model)
+        ++mesh->Model->refs;
+    return mesh->Model;
+}
 void MeshClass::Recolor0092DF50(unsigned color)
 {
     int i;
-    MeshModelClass *model = Get_Model();
+    MeshModelClass *model = meshModelRef(this);
     MaterialInfoClass *material = Get_Material_Info();
     const char *name = Get_Name(), *meshName;
     if ((((meshName = strchr(name, '.')) != 0 && *(meshName++)) || ((meshName = name) != 0)) &&
@@ -364,7 +373,7 @@ void MeshClass::Recolor0092DF50(unsigned color)
     }
     for (i = 0; i < material->textureCount; ++i)
     {
-        BfmeHandleCX old = material->Get_Texture(i);
+        BfmeHandleCX old = ((const Gen_007A0340 *)material)->bfmeGet(i);
         if (_strnicmp(old.p ? old.p->Get_Name() : 0, "ZHC", 3) == 0)
         {
             VertexMaterialClass *vmat = material->VertexMaterials[i];
