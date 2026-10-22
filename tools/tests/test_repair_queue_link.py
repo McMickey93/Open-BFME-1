@@ -25,6 +25,7 @@ SHARED_SERVABLE = eligibility.servable
 
 @pytest.fixture
 def rq(monkeypatch):
+    monkeypatch.setattr(ca, "ancestry", lambda *a: (True, 0, "synthetic ancestor"))
     monkeypatch.delenv("REPAIR_ROOT", raising=False)
     monkeypatch.delenv("REPAIR_LINK_STATUS", raising=False)
     import repair_queue
@@ -156,7 +157,7 @@ def failing(tmp_path, monkeypatch):
 @pytest.mark.parametrize("reason,route,code", [
     ("corrupt", "tooling seat", 1), ("unavailable", "use another work lane", 2),
     ("empty", "use another work lane", 3), ("stale", "use another work lane", 4),
-    ("incompatible-rules", "tooling seat / human review", 5), ("unauthenticated", "refuse", 6),
+    ("incompatible-rules", "tooling seat / human review", 5), ("not-authoritative", "refuse", 6),
     ("no-closure-report", "ordinary link queue, no closure ranking", 7)])
 def test_reason_router_api_and_json_exit(rq, monkeypatch, capsys, reason, route, code):
     assert rq.failure_route(reason) == {"reason": reason, "route": route, "exit_code": code}
@@ -176,44 +177,37 @@ def test_reason_router_api_and_json_exit(rq, monkeypatch, capsys, reason, route,
     assert calls[0]["allow_stale"] is False and len(calls) == 1
 
 
-def test_default_empty_allowlist_refuses_real_bundle_and_router(rq, failing, capsys):
-    assert ca.PUBLISHERS == () and ca.DEFAULT_REPO is None
-    result = rq.route_link_queue(failing, now=NOW)
-    assert result["reason"] == "unauthenticated" and result["exit_code"] == 6
-    assert not result["items"]
-    assert rq.main(["link", "--bundle", str(failing), "--json"]) == 6
-    assert json.loads(capsys.readouterr().out)["route"] == "refuse"
-
-
 @pytest.mark.parametrize("closure", [False, True])
-def test_local_unpublished_inspection_is_labelled_but_never_routed(rq, failing, capsys, closure):
-    result = rq.link_queue(failing, local_unpublished=True, closure=closure, now=NOW)
+def test_clean_local_bundle_accepted_and_routed(rq, failing, capsys, closure):
+    result = rq.link_queue(failing, closure=closure, now=NOW)
     assert result["exit_code"] == 0 and result["route"] is None
-    assert result["diagnostic"] and not result["authoritative"]
-    assert all(i["diagnostic"] and not i["authoritative"] for i in result["items"])
-    assert "never routed" in result["notes"][0] and "UNAUTHENTICATED" in result["notes"][0]
-    routed = rq.route_link_queue(failing, local_unpublished=True, closure=closure, now=NOW)
-    assert routed["reason"] == "unauthenticated" and routed["items"] == []
+    assert result["authoritative"] and not result["diagnostic"]
+    assert all(i["authoritative"] and not i["diagnostic"] for i in result["items"])
+    assert "authoritative clean local run" in result["notes"][0]
+    routed = rq.route_link_queue(failing, closure=closure, now=NOW)
+    assert routed["reason"] is None and routed["items"]
     flags = ["--closure"] if closure else []
-    assert rq.main(["link", "--bundle", str(failing), "--local-unpublished", "--route", "--json", *flags]) == 6
-    assert json.loads(capsys.readouterr().out)["items"] == []
+    assert rq.main(["link", "--bundle", str(failing), "--route", "--json", *flags]) == 0
+    got = json.loads(capsys.readouterr().out)
+    assert got["authoritative"] and got["sub_reason"] is None
+    assert got["route"] == ("closure link queue" if closure else "ordinary link queue")
 
 
 def test_closure_ranking_order_joint_separation_and_passing_rows(rq, failing, capsys):
-    result = rq.link_queue(failing, closure=True, local_unpublished=True, now=NOW)
+    result = rq.link_queue(failing, closure=True, now=NOW)
     assert [(i["function"], i["conditional_gain_bytes"]) for i in result["items"]] == [("f1", 50), ("f2", 10)]
     assert result["joint_only"]["candidate_unique_bytes"] == 100
     assert result["joint_only"]["non_additive"] is True
     assert all(i["non_additive"] and i["credit"] == i["conditional_gain_bytes"] for i in result["items"])
     assert "total_gain" not in result  # no additive aggregate, including across --limit
-    ordinary = rq.link_queue(failing, local_unpublished=True, now=NOW)
+    ordinary = rq.link_queue(failing, now=NOW)
     assert [i["function"] for i in ordinary["items"]] == ["f1", "f2", "f6"]
     assert all(i["credit"] == 0 for i in ordinary["items"])
-    assert rq.main(["link", "--bundle", str(failing), "--closure", "--local-unpublished", "--json", "--limit", "1"]) == 0
+    assert rq.main(["link", "--bundle", str(failing), "--closure", "--json", "--limit", "1"]) == 0
     got = json.loads(capsys.readouterr().out)
     assert len(got["items"]) == 1 and got["items"][0]["credit"] == 50
     assert got["joint_only"]["candidate_unique_bytes"] == 100
-    assert rq.main(["link", "--bundle", str(failing), "--closure", "--local-unpublished", "--limit", "1"]) == 0
+    assert rq.main(["link", "--bundle", str(failing), "--closure", "--limit", "1"]) == 0
     text = capsys.readouterr().out
     assert "JOINT-ONLY" in text and "do not add them" in text and "never included" in text
 
@@ -227,7 +221,7 @@ def test_bundle_eligibility_applies_after_ranking(rq, failing, monkeypatch):
             return rva != 0x1000
         return ok
     monkeypatch.setattr(eligibility, "servable", shared)
-    result = rq.link_queue(failing, local_unpublished=True, closure=True, now=NOW)
+    result = rq.link_queue(failing, closure=True, now=NOW)
     assert [i["function"] for i in result["items"]] == ["f2"]
     assert set(seen) == {0x1000, 0x2000}
     assert result["items"][0]["claim_required"]
@@ -235,10 +229,10 @@ def test_bundle_eligibility_applies_after_ranking(rq, failing, monkeypatch):
 
 def test_current_alias_uses_cycle_store_without_local_fallback(rq, failing, tmp_path, monkeypatch):
     store = tmp_path / "store"
-    ca.install_local(failing, store, local_unpublished=True, now=NOW)
+    ca.install_local(failing, store, now=NOW)
     monkeypatch.setattr(ca, "DEFAULT_STORE", store)
-    assert rq.link_queue("current", now=NOW)["reason"] == "unauthenticated"
-    result = rq.link_queue("current", local_unpublished=True, closure=True, now=NOW)
+    assert rq.route_link_queue("current", now=NOW)["authoritative"]
+    result = rq.link_queue("current", closure=True, now=NOW)
     assert result["exit_code"] == 0 and result["items"][0]["credit"] == 50
 
 
@@ -246,7 +240,7 @@ def test_current_alias_uses_cycle_store_without_local_fallback(rq, failing, tmp_
 def test_stale_never_auto_overridden_and_explicit_override_recorded(rq, failing, monkeypatch, capsys, closure):
     monkeypatch.setattr(ca.time, "time", lambda: NOW + 25 * 3600)
     flags = ["--closure"] if closure else []
-    args = ["link", "--bundle", str(failing), "--local-unpublished", "--json", *flags]
+    args = ["link", "--bundle", str(failing), "--json", *flags]
     assert rq.main(args) == 4
     got = json.loads(capsys.readouterr().out)
     assert got["reason"] == "stale" and got["allow_stale"] is False and got["items"] == []
@@ -254,8 +248,8 @@ def test_stale_never_auto_overridden_and_explicit_override_recorded(rq, failing,
     got = json.loads(capsys.readouterr().out)
     assert got["allow_stale"] is True and got["freshness"]["stale"] is True
     assert "allow_stale=True" in got["notes"][0]
-    # Human freshness override does not authenticate a bundle for a router.
-    assert rq.route_link_queue(failing, allow_stale=True)["reason"] == "unauthenticated"
+    # A human freshness override never grants authority to the router.
+    assert rq.route_link_queue(failing, allow_stale=True)["reason"] == "not-authoritative"
 
 
 def test_missing_empty_corrupt_and_incompatible_bundle_failures(rq, failing, tmp_path, monkeypatch):
@@ -266,15 +260,15 @@ def test_missing_empty_corrupt_and_incompatible_bundle_failures(rq, failing, tmp
     other_root = tmp_path / "other-checkout"
     other_root.mkdir()
     monkeypatch.setattr(rq, "ROOT", other_root)
-    assert rq.link_queue(failing, local_unpublished=True, now=NOW)["reason"] == "incompatible-rules"
+    assert rq.link_queue(failing, now=NOW)["reason"] == "incompatible-rules"
     # Incompatibility/future checks cannot be bypassed with a freshness override.
-    assert rq.link_queue(failing, local_unpublished=True, allow_stale=True, now=NOW)["reason"] == "incompatible-rules"
+    assert rq.link_queue(failing, allow_stale=True, now=NOW)["reason"] == "incompatible-rules"
     (failing / ca.LINK_STATUS).write_bytes(b"broken gzip")
-    assert rq.link_queue(failing, local_unpublished=True, now=NOW)["reason"] == "corrupt"
+    assert rq.link_queue(failing, now=NOW)["reason"] == "corrupt"
 
 
 def test_future_not_overridden(rq, failing):
-    result = rq.link_queue(failing, local_unpublished=True, allow_stale=True, now=NOW - 601)
+    result = rq.link_queue(failing, allow_stale=True, now=NOW - 601)
     assert result["reason"] == "corrupt" and result["items"] == []
 
 
@@ -284,7 +278,7 @@ def test_no_closure_report_routes_ordinary_queue_without_local_fallback(rq, fail
     from cycle_fixture import rewrite_manifest
     rewrite_manifest(failing, lambda m: m["members"].pop(ca.CLOSURE_ROOTS))
     monkeypatch.setattr(rq, "link_source", lambda *a: pytest.fail("no bundle fallback allowed"))
-    result = rq.link_queue(failing, closure=True, local_unpublished=True, now=NOW)
+    result = rq.link_queue(failing, closure=True, now=NOW)
     assert result["reason"] == "no-closure-report" and result["exit_code"] == 7
     assert result["route"] == "ordinary link queue, no closure ranking" and result["items"] == []
 
@@ -303,16 +297,16 @@ def test_forged_report_claims_rejected_even_after_manifest_rehash(rq, failing, f
         doc["roots"].append(dict(doc["roots"][0], root="0x00005000"))
     pc.gzip_bytes(ca.dumps(doc).encode(), failing / ca.CLOSURE_ROOTS)
     rehash(failing, ca.CLOSURE_ROOTS)
-    result = rq.link_queue(failing, closure=True, local_unpublished=True, now=NOW)
+    result = rq.link_queue(failing, closure=True, now=NOW)
     assert result["reason"] == "corrupt" and result["items"] == []
 
 
 def test_all_passing_bundle_is_empty_and_flags_need_explicit_bundle(rq, tmp_path, monkeypatch):
     monkeypatch.setattr(ca.time, "time", lambda: NOW)
     passing = bundle(tmp_path)
-    assert rq.link_queue(passing, local_unpublished=True, now=NOW)["reason"] == "empty"
-    assert rq.link_queue(passing, closure=True, local_unpublished=True, now=NOW)["reason"] == "empty"
-    for flags in ({"closure": True}, {"allow_stale": True}, {"local_unpublished": True}):
+    assert rq.link_queue(passing, now=NOW)["reason"] == "empty"
+    assert rq.link_queue(passing, closure=True, now=NOW)["reason"] == "empty"
+    for flags in ({"closure": True}, {"allow_stale": True}):
         assert rq.link_queue(**flags)["reason"] == "unavailable"
 
 
@@ -333,7 +327,7 @@ def test_real_shared_eligibility_includes_claims(rq, failing, monkeypatch):
     monkeypatch.setattr(eligibility.re_log, "latest_records", lambda: {})
     monkeypatch.setattr(eligibility, "attempt_counts", lambda: {})
     monkeypatch.setattr(eligibility, "unlocked_rvas", lambda: set())
-    result = rq.link_queue(failing, closure=True, local_unpublished=True, now=NOW)
+    result = rq.link_queue(failing, closure=True, now=NOW)
     assert result["exit_code"] == 0
     assert [i["function"] for i in result["items"]] == ["f2"]
     assert calls == [rq.ROOT]
@@ -341,7 +335,7 @@ def test_real_shared_eligibility_includes_claims(rq, failing, monkeypatch):
 
 def test_roots_without_retail_address_are_reported_but_not_claimed(rq, tmp_path, monkeypatch):
     monkeypatch.setattr(ca.time, "time", lambda: NOW)
-    result = rq.link_queue(failed_bundle(tmp_path, eh=True), closure=True, local_unpublished=True, now=NOW)
+    result = rq.link_queue(failed_bundle(tmp_path, eh=True), closure=True, now=NOW)
     assert result["exit_code"] == 0
     assert [i["function"] for i in result["items"]] == ["f1", "f2"]
     assert any("no retail address" in n and "eh:0x0000A000" in n for n in result["notes"])
@@ -349,7 +343,57 @@ def test_roots_without_retail_address_are_reported_but_not_claimed(rq, tmp_path,
 
 def test_joint_only_candidates_remain_visible_when_no_single_root_can_be_served(rq, tmp_path, monkeypatch):
     monkeypatch.setattr(ca.time, "time", lambda: NOW)
-    result = rq.link_queue(failed_bundle(tmp_path, only_joint=True), closure=True, local_unpublished=True, now=NOW)
+    result = rq.link_queue(failed_bundle(tmp_path, only_joint=True), closure=True, now=NOW)
     assert result["reason"] == "empty" and result["exit_code"] == 3
     assert result["items"] == [] and result["joint_only"]["candidate_unique_bytes"] == 100
     assert result["joint_only"]["non_additive"] is True
+
+
+@pytest.mark.parametrize("attack,reason,sub_reason", [
+    ("dirty-start", "not-authoritative", "dirty-start"),
+    ("dirty-end", "not-authoritative", "dirty-end"),
+    ("allow_dirty", "not-authoritative", "diagnostic"),
+    ("allow_stale_cache", "not-authoritative", "diagnostic"),
+    ("measure_only", "not-authoritative", "diagnostic"),
+    ("snapshot", "not-authoritative", "diagnostic"),
+    ("remeasure", "not-authoritative", "diagnostic"),
+    ("non-ancestor", "not-authoritative", "non-ancestor"),
+    ("unknown", "not-authoritative", "ancestry-unknown"),
+    ("tampered", "corrupt", "integrity"),
+    ("rules", "incompatible-rules", "rules-mismatch"),
+    ("stale", "stale", "stale"), ("future", "corrupt", "future")])
+def test_failed_authority_conditions_refused_with_json_sub_reason(rq, failing, monkeypatch,
+                                                                   capsys, attack, reason, sub_reason):
+    run = failing.parent / "run"
+    r = ca.read_json(run / ca.RECEIPT)
+    if attack.startswith("dirty-"):
+        r["checkout_" + attack.split("-")[1]]["dirty"] = True
+    elif attack in ca.context.RUN_OPTIONS:
+        r["run_options"][attack] = True
+    elif attack == "non-ancestor":
+        monkeypatch.setattr(ca, "ancestry", lambda *a: (False, None, "another line"))
+    elif attack == "unknown":
+        monkeypatch.setattr(ca, "ancestry", lambda *a: (None, None, "unknown commit: git fetch origin"))
+    elif attack == "rules":
+        original = ca.local_rules()
+        monkeypatch.setattr(ca, "local_rules", lambda *a: dict(original, id="other"))
+    elif attack == "stale":
+        monkeypatch.setattr(ca.time, "time", lambda: NOW + 25 * 3600)
+    elif attack == "future":
+        monkeypatch.setattr(ca.time, "time", lambda: NOW - 601)
+    # Restamp and rebuild all repetitions to test evidence, not accidental corruption.
+    save_receipt(run, r)
+    d = failing.parent / "changed-bundle"
+    pc.make_bundle(run, d, "synthetic")
+    from cycle_fixture import rewrite_manifest
+    rewrite_manifest(d, lambda m: m.update(authoritative=True))
+    if attack == "tampered":
+        (d / ca.LINK_STATUS).write_bytes(b"tampered")
+    assert rq.main(["link", "--bundle", str(d), "--route", "--json"]) == ca.EXIT[reason]
+    got = json.loads(capsys.readouterr().out)
+    assert (got["reason"], got["sub_reason"]) == (reason, sub_reason)
+    assert not got["authoritative"] and got["items"] == []
+    if reason == "not-authoritative":
+        assert got["route"] == "refuse"
+    if attack == "unknown":
+        assert "git fetch origin" in got["message"]

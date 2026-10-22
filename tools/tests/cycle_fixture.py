@@ -41,7 +41,11 @@ def measured_run(path, *, now=NOW, commit="a" * 40, name="f", deps=None, empty=F
                "retail_sha256": h, "inputs": dict.fromkeys(ca.LEDGERS, h), "objects_digest": h,
                "provenance_sha256": h, "objects_canon_digest": h, "provenance_canon_sha256": h,
                "canon_rules": lc.CANON_RULES, "objects": 1, "objects_missing": 0,
-               "authoritative": True, "snapshot": True, "submodules": {}, "tree_manifest": h,
+               "authoritative": True, "snapshot": False, "dirty": False, "allow_dirty": False,
+               "compile_failed": [], "warm_start": {"stale": False},
+               "checkout_start": {"commit": commit, "snapshot": False, "dirty": False},
+               "checkout_end": {"commit": commit, "snapshot": False, "dirty": False},
+               "run_options": dict.fromkeys(context.RUN_OPTIONS, False), "submodules": {}, "tree_manifest": h,
                "date_utc": ca.iso_utc(now), "measured_end_ns": int(now * 1e9), "seconds": {"total": 10},
                "closure_graph_sha256": ca.sha256_file(path / ca.CLOSURE_GRAPH),
                "series": {"credit_unique_bytes": 0 if empty else 10,
@@ -59,7 +63,7 @@ def save_receipt(path, receipt):
 def bundle(path, *, run=None, first=False, **kwargs):
     run, _ = measured_run(path / "run") if run is None else (run, None)
     dest = path / "bundle"
-    pc.make_bundle(run, dest, "synthetic-bfme1-test", local_unpublished=True, first=first, **kwargs)
+    pc.make_bundle(run, dest, "synthetic-bfme1-test", first=first, **kwargs)
     return dest
 
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build a BFME1 cycle bundle; GitHub publication is deferred.
+"""Build and install an immutable local BFME1 cycle bundle.
 
 Ported lifecycle/serialization from BFME2 02518d74b1 with BFME1 adapters.
-`bundle RUN --out DIR --producer LABEL --local-unpublished` freezes the receipt,
+`bundle RUN --out DIR --producer LABEL` freezes the receipt,
 status, measured graph, closure report and explicit unavailable data-back member.
 A missing report is computed from the receipt-bound graph without measuring or
 linking. --closure DIR uses a precomputed report, validated against this run.
@@ -13,7 +13,7 @@ Bytes are deterministic: gzip has mtime=0/no name, JSON is sorted, and the defau
 manifest timestamp is the receipt's finalization time (not assembly wall time).
 The temporary directory is validated before one rename; no existing destination,
 even empty, is replaced. `--install STORE` uses cycle_artifacts' immutable store.
-Local bundles never authenticate, even if their measurement was a clean snapshot.
+Authority is recomputed by consumers from the run evidence and local policy.
 No ledger, source, receipt, graph, or input run file is modified.
 """
 import argparse
@@ -35,15 +35,7 @@ class RunError(ca.BundleError):
     pass
 
 
-class PublishError(ca.Refused):
-    def __init__(self, message):
-        super().__init__(message, "unauthenticated")
-
-
-def validate_run(run_dir, *, root=ROOT, local_unpublished=False):
-    if not local_unpublished:
-        raise ca.Refused("publisher trust not configured; local builds require --local-unpublished",
-                         "unauthenticated")
+def validate_run(run_dir, *, root=ROOT):
     run = Path(run_dir)
     try:
         rpath = run / ca.RECEIPT
@@ -109,12 +101,12 @@ def closure_members(facts, tmp, closure=None):
 
 
 def make_bundle(run_dir, out, producer, *, root=ROOT, now=None, closure=None, previous=None,
-                first=False, local_unpublished=False):
+                first=False):
     if not isinstance(producer, str) or not producer.strip():
         raise RunError("a BFME1 producer label is required")
     if first and previous is not None:
         raise RunError("--first and --previous are mutually exclusive")
-    facts = validate_run(run_dir, root=root, local_unpublished=local_unpublished)
+    facts = validate_run(run_dir, root=root)
     out = Path(out)
     if out.exists():
         raise RunError("bundle destination exists: immutable bundles are never replaced")
@@ -145,7 +137,6 @@ def make_bundle(run_dir, out, producer, *, root=ROOT, now=None, closure=None, pr
         members = {p.name: ca.member_meta(p) for p in sorted(tmp.iterdir())}
         manifest = {"schema": ca.SCHEMA, "tag": ca.tag_for(facts["receipt_bytes"]),
                     "commit": receipt["commit"], "producer": producer.strip(),
-                    "publication": "local-unpublished", "authenticated": False, "authoritative": False,
                     "created_utc": ca.iso_utc(ca.receipt_end(receipt) if now is None else now),
                     "measured": ca.measured_of(receipt), "headline": ca.headline_of(receipt),
                     "instance": {"receipt_sha256": members[ca.RECEIPT]["sha256"],
@@ -163,45 +154,31 @@ def make_bundle(run_dir, out, producer, *, root=ROOT, now=None, closure=None, pr
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def publish(bundle, repo=None, *, dry_run=False, gh=None, **kwargs):
-    # No network even for a dry run: publishing/authentication is an owner decision.
-    ca.require_publisher_trust(repo)
-    raise PublishError("publisher trust not configured: BFME1 release publishing is deferred")
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     v = sub.add_parser("validate")
     v.add_argument("run_dir")
-    v.add_argument("--local-unpublished", action="store_true")
     b = sub.add_parser("bundle")
     b.add_argument("run_dir")
     b.add_argument("--out", required=True)
     b.add_argument("--producer", required=True)
-    b.add_argument("--local-unpublished", action="store_true")
     b.add_argument("--closure")
     prior = b.add_mutually_exclusive_group()
     prior.add_argument("--previous")
     prior.add_argument("--first", action="store_true")
     b.add_argument("--install", metavar="STORE")
-    p = sub.add_parser("publish")
-    p.add_argument("bundle")
-    p.add_argument("--repo", default=ca.DEFAULT_REPO)
-    p.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
     try:
         if args.cmd == "validate":
-            facts = validate_run(args.run_dir, local_unpublished=args.local_unpublished)
-            print(f"consistent local measurement {facts['commit']}; UNAUTHENTICATED, never authoritative")
+            facts = validate_run(args.run_dir)
+            print(f"consistent local measurement {facts['commit']}; authority is recomputed when served")
         elif args.cmd == "bundle":
             m = make_bundle(args.run_dir, args.out, args.producer, closure=args.closure, previous=args.previous,
-                            first=args.first, local_unpublished=args.local_unpublished)
+                            first=args.first)
             if args.install:
-                ca.install_local(args.out, args.install, local_unpublished=args.local_unpublished)
-            print(f"bundle {m['tag']}: UNAUTHENTICATED, never authoritative; data-back rank unavailable")
-        else:
-            publish(args.bundle, args.repo, dry_run=args.dry_run)
+                ca.install_local(args.out, args.install)
+            print(f"bundle {m['tag']}: local bundle; authority is recomputed when served; data-back rank unavailable")
         return 0
     except OSError as e:
         problem = ca.Unavailable(str(e))

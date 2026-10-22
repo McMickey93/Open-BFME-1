@@ -12,30 +12,19 @@ import link_cycle_context as context
 import publish_cycle as pc
 
 
-def test_cli_build_install_inspect_and_never_publish(tmp_path, monkeypatch, capsys):
-    run, _ = measured_run(tmp_path / "run", now=ca.time.time() // 1)
-    # seconds.total remains an int; measured_end_ns can represent this wall time.
-    out, store = tmp_path / "out", tmp_path / "store"
-    assert pc.main(["bundle", str(run), "--out", str(out), "--producer", "bfme1-synthetic",
-                    "--local-unpublished", "--first", "--install", str(store)]) == 0
-    assert "UNAUTHENTICATED" in capsys.readouterr().out
-    assert ca.main(["validate", str(store), "--local-unpublished"]) == 0
-    assert "never authoritative" in capsys.readouterr().out
-    assert ca.main(["validate", str(out)]) == 6
-    assert "[reason=unauthenticated]" in capsys.readouterr().err
-    assert ca.main(["fetch", "--latest"]) == 6
-    assert "publisher trust not configured" in capsys.readouterr().err
-    assert pc.main(["publish", str(out), "--dry-run"]) == 6
-    assert "publisher trust not configured" in capsys.readouterr().err
-
-
-def test_all_local_paths_require_explicit_flag(tmp_path):
+def test_cli_build_install_and_inspect(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(ca, "ancestry", lambda *a: (True, 0, "synthetic ancestor"))
+    monkeypatch.setattr(ca.time, "time", lambda: NOW)
     run, _ = measured_run(tmp_path / "run")
-    with pytest.raises(ca.Refused):
-        pc.validate_run(run)
-    with pytest.raises(ca.Refused):
-        pc.make_bundle(run, tmp_path / "out", "test")
-    assert not (tmp_path / "out").exists()
+    out, store = tmp_path / "out", tmp_path / "store"
+    assert pc.main(["validate", str(run)]) == 0
+    assert "consistent local measurement" in capsys.readouterr().out
+    assert pc.main(["bundle", str(run), "--out", str(out), "--producer", "bfme1-synthetic",
+                    "--first", "--install", str(store)]) == 0
+    assert "authority is recomputed" in capsys.readouterr().out
+    assert ca.main(["validate", str(store)]) == 0
+    assert "AUTHORITATIVE: clean local run" in capsys.readouterr().out
+    assert ca.main(["validate", str(out)]) == 0
 
 
 def test_precomputed_report_pair_cannot_be_from_another_measurement(tmp_path):
@@ -47,7 +36,7 @@ def test_precomputed_report_pair_cannot_be_from_another_measurement(tmp_path):
     (closure / cr.ROOTS).write_bytes(roots)
     (closure / cr.BLOCKERS).write_bytes(table)
     with pytest.raises(ca.BundleError, match="closure report receipt_sha256"):
-        pc.make_bundle(b, tmp_path / "out", "test", local_unpublished=True, closure=closure)
+        pc.make_bundle(b, tmp_path / "out", "test", closure=closure)
     assert not (tmp_path / "out").exists()
     assert not list(tmp_path.glob(".out.partial-*"))
 
@@ -66,7 +55,7 @@ def test_current_ledgers_never_substituted_for_frozen_inputs(tmp_path, monkeypat
     def forbidden(*a, **kw):
         pytest.fail("bundle construction must not substitute today's ledger contents")
     monkeypatch.setattr(context, "input_hashes", forbidden)
-    m = pc.make_bundle(run, tmp_path / "out", "test", local_unpublished=True)
+    m = pc.make_bundle(run, tmp_path / "out", "test")
     assert m["binding"]["inputs"] == receipt["inputs"]
 
 
@@ -95,7 +84,7 @@ def test_refuse_invalid_or_superseded_run(tmp_path, attack):
         receipt["moved_during_run"] = ["inputs"]
         save_receipt(run, receipt)
     with pytest.raises(ca.Problem):
-        pc.make_bundle(run, tmp_path / "out", "test", local_unpublished=True)
+        pc.make_bundle(run, tmp_path / "out", "test")
     assert not (tmp_path / "out").exists()
 
 
@@ -105,7 +94,7 @@ def test_no_partial_bundle_on_copy_failure(tmp_path, monkeypatch):
         raise OSError("copy failed")
     monkeypatch.setattr(pc.shutil, "copyfile", fail)
     with pytest.raises(ca.Unavailable, match="copy failed"):
-        pc.make_bundle(run, tmp_path / "out", "test", local_unpublished=True)
+        pc.make_bundle(run, tmp_path / "out", "test")
     assert not (tmp_path / "out").exists()
     assert not list(tmp_path.glob(".out.partial-*"))
 
@@ -115,11 +104,11 @@ def test_destination_is_never_replaced_even_when_empty(tmp_path):
     out = tmp_path / "out"
     out.mkdir()
     with pytest.raises(pc.RunError, match="never replaced"):
-        pc.make_bundle(run, out, "test", local_unpublished=True)
+        pc.make_bundle(run, out, "test")
 
 
 def test_missing_closure_source_has_routing_reason(tmp_path):
     run, _ = measured_run(tmp_path / "run")
     with pytest.raises(ca.Refused) as e:
-        pc.make_bundle(run, tmp_path / "out", "test", local_unpublished=True, closure=tmp_path / "missing")
+        pc.make_bundle(run, tmp_path / "out", "test", closure=tmp_path / "missing")
     assert e.value.reason == "no-closure-report"

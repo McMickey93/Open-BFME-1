@@ -21,6 +21,16 @@ import link_cycle_context as context
 import publish_cycle as pc
 
 
+REAL_ANCESTRY = ca.ancestry
+
+
+@pytest.fixture(autouse=True)
+def reader_context(monkeypatch):
+    # Unit tests use synthetic commits; actual git ancestry is exercised below.
+    monkeypatch.setattr(ca, "ancestry", lambda *a: (True, 0, "synthetic ancestor"))
+    monkeypatch.setattr(ca.time, "time", lambda: NOW)
+
+
 @pytest.fixture
 def frozen(tmp_path):
     return bundle(tmp_path)
@@ -114,7 +124,7 @@ def test_missing_semantic_dependency_refused_even_with_restamped_core(tmp_path):
     receipt["tool_digest"] = context.digest(receipt["tool_dependencies"])
     save_receipt(run, receipt)
     with pytest.raises(ca.BundleError, match="dependency"):
-        pc.make_bundle(run, tmp_path / "out", "test", local_unpublished=True)
+        pc.make_bundle(run, tmp_path / "out", "test")
 
 
 def test_old_rules_are_incompatible_not_tool_warning(frozen):
@@ -131,59 +141,20 @@ def test_old_rules_are_incompatible_not_tool_warning(frozen):
 def test_stale_future_and_exact_limits(frozen, offset, reason):
     if reason:
         with pytest.raises(ca.Problem) as e:
-            ca.serve(frozen, local_unpublished=True, now=NOW + offset)
+            ca.serve(frozen, now=NOW + offset)
         assert e.value.reason == reason
     else:
-        b, fr, _ = ca.serve(frozen, local_unpublished=True, now=NOW + offset)
-        assert fr["rules_match"] is True and b.authoritative is False
+        b, fr, _ = ca.serve(frozen, now=NOW + offset)
+        assert fr["rules_match"] is True and b.authoritative is True
 
 
 def test_stale_override_does_not_override_future(frozen):
-    _, fr, lines = ca.serve(frozen, local_unpublished=True, allow_stale=True, now=NOW + 90000)
+    b, fr, lines = ca.serve(frozen, allow_stale=True, now=NOW + 90000)
+    assert not b.authoritative and not fr["authoritative"]
     assert fr["stale"] and any(line.startswith("STALE") for line in lines)
-    with pytest.raises(ca.BundleError):
-        ca.serve(frozen, local_unpublished=True, allow_stale=True, now=NOW - 601)
-
-
-def test_local_unpublished_never_authoritative_in_any_api(frozen, tmp_path, monkeypatch):
-    assert ca.validate(frozen)["authoritative"] is False
-    b, fr, lines = ca.serve(frozen, local_unpublished=True, now=NOW)
-    b.evidence = {"immutable": True, "author": {"login": "test", "id": 1}}
-    assert b.authoritative is False and b.authenticated is False
-    assert fr["authenticated"] is False and fr["authoritative"] is False
-    assert any("UNAUTHENTICATED" in line for line in lines)
-    # Even a configured future allowlist and fabricated evidence cannot promote LOCAL.
-    monkeypatch.setattr(ca, "PUBLISHERS", ({"login": "test", "id": 1},))
-    with pytest.raises(ca.Refused) as e:
-        ca.authenticate_local(b)
-    assert e.value.reason == "unauthenticated"
-    store = tmp_path / "store"
-    m, pointer = ca.install_local(frozen, store, local_unpublished=True)
-    assert not m["authenticated"] and pointer["latest_measurement"] is None
-    assert pointer["latest_closure_ready"] is None
-    status = ca.status(store, out=io.StringIO())
-    assert all(not e["authoritative"] and not e["authenticated"] for e in status["bundles"])
-    with pytest.raises(ca.Refused):
-        ca.serve(store, now=NOW)
-    assert ca.serve(store, local_unpublished=True, now=NOW)[0].authoritative is False
-
-
-class NoNetwork:
-    def run(self, *a, **kw):
-        pytest.fail("deferred trust must refuse before network")
-    json = run
-
-
-@pytest.mark.parametrize("dry_run", [False, True])
-def test_empty_allowlist_and_no_default_repo_refuse(frozen, tmp_path, dry_run):
-    assert ca.PUBLISHERS == () and ca.DEFAULT_REPO is None
-    assert ca.release_trust({}) == "publisher trust not configured"
-    with pytest.raises(ca.Refused, match="publisher trust not configured") as e:
-        ca.fetch("test/repo", tmp_path / "store", gh=NoNetwork())
-    assert ca.exit_code(e.value) == 6
-    with pytest.raises(ca.Refused, match="publisher trust not configured"):
-        pc.publish(frozen, "test/repo", gh=NoNetwork(), dry_run=dry_run)
-    assert not (tmp_path / "store").exists()
+    with pytest.raises(ca.Refused) as exc:
+        ca.serve(frozen, allow_stale=True, now=NOW - 601)
+    assert (exc.value.reason, exc.value.sub_reason) == ("corrupt", "future")
 
 
 def test_unavailable_rank_is_explicit_and_not_empty_success(frozen):
@@ -194,7 +165,7 @@ def test_unavailable_rank_is_explicit_and_not_empty_success(frozen):
     with pytest.raises(ca.Unavailable):
         b.data_back_rank()
     with pytest.raises(ca.Unavailable):
-        ca.serve(frozen, local_unpublished=True, need_rank=True, now=NOW)
+        ca.serve(frozen, need_rank=True, now=NOW)
     doc.update(status="available", addresses=[])
     (frozen / ca.RANK_JSON).write_text(ca.dumps(doc))
     rehash(frozen, ca.RANK_JSON)
@@ -207,37 +178,35 @@ def test_atomic_install_concurrent_writers_and_immutable_reader(tmp_path):
     run, _ = measured_run(tmp_path / "b-run", now=NOW + 100, commit="b" * 40)
     b = bundle(tmp_path / "b", run=run)
     store = tmp_path / "store"
-    ca.install_local(a, store, local_unpublished=True)
-    resolved, _ = ca.resolve(store, local_unpublished=True)
+    ca.install_local(a, store)
+    resolved, _ = ca.resolve(store)
     old_bytes = (resolved / ca.RECEIPT).read_bytes()
     # Different and duplicate writers serialize. Every writer sees complete dirs.
     with ThreadPoolExecutor(max_workers=6) as pool:
-        results = list(pool.map(lambda d: ca.install_local(d, store, local_unpublished=True), [a, b, a, b, a, b]))
+        results = list(pool.map(lambda d: ca.install_local(d, store), [a, b, a, b, a, b]))
     assert len(results) == 6
     doc = ca.read_pointer(store)
     assert len(doc["bundles"]) == 2
     assert doc["bundles"][0]["commit"] == "b" * 40
     assert (resolved / ca.RECEIPT).read_bytes() == old_bytes
     assert not list(store.glob(".partial-*"))
-    assert ca.resolve(store, local_unpublished=True)[0] != resolved
+    assert ca.resolve(store)[0] != resolved
     ca.validate(resolved)
 
 
-def test_local_install_requires_flag_and_never_replaces(frozen, tmp_path):
+def test_local_install_never_replaces(frozen, tmp_path):
     store = tmp_path / "store"
-    with pytest.raises(ca.Refused):
-        ca.install_local(frozen, store)
-    ca.install_local(frozen, store, local_unpublished=True)
+    ca.install_local(frozen, store)
     before = (store / ca.POINTER).read_bytes()
     rewrite_manifest(frozen, lambda m: m.update(producer="other producer"))
     with pytest.raises(ca.BundleError, match="immutable installed manifest"):
-        ca.install_local(frozen, store, local_unpublished=True)
+        ca.install_local(frozen, store)
     assert (store / ca.POINTER).read_bytes() == before
 
 
 def test_pointer_read_once_during_refresh(frozen, tmp_path, monkeypatch):
     store = tmp_path / "store"
-    ca.install_local(frozen, store, local_unpublished=True)
+    ca.install_local(frozen, store)
     original = ca.read_pointer
     calls = []
     def read_once(path):
@@ -246,13 +215,13 @@ def test_pointer_read_once_during_refresh(frozen, tmp_path, monkeypatch):
         (Path(path) / ca.POINTER).write_text("corrupt future pointer")
         return doc
     monkeypatch.setattr(ca, "read_pointer", read_once)
-    b, _, _ = ca.serve(store, local_unpublished=True, now=NOW)
+    b, _, _ = ca.serve(store, now=NOW)
     assert b.commit == "a" * 40 and len(calls) == 1
 
 
 def test_failure_reasons_and_exit_codes(frozen, tmp_path):
     assert ca.EXIT == {"corrupt": 1, "unavailable": 2, "empty": 3, "stale": 4,
-                       "incompatible-rules": 5, "unauthenticated": 6, "no-closure-report": 7}
+                       "incompatible-rules": 5, "not-authoritative": 6, "no-closure-report": 7}
     for reason, code in ca.EXIT.items():
         problem = ca.Refused("test", reason)
         assert ca.exit_code(problem) == code and f"[reason={reason}]" in ca.describe(problem)
@@ -266,7 +235,7 @@ def test_failure_reasons_and_exit_codes(frozen, tmp_path):
     # routing reason, while integrity validation still rejects the profile.
     rewrite_manifest(frozen, lambda m: [m["members"].pop(k) for k in (ca.CLOSURE_ROOTS, ca.CLOSURE_BLOCKERS)])
     with pytest.raises(ca.Refused) as e:
-        ca.serve(frozen, need_closure=True, local_unpublished=True)
+        ca.serve(frozen, need_closure=True)
     assert e.value.reason == "no-closure-report"
     with pytest.raises(ca.BundleError):
         ca.validate(frozen)
@@ -283,13 +252,13 @@ def test_semantic_change_refuses_unrelated_change_only_warns(frozen, tmp_path):
     shutil.copytree(ca.ROOT / "tools", root / "tools", ignore=shutil.ignore_patterns("tests", "__pycache__"))
     assert ca.local_rules(root) == ca.local_rules()
     (root / "tools/fleet_unrelated.py").write_text("# daily fleet edit\n")
-    _, fr, lines = ca.serve(frozen, local_unpublished=True, now=NOW, root=root)
+    _, fr, lines = ca.serve(frozen, now=NOW, root=root)
     assert fr["rules_match"] is True and fr["tool_digest_matches"] is False
     assert any(line.startswith("WARNING: tool digest") for line in lines)
     p = root / "tools/build.py"
     p.write_bytes(p.read_bytes() + b"\n# semantic provider changed\n")
     with pytest.raises(ca.Refused) as e:
-        ca.serve(frozen, local_unpublished=True, now=NOW, root=root)
+        ca.serve(frozen, now=NOW, root=root)
     assert e.value.reason == "incompatible-rules"
 
 
@@ -316,151 +285,26 @@ def test_symlink_members_refused(frozen, tmp_path, name):
         ca.validate(frozen)
 
 
-class SyntheticRelease:
-    """In-memory GitHub transport; no external account or service."""
-    def __init__(self, directory):
-        self.files = {p.name: p.read_bytes() for p in directory.iterdir()}
-        manifest = ca.read_json(directory / ca.MANIFEST)
-        self.commit, self.tag = manifest["commit"], manifest["tag"]
-        self.release = {"id": 37, "tag_name": self.tag, "draft": False, "prerelease": True,
-                        "immutable": True, "author": {"login": "synthetic-bfme1", "id": 37},
-                        "target_commitish": self.commit,
-                        "assets": [{"name": n, "state": "uploaded", "size": len(raw),
-                                    "digest": "sha256:" + ca.hashlib.sha256(raw).hexdigest()}
-                                   for n, raw in sorted(self.files.items())]}
-        self.tag_target = self.commit
-
-    def run(self, args):
-        if args[:2] == ["release", "download"]:
-            dest = Path(args[args.index("--dir") + 1])
-            for n, raw in self.files.items():
-                (dest / n).write_bytes(raw)
-            return ""
-        if args[:2] == ["release", "verify"]:
-            return "verified"
-        raise AssertionError(args)
-
-    def json(self, args):
-        if args[:4] == ["api", "--paginate", "--slurp", "repos/synthetic/repo/releases?per_page=100"]:
-            return [[self.release]]
-        if args[0] == "api" and "/git/ref/tags/" in args[1]:
-            return {"object": {"type": "commit", "sha": self.tag_target}}
-        raise AssertionError(args)
-
-
-@pytest.fixture
-def synthetic_release(frozen, monkeypatch):
-    # Only tests can configure trust. The production allowlist stays empty.
-    monkeypatch.setattr(ca, "PUBLISHERS", ({"login": "synthetic-bfme1", "id": 37},))
-    rewrite_manifest(frozen, lambda m: m.update(publication="release"))
-    return SyntheticRelease(frozen)
-
-
-def test_dormant_authentication_code_path(tmp_path, synthetic_release):
-    gh = synthetic_release
-    store = tmp_path / "store"
-    m, _, pointer = ca.fetch("synthetic/repo", store, gh=gh, now=NOW)
-    b, fr, _ = ca.serve(store, now=NOW)
-    assert b.authenticated and b.authoritative
-    assert pointer["latest_measurement"] == ca.bundle_id(m["tag"])
-    assert fr["authenticated"] and fr["authoritative"]
-    assert ca.authenticate_local(b)["author"]["id"] == 37
-    # A changed authenticated manifest is no longer evidence-backed, even if
-    # the edit leaves the self-consistent member/receipt identities untouched.
-    rewrite_manifest(b.dir, lambda m: m.update(producer="forged label"))
-    with pytest.raises(ca.Refused) as e:
-        ca.serve(b.dir, now=NOW)
-    assert e.value.reason == "unauthenticated"
-
-
-@pytest.mark.parametrize("attack,reason", [("author", "unauthenticated"), ("mutable", "unauthenticated"),
-    ("tag", "unauthenticated"), ("target", "unauthenticated"), ("digest", "corrupt"),
-    ("no-digest", "unauthenticated"), ("size", "corrupt"), ("extra", "corrupt"),
-    ("duplicate", "corrupt"), ("local", "unauthenticated")])
-def test_release_authentication_rejections_leave_no_install(tmp_path, synthetic_release, attack, reason):
-    gh = synthetic_release
-    r = gh.release
-    if attack == "author":
-        r["author"]["id"] += 1
-    elif attack == "mutable":
-        r["immutable"] = False
-    elif attack == "tag":
-        gh.tag_target = "b" * 40
-    elif attack == "target":
-        r["target_commitish"] = "b" * 40
-    elif attack in ("digest", "no-digest"):
-        r["assets"][0]["digest"] = "sha256:" + "0" * 64 if attack == "digest" else None
-    elif attack == "size":
-        r["assets"][0]["size"] += 1
-    elif attack == "extra":
-        gh.files["extra"] = b"extra"
-    elif attack == "duplicate":
-        r["assets"].append(copy.deepcopy(r["assets"][0]))
-    else:
-        manifest = json.loads(gh.files[ca.MANIFEST])
-        manifest["publication"] = "local-unpublished"
-        raw = ca.dumps(manifest).encode()
-        gh.files[ca.MANIFEST] = raw
-        a = next(a for a in r["assets"] if a["name"] == ca.MANIFEST)
-        a.update(size=len(raw), digest="sha256:" + ca.hashlib.sha256(raw).hexdigest())
-    store = tmp_path / "store"
-    with pytest.raises(ca.Problem) as e:
-        ca.install(gh, "synthetic/repo", r, store, now=NOW)
-    assert e.value.reason == reason
-    assert not (store / ca.bundle_id(gh.tag)).exists()
-    assert not list(store.glob(".partial-*"))
-
-
-def test_mutable_test_install_stays_unauthenticated(tmp_path, synthetic_release):
-    gh = synthetic_release
-    gh.release["immutable"] = False
-    store = tmp_path / "store"
-    m = ca.install(gh, "synthetic/repo", gh.release, store, allow_mutable=True, now=NOW)
-    b = ca.load_bundle(store / ca.bundle_id(m["tag"]) / "bundle")
-    assert b.authenticated is False and b.authoritative is False
-    with pytest.raises(ca.Refused):
-        ca.serve(b.dir, now=NOW)
-
-
-@pytest.mark.parametrize("contents", [[], {"assets": []}, {"schema": ca.EVIDENCE_SCHEMA, "assets": {"bad": []}}])
-def test_malformed_evidence_refuses(tmp_path, synthetic_release, contents):
-    gh = synthetic_release
-    store = tmp_path / "store"
-    m = ca.install(gh, "synthetic/repo", gh.release, store, now=NOW)
-    d = store / ca.bundle_id(m["tag"])
-    (d / ca.EVIDENCE).write_text(ca.dumps(contents))
-    b = ca.load_bundle(d / "bundle")
-    assert b.authenticated is False
-    with pytest.raises(ca.Refused):
-        ca.authenticate_local(b)
-
-
 def test_legacy_presplit_rules_require_a_new_measurement(tmp_path):
     run, r = measured_run(tmp_path / "run")
     r["rule_identity"].pop("measurement_files")
     r["rule_identity"]["implementation_sha256"] = context.digest(r["tool_dependencies"])
     save_receipt(run, r)
     with pytest.raises(ca.Refused) as e:
-        pc.validate_run(run, local_unpublished=True)
+        pc.validate_run(run)
     assert e.value.reason == "incompatible-rules"
-
-
-def test_ancestry_is_informational(frozen, monkeypatch):
-    monkeypatch.setattr(ca, "ancestry", lambda *a: (False, None, "not an ancestor"))
-    b, fr, _ = ca.serve(frozen, local_unpublished=True, now=NOW)
-    assert fr["ancestor"] is False and not b.authoritative
 
 
 def test_unknown_local_rules_never_served(frozen, tmp_path):
     with pytest.raises(ca.Refused) as e:
-        ca.serve(frozen, local_unpublished=True, root=tmp_path / "no-tools", now=NOW)
+        ca.serve(frozen, root=tmp_path / "no-tools", now=NOW)
     assert e.value.reason == "incompatible-rules"
 
 
 def test_closure_selection_respects_five_older_limit():
     mine = ca.local_rules()
     bad = dict(mine, id="other-rule")
-    entries = [{"id": str(i), "closure_report": True, "authenticated": True, "rules_tuple": bad}
+    entries = [{"id": str(i), "closure_report": True, "rules_tuple": bad}
                for i in range(7)]
     doc = {"bundles": entries}
     entries[5]["rules_tuple"] = mine
@@ -480,3 +324,168 @@ def test_historical_dependency_set_is_incompatible_not_corrupt(tmp_path):
     lc.stamp_cores(r)
     ca.check_receipt(r)
     assert ca.refusal(ca.freshness(r, now=NOW))[0] == "incompatible-rules"
+
+
+def test_clean_local_run_accepted_through_bundle_store_and_status(frozen, tmp_path):
+    # Neither a manifest nor a CLI switch needs to claim authority.
+    assert "authoritative" not in ca.validate(frozen)
+    rewrite_manifest(frozen, lambda m: m.update(authoritative=False))
+    b, fr, lines = ca.serve(frozen, now=NOW)
+    assert b.authoritative and fr["authoritative"]
+    assert any("AUTHORITATIVE: clean local run" in line for line in lines)
+    store = tmp_path / "store"
+    m, pointer = ca.install_local(frozen, store, now=NOW)
+    assert pointer["latest_measurement"] == ca.bundle_id(m["tag"])
+    assert ca.serve(store, now=NOW)[0].authoritative
+    doc = ca.status(store, now=NOW, out=io.StringIO())
+    assert all(e["authoritative"] for e in doc["bundles"])
+
+
+@pytest.mark.parametrize("attack,sub_reason", [
+    ("dirty-start", "dirty-start"), ("dirty-end", "dirty-end"),
+    ("allow_dirty", "diagnostic"), ("allow_stale_cache", "diagnostic"),
+    ("measure_only", "diagnostic"), ("snapshot", "diagnostic"), ("remeasure", "diagnostic"),
+    ("warm-stale", "diagnostic"), ("missing-start", "missing-evidence"),
+    ("missing-end", "missing-evidence"), ("missing-options", "missing-evidence"),
+    ("receipt-denies", "receipt-not-authoritative"), ("compile-failed", "compile-failed")])
+def test_authority_claim_cannot_override_run_evidence(tmp_path, attack, sub_reason):
+    run, r = measured_run(tmp_path / "run")
+    if attack.startswith("dirty-"):
+        r["checkout_" + attack.split("-")[1]]["dirty"] = True
+    elif attack.startswith("missing-"):
+        del r[{"missing-start": "checkout_start", "missing-end": "checkout_end",
+               "missing-options": "run_options"}[attack]]
+    elif attack == "receipt-denies":
+        r["authoritative"] = False
+    elif attack == "compile-failed":
+        r["compile_failed"] = ["f.cpp"]
+    elif attack == "warm-stale":
+        r["warm_start"]["stale"] = True
+    else:
+        r["run_options"][attack] = True
+    save_receipt(run, r)
+    d = bundle(tmp_path, run=run)
+    rewrite_manifest(d, lambda m: m.update(authoritative=True))
+    assert not ca.load_bundle(d).authoritative
+    with pytest.raises(ca.Refused) as exc:
+        ca.serve(d, now=NOW)
+    assert (exc.value.reason, exc.value.sub_reason) == ("not-authoritative", sub_reason)
+    assert ca.exit_code(exc.value) == 6
+
+
+def test_authority_and_store_pointer_claims_are_recomputed(frozen, tmp_path, monkeypatch):
+    store = tmp_path / "store"
+    ca.install_local(frozen, store, now=NOW)
+    b = ca.serve(store, now=NOW)[0]
+    # The pointer still claims authority after local origin/master changes.
+    monkeypatch.setattr(ca, "ancestry", lambda *a: (False, None, "another line"))
+    assert not b.authoritative
+    with pytest.raises(ca.Refused) as exc:
+        ca.serve(store, now=NOW)
+    assert exc.value.sub_reason == "non-ancestor"
+    doc = ca.status(store, now=NOW, out=io.StringIO())
+    assert doc["latest_measurement"] is None
+    assert not doc["bundles"][0]["authoritative"]
+
+
+@pytest.mark.parametrize("condition,sub_reason", [("ancestor", None), ("non-ancestor", "non-ancestor"),
+    ("unknown-commit", "ancestry-unknown"), ("missing-ref", "ancestry-unknown"),
+    ("git-failed", "ancestry-unknown"), ("not-checkout", "ancestry-unknown")])
+def test_actual_local_git_ancestry_required(tmp_path, monkeypatch, condition, sub_reason):
+    import subprocess
+    root = tmp_path / "repo"
+    root.mkdir()
+    def git(*args):
+        return subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True, text=True).stdout.strip()
+    git("init", "-q")
+    git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--allow-empty", "-qm", "first")
+    first = git("rev-parse", "HEAD")
+    git("update-ref", "refs/remotes/origin/master", first)
+    git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--allow-empty", "-qm", "second")
+    second = git("rev-parse", "HEAD")
+    assert REAL_ANCESTRY(first, root)[0] is True
+    commit = first
+    if condition == "non-ancestor":
+        commit = second
+    elif condition == "unknown-commit":
+        commit = "f" * 40
+    elif condition == "missing-ref":
+        git("update-ref", "-d", "refs/remotes/origin/master")
+    elif condition == "not-checkout":
+        root = tmp_path
+    elif condition == "git-failed":
+        original = ca._git
+        monkeypatch.setattr(ca, "_git", lambda root, *args: None if args[0] == "merge-base" else original(root, *args))
+    run, _ = measured_run(tmp_path / "run", commit=commit)
+    d = bundle(tmp_path, run=run)
+    monkeypatch.setattr(ca, "ancestry", REAL_ANCESTRY)
+    # Rules are checked from the consuming checkout; isolate git policy here.
+    monkeypatch.setattr(ca, "local_rules", lambda *a: ca.rules_of(ca.read_json(d / ca.RECEIPT)))
+    if condition == "ancestor":
+        b, fr, _ = ca.serve(d, root=root, now=NOW)
+        assert b.authoritative and fr["ancestor"] is True
+        return
+    with pytest.raises(ca.Refused) as exc:
+        ca.serve(d, root=root, now=NOW)
+    assert (exc.value.reason, exc.value.sub_reason) == ("not-authoritative", sub_reason)
+    if condition == "unknown-commit":
+        assert "git fetch origin" in str(exc.value)
+
+
+def test_receipt_core_rejects_changed_cleanliness_without_restamping(tmp_path):
+    run, r = measured_run(tmp_path / "run")
+    r["checkout_end"]["dirty"] = True
+    (run / ca.RECEIPT).write_text(ca.dumps(r))
+    with pytest.raises(ca.BundleError, match="core_sha256"):
+        bundle(tmp_path, run=run)
+
+
+def test_removed_remote_trust_surface_has_no_remaining_references():
+    import re
+    names = ("link_cycle_context", "link_cycle", "closure_report", "cycle_artifacts",
+             "publish_cycle", "cycle_diff", "data_back_rank", "repair_queue")
+    # Grep the production surface; split removed tokens so this guard doesn't
+    # itself reintroduce the obsolete API names into a repository text search.
+    patterns = ("PUB" + "LISHERS", "publisher" + "_ok", "release" + "_trust", "release" + "_problem",
+                "RELEASE" + "_TRUST", "--allow-" + "mutable", "unauth" + "enticated",
+                "--local-" + "unpublished", r"\bGh(?:Error)?\b", r"\bgh\b", "Git" + "Hub",
+                "authenticate" + "_local", "list_" + "releases", "tag_" + "commit",
+                r"\brelease\b", r"\bpublishers?\b", r"\bauthenticat\w*\b")
+    for name in names:
+        source = (ca.ROOT / "tools" / (name + ".py")).read_text()
+        for pattern in patterns:
+            assert not re.search(pattern, source), (name, pattern)
+    # Only the local lifecycle commands remain in either CLI.
+    import ast
+    for module, expected in ((ca, {"status", "install", "validate"}),
+                             (pc, {"validate", "bundle"})):
+        tree = ast.parse(Path(module.__file__).read_text())
+        commands = {node.args[0].value for node in ast.walk(tree) if isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute) and node.func.attr == "add_parser"}
+        assert commands == expected
+
+
+def test_loaded_bundle_rechecks_integrity_before_claiming_authority(frozen):
+    b = ca.serve(frozen, now=NOW)[0]
+    assert b.authoritative
+    (frozen / ca.LINK_STATUS).write_bytes(b"changed after load")
+    assert not b.authoritative
+
+
+def test_diagnostic_store_pointer_cannot_promote_a_bundle(tmp_path):
+    run, r = measured_run(tmp_path / "run")
+    r["run_options"]["allow_stale_cache"] = True
+    save_receipt(run, r)
+    d = bundle(tmp_path, run=run)
+    store = tmp_path / "store"
+    _, pointer = ca.install_local(d, store, now=NOW)
+    entry = pointer["bundles"][0]
+    assert pointer["latest_measurement"] is None
+    entry["authoritative"] = True
+    pointer["latest_measurement"] = entry["id"]
+    pointer["latest_closure_ready"] = entry["id"]
+    (store / ca.POINTER).write_text(ca.dumps(pointer))
+    for closure in (False, True):
+        with pytest.raises(ca.Refused) as exc:
+            ca.serve(store, need_closure=closure, now=NOW)
+        assert (exc.value.reason, exc.value.sub_reason) == ("not-authoritative", "diagnostic")

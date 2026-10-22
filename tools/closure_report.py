@@ -9,7 +9,7 @@ No compilation, census, link, ledger substitution or validity admission occurs.
   closure_report.py show closure_roots.json[.gz]
 
 The graph and every status row must reproduce the receipt's credit. Integrity
-binding is not publication authentication. Older replay reports retain the
+binding alone does not establish clean-run authority. Older replay reports retain the
 label 'replayed, graph not receipt-bound'; rebuilding unbound legacy graphs is
 intentionally unavailable here, since BFME2's replay uses different verdicts.
 
@@ -581,7 +581,7 @@ def from_graph(run_dir, verify=25, log=None):
     return report(graph, receipt, status_rows(status_path),
                   {"source": "graph", "receipt_sha256": lc.sha256(run / "receipt.json"),
                    "graph": {"bound": True, "label": BOUND, "sha256": want},
-                   "authority": "integrity-bound diagnostic; not authenticated publication",
+                   "authority": "integrity-bound report; bundle authority requires clean-run and reader policy checks",
                    "row_columns": ("name", "kind", "source", "retail_rva", "size", "placed", "self_strict",
                                    "closed_strict")}, verify, log)
 

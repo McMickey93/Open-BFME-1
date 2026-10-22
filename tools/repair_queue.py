@@ -21,9 +21,9 @@ tools/next_work.py serves these as tiers; this module builds them.
           else the committed census's failing units, with the reason (build/link_cycle/
           link_status.csv, or REPAIR_LINK_STATUS). PASS TEST: the next cycle reports
           the row placed=1 self_strict=1 (`tools/link_cycle.py --measure-only`).
-          --bundle DIR|current validates integrity, rules, freshness and publication
-          evidence via cycle_artifacts. Empty BFME1 publisher trust refuses all
-          bundles; --local-unpublished permits labelled diagnostics, never routing.
+          --bundle DIR|current validates integrity, rules, freshness, clean-run
+          evidence and local origin/master ancestry via cycle_artifacts. Only
+          authoritative clean local runs may be routed.
           --closure ranks conditional single-root unique gains from the measured
           graph; joint-only bytes remain separate and scores must never be added.
           --route (also --router) exposes the failure router; --json includes the
@@ -515,7 +515,7 @@ FAILURE_ROUTES = {
     "empty": "use another work lane",
     "stale": "use another work lane",
     "incompatible-rules": "tooling seat / human review",
-    "unauthenticated": "refuse",
+    "not-authoritative": "refuse",
     "no-closure-report": "ordinary link queue, no closure ranking",
 }
 
@@ -531,8 +531,7 @@ def bundle_path(bundle):
 
 
 def bundle_note(b, fr, what, allow_stale=False):
-    trust = ("UNAUTHENTICATED LOCAL DIAGNOSTIC (non-authoritative; never routed)"
-             if not b.evidence else "authenticated publication")
+    trust = "authoritative clean local run" if fr["authoritative"] else "non-authoritative diagnostic"
     return (f"{what} from link-cycle bundle {b.tag} ({b.dir}; commit {b.commit[:12]}, measured "
             f"{fr['measured_end_utc']} UTC, {fr['age_hours']:.2f} h ago; {trust}; "
             f"allow_stale={allow_stale}; {fr['ancestry']})")
@@ -598,71 +597,68 @@ def closure_queue(b):
     return items, notes, joint
 
 
-def _bundle_queue(bundle, *, closure=False, now=None, allow_stale=False, local_unpublished=False):
+def _bundle_queue(bundle, *, closure=False, now=None, allow_stale=False):
     ca = cycle_artifacts()
     b, fr, lines = ca.serve(bundle_path(bundle), root=ROOT, now=now, allow_stale=allow_stale,
-                            local_unpublished=local_unpublished, need_closure=closure)
+                            need_closure=closure)
     if closure:
         items, notes, joint = closure_queue(b)
     else:
         items, notes, joint = cycle_items(b.link_status), [], None
     items = eligible_link_items(items)
-    authoritative = bool(b.evidence) and b.manifest["publication"] != "local-unpublished"
+    authoritative = fr["authoritative"]
     for item in items:
         item.update(authoritative=authoritative, diagnostic=not authoritative)
     notes.insert(0, bundle_note(b, fr, f"{len(items)} {'closure root' if closure else 'row'}(s)", allow_stale))
-    warnings = [line for line in lines if line.startswith(("STALE", "UNAUTHENTICATED", "NOT THE NEWEST", "WARNING"))]
+    warnings = [line for line in lines if line.startswith(("STALE", "NOT AUTHORITATIVE", "NOT THE NEWEST", "WARNING"))]
     return {"items": items, "notes": notes, "warnings": warnings, "joint_only": joint,
             "authoritative": authoritative, "diagnostic": not authoritative, "freshness": fr,
             "source_kind": "bundle", "bundle": str(b.dir), "tag": b.tag, "commit": b.commit}
 
 
-def bundle_link_items(bundle, now=None, allow_stale=False, local_unpublished=False):
+def bundle_link_items(bundle, now=None, allow_stale=False):
     """BFME2-compatible diagnostic API; validation failures never use local files."""
-    result = _bundle_queue(bundle, now=now, allow_stale=allow_stale, local_unpublished=local_unpublished)
+    result = _bundle_queue(bundle, now=now, allow_stale=allow_stale)
     return result["items"], "\n".join(result["notes"]), result["warnings"]
 
 
-def closure_items(bundle, now=None, allow_stale=False, local_unpublished=False):
+def closure_items(bundle, now=None, allow_stale=False):
     """Conditional roots only; joint-only gains are separate notes, never scores."""
-    result = _bundle_queue(bundle, closure=True, now=now, allow_stale=allow_stale,
-                           local_unpublished=local_unpublished)
+    result = _bundle_queue(bundle, closure=True, now=now, allow_stale=allow_stale)
     return result["items"], result["notes"], result["warnings"]
 
 
-def link_queue(bundle=None, *, closure=False, now=None, allow_stale=False, local_unpublished=False,
-               router=False):
+def link_queue(bundle=None, *, closure=False, now=None, allow_stale=False, router=False):
     """Machine result for diagnostics or routing, with cycle_artifacts reason/exit codes.
 
     The caller must explicitly request allow_stale; it is passed once, recorded,
     and never retried. Explicit bundles have no local/census fallback. The router
-    cannot return diagnostic items, even when --local-unpublished was requested.
+    cannot return diagnostic items, including an explicit stale override.
     no-closure-report returns the ordinary-queue route, not a different source.
     """
     ca = cycle_artifacts()
     result = {"items": [], "notes": [], "warnings": [], "joint_only": None,
               "authoritative": False, "diagnostic": True, "router": router,
-              "allow_stale": allow_stale, "local_unpublished": local_unpublished,
+              "allow_stale": allow_stale, "sub_reason": None,
               "closure_requested": closure, "closure_ranking": False,
               "requested_bundle": str(bundle) if bundle is not None else None,
               "reason": None, "exit_code": 0, "route": None}
     try:
-        if router and local_unpublished:
-            raise ca.Refused("--local-unpublished permits diagnostic inspection only; never routed", "unauthenticated")
         if bundle is not None:
-            result.update(_bundle_queue(bundle, closure=closure, now=now, allow_stale=allow_stale,
-                                         local_unpublished=local_unpublished))
+            result.update(_bundle_queue(bundle, closure=closure, now=now, allow_stale=allow_stale))
             if router and not result["authoritative"]:
-                raise ca.Refused("unauthenticated bundle diagnostics are never routed", "unauthenticated")
+                raise ca.Refused("bundle diagnostics are never routed", "not-authoritative",
+                                 result["freshness"]["sub_reason"])
             result["closure_ranking"] = closure
         else:
-            if closure or allow_stale or local_unpublished:
-                raise ca.Unavailable("--closure, --allow-stale and --local-unpublished require --bundle DIR|current")
+            if closure or allow_stale:
+                raise ca.Unavailable("--closure and --allow-stale require --bundle DIR|current")
             kind, path, note = link_source()
             if kind is None:
                 raise ca.Unavailable(note)
             if router and kind == "cycle":
-                raise ca.Refused("local cycle files are non-authoritative diagnostics; never routed", "unauthenticated")
+                raise ca.Refused("local cycle files are non-authoritative diagnostics; never routed",
+                                 "not-authoritative", "diagnostic")
             items = census_items(path) if kind == "census" else cycle_items(path)
             result.update(items=eligible_link_items(items), notes=[note], source_kind=kind)
         if not result["items"]:
@@ -672,10 +668,12 @@ def link_queue(bundle=None, *, closure=False, now=None, allow_stale=False, local
             result["route"] = "closure link queue" if closure else "ordinary link queue"
     except ca.Problem as e:
         result.update(failure_route(e.reason), status="refused", message=str(e), items=[],
+                      authoritative=False, diagnostic=True, sub_reason=getattr(e, "sub_reason", None),
                       closure_ranking=False,
                       joint_only=result["joint_only"] if e.reason == "empty" else None)
     except (OSError, ValueError, TypeError, KeyError, AttributeError, EOFError, csv.Error) as e:
         result.update(failure_route("corrupt"), status="refused", message=str(e), items=[],
+                      authoritative=False, diagnostic=True,
                       closure_ranking=False, joint_only=None)
     return result
 
@@ -779,7 +777,6 @@ def main(argv=None):
             p.add_argument("--bundle", metavar="DIR|current", help="validated cycle bundle/store; never local fallback")
             p.add_argument("--closure", action="store_true", help="rank conditional single-root gains in --bundle")
             p.add_argument("--allow-stale", action="store_true", help="explicit human freshness override, recorded in output")
-            p.add_argument("--local-unpublished", action="store_true", help="non-authoritative diagnostics only; never routed")
             p.add_argument("--route", "--router", dest="router", action="store_true", help="router mode: refuse diagnostic bundles")
             p.add_argument("--json", action="store_true", help="machine result with reason, route and cycle_artifacts exit code")
     sub.add_parser("dest").add_argument("rva")
@@ -801,7 +798,7 @@ def main(argv=None):
         return 0 if ok else 1
     if args.cmd == "link":
         result = link_queue(args.bundle, closure=args.closure, allow_stale=args.allow_stale,
-                            local_unpublished=args.local_unpublished, router=args.router)
+                            router=args.router)
         if args.json:
             print(json.dumps(dict(result, items=result["items"][:max(0, args.limit)]), sort_keys=True))
         else:
@@ -810,7 +807,7 @@ def main(argv=None):
             for line in result["warnings"]:
                 print(f"repair_queue: {line}", file=sys.stderr)
             if result["reason"]:
-                print(f"repair_queue: [reason={result['reason']}] {result['message']}; "
+                print(f"repair_queue: [reason={result['reason']}, sub_reason={result['sub_reason']}] {result['message']}; "
                       f"route: {result['route']}; allow_stale={result['allow_stale']}", file=sys.stderr)
             else:
                 if result["route"]:

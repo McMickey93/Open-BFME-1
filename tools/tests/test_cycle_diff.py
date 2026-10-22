@@ -54,7 +54,7 @@ def test_first_run_has_no_invented_gain_and_bundle_previous_is_optional(tmp_path
     assert doc["comparison"] is False and doc["totals"] is None
     assert doc["gained"] is None and doc["lost"] is None
     out = tmp_path / "out"
-    pc.make_bundle(b, out, "test", local_unpublished=True, previous=a)
+    pc.make_bundle(b, out, "test", previous=a)
     ca.validate(out)
     assert ca.read_json(out / ca.CYCLE_DIFF)["comparison"] is True
 
@@ -64,16 +64,16 @@ def test_previous_must_be_earlier_and_not_self(tmp_path):
     b, _ = measured_run(tmp_path / "b", now=NOW + 60)
     for run, previous in ((a, b), (a, a)):
         with pytest.raises(pc.RunError):
-            pc.make_bundle(run, tmp_path / "out", "test", local_unpublished=True, previous=previous)
+            pc.make_bundle(run, tmp_path / "out", "test", previous=previous)
     with pytest.raises(pc.RunError):
-        pc.make_bundle(b, tmp_path / "out", "test", local_unpublished=True, previous=a, first=True)
+        pc.make_bundle(b, tmp_path / "out", "test", previous=a, first=True)
 
 
 def test_diff_total_tamper_with_rehashed_member_refused(tmp_path):
     a, _ = measured_run(tmp_path / "a")
     b, _ = measured_run(tmp_path / "b", now=NOW + 60)
     d = tmp_path / "out"
-    pc.make_bundle(b, d, "test", local_unpublished=True, previous=a)
+    pc.make_bundle(b, d, "test", previous=a)
     doc = ca.read_json(d / ca.CYCLE_DIFF)
     doc["totals"]["gained"] += 1
     (d / ca.CYCLE_DIFF).write_text(cd.dumps(doc))

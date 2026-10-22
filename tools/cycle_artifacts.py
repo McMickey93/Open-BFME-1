@@ -6,19 +6,17 @@ requires a measured closure graph and both report files; it has no data-fold
 member. Receipt provenance binds the executable, ledgers, objects and semantic
 rules. The broad tool digest is provenance, with equal-rule mismatches warning.
 
-Integrity is not authorship. Publishing is deferred: PUBLISHERS is empty and
-DEFAULT_REPO is None. GitHub fetch/publish refuse before contacting the network.
-Explicit --local-unpublished permits diagnostic inspection/installation only;
-Bundle.authoritative is always false for these bundles, even with forged fetch
-evidence. A receipt's historical `authoritative` means a consistent snapshot
-measurement, never authenticated publication.
+Authority is recomputed from clean local run evidence, local origin/master
+ancestry, integrity, matching rules and freshness. A manifest's own authority
+claim is ignored. Local evidence is not a signature or proof against an actor
+who fabricates an entirely consistent run.
 
 Store/<measurement id>/bundle is installed by one directory rename; current.json
 is replaced atomically under a portable writer lock. Readers read the pointer
-once and never revisit it. Installed directories are never replaced or removed.
-BFME2 reason strings/exit codes are preserved: corrupt=1, unavailable=2, empty=3,
-stale=4, incompatible-rules=5, unauthenticated=6, no-closure-report=7. Age limit
-24 h; future skew 600 s; closure lookback 5; git ancestry is informational.
+once. Installed directories are never replaced or removed. Reason/exit slots:
+corrupt=1, unavailable=2, empty=3, stale=4, incompatible-rules=5,
+not-authoritative=6, no-closure-report=7. Age limit 24 h; future skew 600 s;
+closure lookback 5. Unknown ancestry fails closed.
 """
 import argparse
 import ast
@@ -43,7 +41,6 @@ from portable_lock import lock, unlock
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = "bfme1-link-cycle-bundle/1"
 STORE_SCHEMA = "bfme1-link-cycle-store/1"
-EVIDENCE_SCHEMA = "bfme1-link-cycle-evidence/1"
 MANIFEST, RECEIPT = "manifest.json", "receipt.json"
 LINK_STATUS = "link_status.csv.gz"
 CLOSURE_GRAPH = "closure_graph.json.gz"
@@ -56,14 +53,12 @@ OPTIONAL = (CYCLE_DIFF,)
 TAG_PREFIX = "bfme1-link-cycle/"
 TAG = re.compile(r"^bfme1-link-cycle/([0-9a-f]{12})-(\d{8}T\d{6}Z)-([0-9a-f]{12})$")
 SHA = re.compile(r"^[0-9a-f]{64}$")
-DEFAULT_REPO = None
-PUBLISHERS = ()
 DEFAULT_STORE = ROOT / "build/cycle_bundles"
-POINTER, EVIDENCE = "current.json", "evidence.json"
+POINTER = "current.json"
 FRESH_HOURS, FUTURE_SKEW, CLOSURE_LOOKBACK = 24.0, 600, 5
 UPSTREAM = "origin/master"
 EXIT = {"corrupt": 1, "unavailable": 2, "empty": 3, "stale": 4, "incompatible-rules": 5,
-        "unauthenticated": 6, "no-closure-report": 7}
+        "not-authoritative": 6, "no-closure-report": 7}
 EXIT_INVALID, EXIT_UNAVAILABLE, EXIT_EMPTY = 1, 2, 3
 STATUS_COLUMNS = ("name", "kind", "source", "retail_rva", "size", "linked_rva", "placed", "placement_reason",
                   "self_strict", "closed_strict", "closed_strict_dumps_ok", "closed_strict_pilot_rule",
@@ -77,6 +72,7 @@ class Problem(Exception):
 
 class BundleError(Problem):
     reason = "corrupt"
+    sub_reason = "integrity"
 
 
 class Unavailable(Problem):
@@ -88,8 +84,9 @@ class Empty(Problem):
 
 
 class Refused(Problem):
-    def __init__(self, message, reason):
+    def __init__(self, message, reason, sub_reason=None):
         super().__init__(message)
+        self.sub_reason = sub_reason
         assert reason in EXIT
         self.reason = reason
 
@@ -101,7 +98,8 @@ def exit_code(problem):
 def describe(problem):
     kind = ("unavailable" if isinstance(problem, Unavailable) else "empty" if isinstance(problem, Empty)
             else "invalid" if isinstance(problem, BundleError) else "refused")
-    return f"{kind} [reason={problem.reason}]: {problem}"
+    detail = f", sub_reason={problem.sub_reason}" if getattr(problem, "sub_reason", None) else ""
+    return f"{kind} [reason={problem.reason}{detail}]: {problem}"
 
 
 def dumps(value):
@@ -296,7 +294,7 @@ def core_check(receipt, root=ROOT):
 
 
 def check_receipt(receipt, root=ROOT):
-    """Require complete BFME1 measurement provenance, without granting publication trust."""
+    """Require complete BFME1 measurement provenance, without granting authority."""
     if receipt.get("tool") != "link_cycle":
         raise BundleError("receipt is not from link_cycle")
     if not re.fullmatch(r"[0-9a-f]{40}", str(receipt.get("commit", ""))):
@@ -341,7 +339,9 @@ def binding_of(receipt):
     keys = ("core_sha256", "core_canon_sha256", "rule_identity", "tool_digest", "target", "retail_sha256",
             "inputs", "objects_digest", "objects_canon_digest", "provenance_sha256", "provenance_canon_sha256",
             "objects", "objects_missing", "tree_manifest", "submodules", "snapshot", "authoritative",
-            "closure_graph_sha256", "canon_rules", "measure_env", "toolchain_sha256")
+            "closure_graph_sha256", "canon_rules", "measure_env", "toolchain_sha256",
+            "checkout_start", "checkout_end", "run_options", "dirty", "allow_dirty", "warm_start",
+            "compile_failed", "moved_during_run", "diagnostic")
     return {k: receipt.get(k) for k in keys}
 
 
@@ -451,11 +451,7 @@ def _validate(d, root):
     same("headline", manifest.get("headline"), headline_of(receipt))
     same("instance", manifest.get("instance"),
          {"receipt_sha256": members[RECEIPT]["sha256"], "measured_end_ns": receipt["measured_end_ns"]})
-    if manifest.get("publication") not in ("local-unpublished", "release"):
-        raise BundleError("manifest lacks publication mode")
-    # These are publication claims, never copied from receipt.authoritative.
-    same("manifest authority", manifest.get("authoritative"), False)
-    same("manifest authentication", manifest.get("authenticated"), False)
+    # Optional authority claims in an input manifest never confer trust.
     if not isinstance(manifest.get("producer"), str) or not manifest["producer"].strip():
         raise BundleError("manifest has no producer label")
     if parse_utc(manifest["created_utc"]) + FUTURE_SKEW < receipt_end(receipt):
@@ -471,7 +467,7 @@ def _validate(d, root):
 
 
 def validate(directory, *, root=ROOT, recompute_core=True):
-    """Self-consistency only; never claims authentication, freshness or authority.
+    """Self-consistency only; never claims freshness or authority.
 
     Every consumer must use serve(). Unavailable diagnostic rank members are
     validly encoded, but Bundle.data_back_rank() refuses to serve their contents.
@@ -488,24 +484,21 @@ def validate(directory, *, root=ROOT, recompute_core=True):
 
 
 class Bundle:
-    def __init__(self, directory, manifest, receipt):
+    def __init__(self, directory, manifest, receipt, root=ROOT):
         self.dir, self.manifest, self.receipt = Path(directory), manifest, receipt
         self.tag, self.commit = manifest["tag"], manifest["commit"]
         self.paths = {n: self.dir / n for n in manifest["members"]}
         self.paths[MANIFEST] = self.dir / MANIFEST
-        self.evidence, self.notes = None, []
+        self.root, self.now, self.notes = root, None, []
 
     @property
-    def authenticated(self):
-        if self.manifest["publication"] == "local-unpublished":
-            return False
+    def authoritative(self):
+        # Recheck files and local policy; cached/manifest booleans are not evidence.
         try:
-            authenticate_local(self)
-            return True
-        except Refused:
+            return self.freshness(now=self.now)["authoritative"]
+        except Problem:
             return False
 
-    authoritative = property(lambda self: self.authenticated)
     link_status = property(lambda self: self.paths[LINK_STATUS])
     closure_graph = property(lambda self: self.paths[CLOSURE_GRAPH])
     closure_roots = property(lambda self: self.paths[CLOSURE_ROOTS])
@@ -513,9 +506,14 @@ class Bundle:
     rank_json = property(lambda self: self.paths[RANK_JSON])
     cycle_diff = property(lambda self: self.paths.get(CYCLE_DIFF))
 
-    def freshness(self, now=None, root=ROOT, **kwargs):
-        fr = freshness(self.receipt, now=now, root=root, **kwargs)
-        return dict(fr, authenticated=self.authenticated, authoritative=self.authoritative)
+    def freshness(self, now=None, root=None):
+        root = self.root if root is None else root
+        validate(self.dir, root=root)
+        same("loaded receipt", read_json(self.paths[RECEIPT]), self.receipt)
+        fr = freshness(self.receipt, now=now, root=root)
+        why = authority_refusal(self.receipt, fr)
+        return dict(fr, authoritative=why is None,
+                    reason=why[0] if why else None, sub_reason=why[1] if why else None)
 
     def data_back_rank(self):
         doc = read_json(self.rank_json)
@@ -526,197 +524,7 @@ class Bundle:
 
 def load_bundle(directory, *, root=ROOT):
     manifest = validate(directory, root=root)
-    return Bundle(directory, manifest, read_json(Path(directory) / RECEIPT))
-
-
-class GhError(Unavailable):
-    def __init__(self, args, code, err):
-        super().__init__(f"gh {' '.join(args)}: " + (f"exit {code}: " if code is not None else "") + (err or "")[:500])
-        self.args_, self.code, self.err = list(args), code, err or ""
-
-
-class Gh:
-    """The gh CLI. run(args) -> stdout text; json(args) -> parsed stdout. Tests pass a fake
-    with the same two methods."""
-
-    def __init__(self, exe=None):
-        self.exe = exe or os.environ.get("GH") or "gh"
-
-    def run(self, args):
-        try:
-            got = subprocess.run([self.exe, *args], capture_output=True, text=True, encoding="utf-8",
-                                 errors="replace")
-        except OSError as e:
-            raise GhError(args, None, str(e)) from None
-        if got.returncode:
-            raise GhError(args, got.returncode, got.stderr.strip())
-        return got.stdout
-
-    def json(self, args):
-        text = self.run(args)
-        try:
-            return json.loads(text) if text.strip() else None
-        except ValueError as e:
-            raise GhError(args, 0, f"invalid API JSON: {e}") from None
-
-
-def publisher_ok(author):
-    return any(isinstance(author, dict) and author.get("login") == p["login"] and author.get("id") == p["id"]
-               for p in PUBLISHERS)
-
-
-def publishers_text():
-    return ", ".join(f"{p['login']} (id {p['id']})" for p in PUBLISHERS)
-
-
-def release_trust(release, allow_mutable=False):
-    """Why RELEASE is not a trusted publication, or None: its author is a designated
-    publisher and GitHub reports it immutable."""
-    if not PUBLISHERS:
-        return "publisher trust not configured"
-    author = release.get("author") or {}
-    if not publisher_ok(author):
-        return (f"author {author.get('login')!r} (id {author.get('id')!r}) is not a designated publisher "
-                f"({publishers_text()})")
-    if release.get("immutable") is not True and not allow_mutable:
-        return ("the release is not immutable (GitHub reports immutable="
-                f"{release.get('immutable')!r}): its assets and tag can be replaced. The maintainer enables "
-                "immutable releases in the repository settings; --allow-mutable only exercises fetch")
-    return None
-
-
-def tag_commit(gh, repo, tag):
-    """The commit TAG resolves to on REPO, annotated tags peeled; Refused when there is none."""
-    try:
-        ref = gh.json(["api", f"repos/{repo}/git/ref/tags/{tag}"]) or {}
-        obj = ref.get("object") or {}
-        for _ in range(4):
-            if obj.get("type") != "tag":
-                break
-            obj = (gh.json(["api", f"repos/{repo}/git/tags/{obj.get('sha')}"]) or {}).get("object") or {}
-    except GhError as e:
-        raise Refused(f"the tag {tag} cannot be resolved on {repo} ({e.err.strip()[:200]})", "unauthenticated") from None
-    if obj.get("type") != "commit" or not obj.get("sha"):
-        raise Refused(f"the tag {tag} does not resolve to a commit ({obj.get('type')!r})", "unauthenticated")
-    return obj["sha"]
-
-
-def attest(gh, repo, tag):
-    """`gh release verify TAG`: 'verified', or 'not run: ...' when this gh has no such
-    command; Refused when the verification itself fails."""
-    try:
-        gh.run(["release", "verify", tag, "--repo", repo])
-    except GhError as e:
-        if e.code is None or "unknown command" in e.err or "unknown flag" in e.err:
-            return "not run: this gh has no `release verify` (gh 2.81 or newer)"
-        raise Refused(f"`gh release verify {tag}` failed ({e.err.strip()[:300]})", "unauthenticated") from None
-    return "verified"
-
-
-def _authenticate_local(bundle, root=ROOT):
-    """The evidence fetch stored beside BUNDLE (its directory's sibling evidence.json),
-    re-checked against the files; Refused(unauthenticated) when there is none, it is not this
-    bundle's, or it records a release that was not immutable."""
-    if not PUBLISHERS or bundle.manifest["publication"] == "local-unpublished":
-        raise Refused("publisher trust not configured; local-unpublished bundles are never authoritative",
-                      "unauthenticated")
-    path = bundle.dir.parent / EVIDENCE
-    try:
-        ev = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        raise Refused(f"bundle {bundle.tag} at {bundle.dir} has no fetch evidence ({path.name}): it is a local "
-                      "directory, not an authenticated publication (python3 tools/cycle_artifacts.py fetch; a "
-                      "producer inspecting its own unpublished bundle passes --local-unpublished)",
-                      "unauthenticated") from None
-    if not isinstance(ev, dict):
-        raise Refused("malformed publication evidence", "unauthenticated")
-    if ev.get("schema") != EVIDENCE_SCHEMA or ev.get("tag") != bundle.tag or not ev.get("repo"):
-        raise Refused(f"{path} is not the evidence of {bundle.tag}", "unauthenticated")
-    if ev.get("manifest_sha256") != sha256_file(bundle.dir / MANIFEST):
-        raise Refused(f"{bundle.dir / MANIFEST} is not the manifest that was authenticated", "unauthenticated")
-    if not isinstance(ev.get("assets"), dict) or any(not isinstance(v, dict) for v in ev["assets"].values()):
-        raise Refused("malformed asset evidence", "unauthenticated")
-    for name in list(bundle.manifest["members"]) + [MANIFEST]:
-        want = ((ev.get("assets") or {}).get(name) or {}).get("sha256")
-        if not want or want != sha256_file(bundle.dir / name) or \
-                (ev["assets"][name].get("size") != (bundle.dir / name).stat().st_size):
-            raise Refused(f"{name} is not the asset that was authenticated", "unauthenticated")
-    if not publisher_ok(ev.get("author")):
-        raise Refused(f"bundle {bundle.tag} was published by {(ev.get('author') or {}).get('login')!r}, who is not a "
-                      f"designated publisher ({publishers_text()})", "unauthenticated")
-    if ev.get("tag_commit") != bundle.commit or ev.get("target_commitish") != bundle.commit:
-        raise Refused(f"the tag of {bundle.tag} resolved to {str(ev.get('tag_commit'))[:12]}, not the measured commit",
-                      "unauthenticated")
-    r = bundle.receipt
-    if r.get("authoritative") is not True or r.get("snapshot") is not True or r.get("dirty") \
-            or r.get("compile_failed") or r.get("moved_during_run") or (r.get("warm_start") or {}).get("stale"):
-        raise Refused("release does not carry a consistent clean snapshot measurement", "unauthenticated")
-    if ev.get("immutable") is not True:
-        raise Refused(f"bundle {bundle.tag} was fetched with --allow-mutable from a release that is NOT immutable: "
-                      "it is not authenticated and is not served", "unauthenticated")
-    return ev
-
-
-def authenticate_local(bundle, root=ROOT):
-    """Authenticate installed publication evidence; malformed evidence never confers trust."""
-    try:
-        return _authenticate_local(bundle, root)
-    except Refused:
-        raise
-    except (OSError, ValueError, TypeError, KeyError, AttributeError) as e:
-        raise Refused(f"unreadable/malformed publication evidence: {e}", "unauthenticated") from None
-
-
-def list_releases(gh, repo):
-    """Every release of REPO (drafts too when the token may see them), REST order."""
-    pages = gh.json(["api", "--paginate", "--slurp", f"repos/{repo}/releases?per_page=100"]) or []
-    out = []
-    for page in pages:
-        out.extend(page if isinstance(page, list) else [page])
-    return out
-
-
-def release_problem(release):
-    """Why RELEASE is not a complete link-cycle prerelease, or None."""
-    if tag_time(release.get("tag_name")) is None:
-        return "not a link-cycle measurement tag"
-    if release.get("draft"):
-        return "draft (not published)"
-    if not release.get("prerelease"):
-        return "not a prerelease"
-    state = {a.get("name"): a.get("state") for a in release.get("assets") or ()}
-    missing = [m for m in (MANIFEST,) + MEMBERS if state.get(m) != "uploaded"]
-    missing += [m for m in OPTIONAL if m in state and state[m] != "uploaded"]
-    if missing:
-        return "incomplete: no uploaded " + ", ".join(missing)
-    extra = sorted(set(state) - set((MANIFEST,) + MEMBERS + OPTIONAL))
-    if extra:
-        return "holds assets that are not bundle members: " + ", ".join(extra)
-    return None
-
-
-def candidates(releases, tag=None, allow_mutable=False):
-    """([trusted complete link-cycle prereleases, newest MEASUREMENT first], [(tag, why skipped)])."""
-    link = [r for r in releases if str(r.get("tag_name", "")).startswith(TAG_PREFIX)]
-    if tag is not None:
-        link = [r for r in link if r.get("tag_name") == tag]
-    good, skipped = [], []
-    for r in link:
-        why = release_problem(r)
-        if why is None:
-            why = release_trust(r, allow_mutable)
-            why = why and "UNTRUSTED: " + why
-        if why:
-            skipped.append((r.get("tag_name"), why))
-        else:
-            good.append(r)
-    good.sort(key=lambda r: (tag_time(r["tag_name"]), r["tag_name"]), reverse=True)
-    return good, skipped
-
-
-def has_closure(release):
-    names = {a.get("name") for a in release.get("assets") or ()}
-    return CLOSURE_ROOTS in names and CLOSURE_BLOCKERS in names
+    return Bundle(directory, manifest, read_json(Path(directory) / RECEIPT), root)
 
 
 def _git(root, *args):
@@ -738,7 +546,7 @@ def ancestry(commit, root=ROOT, ref=UPSTREAM):
         return None, None, f"ancestry unknown: {root} is not a git checkout"
     have = _git(root, "rev-parse", "--verify", "--quiet", ref + "^{commit}")
     if have is None or have.returncode:
-        return None, None, f"ancestry unknown: no local {ref} here"
+        return None, None, f"ancestry unknown: no local {ref} here (git fetch origin)"
     known = _git(root, "cat-file", "-e", commit + "^{commit}")
     if known is None or known.returncode:
         return None, None, f"ancestry unknown: {commit[:12]} is not in this clone (git fetch origin)"
@@ -752,7 +560,7 @@ def ancestry(commit, root=ROOT, ref=UPSTREAM):
     behind = int(count.stdout.strip()) if count is not None and count.returncode == 0 and count.stdout.strip().isdigit() else None
     return True, behind, (f"the measured commit is an ancestor of local {ref}, "
                           + (f"{behind} commit(s) behind it" if behind is not None else "distance unknown")
-                          + " (information only; git fetch origin for a current count)")
+                          + " (git fetch origin for a current count)")
 
 
 def freshness(receipt, now=None, root=ROOT, ref=UPSTREAM, max_age_hours=FRESH_HOURS):
@@ -774,8 +582,26 @@ def freshness(receipt, now=None, root=ROOT, ref=UPSTREAM, max_age_hours=FRESH_HO
 def refusal(fr, allow_stale=False):
     if fr["rules_match"] is not True:
         return "incompatible-rules", "BFME1 semantic rules differ or local rules are unreadable; no override"
+    if fr["future"]:
+        return "corrupt", "measurement is more than 600 s in the future"
     if fr["stale"] and not allow_stale:
         return "stale", f"measurement exceeds the {fr['max_age_hours']:g} h freshness window"
+    return None
+
+
+def authority_refusal(receipt, fr):
+    """(reason, sub-reason, explanation), independent of any bundle claim/flag."""
+    run_failure = context.run_authority_failure(receipt)
+    if run_failure:
+        return "not-authoritative", run_failure, "receipt does not prove a clean local run: " + run_failure
+    if receipt.get("authoritative") is not True:
+        return "not-authoritative", "receipt-not-authoritative", "link_cycle did not produce an authoritative receipt"
+    why = refusal(fr)
+    if why:
+        return why[0], {"corrupt": "future", "stale": "stale", "incompatible-rules": "rules-mismatch"}[why[0]], why[1]
+    if fr["ancestor"] is not True:
+        sub = "non-ancestor" if fr["ancestor"] is False else "ancestry-unknown"
+        return "not-authoritative", sub, fr["ancestry"]
     return None
 
 
@@ -786,15 +612,9 @@ def format_freshness(bundle, fr):
         lines.append("RULES MISMATCH OR UNKNOWN: incompatible-rules")
     elif fr["tool_digest_matches"] is False:
         lines.append("WARNING: tool digest differs under equal BFME1 semantic rules")
-    if not bundle.authenticated:
-        lines.append("UNAUTHENTICATED: local diagnostic; never authoritative")
+    lines.append("AUTHORITATIVE: clean local run" if fr["authoritative"] else
+                 f"NOT AUTHORITATIVE: {fr['reason']} / {fr['sub_reason']}")
     return lines
-
-
-def require_publisher_trust(repo):
-    if not PUBLISHERS or not repo:
-        raise Refused("publisher trust not configured (empty BFME1 allowlist or no release repository)",
-                      "unauthenticated")
 
 
 def _writer(store):
@@ -809,7 +629,7 @@ def _writer(store):
     return handle
 
 
-def installed(store, root=ROOT):
+def installed(store, root=ROOT, now=None):
     out = []
     for d in Path(store).iterdir():
         if d.name.startswith(".") or not d.is_dir():
@@ -818,24 +638,24 @@ def installed(store, root=ROOT):
             raise BundleError(f"unexpected directory in bundle store: {d.name}")
         b = load_bundle(d / "bundle", root=root)
         same("installed directory identity", d.name, bundle_id(b.tag))
+        fr = b.freshness(now=now)
         out.append({"id": d.name, "tag": b.tag, "commit": b.commit,
                     "measured_end_ns": b.receipt["measured_end_ns"],
                     "measured_end_utc": measured_of(b.receipt)["end_utc"],
                     "rules_tuple": rules_of(b.receipt), "closure_report": True,
-                    "authenticated": b.authenticated, "authoritative": b.authoritative,
-                    "publication": b.manifest["publication"]})
+                    "authoritative": fr["authoritative"], "reason": fr["reason"],
+                    "sub_reason": fr["sub_reason"]})
     return sorted(out, key=lambda e: (e["measured_end_ns"], e["id"]), reverse=True)
 
 
 def write_pointer(store, now=None, root=ROOT):
-    """Caller holds the writer lock; pointer claims never confer authentication."""
+    """Caller holds the writer lock; pointer claims never confer authority."""
     store = Path(store)
-    entries = installed(store, root)
-    trusted = [e for e in entries if e["authenticated"]]
+    entries = installed(store, root, now)
+    trusted = [e for e in entries if e["authoritative"]]
     doc = {"schema": STORE_SCHEMA, "written_utc": iso_utc(time.time() if now is None else now),
            "latest_measurement": trusted[0]["id"] if trusted else None,
            "latest_closure_ready": next((e["id"] for e in trusted if e["closure_report"]), None),
-           "latest_local_unpublished": next((e["id"] for e in entries if e["publication"] == "local-unpublished"), None),
            "bundles": entries}
     fd, tmp = tempfile.mkstemp(prefix=".current-", dir=store)
     try:
@@ -867,7 +687,7 @@ def read_pointer(store):
             ids.append(e["id"])
         if len(set(ids)) != len(ids):
             raise BundleError("duplicate bundle id in pointer")
-        for k in ("latest_measurement", "latest_closure_ready", "latest_local_unpublished"):
+        for k in ("latest_measurement", "latest_closure_ready"):
             if doc.get(k) is not None and doc[k] not in ids:
                 raise BundleError(f"pointer {k} is not installed")
         return doc
@@ -877,17 +697,16 @@ def read_pointer(store):
         raise BundleError(f"invalid pointer: {e}") from None
 
 
-def closure_choice(doc, root=ROOT, local_unpublished=False):
+def closure_choice(doc, root=ROOT):
     mine = local_rules(root)
-    ready = [e for e in doc["bundles"] if e.get("closure_report") and
-             (e.get("authenticated") or local_unpublished and e.get("publication") == "local-unpublished")]
+    ready = [e for e in doc["bundles"] if e.get("closure_report")]
     for e in ready[:CLOSURE_LOOKBACK + 1]:
         if mine is not None and e.get("rules_tuple") == mine:
             return e["id"], True
     return (ready[0]["id"] if ready else None), False
 
 
-def resolve(path, need_closure=False, root=ROOT, local_unpublished=False):
+def resolve(path, need_closure=False, root=ROOT):
     path = Path(path)
     if (path / MANIFEST).is_file():
         return path, []
@@ -895,29 +714,22 @@ def resolve(path, need_closure=False, root=ROOT, local_unpublished=False):
     if not doc["bundles"]:
         raise Empty("bundle store has no measurements")
     if need_closure:
-        ident, _ = closure_choice(doc, root, local_unpublished)
+        ident, _ = closure_choice(doc, root)
         if ident is None:
-            reason = "unauthenticated" if any(e.get("closure_report") for e in doc["bundles"]) else "no-closure-report"
-            raise Refused("store has no authenticated closure report", reason)
+            raise Refused("store has no closure report", "no-closure-report")
     else:
-        ident = doc.get("latest_measurement")
-        if local_unpublished:
-            ident = doc["bundles"][0]["id"]
-        if ident is None:
-            raise Refused("store has no authenticated measurement", "unauthenticated")
+        # Pointer authority claims can be stale or forged. Select by recorded
+        # measurement order, then serve() recomputes every check from the files.
+        ident = doc["bundles"][0]["id"]
     notes = []
     if ident != doc["bundles"][0]["id"]:
         notes.append(f"NOT THE NEWEST: serving compatible closure measurement {ident}")
     return path / ident / "bundle", notes
 
 
-def install_local(directory, store, *, local_unpublished=False, root=ROOT, now=None):
+def install_local(directory, store, *, root=ROOT, now=None):
     """Copy and validate before one rename under the writer lock. Never overwrite an id."""
-    if not local_unpublished:
-        raise Refused("local install requires --local-unpublished", "unauthenticated")
     source = load_bundle(directory, root=root)
-    if source.manifest["publication"] != "local-unpublished":
-        raise Refused("local install accepts only explicitly local-unpublished bundles", "unauthenticated")
     store = Path(store)
     handle = _writer(store)
     tmp = None
@@ -927,9 +739,6 @@ def install_local(directory, store, *, local_unpublished=False, root=ROOT, now=N
         shutil.copytree(source.dir, tmp / "bundle", symlinks=True)
         copied = load_bundle(tmp / "bundle", root=root)
         same("copied manifest", copied.manifest, source.manifest)
-        # An explicit marker is informational, never fetch authentication evidence.
-        (tmp / EVIDENCE).write_text(dumps({"schema": EVIDENCE_SCHEMA, "local_unpublished": True,
-                                         "authenticated": False, "tag": source.tag}), encoding="utf-8")
         if final.exists():
             same("immutable installed manifest", validate(final / "bundle", root=root), copied.manifest)
         else:
@@ -946,142 +755,25 @@ def install_local(directory, store, *, local_unpublished=False, root=ROOT, now=N
         handle.close()
 
 
-def serve(path, *, allow_stale=False, local_unpublished=False, need_closure=False, need_rank=False,
-          now=None, root=ROOT):
-    directory, notes = resolve(path, need_closure, root, local_unpublished)
+def serve(path, *, allow_stale=False, need_closure=False, need_rank=False, now=None, root=ROOT):
+    directory, notes = resolve(path, need_closure, root)
     if need_closure and (directory / MANIFEST).is_file():
         m = read_manifest(directory)
-        # A declared profile member subsequently deleted remains corruption.
         if not {CLOSURE_ROOTS, CLOSURE_BLOCKERS} <= set(m.get("members") or {}):
             raise Refused("bundle carries no closure report", "no-closure-report")
     b = load_bundle(directory, root=root)
-    b.notes = notes
-    if not local_unpublished:
-        b.evidence = authenticate_local(b, root)
-    else:
-        b.notes.append("UNAUTHENTICATED LOCAL BUNDLE (--local-unpublished): never authoritative")
+    b.notes, b.now = notes, now
     fr = b.freshness(now=now, root=root)
-    if fr["future"]:
-        raise BundleError("measurement is more than 600 s in the future")
-    why = refusal(fr, allow_stale)
-    if why:
-        raise Refused(why[1], why[0])
+    why = authority_refusal(b.receipt, fr)
+    if why and not (allow_stale and why[0] == "stale"):
+        raise Refused(why[2], why[0], why[1])
+    # A human stale override can inspect, but cannot grant authority or bypass ancestry.
+    if allow_stale and fr["ancestor"] is not True:
+        sub = "non-ancestor" if fr["ancestor"] is False else "ancestry-unknown"
+        raise Refused(fr["ancestry"], "not-authoritative", sub)
     if need_rank:
         b.data_back_rank()
     return b, fr, format_freshness(b, fr) + b.notes
-
-
-def install(gh, repo, release, store, *, root=ROOT, allow_mutable=False, now=None):
-    """Download RELEASE into a temporary directory inside STORE, authenticate and validate
-    it, write its evidence, and rename the complete directory to STORE/<id>. An id already
-    installed from the same release is kept as it is (bundles are immutable). On any
-    failure the store is unchanged. Returns the manifest."""
-    require_publisher_trust(repo)
-    store = Path(store)
-    tag = release["tag_name"]
-    final = store / bundle_id(tag)
-    why = release_trust(release, allow_mutable)
-    if why:
-        raise Refused(f"{tag}: {why}", "unauthenticated")
-    if final.is_dir():
-        try:
-            ev = json.loads((final / EVIDENCE).read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            ev = {}
-        if isinstance(ev, dict) and ev.get("release_id") == release.get("id") and (ev.get("immutable") is True or allow_mutable):
-            return validate(final / "bundle", root=root)
-        raise BundleError(f"{final} is already installed from another release than "
-                          f"{release.get('id')}: a published bundle is never replaced; inspect both")
-    store.mkdir(parents=True, exist_ok=True)
-    tmp = Path(tempfile.mkdtemp(prefix=".partial-", dir=store))
-    try:
-        down = tmp / "bundle"
-        down.mkdir()
-        gh.run(["release", "download", tag, "--repo", repo, "--dir", str(down)])
-        assets = {a["name"]: a for a in release.get("assets") or ()}
-        if len(assets) != len(release.get("assets") or ()):
-            raise BundleError("release lists duplicate asset names")
-        got = {p.name for p in down.iterdir()}
-        if got != set(assets):
-            raise BundleError(f"{tag}: downloaded {sorted(got)}, the release lists {sorted(assets)}")
-        hashes = {}
-        for name, a in sorted(assets.items()):
-            digest = str(a.get("digest") or "")
-            hashes[name] = sha256_file(down / name)
-            if a.get("size") != (down / name).stat().st_size:
-                raise BundleError(f"release asset size mismatch for {name}")
-            if not digest.startswith("sha256:"):
-                raise Refused(f"{tag}: the release API reports no SHA-256 digest for {name}: its bytes are not "
-                              "bound by the platform", "unauthenticated")
-            if digest[7:] != hashes[name]:
-                raise BundleError(f"{tag}: {name} downloads as {hashes[name][:16]}, the release API says "
-                                  f"{digest[7:23]}")
-        manifest = validate(down, root=root)
-        if manifest["tag"] != tag:
-            raise BundleError(f"release {tag} carries the manifest of {manifest['tag']}")
-        if manifest["publication"] == "local-unpublished":
-            raise Refused("local-unpublished bundles are never authenticated", "unauthenticated")
-        commit = tag_commit(gh, repo, tag)
-        if commit != manifest["commit"]:
-            raise Refused(f"the tag {tag} resolves to {commit[:12]}, not the measured commit "
-                          f"{manifest['commit'][:12]}", "unauthenticated")
-        if release.get("target_commitish") != manifest["commit"]:
-            raise Refused(f"release {tag} targets {str(release.get('target_commitish'))[:40]!r}, not the measured "
-                          f"commit {manifest['commit']}", "unauthenticated")
-        immutable = release.get("immutable") is True
-        evidence = {"schema": EVIDENCE_SCHEMA, "repo": repo, "release_id": release.get("id"), "tag": tag,
-                    "author": {k: (release.get("author") or {}).get(k) for k in ("login", "id")},
-                    "immutable": immutable, "tag_commit": commit, "target_commitish": release.get("target_commitish"),
-                    "published_at": release.get("published_at"),
-                    "assets": {n: {"sha256": h, "size": (down / n).stat().st_size} for n, h in hashes.items()},
-                    "manifest_sha256": hashes[MANIFEST],
-                    "attestation": attest(gh, repo, tag) if immutable else "not run: the release is not immutable",
-                    "fetched_utc": iso_utc(time.time() if now is None else now),
-                    "note": None if immutable else "FETCHED WITH --allow-mutable: NOT AUTHENTICATED, not served"}
-        (tmp / EVIDENCE).write_text(json.dumps(evidence, indent=1, sort_keys=True) + "\n", encoding="utf-8",
-                                    newline="\n")
-        os.chmod(tmp, 0o755)                     # mkdtemp's 0700 would follow the rename
-        os.rename(tmp, final)                    # one rename of a complete directory; nothing is replaced
-    except BaseException:
-        shutil.rmtree(tmp, ignore_errors=True)
-        raise
-    return manifest
-
-
-def fetch(repo, store, *, tag=None, gh=None, root=ROOT, now=None, warn=None):
-    require_publisher_trust(repo)  # Refuse before credentials/network or filesystem writes.
-    gh = gh or Gh()
-    warn = warn or (lambda line: print(line, file=sys.stderr))
-    good, skipped = candidates(list_releases(gh, repo), tag)
-    if not good:
-        if any("UNTRUSTED" in why for _, why in skipped):
-            raise Refused("no trusted BFME1 publisher release", "unauthenticated")
-        if tag:
-            raise Unavailable(f"no complete release {tag}")
-        raise Empty("no complete BFME1 cycle release")
-    handle = _writer(store)
-    try:
-        manifest = None
-        failures = []
-        for release in good[:CLOSURE_LOOKBACK + 1]:
-            try:
-                got = install(gh, repo, release, store, root=root, now=now)
-            except Problem as e:
-                if tag:
-                    raise
-                failures.append(e)
-                warn(describe(e))
-                continue
-            if manifest is None:
-                manifest = got
-            if got["rules"] == local_rules(root) or tag:
-                break
-        if manifest is None:
-            raise failures[0]
-        return manifest, [describe(e) for e in failures], write_pointer(store, now, root)
-    finally:
-        unlock(handle)
-        handle.close()
 
 
 def report(bundle, now=None, out=None, err=None, root=ROOT):
@@ -1093,11 +785,12 @@ def report(bundle, now=None, out=None, err=None, root=ROOT):
 
 def status(store, now=None, root=ROOT, out=None):
     doc = read_pointer(store)
-    # Recheck the files/authentication; pointer booleans are never trust evidence.
+    # Recheck files and policy; pointer booleans never confer authority.
     for entry in doc["bundles"]:
         b = load_bundle(Path(store) / entry["id"] / "bundle", root=root)
-        entry["authenticated"], entry["authoritative"] = b.authenticated, b.authoritative
-    trusted = [e for e in doc["bundles"] if e["authenticated"]]
+        fr = b.freshness(now=now)
+        entry.update(authoritative=fr["authoritative"], reason=fr["reason"], sub_reason=fr["sub_reason"])
+    trusted = [e for e in doc["bundles"] if e["authoritative"]]
     doc["latest_measurement"] = trusted[0]["id"] if trusted else None
     doc["latest_closure_ready"] = next((e["id"] for e in trusted if e["closure_report"]), None)
     print(dumps(doc), end="", file=out or sys.stdout)
@@ -1107,35 +800,24 @@ def status(store, now=None, root=ROOT, out=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    f = sub.add_parser("fetch")
-    which = f.add_mutually_exclusive_group(required=True)
-    which.add_argument("--latest", action="store_true")
-    which.add_argument("--tag")
-    f.add_argument("--repo", default=DEFAULT_REPO)
-    f.add_argument("--store", default=str(DEFAULT_STORE))
     s = sub.add_parser("status")
     s.add_argument("store", nargs="?", default=str(DEFAULT_STORE))
     i = sub.add_parser("install")
     i.add_argument("dir")
     i.add_argument("--store", default=str(DEFAULT_STORE))
-    i.add_argument("--local-unpublished", action="store_true")
     v = sub.add_parser("validate")
     v.add_argument("dir")
-    v.add_argument("--local-unpublished", action="store_true")
     v.add_argument("--allow-stale", action="store_true")
     v.add_argument("--closure", action="store_true")
     args = ap.parse_args(argv)
     try:
-        if args.cmd == "fetch":
-            fetch(args.repo, args.store, tag=args.tag)
-        elif args.cmd == "status":
+        if args.cmd == "status":
             status(args.store)
         elif args.cmd == "install":
-            m, _ = install_local(args.dir, args.store, local_unpublished=args.local_unpublished)
-            print(f"installed {m['tag']}: UNAUTHENTICATED, never authoritative")
+            m, _ = install_local(args.dir, args.store)
+            print(f"installed {m['tag']}; authority is recomputed when served")
         else:
-            b, _, lines = serve(args.dir, allow_stale=args.allow_stale,
-                                local_unpublished=args.local_unpublished, need_closure=args.closure)
+            _, _, lines = serve(args.dir, allow_stale=args.allow_stale, need_closure=args.closure)
             for line in lines:
                 print(line)
         return 0
