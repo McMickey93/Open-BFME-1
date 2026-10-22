@@ -29,3 +29,6 @@ typedef _STL::_Rb_tree<AsciiString, AsciiString, _STL::_Identity<AsciiString>,
 
 // retail 0x00076A90
 template void AsciiStringSetTree::_M_erase( _STL::_Rb_tree_node<AsciiString> * );
+
+// retail 0x00633760
+template void AsciiStringSetTree::erase( AsciiStringSetTree::iterator, AsciiStringSetTree::iterator );
