@@ -3,11 +3,10 @@
 Rule identity hashes only MEASUREMENT_FILES, traced from link_cycle's executed
 providers: build/COFF/case-shim/locking and current-object receipts; census's
 verified-data, relocation, alias and pin owners (including ABI/import/ILT route
-proof); build's relocation/definition helpers; and dump/retail relocation
-producers for the swapped objects. gen_case_shims is also a snapshot subprocess.
+proof and progress's generated-row identity constants); build's relocation and
+definition helpers; and dump/retail relocation producers for the swapped objects. gen_case_shims is also a snapshot subprocess.
 Whole provider files are bound, including their optional measurement branches.
-CLI-only queues, progress rendering and gates never called by the cycle are not
-semantic dependencies merely because a provider imports them. The broad tools
+CLI-only queues and gates never called by the cycle are not semantic dependencies merely because a provider imports them. The broad tools
 inventory remains tool_digest provenance: unrelated fleet edits warn, not refuse.
 New local imports in the driver require review of this explicit set (tested).
 No BFME2 policy, release identity or authority default belongs here.
@@ -31,7 +30,7 @@ PROFILE = {"target": "bfme1-retail-1.03", "text_groups": [[0x1000, ".text"]],
 MEASUREMENT_FILES = (
     "link_cycle.py", "link_cycle_context.py", "link_census.py", "build.py",
     "census_receipts.py", "data_rows.py", "reloc_ledger.py", "alias_guard.py",
-    "pin_consistency.py", "abi_view.py", "import_pin_guard.py", "ilt_oracle.py",
+    "pin_consistency.py", "progress.py", "abi_view.py", "import_pin_guard.py", "ilt_oracle.py",
     "body_guard.py", "dir32_record_guard.py", "archive_import.py",
     "coffar.py", "gen_case_shims.py", "portable_lock.py", "target_guard.py",
     "dump_relocs.py", "dump_apply.py", "retail_relocs.py",
