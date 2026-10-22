@@ -533,6 +533,11 @@ class Bundle:
         # A stamp binds the complete manifest; evidence is independently checked.
         fr["stamp_failure"] = cycle_stamp.verify(self.dir)
         fr["evidence_failure"] = None if fr["stamp_failure"] else run_evidence_failure(self.dir, self.receipt, root)
+        # History admission is independent of the first displayed refusal:
+        # unsigned incompatible bundles must not consume the rules lookback.
+        fr["execution_eligible"] = (fr["stamp_failure"] is None and fr["evidence_failure"] is None
+                                    and context.run_authority_failure(self.receipt) is None
+                                    and self.receipt.get("authoritative") is True and fr["ancestor"] is True)
         why = authority_refusal(self.receipt, fr)
         return dict(fr, authoritative=why is None,
                     reason=why[0] if why else None, sub_reason=why[1] if why else None)
@@ -738,7 +743,8 @@ def installed(store, root=ROOT, now=None):
                     "measured_end_ns": b.receipt["measured_end_ns"],
                     "measured_end_utc": measured_of(b.receipt)["end_utc"],
                     "rules_tuple": rules_of(b.receipt), "closure_report": True,
-                    "authoritative": fr["authoritative"], "reason": fr["reason"],
+                    "authoritative": fr["authoritative"], "execution_eligible": fr["execution_eligible"],
+                    "reason": fr["reason"],
                     "sub_reason": fr["sub_reason"]})
     return sorted(out, key=lambda e: (e["measured_end_ns"], e["id"]), reverse=True)
 
@@ -819,7 +825,7 @@ def resolve(path, need_closure=False, root=ROOT, now=None):
     eligible = [e for e in entries if e["authoritative"]]
     if need_closure:
         # Diagnostic installs never consume the compatible history window.
-        candidates = [e for e in entries if e.get("reason") != "not-authoritative"]
+        candidates = [e for e in entries if e["execution_eligible"]]
         ident, _ = closure_choice({"bundles": candidates or entries}, root)
         if ident is None:
             raise Refused("store has no closure report", "no-closure-report")

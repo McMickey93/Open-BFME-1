@@ -236,3 +236,32 @@ def test_defect_unsigned_install_reserves_signed_measurement(checkout, tmp_path,
     ca.install_local(unsigned, store, root=root, now=NOW)
     assert (installed / stamp.STAMP).read_bytes() == before
     assert ca.serve(store, root=root, now=NOW)[1]["authoritative"]
+
+@pytest.mark.parametrize("signature", ["unsigned", "invalid", "wrong-key"])
+def test_defect_unsigned_incompatible_bundles_evict_closure(checkout, tmp_path, signature):
+    root, _ = checkout
+    good_run, _ = failed_run(checkout, tmp_path / "good-run")
+    good = freeze(good_run, tmp_path / "good", root)
+    store = tmp_path / "store"
+    ca.install_local(good, store, root=root, now=NOW)
+    assert rq.route_link_queue(store, closure=True, now=NOW)["status"] == "ok"
+    for index in range(ca.CLOSURE_LOOKBACK + 1):
+        run, receipt = failed_run(checkout, tmp_path / f"bad-run-{index}", now=NOW + index + 1)
+        receipt["tool_dependencies"]["build.py"] = "f" * 64
+        receipt["tool_digest"] = ctx.digest(receipt["tool_dependencies"])
+        receipt["rule_identity"] = ctx.rule_identity(receipt["tool_dependencies"])
+        save_receipt(run, receipt)
+        out = freeze(run, tmp_path / f"bad-{index}", root, sign=False)
+        if signature == "invalid":
+            (out / stamp.STAMP).write_text("{}")
+        elif signature == "wrong-key":
+            from cycle_fixture import host_stamp
+            host_stamp(out, stamp.keygen(tmp_path / f"untrusted-key-{index}"))
+        ca.install_local(out, store, root=root, now=NOW + 10)
+    assert rq.route_link_queue(store, now=NOW + 10)["status"] == "ok"
+    result = rq.route_link_queue(store, closure=True, now=NOW + 10)
+    assert result["status"] == "ok" and result["authoritative"] is True
+    assert result["items"][0]["function"] == "f"
+    installed = ca.installed(store, root=root, now=NOW + 10)
+    assert sum(e["execution_eligible"] for e in installed) == 1
+    assert ca.serve(store, root=root, now=NOW + 10, need_closure=True)[0].tag == ca.read_manifest(good)["tag"]
