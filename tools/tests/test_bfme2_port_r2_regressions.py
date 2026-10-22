@@ -265,3 +265,51 @@ def test_defect_unsigned_incompatible_bundles_evict_closure(checkout, tmp_path, 
     installed = ca.installed(store, root=root, now=NOW + 10)
     assert sum(e["execution_eligible"] for e in installed) == 1
     assert ca.serve(store, root=root, now=NOW + 10, need_closure=True)[0].tag == ca.read_manifest(good)["tag"]
+
+def test_defect_cycle_diff_calls_unsigned_bundle_comparison_verified(checkout, tmp_path):
+    root, _ = checkout
+    old_run, _ = failed_run(checkout, tmp_path / "old-run")
+    new_run, _ = run_for(checkout, tmp_path / "new-run", now=NOW + 1)
+    old = freeze(old_run, tmp_path / "old", root, sign=False)
+    new = freeze(new_run, tmp_path / "new", root, sign=False)
+    for path in (old, new):
+        with pytest.raises(ca.Refused) as error:
+            ca.serve(path, root=root, now=NOW + 1)
+        assert error.value.sub_reason == "unstamped"
+    report = tmp_path / "diff.json"
+    assert cd.main([str(new), "--previous", str(old), "--json", str(report)]) == 0
+    doc = json.loads(report.read_text())
+    assert "comparison_verified" not in doc and doc["totals"]["gained"] == 10
+    assert doc["consistent"] is True and doc["authoritative"] is False
+    assert doc["diagnostic"] is True and doc["label"].startswith("DIAGNOSTIC:")
+    assert all(not status["authoritative"] for status in doc["input_authority"].values())
+    cd.check_report(doc)
+
+
+@pytest.mark.parametrize("old_signed,new_signed", [(True, True), (True, False), (False, True)])
+def test_diff_cli_requires_both_authenticated_inputs(checkout, tmp_path, monkeypatch, old_signed, new_signed):
+    root, _ = checkout
+    old_run, _ = failed_run(checkout, tmp_path / "old-run")
+    new_run, _ = run_for(checkout, tmp_path / "new-run", now=NOW + 1)
+    old = freeze(old_run, tmp_path / "old", root, sign=old_signed)
+    new = freeze(new_run, tmp_path / "new", root, sign=new_signed)
+    monkeypatch.setattr(ca, "ROOT", root)
+    monkeypatch.setattr(ca.time, "time", lambda: NOW + 1)
+    report = tmp_path / "diff.json"
+    assert cd.main([str(new), "--previous", str(old), "--json", str(report)]) == 0
+    doc = ca.read_json(report)
+    assert doc["consistent"] is True
+    assert doc["authoritative"] is (old_signed and new_signed)
+    assert doc["diagnostic"] is not doc["authoritative"]
+    assert doc["input_authority"]["old"]["authoritative"] is old_signed
+    assert doc["input_authority"]["new"]["authoritative"] is new_signed
+    assert doc["totals"]["gained"] == 10
+    cd.check_report(doc)
+
+
+def test_diff_cli_raw_runs_are_diagnostic(checkout, tmp_path):
+    old, _ = failed_run(checkout, tmp_path / "old")
+    new, _ = run_for(checkout, tmp_path / "new", now=NOW + 1)
+    doc = cd.cli_compare(old, new)
+    assert doc["consistent"] and doc["diagnostic"] and not doc["authoritative"]
+    assert doc["input_authority"]["old"]["sub_reason"] == "raw-run"

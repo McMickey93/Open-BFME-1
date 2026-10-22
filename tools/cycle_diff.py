@@ -5,6 +5,8 @@ The interval-union comparison is adapted from BFME2 02518d74b1. Names do not
 score: renames gain zero. This scoped port omits BFME2 fold diagnostics and
 candidate-cause attribution; it reports ruler changes using the single BFME1
 semantic dependency declaration in link_cycle_context, plus target/environment.
+The CLI labels raw/unsigned comparisons diagnostic and checks both bundles'
+authority independently of receipt/status consistency.
 """
 import argparse
 import csv
@@ -133,7 +135,7 @@ def check_report(doc):
         if doc["totals"] is not None or doc["gained"] is not None or doc["lost"] is not None:
             raise CycleDiffError("first-run report invents a gain")
         return
-    if doc.get("comparison_verified") is not True:
+    if doc.get("consistent", doc.get("comparison_verified")) is not True:
         if any(doc.get(k) is not None for k in ("totals", "gained", "lost")):
             raise CycleDiffError("unverified comparison cannot count progress")
         return
@@ -184,6 +186,37 @@ def dumps(doc):
     return json.dumps(doc, sort_keys=True, indent=1) + "\n"
 
 
+def cli_input_authority(directory, expected):
+    """Authenticate a CLI input independently of the internal interval validator."""
+    import cycle_artifacts as ca
+    directory = Path(directory)
+    if not (directory / ca.MANIFEST).exists():
+        return {"authoritative": False, "reason": "not-authoritative", "sub_reason": "raw-run"}
+    try:
+        bundle, fr, _ = ca.serve(directory, root=ca.ROOT)
+    except ca.Refused as error:
+        return {"authoritative": False, "reason": error.reason, "sub_reason": error.sub_reason}
+    except ca.Problem as error:
+        raise CycleDiffError(ca.describe(error)) from None
+    if identity(bundle.receipt) != expected:
+        raise CycleDiffError("authenticated input identifies another receipt")
+    return {"authoritative": fr["authoritative"], "reason": None, "sub_reason": None}
+
+
+def cli_compare(old, new):
+    doc = compare(old, new)
+    inputs = {"new": cli_input_authority(new, doc["identity"]["new"]),
+              "old": cli_input_authority(old, doc["identity"]["old"]) if old is not None else None}
+    authoritative = all(side is None or side["authoritative"] for side in inputs.values()) and not doc["measurement_changed"]
+    # Keep comparison_verified as an internal, legacy consistency field only.
+    doc.pop("comparison_verified")
+    doc.update(consistent=True, authoritative=authoritative, diagnostic=not authoritative,
+               label="AUTHORITATIVE: measured unique bytes" if authoritative else "DIAGNOSTIC: consistent unique bytes; no authoritative progress claim",
+               input_authority=inputs)
+    check_report(doc)
+    return doc
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("new")
@@ -191,7 +224,7 @@ def main(argv=None):
     ap.add_argument("--json")
     args = ap.parse_args(argv)
     try:
-        raw = dumps(compare(args.previous, args.new))
+        raw = dumps(cli_compare(args.previous, args.new))
         if args.json:
             Path(args.json).write_text(raw, encoding="utf-8")
         else:
