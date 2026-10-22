@@ -43,8 +43,11 @@ UpdateSleepTime BattlePlanUpdate::update()
 				{
 					if( m_currentPlan == PLANSTATUS_BOMBARDMENT )
 					{
+						// This TU uses the dockupdate ObjectModule layout: m_object is at +8.
+						// Read the slot here without emitting its incompatible inline accessor.
 						AIUpdateInterface *ai = *reinterpret_cast<AIUpdateInterface **>(
-							reinterpret_cast<UnsignedByte *>( getObject() ) + 0x204 );
+							reinterpret_cast<UnsignedByte *>(
+							*reinterpret_cast<Object **>(reinterpret_cast<UnsignedByte *>(this) + 0x08)) + 0x204 );
 						if( ai )
 						{
 							if( isTurretInNaturalPosition() )
