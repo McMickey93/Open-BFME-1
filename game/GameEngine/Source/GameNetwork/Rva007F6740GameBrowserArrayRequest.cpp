@@ -20,10 +20,10 @@ public:
 	void m();
 };
 
-class BfmeMsgVJH
+class BfmeC994
 {
 public:
-	BfmeMsgVJH( char *buffer, int size ) throw();
+	BfmeC994( char *buffer, int size ) throw();
 
 	char m_data[ 0x34 ];
 };
@@ -51,7 +51,7 @@ public:
 	virtual void slot10() = 0;
 	virtual void slot14() = 0;
 	virtual void slot18() = 0;
-	virtual void send( BfmeMsgVJH *message, void *context,
+	virtual void send( BfmeC994 *message, void *context,
 		int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8,
 		int a14, int a13, const char *int64Text,
 		const char *stringText ) throw() = 0;
@@ -62,7 +62,7 @@ class Rva007F6740AsyncService
 public:
 	virtual void slot00() = 0;
 	virtual void slot04() = 0;
-	virtual void send( BfmeMsgVJH *message,
+	virtual void send( BfmeC994 *message,
 		void (__cdecl *callback)( Rva007E8810Message *,
 			Rva007F6740Receiver * ),
 		Rva007F6740Receiver *owner, int transaction ) throw() = 0;
@@ -91,7 +91,7 @@ void Rva007F6740Receiver::call( void *context, int a1, int a2, int a3,
 	const char **stringParts, unsigned stringCount, int a13,
 	int a14 ) throw()
 {
-	BfmeMsgVJH message( m_messageBuffer, sizeof( m_messageBuffer ) );
+	BfmeC994 message( m_messageBuffer, sizeof( m_messageBuffer ) );
 	char stringText[ 0x100 ];
 	char int64Text[ 0x100 ];
 
