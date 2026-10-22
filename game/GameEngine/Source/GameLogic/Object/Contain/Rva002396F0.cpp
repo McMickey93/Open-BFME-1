@@ -74,7 +74,6 @@ typedef char Rva002396F0TreeViewSize[
 typedef char Rva002396F0ModelConditionFlagsSize[
 	(sizeof(BitFlags<320>) == 0x28) ? 1 : -1];
 
-extern void __cdecl Gen0082E5F0(void *node, unsigned int size);
 
 struct Gen_t_002221b0_p4pod
 {
@@ -144,7 +143,7 @@ public:
 	Rva002396F0ObjectHash m_objectHash;
 };
 
-extern GameLogic *TheBfmeGameLogic;
+extern GameLogic *TheGameLogic;
 
 template <int N>
 class Rva002396F0SlotPrefix : public Rva002396F0SlotPrefix<N - 1>
@@ -192,7 +191,7 @@ void Rva002396F0::rva002396f0()
 		Rva002396F0TreeAccess::erase(
 			(Rva002396F0FormationTree *)tree, node->right);
 			Rva002396F0TreeNode *left = node->left;
-			Gen0082E5F0(node, 0x18);
+			_STL::__node_alloc<true, 0>::deallocate(node, 0x18);
 			node = left;
 		}
 
@@ -202,8 +201,8 @@ void Rva002396F0::rva002396f0()
 		tree->nodeCount = 0;
 	}
 
-	Object *first = TheBfmeGameLogic->findObjectByID(m_idA);
-	Object *second = TheBfmeGameLogic->findObjectByID(m_idB);
+	Object *first = TheGameLogic->findObjectByID(m_idA);
+	Object *second = TheGameLogic->findObjectByID(m_idB);
 
 	if (first != 0)
 		first->clearAndSetModelConditionFlags(m_clearMaskA, BitFlags<320>());
