@@ -17,8 +17,12 @@ SCHEMA = "bfme1-cycle-host-stamp/1"
 try:
     import pwd
     _ACCOUNT_HOME = Path(pwd.getpwuid(os.getuid()).pw_dir)
-except ImportError:  # Windows has no pwd database.
-    _ACCOUNT_HOME = Path.home()
+except ImportError:  # Windows: query the account profile, not HOME/USERPROFILE.
+    import ctypes
+    _profile = ctypes.create_unicode_buffer(32768)
+    if ctypes.windll.shell32.SHGetFolderPathW(None, 0x0028, None, 0, _profile) != 0:
+        raise OSError("cannot resolve the account profile for the fixed cycle key")
+    _ACCOUNT_HOME = Path(_profile.value)
 DEFAULT_KEY = _ACCOUNT_HOME / ".config/open-bfme/cycle_key"
 _reader_key_for_tests = None  # Tests monkeypatch this; no production setter.
 

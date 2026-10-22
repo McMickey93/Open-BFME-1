@@ -313,3 +313,209 @@ def test_diff_cli_raw_runs_are_diagnostic(checkout, tmp_path):
     doc = cd.cli_compare(old, new)
     assert doc["consistent"] and doc["diagnostic"] and not doc["authoritative"]
     assert doc["input_authority"]["old"]["sub_reason"] == "raw-run"
+
+
+@pytest.mark.parametrize("name", ca.MEMBERS + (ca.PROVENANCE,))
+def test_sound_stamp_binds_every_member_via_manifest(checkout, tmp_path, name):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "out", root)
+    assert stamp.verify(out) is None
+    path = out / name
+    if path.suffix == ".gz":
+        pc.gzip_bytes(ca.read_member(path) + b"changed", path)
+    else:
+        path.write_bytes(path.read_bytes() + b"changed")
+    rehash(out, name)
+    assert stamp.verify(out) == "bad-stamp"
+
+
+@pytest.mark.parametrize("mode", [0o400, 0o640, 0o644, 0o660, 0o666])
+def test_sound_loose_or_wrong_key_modes_refused(checkout, mode):
+    key = stamp.configured_keys()[0]
+    key.chmod(mode)
+    with pytest.raises(stamp.KeyError, match="0600"):
+        stamp.read_key(key)
+
+
+def test_sound_key_parent_symlink_into_repository_refused(checkout, tmp_path):
+    root, _ = checkout
+    key = root / "nested/secret"
+    key.parent.mkdir()
+    key.write_bytes(b"x" * 32)
+    key.chmod(0o600)
+    alias = tmp_path / "alias"
+    alias.symlink_to(key.parent, target_is_directory=True)
+    with pytest.raises(stamp.KeyError, match="outside every"):
+        stamp.read_key(alias / "secret")
+
+
+def test_sound_old_stamp_cannot_refresh_receipt_time(checkout, tmp_path):
+    root, _ = checkout
+    run, receipt = run_for(checkout, tmp_path / "run")
+    old = freeze(run, tmp_path / "old", root)
+    with pytest.raises(ca.Refused) as error:
+        ca.serve(old, root=root, now=NOW + 86401)
+    assert error.value.reason == "stale"
+    receipt["date_utc"] = ca.iso_utc(NOW + 86401)
+    receipt["measured_end_ns"] = (NOW + 86401) * 10**9
+    save_receipt(run, receipt)
+    new = freeze(run, tmp_path / "replayed", root, sign=False)
+    shutil.copyfile(old / stamp.STAMP, new / stamp.STAMP)
+    with pytest.raises(ca.Refused) as error:
+        ca.serve(new, root=root, now=NOW + 86401)
+    assert error.value.sub_reason == "bad-stamp"
+
+
+def test_sound_alias_counts_and_rva_data_provider(tmp_path, monkeypatch):
+    reverse = census_fixture(tmp_path, monkeypatch, data_only=True)
+    (reverse / "data_rows.csv").write_text(
+        "name,address,address_kind,size,source,status\n"
+        "_datum,0x00500000,rva,4,game/Data.cpp,matched\n")
+    status = reverse / "link_status.csv"
+    status.write_text(status.read_text().replace(
+        "game/Data.cpp,no,1,0,0,0,0,0,0", "game/Data.cpp,no,0,0,0,0,0,3,4"))
+    [item] = rq.census_items(status)
+    assert item["target_rva"] == "0x00500000" and item["blockers"] == 7
+    assert item["credit"] == item["size"] == 0 and item["provider_kind"] == "data"
+    rq.ledger.cache_clear()
+
+
+def test_sound_staged_census_changes_do_not_route(tmp_path, monkeypatch):
+    reverse = census_fixture(tmp_path, monkeypatch)
+    root = reverse.parents[2]
+    (reverse / "link_status.csv").write_text(
+        "source,linked,unresolved\ngame/f.cpp,no,999\n")
+    (reverse / "functions.csv").write_text(
+        "name,target_rva,target_size,source,status\nforged,0x2000,999,game/f.cpp,matched\n")
+    git(root, "add", "targets")
+    result = rq.route_link_queue()
+    assert result["status"] == "ok"
+    assert result["items"][0]["function"] == "f" and result["items"][0]["blockers"] == 2
+    rq.ledger.cache_clear()
+
+
+@pytest.mark.parametrize("member", [ca.CLOSURE_ROOTS, ca.CLOSURE_BLOCKERS])
+def test_sound_common_validation_reproduces_closure_tables(checkout, tmp_path, member):
+    root, _ = checkout
+    run, _ = failed_run(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "out", root)
+    if member == ca.CLOSURE_ROOTS:
+        doc = ca.read_json(out / member)
+        doc["summary"]["credit_unique_bytes"] = 999
+        raw = ca.dumps(doc).encode()
+    else:
+        raw = ca.read_member(out / member).replace(b"unit:0x00001000:f", b"invented-witness")
+        assert raw != ca.read_member(out / member)
+    pc.gzip_bytes(raw, out / member)
+    rehash(out, member)
+    with pytest.raises(ca.BundleError):
+        ca.validate(out, root=root)
+
+
+def test_sound_edited_old_evidence_cannot_keep_predecessor_identity(checkout, tmp_path):
+    old_run, _ = run_for(checkout, tmp_path / "old-run")
+    new_run, _ = run_for(checkout, tmp_path / "new-run", now=NOW + 1)
+    doc = cd.compare(old_run, new_run)
+    original = copy.deepcopy(doc["identity"]["old"])
+    old = doc["evidence"]["old"]
+    old["link_status"] += "\n"
+    old["receipt"]["series"]["link_status_sha256"] = hashlib.sha256(old["link_status"].encode()).hexdigest()
+    lc.stamp_cores(old["receipt"])
+    assert doc["identity"]["old"] == original
+    with pytest.raises(cd.CycleDiffError, match="identifies another receipt"):
+        cd.check_report(doc)
+
+
+def test_sound_launcher_ignores_caller_import_environment(checkout, tmp_path, monkeypatch):
+    root, _ = synthetic_snapshot_checkout(checkout)
+    poison = tmp_path / "caller-modules"
+    poison.mkdir()
+    for name in ("link_cycle", "link_cycle_context", "sitecustomize", "gen_case_shims"):
+        (poison / (name + ".py")).write_text("raise RuntimeError('caller module imported')\n")
+    monkeypatch.setenv("PYTHONPATH", str(poison))
+    monkeypatch.setenv("PYTHONSTARTUP", str(poison / "sitecustomize.py"))
+    monkeypatch.setenv("LINK_CYCLE_ROOT", str(poison))
+    out = tmp_path / "out"
+    launch.measure(out, "R2 isolated import probe", root=root, key=stamp.configured_keys()[0])
+    assert ca.serve(out, root=root, now=NOW)[1]["authoritative"]
+
+
+def test_sound_shift_layout_failure_still_routes(checkout, tmp_path):
+    root, _ = checkout
+    run, receipt = failed_run(checkout, tmp_path / "run")
+    graph = ca.read_json(run / ca.CLOSURE_GRAPH)
+    graph["nodes"]["unit:1"]["failures"] = ["shift:layout differs"]
+    change_row(run, receipt, failures="shift:layout differs")
+    save_graph(run, receipt, graph)
+    out = freeze(run, tmp_path / "out", root)
+    for closure in (False, True):
+        result = rq.route_link_queue(out, closure=closure, now=NOW)
+        assert result["status"] == "ok" and result["items"][0]["function"] == "f"
+
+
+def test_sound_pointer_reordering_and_forged_flags_cannot_replay_old(checkout, tmp_path):
+    root, _ = checkout
+    store = tmp_path / "store"
+    for index in range(2):
+        run, _ = run_for(checkout, tmp_path / f"run-{index}", now=NOW + index)
+        out = freeze(run, tmp_path / f"out-{index}", root)
+        ca.install_local(out, store, root=root, now=NOW + 1)
+    doc = ca.read_pointer(store)
+    newest = doc["latest_measurement"]
+    doc["bundles"].reverse()
+    doc["latest_measurement"] = doc["latest_closure_ready"] = doc["bundles"][0]["id"]
+    doc["bundles"][1]["authoritative"] = False
+    (store / ca.POINTER).write_text(ca.dumps(doc))
+    for closure in (False, True):
+        b, fr, notes = ca.serve(store, root=root, now=NOW + 1, need_closure=closure)
+        assert fr["authoritative"] and ca.bundle_id(b.tag) == newest
+        assert any("rollback" in note for note in notes)
+
+
+@pytest.mark.parametrize("portable", [False, True])
+def test_sound_store_rename_race_preserves_competitor(checkout, tmp_path, monkeypatch, portable):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "out", root)
+    store = tmp_path / "store"
+    original = ca.publish_directory
+    destinations = []
+    def compete(source, destination):
+        destination = Path(destination)
+        destination.mkdir()
+        (destination / "competitor.txt").write_text("preserve me")
+        destinations.append(destination)
+        return original(source, destination)
+    monkeypatch.setattr(ca, "publish_directory", compete)
+    if portable:
+        monkeypatch.setattr(ca.sys, "platform", "portable-test")
+    with pytest.raises(ca.Unavailable):
+        ca.install_local(out, store, root=root, now=NOW)
+    assert (destinations[0] / "competitor.txt").read_text() == "preserve me"
+    assert not list(store.glob(".partial-*"))
+
+
+def test_windows_reader_key_uses_account_profile_not_environment(tmp_path, monkeypatch):
+    import builtins
+    import ctypes
+    import types
+    profile = tmp_path / "account-profile"
+    def profile_path(hwnd, folder, token, flags, buffer):
+        assert folder == 0x0028  # CSIDL_PROFILE
+        buffer.value = str(profile)
+        return 0
+    monkeypatch.setattr(ctypes, "windll", types.SimpleNamespace(shell32=types.SimpleNamespace(
+        SHGetFolderPathW=profile_path)), raising=False)
+    original_import = builtins.__import__
+    def no_pwd(name, *args, **kwargs):
+        if name == "pwd":
+            raise ImportError("Windows has no pwd")
+        return original_import(name, *args, **kwargs)
+    monkeypatch.setattr(builtins, "__import__", no_pwd)
+    monkeypatch.setenv("HOME", str(tmp_path / "worker-home"))
+    monkeypatch.setenv("USERPROFILE", str(tmp_path / "worker-profile"))
+    spec = importlib.util.spec_from_file_location("windows_stamp_fixture", stamp.__file__)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.configured_keys() == [profile / ".config/open-bfme/cycle_key"]

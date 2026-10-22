@@ -187,7 +187,7 @@ def dumps(doc):
 
 
 def cli_input_authority(directory, expected):
-    """Authenticate a CLI input independently of the internal interval validator."""
+    """Verify a CLI input host stamp independently of the internal interval validator."""
     import cycle_artifacts as ca
     directory = Path(directory)
     if not (directory / ca.MANIFEST).exists():
@@ -199,7 +199,7 @@ def cli_input_authority(directory, expected):
     except ca.Problem as error:
         raise CycleDiffError(ca.describe(error)) from None
     if identity(bundle.receipt) != expected:
-        raise CycleDiffError("authenticated input identifies another receipt")
+        raise CycleDiffError("host-stamped input identifies another receipt")
     return {"authoritative": fr["authoritative"], "reason": None, "sub_reason": None}
 
 

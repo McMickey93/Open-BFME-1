@@ -870,7 +870,7 @@ def publish_directory(source, destination):
 
 
 def attach_verified_stamp(source, destination):
-    """Under the store writer lock, upgrade authentication only, never payload.
+    """Under the store writer lock, upgrade the host stamp only, never payload.
 
     The caller has validated both payloads and proved manifest equality. The
     manifest binds every member, so the incoming verified stamp covers exactly
