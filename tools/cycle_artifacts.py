@@ -8,12 +8,13 @@ rules. The broad tool digest is provenance, with equal-rule mismatches warning.
 
 Authority is recomputed from clean local run evidence, local origin/master
 ancestry, integrity, matching rules and freshness. A manifest's own authority
-claim is ignored. Local evidence is not a signature or proof against an actor
-who fabricates an entirely consistent run.
+claim is ignored. Authority additionally requires a host-key stamp from the
+fresh-snapshot launcher, tracked Git input hashes, and bound object evidence.
 
 Store/<measurement id>/bundle is installed by one directory rename; current.json
-is replaced atomically under a portable writer lock. Readers read the pointer
-once. Installed directories are never replaced or removed. Reason/exit slots:
+is replaced atomically under a portable writer lock. Readers derive selection
+from validated installed receipts and warn about pointer rollback. Installed
+directories are never replaced or removed. Reason/exit slots:
 corrupt=1, unavailable=2, empty=3, stale=4, incompatible-rules=5,
 not-authoritative=6, no-closure-report=7. Age limit 24 h; future skew 600 s;
 closure lookback 5. Unknown ancestry fails closed.
@@ -36,6 +37,7 @@ import time
 import zlib
 from pathlib import Path
 
+import cycle_stamp
 import link_cycle_context as context
 from portable_lock import lock, unlock
 
@@ -50,7 +52,8 @@ CLOSURE_BLOCKERS = "closure_blockers.csv.gz"
 RANK_JSON = "data_back_rank.json"
 CYCLE_DIFF = "cycle_diff.json"
 MEMBERS = (RECEIPT, LINK_STATUS, CLOSURE_GRAPH, CLOSURE_ROOTS, CLOSURE_BLOCKERS, RANK_JSON)
-OPTIONAL = (CYCLE_DIFF,)
+PROVENANCE = "provenance.json"
+OPTIONAL = (CYCLE_DIFF, PROVENANCE)
 TAG_PREFIX = "bfme1-link-cycle/"
 TAG = re.compile(r"^bfme1-link-cycle/([0-9a-f]{12})-(\d{8}T\d{6}Z)-([0-9a-f]{12})$")
 SHA = re.compile(r"^[0-9a-f]{64}$")
@@ -443,7 +446,7 @@ def _validate(d, root):
         raise BundleError("missing required member(s): " + ", ".join(sorted(missing)))
     if set(members) - set(MEMBERS + OPTIONAL):
         raise BundleError("manifest lists an unknown member")
-    same("directory members", {p.name for p in d.iterdir()}, set(members) | {MANIFEST})
+    same("directory members", {p.name for p in d.iterdir()} - {cycle_stamp.STAMP}, set(members) | {MANIFEST})
     for name, meta in members.items():
         path = d / name
         if path.is_symlink() or not path.is_file():
@@ -522,6 +525,9 @@ class Bundle:
         validate(self.dir, root=root)
         same("loaded receipt", read_json(self.paths[RECEIPT]), self.receipt)
         fr = freshness(self.receipt, now=now, root=root)
+        # A stamp binds the complete manifest; evidence is independently checked.
+        fr["stamp_failure"] = cycle_stamp.verify(self.dir)
+        fr["evidence_failure"] = None if fr["stamp_failure"] else run_evidence_failure(self.dir, self.receipt, root)
         why = authority_refusal(self.receipt, fr)
         return dict(fr, authoritative=why is None,
                     reason=why[0] if why else None, sub_reason=why[1] if why else None)
@@ -613,6 +619,79 @@ def authority_refusal(receipt, fr):
     if fr["ancestor"] is not True:
         sub = "non-ancestor" if fr["ancestor"] is False else "ancestry-unknown"
         return "not-authoritative", sub, fr["ancestry"]
+    if fr.get("stamp_failure", "unstamped"):
+        sub = fr.get("stamp_failure", "unstamped")
+        return "not-authoritative", sub, "no valid stamp under a configured host key: " + sub
+    if fr.get("evidence_failure"):
+        return "not-authoritative", fr["evidence_failure"], "snapshot evidence failed: " + fr["evidence_failure"]
+    return None
+
+
+def git_blob(root, commit, path):
+    if not isinstance(path, str) or Path(path).is_absolute() or ".." in Path(path).parts or "\\" in path:
+        return None
+    got = subprocess.run(["git", "-C", str(root), "show", f"{commit}:{path}"], capture_output=True)
+    return got.stdout if got.returncode == 0 else None
+
+
+def tracked_input_failure(receipt, root):
+    """Prove declared tracked inputs and executed tools against the measured tree."""
+    commit = receipt["commit"]
+    got = _git(root, "ls-tree", "-r", "--name-only", commit)
+    if got is None or got.returncode:
+        return "git-evidence-unavailable"
+    tracked = set(got.stdout.splitlines())
+    inputs = receipt.get("inputs") or {}
+    if any(n not in tracked for n in LEDGERS):
+        return "input-mismatch"
+    for name, digest in inputs.items():
+        if name in tracked:
+            raw = git_blob(root, commit, name)
+            if raw is None or hashlib.sha256(text_bytes(raw)).hexdigest() != digest:
+                return "input-mismatch"
+    for name, digest in receipt["tool_dependencies"].items():
+        path = "tools/" + name
+        raw = git_blob(root, commit, path) if path in tracked else None
+        if raw is None or hashlib.sha256(text_bytes(raw)).hexdigest() != digest:
+            return "tool-mismatch"
+    return None
+
+
+def run_evidence_failure(directory, receipt, root):
+    """Require launcher execution binding and reproduce the object inventory."""
+    d = Path(directory)
+    execution = read_manifest(d).get("execution")
+    want = {"launcher": "cycle_launch/1", "commit": receipt["commit"], "snapshot": True,
+            "semantic_sha256": receipt["rule_identity"]["implementation_sha256"]}
+    if execution != want or receipt.get("snapshot") is not True:
+        return "snapshot-required"
+    why = tracked_input_failure(receipt, root)
+    if why:
+        return why
+    if PROVENANCE not in read_manifest(d)["members"]:
+        return "missing-object-evidence"
+    try:
+        same("object evidence hash", sha256_file(d / PROVENANCE), receipt["provenance_sha256"])
+        prov = read_json(d / PROVENANCE)
+        if not prov or len(prov) != receipt.get("objects"):
+            return "missing-object-evidence"
+        h = hashlib.sha256()
+        for name in sorted(prov):
+            rec = prov[name]
+            if not SHA.fullmatch(str(rec.get("object"))) or not SHA.fullmatch(str(rec.get("object_canon"))):
+                return "missing-object-evidence"
+            h.update(name.encode() + b"\0" + rec["object"].encode())
+            if rec.get("source"):
+                raw = git_blob(root, receipt["commit"], rec["source"])
+                if raw is None or hashlib.sha256(raw).hexdigest() != rec.get("source_sha256") \
+                        or rec.get("proof") not in ("inventory", "deps") or not SHA.fullmatch(str(rec.get("deps_sha256"))):
+                    return "object-source-mismatch"
+        same("objects inventory", h.hexdigest(), receipt["objects_digest"])
+        canon = link_cycle_module(root).canonical_digests(prov)
+        for key, value in canon.items():
+            same(key, value, receipt.get(key))
+    except (Problem, KeyError, ValueError, TypeError, AttributeError, OSError):
+        return "bad-object-evidence"
     return None
 
 
@@ -623,7 +702,7 @@ def format_freshness(bundle, fr):
         lines.append("RULES MISMATCH OR UNKNOWN: incompatible-rules")
     elif fr["tool_digest_matches"] is False:
         lines.append("WARNING: tool digest differs under equal BFME1 semantic rules")
-    lines.append("AUTHORITATIVE: clean local run" if fr["authoritative"] else
+    lines.append("AUTHORITATIVE: clean local run (host-stamped snapshot)" if fr["authoritative"] else
                  f"NOT AUTHORITATIVE: {fr['reason']} / {fr['sub_reason']}")
     return lines
 
@@ -828,7 +907,7 @@ def serve(path, *, allow_stale=False, need_closure=False, need_rank=False, now=N
     return b, fr, format_freshness(b, fr) + b.notes
 
 
-def report(bundle, now=None, out=None, err=None, root=ROOT):
+def report(bundle, now=None, out=None, err=None, root=None):
     fr = bundle.freshness(now=now, root=root)
     for line in format_freshness(bundle, fr) + bundle.notes:
         print(line, file=out or sys.stdout)
@@ -853,6 +932,8 @@ def main(argv=None):
     i = sub.add_parser("install")
     i.add_argument("dir")
     i.add_argument("--store", default=str(DEFAULT_STORE))
+    inspect = sub.add_parser("inspect", help="inspect a bundle as a labelled diagnostic")
+    inspect.add_argument("dir")
     v = sub.add_parser("validate")
     v.add_argument("dir")
     v.add_argument("--allow-stale", action="store_true")
@@ -864,6 +945,11 @@ def main(argv=None):
         elif args.cmd == "install":
             m, _ = install_local(args.dir, args.store)
             print(f"installed {m['tag']}; authority is recomputed when served")
+        elif args.cmd == "inspect":
+            directory, notes = resolve(args.dir)
+            b = load_bundle(directory)
+            b.notes = notes
+            report(b)
         else:
             _, _, lines = serve(args.dir, allow_stale=args.allow_stale, need_closure=args.closure)
             for line in lines:

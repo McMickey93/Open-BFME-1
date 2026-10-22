@@ -111,7 +111,7 @@ def evidence(directory, receipt):
 
 
 def check_report(doc):
-    """Check algebraic consistency; source receipts were verified by compare()."""
+    """Reproduce both identified receipt/status unions before counting progress."""
     if doc.get("schema") != SCHEMA:
         raise CycleDiffError("unknown diff schema")
     ident = doc["identity"]

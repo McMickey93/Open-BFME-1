@@ -56,8 +56,12 @@ def run_authority_failure(receipt):
     options = receipt.get("run_options")
     if not isinstance(options, dict) or any(type(options.get(k)) is not bool for k in RUN_OPTIONS):
         return "missing-evidence"
-    if any(options.values()) or receipt.get("allow_dirty") or receipt.get("snapshot") \
-            or start["snapshot"] or end["snapshot"] or receipt.get("diagnostic") \
+    snapshot = receipt.get("snapshot") is True and start["snapshot"] and end["snapshot"] \
+        and bool(start.get("tree_manifest")) and options["snapshot"]
+    snapshot_requested = options["snapshot"] or receipt.get("snapshot") or start["snapshot"] or end["snapshot"]
+    if any(value for name, value in options.items() if name != "snapshot") \
+            or (snapshot_requested and not snapshot) \
+            or receipt.get("allow_dirty") or receipt.get("diagnostic") \
             or receipt.get("remeasured_utc") or receipt.get("source_receipt_sha256"):
         return "diagnostic"
     if receipt.get("dirty") is not False:
@@ -89,8 +93,8 @@ def digest(value):
 def tool_dependencies(root=ROOT, measuring_file=None):
     """Normalized identities, including the actual driver used for a snapshot.
 
-    The other providers are loaded from root/tools. Bind both the driver and
-    this adapter as executed, rather than accidentally hashing snapshot copies.
+    Providers are loaded from root/tools. Frozen snapshot subprocesses execute
+    their own driver and adapter; bind those actual files.
     """
     base = Path(root) / "tools"
     files = {p.relative_to(base).as_posix(): p for p in base.rglob("*")

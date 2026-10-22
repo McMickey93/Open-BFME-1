@@ -2,7 +2,7 @@
 
 Only synthetic images, artifacts and temporary git repositories. Never run a
 compiler, linker, census, cycle(), Wine, or the general tools/tests suite.
-Run: ~/.cache/bfme-venv/bin/python -m pytest -q -s tools/tests/test_bfme2_port_review_r1.py
+Run: ~/.cache/bfme-venv/bin/python -m pytest -q -s tools/tests/test_bfme2_port_r1_regressions.py
 """
 import ast
 import collections
@@ -20,10 +20,12 @@ import types
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from cycle_fixture import NOW, measured_run, save_receipt, rehash
+from cycle_fixture import host_stamp, NOW, measured_run, save_receipt, rehash
 import closure_report as cr
 import cycle_artifacts as ca
 import cycle_diff as cd
+import cycle_launch as launch
+import cycle_stamp as stamp
 import eligibility
 import link_census as census
 import link_cycle as lc
@@ -47,16 +49,20 @@ def checkout(tmp_path, monkeypatch):
     (root / "tools").mkdir(parents=True)
     names = set(ctx.MEASUREMENT_FILES) | {
         "closure_report.py", "cycle_artifacts.py", "publish_cycle.py",
-        "repair_queue.py", "cycle_diff.py", "data_back_rank.py"}
+        "repair_queue.py", "cycle_diff.py", "data_back_rank.py", "cycle_stamp.py", "cycle_launch.py"}
     for name in names:
         shutil.copyfile(ROOT / "tools" / name, root / "tools" / name)
     reverse = root / "targets/game/reverse"
     reverse.mkdir(parents=True)
     for name in ("functions", "symbols", "data_rows"):
         (reverse / (name + ".csv")).write_text("synthetic ledger\n")
+    (root / "game").mkdir()
+    (root / "game/f.cpp").write_text("// synthetic measured source\n")
+    key = stamp.keygen(tmp_path / "host-key")
+    monkeypatch.setenv("BFME_CYCLE_KEYS", str(key))
     (root / ".gitignore").write_text("build/\n__pycache__/\n")
     git(root, "init", "-q")
-    git(root, "add", "tools", "targets", ".gitignore")
+    git(root, "add", "tools", "targets", "game", ".gitignore")
     git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R1 fixture",
         "-c", "user.email=r1@example.invalid", "commit", "-qm", "synthetic approved checkout")
     commit = git(root, "rev-parse", "HEAD")
@@ -72,11 +78,35 @@ def checkout(tmp_path, monkeypatch):
 
 def run_for(checkout, path, **kwargs):
     root, commit = checkout
-    return measured_run(path, commit=commit, deps=ca.local_dependencies(root), **kwargs)
+    run, receipt = measured_run(path, commit=commit, deps=ca.local_dependencies(root), **kwargs)
+    bind_evidence(run, receipt, root)
+    return run, receipt
 
 
-def freeze(run, out, root, **kwargs):
-    pc.make_bundle(run, out, "R1 synthetic reproduction", root=root, **kwargs)
+def bind_evidence(run, receipt, root):
+    receipt["inputs"] = {n: ca.text_sha256(root / n) for n in ca.LEDGERS}
+    receipt["snapshot"] = True
+    receipt["run_options"]["snapshot"] = True
+    for phase in ("start", "end"):
+        receipt["checkout_" + phase].update(snapshot=True, tree_manifest="e" * 64)
+    h = "e" * 64
+    prov = {"build/f.obj": {"object": h, "object_canon": h, "proof": "inventory",
+                            "source": "game/f.cpp", "source_sha256": ca.sha256_file(root / "game/f.cpp"),
+                            "deps_sha256": h}}
+    (run / ca.PROVENANCE).write_text(ca.dumps(prov))
+    receipt["provenance_sha256"] = ca.sha256_file(run / ca.PROVENANCE)
+    receipt["objects_digest"] = __import__("hashlib").sha256(b"build/f.obj\0" + h.encode()).hexdigest()
+    receipt.update(lc.canonical_digests(prov))
+    save_receipt(run, receipt)
+
+
+def freeze(run, out, root, *, sign=True, **kwargs):
+    manifest = pc.make_bundle(run, out, "R1 synthetic reproduction", root=root, **kwargs)
+    if sign:
+        manifest["execution"] = {"launcher": "cycle_launch/1", "commit": manifest["commit"], "snapshot": True,
+                                 "semantic_sha256": manifest["rules"]["implementation_sha256"]}
+        (out / ca.MANIFEST).write_text(ca.dumps(manifest))
+        host_stamp(out, stamp.configured_keys()[0])
     return out
 
 
@@ -98,10 +128,6 @@ def save_graph(run, receipt, doc):
     save_receipt(run, receipt)
 
 
-
-
-
-
 def test_r3_shift_only_failure_is_dropped_from_both_queues(checkout, tmp_path):
     root, _ = checkout
     run, receipt = run_for(checkout, tmp_path / "run")
@@ -119,7 +145,6 @@ def test_r3_shift_only_failure_is_dropped_from_both_queues(checkout, tmp_path):
     closure = rq.route_link_queue(out, closure=True, now=NOW)
     assert ordinary["status"] == closure["status"] == "ok"
     assert ordinary["items"][0]["function"] == closure["items"][0]["function"] == "f"
-    print("F3 shift-only root: gain=10; ordinary=empty; closure=empty")
 
 
 def census_fixture(tmp_path, monkeypatch, data_only=False):
@@ -158,7 +183,6 @@ def test_r4_bfme1_alias_blockers_are_not_counted(tmp_path, monkeypatch):
         [item] = rq.census_items(rev / "link_status.csv")
         assert item["blockers"] == 2
         assert "alias_target 1" in item["why"] and "alias_unknown 1" in item["why"]
-        print("F4 census alias_target=1 alias_unknown=1 -> blockers=0; reason=" + item["why"])
     finally:
         rq.ledger.cache_clear()
 
@@ -171,19 +195,8 @@ def test_r5_data_only_census_repairs_disappear(tmp_path, monkeypatch):
         [item] = result["items"]
         assert item["provider_kind"] == "data" and item["target_rva"] == "0x00500000"
         assert item["size"] == item["credit"] == 0
-        print("F5 data-only provider: linked=no unresolved=1; router=empty")
     finally:
         rq.ledger.cache_clear()
-
-
-
-
-
-
-
-
-
-
 
 
 def test_r11_dirty_census_is_routed_as_committed(tmp_path, monkeypatch):
@@ -205,14 +218,14 @@ def test_r11_dirty_census_is_routed_as_committed(tmp_path, monkeypatch):
         assert result["items"][0]["blockers"] == 2
         assert "alias_target 1" in result["items"][0]["why"]
         assert "committed link census" in result["notes"][0]
-        print("F11 dirty census: invented blockers=12345; label=committed link census; router=ordinary link queue")
     finally:
         rq.ledger.cache_clear()
 
 
-
-
-def test_r9_publisher_replaces_destination_created_during_validation(checkout, tmp_path, monkeypatch):
+@pytest.mark.parametrize("portable", [False, True])
+def test_r9_publisher_replaces_destination_created_during_validation(checkout, tmp_path, monkeypatch, portable):
+    if portable:
+        monkeypatch.setattr(ca.sys, "platform", "portable-test")
     root, _ = checkout
     run, _ = run_for(checkout, tmp_path / "run")
     out = tmp_path / "published"
@@ -229,7 +242,6 @@ def test_r9_publisher_replaces_destination_created_during_validation(checkout, t
         freeze(run, out, root)
     assert created and out.stat().st_ino == created[0]
     assert list(out.iterdir()) == []
-    print("F9 publication race: pre-existing destination inode replaced=True")
 
 
 def test_r10_rehashed_closure_report_is_authoritative_before_queue_checks(checkout, tmp_path):
@@ -244,7 +256,6 @@ def test_r10_rehashed_closure_report_is_authoritative_before_queue_checks(checko
     with pytest.raises(ca.BundleError, match="closure root gains"):
         ca.serve(out, root=root, now=NOW, need_closure=True)
     assert rq.route_link_queue(out, closure=True, now=NOW)["reason"] == "corrupt"
-    print("F10 malformed closure score table: serve(need_closure=True) authoritative=True; repair queue alone detects corrupt")
 
 
 def test_r8_cycle_diff_predecessor_credit_is_unbound(checkout, tmp_path):
@@ -265,7 +276,6 @@ def test_r8_cycle_diff_predecessor_credit_is_unbound(checkout, tmp_path):
     assert ca.read_json(out / ca.CYCLE_DIFF)["identity"] == unchanged_identity
     with pytest.raises(ca.BundleError, match="old credit union"):
         ca.validate(out, root=root)
-    print("F8 unchanged predecessor identity: actual gain=0; accepted gain=10; authoritative=True")
 
 
 def test_r8_missing_historical_evidence_never_counts(tmp_path):
@@ -294,7 +304,6 @@ def test_r6_diagnostic_install_masks_authoritative_current(checkout, tmp_path):
     for closure in (False, True):
         b, fr, _ = ca.serve(store, root=root, now=NOW + 1, need_closure=closure)
         assert fr["authoritative"] and b.tag == good_manifest["tag"]
-    print("F6 store: latest_measurement=clean bundle; ordinary and closure serving refuse the newer diagnostic")
 
 
 def test_r7_pointer_replay_returns_old_measurement_without_warning(checkout, tmp_path):
@@ -313,7 +322,369 @@ def test_r7_pointer_replay_returns_old_measurement_without_warning(checkout, tmp
         b, fr, lines = ca.serve(store, root=root, now=NOW + 100, need_closure=closure)
         assert fr["authoritative"] and b.receipt["measured_end_ns"] == (NOW + 100) * 10**9
         assert any("rollback" in line for line in lines)
-    print("F7 pointer replay: newer bundle remains installed; older bundle authoritative=True; rollback warning=False")
     historical = store / ca.bundle_id(ca.read_manifest(old)["tag"]) / "bundle"
     _, fr, notes = ca.serve(historical, root=root, now=NOW + 100)
     assert fr["authoritative"] and any("explicit historical" in line for line in notes)
+
+
+def test_r1_fabricated_run_is_authoritative(checkout, tmp_path):
+    root, commit = checkout
+    run, receipt = measured_run(tmp_path / "fabricated", commit=commit, deps=ca.local_dependencies(root))
+    # All producer evidence is invented, including image/ledger/object digests.
+    # No ancestry, compatibility, freshness or integrity checker is patched.
+    assert receipt["inputs"][ca.LEDGERS[0]] != ctx.text_sha256(root / ca.LEDGERS[0])
+    assert not (run / "provenance.json").exists()
+    out = freeze(run, tmp_path / "bundle", root, sign=False)
+    ca.validate(out, root=root)
+    with pytest.raises(ca.Refused) as refused:
+        ca.serve(out, root=root, now=NOW)
+    assert refused.value.sub_reason == "unstamped"
+
+
+def test_r2_loaded_verifier_can_claim_restored_disk_rules(checkout, tmp_path, monkeypatch):
+    root, commit = checkout
+    driver = root / "tools/link_cycle.py"
+    original = driver.read_text()
+    old = "    def code(self, at, size, masked, rels):\n"
+    assert old in original
+    driver.write_text(original.replace(old, old + "        return None  # bad local verifier\n"))
+    monkeypatch.setenv("LINK_CYCLE_ROOT", str(root))
+    monkeypatch.setattr(sys, "path", list(sys.path))
+    spec = importlib.util.spec_from_file_location("review_loaded_driver", driver)
+    running = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(running)
+    driver.write_text(original)  # checkout/rebase restores disk; imported code survives
+    assert not git(root, "status", "--porcelain")
+    deps = ctx.tool_dependencies(root, running.__file__)
+    assert ctx.rule_identity(deps) == ca.local_rules(root)
+    # Exercise the real clean-start/end observer, with inert toolchain files and
+    # a minimal PE32 target. No compiler discovery/execution or policy mock.
+    toolchain = root / "build/toolchain"
+    (toolchain / "Vc7/bin").mkdir(parents=True)
+    for name in ("cl.exe", "link.exe", "lib.exe"):
+        (toolchain / "Vc7/bin" / name).write_bytes(b"inert synthetic executable")
+    target = root / "build/fixture.exe"
+    pe = bytearray(0x400)
+    pe[:2] = b"MZ"
+    struct.pack_into("<I", pe, 0x3c, 0x40)
+    pe[0x40:0x44] = b"PE\0\0"
+    struct.pack_into("<HHIIIHH", pe, 0x44, 0x14c, 1, 0, 0, 0, 224, 0x102)
+    struct.pack_into("<H", pe, 0x58, 0x10b)
+    struct.pack_into("<I", pe, 0x58 + 28, 0x400000)
+    struct.pack_into("<II", pe, 0x58 + 32, 0x1000, 0x200)
+    struct.pack_into("<II", pe, 0x58 + 56, 0x2000, 0x200)
+    pe[0x138:0x140] = b".text\0\0\0"
+    struct.pack_into("<IIII", pe, 0x140, 0x100, 0x1000, 0x200, 0x200)
+    struct.pack_into("<I", pe, 0x138 + 36, 0x60000020)
+    target.write_bytes(pe)
+    monkeypatch.setattr(running.build, "ROOT", root)
+    monkeypatch.setattr(running.build, "MANIFEST", root / "inputs/baselines/bfme1/manifest.json")
+    monkeypatch.setattr(running.build, "EXE", target)
+    monkeypatch.setattr(running.build, "vc71_root", lambda: toolchain)
+    start = running.input_state()
+    assert not start["dirty"] and start["rule_identity"] == ca.local_rules(root)
+    run, receipt = measured_run(tmp_path / "run", commit=commit, deps=deps)
+    receipt.update(start)
+    image = bytearray(0x3000)
+    image[0x1000:0x1006] = b"\xa1" + struct.pack("<I", lc.BASE + 0x1f10) + b"\xc3"
+    shifted = running.Shifted.__new__(running.Shifted)
+    shifted.I = shifted.S = bytes(image)
+    shifted.delta, shifted.base_s = lc.SHIFT_BASE - lc.BASE, lc.SHIFT_BASE
+    shifted.lo, shifted.hi, shifted.starts = lc.BASE + 0x1f00, lc.BASE + 0x2000, set()
+    shifted.why, shifted.failed = None, collections.Counter()
+    assert lc.Shifted.code(shifted, 0x1000, 6, set(), []) == "hardcoded address"
+    assert shifted.code(0x1000, 6, set(), []) is None
+    shifted.failed.clear()
+    row = {"name": "f", "kind": "real", "source": "game/f.cpp", "rva": 0x1000, "size": 6}
+    unit = {"id": 1, "head": "f", "rows": [row]}
+    rec = {"row": row, "unit": unit, "measured": True, "placed": 1, "linked": 0x1000, "fails": [],
+           "edges": set(), "masked": set(), "rels": [], "unpinned": False}
+    m = types.SimpleNamespace(run=lambda: [rec], twins={}, dnodes={}, eh=collections.Counter(),
+                              import_equiv=0, ilt_routes=collections.Counter(), back={})
+    (run / "base.map").write_text("")
+    # Only replace the linker/PE inputs with in-memory fixtures. The modified
+    # Shifted.code executes; measure writes the actual status and graph.
+    with monkeypatch.context() as patch:
+        patch.setattr(running, "Measure", lambda *a: m)
+        patch.setattr(running, "Shifted", lambda *a: shifted)
+        patch.setattr(running, "pe_view", lambda p: (None, bytes(image), {".text": (0x1000, 0x2000)}, {}))
+        patch.setattr(running, "zz_names", lambda p: ({}, []))
+        series = running.measure(run, [unit], [], types.SimpleNamespace(by_base={}), bytes(image),
+                                 {".text": (0x1000, 0x2000)}, {}, {}, True, lc.SHIFT_BASE)
+    assert series["credit_unique_bytes"] == 6
+    receipt.update(series=series, closure_graph_sha256=series["closure_graph_sha256"])
+    end = running.input_state(final=True)
+    assert start == end
+    running.record_run_evidence(receipt, start, end, types.SimpleNamespace())
+    save_receipt(run, receipt)
+    assert sys.modules["link_cycle"] is lc  # independent, unmodified consumer
+    out = freeze(run, tmp_path / "bundle", root, sign=False)
+    with pytest.raises(ca.Refused) as refused:
+        ca.serve(out, root=root, now=NOW)
+    assert refused.value.sub_reason == "unstamped"
+
+
+@pytest.mark.parametrize("attack,reason", [
+    ("functions", "input-mismatch"), ("symbols", "input-mismatch"), ("data_rows", "input-mismatch"),
+    ("extra-input", "input-mismatch"),
+    ("tool", "tool-mismatch"), ("missing-objects", "missing-object-evidence"),
+    ("objects-digest", "bad-object-evidence"), ("object-source", "object-source-mismatch")])
+def test_r1_stamped_evidence_must_match_git_and_objects(checkout, tmp_path, attack, reason):
+    root, _ = checkout
+    run, receipt = run_for(checkout, tmp_path / "run")
+    if attack in ("functions", "symbols", "data_rows"):
+        receipt["inputs"][f"targets/game/reverse/{attack}.csv"] = "f" * 64
+    elif attack == "extra-input":
+        receipt["inputs"]["tools/repair_queue.py"] = "f" * 64
+    elif attack == "tool":
+        # A broad tool hash must match Git even under equal semantic rules.
+        receipt["tool_dependencies"]["repair_queue.py"] = "f" * 64
+        receipt["tool_digest"] = ctx.digest(receipt["tool_dependencies"])
+    elif attack == "missing-objects":
+        (run / ca.PROVENANCE).unlink()
+    elif attack == "objects-digest":
+        receipt["objects_digest"] = "f" * 64
+    else:
+        prov = ca.read_json(run / ca.PROVENANCE)
+        prov["build/f.obj"]["source_sha256"] = "f" * 64
+        (run / ca.PROVENANCE).write_text(ca.dumps(prov))
+        receipt["provenance_sha256"] = ca.sha256_file(run / ca.PROVENANCE)
+    save_receipt(run, receipt)
+    out = freeze(run, tmp_path / "bundle", root)
+    with pytest.raises(ca.Refused) as refused:
+        ca.serve(out, root=root, now=NOW)
+    assert refused.value.sub_reason == reason
+
+
+@pytest.mark.parametrize("attack,reason", [
+    ("missing", "unstamped"), ("no-keys", "unstamped"), ("wrong-key", "bad-stamp"),
+    ("mac", "bad-stamp"), ("manifest", "bad-stamp"), ("readable-key", "bad-stamp")])
+def test_r1_host_stamp_required_under_reader_keys(checkout, tmp_path, monkeypatch, attack, reason):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "bundle", root)
+    assert ca.serve(out, root=root, now=NOW)[1]["authoritative"]
+    if attack == "missing":
+        (out / stamp.STAMP).unlink()
+    elif attack == "no-keys":
+        monkeypatch.setenv("BFME_CYCLE_KEYS", "")
+    elif attack == "wrong-key":
+        monkeypatch.setenv("BFME_CYCLE_KEYS", str(stamp.keygen(tmp_path / "other-key")))
+    elif attack == "mac":
+        doc = ca.read_json(out / stamp.STAMP)
+        doc["hmac_sha256"] = "0" * 64
+        (out / stamp.STAMP).write_text(ca.dumps(doc))
+    elif attack == "readable-key":
+        stamp.configured_keys()[0].chmod(0o640)
+    else:
+        manifest = ca.read_manifest(out)
+        manifest["producer"] = "changed producer"
+        (out / ca.MANIFEST).write_text(ca.dumps(manifest))
+    with pytest.raises(ca.Refused) as refused:
+        ca.serve(out, root=root, now=NOW)
+    assert refused.value.sub_reason == reason
+    assert ca.load_bundle(out, root=root).freshness(now=NOW)["authoritative"] is False
+
+
+def test_r1_keygen_refuses_repository_keys_and_never_replaces(checkout, tmp_path):
+    root, _ = checkout
+    key = tmp_path / "new-key"
+    assert launch.main(["keygen", "--key", str(key)]) == 0
+    assert key.stat().st_mode & 0o777 == 0o600 and len(stamp.read_key(key)) == 32
+    original = key.read_bytes()
+    assert launch.main(["keygen", "--key", str(key)]) == 1
+    assert key.read_bytes() == original
+    for candidate in (root / "key", root / ".git/key"):
+        assert launch.main(["keygen", "--key", str(candidate)]) == 1
+        assert not candidate.exists()
+    inside = root / "secret"
+    inside.write_bytes(original)
+    inside.chmod(0o600)
+    with pytest.raises(stamp.KeyError, match="outside every"):
+        stamp.read_key(inside)
+    symlink = tmp_path / "key-symlink"
+    symlink.symlink_to(key)
+    with pytest.raises((stamp.KeyError, OSError)):
+        stamp.read_key(symlink)
+
+
+def synthetic_snapshot_checkout(checkout):
+    """Commit an inert measurement entrypoint; the real cycle body is removed.
+
+    Real export_snapshot/run_in_snapshot execute, followed by synthetic artifact
+    serialization only. Neither a compiler nor the real cycle can be called.
+    """
+    import inspect
+    import textwrap
+    root, _ = checkout
+    driver = root / "tools/link_cycle.py"
+    source = driver.read_text()
+    cycle = next(n for n in ast.parse(source).body if isinstance(n, ast.FunctionDef) and n.name == "cycle")
+    lines = source.splitlines(True)
+    lines[cycle.lineno - 1:cycle.end_lineno] = []
+    source = "".join(lines).replace("    cycle(args)\n", "    synthetic_measurement(args)\n")
+    helper = '''def synthetic_measurement(args):
+    import os
+    import cycle_artifacts as ca
+    import link_cycle as lc
+    sys.path.insert(0, str(ROOT / "tools/tests"))
+    from cycle_fixture import measured_run, save_receipt
+'''
+    helper += textwrap.indent(inspect.getsource(bind_evidence), "    ")
+    helper += '''
+    meta = ca.read_json(ROOT / SNAPSHOT_MARK)
+    run, receipt = measured_run(ROOT / "build/link_cycle", commit=meta["commit"], deps=ca.local_dependencies(ROOT))
+    bind_evidence(run, receipt, ROOT)
+    image = bytearray(0x3000)
+    image[0x1000:0x1006] = b"\\xa1" + struct.pack("<I", BASE + 0x1f10) + b"\\xc3"
+    sh = Shifted.__new__(Shifted)
+    sh.I = sh.S = bytes(image)
+    sh.delta, sh.base_s = SHIFT_BASE - BASE, SHIFT_BASE
+    sh.lo, sh.hi, sh.starts = BASE + 0x1f00, BASE + 0x2000, set()
+    sh.why, sh.failed = None, collections.Counter()
+    result = sh.code(0x1000, 6, set(), [])
+    assert result == "hardcoded address"
+    receipt["synthetic_execution"] = {"pid": os.getpid(), "driver": __file__, "adapter": context.__file__, "shift": result}
+    save_receipt(run, receipt)
+
+
+'''
+    source = source.replace('if __name__ == "__main__":', helper + 'if __name__ == "__main__":')
+    assert not any(isinstance(n, ast.FunctionDef) and n.name == "cycle" for n in ast.parse(source).body)
+    driver.write_text(source)
+    (root / "tools/gen_case_shims.py").write_text("def ensure_case_shims(*args, **kwargs):\n    pass\n")
+    tests = root / "tools/tests"
+    tests.mkdir()
+    shutil.copyfile(ROOT / "tools/tests/cycle_fixture.py", tests / "cycle_fixture.py")
+    git(root, "add", "tools")
+    git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R1 fixture",
+        "-c", "user.email=r1@example.invalid", "commit", "-qm", "inert snapshot measurement")
+    commit = git(root, "rev-parse", "HEAD")
+    git(root, "update-ref", "refs/remotes/origin/master", commit)
+    return root, commit
+
+
+def test_r2_launcher_executes_snapshot_code_in_fresh_interpreter(checkout, tmp_path, monkeypatch):
+    import os
+    root, commit = synthetic_snapshot_checkout(checkout)
+    # Deliberately poison the caller's already-loaded verifier. It cannot leak
+    # into either subprocess, even when disk identities describe approved code.
+    monkeypatch.setattr(lc.Shifted, "code", lambda *a: None)
+    out = tmp_path / "launched"
+    launch.measure(out, "synthetic host", root=root, key=stamp.configured_keys()[0])
+    b, fr, _ = ca.serve(out, root=root, now=NOW)
+    assert fr["authoritative"] and b.receipt["commit"] == commit
+    executed = b.receipt["synthetic_execution"]
+    assert executed["pid"] != os.getpid() and executed["shift"] == "hardcoded address"
+    assert f"/s/{commit[:10]}/tools/" in executed["driver"]
+    assert Path(executed["driver"]).parent == Path(executed["adapter"]).parent
+
+
+def test_r2_launcher_rejects_preexecution_tool_digest_mismatch(checkout, tmp_path, monkeypatch):
+    root, _ = synthetic_snapshot_checkout(checkout)
+    original = launch.frozen_tools
+    def mismatched(*args):
+        return dict(original(*args), implementation_sha256="0" * 64)
+    monkeypatch.setattr(launch, "frozen_tools", mismatched)
+    out = tmp_path / "refused"
+    with pytest.raises(subprocess.CalledProcessError):
+        launch.measure(out, "synthetic host", root=root, key=stamp.configured_keys()[0])
+    assert not out.exists()
+
+
+def test_sound_differential_measurement_and_verdicts(tmp_path, monkeypatch):
+    """Execute old/new measurement on identical finished records, without linking."""
+    original = git(ROOT, "show", BASELINE + ":tools/link_cycle.py")
+    prior = types.ModuleType("review_prior_cycle")
+    prior.__file__ = str(ROOT / "tools/link_cycle.py")
+    exec(compile(original, prior.__file__, "exec"), prior.__dict__)
+    current_tree = ast.parse((ROOT / "tools/link_cycle.py").read_text())
+    old_tree = ast.parse(original)
+    old_nodes = {n.name: n for n in old_tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef))}
+    new_nodes = {n.name: n for n in current_tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef))}
+    for name in ("Measure", "Shifted", "analyze", "row_kind", "load_pins", "greatest_closure",
+                 "plan_order", "filler_chunks", "read_map", "zz_objects", "object_identity"):
+        assert ast.dump(old_nodes[name]) == ast.dump(new_nodes[name]), name
+    assert git(ROOT, "show", BASELINE + ":tools/link_census.py") == (ROOT / "tools/link_census.py").read_text().strip()
+    # All keep-rule verdict combinations and selected-owner choices agree.
+    old_census = types.ModuleType("review_prior_census")
+    old_census.__file__ = str(ROOT / "tools/link_census.py")
+    monkeypatch.setitem(sys.modules, old_census.__name__, old_census)
+    exec(compile(git(ROOT, "show", BASELINE + ":tools/link_census.py"), old_census.__file__, "exec"), old_census.__dict__)
+    for verdicts in itertools.product((None, "retail", "wrong", "unknown"), repeat=3):
+        copies = [(str(i), "x" if i < 2 else "y", v) for i, v in enumerate(verdicts)]
+        assert census.keep_rule(copies) == old_census.keep_rule(copies)
+        for holder in (None, "0", "1", "2"):
+            args = holder, {o: (d, v) for o, d, v in copies}, {"0", "1", "2"}, {"0"}, {"1"}
+            assert census.judge_selected(*args) == old_census.judge_selected(*args)
+    for kind, shift_failure in itertools.product(("real", "generated", "asm", "gen-alias"), (False, True)):
+        results, statuses = [], []
+        for module in (prior, lc):
+            out = tmp_path / (module.__name__ + kind + str(shift_failure))
+            out.mkdir()
+            (out / "base.map").write_text("")
+            rows = [{"name": "f", "kind": "real", "source": "game/f.cpp", "rva": 0x1000, "size": 4},
+                    {"name": "g", "kind": kind, "source": "game/g.cpp", "rva": 0x1100, "size": 4}]
+            units = [{"id": i, "head": r["name"], "rows": [r]} for i, r in enumerate(rows)]
+            recs = [{"row": r, "unit": u, "measured": True, "placed": 1, "linked": r["rva"], "fails": [],
+                     "edges": {("unit", 1)} if i == 0 else set(), "masked": set(), "rels": [], "unpinned": False}
+                    for i, (r, u) in enumerate(zip(rows, units))]
+            m = types.SimpleNamespace(run=lambda: recs, twins={}, dnodes={}, eh=collections.Counter(),
+                                      import_equiv=0, ilt_routes=collections.Counter(), back={})
+            sh = types.SimpleNamespace(code=lambda *a: "hardcoded address" if shift_failure else None,
+                                       summary=lambda: {"checked": True})
+            with monkeypatch.context() as patch:
+                patch.setattr(module, "Measure", lambda *a: m)
+                patch.setattr(module, "Shifted", lambda *a: sh)
+                patch.setattr(module, "pe_view", lambda p: (None, bytes(0x3000), {".text": (0x1000, 0x2000)}, {}))
+                patch.setattr(module, "zz_names", lambda p: ({}, []))
+                result = module.measure(out, units, [], types.SimpleNamespace(by_base={}), bytes(0x3000),
+                                        {".text": (0x1000, 0x2000)}, {}, {}, True, module.SHIFT_BASE)
+            result.pop("data_back", None)
+            result.pop("closure_graph_sha256", None)
+            results.append(result)
+            statuses.append((out / "link_status.csv").read_bytes())
+        assert results[0] == results[1] and statuses[0] == statuses[1]
+    print("SOUND old/new: 8 measure scenarios identical; 64 keep_rule and 256 judge_selected cases identical; ILT/Measure/Shifted AST identical")
+
+
+def test_r1_unstamped_bundle_has_labelled_diagnostic_cli(checkout, tmp_path, monkeypatch, capsys):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "bundle", root, sign=False)
+    original = ca.load_bundle
+    monkeypatch.setattr(ca, "load_bundle", lambda path: original(path, root=root))
+    monkeypatch.setattr(ca.time, "time", lambda: NOW)
+    assert ca.main(["inspect", str(out)]) == 0
+    assert "NOT AUTHORITATIVE: not-authoritative / unstamped" in capsys.readouterr().out
+
+
+def test_r1_reader_can_trust_multiple_host_keys(checkout, tmp_path, monkeypatch):
+    root, _ = checkout
+    run, _ = run_for(checkout, tmp_path / "run")
+    out = freeze(run, tmp_path / "bundle", root)
+    original = stamp.configured_keys()[0]
+    other = stamp.keygen(tmp_path / "second-host-key")
+    monkeypatch.setenv("BFME_CYCLE_KEYS", str(other) + __import__("os").pathsep + str(original))
+    assert ca.serve(out, root=root, now=NOW)[1]["authoritative"]
+
+
+def test_r2_launcher_rejects_receipt_semantic_digest_mismatch(checkout, tmp_path):
+    root, _ = synthetic_snapshot_checkout(checkout)
+    driver = root / "tools/link_cycle.py"
+    source = driver.read_text()
+    needle = '    receipt["synthetic_execution"] = '
+    before = source.index(needle)
+    source = source[:before] + (
+        '    receipt["tool_dependencies"]["link_cycle.py"] = "f" * 64\n'
+        '    receipt["rule_identity"] = context.rule_identity(receipt["tool_dependencies"])\n'
+        '    receipt["tool_digest"] = context.digest(receipt["tool_dependencies"])\n') + source[before:]
+    driver.write_text(source)
+    git(root, "add", "tools/link_cycle.py")
+    git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R1 fixture",
+        "-c", "user.email=r1@example.invalid", "commit", "-qm", "inert dishonest receipt")
+    git(root, "update-ref", "refs/remotes/origin/master", "HEAD")
+    out = tmp_path / "refused"
+    with pytest.raises(ca.BundleError, match="executed semantic dependency digest"):
+        launch.measure(out, "synthetic host", root=root, key=stamp.configured_keys()[0])
+    assert not out.exists()

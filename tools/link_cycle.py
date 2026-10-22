@@ -84,8 +84,8 @@ fixes of research 29, 31 and the round-2 review:
      stubs) are reused only for the objects they were computed from.
      `--snapshot REV` measures an immutable export of REV (git archive with
      submodules) in its own directory, with its own outputs and no shared
-     object store; snapshots remain diagnostic. Clean local runs record
-     checkout cleanliness at start and end; readers also require ancestry,
+     object store; a snapshot needs the host-key launcher for bundle authority.
+     Runs record checkout cleanliness at start and end; readers also require ancestry,
      integrity, matching rules and freshness before granting authority.
      BFME1's rule tuple includes a profile and implementation digest; it is
      distinct from BFME2 link-cycle-2. Dirty diagnostics need --allow-dirty.
@@ -122,7 +122,7 @@ import time
 from pathlib import Path
 
 # LINK_CYCLE_ROOT: the tree to measure (run_in_snapshot points it at an exported
-# snapshot); this file stays the measuring tool and is digested as such.
+# snapshot); snapshots execute their own tools and bind those dependencies.
 ROOT = Path(os.environ.get("LINK_CYCLE_ROOT") or Path(__file__).resolve().parents[1]).resolve()
 sys.path.insert(0, str(ROOT / "tools"))
 import build  # noqa: E402
@@ -1513,6 +1513,10 @@ def export_snapshot(rev, parent):
             (tmp / path).mkdir(parents=True, exist_ok=True)
             extract(ROOT / path, obj, tmp / path)
             subs[path] = obj
+    # The launcher binds the exported tools before even the shim helper runs.
+    expected = os.environ.get("BFME_CYCLE_EXPECTED_SEMANTIC")
+    if expected and context.digest({n: text_sha256(tmp / "tools" / n) for n in context.MEASUREMENT_FILES}) != expected:
+        raise SystemExit("link_cycle: snapshot tools differ from launcher preflight")
     # the tree's own generated inputs (case-redirect shims on a case-sensitive host), before the marker
     subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, 'tools'); import gen_case_shims; "
                     "gen_case_shims.ensure_case_shims()"], cwd=tmp, check=True,
@@ -1547,9 +1551,13 @@ def run_in_snapshot(args, argv):
             skip = "=" not in a
             continue
         rest.append(a)
+    expected = os.environ.get("BFME_CYCLE_EXPECTED_SEMANTIC")
+    semantic = context.digest({n: text_sha256(snap / "tools" / n) for n in context.MEASUREMENT_FILES})
+    if expected and semantic != expected:
+        raise SystemExit("link_cycle: snapshot tools differ from launcher preflight")
     env = dict(os.environ, LINK_CYCLE_ROOT=str(snap), BFME_OBJSTORE="off", PYTHONDONTWRITEBYTECODE="1",
                GIT_CEILING_DIRECTORIES=str(snap.parent))
-    return subprocess.run([sys.executable, str(Path(__file__).resolve()), *rest], env=env, cwd=snap).returncode
+    return subprocess.run([sys.executable, "-I", "-B", str(snap / "tools/link_cycle.py"), *rest], env=env, cwd=snap).returncode
 
 
 def input_state(allow_dirty=False, *, final=False):
@@ -1560,7 +1568,7 @@ def input_state(allow_dirty=False, *, final=False):
     if mark.exists():
         meta = json.loads(mark.read_text())
         commit = {"commit": meta["commit"], "submodules": meta["submodules"], "snapshot": True,
-                  "tree_manifest": tree_manifest(ROOT)}
+                  "tree_manifest": tree_manifest(ROOT), "dirty": False}
         if commit["tree_manifest"] != meta["tree_manifest"]:
             raise SystemExit("link_cycle: the snapshot tree differs from its marker; refusing to measure it")
     else:

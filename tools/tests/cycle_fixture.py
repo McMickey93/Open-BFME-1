@@ -76,3 +76,37 @@ def rewrite_manifest(directory, fn):
 
 def rehash(directory, name):
     rewrite_manifest(directory, lambda m: m["members"].update({name: ca.member_meta(directory / name)}))
+
+
+# Existing serializer/queue unit tests use deliberately invented commits. Their
+# execution evidence is stubbed explicitly; real Git/host-bound checks live in
+# test_bfme2_port_r1_regressions.py and do not use this fixture.
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def synthetic_host(tmp_path, monkeypatch):
+    import cycle_stamp
+    key = cycle_stamp.keygen(tmp_path / "host-key")
+    monkeypatch.setenv("BFME_CYCLE_KEYS", str(key))
+    monkeypatch.setattr(ca, "run_evidence_failure", lambda *a: None)
+    original = pc.make_bundle
+
+    def signed(*args, **kwargs):
+        result = original(*args, **kwargs)
+        host_stamp(Path(args[1]), key)
+        return result
+    monkeypatch.setattr(pc, "make_bundle", signed)
+
+
+def host_stamp(directory, key):
+    """Simulate a trusted measuring host, only for synthetic tests."""
+    import hashlib
+    import hmac
+    import cycle_stamp
+    secret = cycle_stamp.read_key(key)
+    digest = ca.sha256_file(directory / ca.MANIFEST)
+    (directory / cycle_stamp.STAMP).write_text(ca.dumps({
+        "schema": cycle_stamp.SCHEMA, "manifest_sha256": digest,
+        "key_id": hashlib.sha256(secret).hexdigest(),
+        "hmac_sha256": hmac.new(secret, bytes.fromhex(digest), hashlib.sha256).hexdigest()}))

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from cycle_fixture import NOW, bundle, measured_run, save_receipt
+from cycle_fixture import synthetic_host, NOW, bundle, measured_run, save_receipt
 import closure_report as cr
 import cycle_artifacts as ca
 import link_cycle_context as context

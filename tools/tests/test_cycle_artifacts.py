@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from cycle_fixture import NOW, bundle, measured_run, rehash, rewrite_manifest, save_receipt
+from cycle_fixture import synthetic_host, NOW, bundle, measured_run, rehash, rewrite_manifest, save_receipt
 import closure_report as cr
 import cycle_artifacts as ca
 import link_cycle as lc
@@ -41,7 +41,7 @@ def test_deterministic_bundle_bytes(tmp_path):
     a = bundle(tmp_path / "a", run=run, first=True)
     b = bundle(tmp_path / "b", run=run, first=True)
     assert {p.name: p.read_bytes() for p in a.iterdir()} == {p.name: p.read_bytes() for p in b.iterdir()}
-    assert set(p.name for p in a.iterdir()) == set(ca.MEMBERS + (ca.MANIFEST, ca.CYCLE_DIFF))
+    assert set(p.name for p in a.iterdir()) == set(ca.MEMBERS + (ca.MANIFEST, ca.CYCLE_DIFF, ca.cycle_stamp.STAMP))
     assert ca.SCHEMA != "link-cycle-bundle/2"
     for p in a.glob("*.gz"):
         assert p.read_bytes()[4:8] == b"\0" * 4
@@ -330,6 +330,8 @@ def test_clean_local_run_accepted_through_bundle_store_and_status(frozen, tmp_pa
     # Neither a manifest nor a CLI switch needs to claim authority.
     assert "authoritative" not in ca.validate(frozen)
     rewrite_manifest(frozen, lambda m: m.update(authoritative=False))
+    from cycle_fixture import host_stamp
+    host_stamp(frozen, ca.cycle_stamp.configured_keys()[0])
     b, fr, lines = ca.serve(frozen, now=NOW)
     assert b.authoritative and fr["authoritative"]
     assert any("AUTHORITATIVE: clean local run" in line for line in lines)
@@ -457,7 +459,7 @@ def test_removed_remote_trust_surface_has_no_remaining_references():
             assert not re.search(pattern, source), (name, pattern)
     # Only the local lifecycle commands remain in either CLI.
     import ast
-    for module, expected in ((ca, {"status", "install", "validate"}),
+    for module, expected in ((ca, {"status", "install", "validate", "inspect"}),
                              (pc, {"validate", "bundle"})):
         tree = ast.parse(Path(module.__file__).read_text())
         commands = {node.args[0].value for node in ast.walk(tree) if isinstance(node, ast.Call)

@@ -116,6 +116,10 @@ def make_bundle(run_dir, out, producer, *, root=ROOT, now=None, closure=None, pr
         (tmp / ca.RECEIPT).write_bytes(facts["receipt_bytes"])
         gzip_bytes(ca.read_member(facts["status"]), tmp / ca.LINK_STATUS)
         shutil.copyfile(facts["graph"], tmp / ca.CLOSURE_GRAPH)
+        if (facts["run_dir"] / ca.PROVENANCE).is_file():
+            ca.same("run provenance", ca.sha256_file(facts["run_dir"] / ca.PROVENANCE),
+                    facts["receipt"]["provenance_sha256"])
+            shutil.copyfile(facts["run_dir"] / ca.PROVENANCE, tmp / ca.PROVENANCE)
         report = closure_members(facts, tmp, closure)
         receipt = facts["receipt"]
         (tmp / ca.RANK_JSON).write_text(ca.dumps(data_back_rank.unavailable(receipt)), encoding="utf-8", newline="\n")
