@@ -20970,5 +20970,25 @@
   "after_sha256": "015ab2ef98673521cb47fe0d8b0e070af8f6e4113b8b32190cab4f6fb86e7438",
   "evidence": "targets/game/reverse/identity_evidence/0x00504600-mapselect-call-targets.md",
   "reason": "The dropped token is the throw() specification of the bank's own Rva00098E70GameInfoView workaround class, removed with the class when the two menu call sites were rebound to ILT 0x00029CEE -> 0x00457090 and to GameInfo::getMap(). Every matched sibling declares AsciiString getMap() const; without it. The token pairing against the new import stub is a diff artefact, not an identity claim."
-}
+},
+ {
+  "old_path": "targets/game/reverse/attempts/0x0092d4b0.cpp",
+  "new_path": "game/Libraries/Source/WWVegas/WW3D2/MeshClassRva0092D4B0.cpp",
+  "old_name": "apply",
+  "new_name": "rva0092D4B0",
+  "before_sha256": "79b0f86ba6ce99f82a3c4a59e87fa3bd1e7a7c935b4536b8edb5043c9d379fc8",
+  "after_sha256": "98264e4a60ddcee21641f239660ecb5cb82cb117c5549d3c3abc8f3a215950a4",
+  "evidence": "targets/game/reverse/identity_evidence/0092d4b0-meshclass-slot127.md",
+  "reason": "stash guesses without evidence; vtable proves MeshClass slot 127 and the callee keeps its ledger name"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0092d4b0.cpp",
+  "new_path": "game/Libraries/Source/WWVegas/WW3D2/MeshClassRva0092D4B0.cpp",
+  "old_name": "setTexture",
+  "new_name": "bfmeSetVGT",
+  "before_sha256": "79b0f86ba6ce99f82a3c4a59e87fa3bd1e7a7c935b4536b8edb5043c9d379fc8",
+  "after_sha256": "98264e4a60ddcee21641f239660ecb5cb82cb117c5549d3c3abc8f3a215950a4",
+  "evidence": "targets/game/reverse/identity_evidence/0092d4b0-meshclass-slot127.md",
+  "reason": "stash guesses without evidence; vtable proves MeshClass slot 127 and the callee keeps its ledger name"
+ }
 ]
