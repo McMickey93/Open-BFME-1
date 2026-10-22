@@ -266,12 +266,6 @@ class MeshClass
     virtual MaterialInfoClass *Get_Material_Info();
     char pad04[0xc4];
     MeshModelClass *Model;
-    MeshModelClass *Get_Model()
-    {
-        if (Model)
-            ++Model->refs;
-        return Model;
-    }
     virtual void slot154();
     virtual void slot158();
     virtual void slot15c();
@@ -316,6 +310,14 @@ class MeshClass
     virtual void Recolor0092DF50(unsigned color);
     virtual void rva0092D4B0(int color, const char *skipExtension);
 };
+// Retail inlines MeshClass::Get_Model (0x0092CF80); a file-local helper keeps
+// the expansion without emitting a second COMDAT body under that name.
+static __forceinline MeshModelClass *meshModelRef(MeshClass *mesh)
+{
+    if (mesh->Model)
+        ++mesh->Model->refs;
+    return mesh->Model;
+}
 void MeshClass::rva0092D4B0(int color, const char *skipExtension)
 {
     const char *name = Get_Name();
@@ -327,7 +329,7 @@ void MeshClass::rva0092D4B0(int color, const char *skipExtension)
     ++extension;
     if (skipExtension && !_strcmpi(extension, skipExtension))
         return;
-    MeshModelClass *model = Get_Model();
+    MeshModelClass *model = meshModelRef(this);
     BfmeHandleUZA old = ((const BfmeThingAUZA *)model)->bfmeGoAUZA(0, 0);
     const char *textureName = (const char *)PeekHashMapValue008FF850(old.p ? old.p->key : -1);
     if (textureName)
