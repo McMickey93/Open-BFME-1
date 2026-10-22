@@ -19,6 +19,7 @@ import tempfile
 
 import cycle_artifacts as ca
 import cycle_stamp as stamp
+import cycle_source
 import publish_cycle as pc
 
 
@@ -28,6 +29,7 @@ def frozen_tools(root, commit, destination):
                              check=True, capture_output=True).stdout
     with tarfile.open(fileobj=io.BytesIO(archive)) as stream:
         stream.extractall(destination, filter="data")
+    cycle_source.reject_bytecode(destination)
     rules = ca.local_rules(destination)
     if rules is None:
         raise ca.BundleError("approved commit has no readable BFME1 snapshot implementation")
@@ -37,11 +39,11 @@ def frozen_tools(root, commit, destination):
 def snapshot_command(seed, root, commit, snapshots):
     # Import providers only from the frozen bootstrap. Then point the existing
     # --snapshot exporter at the source Git database. Its measurement subprocess
-    # executes snapshot/tools/link_cycle.py with -I/-B, never this import.
+    # executes snapshot/tools/link_cycle.py through the same source-only loader.
     code = ("import sys; sys.path.insert(0, sys.argv[1]); import link_cycle as lc; "
             "lc.ROOT = lc.Path(sys.argv[2]); "
             "raise SystemExit(lc.main(['--snapshot', sys.argv[3], '--snapshot-dir', sys.argv[4], '--build']))")
-    return [sys.executable, "-I", "-B", "-c", code, str(seed / "tools"), str(root), commit, str(snapshots)]
+    return cycle_source.command(seed / "tools", code, seed / "tools", root, commit, snapshots)
 
 
 def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_KEY, snapshot_dir=None):
@@ -68,6 +70,7 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         subprocess.run(snapshot_command(seed, root, commit, snapshots), cwd=root, env=env, check=True)
         snapshot = snapshots / commit[:10]
         # Hash the actual export again, and bind the preflight to the receipt.
+        cycle_source.reject_bytecode(snapshot)
         ca.same("snapshot tools after execution", ca.local_rules(snapshot), rules)
         run = snapshot / "build/link_cycle"
         receipt = ca.read_json(run / ca.RECEIPT)

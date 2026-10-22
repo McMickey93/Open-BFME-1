@@ -128,6 +128,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import build  # noqa: E402
 import link_census as census  # noqa: E402
 import link_cycle_context as context  # noqa: E402
+import cycle_source  # noqa: E402
 
 OUT = ROOT / "build" / "link_cycle"
 BASE = 0x400000
@@ -1488,6 +1489,7 @@ def export_snapshot(rev, parent):
         meta = json.loads(mark.read_text())
         if meta.get("commit") != sha or tree_manifest(dest) != meta.get("tree_manifest"):
             raise SystemExit(f"link_cycle: snapshot {dest} no longer matches its marker; delete it and re-export")
+        cycle_source.reject_bytecode(dest)
         return dest
     tmp = dest                         # extracted in place; the marker, written last, makes it complete
     if tmp.exists():
@@ -1513,14 +1515,15 @@ def export_snapshot(rev, parent):
             (tmp / path).mkdir(parents=True, exist_ok=True)
             extract(ROOT / path, obj, tmp / path)
             subs[path] = obj
+    cycle_source.reject_bytecode(tmp)
     # The launcher binds the exported tools before even the shim helper runs.
     expected = os.environ.get("BFME_CYCLE_EXPECTED_SEMANTIC")
     if expected and context.digest({n: text_sha256(tmp / "tools" / n) for n in context.MEASUREMENT_FILES}) != expected:
         raise SystemExit("link_cycle: snapshot tools differ from launcher preflight")
     # the tree's own generated inputs (case-redirect shims on a case-sensitive host), before the marker
-    subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, 'tools'); import gen_case_shims; "
-                    "gen_case_shims.ensure_case_shims()"], cwd=tmp, check=True,
-                   env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+    subprocess.run(cycle_source.command(tmp / "tools", "import gen_case_shims; gen_case_shims.ensure_case_shims()"),
+                   cwd=tmp, check=True, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+    cycle_source.reject_bytecode(tmp)
     return finish_snapshot(tmp, dest, sha, subs, round(time.time() - t))
 
 
@@ -1557,7 +1560,7 @@ def run_in_snapshot(args, argv):
         raise SystemExit("link_cycle: snapshot tools differ from launcher preflight")
     env = dict(os.environ, LINK_CYCLE_ROOT=str(snap), BFME_OBJSTORE="off", PYTHONDONTWRITEBYTECODE="1",
                GIT_CEILING_DIRECTORIES=str(snap.parent))
-    return subprocess.run([sys.executable, "-I", "-B", str(snap / "tools/link_cycle.py"), *rest], env=env, cwd=snap).returncode
+    return subprocess.run(cycle_source.script_command(snap / "tools/link_cycle.py", *rest), env=env, cwd=snap).returncode
 
 
 def input_state(allow_dirty=False, *, final=False):

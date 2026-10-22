@@ -47,7 +47,7 @@ def failed_run(checkout, path, **kwargs):
 
 
 def commit_fixture(root, message):
-    git(root, "add", "-f", "tools")
+    git(root, "add", "-f", "tools", "game")
     git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R2 fixture",
         "-c", "user.email=r2@example.invalid", "commit", "-qm", message)
     git(root, "update-ref", "refs/remotes/origin/master", "HEAD")
@@ -135,3 +135,72 @@ def test_key_checks_opened_descriptor_after_parent_swap(checkout, tmp_path, monk
     monkeypatch.setattr(stamp.os, "open", swap)
     with pytest.raises(stamp.KeyError, match="outside every"):
         stamp.read_key(alias / "key")
+
+@pytest.mark.parametrize("cache_location", ["provider", "shim-helper", "full-snapshot"])
+def test_defect_snapshot_executes_unhashed_bytecode(checkout, tmp_path, cache_location):
+    root, _ = synthetic_snapshot_checkout(checkout)
+    driver = root / "tools/link_cycle.py"
+    source = driver.read_text()
+    needle = '    receipt["synthetic_execution"] = '
+    at = source.index(needle)
+    source = source[:at] + (
+        '    receipt["cached_object_verdict"] = context.current_object(ROOT / "game/absent.cpp", ROOT / "build/absent.obj")\n'
+    ) + source[at:]
+    driver.write_text(source)
+    commit_fixture(root, "inert source-only object probe")
+    adapter = root / "tools/link_cycle_context.py"
+    before = ca.local_rules(root)
+    assert ctx.current_object(root / "game/absent.cpp", root / "build/absent.obj") is False
+    modified = adapter.read_text().replace(
+        "def current_object(source, obj, **kwargs):\n",
+        "def current_object(source, obj, **kwargs):\n    return True  # alternate cached verifier\n")
+    alternate = tmp_path / "alternate_context.py"
+    alternate.write_text(modified)
+    target = {"provider": adapter, "shim-helper": root / "tools/gen_case_shims.py",
+              "full-snapshot": root / "game/probe.py"}[cache_location]
+    cache = Path(importlib.util.cache_from_source(str(target)))
+    cache.parent.mkdir(exist_ok=True)
+    py_compile.compile(str(alternate), cfile=str(cache), dfile=str(adapter), doraise=True,
+                       invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH)
+    commit = commit_fixture(root, "fixture alternate measurement bytecode")
+    assert ca.local_rules(root) == before
+    assert not git(root, "status", "--porcelain")
+    out = tmp_path / "launched"
+    import subprocess
+    with pytest.raises((ValueError, subprocess.CalledProcessError)):
+        launch.measure(out, "R2 inert bytecode probe", root=root, key=stamp.configured_keys()[0])
+    assert not out.exists()
+
+
+
+@pytest.mark.parametrize("sourceless", [False, True])
+def test_source_loader_refuses_late_bytecode(tmp_path, sourceless):
+    import subprocess
+    import cycle_source
+    tools = tmp_path / "tools"
+    tools.mkdir()
+    shutil.copyfile(cycle_source.__file__, tools / "cycle_source.py")
+    (tools / "probe.py").write_text("current = False\n")
+    alternate = tmp_path / "alternate.py"
+    alternate.write_text("current = True\n")
+    # Introduce bytecode only AFTER bootstrap's initial cache inventory.
+    program = """import importlib.util, py_compile
+source = tools / 'probe.py'
+cache = tools / 'probe.pyc' if sys.argv[1] == 'True' else Path(importlib.util.cache_from_source(str(source)))
+cache.parent.mkdir(exist_ok=True)
+py_compile.compile(str(tools.parent / 'alternate.py'), cfile=str(cache), doraise=True,
+                   invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH)
+if sys.argv[1] == 'True':
+    source.unlink()
+    try:
+        import probe
+    except ImportError:
+        pass
+    else:
+        raise AssertionError('sourceless bytecode executed')
+else:
+    import probe
+    assert probe.current is False, 'cached bytecode executed'
+"""
+    subprocess.run(cycle_source.command(tools, program, sourceless), check=True,
+                   env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))

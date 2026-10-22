@@ -28,7 +28,7 @@ PROFILE = {"target": "bfme1-retail-1.03", "text_groups": [[0x1000, ".text"]],
            "alias_rule": "bfme1-judge_selected", "fold_exemptions": []}
 # Explicit measurement-semantic closure; shared by receipts, bundles and diffs.
 MEASUREMENT_FILES = (
-    "link_cycle.py", "link_cycle_context.py", "link_census.py", "build.py",
+    "link_cycle.py", "link_cycle_context.py", "cycle_source.py", "link_census.py", "build.py",
     "census_receipts.py", "data_rows.py", "reloc_ledger.py", "alias_guard.py",
     "pin_consistency.py", "progress.py", "abi_view.py", "import_pin_guard.py", "ilt_oracle.py",
     "body_guard.py", "dir32_record_guard.py", "archive_import.py",
