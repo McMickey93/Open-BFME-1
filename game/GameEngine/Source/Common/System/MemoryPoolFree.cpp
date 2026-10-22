@@ -25,6 +25,10 @@ char g_Va0130E9D8[24];
 // The four-byte pointer is initially zero in retail .data.
 unsigned int *g_Va0130E9B8;
 unsigned int *g_Va0130E9BC;
+// Retail _Allocate (0x00882960) raises this to the running byte total g_Va0130E9F4.
+unsigned int g_Va0130E9C0;
+// Byte flag _Allocate turns into HeapAlloc flags 8; Rva00882F20/F30SetFlag set and clear it.
+unsigned char g_Va0130E9F8;
 unsigned int g_Va0130EA08, g_Va0130E9C8;
 unsigned int g_Va012D4D0C = 0x1000;
 extern Rva00882BA0Block **g_Va0130E9CC, **g_Va0130E9D4;
