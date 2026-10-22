@@ -20990,5 +20990,25 @@
   "after_sha256": "98264e4a60ddcee21641f239660ecb5cb82cb117c5549d3c3abc8f3a215950a4",
   "evidence": "targets/game/reverse/identity_evidence/0092d4b0-meshclass-slot127.md",
   "reason": "stash guesses without evidence; vtable proves MeshClass slot 127 and the callee keeps its ledger name"
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x006d8c10.cpp",
+  "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeBuffer.cpp",
+  "old_name": "TerrainRoadType",
+  "new_name": "BfmeC998",
+  "before_sha256": "2a776a9aea96441b2bd908c61f0d58150670fe63089ef44f51df3baade4c92c9",
+  "after_sha256": "b985913a139eb9ab049d566d10b62b565db2c30dce1fc6f81885ce4e7c2ad5ad",
+  "evidence": "targets/game/reverse/identity_evidence/006d8c10-w3dbridge-load.md",
+  "reason": "False pairing: TerrainRoadType remains in the converted W3DBridgeLoad.cpp. The checker aligned the deleted bank with the unrelated BfmeC998 mesh-normal helper still present in W3DBridgeBuffer.cpp; no identity was renamed."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x006d8c10.cpp",
+  "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/W3DBridgeBuffer.cpp",
+  "old_name": "getTexture",
+  "new_name": "bfmeGo998C",
+  "before_sha256": "2a776a9aea96441b2bd908c61f0d58150670fe63089ef44f51df3baade4c92c9",
+  "after_sha256": "b985913a139eb9ab049d566d10b62b565db2c30dce1fc6f81885ce4e7c2ad5ad",
+  "evidence": "targets/game/reverse/identity_evidence/006d8c10-w3dbridge-load.md",
+  "reason": "False pairing: getTexture remains in the converted W3DBridgeLoad.cpp. The checker aligned the deleted bank with the unrelated bfmeGo998C mesh-normal helper still present in W3DBridgeBuffer.cpp; no identity was renamed."
  }
 ]

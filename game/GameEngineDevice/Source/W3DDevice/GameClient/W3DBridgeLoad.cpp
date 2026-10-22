@@ -1,7 +1,8 @@
 // ?load@W3DBridge@@QAE_NW4BodyDamageType@@@Z
-// partial score=0.9986 date=2026-10-11
+// Native byte match, 2026-10-22.
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WWDebug
-// Native bank: W3DBridge::load, RVA006D8C10,2836 bytes including four switch entries.
+// Native conversion: W3DBridge::load, RVA006D8C10,2836 bytes including four switch entries.
+// The grouped first product preserves retail's x87 order: (Y + Z), then X, then translation.
 // The 0x114-byte bridge layout is witnessed by its landed constructor and vertex methods.
 // Rva006D8C10GeometryView preserves the witnessed count/vertex slots +28/+30;
 // the shared geometry header has +2C/+34 and is not changed here.
@@ -96,7 +97,7 @@ static __forceinline void Rva006D8C10TransformFirst(const Matrix3D & A,const Vec
 		v = (Vector3 *)&in;		// whats the right way to do this...
 	}
 
-	out->X = ((*(volatile const float *)&A[0][0]) * v->X + A[0][1] * v->Y + A[0][2] * v->Z + A[0][3]);
+	out->X = (A[0][0] * (*(volatile const float *)&v->X) + (A[0][1] * v->Y + A[0][2] * v->Z) + A[0][3]);
 	out->Y = (A[1][0] * v->X + A[1][1] * v->Y + A[1][2] * v->Z + A[1][3]);
 	out->Z = (A[2][0] * v->X + A[2][1] * v->Y + A[2][2] * v->Z + A[2][3]);
 }
