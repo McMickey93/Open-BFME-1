@@ -1,6 +1,8 @@
 // Open-BFME5: clean C++ conversion of the sixteen-byte payload fill walk.
 
-extern int R2Data010EC760;
+// Retail's 0x010EC760 vtable is the table ParseFlashRegionsEvent.cpp emits for
+// Rva003B7190Record (the same one Rva003A6360CopyCtor.cpp installs).
+extern "C" const void *__identifier("??_7Rva003B7190Record@@6B@")[];
 
 struct Gen_t_003acd30_p16cd
 {
@@ -27,7 +29,7 @@ Output __uninitialized_fill_n(Output result, Size count, const Value &value,
 		{
 			if (current != 0)
 			{
-				current->m_at00 = &R2Data010EC760;
+				current->m_at00 = (void *)__identifier("??_7Rva003B7190Record@@6B@");
 				current->m_at04 = value.m_at04;
 				current->m_at08 = value.m_at08;
 				current->m_at0C = value.m_at0C;

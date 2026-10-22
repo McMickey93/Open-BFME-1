@@ -5,7 +5,9 @@
 // converted in ElementPayloadConstructors.cpp; this is the other, instantiated
 // over its own element type so the two rows stay distinct.
 
-extern int R2Data010EC760;
+// Retail's 0x010EC760 vtable is the table ParseFlashRegionsEvent.cpp emits for
+// Rva003B7190Record (the same one Rva003A6360CopyCtor.cpp installs).
+extern "C" const void *__identifier("??_7Rva003B7190Record@@6B@")[];
 
 struct Gen_t_003acce0_p16cd
 {
@@ -27,7 +29,7 @@ Output __uninitialized_copy( Input first, Input last, Output result, const __fal
 	{
 		if ( result != 0 )
 		{
-			result->m_at00 = &R2Data010EC760;
+			result->m_at00 = (void *)__identifier("??_7Rva003B7190Record@@6B@");
 			result->m_at04 = first->m_at04;
 			result->m_at08 = first->m_at08;
 			result->m_at0C = first->m_at0C;
