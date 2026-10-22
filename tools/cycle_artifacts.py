@@ -424,7 +424,10 @@ def check_cycle_diff(d, manifest, receipt):
     same("cycle_diff NEW", (doc.get("identity") or {}).get("new"), cd.identity(receipt))
     same("cycle_diff component", component,
          {"included": True, "schema": cd.SCHEMA, "predecessor": (doc.get("identity") or {}).get("old")})
-    cd.check_report(doc)
+    try:
+        cd.check_report(doc)
+    except cd.CycleDiffError as e:
+        raise BundleError(f"cycle_diff: {e}") from None
     _, spans = cd.load_run(d)
     same("cycle_diff NEW credit union", doc["credit"]["new"], spans)
 

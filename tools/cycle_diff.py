@@ -74,21 +74,40 @@ def load_run(directory):
         raw = ca.read_member(path)
         if hashlib.sha256(raw).hexdigest() != receipt["series"]["link_status_sha256"]:
             raise CycleDiffError("status is not the receipt's")
-        with ca.open_text(path) as f:
-            rows = list(csv.DictReader(f))
-        spans = []
-        for row in rows:
-            if row["kind"] == "real" and row["placed"] == "1" and row["closed_strict"] == "1":
-                if ca.context.source_kind(row) != "real":
-                    raise CycleDiffError("generated/assembly source cannot score")
-                a = int(row["retail_rva"], 16)
-                spans.append([a, a + int(row["size"])])
-        spans = union(spans)
-        if size(spans) != receipt["series"]["credit_unique_bytes"]:
-            raise CycleDiffError("credit union disagrees with receipt")
+        spans = verified_credit(receipt, raw)
         return receipt, spans
     except (ca.Problem, OSError, KeyError, TypeError, ValueError) as e:
         raise CycleDiffError(f"{d}: {e}") from None
+
+
+def verified_credit(receipt, raw):
+    """Reproduce a credit union from the receipt's exact status artifact."""
+    import io
+    import cycle_artifacts as ca
+    ca.check_receipt(receipt)
+    if hashlib.sha256(raw).hexdigest() != receipt["series"]["link_status_sha256"]:
+        raise CycleDiffError("status is not the receipt's")
+    rows = csv.DictReader(io.StringIO(raw.decode("utf-8")))
+    spans = []
+    for row in rows:
+        if row["kind"] == "real" and row["placed"] == "1" and row["closed_strict"] == "1":
+            if ca.context.source_kind(row) != "real":
+                raise CycleDiffError("generated/assembly source cannot score")
+            a = int(row["retail_rva"], 16)
+            spans.append([a, a + int(row["size"])])
+    spans = union(spans)
+    if size(spans) != receipt["series"]["credit_unique_bytes"]:
+        raise CycleDiffError("credit union disagrees with receipt")
+    return spans
+
+
+def evidence(directory, receipt):
+    import cycle_artifacts as ca
+    d = Path(directory)
+    path = d / "link_status.csv"
+    if not path.is_file():
+        path = d / ca.LINK_STATUS
+    return {"receipt": receipt, "link_status": ca.read_member(path).decode("utf-8")}
 
 
 def check_report(doc):
@@ -114,6 +133,19 @@ def check_report(doc):
         if doc["totals"] is not None or doc["gained"] is not None or doc["lost"] is not None:
             raise CycleDiffError("first-run report invents a gain")
         return
+    if doc.get("comparison_verified") is not True:
+        if any(doc.get(k) is not None for k in ("totals", "gained", "lost")):
+            raise CycleDiffError("unverified comparison cannot count progress")
+        return
+    for side in ("old", "new"):
+        try:
+            proof = doc["evidence"][side]
+            if identity(proof["receipt"]) != ident[side]:
+                raise CycleDiffError(f"{side} evidence identifies another receipt")
+            if verified_credit(proof["receipt"], proof["link_status"].encode("utf-8")) != doc["credit"][side]:
+                raise CycleDiffError(f"{side} credit union disagrees with evidence")
+        except (KeyError, TypeError, ValueError) as e:
+            raise CycleDiffError(f"unverified {side} comparison evidence: {e}") from None
     gained, lost = difference(new, old), difference(old, new)
     if doc["gained"] != gained or doc["lost"] != lost or doc["totals"] != {
             "old": size(old), "new": size(new), "gained": size(gained), "lost": size(lost),
@@ -133,6 +165,8 @@ def compare(old, new):
     gained = difference(new_spans, old_spans) if before is not None else None
     lost = difference(old_spans, new_spans) if before is not None else None
     doc = {"schema": SCHEMA, "comparison": before is not None,
+           "comparison_verified": before is not None,
+           "evidence": {"new": evidence(new, after), "old": evidence(old, before) if before else None},
            "identity": {"new": identity(after), "old": identity(before) if before is not None else None},
            "credit": {"new": new_spans, "old": old_spans}, "gained": gained, "lost": lost,
            "totals": None if before is None else {

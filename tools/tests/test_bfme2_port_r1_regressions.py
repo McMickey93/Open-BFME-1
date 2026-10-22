@@ -245,3 +245,35 @@ def test_r10_rehashed_closure_report_is_authoritative_before_queue_checks(checko
         ca.serve(out, root=root, now=NOW, need_closure=True)
     assert rq.route_link_queue(out, closure=True, now=NOW)["reason"] == "corrupt"
     print("F10 malformed closure score table: serve(need_closure=True) authoritative=True; repair queue alone detects corrupt")
+
+
+def test_r8_cycle_diff_predecessor_credit_is_unbound(checkout, tmp_path):
+    root, _ = checkout
+    old_run, _ = run_for(checkout, tmp_path / "old-run")
+    new_run, _ = run_for(checkout, tmp_path / "new-run", now=NOW + 100)
+    old = freeze(old_run, tmp_path / "old", root)
+    out = freeze(new_run, tmp_path / "new", root, previous=old)
+    doc = ca.read_json(out / ca.CYCLE_DIFF)
+    assert doc["totals"]["gained"] == 0
+    unchanged_identity = copy.deepcopy(doc["identity"])
+    doc["credit"]["old"] = []
+    doc["gained"] = doc["credit"]["new"]
+    doc["lost"] = []
+    doc["totals"] = {"old": 0, "new": 10, "gained": 10, "lost": 0, "delta": 10}
+    (out / ca.CYCLE_DIFF).write_text(cd.dumps(doc))
+    rehash(out, ca.CYCLE_DIFF)
+    assert ca.read_json(out / ca.CYCLE_DIFF)["identity"] == unchanged_identity
+    with pytest.raises(ca.BundleError, match="old credit union"):
+        ca.validate(out, root=root)
+    print("F8 unchanged predecessor identity: actual gain=0; accepted gain=10; authoritative=True")
+
+
+def test_r8_missing_historical_evidence_never_counts(tmp_path):
+    a, _ = measured_run(tmp_path / "a")
+    b, _ = measured_run(tmp_path / "b", now=NOW + 1)
+    doc = cd.compare(a, b)
+    doc.pop("evidence")
+    with pytest.raises(cd.CycleDiffError):
+        cd.check_report(doc)
+    doc.update(comparison_verified=False, totals=None, gained=None, lost=None)
+    cd.check_report(doc)
