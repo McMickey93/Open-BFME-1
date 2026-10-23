@@ -1733,6 +1733,9 @@ def record_run_evidence(receipt, start, end, args, *, remeasure=False):
     receipt["run_options"] = {k: bool(getattr(args, k, False)) for k in context.RUN_OPTIONS}
     receipt["run_options"].update(snapshot=bool(start.get("snapshot")), remeasure=remeasure,
                                   measure_only=remeasure or bool(getattr(args, "measure_only", False)))
+    if os.environ.get(cycle_source.AUDIT_ENV):
+        receipt["executed_modules"] = cycle_source.audit_modules(os.environ[cycle_source.AUDIT_ENV],
+                                                                require_complete=False)
     receipt["authoritative"] = context.run_authority_failure(receipt) is None
 
 
@@ -1741,7 +1744,7 @@ def receipt_core(receipt):
     inputs must agree on. Times, dates, link history and the warm-start path are
     left out; the instance tag additionally binds exact receipt bytes."""
     keep = ("checkout_start", "checkout_end", "run_options", "diagnostic",
-            "rule_identity", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
+            "rule_identity", "executed_modules", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
             "untracked_sha256", "closure_graph_sha256", "rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
             "retail_sha256", "toolchain_sha256", "inputs", "objects_digest", "provenance_sha256", "objects",
             "objects_missing", "compile_failed", "currency_proofs", "quarantine_sha256", "stubs_sha256",

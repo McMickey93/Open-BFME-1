@@ -6,8 +6,8 @@ verified-data, relocation, alias and pin owners (including ABI/import/ILT route
 proof and progress's generated-row identity constants); build's relocation and
 definition helpers; and dump/retail relocation producers for the swapped objects. gen_case_shims is also a snapshot subprocess.
 Whole provider files are bound, including their optional measurement branches.
-CLI-only queues and gates never called by the cycle are not semantic dependencies merely because a provider imports them. The broad tools
-inventory remains tool_digest provenance: unrelated fleet edits warn, not refuse.
+Every imported local module is bound, including definitions imported by a provider.
+The broad tools inventory remains provenance: unrelated fleet edits warn, not refuse.
 New local imports in the driver require review of this explicit set (tested).
 No BFME2 policy or authority default belongs here.
 """
@@ -34,6 +34,8 @@ MEASUREMENT_FILES = (
     "body_guard.py", "dir32_record_guard.py", "archive_import.py",
     "coffar.py", "gen_case_shims.py", "portable_lock.py", "target_guard.py",
     "dump_relocs.py", "dump_apply.py", "retail_relocs.py",
+    "layout_history.py", "gaps.py", "list_naked_candidates.py", "eligibility.py",
+    "re_log.py", "yield_model.py", "audit_ret_arity.py",
 )
 RUN_OPTIONS = ("allow_dirty", "allow_stale_cache", "measure_only", "snapshot", "remeasure")
 

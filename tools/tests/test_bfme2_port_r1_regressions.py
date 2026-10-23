@@ -84,6 +84,8 @@ def run_for(checkout, path, **kwargs):
 
 
 def bind_evidence(run, receipt, root):
+    receipt["executed_modules"] = {n: {"origin": "tools/" + n, "sha256": ca.sha256_file(root / "tools" / n)}
+                                   for n in receipt["rule_identity"]["measurement_files"]}
     receipt["inputs"] = {n: ca.text_sha256(root / n) for n in ca.LEDGERS}
     receipt["snapshot"] = True
     receipt["run_options"]["snapshot"] = True
@@ -523,13 +525,22 @@ def synthetic_snapshot_checkout(checkout):
     lines = source.splitlines(True)
     lines[cycle.lineno - 1:cycle.end_lineno] = []
     source = "".join(lines).replace("    cycle(args)\n", "    synthetic_measurement(args)\n")
-    helper = '''def synthetic_measurement(args):
-    import os
-    import cycle_artifacts as ca
-    import link_cycle as lc
-    sys.path.insert(0, str(ROOT / "tools/tests"))
-    from cycle_fixture import measured_run, save_receipt
-'''
+    helper = "def synthetic_measurement(args):\n"
+    # Inline only the inert artifact serializer into the declared driver. No
+    # test module or bundle reader is imported as an undeclared provider.
+    helper += "    import types\n    import link_cycle as lc\n"
+    helper += "    NOW = " + repr(NOW) + "\n"
+    helper += "    ca = types.SimpleNamespace()\n"
+    helper += "    ca.LEDGERS = " + repr(ca.LEDGERS) + "\n"
+    helper += "    ca.STATUS_COLUMNS = " + repr(ca.STATUS_COLUMNS) + "\n"
+    helper += "    ca.RECEIPT, ca.PROVENANCE, ca.CLOSURE_GRAPH = 'receipt.json', 'provenance.json', 'closure_graph.json.gz'\n"
+    helper += "    ca.dumps = lambda doc: json.dumps(doc, sort_keys=True, indent=2) + chr(10)\n"
+    helper += "    ca.read_json = lambda path: json.loads(path.read_bytes())\n"
+    helper += "    ca.local_dependencies = context.tool_dependencies\n"
+    helper += "    ca.text_sha256, ca.sha256_file = text_sha256, sha256\n"
+    helper += "    ca.iso_utc = lambda seconds: time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(seconds))\n"
+    helper += textwrap.indent(inspect.getsource(measured_run), "    ")
+    helper += textwrap.indent(inspect.getsource(save_receipt), "    ")
     helper += textwrap.indent(inspect.getsource(bind_evidence), "    ")
     helper += '''
     meta = ca.read_json(ROOT / SNAPSHOT_MARK)
@@ -553,9 +564,6 @@ def synthetic_snapshot_checkout(checkout):
     assert not any(isinstance(n, ast.FunctionDef) and n.name == "cycle" for n in ast.parse(source).body)
     driver.write_text(source)
     (root / "tools/gen_case_shims.py").write_text("def ensure_case_shims(*args, **kwargs):\n    pass\n")
-    tests = root / "tools/tests"
-    tests.mkdir()
-    shutil.copyfile(ROOT / "tools/tests/cycle_fixture.py", tests / "cycle_fixture.py")
     git(root, "add", "tools")
     git(root, "-c", "core.hooksPath=.githooks", "-c", "user.name=R1 fixture",
         "-c", "user.email=r1@example.invalid", "commit", "-qm", "inert snapshot measurement")

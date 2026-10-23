@@ -15,11 +15,12 @@ Same-user key access is an owner-accepted residual risk: code running as that
 account can deliberately read the secret and sign fabricated measurements.
 The stamp does not establish a security boundary against that account.
 
-Store/<measurement id>/bundle is installed by one directory rename; current.json
-is replaced atomically under a portable writer lock. Readers derive selection
+Signed bundles use Store/<measurement id>/bundle; unsigned representations
+add their exact manifest digest to the directory id. Installs and promotions
+use a directory rename; current.json is replaced under a portable writer lock. Readers derive selection
 from validated installed receipts and warn about pointer rollback. Installed
-payload directories are never replaced or removed; a verified stamp may be
-attached atomically to an identical installed payload. Reason/exit slots:
+payload bytes are never replaced; an exact diagnostic copy may be promoted by
+rename, and a verified stamp attached to its identical manifest bytes. Reason/exit slots:
 corrupt=1, unavailable=2, empty=3, stale=4, incompatible-rules=5,
 not-authoritative=6, no-closure-report=7. Age limit 24 h; future skew 600 s;
 closure lookback 5. Unknown ancestry fails closed.
@@ -376,7 +377,10 @@ def binding_of(receipt):
             "checkout_start", "checkout_end", "run_options", "dirty", "allow_dirty", "warm_start",
             "compile_failed", "moved_during_run", "diagnostic")
     binding = {k: receipt.get(k) for k in keys}
-    binding.update({k: receipt[k] for k in ("compile_input_run", "compile_inputs_sha256") if k in receipt})
+    # Historical receipts without import evidence remain readable diagnostics;
+    # run_evidence_failure refuses authority rather than calling them corrupt.
+    binding.update({k: receipt[k] for k in ("compile_input_run", "compile_inputs_sha256", "executed_modules")
+                    if k in receipt})
     return binding
 
 
@@ -695,13 +699,30 @@ def tracked_input_failure(receipt, root):
 
 
 def run_evidence_failure(directory, receipt, root):
-    """Require launcher execution binding and reproduce the object inventory."""
+    """Require canonical executed providers, launcher binding and object inventory."""
     d = Path(directory)
     execution = read_manifest(d).get("execution")
     want = {"launcher": "cycle_launch/1", "commit": receipt["commit"], "snapshot": True,
             "semantic_sha256": receipt["rule_identity"]["implementation_sha256"]}
     if execution != want or receipt.get("snapshot") is not True:
         return "snapshot-required"
+    modules = receipt.get("executed_modules")
+    files = receipt["rule_identity"]["measurement_files"]
+    if not isinstance(modules, dict) or set(modules) != set(files):
+        return "executed-module-mismatch"
+    for name, entry in modules.items():
+        if Path(name).name != name or not name.endswith(".py") or not isinstance(entry, dict) \
+                or set(entry) != {"origin", "sha256"} or entry["origin"] != "tools/" + name \
+                or not SHA.fullmatch(str(entry["sha256"])):
+            return "executed-module-mismatch"
+        raw = git_blob(root, receipt["commit"], "tools/" + name)
+        # Git exports may use the host's LF or CRLF convention. Both exact byte
+        # identities are canonical; their normalized semantic hash must agree.
+        if raw is None or entry["sha256"] not in {
+                hashlib.sha256(raw).hexdigest(),
+                hashlib.sha256(text_bytes(raw).replace(b"\n", b"\r\n")).hexdigest()} \
+                or hashlib.sha256(text_bytes(raw)).hexdigest() != receipt["tool_dependencies"].get(name):
+            return "executed-module-mismatch"
     why = tracked_input_failure(receipt, root)
     if why:
         return why
@@ -756,6 +777,11 @@ def _writer(store):
     return handle
 
 
+def variant_id(tag, manifest_sha256):
+    """Unsigned representations cannot reserve the host-stamped receipt slot."""
+    return bundle_id(tag) + "--" + manifest_sha256
+
+
 def installed(store, root=ROOT, now=None):
     out = []
     for d in Path(store).iterdir():
@@ -764,10 +790,12 @@ def installed(store, root=ROOT, now=None):
         if not (d / "bundle").is_dir():
             raise BundleError(f"unexpected directory in bundle store: {d.name}")
         b = load_bundle(d / "bundle", root=root)
-        same("installed directory identity", d.name, bundle_id(b.tag))
+        manifest_digest = sha256_file(b.dir / MANIFEST)
+        if d.name not in (bundle_id(b.tag), variant_id(b.tag, manifest_digest)):
+            raise BundleError("installed directory identity disagrees with the receipt or manifest")
         fr = b.freshness(now=now)
         out.append({"id": d.name, "tag": b.tag, "commit": b.commit,
-                    "measured_end_ns": b.receipt["measured_end_ns"],
+                    "manifest_sha256": manifest_digest, "measured_end_ns": b.receipt["measured_end_ns"],
                     "measured_end_utc": measured_of(b.receipt)["end_utc"],
                     "rules_tuple": rules_of(b.receipt), "closure_report": True,
                     "authoritative": fr["authoritative"], "execution_eligible": fr["execution_eligible"],
@@ -810,7 +838,9 @@ def read_pointer(store):
             raise BundleError("invalid bundle store pointer")
         ids = []
         for e in doc["bundles"]:
-            if e.get("id") != bundle_id(e.get("tag")):
+            if e.get("id") != bundle_id(e.get("tag")) and not (
+                    SHA.fullmatch(str(e.get("manifest_sha256", ""))) and
+                    e.get("id") == variant_id(e.get("tag"), e["manifest_sha256"])):
                 raise BundleError("unsafe/mismatched bundle id in pointer")
             ids.append(e["id"])
         if len(set(ids)) != len(ids):
@@ -905,6 +935,7 @@ def attach_verified_stamp(source, destination):
     """
     if cycle_stamp.verify(source) is not None or cycle_stamp.verify(destination) is None:
         return
+    same("stamp manifest bytes", (source / MANIFEST).read_bytes(), (destination / MANIFEST).read_bytes())
     fd, temporary = tempfile.mkstemp(prefix=".stamp-", dir=destination.parent)
     try:
         with os.fdopen(fd, "wb") as stream:
@@ -912,6 +943,7 @@ def attach_verified_stamp(source, destination):
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary, destination / cycle_stamp.STAMP)
+        same("attached stamp verification", cycle_stamp.verify(destination), None)
     finally:
         if os.path.exists(temporary):
             os.unlink(temporary)
@@ -924,13 +956,30 @@ def install_local(directory, store, *, root=ROOT, now=None):
     handle = _writer(store)
     tmp = None
     try:
-        final = store / bundle_id(source.tag)
+        manifest_bytes = (source.dir / MANIFEST).read_bytes()
+        manifest_digest = hashlib.sha256(manifest_bytes).hexdigest()
+        signed_slot = store / bundle_id(source.tag)
+        diagnostic_slot = store / variant_id(source.tag, manifest_digest)
+        verified = cycle_stamp.verify(source.dir) is None
+        final = signed_slot if verified else diagnostic_slot
+        # An exact unsigned reinstall cannot downgrade or duplicate a signed copy.
+        if signed_slot.exists() and (signed_slot / "bundle" / MANIFEST).read_bytes() == manifest_bytes:
+            final = signed_slot
         tmp = Path(tempfile.mkdtemp(prefix=".partial-", dir=store))
         shutil.copytree(source.dir, tmp / "bundle", symlinks=True)
         copied = load_bundle(tmp / "bundle", root=root)
-        same("copied manifest", copied.manifest, source.manifest)
-        if final.exists():
-            same("immutable installed manifest", validate(final / "bundle", root=root), copied.manifest)
+        same("copied manifest bytes", (copied.dir / MANIFEST).read_bytes(), manifest_bytes)
+        if verified:
+            same("copied stamp verification", cycle_stamp.verify(copied.dir), None)
+        if verified and not final.exists() and diagnostic_slot.exists():
+            # Promote an exact representation by rename, preserving payload inodes.
+            validate(diagnostic_slot / "bundle", root=root)
+            same("promotion manifest bytes", (diagnostic_slot / "bundle" / MANIFEST).read_bytes(), manifest_bytes)
+            attach_verified_stamp(copied.dir, diagnostic_slot / "bundle")
+            publish_directory(diagnostic_slot, final)
+        elif final.exists():
+            validate(final / "bundle", root=root)
+            same("immutable installed manifest bytes", (final / "bundle" / MANIFEST).read_bytes(), manifest_bytes)
             attach_verified_stamp(copied.dir, final / "bundle")
         else:
             publish_directory(tmp, final)

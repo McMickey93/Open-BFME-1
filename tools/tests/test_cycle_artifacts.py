@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from cycle_fixture import synthetic_host, NOW, bundle, measured_run, rehash, rewrite_manifest, save_receipt
+from cycle_fixture import synthetic_host, NOW, bundle, measured_run, rehash, rewrite_manifest, save_receipt, host_stamp
 import closure_report as cr
 import cycle_artifacts as ca
 import link_cycle as lc
@@ -199,6 +199,9 @@ def test_local_install_never_replaces(frozen, tmp_path):
     ca.install_local(frozen, store)
     before = (store / ca.POINTER).read_bytes()
     rewrite_manifest(frozen, lambda m: m.update(producer="other producer"))
+    # This is a second signed representation. Unsigned variants now have their
+    # own digest-keyed diagnostic slots and cannot reserve or replace this one.
+    host_stamp(frozen, ca.cycle_stamp.configured_keys()[0])
     with pytest.raises(ca.BundleError, match="immutable installed manifest"):
         ca.install_local(frozen, store)
     assert (store / ca.POINTER).read_bytes() == before
