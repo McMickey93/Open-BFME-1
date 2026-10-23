@@ -82,7 +82,9 @@ public:
 };
 
 extern const char *PORTABLE_SAVE;
-extern const char *g_Va012ABFC8;
+// Retail VA 0x012ABFC8 points to the compact save-path token "S".
+// The two inverse map-path converters read this same four-byte pointer.
+const char *g_Va012ABFC8 = "S";
 
 static __forceinline const char *rva0010e580String(const char *const &value)
 {

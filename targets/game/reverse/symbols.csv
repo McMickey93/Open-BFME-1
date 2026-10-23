@@ -91153,3 +91153,4 @@ rva00618600Vft,0x01116D64,vtable installed by Rva00618600Poly constructor
 ?Rva006D2630@Rva006D2630Shroud@@QBE?AVBfmeHandleCX@@XZ,0x00013BBF,abi-view=?getShroudTexture@W3DShroud@@QAE?AVTextureHandle@@XZ;address-derived owning-handle call view; ILT 0x00013BBF is called by drawTrapezoidWater 0x007A8FF0 and reaches the matched body 0x006D2630
 ?rva007A6AA0@WaterRenderObjClass@@IAEXPAVRva007A8FF0Data@@@Z,0x00025EC3,ILT 00025EC3 to matched WaterShader007A6AA0::setup 0x007A6AA0 called with WaterRenderObjClass this and record
 ?rva007A7240@WaterRenderObjClass@@IAEXPAVRva007A8FF0Data@@@Z,0x00024A14,ILT 00024A14 to matched WaterShader007A7240::setup 0x007A7240 called with WaterRenderObjClass this and record
+??_C@_01CPLAODJH@S?$AA@,0x01089290,Retail VA 012ABFC8 points to this two-byte compact-save token: 53 00; verified PE bytes for GameState map-path converters
