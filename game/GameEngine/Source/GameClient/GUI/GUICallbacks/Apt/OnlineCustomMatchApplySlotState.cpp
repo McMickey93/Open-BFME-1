@@ -128,14 +128,23 @@ public:
 class GameSpyInfoInterface;
 extern GameSpyInfoInterface *TheGameSpyInfo;
 
-class StlStr
+namespace _STL
+{
+template <class T> class char_traits;
+template <class T> class allocator;
+
+// Declaration-only STLport string view: assign(first, last) is the
+// specialization matched at 0x000A5810, reached through ILT 0x0002B297.
+template <class C, class Traits, class Allocator> class basic_string
 {
 public:
-	StlStr &assign( const char *first, const char *last );
+	basic_string &assign( const C *first, const C *last );
 
 private:
 	char m_bytes[ 12 ];
 };
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+}
 
 class PeerRequest
 {
@@ -143,10 +152,10 @@ public:
 	PeerRequest();
 	~PeerRequest();
 	int peerRequestType;
-	StlStr nick;
+	_STL::string nick;
 	char m_mid[ 0x24 ];
-	StlStr id;
-	StlStr options;
+	_STL::string id;
+	_STL::string options;
 	char m_pad4C[ 0xE4 - 0x4C ];
 	unsigned char m_isStagingRoom;
 	char m_tail[ 0x194 - 0xE5 ];
