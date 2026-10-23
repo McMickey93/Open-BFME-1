@@ -1,4 +1,4 @@
-// cl: /O2 /Ob0
+// cl:
 // stlport
 
 #include <string>
