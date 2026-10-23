@@ -161,6 +161,26 @@ typedef _STL::list<AudioRequest *> AudioRequestList;
 typedef _STL::list<PlayingAudioRef> PlayingAudioList;
 typedef _STL::deque<PlayingAudioRef> PlayingAudioDeque;
 
+// Keep the native unlink sequence, but do not instantiate a second allocator
+// deallocate wrapper with a different global configuration. The matched caller
+// independently proves the 12-byte node-pool route at 0x0082E5F0.
+namespace _STL
+{
+template <>
+inline list<AudioRequest *>::iterator list<AudioRequest *>::erase(iterator position)
+{
+    _List_node_base *next = position._M_node->_M_next;
+    _List_node_base *previous = position._M_node->_M_prev;
+    _Node *node = (_Node *)position._M_node;
+    previous->_M_next = next;
+    next->_M_prev = previous;
+    _Destroy(&node->_M_data);
+    if (node != 0)
+        _Node_alloc::deallocate(node, sizeof(_Node));
+    return iterator((_Node *)next);
+}
+}
+
 // Retail callers use ILT 0x0002669D -> 0x006A59F0, a thiscall with one
 // PlayingAudio pointer. The old member declaration had no linked provider.
 extern void j_0002669d();
