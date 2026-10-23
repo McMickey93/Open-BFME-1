@@ -1,8 +1,7 @@
 // ?setTriggerAreaFlagsForChangeInPosition@Object@@IAEXXZ
-// partial score=0.978043 date=2026-09-28
 // cl: /O2 /Ob1 /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWMath /Igame/GameEngine/Include/Precompiled
 // Full retail boundary: ILT0001B5D1 targets001C8D80; RET at001C9169.
-// Existing001C8E7D claim starts inside this function. ZH Object.cpp establishes
+// The old 0x001C8E7D row was an interior tail of this body. ZH Object.cpp establishes
 // the trigger transition algorithm; BFME adds path result and Lua events.
 #include "ascii_string.h"
 #include "coord.h"
@@ -30,18 +29,21 @@ class BfmeOwnerBR { public: void bfmeGo939B(int,Object *,DelayedLuaEventList *);
 extern "C" BfmeOwnerBR *g_bfmeOwnerBR;
 struct BfmeDelayedLuaEventList { BfmeDelayedLuaEventList(); ~BfmeDelayedLuaEventList(); char bytes[0x4c]; };
 class BfmeDelayedLuaEvent { public: BfmeDelayedLuaEvent(); ~BfmeDelayedLuaEvent(); char pad00[0x10]; AsciiString text; int type; };
-// Head-only ABI view; the enclosing storage owns the three events.
+// The exit branch calls the out-of-line DelayedLuaEventList ctor/dtor (0x000EDBB0/0x000EDC40);
+// the enter branch inlines them. Retail's inlined construction stores EH state 0 before the
+// DelayedLuaEventList vptr, so an empty base with the Snapshot-vptr destructor precedes the head.
 extern int bfmeVtable000A1B30[];
 class DelayedLuaEventList {
 public:
     DelayedLuaEventList() throw() {}
-    ~DelayedLuaEventList() { *(int **)this=bfmeVtable000A1B30; }
     virtual const char *GetSnapshotName(); virtual void LoadPostProcess(); virtual void DoXfer(Xfer &);
 };
-struct Rva001C8D80EntryList { DelayedLuaEventList head; BfmeDelayedLuaEvent events[3]; };
-void d_001af550(); void d_003e9d80();
+struct Rva001C8D80EntryListBase { ~Rva001C8D80EntryListBase() { *(int **)this=bfmeVtable000A1B30; } };
+struct Rva001C8D80EntryList : Rva001C8D80EntryListBase { DelayedLuaEventList head; BfmeDelayedLuaEvent events[3]; };
+class TerrainRecordScan001AEFF0 { public: void rva001AF550(Object *); };
+void d_003e9d80();
 class Rva001C8D80Call {};
-inline void terrainMoved(void *p,Object *o) { union { void (*raw)(); void (Rva001C8D80Call::*fn)(Object *); } c; c.raw=d_001af550; (((Rva001C8D80Call *)p)->*c.fn)(o); }
+inline void terrainMoved(void *p,Object *o) { ((TerrainRecordScan001AEFF0 *)p)->rva001AF550(o); }
 inline bool pathMoved(void *p,Object *o,const Coord3D *v) { union { void (*raw)(); bool (Rva001C8D80Call::*fn)(Object *,const Coord3D *); } c; c.raw=d_003e9d80; return (((Rva001C8D80Call *)p)->*c.fn)(o,v); }
 struct Rva001C8D80Record { PolygonTrigger *trigger; bool entered,exited,inside; char pad; };
 inline Rva001C8D80Record *records(Object *p) { return (Rva001C8D80Record *)((char *)p+0x2d8); }
