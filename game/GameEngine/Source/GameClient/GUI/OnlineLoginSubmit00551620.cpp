@@ -85,13 +85,39 @@ class BfmeLevelAN { public:
 class WindowManager;
 extern WindowManager *g_rva012F19E8WindowManager;
 struct LoginContext00551620 { char field000[0x250]; unsigned int field250; };
+class BfmeThingRT { public:
+ void bfmeSetRT(void *key, void *value);
+ virtual void slot00();
+ virtual void slot04();
+ virtual void slot08();
+ virtual void slot0C();
+};
+class Rva0054FF80 { public: void call(AsciiString &lastEmail, AsciiString &lastName); };
 class BfmeAptScreenOnlineLogin { public:
  void submitLogin00551620();
+ void rva00551C80(bool refresh);
  UnicodeString bfmeGetTextAt74() const;
  UnicodeString bfmeGetTextAt78() const;
  UnicodeString bfmeGetTextAt7C() const;
  char field00[0x34]; LoginContext00551620 *field34; char field38[0x60]; unsigned long field98; char field9C[0xC]; AsciiString fieldA8;
 };
+// Retail 0x00551C80..0x00551D70: the update caller names this member.
+// fieldA8 is ASCII: submitLogin00551620 assigns the narrow login string,
+// and constructor 0x005538A0 constructs AsciiString at the same offset.
+// The former bank's UnicodeString view called the wrong set overload.
+void BfmeAptScreenOnlineLogin::rva00551C80(bool refresh) {
+ if (fieldA8.isEmpty()) return;
+ if (refresh) {
+  AsciiString email;
+  email.translate(bfmeGetTextAt74());
+  BfmeThingRT *preferences = reinterpret_cast<BfmeThingRT *>((char *)this + 0x3C);
+  preferences->bfmeSetRT(&email, &fieldA8);
+  preferences->slot0C();
+  AsciiString empty(AsciiString::TheEmptyString);
+  reinterpret_cast<Rva0054FF80 *>(this)->call(email, empty);
+ }
+ fieldA8 = AsciiString::TheEmptyString;
+}
 void BfmeAptScreenOnlineLogin::submitLogin00551620() {
  AsciiString login,password,email;
  email.translate(bfmeGetTextAt74());
