@@ -37,7 +37,8 @@ def key_path(path):
     for parent in resolved.parents:
         if (parent / ".git").exists():
             raise KeyError("host key must be outside every git worktree")
-    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    import cycle_source
+    env = cycle_source.clean_environment({})
     got = subprocess.run(["git", "-C", str(resolved.parent), "rev-parse", "--git-dir"],
                          capture_output=True, env=env)
     if got.returncode == 0:

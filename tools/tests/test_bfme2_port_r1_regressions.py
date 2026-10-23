@@ -86,6 +86,12 @@ def run_for(checkout, path, **kwargs):
 def bind_evidence(run, receipt, root):
     receipt["executed_modules"] = {n: {"origin": "tools/" + n, "sha256": ca.sha256_file(root / "tools" / n)}
                                    for n in receipt["rule_identity"]["measurement_files"]}
+    import cycle_source
+    import os
+    audit = os.environ.get(cycle_source.AUDIT_ENV)
+    receipt["runtime_modules"] = (cycle_source.audit_modules(audit, require_complete=False, runtime=True) if audit else
+                                  {"sys": {"origin": "built-in:sys", "sha256":
+                                           receipt["rule_identity"]["runtime"]["executable_sha256"]}})
     receipt["inputs"] = {n: ca.text_sha256(root / n) for n in ca.LEDGERS}
     receipt["snapshot"] = True
     receipt["run_options"]["snapshot"] = True

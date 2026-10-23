@@ -1528,7 +1528,7 @@ def export_snapshot(rev, parent):
         raise SystemExit("link_cycle: snapshot tools differ from launcher preflight")
     # the tree's own generated inputs (case-redirect shims on a case-sensitive host), before the marker
     subprocess.run(cycle_source.command(tmp / "tools", "import gen_case_shims; gen_case_shims.ensure_case_shims()"),
-                   cwd=tmp, check=True, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+                   cwd=tmp, check=True, env=dict(os.environ))
     cycle_source.reject_bytecode(tmp)
     return finish_snapshot(tmp, dest, sha, subs, round(time.time() - t))
 
@@ -1564,7 +1564,7 @@ def run_in_snapshot(args, argv):
     semantic = context.digest({n: text_sha256(snap / "tools" / n) for n in context.MEASUREMENT_FILES})
     if expected and semantic != expected:
         raise SystemExit("link_cycle: snapshot tools differ from launcher preflight")
-    env = dict(os.environ, LINK_CYCLE_ROOT=str(snap), BFME_OBJSTORE="off", PYTHONDONTWRITEBYTECODE="1",
+    env = dict(os.environ, LINK_CYCLE_ROOT=str(snap), BFME_OBJSTORE="off",
                GIT_CEILING_DIRECTORIES=str(snap.parent))
     return subprocess.run(cycle_source.script_command(snap / "tools/link_cycle.py", *rest), env=env, cwd=snap).returncode
 
@@ -1643,8 +1643,40 @@ def compile_cycle_rows(rows, sources, out):
 
 
 def compile_input_binding(receipts):
-    return ({"compile_input_run": receipts.run, "compile_inputs_sha256": sha256(receipts.path)}
+    return ({"compile_input_run": receipts.run, "compile_input_root": str(ROOT.resolve()),
+             "compile_input_root_spellings": census_receipts.root_spellings(ROOT),
+             "compile_inputs_sha256": sha256(receipts.path),
+             "compile_inputs_semantic_sha256": digest_of(compile_input_semantics(receipts.entries))}
             if receipts is not None else {})
+
+
+def compile_input_semantics(entries, root=None, spellings=None):
+    """Content proof, excluding run IDs, inode generations and export locations.
+
+    Exact witness bytes remain bound by the instance receipt and manifest.
+    Object content is independently bound by the provenance's COFF identities.
+    """
+    root = str(Path(root or ROOT).resolve())
+
+    def normalize(value):
+        if isinstance(value, str):
+            return census_receipts.canonical_text(value, root, spellings)
+        if isinstance(value, list):
+            return [normalize(v) for v in value]
+        if isinstance(value, dict):
+            return {normalize(k): normalize(v) for k, v in value.items()}
+        return value
+
+    result = {}
+    for obj, entry in entries.items():
+        inputs = {k: v for k, v in entry["input"].items()
+                  if k not in ("generations", "preprocessed", "signature")}
+        inputs["preprocessed_canon"] = entry["input"].get("preprocessed_canon", entry["input"]["preprocessed"])
+        signature = entry["input"]["signature"]
+        inputs["signature"] = {k: v for k, v in signature.items()
+                               if k != "fingerprint" or "environment" not in signature}
+        result[obj] = {"source": entry["source"], "command": entry["command"], "input": inputs}
+    return normalize(result)
 
 
 def provenance(rows, present, objs, out, *, receipts=None):
@@ -1676,6 +1708,11 @@ def provenance(rows, present, objs, out, *, receipts=None):
             side = Path(p).with_suffix(".deps.json")
             rec.update(source=Path(src).relative_to(ROOT).as_posix(), source_sha256=sha256(src),
                        deps_sha256=sha256(side) if side.exists() else None)
+            if rec["proof"] == "receipt":
+                ref = str(Path(p).resolve())
+                entry = receipts.entries[ref]
+                rec.update(receipt_ref=ref, receipt_sha256=digest_of(entry), object_sha256=sha256(p),
+                           witness_semantic_sha256=digest_of(compile_input_semantics({ref: entry})))
         prov[rel] = rec
         old = before.get(rel)
         if (old and rec.get("proof") == "deps" and rec.get("deps_sha256")
@@ -1699,8 +1736,13 @@ def canonical_digests(prov):
     h = hashlib.sha256(CANON_RULES.encode())
     for rel in sorted(prov):
         h.update(f"{rel}\0{prov[rel].get('object_canon') or '-'}".encode())
-    canon = {rel: {k: v for k, v in rec.items() if k != "object"} for rel, rec in prov.items()}
+    stable = {rel: {k: v for k, v in rec.items()
+                    if k not in ("receipt_ref", "receipt_sha256", "object_sha256")
+                    and not (rec.get("proof") == "receipt" and k == "deps_sha256")}
+              for rel, rec in prov.items()}
+    canon = {rel: {k: v for k, v in rec.items() if k != "object"} for rel, rec in stable.items()}
     return {"canon_rules": CANON_RULES, "objects_canon_digest": h.hexdigest(),
+            "provenance_semantic_sha256": digest_of(stable),
             "provenance_canon_sha256": digest_of(canon)}
 
 
@@ -1736,6 +1778,8 @@ def record_run_evidence(receipt, start, end, args, *, remeasure=False):
     if os.environ.get(cycle_source.AUDIT_ENV):
         receipt["executed_modules"] = cycle_source.audit_modules(os.environ[cycle_source.AUDIT_ENV],
                                                                 require_complete=False)
+        receipt["runtime_modules"] = cycle_source.audit_modules(os.environ[cycle_source.AUDIT_ENV],
+                                                               require_complete=False, runtime=True)
     receipt["authoritative"] = context.run_authority_failure(receipt) is None
 
 
@@ -1744,14 +1788,17 @@ def receipt_core(receipt):
     inputs must agree on. Times, dates, link history and the warm-start path are
     left out; the instance tag additionally binds exact receipt bytes."""
     keep = ("checkout_start", "checkout_end", "run_options", "diagnostic",
-            "rule_identity", "executed_modules", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
+            "rule_identity", "executed_modules", "runtime_modules", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
             "untracked_sha256", "closure_graph_sha256", "rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
             "retail_sha256", "toolchain_sha256", "inputs", "objects_digest", "provenance_sha256", "objects",
             "objects_missing", "compile_failed", "currency_proofs", "quarantine_sha256", "stubs_sha256",
-            "compile_input_run", "compile_inputs_sha256",
+            "compile_inputs_semantic_sha256",
             "not_ordered", "not_ordered_bytes", "analyze",
             "scaffold", "final_link", "series")
-    return {k: receipt[k] for k in keep if k in receipt}
+    core = {k: receipt[k] for k in keep if k in receipt}
+    if "provenance_semantic_sha256" in receipt:
+        core["provenance_sha256"] = receipt["provenance_semantic_sha256"]
+    return core
 
 
 def receipt_canon_core(receipt):

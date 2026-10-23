@@ -280,7 +280,9 @@ def local_rules(root=ROOT):
         if not files or any(n not in deps for n in files):
             return None
         profile = constants["PROFILE"]
+        import cycle_source
         return {"id": constants["RULES"], "profile": profile, "profile_sha256": context.digest(profile),
+                "runtime": cycle_source.runtime_identity(),
                 "measurement_files": list(files),
                 "implementation_sha256": context.digest({n: deps[n] for n in files})}
     except (OSError, SyntaxError, KeyError, ValueError, TypeError):
@@ -366,6 +368,26 @@ def check_compile_inputs(directory, receipt):
     same("compile input receipt run", doc.get("run"), receipt["compile_input_run"])
     if not isinstance(doc.get("entries"), dict):
         raise BundleError("invalid compile input receipt entries")
+    if "compile_inputs_semantic_sha256" in receipt:
+        lc = link_cycle_module()
+        # The exported root is retained only in exact instance evidence.
+        try:
+            entries = doc["entries"]
+            base = Path(receipt["compile_input_root"])
+            if not base.is_absolute() or ".." in base.parts:
+                raise ValueError("invalid export root")
+            spellings = receipt["compile_input_root_spellings"]
+            if not isinstance(spellings, list) or str(base) not in spellings \
+                    or any(not isinstance(v, str) or not v for v in spellings):
+                raise ValueError("invalid export spellings")
+            for ref, entry in entries.items():
+                for name in (ref, entry["source"]):
+                    if not Path(name).is_absolute() or not Path(name).is_relative_to(base) or ".." in Path(name).parts:
+                        raise ValueError("witness outside export root")
+            semantic = lc.compile_input_semantics(entries, base, spellings)
+        except (KeyError, ValueError, TypeError, AttributeError) as error:
+            raise BundleError("invalid compile input receipts") from error
+        same("compile input semantic receipts", lc.digest_of(semantic), receipt["compile_inputs_semantic_sha256"])
 
 
 def binding_of(receipt):
@@ -379,7 +401,9 @@ def binding_of(receipt):
     binding = {k: receipt.get(k) for k in keys}
     # Historical receipts without import evidence remain readable diagnostics;
     # run_evidence_failure refuses authority rather than calling them corrupt.
-    binding.update({k: receipt[k] for k in ("compile_input_run", "compile_inputs_sha256", "executed_modules")
+    binding.update({k: receipt[k] for k in ("compile_input_run", "compile_input_root", "compile_input_root_spellings",
+                                          "compile_inputs_sha256", "compile_inputs_semantic_sha256",
+                                          "provenance_semantic_sha256", "executed_modules", "runtime_modules")
                     if k in receipt})
     return binding
 
@@ -586,8 +610,10 @@ def load_bundle(directory, *, root=ROOT):
 
 
 def _git(root, *args):
+    import cycle_source
     try:
-        return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
+        return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True,
+                              env=cycle_source.clean_environment({}))
     except OSError:
         return None
 
@@ -671,7 +697,9 @@ def authority_refusal(receipt, fr):
 def git_blob(root, commit, path):
     if not isinstance(path, str) or Path(path).is_absolute() or ".." in Path(path).parts or "\\" in path:
         return None
-    got = subprocess.run(["git", "-C", str(root), "show", f"{commit}:{path}"], capture_output=True)
+    import cycle_source
+    got = subprocess.run(["git", "-C", str(root), "show", f"{commit}:{path}"], capture_output=True,
+                         env=cycle_source.clean_environment({}))
     return got.stdout if got.returncode == 0 else None
 
 
@@ -696,6 +724,38 @@ def tracked_input_failure(receipt, root):
         if raw is None or hashlib.sha256(text_bytes(raw)).hexdigest() != digest:
             return "tool-mismatch"
     return None
+
+
+def valid_object_witness(doc, receipt, name, rec, root):
+    try:
+        ref = rec["receipt_ref"]
+        entry = doc["entries"][ref]
+        base = Path(receipt["compile_input_root"])
+        if not Path(ref).is_absolute() or Path(ref) != base / name \
+                or entry["source"] != str(base / rec["source"]):
+            return False
+        lc = link_cycle_module(root)
+        if lc.digest_of(entry) != rec["receipt_sha256"] \
+                or not SHA.fullmatch(str(entry["object"])) or entry["object"] != rec["object_sha256"] \
+                or lc.digest_of(lc.compile_input_semantics({ref: entry}, base, receipt["compile_input_root_spellings"])) != rec["witness_semantic_sha256"]:
+            return False
+        inputs = entry["input"]
+        if not SHA.fullmatch(str(inputs["preprocessed"])) \
+                or not SHA.fullmatch(str(inputs["preprocessed_canon"])) \
+                or not inputs["signature"]["fingerprint"] \
+                or inputs["signature"]["command"] != entry["command"] \
+                or inputs["files"].get(entry["source"]) != rec["source_sha256"]:
+            return False
+        for path, digest in inputs["files"].items():
+            if not Path(path).is_absolute() or not SHA.fullmatch(str(digest)):
+                return False
+            if Path(path).is_relative_to(base):
+                raw = git_blob(root, receipt["commit"], Path(path).relative_to(base).as_posix())
+                if raw is not None and hashlib.sha256(raw).hexdigest() != digest:
+                    return False
+        return True
+    except (Problem, KeyError, ValueError, TypeError, AttributeError, OSError):
+        return False
 
 
 def run_evidence_failure(directory, receipt, root):
@@ -723,6 +783,30 @@ def run_evidence_failure(directory, receipt, root):
                 hashlib.sha256(text_bytes(raw).replace(b"\n", b"\r\n")).hexdigest()} \
                 or hashlib.sha256(text_bytes(raw)).hexdigest() != receipt["tool_dependencies"].get(name):
             return "executed-module-mismatch"
+    import cycle_source
+    runtime = receipt.get("runtime_modules")
+    if not isinstance(runtime, dict) or not runtime:
+        return "executed-module-mismatch"
+    stdlib, native, packages = cycle_source.runtime_paths()
+    for name, entry in runtime.items():
+        try:
+            origin, digest = entry["origin"], entry["sha256"]
+            if origin in ("built-in:" + name, "frozen:" + name):
+                expected = receipt["rule_identity"]["runtime"]["executable_sha256"]
+            else:
+                kind, rel = origin.split("/", 1)
+                base = (cycle_source.dependency_locations()[Path(rel).parts[0]].parent
+                        if kind == "packages" else {"stdlib": stdlib, "native": native}[kind])
+                path = base / rel
+                if not path.resolve().is_relative_to(base.resolve()) or ".." in Path(rel).parts \
+                        or (kind == "packages" and Path(rel).parts[0] not in cycle_source.DEPENDENCIES) \
+                        or (kind == "stdlib" and {"site-packages", "dist-packages"}.intersection(Path(rel).parts)):
+                    return "executed-module-mismatch"
+                expected = cycle_source.file_hash(path)
+            if digest != expected:
+                return "executed-module-mismatch"
+        except (KeyError, ValueError, TypeError, AttributeError, OSError):
+            return "executed-module-mismatch"
     why = tracked_input_failure(receipt, root)
     if why:
         return why
@@ -733,6 +817,10 @@ def run_evidence_failure(directory, receipt, root):
         prov = read_json(d / PROVENANCE)
         if not prov or len(prov) != receipt.get("objects"):
             return "missing-object-evidence"
+        witness = None
+        if any(rec.get("proof") == "receipt" for rec in prov.values()):
+            check_compile_inputs(d, receipt)
+            witness = read_json(d / COMPILE_INPUTS)
         h = hashlib.sha256()
         for name in sorted(prov):
             rec = prov[name]
@@ -741,8 +829,12 @@ def run_evidence_failure(directory, receipt, root):
             h.update(name.encode() + b"\0" + rec["object"].encode())
             if rec.get("source"):
                 raw = git_blob(root, receipt["commit"], rec["source"])
-                if raw is None or hashlib.sha256(raw).hexdigest() != rec.get("source_sha256") \
-                        or rec.get("proof") not in ("inventory", "deps") or not SHA.fullmatch(str(rec.get("deps_sha256"))):
+                if raw is None or hashlib.sha256(raw).hexdigest() != rec.get("source_sha256"):
+                    return "object-source-mismatch"
+                if rec.get("proof") == "receipt":
+                    if not valid_object_witness(witness, receipt, name, rec, root):
+                        return "object-source-mismatch"
+                elif rec.get("proof") not in ("inventory", "deps") or not SHA.fullmatch(str(rec.get("deps_sha256"))):
                     return "object-source-mismatch"
         same("objects inventory", h.hexdigest(), receipt["objects_digest"])
         canon = link_cycle_module(root).canonical_digests(prov)

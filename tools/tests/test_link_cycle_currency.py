@@ -141,6 +141,8 @@ def test_compile_receipts_are_bound_in_run_archive_and_bundle(tmp_path, monkeypa
     save_receipt(run, receipt)
     original_core = receipt["core_sha256"]
     receipt["compile_inputs_sha256"] = "0" * 64
+    assert lc.digest_of(lc.receipt_core(receipt)) == original_core  # Exact instance binding is checked below.
+    receipt["compile_inputs_semantic_sha256"] = "0" * 64
     assert lc.digest_of(lc.receipt_core(receipt)) != original_core
     receipt.update(lc.compile_input_binding(receipts))
     monkeypatch.setattr(lc.time, "time_ns", lambda: receipt["measured_end_ns"])

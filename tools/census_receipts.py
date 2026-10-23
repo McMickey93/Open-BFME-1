@@ -99,8 +99,35 @@ def _normal_cache_current(source, output):
 
 
 def signature(command, env):
+    mappings = []
+    if os.name != "nt":
+        prefix = Path(env.get("WINEPREFIX") or os.environ.get("WINEPREFIX") or Path.home() / ".wine")
+        for drive in sorted((prefix / "dosdevices").glob("[a-z]:")):
+            mappings.append([drive.name, str(drive.resolve())])
     return {"command": command, "fingerprint": build._cmd_fingerprint(command, env),
+            "environment": {"include": env.get("INCLUDE", ""), "drive_mappings": mappings},
             "implicit_flags": [env.get("CL", ""), env.get("_CL_", "")]}
+
+
+def root_spellings(root):
+    root = str(Path(root).resolve())
+    spellings = {root, root.replace("/", "\\")}
+    cached = build._WINE_PATH_CACHE.get(root)
+    if cached:
+        spellings.update((cached, cached.replace("\\", "/"), cached.replace("\\", "\\\\")))
+    return sorted(spellings, key=lambda value: (-len(value), value))
+
+
+def canonical_text(text, root, spellings=None):
+    """Normalize export locations without invoking winepath or another process."""
+    spellings = root_spellings(root) if spellings is None else spellings
+    if isinstance(text, bytes):
+        for spelling in sorted(spellings, key=len, reverse=True):
+            text = text.replace(spelling.encode(), b"$ROOT")
+    else:
+        for spelling in sorted(spellings, key=len, reverse=True):
+            text = text.replace(spelling, "$ROOT")
+    return text
 
 
 def opened_paths(source, include_output):
@@ -214,7 +241,8 @@ def snapshot(source, command, env):
         generations[path] = list(stamp(following))
     if not _LINE.search(result.stdout):
         raise ValueError("preprocessor omitted input provenance")
-    return {"preprocessed": hashlib.sha256(result.stdout).hexdigest(), "files": files,
+    return {"preprocessed": hashlib.sha256(result.stdout).hexdigest(),
+            "preprocessed_canon": hashlib.sha256(canonical_text(result.stdout, build.ROOT)).hexdigest(), "files": files,
             "signature": signature(command, env), "generations": generations}
 
 

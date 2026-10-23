@@ -114,7 +114,9 @@ def rule_identity(dependencies):
     Missing providers are explicitly bound as None; real receipts must carry
     every provider (bundle validation enforces that completeness).
     """
+    import cycle_source
     return {"id": RULES, "profile": PROFILE, "profile_sha256": digest(PROFILE),
+            "runtime": cycle_source.runtime_identity(),
             "measurement_files": list(MEASUREMENT_FILES),
             "implementation_sha256": digest({name: dependencies.get(name) for name in MEASUREMENT_FILES})}
 

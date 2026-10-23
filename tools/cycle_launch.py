@@ -26,7 +26,7 @@ import publish_cycle as pc
 def frozen_tools(root, commit, destination):
     """Bootstrap only committed tools, without importing any caller providers."""
     archive = subprocess.run(["git", "-C", str(root), "archive", "--format=tar", commit, "tools"],
-                             check=True, capture_output=True).stdout
+                             check=True, capture_output=True, env=cycle_source.clean_environment({})).stdout
     with tarfile.open(fileobj=io.BytesIO(archive)) as stream:
         stream.extractall(destination, filter="data")
     cycle_source.reject_bytecode(destination)
@@ -70,9 +70,9 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         audit = workspace / "module-audit"
         audit.mkdir()
         expected = rules["implementation_sha256"]  # tools hashed before any execution
-        env = {k: v for k, v in os.environ.items() if not k.startswith(("PYTHON", "LINK_CYCLE_", "GIT_", "BFME_CYCLE_"))}
+        env = cycle_source.clean_environment({})
         env.update(LINK_CYCLE_ROOT=str(seed), BFME_CYCLE_EXPECTED_SEMANTIC=expected,
-                   BFME_OBJSTORE="off", PYTHONDONTWRITEBYTECODE="1", **{cycle_source.AUDIT_ENV: str(audit)})
+                   BFME_OBJSTORE="off", **{cycle_source.AUDIT_ENV: str(audit)})
         subprocess.run(snapshot_command(seed, root, commit, snapshots), cwd=root, env=env, check=True)
         snapshot = snapshots / commit[:10]
         # Hash the actual export again, and bind the preflight to the receipt.
@@ -83,8 +83,11 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         ca.same("snapshot measured commit", receipt["commit"], commit)
         ca.same("executed semantic dependency digest", receipt["rule_identity"], rules)
         actual = cycle_source.audit_modules(audit, roots=(seed / "tools", snapshot / "tools"))
+        runtime = cycle_source.audit_modules(audit, roots=(seed / "tools", snapshot / "tools"), runtime=True)
         ca.same("executed module set", actual, executed)
         ca.same("receipt executed module set", receipt.get("executed_modules"), actual)
+        ca.same("receipt runtime module set", receipt.get("runtime_modules"), runtime)
+        ca.same("unchanged interpreter installation", cycle_source.runtime_identity(), rules["runtime"])
         failure = ca.context.run_authority_failure(receipt)
         if failure or receipt.get("authoritative") is not True:
             raise ca.Refused("snapshot was diagnostic: " + str(failure), "not-authoritative", failure or "diagnostic")

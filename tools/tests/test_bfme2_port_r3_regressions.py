@@ -236,7 +236,8 @@ def test_executed_module_set_covers_bootstrap_measurement_and_helper(checkout, t
     original = cycle_source.audit_modules
 
     def collect(directory, **kwargs):
-        observed.extend(json.loads(p.read_bytes()) for p in Path(directory).glob("*.json"))
+        if not kwargs.get("runtime"):
+            observed.extend(json.loads(p.read_bytes()) for p in Path(directory).glob("*.json"))
         return original(directory, **kwargs)
 
     monkeypatch.setattr(cycle_source, "audit_modules", collect)
@@ -248,6 +249,8 @@ def test_executed_module_set_covers_bootstrap_measurement_and_helper(checkout, t
     expected = {name: {"origin": "tools/" + name, "sha256": ca.sha256_file(root / "tools" / name)}
                 for name in declared}
     assert bundle.receipt["executed_modules"] == expected
+    assert "capstone" in bundle.receipt["runtime_modules"]
+    assert any(v["origin"].endswith((".so", ".pyd")) for v in bundle.receipt["runtime_modules"].values())
     assert len(observed) == 3  # seed bootstrap, shim helper, measurement process
     assert all(p["complete"] and p["modules"] == expected for p in observed)
     assert sum("/seed/tools" in p["tools"] for p in observed) == 1
