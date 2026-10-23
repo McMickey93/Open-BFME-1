@@ -126,7 +126,9 @@ static NameKeyType buttonBuddiesID = NAMEKEY_INVALID;
 static NameKeyType buttonSaveReplayID = NAMEKEY_INVALID;
 static NameKeyType backdropID = NAMEKEY_INVALID;
 
-static GameWindow *parent = NULL;
+// External, not ZH's static: populateSideInfo, hideWindows, setObserverWindows
+// and the other split ScoreScreen TUs read it (retail 0x012F415C).
+GameWindow *parent = NULL;
 static GameWindow *buttonOk = NULL;
 //static GameWindow *buttonRehost = NULL;
 static GameWindow *buttonContinue = NULL;
