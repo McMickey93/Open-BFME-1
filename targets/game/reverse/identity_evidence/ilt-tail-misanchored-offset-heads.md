@@ -119,3 +119,13 @@ claims were byte coincidences and are retired:
 | 0x0034FF20 | 31 | PathNode::setPosition @0x0034FF25 | copy Coord3D to +0x14 when the +0x00 tag is 0x10 |
 | 0x00537A10 | 23 | InGameUI::disregardDrawable @0x00537A1A | TheGameSpyInfo ? virtual +0xC8 (tail jmp) : false, ret 4 |
 | 0x005BE810 | 13 | ?dup_005be812 / ?dup_5be812 (deleteInstance aliases) @0x005BE812 | delete the polymorphic +0x00 pointer |
+
+## DownloadMenu callbacks
+
+| head | size | identity evidence | retired tail |
+|---|---|---|---|
+| 0x004C7800 | 21 | errorCallback: DIR32 at 0x004C79C5 inside matched DownloadManagerMunkee::OnError (MessageBoxOk callback) | ?j_004c7810 (its own `je` target, the final `jmp closeDownloadWindow`) |
+| 0x004C7860 | 21 | successNoQuitCallback: second DIR32 in matched OnEnd (0x004C7ACE; 0x004C7AA2 is successQuitCallback 0x004C7820) | ?j_004c7870 |
+
+Zero Hour's errorCallback/successQuitCallback/successNoQuitCallback sit in that address
+order; BFME replaces HandleCanceledDownload with the +0x259 flag clear the cancel button uses.

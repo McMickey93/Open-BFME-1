@@ -195,9 +195,29 @@ void closeDownloadWindow( void )
 		TheWindowManager->winSetFocus( mainWin );
 }
 
+//-------------------------------------------------------------------------------------------------
+// BFME does not call HandleCanceledDownload from the cancel button or from the
+// error and no-quit success callbacks (retail 0x004C7800, 0x004C7860, referenced
+// by the matched OnError and OnEnd). It clears one
+// byte at +0x259 of the singleton at 0x012F49B4 and goes straight to
+// closeDownloadWindow. Nothing else in the image names that singleton, so it and
+// the member are named for what the call site proves - an offset and a store of
+// zero - and no layout is invented around them.
+//-------------------------------------------------------------------------------------------------
+class BfmeDownloadState
+{
+public:
+	char m_pad[0x259];
+	Bool m_flagAt259;
+};
+
+class BfmeAptScreenMainMenu;
+extern BfmeAptScreenMainMenu *g_rva012F49B4MainMenu;
+
 static void errorCallback( void )
 {
-	HandleCanceledDownload();
+	if( reinterpret_cast<BfmeDownloadState * &>(g_rva012F49B4MainMenu) )
+		reinterpret_cast<BfmeDownloadState * &>(g_rva012F49B4MainMenu)->m_flagAt259 = FALSE;
 	closeDownloadWindow();
 }
 
@@ -213,7 +233,8 @@ static void successQuitCallback( void )
 
 static void successNoQuitCallback( void )
 {
-	HandleCanceledDownload();
+	if( reinterpret_cast<BfmeDownloadState * &>(g_rva012F49B4MainMenu) )
+		reinterpret_cast<BfmeDownloadState * &>(g_rva012F49B4MainMenu)->m_flagAt259 = FALSE;
 	closeDownloadWindow();
 }
 
@@ -494,22 +515,6 @@ WindowMsgHandledType DownloadMenuInput( GameWindow *window, UnsignedInt msg,
 
 }  // end DownloadMenuInput
 
-//-------------------------------------------------------------------------------------------------
-// BFME does not call HandleCanceledDownload from the cancel button. It clears one
-// byte at +0x259 of the singleton at 0x012F49B4 and goes straight to
-// closeDownloadWindow. Nothing else in the image names that singleton, so it and
-// the member are named for what the call site proves - an offset and a store of
-// zero - and no layout is invented around them.
-//-------------------------------------------------------------------------------------------------
-class BfmeDownloadState
-{
-public:
-	char m_pad[0x259];
-	Bool m_flagAt259;
-};
-
-class BfmeAptScreenMainMenu;
-extern BfmeAptScreenMainMenu *g_rva012F49B4MainMenu;
 
 
 //-------------------------------------------------------------------------------------------------
