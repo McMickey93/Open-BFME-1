@@ -372,25 +372,28 @@ def _disp_setup(local, a_tail=b"GOOD", b_head=b"GOOD", L=0x3000):
 @pytest.mark.parametrize("local", [True, False])
 @pytest.mark.parametrize("before, addend", [(4, 0xFFFFFFFC), (2, 0xFFFFFFFE)])
 @pytest.mark.parametrize("a_tail, b_head", [(b"GOOD", b"GOOD"), (b"BAD!", b"GOOD"), (b"GOOD", b"BAD!")])
-def test_displacement_before_its_symbol_is_unresolved(local, before, addend, a_tail, b_head):
-    """MSVC folds table[i - 1] into [reg*4 + table-4]: a DIR32 addend of -4. Read
-    unsigned (0xFFFFFFFC), a symbol its own object defines reached the section's
-    last datum at a negative retail start (data-extent). Signed, `_b-4` is an
-    indexed read of _b, a direct read of _a's last bytes or (`_b-2`) both:
-    judging _b alone credits a bad _a, judging _a alone a bad _b. Until both are
-    judged it stays unresolved, whatever the bytes, on both paths."""
+def test_displacement_before_its_symbol_keeps_the_named_datum(local, before, addend, a_tail, b_head):
+    """An address/index displacement still names _b under the whole-datum rule.
+
+    This replaces the previous unknown-index ban. Arithmetic outside _b's
+    domain is outside retail's definition; a fixed load still must fit below.
+    """
     m, o, syms = _disp_setup(local, a_tail, b_head)
     lt = 0x3010 - before
     fails, edges, _ = m.data_ref(lt, lt + 0x100, "_b", syms[1], o, addend)
-    assert "data-unmapped:_b" in fails and edges == set()
-    assert not [f for f in fails if f.startswith("data-extent")]
+    assert fails == (["data-content:_b"] if b_head != b"GOOD" else [])
+    assert edges == {("datum", (0x3010, 0x3110, 0x10))}
+    ref = (lt, lt + 0x100, "_b", syms[1], o, addend, "read", 4, False)
+    assert "data-access-extent:_b" in m.ref_check(ref)[0]
 
 
 @pytest.mark.parametrize("local", [True, False])
-def test_displacement_before_its_section_is_unresolved(local):
-    m, o, syms = _disp_setup(local, L=0x3040)                         # _a-4: another section's bytes
+def test_displacement_before_its_section_keeps_the_named_datum(local):
+    m, o, syms = _disp_setup(local, L=0x3040)
     fails, edges, _ = m.data_ref(0x303C, 0x313C, "_a", syms[0], o, 0xFFFFFFFC)
-    assert "data-unmapped:_a" in fails and edges == set()
+    assert fails == [] and edges == {("datum", (0x3040, 0x3140, 0x10))}
+    ref = (0x303C, 0x313C, "_a", syms[0], o, 0xFFFFFFFC, "read", 4, False)
+    assert "data-access-extent:_a" in m.ref_check(ref)[0]
 
 
 @pytest.mark.parametrize("local", [True, False])
@@ -445,21 +448,15 @@ def _indexed_row(addend, a_tail=b"GOOD", b_head=b"GOOD"):
 
 
 @pytest.mark.parametrize("a_tail, b_head", [(b"GOOD", b"GOOD"), (b"BAD!", b"GOOD"), (b"GOOD", b"BAD!")])
-def test_indexed_read_before_its_symbol_never_credits_the_row(a_tail, b_head):
-    """`[eax*4 + _b-4]` with eax = 1 reads _b; the row must not close whichever
-    datum is wrong (Open-BFME-2's review round 2 reproduction, through run())."""
-    m, recs = _indexed_row(-4, a_tail, b_head)
-    rec = recs[0]
-    assert rec["measured"] and "data-unmapped:_b" in rec["fails"] and not rec["edges"] & {
-        ("datum", (0x3000, 0x3100, 0x10)), ("datum", (0x3010, 0x3110, 0x10))}
-    assert not _strictly_closed(m, recs)
-    m, recs = _indexed_row(4, a_tail, b_head)
-    # Round 2b finding 4: starting inside _b proves no bound on eax*4.
-    # Fixed in-bounds accesses have their positive control in review2b_evidence.
-    assert "data-access-extent:_b" in recs[0]["fails"]
-    assert ("data-content:_b" in recs[0]["fails"]) == (b_head != b"GOOD")
-    assert ("datum", (0x3010, 0x3110, 0x10)) in recs[0]["edges"]
-    assert not _strictly_closed(m, recs)
+def test_indexed_displacement_verifies_the_whole_named_datum(a_tail, b_head):
+    """Both folded displacements depend on _b in full, without range analysis."""
+    for addend in (-4, 4):
+        m, recs = _indexed_row(addend, a_tail, b_head)
+        rec = recs[0]
+        assert rec["measured"]
+        assert rec["fails"] == (["data-content:_b"] if b_head != b"GOOD" else [])
+        assert ("datum", (0x3010, 0x3110, 0x10)) in rec["edges"]
+        assert _strictly_closed(m, recs) == (b_head == b"GOOD")
 
 
 def _common_pointer_row(addend):

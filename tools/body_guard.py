@@ -165,6 +165,11 @@ def _static_content(info, symbol, base_va, addend):
     return "ok", ""
 
 
+def ltable_address(row_rva, function_start, label_value, addend, image_base=IMAGE_BASE):
+    """BFME1's same-section storage/case-label identity, shared with measurement."""
+    return (image_base + row_rva + label_value - function_start + addend) & 0xFFFFFFFF
+
+
 def row_findings(row, ctx, stats=None):
     """[(check, detail)] for one matched row whose object is built."""
     stats = {} if stats is None else stats
@@ -205,7 +210,7 @@ def row_findings(row, ctx, stats=None):
                 if not ctx.same_function(got, name):
                     findings.append(("ltable", f"+{off} {name[:60]} -> 0x{got:08X}"))
                 continue
-            want = (IMAGE_BASE + rva + target["value"] - start + addend) & 0xFFFFFFFF
+            want = ltable_address(rva, start, target["value"], addend)
             stats["ltable_entries"] = stats.get("ltable_entries", 0) + 1
             if want != final:
                 findings.append(("ltable", f"+{off} {name} wants 0x{want:08X} retail 0x{final:08X}"))

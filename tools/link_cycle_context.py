@@ -134,6 +134,9 @@ def input_paths(root=ROOT):
     for name in ("functions.csv", "symbols.csv", "data_rows.csv", "ghidra_functions.csv",
                  "dir32_addresses.csv", "dir32_consistency_whitelist.txt", "imports.csv", "exports.csv"):
         paths[f"targets/game/reverse/{name}"] = reverse / name
+    # Whole-datum measurement uses BFME1's retail allocation evidence.
+    name = "targets/game/reverse/retail_inventory/data_items.csv"
+    paths[name] = root / name
     # Derive the target-manifest location from BFME1's owner, never a donor path.
     import build
     manifest = Path(build.MANIFEST).relative_to(build.ROOT)

@@ -954,6 +954,26 @@ class Measure:
             return self.isecs.name_at(a)
         return next((n for n, (s, z) in self.isecs.items() if s <= a < s + max(z, 1)), "outside")
 
+    def storage_ref(self, lt, rt, width, owner, *, indexed=False):
+        """Memory in .text is storage; verified rows supply bytes, not entries."""
+        edges, end = set(), lt + max(width, 1)
+        at = lt
+        while at < end:
+            tr, item = self.T(at)
+            # docs/matching.md checks relocation targets; BFME1 ledger extents
+            # are the only code coverage we have verified, never their gaps.
+            if tr != rt + at - lt or item is None:
+                return "code-storage-unverified:" + owner, set()
+            i = bisect.bisect_right(self.istarts, at) - 1
+            if indexed:
+                # An unknown effective range observes the whole containing
+                # storage extent; no integer/index analysis is needed.
+                end = max(end, self.items[i][1])
+                indexed = False
+            edges.add(item)
+            at = min(end, self.items[i][1])
+        return None, edges
+
     def relocs(self, L, rva, size, o, secno, off, owner, failures=None):
         """Check every relocation of [off, off+size) of section `secno` of object o
         linked at L against retail at rva. Returns (failures, edges, masked
@@ -996,27 +1016,53 @@ class Measure:
                 lt, rt = (L + fo + 4 + lv) & 0xFFFFFFFF, (rva + fo + 4 + rv) & 0xFFFFFFFF
             else:
                 lt, rt = (lv - self.lbase) & 0xFFFFFFFF, (rv - self.rbase) & 0xFFFFFFFF
+            addend = u32(raw, sec.ptr + va) if sec.ptr else 0
+            width, indexed, memory = 0, False, False
+            for ins in instructions:
+                if ty == DIR32 and ins.address - L - self.lbase + ins.disp_offset == fo and ins.mnemonic != "lea":
+                    for operand in ins.operands:
+                        if operand.type == capstone.x86.X86_OP_MEM:
+                            memory = True
+                            width = max(width, operand.size)
+                            indexed |= bool(operand.mem.index or operand.mem.base)
+                    # x86 bit strings use a register offset beyond the nominal
+                    # operand width. BFME1's whole datum rule covers that use.
+                    indexed |= ins.mnemonic in ("bt", "bts", "btr", "btc") and any(
+                        op.type == capstone.x86.X86_OP_REG for op in ins.operands[1:])
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
-                direct = ty == REL32 and fo in direct_calls
-                f, e = self.code_ref(lt, rt, tn, owner, direct=direct, pointer=ty == DIR32, fails=fails,
-                                     entry=not direct or not L <= lt < L + size)
-                if f:
-                    fails.append(f)
-                elif e:
-                    edges.add(e)
+                if memory:
+                    if y is not None and y.sec == secno:
+                        import body_guard
+                        # Reuse BFME1's ltable rule, including storage bases.
+                        expected = body_guard.ltable_address(rva, off, y.value, addend, self.rbase)
+                        if rv != expected:
+                            fails.append(f"code-storage-ltable:{tn}")
+                    if (y is not None and y.sec == secno and y.cls == STATIC and tn.startswith("$")
+                            and (self.T(lt)[1] is None or self.T(lt)[1][0] == "fill")):
+                        # body_guard's same-section ltable/tail rule also
+                        # permits storage after the ledger's code extent. Its
+                        # complete symbol extent is a datum: content, shifted
+                        # words and every stored code destination are checked
+                        # by the existing data traversal, never by decoding it.
+                        data.append((lt, rt, tn, y, o, addend, "addr", width, indexed))
+                    else:
+                        f, storage_edges = self.storage_ref(lt, rt, width, tn, indexed=indexed)
+                        if f:
+                            fails.append(f)
+                        edges.update(storage_edges)
+                else:
+                    direct = ty == REL32 and fo in direct_calls
+                    f, e = self.code_ref(lt, rt, tn, owner, direct=direct, pointer=ty == DIR32, fails=fails,
+                                         entry=not direct or not L <= lt < L + size)
+                    if f:
+                        fails.append(f)
+                    elif e:
+                        edges.add(e)
             else:
-                addend = u32(raw, sec.ptr + va) if sec.ptr else 0
                 access = "read" if ty == DIR32 and read_through(got, fo) and read_through(want, fo) else "addr"
-                # BFME1 build.verify_dir32_consistency proves the referenced
-                # storage, not just its first byte. LEA observes an address;
-                # memory operands must fit, and an unknown index has no bound.
-                width, indexed = 0, False
-                for ins in instructions:
-                    if ins.address - L - self.lbase + ins.disp_offset == fo and ins.mnemonic != "lea":
-                        for operand in ins.operands:
-                            if operand.type == capstone.x86.X86_OP_MEM:
-                                width = max(width, operand.size)
-                                indexed |= bool(operand.mem.index or operand.mem.base)
+                # docs/matching.md DIR32 consistency and body_guard's static
+                # rule check the whole containing datum, also for addresses
+                # carried in registers, string ops and unknown scaled indices.
                 data.append((lt, rt, tn, y, o, addend, access, width, indexed))
         # docs/matching.md: DIR32 slots may differ only with symbolic
         # evidence. Retail HIGHLOW sites in code need that evidence too.
@@ -1169,6 +1215,12 @@ class Measure:
         names = getattr(self, "_onames", None)
         if names is None or id(o) not in names:
             names = self._onames = {id(v): Path(p).name.lower() for p, v in self.objs.cache.items() if v}
+            # zz objects retain the original map owner through by_base.
+            owners = set(self.pubobj.values())
+            for base, path in getattr(self.objs, "by_base", {}).items():
+                obj = self.objs.cache.get(Path(path))
+                if obj is not None and base in owners:
+                    names[id(obj)] = base
         return names.get(id(o))
 
     def datum(self, lt, tn, y, o, addend):
@@ -1178,14 +1230,10 @@ class Measure:
         A public the referencing object defines counts as its own only when the
         map says the link selected that object's copy.
 
-        A DIR32 addend is a signed displacement (MSVC folds `table[i - 1]` into
-        [reg*4 + table-4], stored addend -4); read unsigned it put lt about 4 GB
-        into the section. A displacement before the named symbol stays unresolved
-        (data-unmapped): an indexed read through it reaches the symbol's own datum
-        and a direct one the bytes before it, and judging either alone would credit
-        the other unchecked. Judging both is a follow-up; until then nothing is
-        credited there. (Displacements past the symbol's datum are judged by the
-        datum holding lt, as before.)"""
+        A signed DIR32 displacement does not change the named datum. For
+        register/index uses we verify that datum in full; fixed accesses are
+        checked separately against its bounds. Section-symbol relocations use
+        their addend to identify the actual containing symbol."""
         if addend & 0x80000000:
             addend -= 1 << 32
         local = y is not None and y.sec > 0
@@ -1213,10 +1261,11 @@ class Measure:
                 return None
             o, ys = found
             sec, P, base = o[0][ys.sec - 1], ys.value + (lt - S), ys.value
-        if P < base or P >= sec.size:
+        anchor = P if tn == sec.name else base
+        if not 0 <= anchor < sec.size:
             return None
         vals = self.objs.defined(o)[1].get(sec.idx, [])
-        i = bisect.bisect_right(vals, P) - 1
+        i = bisect.bisect_right(vals, anchor) - 1
         v0 = vals[i] if i >= 0 else 0
         v1 = vals[i + 1] if i + 1 < len(vals) else sec.size
         return lt - (P - v0), v1 - v0, P - v0, o, sec, v0, S
@@ -1261,6 +1310,62 @@ class Measure:
         self.resolved[mk] = r
         return r
 
+    def retail_datum_size(self, start, fallback, name):
+        """Retail evidence can require more bytes than the selected COFF copy.
+
+        Keep BFME1's symbol/map allocation extent as a floor (body_guard's
+        _static_content rule); inventory items may split an array into parts.
+        A smaller replacement provider must never define its own access domain.
+        """
+        if not hasattr(self, "retail_datums"):
+            extents, ledger_extents = {}, {}
+            ledger = ROOT / "targets/game/reverse/data_rows.csv"
+            if ledger.exists():
+                with ledger.open(newline="", encoding="utf-8") as stream:
+                    for row in csv.DictReader(stream):
+                        if row.get("status") == "matched":
+                            address = int(row["address"], 16)
+                            address -= self.rbase if row["address_kind"] == "va" else 0
+                            ledger_extents[address] = int(row["size"])
+            inventory = ROOT / "targets/game/reverse/retail_inventory/data_items.csv"
+            if inventory.exists():
+                with inventory.open(newline="", encoding="utf-8") as stream:
+                    for row in csv.DictReader(stream):
+                        address, size = int(row["rva"], 16), int(row["size"])
+                        extents[address] = max(extents.get(address, 0), size)
+            self.retail_ledger = ledger_extents
+            self.retail_ledger_starts = sorted(ledger_extents)
+            self.retail_datums = extents
+            self.retail_datum_starts = sorted(extents)
+        # BFME1's verified sizeof/symbol evidence outranks an inventory
+        # partition, which may group adjacent scalars or overlapping literals.
+        i = bisect.bisect_right(self.retail_ledger_starts, start) - 1
+        if i >= 0:
+            address = self.retail_ledger_starts[i]
+            end = address + self.retail_ledger[address]
+            if address <= start < end:
+                return max(fallback, end - start) if address == start else None
+        import reloc_ledger
+        scalar = reloc_ledger.mangled_scalar_size(name)
+        if scalar is not None:
+            return max(fallback, scalar)
+        if name.startswith("??_C@"):
+            try:
+                return max(fallback, len(build.string_literal_bytes(name, memoryview(self.R)[start:])))
+            except ValueError:
+                # docs/matching.md verifies the literal including its complete
+                # terminator; a malformed/truncated symbol proves no datum.
+                return None
+        i = bisect.bisect_right(self.retail_datum_starts, start) - 1
+        if i >= 0:
+            address = self.retail_datum_starts[i]
+            end = address + self.retail_datums[address]
+            if address <= start < end:
+                # A provider starting in the middle cannot cover the datum's
+                # prefix. docs/matching.md requires the entire target identity.
+                return max(fallback, end - start) if address == start else None
+        return fallback
+
     def datum_sources(self, o, name, rva):
         """Retain the defining TU even for failed, data-only providers."""
         if not hasattr(self, "provider_sources"):
@@ -1268,12 +1373,19 @@ class Measure:
             for unit in self.units:
                 for row in unit["rows"]:
                     sources[Path(unit["obj"]).name.lower()].add(row["source"])
+            rows = [row for unit in self.units for row in unit["rows"]]
+            if ROOT == census.ROOT:
+                # BFME1 admits whole data TUs, not only the anchor's symbol.
+                for path, source in census._object_sources(rows).items():
+                    sources[Path(path).name.lower()].add(source.relative_to(ROOT).as_posix())
             ledger = ROOT / "targets/game/reverse/data_rows.csv"
             if ledger.exists():
                 with ledger.open(newline="", encoding="utf-8") as stream:
                     for row in csv.DictReader(stream):
                         if row.get("status") == "matched" and row.get("source"):
                             sources[("datum", row["name"])].add(row["source"])
+                            if row["name"] in self.pubobj:
+                                sources[self.pubobj[row["name"]]].add(row["source"])
         return sorted(self.provider_sources.get(self.object_name(o), set()) |
                       self.provider_sources.get(("datum", name), set()))
 
@@ -1430,9 +1542,13 @@ class Measure:
         start, rstart, size = kind[1]
         width = ref[7] if len(ref) > 7 else 0
         indexed = ref[8] if len(ref) > 8 else False
-        # BFME1's datum verification must cover every accessed byte; no
-        # runtime index bound can be inferred from a relocation's addend.
-        if width and (indexed or lt - start + width > size):
+        # BFME1 body_guard._static_content and docs/matching.md verify the
+        # whole containing retail datum when the effective range is unknown.
+        # A known scalar range still must fit (round-2 width rule). The retail
+        # extent is independent of the selected provider's possibly short copy.
+        required = self.retail_datum_size(rstart, size, tn)
+        if required is None or required > size or (width and not indexed and
+                                                   not 0 <= lt - start <= size - width):
             fails.append(f"data-access-extent:{tn}")
         fails += self.one_to_one(start, rstart, tn) if (start, rstart) != (lt, rt) else []
         if kind[1] in self.datum_conflicts:
