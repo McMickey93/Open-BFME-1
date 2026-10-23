@@ -1,5 +1,6 @@
-// ?d_001d48a0@@YAXXZ
-// partial score=0.5634 date=2026-10-10
+// ?method@Rva001D48A0@@QAEXPAVXfer@@@Z
+// Recovered from the retail body at 0x001D48A0; identity not proven.
+// Size ends before the int3 run at +0x0F94 (3988 bytes).
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /I. /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 // BFME Object snapshot receiver. Offsets are relative to Object+0x60.
@@ -54,7 +55,7 @@ public:
     virtual Rva001D48A0XferView &unsignedShort(unsigned short *);
     virtual void slot80();
     virtual Rva001D48A0XferView &unsignedByte(unsigned char *);
-    virtual Rva001D48A0XferView &signedByte(signed char *);
+    virtual Rva001D48A0XferView &operator==(signed char &);
     virtual Rva001D48A0XferView &boolean(bool *);
 };
 
@@ -137,7 +138,7 @@ public:
     R48_SLOT(00) R48_SLOT(04) R48_SLOT(08) R48_SLOT(0c)
     virtual float real10();
     R48_SLOT(14) R48_SLOT(18) R48_SLOT(1c)
-    virtual bool boolean20();
+    virtual int boolean20();
     R48_SLOT(24)
     virtual Rva001D48A0VirtualView *pointer28();
     R48_SLOT(2c) R48_SLOT(30)
@@ -168,10 +169,10 @@ public:
     AsciiString keyToName(NameKeyType);
     NameKeyType nameToKey(const char *);
 };
-class Rva001C2DC0
+class Weapon
 {
 public:
-    AsciiString method() const;
+    AsciiString getName() const;
 };
 
 extern void *TheGameLogic;
@@ -284,6 +285,34 @@ struct Rva001D48A0TriggerInfo
     void *trigger;
     signed char entered, exited, inside;
 };
+class Rva001D48A0ModuleData
+{
+public:
+    NameKeyType getModuleTagNameKey() const { return m_moduleTagNameKey; }
+
+private:
+    void *m_vtable;
+    NameKeyType m_moduleTagNameKey;
+};
+class Rva001D48A0BehaviorModule
+{
+public:
+    const Rva001D48A0ModuleData *getModuleData() const { return m_moduleData; }
+    NameKeyType getModuleTagNameKey() const;
+
+private:
+    void *m_vtbl;
+    const Rva001D48A0ModuleData *m_moduleData;
+};
+static __forceinline NameKeyType rva001D48A0ModuleTag(const Rva001D48A0BehaviorModule *module)
+{
+    return module->getModuleData()->getModuleTagNameKey();
+}
+class Rva001D48A0ByteSlots
+{
+public:
+    signed char m_bytes[4];
+};
 struct Rva001D48A0Coord3 { float x, y, z; };
 struct Rva001D48A0StatePosition
 {
@@ -298,6 +327,8 @@ class Rva001D48A0
 public:
     void method(Xfer *xfer);
     template<class T> __forceinline T &field(int offset) { return rva001D48A0Field<T>(this, offset); }
+    char m_pad[0x244];
+    signed char m_weaponSlotBytes[4];
 };
 
 // ?method@Rva001D48A0@@QAEXPAVXfer@@@Z
@@ -314,8 +345,8 @@ void Rva001D48A0::method(Xfer *xfer)
     receiver->text(&templateName);
     unsigned int id = field<unsigned int>(0x14);
     Rva0010C3C0(typed, &id);
+    rva001D48A0SetID(reinterpret_cast<char *>(this) - 0x60, id);
     void *owner = reinterpret_cast<char *>(this) - 0x60;
-    rva001D48A0SetID(owner, id);
     if (!receiver->IsLightCRC())
     {
         Rva001D48A0Matrix matrix = field<Rva001D48A0Matrix>(-0x58);
@@ -346,7 +377,7 @@ void Rva001D48A0::method(Xfer *xfer)
         void *ai = field<void *>(0x1a4);
         if (ai)
         {
-            AsciiString name = reinterpret_cast<Rva001C2DC0 *>(ai)->method();
+            AsciiString name = reinterpret_cast<Weapon *>(ai)->getName();
             receiver->text(&name);
             unsigned int stateId = rva001D48A0StateID(ai);
             receiver->unsignedInteger(&stateId);
@@ -354,8 +385,13 @@ void Rva001D48A0::method(Xfer *xfer)
             Rva0010C3C0(typed, &target);
             Rva001D48A0StatePosition *machine = rva001D48A0Field<Rva001D48A0StatePosition *>(ai, 0x30);
             Rva001D48A0Coord3 coord;
-            const Rva001D48A0Coord3 *position = machine->getPosition();
-            if (position) coord = *machine->getPosition();
+            if (machine->getPosition())
+            {
+                Rva001D48A0StatePosition *fresh = rva001D48A0Field<Rva001D48A0StatePosition *>(ai, 0x30);
+                coord.x = fresh->m_position.x;
+                coord.y = fresh->m_position.y;
+                coord.z = fresh->m_position.z;
+            }
             else { coord.x = 0.0f; coord.y = 0.0f; coord.z = 0.0f; }
             receiver->realCoord3(&coord);
         }
@@ -421,7 +457,8 @@ void Rva001D48A0::method(Xfer *xfer)
         else
             field<unsigned int>(0x1b8) = 0;
     }
-    Rva0010C3C0(typed, &field<unsigned int>(0x1b8));
+    unsigned int *serializedId = &field<unsigned int>(0x1b8);
+    Rva0010C3C0(typed, serializedId);
     receiver->unsignedInteger(&field<unsigned int>(0x1bc));
     receiver->real(&field<float>(0x1c0));
     receiver->text(&field<AsciiString>(0x1e0));
@@ -432,7 +469,7 @@ void Rva001D48A0::method(Xfer *xfer)
     typedef _STL::pair<int, AsciiString> MissingTrigger;
     _STL::list<MissingTrigger> &missingTriggers = field<_STL::list<MissingTrigger> >(0x2b0);
     rva001D48A0Call0<void>(j_00049945, &missingTriggers);
-    receiver->signedByte(&field<signed char>(0x2e6));
+    *receiver == field<signed char>(0x2e6);
     receiver->unsignedInteger(&field<unsigned int>(0x2a0));
     receiver->integerCoord3(&field<int>(0x2a4));
     if (field<signed char>(0x2e6) < 0 || field<signed char>(0x2e6) > 5)
@@ -448,9 +485,9 @@ void Rva001D48A0::method(Xfer *xfer)
         receiver->text(&triggerName);
         if (receiver->IsLoading())
             trigger.trigger = reinterpret_cast<Rva001D48A0Terrain *>(TheTerrainLogic)->findTrigger(triggerName);
-        receiver->signedByte(&trigger.entered);
-        receiver->signedByte(&trigger.exited);
-        receiver->signedByte(&trigger.inside);
+        *receiver == trigger.entered;
+        *receiver == trigger.exited;
+        *receiver == trigger.inside;
         if (!trigger.trigger)
             missingTriggers.push_back(_STL::make_pair(i, triggerName));
     }
@@ -461,16 +498,16 @@ void Rva001D48A0::method(Xfer *xfer)
     Rva0010BE60(typed, &field<unsigned int>(0x2bc));
     if (field<unsigned int>(0x2bc)) receiver->realCoord2(&field<float>(0x2c0));
     unsigned short moduleCount = 0;
-    for (void **b = field<void **>(0x190); *b; ++b) ++moduleCount;
+    for (Rva001D48A0BehaviorModule **behaviorModule = field<Rva001D48A0BehaviorModule **>(0x190); *behaviorModule; ++behaviorModule) ++moduleCount;
     receiver->unsignedShort(&moduleCount);
     AsciiString moduleIdentifier;
+    Rva001D48A0BehaviorModule *module;
     if (receiver->IsStoring())
     {
-        for (void **b = field<void **>(0x190); *b; ++b)
+        for (Rva001D48A0BehaviorModule **behaviorModule = field<Rva001D48A0BehaviorModule **>(0x190); *behaviorModule; ++behaviorModule)
         {
-            void *module = *b;
-            void *moduleData = rva001D48A0Field<void *>(module, 4);
-            moduleIdentifier = g_theNameKeyGenerator->keyToName(rva001D48A0Field<NameKeyType>(moduleData, 4));
+            module = *behaviorModule;
+            moduleIdentifier = g_theNameKeyGenerator->keyToName(rva001D48A0ModuleTag(module));
             receiver->text(&moduleIdentifier);
             receiver->beginBlock("BehaviorModule");
             receiver->snapshot(module);
@@ -484,11 +521,10 @@ void Rva001D48A0::method(Xfer *xfer)
         {
             receiver->text(&moduleIdentifier);
             NameKeyType key = g_theNameKeyGenerator->nameToKey(moduleIdentifier.str());
-            void *module = 0;
-            for (void **b = field<void **>(0x190); b && *b; ++b)
+            module = 0;
+            for (Rva001D48A0BehaviorModule **behaviorModule = field<Rva001D48A0BehaviorModule **>(0x190); behaviorModule && *behaviorModule; ++behaviorModule)
             {
-                void *moduleData = rva001D48A0Field<void *>(*b, 4);
-                if (key == rva001D48A0Field<NameKeyType>(moduleData, 4)) { module = *b; break; }
+                if (key == rva001D48A0ModuleTag(*behaviorModule)) { module = *behaviorModule; break; }
             }
             if (!module) receiver->skipBlock("BehaviorModule");
             else
@@ -503,7 +539,8 @@ void Rva001D48A0::method(Xfer *xfer)
     receiver->unsignedInteger(&field<unsigned int>(0x274));
     receiver->snapshot(field<void *>(0x188));
     rva001D48A0Call<void, Xfer *>(j_00044ce7, &field<unsigned int>(0x23c), xfer);
-    for (int i = 0; i < 4; ++i) receiver->signedByte(&field<signed char>(0x244 + i));
+    signed char *weaponSlot = m_weaponSlotBytes;
+    for (int i = 0; i < 4; ++i) *receiver == weaponSlot[i];
     receiver->snapshot(&field<unsigned int>(0x204));
     rva001D48A0Call<void, Xfer *>(j_0002fc1b, &field<unsigned int>(0x260), xfer);
     receiver->text(&field<AsciiString>(0x2c8));
@@ -512,24 +549,23 @@ void Rva001D48A0::method(Xfer *xfer)
     receiver->boolean(&field<bool>(0x2e2));
     receiver->boolean(&field<bool>(0x2e8));
     if (!receiver->IsCRC()) receiver->unsignedInteger(&field<unsigned int>(0x2d4));
-    _STL::vector<Rva001D28F0Element> &damage = field<_STL::vector<Rva001D28F0Element> >(0x2ec);
     if (receiver->IsStoring())
     {
-        unsigned int count = damage.size();
+        unsigned int count = field<_STL::vector<Rva001D28F0Element> >(0x2ec).size();
         receiver->unsignedInteger(&count);
-        for (_STL::vector<Rva001D28F0Element>::iterator i = damage.begin(); i != damage.end(); ++i)
+        for (_STL::vector<Rva001D28F0Element>::iterator i = field<_STL::vector<Rva001D28F0Element> >(0x2ec).begin(); i != field<_STL::vector<Rva001D28F0Element> >(0x2ec).end(); ++i)
             reinterpret_cast<Rva001D48A0DamageVirtual *>(&*i)->transfer(xfer);
     }
     else
     {
-        damage.clear();
+        field<_STL::vector<Rva001D28F0Element> >(0x2ec).clear();
         unsigned int count;
         receiver->unsignedInteger(&count);
         for (unsigned int i = 0; i < count; ++i)
         {
             Rva001D28F0Element item;
             rva001D48A0Call<void, Xfer *>(j_0003f75b, &item, xfer);
-            damage.push_back(item);
+            field<_STL::vector<Rva001D28F0Element> >(0x2ec).push_back(item);
         }
     }
     receiver->unsignedInteger(&field<unsigned int>(0x2fc));
