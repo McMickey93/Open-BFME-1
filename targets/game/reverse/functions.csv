@@ -122867,12 +122867,8 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_000b7f50@@YAXXZ,,0x000B7F50,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00031A93
 ?j_000b8720@@YAXXZ,,0x000B8720,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000103F7
 ?j_000be2f0@@YAXXZ,,0x000BE2F0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000FC86
-?j_000c3c46@@YAXXZ,,0x000C3C46,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0003C8E9
-?j_000c8e76@@YAXXZ,,0x000C8E76,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00045DC7
-?j_000c8e86@@YAXXZ,,0x000C8E86,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000FDF8
 ?j_000ceb20@@YAXXZ,,0x000CEB20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000ceb30@@YAXXZ,,0x000CEB30,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
-?j_000cff36@@YAXXZ,,0x000CFF36,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00031F8E
 ?j_000d0020@@YAXXZ,,0x000D0020,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004cebd0
 ?j_000d02c0@@YAXXZ,,0x000D02C0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00005B73
 ?j_000d05a0@@YAXXZ,,0x000D05A0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000188EA
@@ -122897,7 +122893,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_000e92a0@@YAXXZ,,0x000E92A0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_000e9a30@@YAXXZ,,0x000E9A30,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004e9640
 ?j_000e9fd6@@YAXXZ,,0x000E9FD6,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00019BCD
-?j_000ed416@@YAXXZ,,0x000ED416,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00887C90
 ?j_000efd30@@YAXXZ,,0x000EFD30,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00032E75
 ?j_000efd40@@YAXXZ,,0x000EFD40,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004ef540
 ?j_000f0df0@@YAXXZ,,0x000F0DF0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004ef440
@@ -122926,7 +122921,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0012a710@@YAXXZ,,0x0012A710,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00529b20
 ?j_0012abb0@@YAXXZ,,0x0012ABB0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00529e90
 ?j_0012ac90@@YAXXZ,,0x0012AC90,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00529e90
-?j_00132ad6@@YAXXZ,,0x00132AD6,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000497D3
 ?j_001345f0@@YAXXZ,,0x001345F0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00134af0@@YAXXZ,,0x00134AF0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_001357c0@@YAXXZ,,0x001357C0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0002838F
@@ -123014,27 +123008,20 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_001957e0@@YAXXZ,,0x001957E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00594da0
 ?j_00198540@@YAXXZ,,0x00198540,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00597bc0
 ?j_001991e0@@YAXXZ,,0x001991E0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_00597ae0
-?j_0019be46@@YAXXZ,,0x0019BE46,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00023786
 ?j_0019db00@@YAXXZ,,0x0019DB00,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0059d7b0
 ?j_0019e630@@YAXXZ,,0x0019E630,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_0059e590
 ?j_001aa5a0@@YAXXZ,,0x001AA5A0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005a9420
-?j_001ac3c6@@YAXXZ,,0x001AC3C6,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x000455DE
 ?j_001adf00@@YAXXZ,,0x001ADF00,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_004ffca0
 ?j_001b06d0@@YAXXZ,,0x001B06D0,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00031F93
 ?j_001b0810@@YAXXZ,,0x001B0810,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005b06e0
 ?j_001b6f10@@YAXXZ,,0x001B6F10,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005b6ad0
 ?j_001bbc40@@YAXXZ,,0x001BBC40,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00032A29
-?j_001bd366@@YAXXZ,,0x001BD366,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0002FDC4
-?j_001bd646@@YAXXZ,,0x001BD646,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0003C0AB
-?j_001bd656@@YAXXZ,,0x001BD656,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0004686C
-?j_001c0bb6@@YAXXZ,,0x001C0BB6,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00887C90
 ?j_001c3b30@@YAXXZ,,0x001C3B30,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00035CA1
 ?j_001c3b40@@YAXXZ,,0x001C3B40,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x00022C5A
 ?j_001c4b20@@YAXXZ,,0x001C4B20,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005c3c70
 ?j_001da710@@YAXXZ,,0x001DA710,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005d8370
 ?j_001de660@@YAXXZ,,0x001DE660,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005de5b0
 ?j_001de870@@YAXXZ,,0x001DE870,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=releaseBuffer
-?j_001e0ac6@@YAXXZ,,0x001E0AC6,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0001BD74
 ?j_001e50f0@@YAXXZ,,0x001E50F0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005e4d60
 ?j_001eac40@@YAXXZ,,0x001EAC40,5,game/gen_small/gthunks_084.cpp,matched,gen-thunk;gap;target=0x0000D486
 ?j_001eced0@@YAXXZ,,0x001ECED0,5,game/gen_small/thunks_036.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
@@ -123353,8 +123340,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002d7d80@@YAXXZ,,0x002D7D80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00020B80
 ?j_002d7ff0@@YAXXZ,,0x002D7FF0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00020B80
 ?j_002d9370@@YAXXZ,,0x002D9370,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00020B80
-?j_002d9386@@YAXXZ,,0x002D9386,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887940
-?j_002d9396@@YAXXZ,,0x002D9396,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887940
 ?j_002d9710@@YAXXZ,,0x002D9710,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00020B80
 ?j_002d9b70@@YAXXZ,,0x002D9B70,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_005ef410
 ?j_002da310@@YAXXZ,,0x002DA310,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00020B80
@@ -123370,7 +123355,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_002debf0@@YAXXZ,,0x002DEBF0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_006df360
 ?j_002e0720@@YAXXZ,,0x002E0720,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00032CA9
 ?j_002ea740@@YAXXZ,,0x002EA740,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003A76F
-?j_002ed3b6@@YAXXZ,,0x002ED3B6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000E700
 ?j_00339590@@YAXXZ,,0x00339590,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002FE5F
 ?j_00339930@@YAXXZ,,0x00339930,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00339ca0@@YAXXZ,,0x00339CA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
@@ -123382,12 +123366,10 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00342e10@@YAXXZ,,0x00342E10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_007416c0
 ?j_00342e20@@YAXXZ,,0x00342E20,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_007417a0
 ?j_00342e30@@YAXXZ,,0x00342E30,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_007418c0
-?j_00360766@@YAXXZ,,0x00360766,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00020FEF
 ?j_003647d0@@YAXXZ,,0x003647D0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001287D
 ?j_003679f0@@YAXXZ,,0x003679F0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00015E0B
 ?j_0036b760@@YAXXZ,,0x0036B760,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000E386
 ?j_0036b950@@YAXXZ,,0x0036B950,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002AE23
-?j_0036b9c6@@YAXXZ,,0x0036B9C6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887C90
 ?j_0036bc80@@YAXXZ,,0x0036BC80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0004049E
 ?j_0036cc00@@YAXXZ,,0x0036CC00,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0036cc90@@YAXXZ,,0x0036CC90,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
@@ -123398,8 +123380,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0037b980@@YAXXZ,,0x0037B980,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00002EC8
 ?j_0037ea50@@YAXXZ,,0x0037EA50,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0077e390
 ?j_00380d20@@YAXXZ,,0x00380D20,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_007808e0
-?j_00383846@@YAXXZ,,0x00383846,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00002E64
-?j_00383906@@YAXXZ,,0x00383906,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001C89B
 ?j_00386a20@@YAXXZ,,0x00386A20,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00387050@@YAXXZ,,0x00387050,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00387300@@YAXXZ,,0x00387300,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
@@ -123421,8 +123401,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_003ba730@@YAXXZ,,0x003BA730,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_007b9fa0
 ?j_003c1ac0@@YAXXZ,,0x003C1AC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003617E
 ?j_003c2820@@YAXXZ,,0x003C2820,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000417F9
-?j_003c6fe6@@YAXXZ,,0x003C6FE6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887C90
-?j_003c6ff6@@YAXXZ,,0x003C6FF6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887940
 ?j_003cb780@@YAXXZ,,0x003CB780,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000349F5
 ?j_003cde30@@YAXXZ,,0x003CDE30,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_007cc890
 ?j_003d34d0@@YAXXZ,,0x003D34D0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
@@ -123437,7 +123415,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_0040ad70@@YAXXZ,,0x0040AD70,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002F85B
 ?j_0040b180@@YAXXZ,,0x0040B180,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_0040c9d0@@YAXXZ,,0x0040C9D0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0080c510
-?j_00410686@@YAXXZ,,0x00410686,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001FCCB
 ?j_00420850@@YAXXZ,,0x00420850,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000090BB
 ?j_004222f0@@YAXXZ,,0x004222F0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_008221f0
 ?j_00423390@@YAXXZ,,0x00423390,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
@@ -123493,7 +123470,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00465660@@YAXXZ,,0x00465660,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00465a60@@YAXXZ,,0x00465A60,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00025CD4
 ?j_00465aa0@@YAXXZ,,0x00465AA0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00881F70
-?j_00466606@@YAXXZ,,0x00466606,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887C90
 ?j_00466aa0@@YAXXZ,,0x00466AA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
 ?j_00467d20@@YAXXZ,,0x00467D20,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003497D
 ?j_00467d30@@YAXXZ,,0x00467D30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003458B
@@ -123535,7 +123511,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00494e30@@YAXXZ,,0x00494E30,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00894d00
 ?j_004989e0@@YAXXZ,,0x004989E0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000458BD
 ?j_00498c10@@YAXXZ,,0x00498C10,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_008989f0
-?j_0049ca26@@YAXXZ,,0x0049CA26,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0003D294
 ?j_0049cdf0@@YAXXZ,,0x0049CDF0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000309E0
 ?j_0049ce00@@YAXXZ,,0x0049CE00,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0001ADF2
 ?j_0049d0a0@@YAXXZ,,0x0049D0A0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00998f30
@@ -123551,7 +123526,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_004b2cb0@@YAXXZ,,0x004B2CB0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002B634
 ?j_004b2cc0@@YAXXZ,,0x004B2CC0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000108FC
 ?j_004bb4a0@@YAXXZ,,0x004BB4A0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=releaseBuffer
-?j_004c1136@@YAXXZ,,0x004C1136,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00046713
 ?j_004c7810@@YAXXZ,,0x004C7810,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x004C7780
 ?j_004c7870@@YAXXZ,,0x004C7870,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x004C7780
 ?j_004c78b0@@YAXXZ,,0x004C78B0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a27730
@@ -123680,7 +123654,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_005eb6a0@@YAXXZ,,0x005EB6A0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_009e7250
 ?j_00604830@@YAXXZ,,0x00604830,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0002A973
 ?j_00605fe0@@YAXXZ,,0x00605FE0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000142EA
-?j_0060a876@@YAXXZ,,0x0060A876,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00887C90
 ?j_0060d2d0@@YAXXZ,,0x0060D2D0,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00036CFF
 ?j_0060d560@@YAXXZ,,0x0060D560,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a1e3e0
 ?j_0060d570@@YAXXZ,,0x0060D570,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00a1e3e0
@@ -123768,7 +123741,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_006abc50@@YAXXZ,,0x006ABC50,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00aaab80
 ?j_006abcf0@@YAXXZ,,0x006ABCF0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00aaad10
 ?j_006b0840@@YAXXZ,,0x006B0840,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000AFC9
-?j_006b0ca6@@YAXXZ,,0x006B0CA6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0000AFC9
 ?j_006baa80@@YAXXZ,,0x006BAA80,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00039FB3
 ?j_006bab30@@YAXXZ,,0x006BAB30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000442F1
 ?j_006bab40@@YAXXZ,,0x006BAB40,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_0046b700
@@ -123797,7 +123769,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00711ed6@@YAXXZ,,0x00711ED6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000299B0
 ?j_00713506@@YAXXZ,,0x00713506,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000080FD
 ?j_00718da0@@YAXXZ,,0x00718DA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b17880
-?j_0071cd76@@YAXXZ,,0x0071CD76,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x0090DF10
 ?j_00746176@@YAXXZ,,0x00746176,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041191
 ?j_00746186@@YAXXZ,,0x00746186,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00014A38
 ?j_00746190@@YAXXZ,,0x00746190,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b40cf0
@@ -173040,3 +173011,32 @@ _CommUdpProcess,,0x00817B30,2207,game/Libraries/Source/DirtySock/commudp.cpp,mat
 ?rva00551C80@BfmeAptScreenOnlineLogin@@QAEX_N@Z,,0x00551C80,240,game/GameEngine/Source/GameClient/GUI/OnlineLoginSubmit00551620.cpp,matched,matched OnlineLoginUpdate caller via ILT00005F9C; RET4 at +0xED and INT3 at +0xF0 prove full extent; saved name +A8 is AsciiString per matched constructor and submitLogin; native expression temporary and ASCII set resolve all callees;model=gpt-6;host=Nathans-PC
 ?refresh@Rva00435270Layout@@AAEXXZ,,0x00435170,195,game/GameEngine/Source/GameClient/GUI/Rva00435270ApplyLayout.cpp,matched,matched apply caller via ILT1CE9F; RET+0xC2 then INT3 proves195B; native eight-byte vector payload and Unicode by-value copy; compiler-only barrier reproduces witnessed single-precision x87 rounding; delay and next-index locals preserve final stores;model=gpt-6;host=Nathans-PC
 ?setTriggerAreaFlagsForChangeInPosition@Object@@IAEXXZ,,0x001C8D80,1002,game/GameEngine/Source/GameLogic/Object/ObjectSetTriggerAreaFlagsForChangeInPosition.cpp,matched,boundary ILT 0x0001B5D1 to 0x001C8D80 and RET at 0x001C9169; replaces interior 749B lift at 0x001C8E7D;model=claude-opus-5-5;host=vm
+?invoke@Rva000C8E70@@QAEXXZ,,0x000C8E70,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva000C8E80@@QAEXXZ,,0x000C8E80,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva000CFF30@@QAEXXZ,,0x000CFF30,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva000ED410@@QAEXXZ,,0x000ED410,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva00132AD0@@QAEXXZ,,0x00132AD0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva0019BE40@@QAEXXZ,,0x0019BE40,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva001AC3C0@@QAEXXZ,,0x001AC3C0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva001BD360@@QAEXXZ,,0x001BD360,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva001BD640@@QAEXXZ,,0x001BD640,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva001BD650@@QAEXXZ,,0x001BD650,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva001C0BB0@@QAEXXZ,,0x001C0BB0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva001E0AC0@@QAEXXZ,,0x001E0AC0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva002D9380@@QAEXXZ,,0x002D9380,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva002D9390@@QAEXXZ,,0x002D9390,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva002ED3B0@@QAEXXZ,,0x002ED3B0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva00360760@@QAEXXZ,,0x00360760,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva0036B9C0@@QAEXXZ,,0x0036B9C0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva00383840@@QAEXXZ,,0x00383840,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva00383900@@QAEXXZ,,0x00383900,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva003C6FE0@@QAEXXZ,,0x003C6FE0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva003C6FF0@@QAEXXZ,,0x003C6FF0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva00410680@@QAEXXZ,,0x00410680,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva00466600@@QAEXXZ,,0x00466600,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva0049CA20@@QAEXXZ,,0x0049CA20,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva004C1130@@QAEXXZ,,0x004C1130,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva0060A870@@QAEXXZ,,0x0060A870,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva006B0CA0@@QAEXXZ,,0x006B0CA0,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva0071CD70@@QAEXXZ,,0x0071CD70,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
+?invoke@Rva000C3C40@@QAEXXZ,,0x000C3C40,11,game/GameEngine/Source/Common/MemberOffsetTailThunks.cpp,matched,11-byte __thiscall offset tail-jump thunk (add ecx OFFSET then jmp REL32); address-derived; boundary-interior-row=retired j_ tail at +6 per identity_evidence/ilt-tail-misanchored-offset-heads.md;model=claude-opus-5-5;host=vm
