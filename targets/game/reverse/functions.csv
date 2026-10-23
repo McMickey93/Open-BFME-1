@@ -36784,7 +36784,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_000f2a00@@YAXXZ,,0x000F2A00,674,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_004f2a00
 ?d_000f2d50@@YAXXZ,,0x000F2D50,468,game/gen_asm/d_000e5b30.asm,matched,gen-dump;ghidra=FUN_004f2d50
 ?d_000f2fb0@@YAXXZ,,0x000F2FB0,528,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004f2fb0
-?d_000f4e20@@YAXXZ,,0x000F4E20,214,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004f4e20
 ?d_000f5e40@@YAXXZ,,0x000F5E40,1293,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_004f5e40
 ?d_000f9410@@YAXXZ,,0x000F9410,5,game/GameEngine/Source/Common/RvaF9410IdentityWithArgumentThunk.cpp,matched,object-symbol=?identity@RvaF9410IdentityWithArgumentThunk@@QAEPAU1@H@Z;Open-BFME5 clean C++ RVA F9410 identity with one argument
 ?d_000fa8b0@@YAXXZ,,0x000FA8B0,188,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004fa8b0
@@ -173122,3 +173121,4 @@ uw_00c18e50,,0x00C18E50,8,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEn
 ??1Vector3Randomizer@@UAE@XZ,,0x0095C6E0,7,game/Libraries/Source/WWVegas/WWMath/v3_rnd.cpp,matched,Vector3Randomizer inline empty virtual dtor; vftable 0x0113E098 ??_7Vector3Randomizer; see identity_evidence/0095c6e0-vector3-randomizer.md;model=claude-opus-5-5;host=vm
 ??_GVector3Randomizer@@UAEPAXI@Z,,0x0095C6F0,31,game/Libraries/Source/WWVegas/WWMath/v3_rnd.cpp,matched,slot 0 of vftable 0x0113E098 ??_7Vector3Randomizer (dtor plus five __purecall slots); moved from 0x008E2260 where it aliased ??_GCullSystemClass; identity_evidence/0095c6e0-vector3-randomizer.md;model=claude-opus-5-5;host=vm
 ?doTeamUseCommandButtonOnNearestObjectType@ScriptActions@@IAEXABVAsciiString@@00@Z,,0x002FE110,273,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActionsUseCommandButtonOnNearestThing.cpp,matched,clean C++ in the private-ABI helper TU; identity from executeAction TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_OBJECTTYPE arm; replaces naked __emit lift;model=claude-opus-5-5;host=vm
+?rva000F4E20@Team@@QAE_NXZ,,0x000F4E20,214,game/GameEngine/Source/Common/RTS/TeamMemberQueries.cpp,matched,clean C++ beside the other Team member walks; caller Team::updateState 0x000F4F30 via ILT 0x00008A71; address-derived name kept;model=claude-opus-5-5;host=vm
