@@ -64,6 +64,8 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         seed, snapshots = workspace / "seed", workspace / "s"
         seed.mkdir()
         rules = frozen_tools(root, commit, seed)
+        preflight = cycle_source.clean_runtime_identity(seed / "tools")
+        ca.same("clean preflight interpreter installation", preflight, rules["runtime"])
         executed = {n: cycle_source.module_record(seed / "tools", seed / "tools" / n,
                                                 (seed / "tools" / n).read_bytes())[1]
                     for n in rules["measurement_files"]}

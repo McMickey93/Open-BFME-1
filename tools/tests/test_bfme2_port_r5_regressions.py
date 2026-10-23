@@ -496,13 +496,14 @@ def test_runtime_inventory_binds_all_stdlib_and_interpreter_inputs(tmp_path, mon
     target.write_bytes(b'after!')  # Same size still invalidates the in-memory cache.
     changed = cs.runtime_identity()
     assert changed != before
-    # Undeclared packages cannot enter through the stdlib inventory.
+    # Every file under a loadable root is bound, including undeclared data.
     ignored = packages / 'not_a_provider'
     ignored.mkdir()
     (ignored / 'rules.json').write_bytes(b'caller data')
-    assert cs.runtime_identity() == changed
+    added = cs.runtime_identity()
+    assert added != changed
     (ignored / 'rules.json').write_bytes(b'changed caller data')
-    assert cs.runtime_identity() == changed
+    assert cs.runtime_identity() != added
 
 
 @pytest.mark.parametrize('contamination', [{'BUILD_POOL': '0'}, {'BUILD_POOL': '-1'},
@@ -544,13 +545,14 @@ def test_recorder_inventories_every_prebootstrap_module(tmp_path):
 def test_installed_hash_cache_is_memory_only_and_invalidates_on_file_generation(tmp_path, monkeypatch):
     path = tmp_path / 'rules.json'
     path.write_bytes(b'before')
-    read_bytes = Path.read_bytes
+    import builtins
+    original_open = builtins.open
     reads = []
-    def read(candidate):
-        if candidate == path:
+    def read(candidate, *args, **kwargs):
+        if Path(candidate) == path:
             reads.append(candidate)
-        return read_bytes(candidate)
-    monkeypatch.setattr(Path, 'read_bytes', read)
+        return original_open(candidate, *args, **kwargs)
+    monkeypatch.setattr(builtins, 'open', read)
     before = cs.file_hash(path)
     assert cs.file_hash(path) == before
     assert len(reads) == 1

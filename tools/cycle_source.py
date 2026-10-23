@@ -7,11 +7,15 @@ The launcher owns the temporary audit directory; children never see its key.
 import ast
 import hashlib
 import functools
+import errno
 import importlib.machinery
 import importlib.util
 import json
 import os
 import shutil
+import stat
+import time
+import zipimport
 from pathlib import Path
 import subprocess
 import sys
@@ -37,7 +41,7 @@ def runtime_paths():
     return stdlib, native.resolve(), packages
 
 
-def dependency_locations():
+def dependency_roots():
     stdlib, _, packages = runtime_paths()
     if os.name == "nt":
         import ctypes
@@ -50,70 +54,165 @@ def dependency_locations():
         user = Path(pwd.getpwuid(os.getuid()).pw_dir) / f".local/lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages"
     # Fixed installation locations, never site.getsitepackages(), .pth or
     # sys.path. Only these individual providers can be imported from them.
-    roots = (packages, user, stdlib / "site-packages", stdlib / "dist-packages")
+    return packages, user, stdlib / "site-packages", stdlib / "dist-packages"
+
+
+def dependency_locations():
+    roots = dependency_roots()
+    packages = roots[0]
     return {name: next((p / name for p in roots if (p / name).exists()), packages / name)
             for name in DEPENDENCIES}
 
 
-@functools.lru_cache(maxsize=8192)
+# Kept only in this process. A new launcher/preflight always reads fresh bytes.
+@functools.lru_cache(maxsize=None)
 def _installed_hash(path, generation):
-    # Memory only: every interpreter run must read its own installation bytes.
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    with open(path, "rb") as stream:
+        value = hashlib.file_digest(stream, "sha256").hexdigest()
+        if _generation(os.fstat(stream.fileno())) != generation:
+            raise ValueError(f"interpreter file changed while hashing: {path}")
+    return value
+
+
+def _generation(st):
+    return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns
 
 
 def file_hash(path):
     path = Path(path)
-    st = path.stat()
-    return _installed_hash(str(path), (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns))
+    return _installed_hash(str(path), _generation(path.stat()))
 
 
-def runtime_identity():
+_INTERPRETER = sys.executable
+_STARTUP_PATH = tuple(sys.path)
+
+
+@functools.lru_cache(maxsize=1)
+def isolated_search_path():
+    # Readers use the same search roots as the -I -S measurement, never their
+    # caller's cwd, PYTHONPATH, pytest paths or site startup additions.
+    if sys.flags.isolated and sys.flags.no_site:
+        return getattr(sys, "_bfme_cycle_startup_path", _STARTUP_PATH)
+    result = subprocess.run([_INTERPRETER, "-I", "-S", "-B", "-c",
+                             "import sys,json; print(json.dumps(sys.path))"],
+                            env=clean_environment({}), check=True, capture_output=True, text=True)
+    return tuple(json.loads(result.stdout))
+
+
+
+@functools.lru_cache(maxsize=1)
+def loaded_runtime_library():
+    """Resolve the provider actually hosting Python's C API, not just sysconfig."""
+    import ctypes
+    if os.name == "nt":
+        buffer = ctypes.create_unicode_buffer(32768)
+        if not ctypes.windll.kernel32.GetModuleFileNameW(
+                ctypes.c_void_p(sys.dllhandle), buffer, len(buffer)):
+            raise OSError("cannot resolve loaded Python DLL")
+        return Path(buffer.value).resolve()
+
+    class DlInfo(ctypes.Structure):
+        _fields_ = [("filename", ctypes.c_char_p), ("base", ctypes.c_void_p),
+                    ("symbol", ctypes.c_char_p), ("address", ctypes.c_void_p)]
+
+    dladdr = ctypes.CDLL(None).dladdr
+    dladdr.argtypes = [ctypes.c_void_p, ctypes.POINTER(DlInfo)]
+    dladdr.restype = ctypes.c_int
+    info = DlInfo()
+    address = ctypes.cast(ctypes.pythonapi.Py_IsInitialized, ctypes.c_void_p)
+    if not dladdr(address, ctypes.byref(info)) or not info.filename:
+        raise OSError("cannot resolve loaded libpython")
+    return Path(os.fsdecode(info.filename)).resolve()
+
+
+def runtime_roots():
     stdlib, native, packages = runtime_paths()
-    files = {}
-    # -B stops cache writes, not pre-bootstrap cache reads (notably encodings).
-    # Resource files and test packages can also supply behavior. Bind every
-    # file, including symlinked providers; only separately bound packages are
-    # excluded. Refuse directory cycles rather than silently omitting inputs.
-    def inventory(directory, prefix, ancestors=frozenset()):
-        resolved = directory.resolve()
-        if resolved in ancestors:
-            raise ValueError(f"recursive interpreter installation: {directory}")
-        for path in sorted(directory.iterdir()):
-            name = prefix + path.name
-            if path.is_dir():
-                if path.name not in ("site-packages", "dist-packages"):
-                    inventory(path, name + "/", ancestors | {resolved})
-            elif path.is_file():
-                files[name] = file_hash(path)
+    roots = [sys.prefix, sys.base_prefix, sys.exec_prefix, sys.base_exec_prefix,
+             *isolated_search_path(), stdlib, native, packages, *dependency_roots(),
+             *(path.parent for path in dependency_locations().values()),
+             loaded_runtime_library(), Path(sys.executable).resolve(),
+             Path(getattr(sys, "_base_executable", sys.executable)).resolve()]
+    library = sysconfig.get_config_var("LDLIBRARY")
+    if library:
+        roots.append(Path(sysconfig.get_config_var("LIBDIR") or Path(sys.executable).parent) / library)
+    # On Windows libpython is a DLL beside the executable/base installation.
+    for directory in {Path(sys.executable).resolve().parent, Path(sys.base_prefix)}:
+        roots.extend(directory.glob("python*.dll"))
+    return tuple(sorted({str(Path(p).absolute()) for p in roots}))
 
-    inventory(stdlib, "stdlib/")
-    for name, path in dependency_locations().items():
-        candidates = path.rglob("*") if path.is_dir() else (path,)
-        for item in candidates:
-            if item.is_file() and "__pycache__" not in item.parts:
-                files["packages/" + item.relative_to(path.parent).as_posix()] = file_hash(item)
-    if not native.is_relative_to(stdlib) and native.is_dir():
-        inventory(native, "native/")
-    # Startup files are never executed, but installation changes remain visible.
-    for path in sorted(packages.glob("*.pth")) + [packages / "sitecustomize.py", packages / "usercustomize.py",
-                                                Path(sys.executable).absolute().parent.parent / "pyvenv.cfg"]:
-        if path.is_file():
-            files["startup/" + path.name] = file_hash(path)
-    executable = Path(sys.executable).resolve()
-    base_executable = Path(getattr(sys, "_base_executable", sys.executable)).resolve()
-    files["runtime/base-executable"] = file_hash(base_executable)
-    for directory in (executable.parent, base_executable.parent):
-        for path in directory.glob("*._pth"):
-            files["runtime/" + path.name] = file_hash(path)
-    for path in Path(sys.base_prefix).glob("python*.dll"):
-        files["runtime/" + path.name] = file_hash(path)
-    for name in (sysconfig.get_config_var("LDLIBRARY"),):
-        if name:
-            library = Path(sysconfig.get_config_var("LIBDIR") or executable.parent) / name
-            if library.is_file():
-                files["runtime/" + name] = file_hash(library)
-    return {"version": sys.version, "executable_sha256": file_hash(executable),
-            "files_sha256": hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()}
+
+def runtime_inventory(roots, *, snapshot=None):
+    """All reachable regular files, including data, caches and symlink targets.
+
+    Paths and absent roots are bound too. Visit resolved directories once, so
+    symlink cycles terminate without excluding any reachable regular file.
+    No basename, suffix, package or bytecode-cache exclusions are safe here:
+    CPython reads startup caches even with -B, and resource APIs read any file.
+    """
+    files, links, visited, directories = {}, {}, set(), set()
+    excluded = Path(snapshot).resolve() if snapshot else None
+
+    def visit(path):
+        try:
+            resolved = path.resolve()
+        except (RuntimeError, OSError) as error:
+            # A symlink loop has no reachable file; retain its link text.
+            if isinstance(error, OSError) and error.errno != errno.ELOOP:
+                raise
+            links[str(path)] = os.readlink(path)
+            return
+        if excluded and (resolved == excluded or resolved.is_relative_to(excluded)):
+            return
+        if path.is_symlink():
+            links[str(path)] = str(resolved)
+        try:
+            st = resolved.stat()
+        except OSError as error:
+            if error.errno == errno.ENOENT:
+                return
+            if error.errno == errno.ELOOP and path.is_symlink():
+                links[str(path)] = os.readlink(path)
+                return
+            raise
+        if stat.S_ISDIR(st.st_mode):
+            key = (st.st_dev, st.st_ino)
+            if key in visited:
+                return
+            visited.add(key)
+            directories.add(str(resolved))
+            with os.scandir(resolved) as entries:
+                for entry in entries:
+                    visit(Path(entry.path))
+        elif stat.S_ISREG(st.st_mode):
+            files[str(resolved)] = (file_hash(resolved), st.st_size)
+
+    roots = sorted(set(map(str, roots)))
+    for root in roots:
+        visit(Path(root))
+    payload = {"roots": roots, "links": links, "directories": sorted(directories),
+               "files": {name: value[0] for name, value in sorted(files.items())}}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest(), files
+
+
+def runtime_identity(*, snapshot=None):
+    started = time.monotonic()
+    digest, files = runtime_inventory(runtime_roots(), snapshot=snapshot)
+    # Cost is diagnostic only; time/stat metadata must never perturb identity.
+    runtime_identity.cost = {"files": len(files), "bytes": sum(v[1] for v in files.values()),
+                             "seconds": time.monotonic() - started}
+    return {"version": sys.version, "executable_sha256": file_hash(Path(sys.executable).resolve()),
+            "files_sha256": digest}
+
+
+def clean_runtime_identity(tools):
+    """Launcher preflight: independent clean process, before measurement starts."""
+    source = Path(tools).resolve() / "cycle_source.py"
+    program = ("import sys; p=sys.argv[1]; ns={'__file__':p, '__name__':'runtime_preflight'}; "
+               "exec(compile(open(p,'rb').read(),p,'exec'),ns); "
+               "print(ns['json'].dumps(ns['runtime_identity'](),sort_keys=True))")
+    result = subprocess.run([sys.executable, "-I", "-S", "-B", "-c", program, str(source)],
+                            env=clean_environment({}), check=True, capture_output=True, text=True)
+    return json.loads(result.stdout)
 
 
 def clean_environment(environment=None):
@@ -213,7 +312,7 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
         reject_shadows(tools, declared)
     modules = {}
     runtime_modules = {}
-    identity = runtime_identity()
+    identity = runtime_identity(snapshot=root)
     preloaded = tuple(sys.modules.items())
     log = Path(audited) / (uuid.uuid4().hex + ".json") if audited else None
 
@@ -283,15 +382,56 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
     # Include modules loaded by CPython before BOOTSTRAP, as well as imports
     # needed to install this recorder. Their bytecode/data is bound by identity
     # even when __spec__.origin reports the corresponding source file.
+    covered_roots = tuple(Path(p).resolve() for p in runtime_roots())
     for name, module in preloaded:
+        if module is None:
+            continue
         spec = getattr(module, "__spec__", None)
         origin = getattr(spec, "origin", None)
+        loader = getattr(spec, "loader", None)
         path = getattr(module, "__file__", None)
-        if origin in ("built-in", "frozen") or not path:
-            runtime_modules[name] = {"origin": (origin or "interpreter") + ":" + name,
+        if getattr(module, "__cached__", None) != getattr(spec, "cached", None):
+            refuse(f"preloaded module cached path mismatch: {name}")
+        if origin in ("built-in", "frozen"):
+            expected = (importlib.machinery.BuiltinImporter if origin == "built-in"
+                        else importlib.machinery.FrozenImporter)
+            state = getattr(spec, "loader_state", None)
+            frozen_path = getattr(state, "filename", None)
+            # importlib.__init__ assigns the bootstrap's source hint although
+            # FrozenImporter intentionally leaves loader_state.filename None.
+            if origin == "frozen" and path and frozen_path is None and getattr(state, "origname", None):
+                frozen_path = str(stdlib / (state.origname.replace(".", "/") + ".py"))
+            if (loader is not expected or getattr(module, "__loader__", None) is not loader
+                    or (origin == "built-in" and path)
+                    or (origin == "frozen" and path != frozen_path)):
+                refuse(f"preloaded module loader/origin mismatch: {name}")
+            runtime_modules[name] = {"origin": origin + ":" + name,
                                      "sha256": identity["executable_sha256"]}
-        else:
-            record(path, name, Path(path).read_bytes())
+            continue
+        if (name == "__main__" and spec is None and path is None
+                and getattr(module, "__loader__", None) is importlib.machinery.BuiltinImporter):
+            runtime_modules[name] = {"origin": "interpreter:" + name,
+                                     "sha256": identity["executable_sha256"]}
+            continue
+        if not origin or not path or Path(path).absolute() != Path(origin).absolute():
+            refuse(f"preloaded module file/spec origin mismatch: {name}")
+        if getattr(module, "__loader__", None) is not loader:
+            refuse(f"preloaded module loader mismatch: {name}")
+        if type(loader) is zipimport.zipimporter:
+            # Startup ZIPs have already executed before our import guards.
+            # Bind them in preflight, but refuse them as unsupported providers;
+            # never reinterpret a virtual archive member as an on-disk source.
+            refuse(f"unsupported preloaded ZIP module: {name}: {loader.archive}")
+        if type(loader) not in (importlib.machinery.SourceFileLoader,
+                                importlib.machinery.SourcelessFileLoader,
+                                importlib.machinery.ExtensionFileLoader) or loader.path != origin:
+            refuse(f"preloaded module loader/origin mismatch: {name}")
+        for candidate in (origin, getattr(spec, "cached", None)):
+            if candidate and not any(Path(candidate).resolve() == p or
+                                     Path(candidate).resolve().is_relative_to(p)
+                                     for p in covered_roots):
+                refuse(f"preloaded module outside runtime roots: {name}: {candidate}")
+        record(origin, name, Path(origin).read_bytes())
 
     def refuse_bytecode(loader, fullname):
         refuse(f"sourceless module refused in cycle snapshot: {fullname}")
@@ -462,6 +602,7 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
 
 # Execute this .py directly before any snapshot import, including itself.
 BOOTSTRAP = """import sys
+sys._bfme_cycle_startup_path = tuple(sys.path)
 # CPython has already imported startup modules such as encodings. Their
 # installation bytes and origins are bound by install(); -B does not stop reads.
 # From here on, record and validate imports before executing them.
@@ -520,8 +661,6 @@ _boot._find_spec = _guard_find
 _boot.module_from_spec = _guard_module
 _external.SourceFileLoader.get_code = _guard_source
 _external.ExtensionFileLoader.create_module = _guard_native
-# Discard the optional stdlib zip entry too: file loaders only.
-sys.path[:] = [p for p in sys.path if not p.endswith('.zip')]
 from pathlib import Path
 tools = Path(sys.argv.pop(1)).resolve()
 import os
