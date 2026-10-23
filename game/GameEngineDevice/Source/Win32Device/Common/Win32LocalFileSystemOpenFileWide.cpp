@@ -25,6 +25,7 @@ public:
 	void set(const T *text, int length);
 	void set(const StringBase<T> &other);
 	void concat(const T *text, int length);
+	Bool nextToken(StringBase<T> *token, const char *separators);
 
 private:
 	StringBase() : m_data(0) {}
@@ -44,7 +45,6 @@ public:
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
 	~AsciiString() {}
 
-	Bool nextToken(AsciiString *token, const char *separators);
 	AsciiString &operator=(const AsciiString &other)
 	{
 		((StringBase<char> *)this)->set(*((const StringBase<char> *)&other));
@@ -144,11 +144,11 @@ File *Win32LocalFileSystem::openFile(const Char *filename, Int access, Int offse
 		bfmeSet(string, filename);
 		AsciiString token;
 		AsciiString dirName;
-		string.nextToken(&token, "\\/");
+		((StringBase<char> *)&string)->nextToken((StringBase<char> *)&token, "\\/");
 		dirName = token;
 		while ((bfmeFind(token, '.') == 0) || (bfmeFind(string, '.') != 0)) {
 			createDirectory(dirName);
-			string.nextToken(&token, "\\/");
+			((StringBase<char> *)&string)->nextToken((StringBase<char> *)&token, "\\/");
 			bfmeConcat(dirName, '\\');
 			bfmeConcat(dirName, token);
 		}
