@@ -129,7 +129,7 @@ class FakeObjs(lc.Objects):
         return (o, self.defined(o)[0][name]) if o and name in self.defined(o)[0] else None
 
 
-def _measure(I, R, items, allsyms, objs=None, pins=None, ledger_starts=None, pub=None, pubobj=None):
+def _measure(I, R, items, allsyms, objs=None, pins=None, ledger_starts=None, pub=None, pubobj=None, retail_extents=None):
     m = lc.Measure.__new__(lc.Measure)
     m.units = []  # no ledger providers in this focused data/identity fixture
     m.I, m.R, m.lbase, m.rbase = I, R, B, B
@@ -142,6 +142,10 @@ def _measure(I, R, items, allsyms, objs=None, pins=None, ledger_starts=None, pub
     m.rimports, m.limports = {}, {}
     m._init_state()
     m.thunk_rows = set()
+    if retail_extents is not None:
+        # Independently specified synthetic retail sizes, never COFF extents.
+        m.retail_ledger = dict(retail_extents)
+        m.retail_ledger_starts = sorted(retail_extents)
     return m
 
 
@@ -156,11 +160,11 @@ def test_data_reference_checks_content_not_only_the_map():
     _put(R, 0x3100, b"Default \0")                         # retail's literal is longer
     data_sec = _sec(2, ".rdata", 8)
     obj = ([_sec(1, ".text", 8), data_sec], {0: _sym(0, "_s", 2, 0, lc.STATIC)}, b"")
-    m = _measure(I, R, [], [(0x3000, "_s", "a.obj")])
+    m = _measure(I, R, [], [(0x3000, "_s", "a.obj")], retail_extents={0x3100: 8})
     fails, _, pinned = m.data_ref(0x3000, 0x3100, "_s", obj[1][0], obj, 0)
     assert fails == ["data-content:_s"] and not pinned
     _put(R, 0x3100, b"Default\0")                          # negative control
-    m = _measure(I, R, [], [(0x3000, "_s", "a.obj")])
+    m = _measure(I, R, [], [(0x3000, "_s", "a.obj")], retail_extents={0x3100: 8})
     assert m.data_ref(0x3000, 0x3100, "_s", obj[1][0], obj, 0)[0] == []
 
 
@@ -169,11 +173,11 @@ def test_data_reference_checks_the_pinned_address():
     _put(I, 0x3000, b"\1\2\3\4")
     _put(R, 0x3100, b"\1\2\3\4")
     obj = ([_sec(1, ".data", 4)], {0: _sym(0, "_g", 1)}, b"")
-    m = _measure(I, R, [], [(0x3000, "_g", "a.obj")], pins={"_g": 0x3200})
+    m = _measure(I, R, [], [(0x3000, "_g", "a.obj")], pins={"_g": 0x3200}, retail_extents={0x3100: 4})
     assert m.data_ref(0x3000, 0x3100, "_g", obj[1][0], obj, 0)[0] == ["data-pin:_g"]
-    m = _measure(I, R, [], [(0x3000, "_g", "a.obj")], pins={"_g": 0x3100})
+    m = _measure(I, R, [], [(0x3000, "_g", "a.obj")], pins={"_g": 0x3100}, retail_extents={0x3100: 4})
     assert m.data_ref(0x3000, 0x3100, "_g", obj[1][0], obj, 0) == ([], {("datum", (0x3000, 0x3100, 4))}, True)
-    m = _measure(I, R, [], [(0x3000, "_g", "a.obj")], pins={"_g": B + 0x3100})   # pinned as a VA
+    m = _measure(I, R, [], [(0x3000, "_g", "a.obj")], pins={"_g": B + 0x3100}, retail_extents={0x3100: 4})   # pinned as a VA
     assert m.data_ref(0x3000, 0x3100, "_g", obj[1][0], obj, 0)[0::2] == ([], True)
 
 
@@ -190,11 +194,11 @@ def test_communal_global_is_sized_by_its_reference():
     objs = FakeObjs({})
     objs.cache = {Path("d.obj"): definer}
     m = _measure(I, R, [], [(0x3000, "?TheX@@3PAVX@@A", "other.obj")], pub={"?TheX@@3PAVX@@A": 0x3000},
-                 pubobj={"?TheX@@3PAVX@@A": "other.obj"}, objs=objs)
+                 pubobj={"?TheX@@3PAVX@@A": "other.obj"}, objs=objs, retail_extents={0x3100: 4})
     assert m.data_ref(0x3000, 0x3100, "?TheX@@3PAVX@@A", ref[1][0], ref, 0)[0] == []
     _put(R, 0x3102, bytes.fromhex('01'))  # retail holds a non-zero byte there
     m = _measure(I, R, [], [(0x3000, "?TheX@@3PAVX@@A", "other.obj")], pub={"?TheX@@3PAVX@@A": 0x3000},
-                 pubobj={"?TheX@@3PAVX@@A": "other.obj"}, objs=objs)
+                 pubobj={"?TheX@@3PAVX@@A": "other.obj"}, objs=objs, retail_extents={0x3100: 4})
     assert m.data_ref(0x3000, 0x3100, "?TheX@@3PAVX@@A", ref[1][0], ref, 0)[0] == ["data-content:?TheX@@3PAVX@@A"]
 
 
@@ -215,18 +219,18 @@ def test_alternatename_alias_resolves_through_the_real_definition():
 
 def test_data_stub_and_vtable_code_pointer():
     I, R = bytearray(0x6000), bytearray(0x6000)
-    m = _measure(I, R, [], [])
+    m = _measure(I, R, [], [], retail_extents={0x3100: 4})
     assert m.data_ref(0x5004, 0x3100, "_x", None, None, 0)[0] == ["data-stub:_x"]
     # a vtable slot (DIR32) must translate through the unit/filler holding its target
     _put(I, 0x3000, struct.pack("<I", B + 0x1800))
     _put(R, 0x3100, struct.pack("<I", B + 0x1900))
     vt = ([_sec(1, ".rdata", 4, relocs=[(0, 0, lc.DIR32)])], {0: _sym(0, "??_7X@@6B@", 1)}, b"")
     items = [(0x1800, 0x1810, 0x1900, ("fill", 0x1900))]
-    m = _measure(I, R, items, [(0x3000, "??_7X@@6B@", "a.obj")])
+    m = _measure(I, R, items, [(0x3000, "??_7X@@6B@", "a.obj")], retail_extents={0x3100: 4})
     fails, edges, _ = m.data_ref(0x3000, 0x3100, "??_7X@@6B@", vt[1][0], vt, 0)
     assert fails == [] and edges == {("datum", (0x3000, 0x3100, 4))}
     assert m.dnodes[(0x3000, 0x3100, 4)]["edges"] == {("fill", 0x1900)}   # a filler edge: not closed later
-    m = _measure(I, R, [(0x1800, 0x1810, 0x1A00, ("unit", 1))], [(0x3000, "??_7X@@6B@", "a.obj")])
+    m = _measure(I, R, [(0x1800, 0x1810, 0x1A00, ("unit", 1))], [(0x3000, "??_7X@@6B@", "a.obj")], retail_extents={0x3100: 4})
     assert m.data_ref(0x3000, 0x3100, "??_7X@@6B@", vt[1][0], vt, 0)[0] == ["data-codeptr:??_7X@@6B@"]
 
 
@@ -320,7 +324,7 @@ def _ptr_setup(target_linked, target_retail_bytes=b"BBBB", pins=None):
     objs.cache = {Path("a.obj"): o}
     m = _measure(I, R, [], [(0x3000, "_a", "a.obj"), (0x3010, "_b", "a.obj"), (0x3020, "_c", "a.obj")],
                  objs=objs, pins=pins, pub={"_a": 0x3000, "_b": 0x3010, "_c": 0x3020},
-                 pubobj={"_a": "a.obj", "_b": "a.obj", "_c": "a.obj"})
+                 pubobj={"_a": "a.obj", "_b": "a.obj", "_c": "a.obj"}, retail_extents={0x3100: 0x10, 0x3110: 0x10, 0x3120: 0x10})
     return m, o
 
 
@@ -361,12 +365,12 @@ def _disp_setup(local, a_tail=b"GOOD", b_head=b"GOOD", L=0x3000):
     o = ([_sec(1, ".data", 0x30)], syms, bytes(0x30))
     allsyms = [(L, "_a", "a.obj"), (L + 0x10, "_b", "a.obj"), (L + 0x20, "_c", "a.obj")]
     if local:
-        return _measure(I, R, [], allsyms), o, syms
+        return _measure(I, R, [], allsyms, retail_extents={L + 0x100: 0x10, L + 0x110: 0x10, L + 0x120: 0x10}), o, syms
     pub = {"_a": L, "_b": L + 0x10, "_c": L + 0x20}
     objs = FakeObjs({"a.obj": o})
     objs.cache = {Path("a.obj"): o}
     ref = ([_sec(1, ".text", 8)], {0: _sym(0, "_a", 0), 1: _sym(1, "_b", 0)}, b"")
-    return _measure(I, R, [], allsyms, objs=objs, pub=pub, pubobj={k: "a.obj" for k in pub}), ref, ref[1]
+    return _measure(I, R, [], allsyms, objs=objs, pub=pub, pubobj={k: "a.obj" for k in pub}, retail_extents={L + 0x100: 0x10, L + 0x110: 0x10, L + 0x120: 0x10}), ref, ref[1]
 
 
 @pytest.mark.parametrize("local", [True, False])
@@ -444,6 +448,8 @@ def _indexed_row(addend, a_tail=b"GOOD", b_head=b"GOOD"):
                                (0x3020, "_c", "d.obj")]), {"?f@@YAXXZ": "a.obj", "_a": "d.obj", "_b": "d.obj", "_c": "d.obj"})
     m = lc.Measure([u], [], mapped, I, R, {".text": (0x1000, 0x1000), ".data": (0x3000, 0x1000)}, {}, {}, {}, objs,
                    {0x1000: 8})
+    m.retail_ledger = {0x3100: 16, 0x3110: 16, 0x3120: 16}
+    m.retail_ledger_starts = sorted(m.retail_ledger)
     return m, m.run()
 
 
@@ -484,6 +490,8 @@ def _common_pointer_row(addend):
               {"?f@@YAXXZ": "a.obj", "_D": "d.obj", "_x": "other.obj"})
     m = lc.Measure([u], [], mapped, I, R, {".text": (0x1000, 0x1000), ".data": (0x3000, 0x1000)}, {}, {}, {}, objs,
                    {0x1000: 6})
+    m.retail_ledger = {0x3100: 4, 0x3140: 4}
+    m.retail_ledger_starts = sorted(m.retail_ledger)
     return m, m.run()
 
 
@@ -506,7 +514,7 @@ def test_displacement_before_a_common_global_is_unresolved():
     ref = ([_sec(1, ".text", 8)], {0: _sym(0, name, 0)}, b"")
     objs = FakeObjs({})
     objs.cache = {Path("d.obj"): ([_sec(1, ".text", 8)], {0: _sym(0, name, 0, value=4)}, b"")}  # COMMON, 4 bytes
-    m = _measure(I, R, [], [(0x3040, name, "other.obj")], pub={name: 0x3040}, pubobj={name: "other.obj"}, objs=objs)
+    m = _measure(I, R, [], [(0x3040, name, "other.obj")], pub={name: 0x3040}, pubobj={name: "other.obj"}, objs=objs, retail_extents={0x3140: 4})
     assert m.data_ref(0x3040, 0x3140, name, ref[1][0], ref, 0)[0] == []                # control
     fails, edges, _ = m.data_ref(0x303C, 0x313C, name, ref[1][0], ref, 0xFFFFFFFC)
     assert f"data-unmapped:{name}" in fails and edges == set()
@@ -703,7 +711,7 @@ def test_vtable_slot_through_the_ilt():
     _put(R, 0x3100, struct.pack("<I", B + 0x1100))                           # retail slot -> ILT thunk
     _put(R, 0x1100, b"\xe9" + struct.pack("<i", 0x1900 - 0x1105))
     vt = ([_sec(1, ".rdata", 4, relocs=[(0, 0, lc.DIR32)])], {0: _sym(0, "??_7X@@6B@", 1)}, b"")
-    m = _measure(I, R, [(0x1800, 0x1810, 0x1900, ("unit", 1))], [(0x3000, "??_7X@@6B@", "a.obj")])
+    m = _measure(I, R, [(0x1800, 0x1810, 0x1900, ("unit", 1))], [(0x3000, "??_7X@@6B@", "a.obj")], retail_extents={0x3100: 4})
     fails, edges, _ = m.data_ref(0x3000, 0x3100, "??_7X@@6B@", vt[1][0], vt, 0)
     assert not fails and edges == {("datum", (0x3000, 0x3100, 4))}
     assert m.ilt_routes["pointer"] == 1

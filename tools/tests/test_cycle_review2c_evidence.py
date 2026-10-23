@@ -150,6 +150,13 @@ def test_inline_switch_storage_is_not_an_executable_entry(case, monkeypatch, mut
         case.ptr(F + 28, F + 22)
     elif mutation == 'storage':
         case.ptr(F + 12, F + 29)
+    if tail:
+        # Independent synthetic retail table extent; never infer it from COFF.
+        reverse = case.root / 'targets/game/reverse'
+        reverse.mkdir(parents=True, exist_ok=True)
+        (reverse / 'data_rows.csv').write_text(
+            'name,address,address_kind,size,source,status\n'
+            f'$table,{F + 28:#x},rva,8,game/table.cpp,matched\n')
     _, row = outcome(case)
     assert row['closed_strict'] == str(int(mutation == 'none')), 'table storage/destination verification failed'
 

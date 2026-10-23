@@ -954,8 +954,13 @@ class Measure:
             return self.isecs.name_at(a)
         return next((n for n, (s, z) in self.isecs.items() if s <= a < s + max(z, 1)), "outside")
 
-    def storage_ref(self, lt, rt, width, owner, *, indexed=False):
+    def storage_ref(self, lt, rt, width, owner, *, indexed=False, pointer_words=False):
         """Memory in .text is storage; verified rows supply bytes, not entries."""
+        # BFME1 docs/matching.md requires all consumed storage bytes. A
+        # function's verified extent does not bound an unknown byte index.
+        # Same-section compiler tables retain body_guard's typed table rule.
+        if indexed and not (pointer_words and owner.startswith('$')):
+            return "code-storage-range-unknown:" + owner, set()
         edges, end = set(), lt + max(width, 1)
         at = lt
         while at < end:
@@ -970,9 +975,395 @@ class Measure:
                 # storage extent; no integer/index analysis is needed.
                 end = max(end, self.items[i][1])
                 indexed = False
+            if item[0] == "unit":
+                unit = self.units[item[1]]
+                obj = self.objs.get(Path(unit["obj"]))
+                sec = obj[0][unit["sec"] - 1]
+                for site, si, ty in sec.relocs:
+                    slot = unit["linked"] + site
+                    if (ty == DIR32 and obj[1].get(si) is not None and obj[1][si].name not in ABSOLUTE
+                            and lt < slot + 4 and slot < end and (lt, end - lt) != (slot, 4)
+                            and not (pointer_words and width == 4 and (slot - lt) % 4 == 0)):
+                        # docs/matching.md masks whole symbolic DIR32 words,
+                        # not raw bytes of relocated instruction operands.
+                        return "code-storage-raw-relocation:" + owner, set()
             edges.add(item)
             at = min(end, self.items[i][1])
         return None, edges
+
+    def pointer_word(self, linked, retail):
+        """Whether storage contains a symbolic pointer, independently of its use."""
+        if linked in self.limports:
+            return True
+        if self.retail_sites is not None:
+            i = bisect.bisect_left(self.retail_sites, retail)
+            if i < len(self.retail_sites) and self.retail_sites[i] == retail:
+                return True
+        _, item = self.T(linked)
+        if item and item[0] == 'unit':
+            unit = self.units[item[1]]
+            obj = self.objs.get(Path(unit['obj']))
+            sec, offset = obj[0][unit['sec'] - 1], linked - unit['linked']
+        else:
+            sym = self.sym_at(linked)
+            found = self.objs.lookup(sym[2], sym[1]) if sym else None
+            if not found or found[1].sec <= 0:
+                return False
+            obj, y = found
+            sec, offset = obj[0][y.sec - 1], y.value + linked - sym[0]
+        return any(site == offset and ty == DIR32 and obj[1].get(si) is not None
+                   and obj[1][si].name not in ABSOLUTE for site, si, ty in sec.relocs)
+
+    def argument_range(self, instructions, origin, lt, rt):
+        """Known fixed API accesses, only for an unambiguous push/call window.
+
+        This is a consumer range, never a retail sizeof assertion. In particular
+        CoCreateInstance reads two 16-byte GUIDs; inventory padding is irrelevant
+        (BFME1 data_rows.py:443). No register/index value is evaluated here.
+        """
+        x = capstone.x86
+        ordered = sorted(instructions, key=lambda ins: ins.address)
+        pos = next(i for i, ins in enumerate(ordered) if ins is origin)
+        after, pushes = [], 0
+        end = origin.address + origin.size
+        for ins in ordered[pos + 1:]:
+            if ins.address != end:
+                return []
+            after.append(ins)
+            end += ins.size
+            if ins.mnemonic == 'call':
+                break
+            if ins.mnemonic.startswith(('j', 'loop', 'ret')) or ins.mnemonic in ('pop', 'enter', 'leave'):
+                return []
+            if ins.mnemonic == 'push':
+                pushes += 1
+            else:
+                _, writes = ins.regs_access()
+                if any(_CSD.reg_name(n) == 'esp' for n in writes) or any(
+                        op.type == x.X86_OP_MEM and op.access & capstone.CS_AC_WRITE
+                        and _CSD.reg_name(op.mem.base) == 'esp' for op in ins.operands):
+                    return []
+        if not after or after[-1].mnemonic != 'call':
+            return []
+        # An alternate entry after the push destroys argument position proof.
+        if any(ins.mnemonic.startswith(('j', 'loop')) and ins.operands
+               and ins.operands[0].type == x.X86_OP_IMM
+               and origin.address < ins.operands[0].imm < end for ins in ordered):
+            return []
+        call = after[-1]
+        op = call.operands[0]
+        if op.type == x.X86_OP_MEM and not op.mem.base and not op.mem.index:
+            imported = self.limports.get(op.mem.disp - self.lbase)
+            if imported == ('ole32.dll', 'CoCreateInstance') and pushes in (0, 3):
+                return [(lt, rt, 16, False)]
+            if imported == ('msvcr71.dll', 'puts') and pushes == 0:
+                # BFME1 body_guard.py:145: puts consumes through the literal's
+                # NUL, with no post-NUL padding or later stack lifetime.
+                nul = bytes(self.R).find(b'\0', rt, rt + 65536)
+                if nul >= rt:
+                    return [(lt, rt, nul + 1 - rt, False)]
+        elif op.type == x.X86_OP_IMM:
+            target = op.imm - self.lbase
+            sym = self.sym_at(target)
+            if sym and sym[0] == target and sym[1] == '_bfmeAppend' and pushes == 1:
+                # BFME1 body_guard._static_content's literal rule: a format
+                # consumer observes through NUL, not alignment after it.
+                nul = bytes(self.R).find(b'\0', rt, rt + 65536)
+                if nul >= rt:
+                    return [(lt, rt, nul + 1 - rt, False)]
+        return []
+
+    def address_uses(self, instructions, origin, register, lt, rt, indexed=False, opaque=False):
+        """Conservative register provenance, not execution or index evaluation.
+
+        Walk the reachable CFG with address tags and constant displacements.
+        Ambiguous joins/loops lose provenance and fail closed. Registers used
+        as indices remain unknown; no symbolic/numeric equivalence is inferred.
+        """
+        x = capstone.x86
+        def reg(n):
+            name = _CSD.reg_name(n)
+            for family in (('eax', 'ax', 'al', 'ah'), ('ebx', 'bx', 'bl', 'bh'),
+                           ('ecx', 'cx', 'cl', 'ch'), ('edx', 'dx', 'dl', 'dh'),
+                           ('esi', 'si'), ('edi', 'di'), ('ebp', 'bp'), ('esp', 'sp')):
+                if name in family:
+                    return family[0]
+            return name
+
+        by_address = {i.address: i for i in instructions}
+        def register_mask(n):
+            name = _CSD.reg_name(n)
+            if name in ('ah', 'bh', 'ch', 'dh'):
+                return 2
+            if name in ('al', 'bl', 'cl', 'dl'):
+                return 1
+            if name in ('ax', 'bx', 'cx', 'dx', 'si', 'di', 'bp', 'sp'):
+                return 3
+            return 15
+
+        def partial_bits_read(origin, written):
+            """Ordinary register liveness, without evaluating instruction values.
+
+            A partial overwrite need not observe the old address. Refuse only
+            if its remaining representation bytes reach a read/unknown flow.
+            """
+            target = reg(written)
+            pending = [(origin.address + origin.size, 15 & ~register_mask(written))]
+            visited = {}
+            while pending:
+                at, mask = pending.pop()
+                if not mask or mask & ~visited.get(at, 0) == 0:
+                    continue
+                mask |= visited.get(at, 0)
+                visited[at] = mask
+                ins = by_address.get(at)
+                if ins is None:
+                    return True
+                reads, writes = ins.regs_access()
+                if any(reg(n) == target and register_mask(n) & mask for n in reads):
+                    return True
+                if ins.mnemonic.startswith(('ret', 'iret')):
+                    if target == 'eax':
+                        return True
+                    continue
+                if ins.mnemonic == 'call' and target in ('eax', 'ecx', 'edx'):
+                    return True  # caller-clobbered register/argument flow is unknown
+                for n in writes:
+                    if reg(n) == target:
+                        mask &= ~register_mask(n)
+                if ins.mnemonic in ('int3', 'ud2', 'hlt'):
+                    continue
+                if ins.mnemonic.startswith(('j', 'loop')):
+                    if not ins.operands or ins.operands[0].type != x.X86_OP_IMM:
+                        return bool(mask)
+                    pending.append((ins.operands[0].imm, mask))
+                    if ins.mnemonic == 'jmp':
+                        continue
+                pending.append((at + ins.size, mask))
+            return False
+
+        work = [(origin.address + origin.size, {register if isinstance(register, str) else reg(register): (None if opaque else 0, indexed)})]
+        seen, uses, escapes, bad = {}, set(), False, False
+        while work:
+            at, state = work.pop()
+            if not state:
+                continue
+            previous = seen.get(at)
+            if previous is not None:
+                if {n for n in previous if n.startswith('stack:')} != {n for n in state if n.startswith('stack:')}:
+                    # docs/matching.md: an inconsistent stack frame at a join
+                    # loses the storage provenance; never grow guessed aliases.
+                    bad = True
+                    continue
+                if any(previous[n] != tag for n, tag in state.items() if n in previous):
+                    # BFME1 docs/matching.md requires proven target/content;
+                    # conflicting address offsets at a join lose that proof.
+                    bad = True
+                    continue
+                joined = dict(previous)
+                joined.update(state)
+                if joined == previous:
+                    continue
+                state = joined
+            if len(state) > 4 * len(instructions):
+                # docs/matching.md: unbounded/unknown stack flow establishes
+                # no consumed range. Refuse rather than execute the loop.
+                bad = True
+                continue
+            # A tag absent on another path is unrelated to this origin, not a
+            # conflicting pointer value. Keep may-address tags monotonically;
+            # overwritten registers are removed using Capstone's write set.
+            seen[at] = dict(state)
+            ins = by_address.get(at)
+            if ins is None:
+                escapes = True
+                continue
+            ops, mn = ins.operands, ins.mnemonic
+            memory_regs, used_regs = set(), set()
+            for op in ops:
+                if op.type == x.X86_OP_MEM:
+                    tags = [(reg(n), state[reg(n)], scale) for n, scale in
+                            ((op.mem.base, 1), (op.mem.index, op.mem.scale)) if n and reg(n) in state]
+                    memory_regs.update(t[0] for t in tags)
+                    if not tags or mn == 'lea':
+                        continue
+                    if len(tags) != 1 or tags[0][2] != 1:
+                        # docs/matching.md permits symbolic addresses, not
+                        # multiplication/addition of two relocated addresses.
+                        bad = True
+                        continue
+                    name, (delta, indexed), _ = tags[0]
+                    if delta is None:
+                        # BFME1 docs/matching.md requires a proven target and
+                        # range; a loaded pointer's unknown flow proves neither.
+                        bad = True
+                        continue
+                    other = [n for n in (op.mem.base, op.mem.index) if n and reg(n) != name]
+                    indexed |= bool(other) or mn in ('bt', 'bts', 'btr', 'btc') and len(ops) > 1 and ops[1].type == x.X86_OP_REG
+                    indexed |= mn.startswith(('rep', 'lods', 'stos', 'movs', 'scas', 'cmps'))
+                    uses.add((lt + delta + op.mem.disp, rt + delta + op.mem.disp, op.size, indexed))
+                elif (op.type == x.X86_OP_REG and op.access & capstone.CS_AC_READ
+                      and reg(op.reg) in state):
+                    used_regs.add(reg(op.reg))
+            reads, writes = ins.regs_access()
+            for op in ops:
+                if op.type == x.X86_OP_MEM and reg(op.mem.base) == 'esp' and not op.mem.index:
+                    for name in state:
+                        if not name.startswith('stack:'):
+                            continue
+                        slot = int(name[6:])
+                        if op.mem.disp < slot + 4 and slot < op.mem.disp + op.size and (
+                                (op.mem.disp, op.size) != (slot, 4) or mn == 'lea'):
+                            # BFME1 docs/matching.md permits whole pointer
+                            # copies, not partial representation reads/writes
+                            # or untracked aliases of copied pointer storage.
+                            bad = True
+            if any(op.type == x.X86_OP_REG and op.access & capstone.CS_AC_WRITE
+                   and op.size < 4 and reg(op.reg) in state and partial_bits_read(ins, op.reg) for op in ops):
+                # docs/matching.md permits whole symbolic pointer words;
+                # reading address bytes left by a partial overwrite does not
+                # preserve that exception. Dead overwritten bytes observe none.
+                bad = True
+            read_tags = {reg(n) for n in reads if reg(n) in state}
+            # Implicit string operands are exposed by Capstone as memory;
+            # anything else implicit has an unknown observation/flow.
+            implicit = read_tags - memory_regs - used_regs
+            if implicit and not mn.startswith('ret'):
+                # docs/matching.md: unproved symbolic address observations
+                # cannot receive relocation equivalence credit.
+                bad = True
+            new = dict(state)
+            for n in writes:
+                new.pop(reg(n), None)
+            if mn.startswith(('rep', 'lods', 'stos', 'movs', 'scas', 'cmps')):
+                for n in writes:
+                    name = reg(n)
+                    if name in state and name in memory_regs:
+                        # BFME1 matching.md requires subsequent storage ranges
+                        # too. Implicit string advancement has unknown offset;
+                        # keep its provenance opaque instead of dropping it.
+                        new[name] = (None, False)
+            def stack_slot(op):
+                if op.type == x.X86_OP_MEM and reg(op.mem.base) == 'esp' and not op.mem.index:
+                    return 'stack:' + str(op.mem.disp)
+                return None
+            if mn == 'mov' and len(ops) == 2 and stack_slot(ops[1]) in state:
+                if ops[0].type == x.X86_OP_REG and ops[0].size == ops[1].size == 4:
+                    new[reg(ops[0].reg)] = state[stack_slot(ops[1])]
+                else:
+                    # docs/matching.md only permits whole pointer copies.
+                    bad = True
+            elif mn == 'mov' and len(ops) == 2 and ops[1].type == x.X86_OP_REG and reg(ops[1].reg) in state:
+                tag = state[reg(ops[1].reg)]
+                if ops[0].type == x.X86_OP_REG and ops[0].size == ops[1].size == 4:
+                    new[reg(ops[0].reg)] = tag
+                elif stack_slot(ops[0]) and ops[0].size == 4:
+                    new[stack_slot(ops[0])] = tag
+                elif ops[0].type == x.X86_OP_MEM and ops[0].size == 4:
+                    # docs/matching.md symbolic pointers need a pointer context;
+                    # an untyped destination cannot prove numeric preservation.
+                    bad = True
+                else:
+                    # BFME1 matching.md's whole symbolic dword exception
+                    # does not cover a truncated/non-pointer representation.
+                    bad = True
+            elif mn == 'lea' and len(ops) == 2 and ops[1].type == x.X86_OP_MEM:
+                mem = ops[1].mem
+                tags = [(reg(n), state[reg(n)], scale) for n, scale in
+                        ((mem.base, 1), (mem.index, mem.scale)) if n and reg(n) in state]
+                if tags:
+                    if len(tags) != 1 or tags[0][2] != 1:
+                        # BFME1 matching.md symbolic target consistency does
+                        # not prove numeric address multiplication.
+                        bad = True
+                    else:
+                        name, (delta, indexed), _ = tags[0]
+                        if delta is None:
+                            # docs/matching.md: unknown pointer flow is not
+                            # evidence for numeric address arithmetic.
+                            bad = True
+                            continue
+                        other = any(n and reg(n) != name for n in (mem.base, mem.index))
+                        new[reg(ops[0].reg)] = (delta + mem.disp, indexed or other)
+            elif mn in ('add', 'sub', 'inc', 'dec') and ops and ops[0].type == x.X86_OP_REG and reg(ops[0].reg) in state:
+                name = reg(ops[0].reg)
+                delta, indexed = state[name]
+                if delta is None:
+                    # docs/matching.md: numeric use of a loaded pointer has
+                    # no value-equivalence proof; refuse rather than execute it.
+                    bad = True
+                    continue
+                if mn in ('inc', 'dec'):
+                    delta += 1 if mn == 'inc' else -1
+                elif ops[1].type == x.X86_OP_IMM:
+                    delta += ops[1].imm * (1 if mn == 'add' else -1)
+                elif mn == 'add' and ops[1].type == x.X86_OP_REG and reg(ops[1].reg) not in state:
+                    indexed = True
+                else:
+                    # docs/matching.md proves pointer rebasing only, not
+                    # arbitrary arithmetic on relocated addresses.
+                    bad = True
+                new[name] = (delta, indexed)
+            elif mn == 'push' and used_regs:
+                pass  # Keep the whole pointer in its fixed stack slot below.
+            elif mn == 'pop' and ops and ops[0].type == x.X86_OP_REG and 'stack:0' in state:
+                new[reg(ops[0].reg)] = state['stack:0']
+                new.pop('stack:0', None)
+            elif mn.startswith('ret'):
+                escapes |= 'eax' in state and state['eax'][0] is not None  # returned original address
+                if 'eax' in state and state['eax'][0] not in (0, None):
+                    # docs/matching.md only permits constant/index address
+                    # adjustment for a proven memory use, not numeric returns.
+                    bad = True
+            elif used_regs and not (mn in ('mov', 'movzx', 'movsx') and len(ops) > 1 and ops[1].type == x.X86_OP_MEM
+                                    and not any(n in used_regs for n in read_tags - memory_regs)):
+                if mn not in ('call', 'jmp'):
+                    # docs/matching.md's symbolic DIR32 exception does not
+                    # preserve and/or/xor/shift/integer compare/multiply.
+                    bad = True
+                else:
+                    escapes = True
+            if (mn == 'mov' and len(ops) == 2 and ops[0].type == x.X86_OP_REG
+                    and ops[1].type == x.X86_OP_MEM and ops[1].size == 4):
+                mem = ops[1].mem
+                tag = state.get(reg(mem.base)) if mem.base and not mem.index else None
+                if tag and tag[0] is not None and not tag[1] and self.pointer_word(
+                        lt + tag[0] + mem.disp, rt + tag[0] + mem.disp):
+                    new[reg(ops[0].reg)] = (None, False)
+            if mn == 'call':
+                escapes |= bool(read_tags) or any(n.startswith('stack:') for n in state)
+                # We cannot follow an unknown callee's register effects.
+                for n in ('eax', 'ecx', 'edx'):
+                    new.pop(n, None)
+            if mn == 'mov' and len(ops) == 2 and stack_slot(ops[0]) and not (
+                    ops[1].type == x.X86_OP_REG and reg(ops[1].reg) in state):
+                new.pop(stack_slot(ops[0]), None)
+            stack_change = 4 if mn == 'push' else -4 if mn == 'pop' else 0
+            if mn in ('add', 'sub') and len(ops) == 2 and ops[0].type == x.X86_OP_REG and reg(ops[0].reg) == 'esp':
+                if ops[1].type == x.X86_OP_IMM:
+                    stack_change = ops[1].imm * (-1 if mn == 'add' else 1)
+                elif any(n.startswith('stack:') for n in state):
+                    # BFME1 target/content rule: unknown stack flow loses
+                    # the address provenance required for subsequent loads.
+                    bad = True
+            if stack_change:
+                new = {('stack:' + str(int(n[6:]) + stack_change) if n.startswith('stack:') else n): tag
+                       for n, tag in new.items()}
+            if mn == 'push':
+                new.pop('stack:0', None)  # the push overwrites the complete word
+                if ops and ops[0].type == x.X86_OP_REG and reg(ops[0].reg) in state:
+                    new['stack:0'] = state[reg(ops[0].reg)]
+            if mn.startswith(('ret', 'iret')) or mn in ('int3', 'ud2', 'hlt'):
+                continue
+            if mn.startswith(('j', 'loop')):
+                if ops and ops[0].type == x.X86_OP_IMM:
+                    work.append((ops[0].imm, new))
+                elif new:
+                    escapes = True
+                if mn == 'jmp':
+                    continue
+            work.append((at + ins.size, new))
+        return sorted(uses), escapes, bad
 
     def relocs(self, L, rva, size, o, secno, off, owner, failures=None):
         """Check every relocation of [off, off+size) of section `secno` of object o
@@ -1017,7 +1408,7 @@ class Measure:
             else:
                 lt, rt = (lv - self.lbase) & 0xFFFFFFFF, (rv - self.rbase) & 0xFFFFFFFF
             addend = u32(raw, sec.ptr + va) if sec.ptr else 0
-            width, indexed, memory = 0, False, False
+            width, indexed, memory, pointer_words = 0, False, False, False
             for ins in instructions:
                 if ty == DIR32 and ins.address - L - self.lbase + ins.disp_offset == fo and ins.mnemonic != "lea":
                     for operand in ins.operands:
@@ -1025,11 +1416,87 @@ class Measure:
                             memory = True
                             width = max(width, operand.size)
                             indexed |= bool(operand.mem.index or operand.mem.base)
+                            pointer_words |= (ins.mnemonic in ("mov", "push", "jmp", "call") and operand.size == 4
+                                              and not operand.mem.base and operand.mem.scale == 4)
                     # x86 bit strings use a register offset beyond the nominal
                     # operand width. BFME1's whole datum rule covers that use.
                     indexed |= ins.mnemonic in ("bt", "bts", "btr", "btc") and any(
                         op.type == capstone.x86.X86_OP_REG for op in ins.operands[1:])
+            uses, escapes, numeric = [], False, False
+            for ins in instructions:
+                if (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
+                        and ins.mnemonic == "push"):
+                    uses = self.argument_range(instructions, ins, lt, rt)
+                    if not uses:
+                        uses, escapes, numeric = self.address_uses(instructions, ins, "stack:0", lt, rt)
+                elif (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
+                        and ins.mnemonic == "mov" and ins.operands[0].type == capstone.x86.X86_OP_REG):
+                    uses, escapes, numeric = self.address_uses(instructions, ins, ins.operands[0].reg, lt, rt)
+                    numeric |= ins.operands[0].size != 4
+                elif (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
+                      and ins.mnemonic == "add" and ins.operands[0].type == capstone.x86.X86_OP_REG):
+                    uses, escapes, numeric = self.address_uses(instructions, ins, ins.operands[0].reg, lt, rt, indexed=True)
+                elif (ty == DIR32 and ins.address - L - self.lbase + ins.disp_offset == fo
+                      and ins.mnemonic == "lea" and ins.operands[0].type == capstone.x86.X86_OP_REG):
+                    mem = ins.operands[1].mem
+                    uses, escapes, numeric = self.address_uses(instructions, ins, ins.operands[0].reg, lt, rt,
+                                                              indexed=bool(mem.base or mem.index))
+                elif (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
+                      and ins.mnemonic == "mov" and ins.operands[0].type == capstone.x86.X86_OP_MEM):
+                    mem = ins.operands[0].mem
+                    if _CSD.reg_name(mem.base) == "esp" and not mem.index:
+                        uses, escapes, numeric = self.address_uses(instructions, ins, "stack:" + str(mem.disp), lt, rt)
+                    else:
+                        # docs/matching.md requires a known pointer context,
+                        # not an arbitrary integer destination for an address.
+                        numeric = True
+                elif ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo:
+                    # BFME1 symbolic DIR32 permission does not cover integer
+                    # arithmetic/compare using a relocated immediate operand.
+                    numeric = True
+            if memory and width == 4:
+                d = self.datum(lt, tn, y, o, addend) if lt not in self.limports else None
+                symbolic = self.pointer_word(lt, rt) if not indexed else bool(d and d[4] is not None and any(
+                    d[5] <= site < d[5] + d[1] and ty == DIR32 for site, _, ty in d[4].relocs))
+                if symbolic:
+                    for ins in instructions:
+                        if ins.address - L - self.lbase + ins.disp_offset != fo:
+                            continue
+                        if ins.mnemonic not in ("mov", "push", "call", "jmp"):
+                            # BFME1 docs/matching.md rebases symbolic pointers;
+                            # integer operations directly on their storage do
+                            # not preserve the values those operations observe.
+                            numeric = True
+                        elif ins.mnemonic == "mov" and ins.operands[0].type == capstone.x86.X86_OP_REG:
+                            a, b = (u32(I, lt) - self.lbase, u32(R, rt) - self.rbase) if not indexed else (0, 0)
+                            pointer_uses, lost, bad = self.address_uses(instructions, ins, ins.operands[0].reg,
+                                                                      a, b, opaque=indexed)
+                            numeric |= bad
+                            if not indexed and self.lsec(a) == ".text":
+                                for aa, bb, z, unknown in pointer_uses:
+                                    f, ee = self.storage_ref(aa, bb, z, tn, indexed=unknown)
+                                    if f:
+                                        fails.append(f)
+                                    edges.update(ee)
+                                if lost and pointer_uses:
+                                    # docs/matching.md target content must
+                                    # cover the entire reached storage use.
+                                    fails.append(f"code-address-flow-unknown:{tn}")
+            if numeric:
+                # BFME1 docs/matching.md permits symbolic target rebasing;
+                # numeric observations require byte/value equality, not identity.
+                fails.append(f"address-numeric-use:{tn}")
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
+                if uses:
+                    for a, b, z, unknown in uses:
+                        f, storage_edges = self.storage_ref(a, b, z, tn, indexed=unknown)
+                        if f:
+                            fails.append(f)
+                        edges.update(storage_edges)
+                if escapes and uses:
+                    # docs/matching.md requires all consumed .text bytes;
+                    # an escaped address has no fully established access range.
+                    fails.append(f"code-address-flow-unknown:{tn}")
                 if memory:
                     if y is not None and y.sec == secno:
                         import body_guard
@@ -1044,9 +1511,9 @@ class Measure:
                         # complete symbol extent is a datum: content, shifted
                         # words and every stored code destination are checked
                         # by the existing data traversal, never by decoding it.
-                        data.append((lt, rt, tn, y, o, addend, "addr", width, indexed))
+                        data.append((lt, rt, tn, y, o, addend, "addr", width, indexed, ([], False), pointer_words))
                     else:
-                        f, storage_edges = self.storage_ref(lt, rt, width, tn, indexed=indexed)
+                        f, storage_edges = self.storage_ref(lt, rt, width, tn, indexed=indexed, pointer_words=pointer_words)
                         if f:
                             fails.append(f)
                         edges.update(storage_edges)
@@ -1063,7 +1530,7 @@ class Measure:
                 # docs/matching.md DIR32 consistency and body_guard's static
                 # rule check the whole containing datum, also for addresses
                 # carried in registers, string ops and unknown scaled indices.
-                data.append((lt, rt, tn, y, o, addend, access, width, indexed))
+                data.append((lt, rt, tn, y, o, addend, access, width, indexed, (uses, escapes), pointer_words))
         # docs/matching.md: DIR32 slots may differ only with symbolic
         # evidence. Retail HIGHLOW sites in code need that evidence too.
         if self.retail_sites is not None:
@@ -1268,6 +1735,12 @@ class Measure:
         i = bisect.bisect_right(vals, anchor) - 1
         v0 = vals[i] if i >= 0 else 0
         v1 = vals[i + 1] if i + 1 < len(vals) else sec.size
+        if tn.startswith("$SG") and sec.ptr:
+            # BFME1 body_guard.py:145 excludes post-NUL alignment padding.
+            blob = o[2][sec.ptr + v0:sec.ptr + v1]
+            nul = blob.find(b"\0", max(0, P - v0))
+            if nul >= 0:
+                v1 = v0 + nul + 1
         return lt - (P - v0), v1 - v0, P - v0, o, sec, v0, S
 
     def communal(self, name):
@@ -1311,14 +1784,13 @@ class Measure:
         return r
 
     def retail_datum_size(self, start, fallback, name):
-        """Retail evidence can require more bytes than the selected COFF copy.
+        """Independent retail size; allocation/inventory partitions prove none.
 
-        Keep BFME1's symbol/map allocation extent as a floor (body_guard's
-        _static_content rule); inventory items may split an array into parts.
-        A smaller replacement provider must never define its own access domain.
+        data_rows.symbol_size (tools/data_rows.py:443) makes allocation an
+        upper bound only. Never promote the candidate's extent to retail size.
         """
-        if not hasattr(self, "retail_datums"):
-            extents, ledger_extents = {}, {}
+        if not hasattr(self, "retail_ledger"):
+            extents = {}
             ledger = ROOT / "targets/game/reverse/data_rows.csv"
             if ledger.exists():
                 with ledger.open(newline="", encoding="utf-8") as stream:
@@ -1326,45 +1798,29 @@ class Measure:
                         if row.get("status") == "matched":
                             address = int(row["address"], 16)
                             address -= self.rbase if row["address_kind"] == "va" else 0
-                            ledger_extents[address] = int(row["size"])
-            inventory = ROOT / "targets/game/reverse/retail_inventory/data_items.csv"
-            if inventory.exists():
-                with inventory.open(newline="", encoding="utf-8") as stream:
-                    for row in csv.DictReader(stream):
-                        address, size = int(row["rva"], 16), int(row["size"])
-                        extents[address] = max(extents.get(address, 0), size)
-            self.retail_ledger = ledger_extents
-            self.retail_ledger_starts = sorted(ledger_extents)
-            self.retail_datums = extents
-            self.retail_datum_starts = sorted(extents)
-        # BFME1's verified sizeof/symbol evidence outranks an inventory
-        # partition, which may group adjacent scalars or overlapping literals.
+                            extents[address] = int(row["size"])
+            self.retail_ledger = extents
+            self.retail_ledger_starts = sorted(extents)
         i = bisect.bisect_right(self.retail_ledger_starts, start) - 1
         if i >= 0:
             address = self.retail_ledger_starts[i]
-            end = address + self.retail_ledger[address]
-            if address <= start < end:
-                return max(fallback, end - start) if address == start else None
+            if address <= start < address + self.retail_ledger[address]:
+                return self.retail_ledger[address] if address == start else None
         import reloc_ledger
         scalar = reloc_ledger.mangled_scalar_size(name)
         if scalar is not None:
-            return max(fallback, scalar)
+            return scalar
         if name.startswith("??_C@"):
             try:
-                return max(fallback, len(build.string_literal_bytes(name, memoryview(self.R)[start:])))
+                return len(build.string_literal_bytes(name, memoryview(self.R)[start:]))
             except ValueError:
-                # docs/matching.md verifies the literal including its complete
-                # terminator; a malformed/truncated symbol proves no datum.
+                # body_guard._static_content requires the complete literal.
                 return None
-        i = bisect.bisect_right(self.retail_datum_starts, start) - 1
-        if i >= 0:
-            address = self.retail_datum_starts[i]
-            end = address + self.retail_datums[address]
-            if address <= start < end:
-                # A provider starting in the middle cannot cover the datum's
-                # prefix. docs/matching.md requires the entire target identity.
-                return max(fallback, end - start) if address == start else None
-        return fallback
+        if name.startswith("$SG"):
+            # body_guard.py:145: the literal ends at NUL, padding is exempt.
+            nul = bytes(self.R).find(b"\0", start, start + fallback)
+            return nul + 1 - start if nul >= start else None
+        return None
 
     def datum_sources(self, o, name, rva):
         """Retain the defining TU even for failed, data-only providers."""
@@ -1542,14 +1998,30 @@ class Measure:
         start, rstart, size = kind[1]
         width = ref[7] if len(ref) > 7 else 0
         indexed = ref[8] if len(ref) > 8 else False
-        # BFME1 body_guard._static_content and docs/matching.md verify the
-        # whole containing retail datum when the effective range is unknown.
-        # A known scalar range still must fit (round-2 width rule). The retail
-        # extent is independent of the selected provider's possibly short copy.
+        # BFME1 data_rows.py:443: allocation only bounds size. Fixed
+        # accesses may use verified bytes; unknown ranges need retail evidence.
         required = self.retail_datum_size(rstart, size, tn)
-        if required is None or required > size or (width and not indexed and
-                                                   not 0 <= lt - start <= size - width):
+        uses, escapes = ref[9] if len(ref) > 9 else ([], not width or indexed)
+        if width:
+            uses = [(lt, rt, width, indexed)] + uses
+        if not width and not uses:
+            escapes = True
+        if ((escapes or any(u[3] for u in uses)) and
+                (required is None or required > size)) or any(
+                not u[3] and not 0 <= u[0] - start <= size - u[2] for u in uses):
+            # docs/matching.md target content rule; an unproven retail domain
+            # cannot be supplied by a candidate allocation or inventory gap.
             fails.append(f"data-access-extent:{tn}")
+        node = self.dnodes[kind[1]]
+        for a, _, z, unknown in uses:
+            for fo, ty, absolute in node["rels"]:
+                if not absolute and (unknown or a < start + fo + 4 and start + fo < a + z):
+                    if (unknown or (a, z) != (start + fo, 4)) and not (
+                            unknown and len(ref) > 10 and ref[10] and z == 4 and (start + fo - a) % 4 == 0):
+                        # docs/matching.md permits symbolic whole DIR32 words,
+                        # not observations of their rebased representation.
+                        fails.append(f"data-raw-relocation:{tn}")
+                        break
         fails += self.one_to_one(start, rstart, tn) if (start, rstart) != (lt, rt) else []
         if kind[1] in self.datum_conflicts:
             fails.append(f"data-identity:{tn}")

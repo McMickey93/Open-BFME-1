@@ -35,6 +35,15 @@ class ImageCase:
             (".text", 0x60000, 0x10000), (".rdata", 0x80000, 0x10000), (".stubd", STUB, 0x1000)])
         self.pins = {}
 
+    def retail_extent(self, name, address, size):
+        """Independent synthetic retail truth, supplied before measuring COFF."""
+        path = self.root / 'targets/game/reverse/data_rows.csv'
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if not path.exists():
+            path.write_text('name,address,address_kind,size,source,status\n')
+        with path.open('a') as f:
+            f.write(f'{name},{address:#x},rva,{size},game/data.cpp,matched\n')
+
     def put(self, at, data, *, retail=None):
         self.I[at:at + len(data)] = data
         if retail is not None:
@@ -267,6 +276,7 @@ def test_eh_catch_type_identity_must_be_verified(case):
     case.put(TYPE, bytes(8) + b".?AVWrong@@\0")
     descriptor = bytes(8) + b".?AVRight@@\0"
     case.R[TYPE + 32:TYPE + 32 + len(descriptor)] = descriptor
+    case.retail_extent('_type', TYPE + 32, 19)  # MSVC descriptor header + .?AVRight@@ NUL
     assert_uncredited(case)
 
 
@@ -430,6 +440,7 @@ def test_control_eh_catch_descriptor_uses_datum_evidence(case, bad):
     case.public(data, "_type", TYPE)
     case.put(TYPE, descriptor)
     case.R[TYPE + 32:TYPE + 32 + len(descriptor)] = descriptor
+    case.retail_extent('_type', TYPE + 32, 19)  # MSVC descriptor header + .?AVRight@@ NUL
     if bad:
         case.I[TYPE + 12] = ord("X")
     for image, fi, ty in ((case.I, DATA, TYPE), (case.R, RDATA, TYPE + 32)):
@@ -536,6 +547,7 @@ def test_vtable_ilt_routes_preserve_global_identity_and_provider(case, provider_
         table = case.object(f'vtable{index}.obj', [('.rdata', bytes(4), [(0, '_a', lc.DIR32)])],
                             [(name, 1, 0, lc.EXTERNAL), ('_a', 0, 0, lc.EXTERNAL)])
         site, retail_site = DATA + 16 * index, RDATA + 16 * index
+        case.retail_extent(name, retail_site, 4)  # independent single-slot retail vtable
         case.public(table, name, site)
         case.ptr(site, A)
         case.R[retail_site:retail_site + 4] = dword(lc.BASE + target)

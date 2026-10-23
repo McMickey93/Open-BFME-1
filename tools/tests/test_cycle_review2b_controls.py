@@ -41,6 +41,7 @@ def test_nested_eh_tables_require_every_inner_dependency(case, fault):
     case.public(obj, "_type", TYPE)
     case.put(TYPE, descriptor)
     case.R[TYPE + 64:TYPE + 64 + len(descriptor)] = descriptor
+    case.retail_extent('_type', TYPE + 64, 19)  # independent EH descriptor extent
     for image, fi, ty in ((case.I, DATA, TYPE), (case.R, RDATA, TYPE + 64)):
         image[fi + 12:fi + 20] = dword(2) + dword(lc.BASE + fi + 0x200)
         for n, (lo, hi, ch) in enumerate(((0, 2, 3), (1, 1, 2))):

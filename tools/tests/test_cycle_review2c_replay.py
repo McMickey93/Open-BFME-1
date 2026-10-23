@@ -217,9 +217,16 @@ def test_recorded_array_content_and_range_evidence(replay, rva):
 
 
 @pytest.mark.parametrize('rva', sorted(set(RANGES)-LOD), ids=lambda n: f'{n:08X}')
-def test_recorded_in_bounds_array_keeps_allowed_credit(replay, rva):
+def test_recorded_in_bounds_array_requires_independent_retail_extent(replay, rva):
     m, records, _ = replay
     for ref in indexed_refs(m, records[rva]):
         failures, _, _ = m.ref_check(ref)
         print(hex(rva), ref[2], 'range-end', RANGES[rva], failures)
-        assert not any(f.startswith('data-access-extent:') for f in failures), 'bounded verified array rejected'
+        _, retail_start, size = m.resolve(ref)[1]
+        extent = m.retail_datum_size(retail_start, size, ref[2])
+        # Final owner decision supersedes the inventory/allocation fallback.
+        # These instruction bounds remain valid byte-evidence controls, but
+        # do not themselves establish retail sizeof. Do not inject a candidate
+        # size into the production reader to preserve the previous credit.
+        refused = any(f.startswith('data-access-extent:') for f in failures)
+        assert refused == (extent is None or extent > size)
