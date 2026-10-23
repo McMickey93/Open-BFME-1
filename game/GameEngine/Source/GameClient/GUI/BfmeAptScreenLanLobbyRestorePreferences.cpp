@@ -15,7 +15,9 @@ template<class T> class StringBase
  StringBase():m_data(0){}
  StringBase(const T *);
  StringBase(const StringBase &);
- ~StringBase();
+ ~StringBase() { releaseBuffer(); }
+ private:
+ void releaseBuffer();
  void set(const StringBase &);
  StringData<T> *m_data;
 };

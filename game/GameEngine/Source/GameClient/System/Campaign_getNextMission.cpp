@@ -34,6 +34,18 @@ struct BfmeAsciiStringData
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
@@ -41,7 +53,7 @@ public:
 	AsciiString(const AsciiString &that);
 	~AsciiString();
 
-	AsciiString &operator=(const AsciiString &that);		// retail 0x00887C90
+	AsciiString &operator=(const AsciiString &that) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&that); return *this; }		// retail 0x00887C90
 
 	void toLower(void);					// retail 0x00887DA0
 

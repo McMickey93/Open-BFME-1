@@ -112,7 +112,9 @@ template <class T> class StringBase
 private:
 	void *m_data;
 	StringBase(const T *text);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	friend class AsciiString;
 };
 

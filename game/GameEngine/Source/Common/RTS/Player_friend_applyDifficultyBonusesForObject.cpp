@@ -19,11 +19,23 @@ enum NameKeyType
 
 NameKeyType NAMEKEY(const char *name);
 
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
 	AsciiString() : m_data(0) {}
-	~AsciiString();
+	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 	void set(const char *text);
 	const char *str() const { return m_data ? m_data + 8 : ""; }
 

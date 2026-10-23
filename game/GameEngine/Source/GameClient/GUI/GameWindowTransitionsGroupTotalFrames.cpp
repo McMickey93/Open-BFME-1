@@ -17,7 +17,9 @@ template <typename T> class StringBase
 	friend class AsciiString;
 private:
 	StringBase( const StringBase<T> &other );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	AsciiStringData *m_data;
 };
 

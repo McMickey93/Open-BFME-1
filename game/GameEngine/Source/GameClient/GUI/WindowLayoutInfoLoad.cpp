@@ -28,7 +28,7 @@ public:
 
 	private:
 	StringBase(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
 	void set(const StringBase<T> &other);
 	void releaseBuffer();
 };

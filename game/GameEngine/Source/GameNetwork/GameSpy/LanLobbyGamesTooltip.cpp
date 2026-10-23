@@ -25,7 +25,9 @@ private:
 	StringBase() : m_data(0) {}
 	StringBase(const T *text);
 	StringBase(const StringBase<T> &source);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 public:
 	void concat(const T *text, Int length);

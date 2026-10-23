@@ -42,7 +42,9 @@ public:
 
 private:
 	StringBase(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	void set(const StringBase<T> &other);
 	friend struct S4SortElem20;
 };

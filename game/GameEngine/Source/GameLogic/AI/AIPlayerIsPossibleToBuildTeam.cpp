@@ -23,7 +23,9 @@ private:
     StringBase() : m_data(0) {}
     StringBase(const T *text);
     StringBase(const StringBase &other);
-    ~StringBase();
+    ~StringBase() { releaseBuffer(); }
+    private:
+    void releaseBuffer();
     Data *m_data;
 };
 

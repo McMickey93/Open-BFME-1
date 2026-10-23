@@ -8,7 +8,9 @@ friend class UnicodeString;
 
 private:
 	StringBase( const StringBase<T> &other );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	void *m_data;
 };

@@ -6,7 +6,9 @@ template <typename T> class StringBase
 
 private:
 	StringBase( const StringBase<T> &other );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	void *m_data;
 };

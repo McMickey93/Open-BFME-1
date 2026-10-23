@@ -16,10 +16,22 @@ public:
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
-	AsciiString &operator=(const AsciiString &other);
+	AsciiString &operator=(const AsciiString &other) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&other); return *this; }
 	void set(const char *text, int length);
 private:
 	char *m_data;

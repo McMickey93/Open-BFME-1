@@ -14,7 +14,9 @@ private:
 	StringBase() : m_data(0) {}
 	StringBase(const T *text);
 	StringBase(const StringBase &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	struct Data { Int refs; unsigned short length, capacity; T text[1]; };
 	Data *m_data;
 };

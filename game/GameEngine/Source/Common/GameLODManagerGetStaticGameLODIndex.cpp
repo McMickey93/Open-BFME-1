@@ -8,10 +8,22 @@ extern "C" __declspec(dllimport) int __cdecl _memicmp(
 extern "C" unsigned __cdecl strlen(const char *text);
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
-	~AsciiString();
+	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 
 	Int compareNoCase(const char *other) const
 	{

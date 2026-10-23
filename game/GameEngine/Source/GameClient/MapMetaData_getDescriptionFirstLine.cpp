@@ -23,7 +23,9 @@ private:
 	StringBase();
 	StringBase(const StringBase<T> &other);
 	StringBase(const StringBase<T> &other, int start, int length);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	void set(const StringBase<T> &other);
 
 	Header *m_data;

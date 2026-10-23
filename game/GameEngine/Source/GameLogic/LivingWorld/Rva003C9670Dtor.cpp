@@ -15,7 +15,9 @@ public:
     void clear(void);
 
 private:
-    ~StringBase(void);
+    ~StringBase() { releaseBuffer(); }
+    private:
+    void releaseBuffer();
     void *m_data;
 };
 

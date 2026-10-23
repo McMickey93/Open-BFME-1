@@ -25,7 +25,9 @@ template <typename T> class StringBase
 
 private:
 	StringBase();
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	void *m_data;
 };

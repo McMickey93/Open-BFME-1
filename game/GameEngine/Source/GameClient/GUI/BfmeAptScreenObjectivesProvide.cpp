@@ -55,13 +55,25 @@ public:
 	char m_chars[1];
 };
 
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
 	AsciiString() { m_data = 0; }
 	~AsciiString() { releaseBuffer(); }
 
-	AsciiString &operator=(const AsciiString &that);
+	AsciiString &operator=(const AsciiString &that) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&that); return *this; }
 
 	AsciiStringData *m_data;
 

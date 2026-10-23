@@ -26,7 +26,7 @@ class AsciiString : public StringBase<char>
 public:
 	AsciiString(const char *text) : StringBase<char>(text) {}
 	~AsciiString() {}
-	AsciiString &operator=(const AsciiString &other);
+	AsciiString &operator=(const AsciiString &other) { set(other); return *this; }
 	void clear();
 
 	Bool isEmpty() const

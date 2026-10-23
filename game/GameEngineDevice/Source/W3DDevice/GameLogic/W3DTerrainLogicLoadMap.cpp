@@ -28,7 +28,7 @@ public:
 	AsciiString(void) : StringBase<char>() {}
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
 	AsciiString(const char *text);
-	~AsciiString();
+	~AsciiString() {}
 
 	const char *str(void) const
 	{

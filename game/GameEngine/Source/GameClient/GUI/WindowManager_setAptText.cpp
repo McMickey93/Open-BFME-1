@@ -11,7 +11,7 @@ class UnicodeString : public StringBase<unsigned short>
 public:
 	UnicodeString() {}
 	UnicodeString(const UnicodeString &other);
-	~UnicodeString();
+	~UnicodeString() {}
 	void translate(const AsciiString &text);
 	void set(const UnicodeString &text)
 	{

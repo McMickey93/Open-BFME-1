@@ -132,7 +132,9 @@ public:
 
 private:
 	StringBase( const StringBase<T> &src );		// retail 0x00887B60
-	~StringBase();					// retail 0x00887940
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	struct Header
 	{

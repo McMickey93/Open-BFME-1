@@ -10,7 +10,7 @@ class UnicodeString : private StringBase<unsigned short>
 {
 public:
 	UnicodeString(const UnicodeString &other) : StringBase<unsigned short>(other) {}
-	~UnicodeString();
+	~UnicodeString() {}
 };
 
 typedef std::pair<const UnicodeString, UnicodeString> UnicodeStringPair;

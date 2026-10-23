@@ -373,7 +373,9 @@ class StringBase
 
 private:
 	StringBase( const T *text );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	const T *str() const
 	{

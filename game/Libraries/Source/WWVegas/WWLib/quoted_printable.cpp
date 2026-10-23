@@ -37,6 +37,18 @@ extern unsigned char g_Va012EEC18[];
 // starts eight bytes after the object-owned data header.  Keep this TU-local
 // ABI view so the conversion bodies inline the proven retail access.
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 	void *m_data;
@@ -51,7 +63,7 @@ public:
 		              : "";
 	}
 	const char *data() const { return (const char *)((const char *)m_data + 8); }
-	~AsciiString();
+	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 };
 
 // WWLib's retail string header stores the data header at +0x00 and its UTF-16

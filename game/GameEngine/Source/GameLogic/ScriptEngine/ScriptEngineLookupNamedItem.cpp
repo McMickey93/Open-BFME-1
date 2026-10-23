@@ -30,7 +30,9 @@ private:
 	Data *m_data;
 	StringBase();
 	StringBase(const StringBase &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 };
 
 class AsciiString : private StringBase<char>

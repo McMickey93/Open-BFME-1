@@ -24,7 +24,9 @@ public:
 private:
 	StringBase( const T *text );
 	StringBase( const StringBase<T> &other, int start, int length );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	Rva0058FE60StringData<T> *m_data;
 };

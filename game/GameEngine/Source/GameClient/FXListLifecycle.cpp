@@ -6,7 +6,9 @@ template<class T> class StringBase
 	friend class AsciiString;
 private:
 	StringBase(const StringBase &);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 private:
 	void *m_data;
 };

@@ -6,12 +6,24 @@
 
 extern "C" __declspec(dllimport) int __cdecl _strcmpi(const char *, const char *);
 
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
 	AsciiString(const char *);
 	AsciiString(const AsciiString &);
-	~AsciiString();
+	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 	void set(const char *);
 
 private:

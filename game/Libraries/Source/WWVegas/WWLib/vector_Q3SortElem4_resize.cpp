@@ -17,7 +17,9 @@ public:
 
 private:
 	StringBase(const StringBase<T> &other);
-	~StringBase(void);
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	T *m_data;
 
 	friend struct Q3SortElem4;

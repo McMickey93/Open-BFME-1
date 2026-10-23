@@ -1,4 +1,4 @@
-// cl: /EHsc /D_STLP_USE_STATIC_LIB
+// cl: /EHsc /D_STLP_USE_STATIC_LIB /MD
 // stlport
 
 // The ILT at 0x00017EF4 is called from LuaScriptEngine::~LuaScriptEngine and

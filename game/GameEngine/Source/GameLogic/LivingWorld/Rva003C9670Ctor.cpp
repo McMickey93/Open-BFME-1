@@ -20,7 +20,10 @@ class StringBase
 public:
     StringBase(void) : m_data(0) {}
     StringBase(const StringBase<T> &other); // retail 0x00887B60
-    ~StringBase(void); // retail 0x00887940
+    ~StringBase() { releaseBuffer(); }
+    private:
+    void releaseBuffer();
+    public:
     void clear(void); // retail 0x00887940
 
 private:

@@ -225,13 +225,25 @@ int Rva002E9F70ObjectDock( lua_State *state )
 	return 0;
 }
 
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
 	AsciiString() { m_data = 0; }
 	AsciiString( const char *text );
 	~AsciiString();
-	AsciiString &operator=( const AsciiString &text );
+	AsciiString &operator=(const AsciiString &text) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&text); return *this; }
 	const char *str() const
 	{
 		return m_data ? (const char *)m_data + 8 : g_bfmeEmptyAscii;

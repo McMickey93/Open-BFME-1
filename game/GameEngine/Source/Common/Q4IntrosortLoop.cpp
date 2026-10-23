@@ -1,4 +1,4 @@
-// cl: -GX-
+// cl: -GX- /MD
 // stlport
 //
 // Eight 140-byte bodies of STLport's __introsort_loop over a FOUR-BYTE SCALAR

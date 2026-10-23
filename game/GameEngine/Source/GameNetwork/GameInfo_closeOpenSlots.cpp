@@ -21,7 +21,9 @@ private:
 	StringBase(const T *text);
 	StringBase(const StringBase<T> &other);
 	void set(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	StringInlineData<T> *m_data;
 };

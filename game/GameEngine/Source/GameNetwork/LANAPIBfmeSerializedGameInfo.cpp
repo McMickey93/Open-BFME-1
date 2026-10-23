@@ -1,5 +1,5 @@
 // ?_bfme_onSerializedGameInfo_00689170@LANAPI@@UAE_NPAUTransportAddress@@HPADI@Z
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringinline
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringinline /Igame/Libraries/Source/WWVegas/WWLib
 // LANAPI vtable slot 39 (vtable 0x0111AF50 + 0x9C).  The serialized
 // game-info receive handler _bfme_handleSerializedGameInfo_0068ADE0
 // (retail 0x0068ADE0, matched in LANAPIBfmeSlotHandlers.cpp) walks the current
@@ -11,20 +11,7 @@
 // the retained global (or its no-global/fallback arm) is signalled through the
 // BFME-only thunks below.
 
-template <typename T>
-class StringBase
-{
-	friend class AsciiString;
-	friend class UnicodeString;
-
-private:
-	StringBase(void) : m_data(0) {}
-	StringBase(const T *text);
-	StringBase(const StringBase<T> &other);
-	~StringBase(void);
-
-	void *m_data;
-};
+#include "string_base.h"
 
 // class-gate: allow AsciiString this unit is a byte-proved reconstruction whose private
 // StringBase<char>/AsciiString pair reproduces retail's inlined string ABI at 0x00689170

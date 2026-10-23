@@ -1,3 +1,4 @@
+// cl: /MD
 // Open-BFME5: the 64-byte timed-operation pump at 0x0007B990.
 //
 // Retail keeps the list head in a global, calls the head node's update method,

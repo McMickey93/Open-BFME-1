@@ -8,7 +8,9 @@ template <typename T> class StringBase
 
 private:
 	StringBase( const T *text );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	void *m_data;
 };

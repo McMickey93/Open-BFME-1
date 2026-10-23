@@ -28,7 +28,9 @@ public:
 
 private:
 	StringBase(const StringBase<T> &source);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	Header *m_data;
 };

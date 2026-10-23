@@ -17,7 +17,9 @@ template <typename T> class StringBase
 private:
 	StringBase() : m_data(0) {}
 	StringBase(const StringBase &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	void set(const StringBase &other);
 	struct Data { Int refs; unsigned short length, capacity; T text[1]; };
 	Data *m_data;

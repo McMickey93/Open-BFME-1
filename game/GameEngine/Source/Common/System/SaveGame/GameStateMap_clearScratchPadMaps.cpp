@@ -10,11 +10,23 @@ typedef int Int;
 
 // BFME retail AsciiString is the one-pointer value type backed by an
 // eight-byte StringBase header: ref_count, length, capacity, then data.
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
 	AsciiString() : m_text( 0 ) {}
-	~AsciiString();
+	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 
 	const char *str() const
 	{

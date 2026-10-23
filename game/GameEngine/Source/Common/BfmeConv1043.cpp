@@ -1,3 +1,4 @@
+// cl: /MD
 // Open-BFME5 conversions.
 
 #include <exception>

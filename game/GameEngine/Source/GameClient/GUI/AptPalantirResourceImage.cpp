@@ -8,7 +8,9 @@ class StringBase
 private:
 	StringBase(const T *text);
 	StringBase(const StringBase<T> &other);
-	~StringBase(void);
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	unsigned char *m_data;
 };

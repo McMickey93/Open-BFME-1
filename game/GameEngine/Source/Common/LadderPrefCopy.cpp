@@ -15,14 +15,14 @@ class AsciiString : private StringBase<char>
 {
 public:
     __forceinline AsciiString(const AsciiString &source) : StringBase<char>(source) {}
-    ~AsciiString();
+    ~AsciiString() {}
 };
 
 class UnicodeString : private StringBase<unsigned short>
 {
 public:
     __forceinline UnicodeString(const UnicodeString &source) : StringBase<unsigned short>(source) {}
-    ~UnicodeString();
+    ~UnicodeString() {}
 };
 
 // LadderPreferences::loadProfile fills these same offsets; the names agree

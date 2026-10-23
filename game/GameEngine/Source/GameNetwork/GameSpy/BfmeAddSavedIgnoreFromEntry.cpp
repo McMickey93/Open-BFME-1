@@ -21,7 +21,9 @@ class StringBase
 private:
 	StringBase() : data(0) {}
 	StringBase(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	void set(const StringBase<T> &other);
 
 	BfmeStringDataE6B<T> *data;

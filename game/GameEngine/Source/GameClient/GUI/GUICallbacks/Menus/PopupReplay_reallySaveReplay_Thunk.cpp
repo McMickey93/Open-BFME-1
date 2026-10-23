@@ -60,7 +60,7 @@ class AsciiString : private StringBase<char>
 {
 public:
     AsciiString() : StringBase<char>() {}
-    AsciiString(const char *source);
+    AsciiString(const char *source) : StringBase<char>(source) {}
 
     AsciiString &operator=(const AsciiString &source)
     {

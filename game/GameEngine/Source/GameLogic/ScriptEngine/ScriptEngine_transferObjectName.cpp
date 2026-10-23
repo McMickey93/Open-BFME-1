@@ -15,6 +15,18 @@ struct BfmeAsciiStringData
 	UnsignedShort m_pad;
 };
 
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
@@ -29,7 +41,7 @@ public:
     }
 
 	Int compare(const AsciiString &other) const;
-	AsciiString &operator=(const AsciiString &other);
+	AsciiString &operator=(const AsciiString &other) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&other); return *this; }
 
 private:
 	BfmeAsciiStringData *m_data;

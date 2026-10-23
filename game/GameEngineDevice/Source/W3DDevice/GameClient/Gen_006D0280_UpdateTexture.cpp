@@ -27,12 +27,24 @@ public:
 	char m_padding04[0x10];
 };
 
+
+// Retail inlines this wrapper into StringBase<char> directly; declare just the
+// StringBase<char> members it reaches (see build/whatif/wrapfix.py).
+template <class T> class StringBase
+{
+	friend class AsciiString;
+	friend class UnicodeString;
+public:
+	void set(const StringBase<T> &other);
+private:
+	void releaseBuffer();
+};
 class AsciiString
 {
 public:
 	void set(const AsciiString &other);
 	int compare(const AsciiString &other) const;
-	~AsciiString(void);
+	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 
 	char *m_data;
 };

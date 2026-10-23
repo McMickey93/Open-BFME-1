@@ -20,7 +20,9 @@ private:
 	StringBase(void) : m_data(0) {}
 	StringBase(const T *text);
 	StringBase(const StringBase<T> &other);
-	~StringBase(void);
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	void set(const StringBase<T> &other);
 	void *m_data;

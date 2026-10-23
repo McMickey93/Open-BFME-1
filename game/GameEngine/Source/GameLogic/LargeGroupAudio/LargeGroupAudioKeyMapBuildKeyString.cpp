@@ -32,7 +32,7 @@ public:
 private:
 	StringBase() : m_data(0) {}
 	StringBase(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
 	void releaseBuffer();
 
 	Header *m_data;

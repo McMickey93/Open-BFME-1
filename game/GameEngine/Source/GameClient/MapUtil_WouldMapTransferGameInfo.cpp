@@ -21,7 +21,9 @@ class StringBase
 private:
 	StringBase() {}
 	StringBase(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	struct Data
 	{

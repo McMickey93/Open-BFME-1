@@ -27,7 +27,9 @@ template <typename T> class StringBase
 private:
 	StringBase() : m_data(0) {}
 	StringBase(const StringBase<T> &other);
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 private:
 	void set(const StringBase<T> &other);

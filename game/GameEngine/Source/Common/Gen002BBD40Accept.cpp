@@ -77,7 +77,9 @@ private:
 	}
 
 	StringBase(const StringBase<T> &other);
-	~StringBase(void);
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 };
 
 class AsciiString : private StringBase<char>

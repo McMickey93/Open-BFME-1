@@ -502,7 +502,9 @@ private:
 	StringBase() : m_data( 0 ) {}
 	StringBase( const T *str );
 	StringBase( const StringBase<T> &src );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	struct Header
 	{

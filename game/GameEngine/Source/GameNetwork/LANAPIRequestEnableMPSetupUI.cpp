@@ -31,7 +31,7 @@ template <typename T> class StringBase
 private:
 	StringBase(void) : m_data(0) {}
 	StringBase(const StringBase<T> &other);
-	~StringBase(void);
+	~StringBase() { releaseBuffer(); }
 	void releaseBuffer(void);
 
 	BfmeStringData<T> *m_data;

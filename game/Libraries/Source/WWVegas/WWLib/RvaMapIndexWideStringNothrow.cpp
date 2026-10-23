@@ -48,7 +48,9 @@ public:
 	}
 private:
 	StringBase( const StringBase<T> &src ) throw();
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	struct Header
 	{

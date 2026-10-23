@@ -28,7 +28,9 @@ public:
 private:
 	StringBase() : m_data( 0 ) {}
 	StringBase( const StringBase<T> &other );
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	StringHeader<T> *m_data;
 };

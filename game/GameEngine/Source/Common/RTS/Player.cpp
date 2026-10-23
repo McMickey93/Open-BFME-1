@@ -177,7 +177,9 @@ public:
 	friend class BfmePlayerAsciiString;
 
 private:
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 	void *m_data;
 };
 

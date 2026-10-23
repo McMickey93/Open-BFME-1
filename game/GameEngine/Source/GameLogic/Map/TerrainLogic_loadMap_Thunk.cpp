@@ -19,8 +19,8 @@ class AsciiString : public StringBase<char>
 public:
 	AsciiString(void) : StringBase<char>() {}
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
-	AsciiString(const char *text);
-	~AsciiString();
+	AsciiString(const char *text) : StringBase<char>(text) {}
+	~AsciiString() {}
 
 	Bool isEmpty(void) const
 	{
