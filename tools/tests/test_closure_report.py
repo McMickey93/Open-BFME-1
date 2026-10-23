@@ -225,6 +225,9 @@ def _measure_state():
           ("datum", d3): True, ("eh", 0x77): False, ("eh", 0x78): True, ("eh", 0x79): False}
     edges = {("unit", 0): {("datum", d1), ("twin", 0x500, 0x1000), ("fill", 0x5000)}, ("unit", 2): {("eh", 0x77)},
              ("twin", 0x500, 0x1000): {("datum", d2), ("stub",)}, ("unit", 1): set()}
+    m.padding, m.source_includes = [], {}
+    for node in m.dnodes.values():
+        node["sources"] = []
     return m, recs, hard, ok, edges
 
 
@@ -236,7 +239,7 @@ def test_link_cycles_graph_emit_reads_the_measure_and_changes_nothing(tmp_path):
     assert doc["schema"] == lc.CLOSURE_GRAPH_SCHEMA == cr.GRAPH_SCHEMA and lc.CLOSURE_GRAPH == cr.GRAPH_FILE
     n = doc["nodes"]
     assert n["unit:0"] == {"kind": "unit", "ok": False, "name": "?a@@YAXXZ", "rva": 0x0F00, "source": "game/a.cpp",
-                           "failures": ["data-back:_g"]}
+                           "failures": ["data-back:_g"], "provenance": ["real"]}
     assert n["unit:1"]["failures"] == ["unmeasured"] and n["unit:1"]["name"] == "?b@@YAXXZ"
     assert n["unit:2"]["failures"] == ["shift:hardcoded address"]
     assert n["twin:1536:12288"]["failures"] == ["bytes", "extent differs"]
@@ -500,8 +503,10 @@ def test_measure_emits_the_final_bfme1_source_graph_and_data_back(tmp_path, monk
             for i, (r, u) in enumerate(zip((real, other), units))]
     m = types.SimpleNamespace(run=lambda: recs, twins={}, dnodes={}, eh=Counter(), import_equiv=0, ilt_routes=Counter(),
                               back={0x5000: {0x4100, 0x4000}})
+    m.code_entries = {r["rva"]: {0} for r in (real, other)}
+    m.include_proofs = lambda sources: {}
     checks = []
-    sh = types.SimpleNamespace(code=lambda *a: checks.append(a), summary=lambda: {"checked": True})
+    sh = types.SimpleNamespace(code=lambda *a, **kw: checks.append(a), summary=lambda: {"checked": True})
     monkeypatch.setattr(lc, "Measure", lambda *a: m)
     monkeypatch.setattr(lc, "Shifted", lambda *a: sh)
     monkeypatch.setattr(lc, "pe_view", lambda p: (None, bytes(0x3000), {".text": (0x1000, 0x2000)}, {}))

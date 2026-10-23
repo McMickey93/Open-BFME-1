@@ -208,6 +208,7 @@ assert before == after
 linked = bytearray(consumed)
 linked[0x1000] = 0xc3
 judge = lc.Measure.__new__(lc.Measure)
+judge._init_state()  # reachable-entry and relocation-evidence state
 judge.I, judge.R = linked, consumed
 judge.lbase = judge.rbase = lc.BASE
 obj = ([SimpleNamespace(relocs=[], size=1)], {}, b'')
@@ -314,7 +315,16 @@ def test_sound_real_run7_graph_credit_and_roots(monkeypatch):
         cr.load_graph(run / cr.GRAPH_FILE, receipt["closure_graph_sha256"])
     with monkeypatch.context() as patch:
         patch.setattr(cr.context, "source_kind", namespace["row_kind"])
-        graph = cr.load_graph(run / cr.GRAPH_FILE, receipt["closure_graph_sha256"])
+        # Reproduce this historical artifact with the pre-round-2b reader.
+        # Current admission above must still reject it; functional gen-* kinds
+        # alone are no longer sufficient provenance for a new source closure.
+        prior = subprocess.run(["git", "show", "1f2a94bcc9:tools/closure_report.py"],
+                               cwd=Path(lc.__file__).parents[1], check=True, capture_output=True, text=True).stdout
+        reader = ast.Module(body=[n for n in ast.parse(prior).body
+                                  if isinstance(n, ast.FunctionDef) and n.name == "graph_from_doc"], type_ignores=[])
+        old_reader = dict(cr.__dict__)
+        exec(compile(reader, '<historical graph reader only>', 'exec'), old_reader)
+        graph = old_reader["graph_from_doc"](json.loads(cr.read_bytes(run / cr.GRAPH_FILE)))
     ok, edges, rows, describe = graph
     closed = cr.reference_closure(ok, edges)
     assert closed == lc.greatest_closure(ok, edges)

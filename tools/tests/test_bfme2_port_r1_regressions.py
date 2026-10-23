@@ -353,7 +353,7 @@ def test_r2_loaded_verifier_can_claim_restored_disk_rules(checkout, tmp_path, mo
     root, commit = checkout
     driver = root / "tools/link_cycle.py"
     original = driver.read_text()
-    old = "    def code(self, at, size, masked, rels):\n"
+    old = "    def code(self, at, size, masked, rels, entries=(0,)):\n"
     assert old in original
     driver.write_text(original.replace(old, old + "        return None  # bad local verifier\n"))
     monkeypatch.setenv("LINK_CYCLE_ROOT", str(root))
@@ -408,7 +408,8 @@ def test_r2_loaded_verifier_can_claim_restored_disk_rules(checkout, tmp_path, mo
     rec = {"row": row, "unit": unit, "measured": True, "placed": 1, "linked": 0x1000, "fails": [],
            "edges": set(), "masked": set(), "rels": [], "unpinned": False}
     m = types.SimpleNamespace(run=lambda: [rec], twins={}, dnodes={}, eh=collections.Counter(),
-                              import_equiv=0, ilt_routes=collections.Counter(), back={})
+                              import_equiv=0, ilt_routes=collections.Counter(), back={},
+                              code_entries=collections.defaultdict(lambda: {0}), include_proofs=lambda sources: {})
     (run / "base.map").write_text("")
     # Only replace the linker/PE inputs with in-memory fixtures. The modified
     # Shifted.code executes; measure writes the actual status and graph.
@@ -659,8 +660,9 @@ def test_sound_differential_measurement_and_verdicts(tmp_path, monkeypatch):
                      "edges": {("unit", 1)} if i == 0 else set(), "masked": set(), "rels": [], "unpinned": False}
                     for i, (r, u) in enumerate(zip(rows, units))]
             m = types.SimpleNamespace(run=lambda: recs, twins={}, dnodes={}, eh=collections.Counter(),
-                                      import_equiv=0, ilt_routes=collections.Counter(), back={})
-            sh = types.SimpleNamespace(code=lambda *a: "hardcoded address" if shift_failure else None,
+                                      import_equiv=0, ilt_routes=collections.Counter(), back={},
+                                      code_entries=collections.defaultdict(lambda: {0}), include_proofs=lambda sources: {})
+            sh = types.SimpleNamespace(code=lambda *a, **kw: "hardcoded address" if shift_failure else None,
                                        summary=lambda: {"checked": True})
             with monkeypatch.context() as patch:
                 patch.setattr(module, "Measure", lambda *a: m)
@@ -669,6 +671,9 @@ def test_sound_differential_measurement_and_verdicts(tmp_path, monkeypatch):
                 patch.setattr(module, "zz_names", lambda p: ({}, []))
                 result = module.measure(out, units, [], types.SimpleNamespace(by_base={}), bytes(0x3000),
                                         {".text": (0x1000, 0x2000)}, {}, {}, True, module.SHIFT_BASE)
+            # Review 2b adds receipt-bound CC exclusion evidence. These
+            # all-zero images contain no padding and retain identical verdicts.
+            result.pop("padding", None)
             result.pop("data_back", None)
             result.pop("closure_graph_sha256", None)
             results.append(result)

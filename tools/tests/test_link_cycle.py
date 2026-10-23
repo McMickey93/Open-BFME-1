@@ -131,6 +131,7 @@ class FakeObjs(lc.Objects):
 
 def _measure(I, R, items, allsyms, objs=None, pins=None, ledger_starts=None, pub=None, pubobj=None):
     m = lc.Measure.__new__(lc.Measure)
+    m.units = []  # no ledger providers in this focused data/identity fixture
     m.I, m.R, m.lbase, m.rbase = I, R, B, B
     m.isecs = {".text": (0x1000, 0x1000), ".data": (0x3000, 0x1000), ".stubd": (0x5000, 0x100)}
     m.ltext = m.isecs[".text"]
@@ -434,7 +435,7 @@ def _indexed_row(addend, a_tail=b"GOOD", b_head=b"GOOD"):
     objs.cache[a] = row
     u = {"id": 0, "obj": str(a), "sec": 1, "secname": ".text", "size": 8, "head": "?f@@YAXXZ",
          "head_cls": lc.EXTERNAL, "starts": [0x1000],
-         "rows": [{"name": "?f@@YAXXZ", "rva": 0x1000, "size": 8, "off": 0, "sym": "?f@@YAXXZ"}]}
+         "rows": [{"name": "?f@@YAXXZ", "rva": 0x1000, "size": 8, "off": 0, "sym": "?f@@YAXXZ", "source": "game/f.cpp"}]}
     pub = {"?f@@YAXXZ": 0x1000, "_a": 0x3000, "_b": 0x3010, "_c": 0x3020}
     mapped = (pub, {}, sorted([(0x1000, "?f@@YAXXZ", "a.obj"), (0x3000, "_a", "d.obj"), (0x3010, "_b", "d.obj"),
                                (0x3020, "_c", "d.obj")]), {"?f@@YAXXZ": "a.obj", "_a": "d.obj", "_b": "d.obj", "_c": "d.obj"})
@@ -452,10 +453,13 @@ def test_indexed_read_before_its_symbol_never_credits_the_row(a_tail, b_head):
     assert rec["measured"] and "data-unmapped:_b" in rec["fails"] and not rec["edges"] & {
         ("datum", (0x3000, 0x3100, 0x10)), ("datum", (0x3010, 0x3110, 0x10))}
     assert not _strictly_closed(m, recs)
-    m, recs = _indexed_row(4, a_tail, b_head)                         # control: inside _b
-    assert recs[0]["fails"] == ([] if b_head == b"GOOD" else ["data-content:_b"])
+    m, recs = _indexed_row(4, a_tail, b_head)
+    # Round 2b finding 4: starting inside _b proves no bound on eax*4.
+    # Fixed in-bounds accesses have their positive control in review2b_evidence.
+    assert "data-access-extent:_b" in recs[0]["fails"]
+    assert ("data-content:_b" in recs[0]["fails"]) == (b_head != b"GOOD")
     assert ("datum", (0x3010, 0x3110, 0x10)) in recs[0]["edges"]
-    assert _strictly_closed(m, recs) == (b_head == b"GOOD")
+    assert not _strictly_closed(m, recs)
 
 
 def _common_pointer_row(addend):
@@ -477,7 +481,7 @@ def _common_pointer_row(addend):
     objs.cache[Path("c.obj")] = ([_sec(1, ".text", 4)], {0: _sym(0, "_x", 0, value=4)}, b"")  # COMMON, 4 bytes
     u = {"id": 0, "obj": str(a), "sec": 1, "secname": ".text", "size": 6, "head": "?f@@YAXXZ",
          "head_cls": lc.EXTERNAL, "starts": [0x1000],
-         "rows": [{"name": "?f@@YAXXZ", "rva": 0x1000, "size": 6, "off": 0, "sym": "?f@@YAXXZ"}]}
+         "rows": [{"name": "?f@@YAXXZ", "rva": 0x1000, "size": 6, "off": 0, "sym": "?f@@YAXXZ", "source": "game/f.cpp"}]}
     pub = {"?f@@YAXXZ": 0x1000, "_D": 0x3000, "_x": 0x3040}
     mapped = (pub, {}, [(0x1000, "?f@@YAXXZ", "a.obj"), (0x3000, "_D", "d.obj"), (0x3040, "_x", "other.obj")],
               {"?f@@YAXXZ": "a.obj", "_D": "d.obj", "_x": "other.obj"})
@@ -629,7 +633,7 @@ def test_selected_copy_diagnostics_do_not_grant_twin_credit():
 def test_unit_whose_copy_the_link_did_not_select_is_not_measured():
     u = {"id": 0, "obj": "x/a.obj", "sec": 1, "secname": ".text", "size": 4, "head": "?f@@YAXXZ",
          "head_cls": lc.EXTERNAL, "starts": [0x1000],
-         "rows": [{"name": "?f@@YAXXZ", "rva": 0x1000, "size": 4, "off": 0, "sym": "?f@@YAXXZ"}]}
+         "rows": [{"name": "?f@@YAXXZ", "rva": 0x1000, "size": 4, "off": 0, "sym": "?f@@YAXXZ", "source": "game/f.cpp"}]}
     mapped = ({"?f@@YAXXZ": 0x1000}, {}, [(0x1000, "?f@@YAXXZ", "b.obj")], {"?f@@YAXXZ": "b.obj"})
     m = lc.Measure([u], [], mapped, bytearray(0x2000), bytearray(0x2000), {".text": (0x1000, 0x1000)},
                    {}, {}, {}, FakeObjs({}), {})

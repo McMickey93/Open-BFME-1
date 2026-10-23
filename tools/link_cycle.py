@@ -369,7 +369,9 @@ def analyze(rows, objs):
         p = row_obj(r)
         sym = (re.search(r"(?:^|;)object-symbol=([^;]+)", r.get("notes", "")) or [None, r["name"]])[1]
         rec = {"name": r["name"], "sym": sym, "rva": rva, "size": size,
-               "kind": row_kind(r, (r["name"], r["target_rva"]) in naked), "source": r["source"]}
+               "kind": row_kind(r, (r["name"], r["target_rva"]) in naked), "source": r["source"],
+               "provenance": progress.source_lane(r["source"], r.get("notes", ""),
+                                                   (r["name"], r["target_rva"]) in naked)}
         o = objs.get(p)
         y = None
         if o is not None:
@@ -813,7 +815,7 @@ def eh_verdict(I, lt, R, rt, lbase, rbase, translate=None, reference=None):
     return None
 
 
-def hardcoded_operands(code, va, masked, lo, hi, starts=frozenset()):
+def hardcoded_operands(code, va, masked, lo, hi, starts=frozenset(), entries=(0,)):
     """Offsets of 32-bit displacement/immediate operands in `code` (at `va`)
     holding an absolute address in [lo, hi) or in `starts` that no relocation
     covers: they cannot follow a rebase. Relative branch targets are not
@@ -823,7 +825,7 @@ def hardcoded_operands(code, va, masked, lo, hi, starts=frozenset()):
     if _CSD is None:
         return []
     out = []
-    for ins in _CSD.disasm(bytes(code), va):
+    for ins in code_flow(code, va, entries)[0]:
         at = ins.address - va
         for off, size in ((ins.disp_offset, ins.disp_size), (ins.imm_offset, ins.imm_size)):
             if size != 4 or not off or ins.mnemonic == "call" or ins.mnemonic.startswith("j"):
@@ -835,12 +837,12 @@ def hardcoded_operands(code, va, masked, lo, hi, starts=frozenset()):
     return out
 
 
-def code_flow(code, va):
+def code_flow(code, va, entries=(0,)):
     """Reachable instructions and fallthrough beyond an extent. Decode branch
     destinations separately so inline data cannot hide a later direct call."""
     if _CSD is None:
         return [], False, False
-    work, seen, covered, fallthrough = [0], {}, set(), False
+    work, seen, covered, fallthrough = list(entries), {}, set(), False
     while work:
         at = work.pop()
         if at in seen:
@@ -910,9 +912,11 @@ class Measure:
         self.import_equiv = 0       # read-through references kept by the (dll, name) rule, not 1:1
         self.ilt_routes = collections.Counter()
         self.code_targets = collections.defaultdict(set)
-        self.code_thunks = collections.defaultdict(set)
+        self.pointer_links = collections.defaultdict(set)
+        self.code_entries = collections.defaultdict(lambda: {0})
         self.code_pointers = collections.defaultdict(set)
         self.code_users = collections.defaultdict(dict)
+        self.code_pointer_users = collections.defaultdict(dict)
         self.eh_nodes = {}
         self.datum_conflicts = set()
         self.retail_sites = None
@@ -950,7 +954,7 @@ class Measure:
             return self.isecs.name_at(a)
         return next((n for n, (s, z) in self.isecs.items() if s <= a < s + max(z, 1)), "outside")
 
-    def relocs(self, L, rva, size, o, secno, off, owner):
+    def relocs(self, L, rva, size, o, secno, off, owner, failures=None):
         """Check every relocation of [off, off+size) of section `secno` of object o
         linked at L against retail at rva. Returns (failures, edges, masked
         offsets, data references [(lt, rt, target name, Sym, object, addend,
@@ -962,8 +966,10 @@ class Measure:
                 and 0 <= rva <= rva + size <= len(R)):
             return ["code-extent"], set(), set(), [], []
         got, want = I[L:L + size], R[rva:rva + size]
-        fails, edges, masked, data, rels = [], set(), set(), [], []
-        instructions, decoded, fallthrough = code_flow(got, L + self.lbase)
+        fails, edges, masked, data, rels = failures if failures is not None else [], set(), set(), [], []
+        instructions, decoded, fallthrough = code_flow(got, L + self.lbase, self.code_entries[L])
+        # Internal direct branches are already traversed here; only entries
+        # discovered outside this traversal need to schedule another pass.
         direct_calls = {ins.address - L - self.lbase + ins.imm_offset for ins in instructions
                         if ins.mnemonic == "call" and ins.operands
                         and ins.operands[0].type == capstone.x86.X86_OP_IMM}
@@ -992,7 +998,8 @@ class Measure:
                 lt, rt = (lv - self.lbase) & 0xFFFFFFFF, (rv - self.rbase) & 0xFFFFFFFF
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
                 direct = ty == REL32 and fo in direct_calls
-                f, e = self.code_ref(lt, rt, tn, owner, direct=direct, pointer=ty == DIR32, fails=fails)
+                f, e = self.code_ref(lt, rt, tn, owner, direct=direct, pointer=ty == DIR32, fails=fails,
+                                     entry=not direct or not L <= lt < L + size)
                 if f:
                     fails.append(f)
                 elif e:
@@ -1000,7 +1007,25 @@ class Measure:
             else:
                 addend = u32(raw, sec.ptr + va) if sec.ptr else 0
                 access = "read" if ty == DIR32 and read_through(got, fo) and read_through(want, fo) else "addr"
-                data.append((lt, rt, tn, y, o, addend, access))
+                # BFME1 build.verify_dir32_consistency proves the referenced
+                # storage, not just its first byte. LEA observes an address;
+                # memory operands must fit, and an unknown index has no bound.
+                width, indexed = 0, False
+                for ins in instructions:
+                    if ins.address - L - self.lbase + ins.disp_offset == fo and ins.mnemonic != "lea":
+                        for operand in ins.operands:
+                            if operand.type == capstone.x86.X86_OP_MEM:
+                                width = max(width, operand.size)
+                                indexed |= bool(operand.mem.index or operand.mem.base)
+                data.append((lt, rt, tn, y, o, addend, access, width, indexed))
+        # docs/matching.md: DIR32 slots may differ only with symbolic
+        # evidence. Retail HIGHLOW sites in code need that evidence too.
+        if self.retail_sites is not None:
+            symbolic = {fo for fo, ty, absolute in rels if ty == DIR32 and not absolute}
+            for site in self.retail_sites[bisect.bisect_left(self.retail_sites, rva):
+                                          bisect.bisect_left(self.retail_sites, rva + size)]:
+                if site - rva not in symbolic:
+                    fails.append("code-unrelocated-pointer")
         nd = nonreloc_diffs(got, want, masked)
         if nd:
             fails.append(f"bytes:{nd}")
@@ -1028,7 +1053,7 @@ class Measure:
                 lt = ins.operands[0].imm - self.lbase
                 rt = rva + (lt - L)  # identical unrelocated displacement
                 f, e = self.code_ref(lt, rt, "direct-branch", owner, direct=ins.mnemonic == "call",
-                                     pointer=False, fails=fails)
+                                     pointer=False, fails=fails, entry=not L <= lt < L + size)
                 if f:
                     fails.append(f)
                 elif e:
@@ -1046,36 +1071,54 @@ class Measure:
         return rt
 
     def code_identity(self, lt, rt, *, pointer=False, fails=None):
-        """Collect all uses before judging injectivity, including later conflicts.
-
-        A thunk and its body are one code identity, but two thunks are not.
-        Taken addresses additionally retain inequality when both raw retail
-        addresses actually occur (as opposed to call-route substitutions).
-        Keep the original provider edge so dumps cannot hide behind a route.
-        """
-        body = self.ilt_body(rt)
-        self.code_targets[lt].add(body)
-        if rt != body:
-            self.code_thunks[lt].add(rt)
-        if pointer:
-            self.code_pointers[lt].add(rt)
+        """Preserve observable pointer equality and inequality measurement-wide."""
+        # BFME1 build_call_thunks/load_symbol_map permit multiple ILT call
+        # routes. docs/matching.md's DIR32 consistency concerns taken addresses;
+        # route-only calls must not constrain observable pointer identity.
+        # Even direct calls cannot merge distinct retail bodies (AGENTS.md:
+        # retail has no ICF). Only thunk routes to the same body are exempt.
+        self.code_targets[lt].add(self.ilt_body(rt))
         if fails is not None:
             self.code_users[lt][id(fails)] = fails
+        if not pointer:
+            return
+        self.code_pointers[lt].add(rt)
+        self.pointer_links[rt].add(lt)
+        if fails is not None:
+            self.code_pointer_users[lt][id(fails)] = fails
 
     def code_collapses(self):
-        return {lt for axis in (self.code_targets, self.code_thunks, self.code_pointers)
-                for lt, targets in axis.items() if len(targets) > 1}
+        bad = {lt for axis in (self.code_targets, self.code_pointers)
+               for lt, targets in axis.items() if len(targets) > 1}
+        for links in self.pointer_links.values():
+            if len(links) > 1:
+                bad.update(links)
+        return bad
+
+    def schedule_entry(self, lt):
+        # BFME1's verified extents cover dependencies at every reached entry,
+        # including switch/EH table pointers, not merely the nominal row start.
+        i = bisect.bisect_right(self.istarts, lt) - 1
+        if i >= 0 and self.items[i][0] <= lt < self.items[i][1] and self.items[i][3][0] == "unit":
+            self.code_entries[self.items[i][0]].add(lt - self.items[i][0])
 
     def settle_code_identities(self):
+        body_bad = {lt for lt, targets in self.code_targets.items() if len(targets) > 1}
         for lt in sorted(self.code_collapses()):
-            for fails in self.code_users[lt].values():
+            # Pointer conflicts affect taken-address uses. BFME1 permits
+            # direct call routes independently of observable pointer identity.
+            users = dict(self.code_users[lt]) if lt in body_bad else {}
+            users.update(self.code_pointer_users[lt])
+            for fails in users.values():
                 why = f"code-identity-collapse:0x{lt:08X}"
                 if why not in fails:
                     fails.append(why)
 
-    def code_ref(self, lt, rt, tn, owner, *, direct=False, pointer=True, fails=None):
+    def code_ref(self, lt, rt, tn, owner, *, direct=False, pointer=True, fails=None, entry=True):
         tr, item = self.T(lt)
         if tr is not None:
+            if entry:
+                self.schedule_entry(lt)
             self.code_identity(lt, rt, pointer=pointer and not direct, fails=fails)
         if tr is not None and tr == rt:
             return None, item
@@ -1102,6 +1145,7 @@ class Measure:
                 # of that provider's code/data dependencies and shifted bytes.
                 tr, edge = self.T(la)
                 if tr is not None:
+                    self.schedule_entry(la)
                     self.code_identity(la, ra, pointer=not direct, fails=node["fails"])
                 if tr is None or (tr != ra and self.ilt_body(ra) != tr):
                     return False
@@ -1217,12 +1261,44 @@ class Measure:
         self.resolved[mk] = r
         return r
 
+    def datum_sources(self, o, name, rva):
+        """Retain the defining TU even for failed, data-only providers."""
+        if not hasattr(self, "provider_sources"):
+            sources = self.provider_sources = collections.defaultdict(set)
+            for unit in self.units:
+                for row in unit["rows"]:
+                    sources[Path(unit["obj"]).name.lower()].add(row["source"])
+            ledger = ROOT / "targets/game/reverse/data_rows.csv"
+            if ledger.exists():
+                with ledger.open(newline="", encoding="utf-8") as stream:
+                    for row in csv.DictReader(stream):
+                        if row.get("status") == "matched" and row.get("source"):
+                            sources[("datum", row["name"])].add(row["source"])
+        return sorted(self.provider_sources.get(self.object_name(o), set()) |
+                      self.provider_sources.get(("datum", name), set()))
+
+    def include_proofs(self, sources):
+        """BFME1 build deps sidecars and census receipts witness include inputs."""
+        proofs = {}
+        for source in sources:
+            if Path(source).suffix.lower() in progress.LIB_SUFFIXES:
+                continue  # a prebuilt member has no TU include search
+            path = build.row_object({"source": source})
+            side = Path(path).with_suffix(".deps.json")
+            if side.is_file():
+                meta = json.loads(side.read_text(encoding="utf-8"))
+                proofs[source] = {k: meta[k] for k in ("deps", "search_roots", "inventory") if k in meta}
+            elif source in getattr(self, "compile_includes", {}):
+                proofs[source] = self.compile_includes[source]
+        return proofs
+
     def scan_datum(self, key, sec, value, name, o):
         """A datum node: its bytes against retail's (relocated words masked), code
         pointers translated through the unit or filler holding them, data pointers
         kept as references (judged once every reference is known)."""
         start, rstart, size = key
-        node = {"name": name, "fails": [], "edges": set(), "refs": [], "rels": [], "masked": set()}
+        node = {"name": name, "sources": self.datum_sources(o, name, rstart),
+                "fails": [], "edges": set(), "refs": [], "rels": [], "masked": set()}
         if size <= 0 or rstart < 0 or rstart + size > len(self.R) or start < 0 or start + size > len(self.I):
             node["fails"].append(f"data-extent:{name}")
             return node
@@ -1332,6 +1408,10 @@ class Measure:
         kind = self.resolve(ref)
         fails = []
         if kind[0] == "import":
+            # BFME1's import equivalence proves one 32-bit IAT slot, not
+            # adjacent slots or a range selected by an unbounded index.
+            if len(ref) > 7 and (ref[7] > 4 or ref[8]):
+                fails.append(f"data-access-extent:{tn}")
             want = self.rimports.get(rt)
             same = want is not None and want == self.limports[lt]
             if not same:
@@ -1347,7 +1427,13 @@ class Measure:
             what = {"stub": "data-stub", "outside": "data-outside-image", "unmapped": "data-unmapped"}[kind[0]]
             return fails + [f"{what}:{tn}"], set(), False
         S = kind[2]
-        start, rstart, _ = kind[1]
+        start, rstart, size = kind[1]
+        width = ref[7] if len(ref) > 7 else 0
+        indexed = ref[8] if len(ref) > 8 else False
+        # BFME1's datum verification must cover every accessed byte; no
+        # runtime index bound can be inferred from a relocation's addend.
+        if width and (indexed or lt - start + width > size):
+            fails.append(f"data-access-extent:{tn}")
         fails += self.one_to_one(start, rstart, tn) if (start, rstart) != (lt, rt) else []
         if kind[1] in self.datum_conflicts:
             fails.append(f"data-identity:{tn}")
@@ -1403,13 +1489,36 @@ class Measure:
                     continue
                 L = la + r["off"]
                 rec["linked"], rec["placed"], rec["measured"] = L, int(L == r["rva"]), True
+                rec["scanned_entries"] = frozenset(self.code_entries[L])
                 f, e, m, data, rels = self.relocs(L, r["rva"], r["size"], o, u["sec"], r["off"], r["sym"])
                 rec["fails"], rec["edges"], rec["masked"], rec["rels"] = f, e, m, rels
                 for ref in data:
                     self.pending.append((rec, ref))
         self.collect_twins()
-        self.discover([ref for _, ref in self.pending] + [ref for b in self.twin_body.values() for ref in b[2]]
-                      + [ref for node in self.eh_nodes.values() for ref in node["refs"]])
+        scanned = {id(rec): rec.get("scanned_entries", frozenset({0})) for rec in out}
+        while True:
+            self.discover([ref for _, ref in self.pending] + [ref for b in self.twin_body.values() for ref in b[2]]
+                          + [ref for node in self.eh_nodes.values() for ref in node["refs"]])
+            changed = False
+            for rec in out:
+                if not rec["measured"]:
+                    continue
+                L, r, u = rec["linked"], rec["row"], rec["unit"]
+                entries = frozenset(self.code_entries[L])
+                if entries == scanned[id(rec)]:
+                    continue
+                scanned[id(rec)] = entries
+                changed = True
+                f, e, mask, data, rels = self.relocs(L, r["rva"], r["size"], self.objs.get(u["obj"]),
+                                                   u["sec"], r["off"], r["sym"], failures=rec["fails"])
+                # Register the same failure list on every traversal, so late
+                # identity conflicts invalidate all uses before closure.
+                rec["edges"].update(e)
+                rec["masked"].update(mask)
+                for ref in data:
+                    self.pending.append((rec, ref))
+            if not changed:
+                break
         self.settle_code_identities()
         self.judge_datums()
         for node in self.eh_nodes.values():
@@ -2311,16 +2420,47 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
         objs.by_base[names[q]] = out / "zzobj" / q
     m = Measure(units, chunks, mapped, I, R, isecs, rimp, limp, pins, objs, ledger_starts)
     m.rsecs = rsecs
+    m.compile_includes = {}
     # A real BFME1 image must have its retained relocation evidence; the
     # loader raises rather than silently dropping a missing/truncated table.
     m.retail_sites = retail_relocs.site_rvas() if R[:2] == b"MZ" else None
     recs = m.run()
-    textsz = rsecs[".text"][1]
+    proof_file = out / COMPILE_INPUTS
+    if proof_file.exists():
+        # Fresh census receipts contain the actual opened paths even when a
+        # reusable deps sidecar cannot be written. Retain their content witness.
+        proof_doc = json.loads(proof_file.read_text(encoding="utf-8"))
+        measured_sources = ({row["source"] for unit in units for row in unit["rows"]} |
+                            {source for node in m.dnodes.values() for source in node["sources"]})
+        inventory_cache = {}
+        for entry in proof_doc.get("entries", {}).values():
+            original = entry["source"].replace("\\", "/")
+            for source in measured_sources:
+                if not original.endswith("/" + source):
+                    continue
+                prefix = original[:-len(source)]
+                deps = {p[len(prefix):] if p.startswith(prefix) else p: h
+                        for p, h in entry["input"]["files"].items()}
+                # Quoted include precedence also observes source/header
+                # directories; command /I roots are inventoried by build.
+                command = entry.get("command", [])
+                roots = build._include_search_roots(ROOT / source, command, {})
+                if roots is not None:
+                    search_roots = [build._root_key(root) for root in roots]
+                    inventory = build._inventory_for_roots(roots, inventory_cache)
+                    m.compile_includes[source] = dict(deps=deps, search_roots=search_roots, inventory=inventory)
+    text0, raw_textsz = rsecs[".text"]
+    # BFME1 progress.real_split/real_code_denominator exclude all retail CC
+    # bytes. Bind the same intervals for graph gains and receipt-only diffs.
+    m.padding = [[text0 + hit.start(), text0 + hit.end()]
+                 for hit in re.finditer(b"\xcc+", bytes(R[text0:text0 + raw_textsz]))]
+    textsz = raw_textsz - sum(b - a for a, b in m.padding)
     sh = Shifted(out, I, isecs, rsecs, have_shift, shift_base, {BASE + r["row"]["rva"] for r in recs})
     hard = {}
     for rec in recs:
         if rec["measured"]:
-            why = sh.code(rec["linked"], rec["row"]["size"], rec["masked"], rec["rels"])
+            why = sh.code(rec["linked"], rec["row"]["size"], rec["masked"], rec["rels"],
+                          entries=m.code_entries[rec["linked"]])
             if why:
                 hard[id(rec)] = why
     # The closure graph. Nodes: units, certified twins, datums (through data
@@ -2351,7 +2491,8 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
                 edges[e] |= node["edges"]
     # a dump (generated/asm unit) is retail bytes re-encoded, not source: in the
     # source closure an edge into one closes nothing, like a filler
-    dump_units = {u["id"] for u in units if any(r["kind"] in ("generated", "asm") for r in u["rows"])}
+    dump_units = {u["id"] for u in units if any(r.get("provenance") in ("generated", "dump") or r["kind"] in ("generated", "asm")
+                                                        for r in u["rows"])}
     src_edges = {n: {("dump", e[1]) if e[0] == "unit" and e[1] in dump_units else e for e in es}
                  for n, es in edges.items()}
     closed = greatest_closure(ok, src_edges, bad_targets=("fill", "stub", "dump"))
@@ -2397,7 +2538,7 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
                    "failures": ";".join(f"{k}x{v}" if v > 1 else k for k, v in collections.Counter(fails).items())}
             w.writerow([row[c] for c in cols])
             k = r["kind"]
-            span = (r["rva"], r["rva"] + r["size"])
+            span = context.credit_spans(r["rva"], r["size"], m.padding)
             flags = {"all": 1, "placed": rec["placed"], "self_strict_any": st, "placed_self_strict": rec["placed"] and st,
                      "placed_pinned_strict": rec["placed"] and row["pinned_strict"],
                      "placed_closed_strict": rec["placed"] and row["closed_strict"],
@@ -2408,13 +2549,13 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
             for name, v in flags.items():
                 if v:
                     series[(k, name, "rows")] += 1
-                    series[(k, name, "bytes")] += r["size"]
-                    spans[(k, name)].append(span)
+                    series[(k, name, "bytes")] += unique_bytes(span)
+                    spans[(k, name)].extend(span)
     res = {}
     for (k, name), sp in sorted(spans.items()):
         res.setdefault(k, {})[name] = {"rows": series[(k, name, "rows")], "bytes": series[(k, name, "bytes")],
                                        "unique_bytes": unique_bytes(sp),
-                                       "pct_text": round(100 * unique_bytes(sp) / textsz, 2)}
+                                       "pct_text": round(100 * unique_bytes(sp) / max(1, textsz), 2)}
     reasons = collections.Counter()
     rbytes = collections.Counter()
     for rec in recs:
@@ -2422,7 +2563,7 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
             fails = rec["fails"] + (["shift"] if id(rec) in hard else [])
             for c in {f.split(":")[0] for f in fails}:
                 reasons[c] += 1
-                rbytes[c] += rec["row"]["size"]
+                rbytes[c] += unique_bytes(context.credit_spans(rec["row"]["rva"], rec["row"]["size"], m.padding))
     res["credit_unique_bytes"] = res.get("real", {}).get("placed_closed_strict", {}).get("unique_bytes", 0)
     res["placed_failure_classes"] = {c: [reasons[c], rbytes[c]] for c, _ in sorted(reasons.items(),
                                                                                     key=lambda kv: (-kv[1], kv[0]))}
@@ -2437,9 +2578,12 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
     res["shift"] = sh.summary()
     res["ilt_routes"] = dict(sorted(m.ilt_routes.items()))
     res["retail_text_bytes"] = textsz
+    res["padding"] = m.padding
     res["link_status_sha256"] = sha256(status)
     res["data_back"] = {"address_kind": "rva", "collisions": [
         {"retail_rva": rt, "linked_rvas": sorted(ls)} for rt, ls in sorted(m.back.items()) if len(ls) > 1]}
+    m.source_includes = m.include_proofs({r["source"] for u in units for r in u["rows"]} |
+                                        {s for node in m.dnodes.values() for s in node["sources"]})
     graph = closure_graph_doc(m, recs, hard, ok, src_edges)
     write_closure_graph(artifact_out / CLOSURE_GRAPH, graph)
     res["closure_graph_sha256"] = sha256(artifact_out / CLOSURE_GRAPH)
@@ -2473,10 +2617,13 @@ def closure_graph_doc(m, recs, hard, ok, edges):
         r, u = rec["row"], rec["unit"]
         n = ("unit", u["id"])
         d = nodes.setdefault(node_key(n), {"kind": "unit", "ok": bool(ok[n]), "name": u.get("head") or r["name"],
-                                           "rva": r["rva"], "source": r["source"], "failures": set()})
+                                           "rva": r["rva"], "source": r["source"], "provenance": [], "failures": set()})
         d["rva"] = min(d["rva"], r["rva"])
         d["name"] = min(d["name"], u.get("head") or r["name"])
         d["source"] = min(d["source"], r["source"])
+        # AGENTS.md generated/vendored claims and progress.source_lane:
+        # provenance is independent of functional gen-funclet/import/alias kind.
+        d["provenance"] = sorted(set(d["provenance"]) | {r.get("provenance", r["kind"])})
         d["failures"].update(rec["fails"])
         if id(rec) in hard:
             d["failures"].add(f"shift:{hard[id(rec)]}")
@@ -2496,7 +2643,7 @@ def closure_graph_doc(m, recs, hard, ok, edges):
             d["failures"].update((getattr(m, "twin_fails", {}).get((n[1], n[2])) or [why]) if not good else ([] if v else ["shift"]))
         elif kind == "datum":
             node = m.dnodes[n[1]]
-            d.update(rva=n[1][1], linked=n[1][0], size=n[1][2], name=node["name"])
+            d.update(rva=n[1][1], linked=n[1][0], size=n[1][2], name=node["name"], sources=node["sources"])
             d["failures"].update(node["fails"] or ([] if v else ["shift"]))
         elif kind == "eh":
             d["failures"].update(m.eh_nodes[n[1]]["fails"] or ([] if v else ["shift"]))
@@ -2505,6 +2652,7 @@ def closure_graph_doc(m, recs, hard, ok, edges):
     for d in nodes.values():
         d["failures"] = sorted(d["failures"])
     return {"schema": CLOSURE_GRAPH_SCHEMA, "bad_targets": list(context.BAD_TARGETS), "rules": RULES,
+            "padding": m.padding, "include_proofs": m.source_includes,
             "nodes": dict(sorted(nodes.items())),
             "edges": {node_key(n): sorted(node_key(t) for t in ts) for n, ts in sorted(edges.items(), key=lambda kv:
                                                                                       node_key(kv[0])) if ts},
@@ -2557,10 +2705,10 @@ class Shifted:
                 return "relocation not adjusted"
         return None
 
-    def code(self, at, size, masked, rels):
+    def code(self, at, size, masked, rels, entries=(0,)):
         """None, or why code at `at` does not follow a rebase: a hard-coded retail
         data VA or row start no relocation covers, or a shifted-link difference."""
-        if hardcoded_operands(self.I[at:at + size], at + BASE, masked, self.lo, self.hi, self.starts):
+        if hardcoded_operands(self.I[at:at + size], at + BASE, masked, self.lo, self.hi, self.starts, entries):
             return self._note("code", "hardcoded address")
         if self.S is None:
             return self._note("code", self.why)

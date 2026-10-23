@@ -24,7 +24,7 @@ GRAPH_SCHEMA = "bfme1-closure-graph/1"
 BAD_TARGETS = ("fill", "stub", "dump")
 PROFILE = {"target": "bfme1-retail-1.03", "text_groups": [[0x1000, ".text"]],
            "ilt": [0x1000, 0x5B000], "bad_targets": list(BAD_TARGETS),
-           "credit": "real/placed/closed_strict/interval-union", "copy_rule": "bfme1-keep_rule",
+           "credit": "real/placed/closed_strict/non-CC-interval-union", "copy_rule": "bfme1-keep_rule",
            "alias_rule": "bfme1-judge_selected", "fold_exemptions": []}
 # Explicit measurement-semantic closure; shared by receipts, bundles and diffs.
 MEASUREMENT_FILES = (
@@ -189,3 +189,35 @@ def retail_imports():
 def ilt_window():
     import link_cycle
     return link_cycle.ILT
+
+
+def credit_spans(start, size, padding=()):
+    """BFME1 progress.real_split: exclude retail 0xCC in every byte series."""
+    import bisect
+    end, cursor, spans = start + size, start, []
+    i = max(0, bisect.bisect_right(padding, [start, float("inf")]) - 1)
+    for index in range(i, len(padding)):
+        a, b = padding[index]
+        if a >= end:
+            break
+        if b <= cursor:
+            continue
+        if a > cursor:
+            spans.append((cursor, min(a, end)))
+        cursor = max(cursor, b)
+    if cursor < end:
+        spans.append((cursor, end))
+    return spans
+
+
+def validate_padding(padding):
+    end = -1
+    for interval in padding:
+        if (not isinstance(interval, list) or len(interval) != 2
+                or any(type(v) is not int for v in interval)):
+            raise ValueError("invalid nonpadding credit evidence")
+        a, b = interval
+        if not 0 <= a < b or a < end:
+            raise ValueError("invalid nonpadding credit evidence")
+        end = b
+    return padding

@@ -64,10 +64,20 @@ class ReportError(Exception):
 
 # ---------------------------------------------------------------- spans
 
+def row_spans(row):
+    return row.get("credit_spans", [(row["rva"], row["rva"] + row["size"])])
+
+
 def merge(spans):
     """Disjoint sorted [start, end) spans covering the union."""
+    def flat(values):
+        for value in values:
+            if len(value) == 2 and all(isinstance(v, int) for v in value):
+                yield value
+            else:
+                yield from flat(value)
     out = []
-    for s, e in sorted(spans):
+    for s, e in sorted(flat(spans)):
         if e <= s:
             continue
         if out and s <= out[-1][1]:
@@ -232,7 +242,7 @@ def analyze(ok, edges, rows, describe, *, forbidden=FORBIDDEN, affected=True, ca
         members[group(n)].append(n)
 
     live = [r for r in rows if r["real"] and r["placed"]]
-    span = (lambda r: (r["rva"], r["rva"] + r["size"]))
+    span = row_spans
     credited = merge(span(r) for r in live if r["self_strict"] and r["node"] not in state)
     starts = [s for s, _ in credited]
     credit = total(credited)
@@ -356,7 +366,7 @@ def credit_of(ok, edges, rows, forced=(), closure=reference_closure):
     table = dict(ok)
     table.update((n, True) for n in forced)
     closed = closure(table, edges)
-    return unique_bytes((r["rva"], r["rva"] + r["size"]) for r in rows
+    return unique_bytes(row_spans(r) for r in rows
                         if r["real"] and r["placed"] and r["node"] in closed
                         and (r["self_strict"] or r["node"] in forced))
 
@@ -413,7 +423,10 @@ def graph_from_doc(doc):
             raise ReportError("invalid graph row extent, flags or unit")
         if kind == "real" and context.source_kind({"source": source}) != "real":
             raise ReportError("generated/assembly source cannot be real credit")
-        if kind in ("generated", "asm"):
+        # BFME1 progress.source_lane governs dependencies even when their
+        # functional kind is gen-funclet/import/alias, including via libraries.
+        if (kind in ("generated", "asm") or context.source_kind({"source": source}) in ("generated", "asm")
+                or set(info[key].get("provenance", ())) & {"generated", "dump", "asm"}):
             dump_units.add(key)
     if any(t in dump_units for ts in doc["edges"].values() for t in ts):
         raise ReportError("graph contains a generated/assembly source closure dependency")
@@ -424,7 +437,8 @@ def graph_from_doc(doc):
         return (info[key]["kind"] if key in info else key.split(":", 1)[0], key)
     ok = {node(k): bool(v["ok"]) for k, v in info.items()}
     edges = {node(k): {node(t) for t in ts} for k, ts in doc["edges"].items()}
-    rows = [{"name": name, "kind": kind, "source": source, "rva": rva, "size": size, "node": node(key),
+    padding = context.validate_padding(doc.get("padding", []))
+    rows = [{"credit_spans": context.credit_spans(rva, size, padding), "name": name, "kind": kind, "source": source, "rva": rva, "size": size, "node": node(key),
              "real": kind == "real", "placed": bool(placed), "self_strict": bool(strict)}
             for name, kind, source, rva, size, key, placed, strict in doc["rows"]]
 
@@ -446,9 +460,15 @@ def graph_from_doc(doc):
             ident = n[0] + ":" + ":".join("0x%08X" % int(p) for p in n[1].split(":")[1:])
         out = {"id": ident, "kind": n[0], "group": where if rva is not None and rva >= 0 else ident,
                "failures": list(d.get("failures") or ())}
-        for key in ("name", "source", "object", "size"):
+        for key in ("name", "source", "sources", "include_proofs", "object", "size"):
             if d.get(key) not in (None, ""):
                 out[key] = d[key]
+        # One witnessed include map per TU, shared by all its code/data
+        # nodes. Do not duplicate the full header inventory for every body.
+        sources = set(d.get("sources", [])) | ({d["source"]} if d.get("source") else set())
+        proofs = {s: doc["include_proofs"][s] for s in sorted(sources) if s in doc.get("include_proofs", {})}
+        if proofs:
+            out["include_proofs"] = proofs
         if where is not None:
             out["retail_rva"] = where
         return out
@@ -505,10 +525,15 @@ def report(graph, receipt, status, binding, verify=25, log=None):
     """(roots bytes, blockers bytes, facts): check GRAPH against the receipt's credit and
     every row of STATUS, analyse it, and re-prove the top VERIFY roots by a forced closure."""
     ok, edges, rows, describe = graph
+    # BFME1 progress.real_split weights must also agree for conditional gains,
+    # including open rows; equal closed totals do not prove equal byte credit.
+    padding = context.validate_padding((receipt.get("series") or {}).get("padding", []))
+    if any(row_spans(r) != context.credit_spans(r["rva"], r["size"], padding) for r in rows):
+        raise ReportError("graph nonpadding weights differ from receipt")
     closed = reference_closure(ok, edges)
     if closed_nodes(ok, edges) != closed:
         raise ReportError("this module's one-pass closure is not the reference closure")
-    credit = unique_bytes((r["rva"], r["rva"] + r["size"]) for r in rows
+    credit = unique_bytes(row_spans(r) for r in rows
                           if r["real"] and r["placed"] and r["self_strict"] and r["node"] in closed)
     want = (receipt.get("series") or {}).get("credit_unique_bytes")
     if credit != want:

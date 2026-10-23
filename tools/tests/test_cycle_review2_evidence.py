@@ -588,8 +588,9 @@ def test_verified_library_is_a_dependency_with_separate_credit_series(case, prov
     assert cr.credit_of(*graph[:3]) == result['credit_unique_bytes']
 
 
+# BFME1 build_call_thunks permits two route-only calls through different ILTs.
 @pytest.mark.parametrize('target_pair,closed', [('body-thunk', True), ('same-thunk', True),
-                                               ('two-thunks', False), ('two-bodies', False)])
+                                               ('two-thunks', True), ('two-bodies', False)])
 def test_code_route_injectivity_is_settled_across_all_rows(case, target_pair, closed):
     body = b'\x31\xc0\xc3'
     provider = case.object('provider.obj', [('.text', body, [])], [('_a', 1, 0, lc.EXTERNAL)])

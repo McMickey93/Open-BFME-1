@@ -652,6 +652,7 @@ def candidate_scope(item, graph=None):
         desc = describe(node)
         if desc.get("source"):
             sources.add(desc["source"])
+        sources.update(desc.get("sources", []))
         if desc.get("retail_rva"):
             addresses.add(int(desc["retail_rva"], 16))
     for row in rows:
@@ -694,6 +695,44 @@ def _currency_ledger(root, commit, path, sources, addresses):
     return found
 
 
+def candidate_include_changes(sources, changed, graph, root):
+    """Use witnessed deps/search roots, not a guessed header suffix list."""
+    import hashlib
+    proofs = {}
+    if graph is not None:
+        for node in graph[0]:
+            proofs.update(graph[3](node).get("include_proofs", {}))
+    moved = set()
+    for source in sources:
+        proof = proofs.get(source)
+        if proof is None:
+            # Legacy graphs have no include witness. BFME1 build's directory
+            # inventory watches all non-.cpp files, including untracked ones.
+            # Bound uncertainty to the candidate's source-adjacent search tree.
+            parent = Path(source).parent
+            moved.update(p for p in changed if Path(p).is_relative_to(parent)
+                         and not p.lower().endswith(".cpp"))
+            continue
+        for path, digest in proof.get("deps", {}).items():
+            try:
+                current = hashlib.sha256((Path(root) / path).read_bytes()).hexdigest()
+            except OSError:
+                current = None
+            if current != digest:
+                moved.add(path)
+        # BFME1 build.search_inventory treats a new earlier include as a
+        # compile input change, regardless of suffix or Git tracking status.
+        import build
+        previous_root = build.ROOT
+        try:
+            build.ROOT = Path(root).resolve()
+            if build._recorded_inventory(proof) != proof.get("inventory") or proof.get("inventory") is None:
+                moved.add(source + " (include search changed)")
+        finally:
+            build.ROOT = previous_root
+    return moved
+
+
 def current_bundle_items(items, commit, *, root=None, graph=None):
     """Never serve work whose measured sources/dependencies/ledger rows moved.
 
@@ -714,7 +753,9 @@ def current_bundle_items(items, commit, *, root=None, graph=None):
             ["git", "-C", str(root), "diff", "--no-renames", "--name-only", "-z", "HEAD"],
             check=True, capture_output=True, text=True).stdout.split("\0")) - {""}
         changed.update(local_changed)
-        headers = {p for p in changed if Path(p).suffix.lower() in (".h", ".hpp", ".inl", ".inc")}
+        changed.update(set(subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--others", "--exclude-standard", "-z"],
+            check=True, capture_output=True, text=True).stdout.split("\0")) - {""})
         ledgers = {f"targets/game/reverse/{name}.csv" for name in ("functions", "symbols", "data_rows")} & changed
         sources = set().union(*(s for s, _ in scopes))
         addresses = set().union(*(a for _, a in scopes))
@@ -734,7 +775,7 @@ def current_bundle_items(items, commit, *, root=None, graph=None):
         return [], [dict(item, reason="stale", stale_reason="cannot compare measured commit with HEAD") for item in items]
     kept, skipped = [], []
     for item, (sources, addresses) in zip(items, scopes):
-        moved = sorted((sources & changed) | headers)
+        moved = sorted((sources & changed) | candidate_include_changes(sources, changed, graph, root))
         for path, rows in deltas.items():
             # Reuse the same address/source filter on the narrow row delta.
             for values in rows:

@@ -90,13 +90,16 @@ def verified_credit(receipt, raw):
     if hashlib.sha256(raw).hexdigest() != receipt["series"]["link_status_sha256"]:
         raise CycleDiffError("status is not the receipt's")
     rows = csv.DictReader(io.StringIO(raw.decode("utf-8")))
+    # BFME1 progress.real_split's retail CC exclusion is receipt-bound, so
+    # padding-only extent growth cannot become a diff gain.
+    padding = ca.context.validate_padding(receipt["series"].get("padding", []))
     spans = []
     for row in rows:
         if row["kind"] == "real" and row["placed"] == "1" and row["closed_strict"] == "1":
             if ca.context.source_kind(row) != "real":
                 raise CycleDiffError("generated/assembly source cannot score")
             a = int(row["retail_rva"], 16)
-            spans.append([a, a + int(row["size"])])
+            spans.extend(ca.context.credit_spans(a, int(row["size"]), padding))
     spans = union(spans)
     if size(spans) != receipt["series"]["credit_unique_bytes"]:
         raise CycleDiffError("credit union disagrees with receipt")

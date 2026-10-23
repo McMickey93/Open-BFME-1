@@ -452,6 +452,9 @@ def check_closure(d, manifest, receipt):
     # Reproduce rows/credit from the measured graph; never consult current ledgers.
     graph_doc = read_json(d / CLOSURE_GRAPH)
     same("graph rules", graph_doc.get("rules"), receipt["rules"])
+    # BFME1 progress.real_split supplies one retail CC exclusion for all
+    # consumers; equal totals cannot excuse different credited addresses.
+    same("retail padding weights", graph_doc.get("padding", []), receipt["series"].get("padding", []))
     # Older rule IDs remain internally verifiable; freshness decides compatibility.
     graph_doc = dict(graph_doc, rules=context.RULES)
     try:
