@@ -514,3 +514,104 @@ def test_eh_thunk_proof_does_not_cover_an_unverified_neighbor(case):
     case.ptr(F + 1, EH + 16)
     case.R[F + 1:F + 5] = dword(lc.BASE + REH + 16)
     assert_uncredited(case)
+
+
+@pytest.mark.parametrize('provider_lane', ['real', 'generated', 'library'])
+@pytest.mark.parametrize('other_target', ['none', 'thunk', 'body'])
+def test_vtable_ilt_routes_preserve_global_identity_and_provider(case, provider_lane, other_target):
+    """Ordinary slots close; a collision discovered in a later datum revokes both."""
+    body = b'\x31\xc0\xc3'
+    provider = case.object('provider.obj', [('.text', body, [])], [('_a', 1, 0, lc.EXTERNAL)])
+    source = {'real': 'game/provider.cpp', 'generated': 'game/gen_small/provider.cpp',
+              'library': 'inputs/vendor/example/example.lib'}[provider_lane]
+    case.row(provider, '_a', A, len(body), source=source, notes='vendored=example-1.0' if provider_lane == 'library' else '')
+    case.public(provider, '_a', A)
+    case.put(A, body, retail=body)
+    thunk, second = 0x20000, 0x20010
+    for address in (thunk, second):
+        case.R[address:address + 5] = b'\xe9' + dword(A - address - 5)
+    targets = [thunk] if other_target == 'none' else [thunk, second if other_target == 'thunk' else A]
+    for index, target in enumerate(targets):
+        name = f'_vtable{index}'
+        table = case.object(f'vtable{index}.obj', [('.rdata', bytes(4), [(0, '_a', lc.DIR32)])],
+                            [(name, 1, 0, lc.EXTERNAL), ('_a', 0, 0, lc.EXTERNAL)])
+        site, retail_site = DATA + 16 * index, RDATA + 16 * index
+        case.public(table, name, site)
+        case.ptr(site, A)
+        case.R[retail_site:retail_site + 4] = dword(lc.BASE + target)
+        raw = b'\xb8' + bytes(4) + b'\xc3'
+        caller_name, caller_rva = f'_caller{index}', F + 32 * index
+        caller = case.object(f'caller{index}.obj', [('.text', raw, [(1, name, lc.DIR32)])],
+                             [(caller_name, 1, 0, lc.EXTERNAL), (name, 0, 0, lc.EXTERNAL)])
+        case.row(caller, caller_name, caller_rva, len(raw))
+        case.public(caller, caller_name, caller_rva)
+        case.put(caller_rva, raw, retail=raw)
+        case.ptr(caller_rva + 1, site)
+        case.R[caller_rva + 1:caller_rva + 5] = dword(lc.BASE + retail_site)
+    result, status = case.measure()
+    expected = other_target == 'none' and provider_lane != 'generated'
+    callers = [r for r in status if r['name'].startswith('_caller')]
+    assert all(r['closed_strict'] == str(int(expected)) for r in callers)
+    assert result['credit_unique_bytes'] == (6 if expected else 0) + (3 if provider_lane == 'real' else 0)
+    assert result['ilt_routes']['pointer'] >= 1
+    if provider_lane != 'real':
+        assert result[provider_lane]['all']['unique_bytes'] == 3
+        assert next(r for r in status if r['name'] == '_a')['kind'] == provider_lane
+
+
+@pytest.mark.parametrize('provider_source,closed', [
+    ('inputs/vendor/example/example.lib', True),
+    ('game/gen_small/provider.cpp', False),
+    ('game/masm_dumps/provider.asm', False),
+])
+@pytest.mark.parametrize('bad_bytes', [False, True])
+def test_verified_library_is_a_dependency_with_separate_credit_series(case, provider_source, closed, bad_bytes):
+    body = b'\x31\xc0\xc3'
+    provider = case.object('provider.obj', [('.text', body, [])], [('_a', 1, 0, lc.EXTERNAL)])
+    case.row(provider, '_a', A, len(body), source=provider_source, notes='vendored=example-1.0')
+    case.public(provider, '_a', A)
+    case.put(A, b'\x31\xc9\xc3' if bad_bytes else body, retail=body)
+    raw = b'\xe8' + bytes(4) + b'\xc3'
+    caller = case.object('caller.obj', [('.text', raw, [(1, '_a', lc.REL32)])],
+                         [('_caller', 1, 0, lc.EXTERNAL), ('_a', 0, 0, lc.EXTERNAL)])
+    case.row(caller, '_caller', F, len(raw))
+    case.public(caller, '_caller', F)
+    code = b'\xe8' + dword(A - F - 5) + b'\xc3'
+    case.put(F, code, retail=code)
+    result, status = case.measure()
+    assert result['credit_unique_bytes'] == (len(code) if closed and not bad_bytes else 0)
+    provider_kind = next(r['kind'] for r in status if r['name'] == '_a')
+    assert provider_kind != 'real'
+    assert result[provider_kind]['all']['unique_bytes'] == len(body)
+    import closure_report as cr
+    graph = cr.load_graph(case.root / 'measurement' / cr.GRAPH_FILE)
+    assert cr.credit_of(*graph[:3]) == result['credit_unique_bytes']
+
+
+@pytest.mark.parametrize('target_pair,closed', [('body-thunk', True), ('same-thunk', True),
+                                               ('two-thunks', False), ('two-bodies', False)])
+def test_code_route_injectivity_is_settled_across_all_rows(case, target_pair, closed):
+    body = b'\x31\xc0\xc3'
+    provider = case.object('provider.obj', [('.text', body, [])], [('_a', 1, 0, lc.EXTERNAL)])
+    case.row(provider, '_a', A, len(body))
+    case.public(provider, '_a', A)
+    case.put(A, body, retail=body)
+    thunk, second = 0x20000, 0x20010
+    for address in (thunk, second):
+        case.R[address:address + 5] = b'\xe9' + dword(A - address - 5)
+    targets = {'body-thunk': (A, thunk), 'same-thunk': (thunk, thunk),
+               'two-thunks': (thunk, second), 'two-bodies': (A, B)}[target_pair]
+    for index, target in enumerate(targets):
+        name, rva = f'_caller{index}', F + 32 * index
+        raw = b'\xe8' + bytes(4) + b'\xc3'
+        obj = case.object(f'caller{index}.obj', [('.text', raw, [(1, '_a', lc.REL32)])],
+                          [(name, 1, 0, lc.EXTERNAL), ('_a', 0, 0, lc.EXTERNAL)])
+        case.row(obj, name, rva, len(raw))
+        case.public(obj, name, rva)
+        case.put(rva, b'\xe8' + dword(A - rva - 5) + b'\xc3',
+                 retail=b'\xe8' + dword(target - rva - 5) + b'\xc3')
+    result, status = case.measure()
+    assert result['credit_unique_bytes'] == (15 if closed else 3)
+    assert all(r['closed_strict'] == str(int(closed)) for r in status if r['name'].startswith('_caller'))
+    assert all(('code-identity-collapse:' in r['failures']) != closed
+               for r in status if r['name'].startswith('_caller'))

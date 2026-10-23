@@ -688,9 +688,11 @@ def test_call_bound_at_the_ilt_thunk_counts_when_the_thunk_reaches_the_body():
     m = _measure(I, R, items, [])
     assert m.code_ref(0x1800, 0x1100, "?f@@YAXXZ", "?r@@YAXXZ", direct=True) == (None, ("unit", 1))
     assert m.ilt_routes["call"] == 1
+    assert m.code_ref(0x1800, 0x1100, "?f@@YAXXZ", "?r@@YAXXZ") == (None, ("unit", 1))
+    assert m.ilt_routes["pointer"] == 1
     # positive control: a thunk to a different body is a wrong target
     assert m.code_ref(0x1800, 0x1200, "?f@@YAXXZ", "?r@@YAXXZ", direct=True) == ("code-wrong:?f@@YAXXZ", None)
-    assert m.code_ref(0x1800, 0x1100, "?f@@YAXXZ", "?r@@YAXXZ")[0] == "code-wrong:?f@@YAXXZ"
+    assert m.code_collapses() == {0x1800}
     assert m.ilt_body(0x1100) == 0x1900 and m.ilt_body(0x1900) == 0x1900
 
 
@@ -702,8 +704,9 @@ def test_vtable_slot_through_the_ilt():
     vt = ([_sec(1, ".rdata", 4, relocs=[(0, 0, lc.DIR32)])], {0: _sym(0, "??_7X@@6B@", 1)}, b"")
     m = _measure(I, R, [(0x1800, 0x1810, 0x1900, ("unit", 1))], [(0x3000, "??_7X@@6B@", "a.obj")])
     fails, edges, _ = m.data_ref(0x3000, 0x3100, "??_7X@@6B@", vt[1][0], vt, 0)
-    assert fails == ["data-codeptr:??_7X@@6B@"] and edges == {("datum", (0x3000, 0x3100, 4))}
-    assert not m.ilt_routes and not m.dnodes[(0x3000, 0x3100, 4)]["edges"]
+    assert not fails and edges == {("datum", (0x3000, 0x3100, 4))}
+    assert m.ilt_routes["pointer"] == 1
+    assert m.dnodes[(0x3000, 0x3100, 4)]["edges"] == {("unit", 1)}
 
 
 def test_row_kinds_keep_dumps_out_of_credit():

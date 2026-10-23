@@ -6,9 +6,11 @@ same receipt), with BFME1's binding rules:
 
   - Retail was linked /INCREMENTAL: a call or a vtable slot encodes the ILT
     thunk (`jmp body`, 0x1000..0x5B000, or a `?j_` row), never the body.
-    This link is /INCREMENTAL:NO (/ORDER forbids an ILT), so a direct call
+    This link is /INCREMENTAL:NO (/ORDER forbids an ILT), so a reference
     to the body counts when retail's thunk jumps there (`ilt_routes`).
-    Taken addresses, including vtable slots, retain the thunk's identity.
+    Across the measurement, distinct bodies or distinct thunks must not
+    collapse to one linked target. Taking both a thunk and its body's address
+    also preserves their observable inequality.
   - No ICF in retail (/OPT:NOICF here too); distinct retail bodies cannot
     share a provider through byte-twin equivalence.
   - One .text group: BFME1 places EH funclets next to their functions, so a
@@ -66,6 +68,8 @@ fixes of research 29, 31 and the round-2 review:
      node the graph does not hold is never a leaf. Credit = unique retail
      bytes of placed, closed-strict rows in progress.py's recovered source
      lanes; fillers, stubs, generated rows, dumps and prebuilt libraries never count.
+     A byte-verified prebuilt library is a legitimate dependency, with its
+     own series, even though its bytes are not recovered source credit.
   5. A second link at a shifted base (default 0x10000000) with the same
      inputs. The layout must be identical; in every node's bytes (rows'
      code, twins, datums, EH FuncInfo and its maps) non-relocation bytes must
@@ -905,6 +909,10 @@ class Measure:
         self.resolved, self.dnodes, self.twin_edges, self.twin_rels, self.twin_body = {}, {}, {}, {}, {}
         self.import_equiv = 0       # read-through references kept by the (dll, name) rule, not 1:1
         self.ilt_routes = collections.Counter()
+        self.code_targets = collections.defaultdict(set)
+        self.code_thunks = collections.defaultdict(set)
+        self.code_pointers = collections.defaultdict(set)
+        self.code_users = collections.defaultdict(dict)
         self.eh_nodes = {}
         self.datum_conflicts = set()
         self.retail_sites = None
@@ -984,7 +992,7 @@ class Measure:
                 lt, rt = (lv - self.lbase) & 0xFFFFFFFF, (rv - self.rbase) & 0xFFFFFFFF
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
                 direct = ty == REL32 and fo in direct_calls
-                f, e = self.code_ref(lt, rt, tn, owner, direct=direct)
+                f, e = self.code_ref(lt, rt, tn, owner, direct=direct, pointer=ty == DIR32, fails=fails)
                 if f:
                     fails.append(f)
                 elif e:
@@ -1004,7 +1012,7 @@ class Measure:
             if not decoded:
                 fails.append("code-decode-incomplete")
             if fallthrough:
-                f, e = self.code_ref(L + size, rva + size, "fallthrough", owner)
+                f, e = self.code_ref(L + size, rva + size, "fallthrough", owner, pointer=False, fails=fails)
                 if f:
                     fails.append(f)
                 elif e:
@@ -1019,7 +1027,8 @@ class Measure:
                     continue
                 lt = ins.operands[0].imm - self.lbase
                 rt = rva + (lt - L)  # identical unrelocated displacement
-                f, e = self.code_ref(lt, rt, "direct-branch", owner, direct=ins.mnemonic == "call")
+                f, e = self.code_ref(lt, rt, "direct-branch", owner, direct=ins.mnemonic == "call",
+                                     pointer=False, fails=fails)
                 if f:
                     fails.append(f)
                 elif e:
@@ -1036,12 +1045,42 @@ class Measure:
                 break
         return rt
 
-    def code_ref(self, lt, rt, tn, owner, *, direct=False):
+    def code_identity(self, lt, rt, *, pointer=False, fails=None):
+        """Collect all uses before judging injectivity, including later conflicts.
+
+        A thunk and its body are one code identity, but two thunks are not.
+        Taken addresses additionally retain inequality when both raw retail
+        addresses actually occur (as opposed to call-route substitutions).
+        Keep the original provider edge so dumps cannot hide behind a route.
+        """
+        body = self.ilt_body(rt)
+        self.code_targets[lt].add(body)
+        if rt != body:
+            self.code_thunks[lt].add(rt)
+        if pointer:
+            self.code_pointers[lt].add(rt)
+        if fails is not None:
+            self.code_users[lt][id(fails)] = fails
+
+    def code_collapses(self):
+        return {lt for axis in (self.code_targets, self.code_thunks, self.code_pointers)
+                for lt, targets in axis.items() if len(targets) > 1}
+
+    def settle_code_identities(self):
+        for lt in sorted(self.code_collapses()):
+            for fails in self.code_users[lt].values():
+                why = f"code-identity-collapse:0x{lt:08X}"
+                if why not in fails:
+                    fails.append(why)
+
+    def code_ref(self, lt, rt, tn, owner, *, direct=False, pointer=True, fails=None):
         tr, item = self.T(lt)
+        if tr is not None:
+            self.code_identity(lt, rt, pointer=pointer and not direct, fails=fails)
         if tr is not None and tr == rt:
             return None, item
-        if direct and tr is not None and self.ilt_body(rt) == tr:
-            self.ilt_routes["call"] += 1      # retail bound at the thunk, this link at its body
+        if tr is not None and self.ilt_body(rt) == tr:
+            self.ilt_routes["call" if direct else "pointer"] += 1
             return None, item
         s = self.sym_at(lt)
         if s and s[0] == lt and s[1].startswith("__ehhandler$"):
@@ -1062,7 +1101,9 @@ class Measure:
                 # EH helper bodies need a verified provider, including all
                 # of that provider's code/data dependencies and shifted bytes.
                 tr, edge = self.T(la)
-                if tr is None or (tr != ra and not (direct and self.ilt_body(ra) == tr)):
+                if tr is not None:
+                    self.code_identity(la, ra, pointer=not direct, fails=node["fails"])
+                if tr is None or (tr != ra and self.ilt_body(ra) != tr):
                     return False
                 node["edges"].add(edge)
                 return True
@@ -1203,8 +1244,8 @@ class Measure:
             lt = (u32(got, fo) - self.lbase) & 0xFFFFFFFF
             rt = (u32(want, fo) - self.rbase) & 0xFFFFFFFF
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
-                tr, item = self.T(lt)
-                if tr != rt:
+                f, item = self.code_ref(lt, rt, tn, "", fails=node["fails"])
+                if f:
                     node["fails"].append(f"data-codeptr:{name}")
                 else:
                     node["edges"].add(item)
@@ -1369,6 +1410,7 @@ class Measure:
         self.collect_twins()
         self.discover([ref for _, ref in self.pending] + [ref for b in self.twin_body.values() for ref in b[2]]
                       + [ref for node in self.eh_nodes.values() for ref in node["refs"]])
+        self.settle_code_identities()
         self.judge_datums()
         for node in self.eh_nodes.values():
             for ref in node["refs"]:
@@ -2284,7 +2326,7 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
                 edges[e] |= node["edges"]
     # a dump (generated/asm unit) is retail bytes re-encoded, not source: in the
     # source closure an edge into one closes nothing, like a filler
-    dump_units = {u["id"] for u in units if any(r["kind"] in ("generated", "asm", "library") for r in u["rows"])}
+    dump_units = {u["id"] for u in units if any(r["kind"] in ("generated", "asm") for r in u["rows"])}
     src_edges = {n: {("dump", e[1]) if e[0] == "unit" and e[1] in dump_units else e for e in es}
                  for n, es in edges.items()}
     closed = greatest_closure(ok, src_edges, bad_targets=("fill", "stub", "dump"))

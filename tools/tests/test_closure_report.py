@@ -484,13 +484,15 @@ def test_legacy_replay_reports_keep_unbound_label(tmp_path):
         cr.from_graph(run)
 
 
-@pytest.mark.parametrize("dump_kind", [None, "generated", "asm"])
+@pytest.mark.parametrize("dump_kind", [None, "generated", "asm", "library"])
 def test_measure_emits_the_final_bfme1_source_graph_and_data_back(tmp_path, monkeypatch, dump_kind):
     """Exercise measure's integration on in-memory images and finished records; no linker."""
     from collections import Counter
     real = {"name": "f", "kind": "real", "source": "game/f.cpp", "rva": 0x1000, "size": 4}
     other = {"name": "g", "kind": dump_kind or "real", "source":
-             "game/gen_asm/d.asm" if dump_kind == "generated" else "game/masm_dumps/D.asm" if dump_kind else "game/g.cpp",
+             "game/gen_asm/d.asm" if dump_kind == "generated" else
+             "inputs/vendor/example/example.lib" if dump_kind == "library" else
+             "game/masm_dumps/D.asm" if dump_kind else "game/g.cpp",
              "rva": 0x1100, "size": 4}
     units = [{"id": i, "head": r["name"], "rows": [r]} for i, r in enumerate((real, other))]
     recs = [{"row": r, "unit": u, "measured": True, "placed": 1, "linked": r["rva"], "fails": [],
@@ -510,7 +512,7 @@ def test_measure_emits_the_final_bfme1_source_graph_and_data_back(tmp_path, monk
     assert len(checks) == 2  # Graph emission did not repeat shift verdicts.
     assert result["data_back"] == {"address_kind": "rva", "collisions": [
         {"retail_rva": 0x5000, "linked_rvas": [0x4000, 0x4100]}]}
-    assert result["credit_unique_bytes"] == (0 if dump_kind else 8)
+    assert result["credit_unique_bytes"] == (4 if dump_kind == "library" else 0 if dump_kind else 8)
     graph = cr.load_graph(tmp_path / cr.GRAPH_FILE, result["closure_graph_sha256"])
     ok, edges, rows, describe_node = graph
     closed = source_closure(ok, edges)
