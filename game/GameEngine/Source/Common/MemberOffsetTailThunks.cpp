@@ -51,6 +51,7 @@ template <class T> class StringBase
 {
 public:
 	~StringBase() { releaseBuffer(); }
+	void set( const StringBase<T> &other );
 
 private:
 	void releaseBuffer();
@@ -275,7 +276,18 @@ BFME_OFFSET_TAIL_THUNK( Rva00061DC0, Gen00887C90, 4 )
 BFME_OFFSET_TAIL_THUNK( Rva00061DD0, Gen00887C90, 8 )
 BFME_OFFSET_TAIL_THUNK( Rva00072480, Gen00887940, 60 )
 BFME_OFFSET_TAIL_THUNK( Rva000782A0, Gen000775F0, 8 )
-BFME_OFFSET_TAIL_THUNK( Rva00087DF0, Gen00887C90, 20 )
+// 0x00087DF0: MapObject::setName, the name string at +20 set from the argument
+// (identity_evidence/00087df0-mapobject-setname-matched-caller.md).
+class AsciiString;
+class MapObject
+{
+public:
+	void setName( const AsciiString &name );
+};
+void MapObject::setName( const AsciiString &name )
+{
+	( (StringBase<char> *)( (char *)this + 20 ) )->set( *(const StringBase<char> *)&name );
+}
 BFME_OFFSET_TAIL_THUNK( Rva0008E440, Gen00887940, 4 )
 BFME_OFFSET_TAIL_THUNK( Rva000A5640, Gen000A5150, 4 )
 BFME_OFFSET_TAIL_THUNK( Rva000A9CF0, Gen00887940, 4 )

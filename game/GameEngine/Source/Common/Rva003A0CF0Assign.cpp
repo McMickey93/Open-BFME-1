@@ -45,7 +45,7 @@ private:
 
 }
 
-class Rva003A0CF0 : public ScienceInfoBase
+class RankInfo : public ScienceInfoBase
 {
 	Rva00630D00UStr m_0C;
 	int m_10;
@@ -58,10 +58,10 @@ class Rva003A0CF0 : public ScienceInfoBase
 	_STL::vector<ICoord2D> m_2C;
 
 public:
-	Rva003A0CF0 &operator=(const Rva003A0CF0 &other);
+	RankInfo &operator=(const RankInfo &other);
 };
 
-Rva003A0CF0 &Rva003A0CF0::operator=(const Rva003A0CF0 &other)
+RankInfo &RankInfo::operator=(const RankInfo &other)
 {
 	ScienceInfoBase::operator=(other);
 	m_0C = other.m_0C;

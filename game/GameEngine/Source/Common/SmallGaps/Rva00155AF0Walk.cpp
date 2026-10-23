@@ -1,9 +1,11 @@
-// ?rva00155AF0Walk@Rva00155AF0Owner@@QAEXPAX0@Z
-// Address-derived: walk an intrusive circular list rooted at this->m_sentinel
-// (m_sentinel->m_next chain, empty when the walk returns to the sentinel).
+// ?groupFollowWaypointPathAsTeamExact@AIGroup@@QAEXPBVWaypoint@@W4CommandSourceType@@@Z (was ?rva00155AF0Walk@Rva00155AF0Owner@@QAEXPAX0@Z)
+// Address-derived: walk an intrusive circular list rooted at this->m_memberList
+// (m_memberList->m_next chain, empty when the walk returns to the sentinel).
 // Each node's item (node->m_item) has its 0x31c field cleared; if the item's
 // 0x204 pointer is non-null, call the already-named thunk 0x0002169D on the
 // sub-object at (that pointer + 0x20) with (arg1, arg2).
+#include "../../GameLogic/command_source_type.h"
+class Waypoint;
 class Rva00155AF0Thunk
 {
 public:
@@ -27,23 +29,23 @@ struct Rva00155AF0Node
 	Rva00155AF0Item *m_item;
 };
 
-class Rva00155AF0Owner
+class AIGroup
 {
 public:
 	unsigned char m_pad0[4];
-	Rva00155AF0Node *m_sentinel;
+	Rva00155AF0Node *m_memberList;
 
-	void rva00155AF0Walk(void *a, void *b);
+	void groupFollowWaypointPathAsTeamExact(const Waypoint *waypoint, CommandSourceType cmdSource);
 };
 
-void Rva00155AF0Owner::rva00155AF0Walk(void *a, void *b)
+void AIGroup::groupFollowWaypointPathAsTeamExact(const Waypoint *waypoint, CommandSourceType cmdSource)
 {
 	typedef void (Rva00155AF0Thunk::*Fn)(void *, void *);
 	union { void (*raw)(); Fn member; } fn;
 	fn.raw = j_0002169d;
 
-	Rva00155AF0Node *node = m_sentinel->m_next;
-	if (node == m_sentinel)
+	Rva00155AF0Node *node = m_memberList->m_next;
+	if (node == m_memberList)
 		return;
 
 	do
@@ -53,8 +55,8 @@ void Rva00155AF0Owner::rva00155AF0Walk(void *a, void *b)
 		if (item->m_204 != 0)
 		{
 			Rva00155AF0Thunk *obj = (Rva00155AF0Thunk *)(item->m_204 + 0x20);
-			(obj->*fn.member)(a, b);
+			(obj->*fn.member)((void *)waypoint, (void *)cmdSource);
 		}
 		node = node->m_next;
-	} while (node != m_sentinel);
+	} while (node != m_memberList);
 }

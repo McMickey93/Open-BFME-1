@@ -55,36 +55,35 @@ struct Open2MemberNode156070 : public BfmeListNodeBase
 	Open2Member156070 *m_value;
 };
 
-class Open2Group156070
+class Team;
+
+// Retail TEAM_ATTACK_TEAM: the matched ScriptActions::doAttack (0x002F2840) calls this body
+// as groupAttackTeam (identity_evidence/00156070-aigroup-groupattackteam-matched-caller.md).
+class AIGroup
 {
 public:
-	enum GuardMode { OPEN2_GUARD_MODE };
-	enum CommandSourceType { OPEN2_COMMAND_SOURCE };
-
-	void groupGuardPosition( const Coord3D *pos, GuardMode mode,
-			CommandSourceType cmdSource );
+	void groupAttackTeam( const Team *team, int maxShotsToFire, ::CommandSourceType cmdSource );
 
 private:
 	char m_head[ 4 ];
-	BfmeListNodeBase *m_members;
+	BfmeListNodeBase *m_memberList;
 };
 
-// @?groupGuardPosition@Open2Group156070@@QAEXPBUCoord3D@@W4GuardMode@1@W4CommandSourceType@1@@Z 0x00156070
-void Open2Group156070::groupGuardPosition( const Coord3D *pos, GuardMode mode,
-		CommandSourceType cmdSource )
+// @?groupAttackTeam@AIGroup@@QAEXPBVTeam@@HW4CommandSourceType@@@Z 0x00156070
+void AIGroup::groupAttackTeam( const Team *team, int maxShotsToFire, ::CommandSourceType cmdSource )
 {
-	if( !pos )
+	if( !team )
 		return;
 
-	for( BfmeListNodeBase *it = m_members->m_bfmeNext;
-			it != m_members;
+	for( BfmeListNodeBase *it = m_memberList->m_bfmeNext;
+			it != m_memberList;
 			it = it->m_bfmeNext )
 	{
 		Open2GroupAI156070 *ai = ( (Open2MemberNode156070 *)it )->m_value->m_ai;
 
 		if( ai )
-			ai->m_commands.aiGuardPosition( pos, (::GuardMode)mode,
-					(::CommandSourceType)cmdSource );
+			ai->m_commands.aiGuardPosition( (const Coord3D *)team, (::GuardMode)maxShotsToFire,
+					cmdSource );
 	}
 }
 

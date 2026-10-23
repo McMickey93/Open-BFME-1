@@ -1,4 +1,4 @@
-// ?notifyMembers@Rva001558F0Owner@@QAEXHH@Z
+// ?groupFollowWaypointPathExact@AIGroup@@QAEXPBVWaypoint@@W4CommandSourceType@@@Z (was ?notifyMembers@Rva001558F0Owner@@QAEXHH@Z)
 // The forwarded command is real: payload->target+0x20 is the member's
 // AICommandInterface (AIGroupForwardedOrders.cpp reads the same chain), so the
 // callee is AICommandInterface::aiFollowWaypointPathExact and this call reaches
@@ -18,16 +18,16 @@ public:
 struct Rva001558F0Target { char m_pad[0x20]; AICommandInterface m_commands; };
 struct Rva001558F0Payload { char m_pad[0x204]; Rva001558F0Target* m_target; };
 struct Rva001558F0Link { Rva001558F0Link* m_next; Rva001558F0Link* m_prev; Rva001558F0Payload* m_payload; };
-struct Rva001558F0Owner {
+struct AIGroup {
 	int m_0;
 	Rva001558F0Link* m_head;
-	void notifyMembers(int a, int b);
+	void groupFollowWaypointPathExact(const Waypoint *waypoint, CommandSourceType cmdSource);
 };
-void Rva001558F0Owner::notifyMembers(int a, int b)
+void AIGroup::groupFollowWaypointPathExact(const Waypoint *waypoint, CommandSourceType cmdSource)
 {
 	for (Rva001558F0Link* n = m_head->m_next; n != m_head; n = n->m_next) {
 		Rva001558F0Target* t = n->m_payload->m_target;
 		if (t)
-			t->m_commands.aiFollowWaypointPathExact((const Waypoint *)a, (CommandSourceType)b);
+			t->m_commands.aiFollowWaypointPathExact(waypoint, cmdSource);
 	}
 }

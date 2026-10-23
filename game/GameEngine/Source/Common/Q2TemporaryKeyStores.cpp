@@ -57,7 +57,6 @@ public:
 	void Rva0009CEA0();
 	void Rva0009CF00();
 	void Rva0009CF60();
-	void Rva0009CFC0();
 	void Rva0009D020();
 	void Rva000A9880();
 	void Rva000A98E0();
@@ -73,7 +72,21 @@ public:
 Q2_TEMPORARY_KEY_STORE( Rva0009CEA0, "OverallWinStreak", 0 )
 Q2_TEMPORARY_KEY_STORE( Rva0009CF00, "OverallBestWinStreak", 0 )
 Q2_TEMPORARY_KEY_STORE( Rva0009CF60, "OverallLossStreak", 0 )
-Q2_TEMPORARY_KEY_STORE( Rva0009CFC0, "OverallWorstLossStreak", 0 )
+
+// 0x0009CFC0: the matched-caller identity (identity_evidence/
+// 0009cfc0-skirmishbattlehonors-getoverallworstlossstreak-matched-caller.md).
+class SkirmishBattleHonors
+{
+public:
+	int getOverallWorstLossStreak() const;
+};
+
+int SkirmishBattleHonors::getOverallWorstLossStreak() const
+{
+	return reinterpret_cast<UserPreferences *>( const_cast<SkirmishBattleHonors *>( this ) )->getInt(
+		Q2AsciiString( "OverallWorstLossStreak" ), 0 );
+}
+
 Q2_TEMPORARY_KEY_STORE( Rva0009D020, "PreferredSide", 4 )
 Q2_TEMPORARY_KEY_STORE( Rva000A9880, "Highest1vs1Rank", 0 )
 Q2_TEMPORARY_KEY_STORE( Rva000A98E0, "Highest2vs2Rank", 0 )
