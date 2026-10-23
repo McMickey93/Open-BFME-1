@@ -100,7 +100,7 @@ public:
 
 extern EAStringC::StringDataC g_rva012D5298Empty;
 
-EAStringC::EAStringC() : StringBase<char>()
+inline EAStringC::EAStringC() : StringBase<char>()
 {
 	m_data = (EAStringData *)&g_rva012D5298Empty;
 	++((EAStringData *)&g_rva012D5298Empty)->m_refCount;
