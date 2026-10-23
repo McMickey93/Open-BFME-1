@@ -68,12 +68,6 @@ public:
 		((StringBase<char> *)this)->concat(text, length);
 	}
 
-	__forceinline void concat(const AsciiString &other)
-	{
-		const Int length = other.m_data ? other.m_data->length : 0;
-		const char *text = other.m_data ? &other.m_data->data[0] : g_bfmeEmptyAscii;
-		((StringBase<char> *)this)->concat(text, length);
-	}
 
 	const char *str(void) const
 	{
@@ -90,6 +84,13 @@ public:
 		return *this;
 	}
 };
+
+static __forceinline void concat(AsciiString &target, const AsciiString &other)
+{
+	const Int length = other.m_data ? other.m_data->length : 0;
+	const char *text = other.m_data ? &other.m_data->data[0] : g_bfmeEmptyAscii;
+	((StringBase<char> *)&target)->concat(text, length);
+}
 
 class FileSystem
 {
@@ -150,7 +151,7 @@ void AudioEventRTS::adjustForLocalization(AsciiString &strToAdjust)
 			const AudioEventInfo *eventInfo = m_eventInfo;
 			const AudioType audioType = eventInfo->m_soundType;
 			strToAdjust = reinterpret_cast<AudioEventRTS *>(this)->generateFilenamePrefix(retainAudioType(audioType), true);
-			strToAdjust.concat(filename);
+			concat(strToAdjust, filename);
 			return;
 		}
 	}

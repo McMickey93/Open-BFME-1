@@ -10,6 +10,7 @@
 typedef bool Bool;
 
 class AsciiString;
+static inline void concat(AsciiString &target, const AsciiString &source);
 class UnicodeString;
 
 template <typename T> struct BfmeStringHeader
@@ -72,20 +73,22 @@ public:
 
     void translate(const UnicodeString &source);
 
-    void concat(const AsciiString &source)
-    {
-        BfmeStringHeader<char> *data =
-            (BfmeStringHeader<char> *)source.m_data;
-        int length = data ? data->length : 0;
-        const char *text = source.str();
-        ((StringBase<char> *)this)->concat(text, length);
-    }
+    friend void concat(AsciiString &target, const AsciiString &source);
 
     const char *str() const
     {
         return m_data ? (const char *)m_data + 8 : "";
     }
 };
+
+static inline void concat(AsciiString &target, const AsciiString &source)
+{
+    BfmeStringHeader<char> *data =
+        (BfmeStringHeader<char> *)source.m_data;
+    int length = data ? data->length : 0;
+    const char *text = source.str();
+    ((StringBase<char> *)&target)->concat(text, length);
+}
 
 class GameTextInterface
 {
@@ -147,8 +150,8 @@ void saveReplay(UnicodeString filename)
     }
 
     AsciiString fullPath = TheRecorder->getReplayDir();
-    fullPath.concat(translated);
-    fullPath.concat(TheRecorder->getReplayExtention());
+    concat(fullPath, translated);
+    concat(fullPath, TheRecorder->getReplayExtention());
 
     const char *pathText = fullPath.str();
     replayPath.assign(pathText, pathText + strlen(pathText));
