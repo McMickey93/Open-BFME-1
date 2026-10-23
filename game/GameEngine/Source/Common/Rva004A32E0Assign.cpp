@@ -10,6 +10,7 @@ struct Rva004A32E0Prefix { unsigned char storage[12]; };
 class Rva004A32E0CallReceiver {};
 extern void j_00048725();
 extern void j_0000efde();
+extern void j_00007a63();
 
 #include "string_base.h"
 
@@ -143,6 +144,12 @@ public:
 
 Rva004A32E0Record &Rva004A32E0Record::operator=(const Rva004A32E0Record &other)
 {
+    // Preserve the observed vector-assignment ABI through its retail ILT.
+    union {
+        void (*raw)();
+        _STL::vector<AsciiString> &(_STL::vector<AsciiString>::*assign)(const _STL::vector<AsciiString> &);
+    } target;
+    target.raw = j_00007a63;
     union PrefixCall {
         void (*address)();
         void *(Rva004A32E0CallReceiver::*method)(const Rva004A32E0Prefix &);
@@ -156,13 +163,13 @@ Rva004A32E0Record &Rva004A32E0Record::operator=(const Rva004A32E0Record &other)
 	m_1C = other.m_1C;
 	m_20 = other.m_20;
 	m_24 = other.m_24;
-	m_28 = other.m_28;
+	(m_28.*target.assign)(other.m_28);
 	m_34 = other.m_34;
 	m_38 = other.m_38;
 	m_3C.set(other.m_3C);
 	m_40.set(other.m_40);
-	m_44 = other.m_44;
-	m_50 = other.m_50;
+	(m_44.*target.assign)(other.m_44);
+	(m_50.*target.assign)(other.m_50);
 	m_5C.set(other.m_5C);
 	m_60.set(other.m_60);
 	m_64.set(other.m_64);
@@ -175,7 +182,7 @@ Rva004A32E0Record &Rva004A32E0Record::operator=(const Rva004A32E0Record &other)
 	m_80 = other.m_80;
 	m_84 = other.m_84;
 	m_90 = other.m_90;
-	m_94 = other.m_94;
+	(m_94.*target.assign)(other.m_94);
 	m_A0 = other.m_A0;
 	m_A4 = other.m_A4;
 	m_A8 = other.m_A8;
