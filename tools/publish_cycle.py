@@ -42,6 +42,7 @@ def validate_run(run_dir, *, root=ROOT):
         raw = rpath.read_bytes()
         receipt = ca.read_json(rpath)
         ca.check_receipt(receipt, root)
+        ca.check_compile_inputs(run, receipt)
         if receipt.get("moved_during_run") or receipt.get("remeasured_utc"):
             raise RunError("receipt records changed inputs or a diagnostic remeasure")
         rejected = run / "receipt.rejected.json"
@@ -116,6 +117,8 @@ def make_bundle(run_dir, out, producer, *, root=ROOT, now=None, closure=None, pr
         (tmp / ca.RECEIPT).write_bytes(facts["receipt_bytes"])
         gzip_bytes(ca.read_member(facts["status"]), tmp / ca.LINK_STATUS)
         shutil.copyfile(facts["graph"], tmp / ca.CLOSURE_GRAPH)
+        if facts["receipt"].get("compile_inputs_sha256"):
+            shutil.copyfile(facts["run_dir"] / ca.COMPILE_INPUTS, tmp / ca.COMPILE_INPUTS)
         if (facts["run_dir"] / ca.PROVENANCE).is_file():
             ca.same("run provenance", ca.sha256_file(facts["run_dir"] / ca.PROVENANCE),
                     facts["receipt"]["provenance_sha256"])

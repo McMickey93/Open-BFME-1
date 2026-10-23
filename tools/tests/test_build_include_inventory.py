@@ -1,6 +1,7 @@
 """A new earlier include must invalidate an object with unchanged old dependencies."""
 import json
 import os
+import struct
 from pathlib import Path
 import sys
 
@@ -21,7 +22,7 @@ def _fixture(tmp_path, monkeypatch):
     original = late / "Common" / "MessageStream.h"
     original.write_text("#define PACKET_RANGE 6\n")
     output = root / "NetPacket.obj"
-    output.write_bytes(b"old object")
+    output.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
     command = ["cl", "-I" + str(early), "-I" + str(late)]
     env = {}
     monkeypatch.setattr(build, "ROOT", root)
@@ -82,7 +83,7 @@ def test_legacy_header_free_receipt_remains_reusable(tmp_path, monkeypatch):
     source = tmp_path / "bare.cpp"
     source.write_text("int f() { return 1; }\n")
     output = tmp_path / "bare.obj"
-    output.write_bytes(b"old object")
+    output.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
     command, env = ["cl"], {}
     monkeypatch.setattr(build, "ROOT", tmp_path)
     monkeypatch.setattr(build, "compiler_command", lambda *_: (command, env))
@@ -99,7 +100,7 @@ def test_legacy_empty_deps_with_include_directive_misses(tmp_path, monkeypatch):
     source = tmp_path / "broken.cpp"
     source.write_text('#inc\\\nlude "Later.h"\n')
     output = tmp_path / "broken.obj"
-    output.write_bytes(b"old object")
+    output.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
     monkeypatch.setattr(build, "ROOT", tmp_path)
     monkeypatch.setattr(build, "compiler_command", lambda *_: (["cl"], {}))
     monkeypatch.setattr(build, "_cmd_fingerprint", lambda *_: "command")
@@ -198,7 +199,7 @@ def test_legacy_asm_without_include_can_still_reuse(tmp_path, monkeypatch):
     source = tmp_path / "body.asm"
     source.write_text("body PROC\nret\nbody ENDP\n")
     output = tmp_path / "body.obj"
-    output.write_bytes(b"old object")
+    output.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
     monkeypatch.setattr(build, "ROOT", tmp_path)
     monkeypatch.setattr(build, "compiler_command", lambda *_: (["ml"], {}))
     monkeypatch.setattr(build, "_cmd_fingerprint", lambda *_: "command")

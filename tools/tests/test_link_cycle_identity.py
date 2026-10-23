@@ -296,7 +296,6 @@ def test_bfme1_wrong_retail_copy_still_charges_despite_proven_kept_copy():
 
 def test_provenance_uses_bfme1_current_object_owner_and_canonical_identity(tmp_path, monkeypatch):
     import json
-    import link_cycle_context as ctx
     source, obj = tmp_path / "game/a.cpp", tmp_path / "build/a.obj"
     source.parent.mkdir()
     obj.parent.mkdir()
@@ -310,12 +309,12 @@ def test_provenance_uses_bfme1_current_object_owner_and_canonical_identity(tmp_p
     def current(src, path, **kw):
         calls.append((src, path, kw))
         return True
-    monkeypatch.setattr(ctx, "current_object", current)
+    monkeypatch.setattr(lc.build, "compile_is_current", current)
     out = tmp_path / "out"
     out.mkdir()
     digest, proofs, canon = lc.provenance([], [obj], lc.Objects([obj]), out)
     record = json.loads((out / "provenance.json").read_text())["build/a.obj"]
-    assert calls and proofs == {"inventory": 1}
+    assert calls and proofs == {"deps": 1}
     assert record["object_canon"] and canon["objects_canon_digest"]
     assert digest == lc.sha256(out / "provenance.json")
     # A COFF symbol-type mutation is invisible to the older identity but bound
@@ -327,7 +326,7 @@ def test_provenance_uses_bfme1_current_object_owner_and_canonical_identity(tmp_p
     obj.write_bytes(raw)
     with pytest.raises(SystemExit, match="changed with no compile"):
         lc.provenance([], [obj], lc.Objects([obj]), out)
-    monkeypatch.setattr(ctx, "current_object", lambda *a, **kw: False)
+    monkeypatch.setattr(lc.build, "compile_is_current", lambda *a, **kw: False)
     with pytest.raises(SystemExit, match="not current"):
         lc.provenance([], [obj], lc.Objects([obj]), out)
 
@@ -393,7 +392,7 @@ def test_remeasurement_preserves_original_receipt_and_artifacts(tmp_path, monkey
     monkeypatch.setattr(lc, "plan_order", lambda *a: ([], {}, {}))
     monkeypatch.setattr(lc, "filler_chunks", lambda *a: [])
 
-    def provenance(rows, present, objs, destination):
+    def provenance(rows, present, objs, destination, **kwargs):
         (destination / "provenance.json").write_text("{}")
         return lc.sha256(destination / "provenance.json"), {}, {}
 

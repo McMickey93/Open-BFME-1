@@ -2271,6 +2271,7 @@ def head():
 
 
 _INPUT_RECEIPTS = None
+_DEFAULT_RECEIPTS = object()
 
 
 def input_receipts():
@@ -2287,7 +2288,8 @@ def input_receipts():
     return _INPUT_RECEIPTS
 
 
-def object_current(source, obj, *, inventory_cache=None, allow_fresh=True):
+def object_current(source, obj, *, inventory_cache=None, allow_fresh=True,
+                   receipts=_DEFAULT_RECEIPTS):
     """Use the full gate's receipt, including new higher-priority headers.
 
     Object timestamps alone cannot prove source or header bytes, and recorded
@@ -2297,7 +2299,8 @@ def object_current(source, obj, *, inventory_cache=None, allow_fresh=True):
         return True
     if not allow_fresh:
         return False
-    receipts = input_receipts()
+    if receipts is _DEFAULT_RECEIPTS:
+        receipts = input_receipts()
     return receipts is not None and receipts.current(source, obj)
 
 
@@ -2333,12 +2336,15 @@ def describe_stale(stale, why):
     return f"{len(stale):,} stale objects: {shown}"
 
 
-def stale_objects(present, sources, why=None):
+def stale_objects(present, sources, why=None, *, receipts=_DEFAULT_RECEIPTS, proofs=None):
     """Check source objects, using fresh proofs across mutable broad roots.
 
-    why, when given, maps each stale object to the check that failed."""
+    why, when given, maps each stale object to the check that failed. Callers
+    measuring outside the census supply their own receipts and proof map."""
     why = {} if why is None else why
-    receipts = input_receipts()
+    proofs = {} if proofs is None else proofs
+    if receipts is _DEFAULT_RECEIPTS:
+        receipts = input_receipts()
     if receipts is not None:
         import census_receipts
         entries = getattr(receipts, "entries", {})
@@ -2355,6 +2361,10 @@ def stale_objects(present, sources, why=None):
                                        allow_fresh=False)]
     if not build._inventory_cache_still_current(inventory_cache):
         raise SystemExit("link_census: include search directories changed while checking objects; retry")
+    uncached_set = set(uncached)
+    for obj in present:
+        if obj in sources and obj not in receipt_set and obj not in uncached_set:
+            proofs[obj] = "deps"
     if receipts is None:
         for obj in uncached:
             why[obj] = "normal cache not current"
@@ -2373,6 +2383,8 @@ def stale_objects(present, sources, why=None):
             if not current:
                 why[obj] = reason
                 stale.append(obj)
+            else:
+                proofs[obj] = "receipt"
     if not build._inventory_cache_still_current(inventory_cache):
         raise SystemExit("link_census: include search directories changed while checking objects; retry")
     return stale

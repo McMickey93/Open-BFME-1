@@ -605,7 +605,19 @@ def test_sound_differential_measurement_and_verdicts(tmp_path, monkeypatch):
     for name in ("Measure", "Shifted", "analyze", "row_kind", "load_pins", "greatest_closure",
                  "plan_order", "filler_chunks", "read_map", "zz_objects", "object_identity"):
         assert ast.dump(old_nodes[name]) == ast.dump(new_nodes[name]), name
-    assert git(ROOT, "show", BASELINE + ":tools/link_census.py") == (ROOT / "tools/link_census.py").read_text().strip()
+    # Currency now accepts caller-owned receipts and reports the proof kind.
+    # Every other census node, including all verdict policy, stays identical.
+    def census_policy(source):
+        tree = ast.parse(source)
+        tree.body = [node for node in tree.body
+                     if not (isinstance(node, ast.FunctionDef)
+                             and node.name in {"object_current", "stale_objects"})
+                     and not (isinstance(node, ast.Assign)
+                              and any(isinstance(t, ast.Name) and t.id == "_DEFAULT_RECEIPTS"
+                                      for t in node.targets))]
+        return ast.dump(tree)
+    assert census_policy(git(ROOT, "show", BASELINE + ":tools/link_census.py")) == census_policy(
+        (ROOT / "tools/link_census.py").read_text())
     # All keep-rule verdict combinations and selected-owner choices agree.
     old_census = types.ModuleType("review_prior_census")
     old_census.__file__ = str(ROOT / "tools/link_census.py")

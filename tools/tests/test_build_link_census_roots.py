@@ -1,5 +1,6 @@
 """Root-cause checks for STLport include inventories used by link census."""
 import json
+import struct
 import tempfile
 import unittest
 from pathlib import Path
@@ -53,7 +54,7 @@ class LinkCensusSearchRootTests(unittest.TestCase):
         original.write_text("#define PACKET_RANGE 6\n")
         output = self.root / "build" / "match" / "NetPacket.obj"
         output.parent.mkdir(parents=True)
-        output.write_bytes(b"object")
+        output.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
         command = ["cl", "-I" + str(early), "-I" + str(late), "-I" + str(self.root)]
         env = {"INCLUDE": ""}
         with patch.object(build, "ROOT", self.root), \

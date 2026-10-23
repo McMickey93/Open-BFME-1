@@ -129,8 +129,10 @@ import build  # noqa: E402
 import link_census as census  # noqa: E402
 import link_cycle_context as context  # noqa: E402
 import cycle_source  # noqa: E402
+import census_receipts  # noqa: E402
 
 OUT = ROOT / "build" / "link_cycle"
+COMPILE_INPUTS = "compile_inputs.json"
 BASE = 0x400000
 SHIFT_BASE = 0x10000000
 # BFME1 has one text group; funclets stay beside their functions.
@@ -157,6 +159,7 @@ class Sym:
 
 def parse_coff(data):
     """(sections, {raw index: Sym}) of an i386 COFF object."""
+    build.validate_coff(data)
     _, nsec, _, symptr, nsym, opt, _ = struct.unpack_from("<HHIIIHH", data, 0)
     strtab = symptr + nsym * 18
 
@@ -316,6 +319,9 @@ class Objects:
                 self.cache[p] = parse_coff(data) + (data,)
             except FileNotFoundError:
                 self.cache[p] = None
+            except (ValueError, IndexError, struct.error) as error:
+                raise SystemExit(f"link_cycle: invalid COFF object {p}: {error}; "
+                                 "delete it and rerun with --build") from None
         return self.cache[p]
 
     def defined(self, o):
@@ -1598,7 +1604,50 @@ def input_state(allow_dirty=False, *, final=False):
                 inputs=context.input_hashes(ROOT))
 
 
-def provenance(rows, present, objs, out):
+def cycle_input_receipts(out):
+    """Load only this cycle's bound witness, never the census's receipts."""
+    path = Path(out) / "receipt.json"
+    if not path.exists():
+        return None
+    receipt = json.loads(path.read_text())
+    if not receipt.get("compile_input_run"):
+        return None
+    proof = Path(out) / COMPILE_INPUTS
+    if not proof.is_file() or sha256(proof) != receipt.get("compile_inputs_sha256"):
+        raise SystemExit("link_cycle: corrupt compile input receipts; rerun with --build")
+    receipts = census_receipts.Receipts.load(proof, receipt["compile_input_run"])
+    if receipts is None:
+        raise SystemExit("link_cycle: invalid compile input receipts; rerun with --build")
+    return receipts
+
+
+def compile_cycle_rows(rows, sources, out):
+    receipts = census_receipts.Receipts(Path(out) / COMPILE_INPUTS)
+    receipts.path.unlink(missing_ok=True)
+    failed = []
+    try:
+        source_outputs = build.compile_rows(rows, sources, input_proof=receipts)
+        census._refresh_missing_search_root_receipts(rows, source_outputs, receipts)
+    except SystemExit as error:
+        # A successful uncacheable TU is still proven by its witnessed compile.
+        source_map = {build.obj_path(Path(s)): Path(s) for s in sources
+                      if Path(s).suffix.lower() != build.LIB_SUFFIX}
+        stale = census.stale_objects(list(source_map), source_map, receipts=receipts)
+        failed = sorted(source_map[p].relative_to(ROOT).as_posix() for p in stale)
+        if not failed:
+            raise
+        print(f"link_cycle: {len(failed)} TU(s) failed to compile ({error}): {failed[:5]}", flush=True)
+    finally:
+        receipts.save()
+    return receipts, failed
+
+
+def compile_input_binding(receipts):
+    return ({"compile_input_run": receipts.run, "compile_inputs_sha256": sha256(receipts.path)}
+            if receipts is not None else {})
+
+
+def provenance(rows, present, objs, out, *, receipts=None):
     """Per-TU provenance of every link input: source, its sha256, the compile's
     dependency record (command fingerprint, header digests) and the object's
     identity. Refuses an object its source no longer produces (a stale cache),
@@ -1611,34 +1660,30 @@ def provenance(rows, present, objs, out):
         before = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         before = {}
-    inventory, stale, prov, tampered = {}, [], {}, []
+    currency, why = {}, {}
+    stale = census.stale_objects(present, sources, why, receipts=receipts, proofs=currency)
+    if stale:
+        raise SystemExit(f"link_cycle: {len(stale)} object(s) are not current for their sources (stale cache), "
+                         f"{census.describe_stale(stale, why)}; run with --build")
+    prov, tampered = {}, []
     for p in present:
         rel = Path(p).relative_to(ROOT).as_posix()
         o = objs.get(p)
         rec = {"object": object_identity(o) if o else None, "object_canon": canonical_identity(o) if o else None}
         src = sources.get(p)
         if src is not None and Path(src).suffix.lower() != build.LIB_SUFFIX:
-            if context.current_object(src, p, inventory_cache=inventory):
-                rec["proof"] = "inventory"
-            elif context.current_object(src, p):
-                # the compile could not inventory its include search (macro or parent-traversing
-                # includes): source, command and every recorded header still prove it
-                rec["proof"] = "deps"
-            else:
-                stale.append(rel)
+            rec["proof"] = currency[p]
             side = Path(p).with_suffix(".deps.json")
             rec.update(source=Path(src).relative_to(ROOT).as_posix(), source_sha256=sha256(src),
                        deps_sha256=sha256(side) if side.exists() else None)
         prov[rel] = rec
         old = before.get(rel)
-        if (old and rec.get("deps_sha256") and old.get("deps_sha256") == rec["deps_sha256"]
+        if (old and rec.get("proof") == "deps" and rec.get("deps_sha256")
+                and old.get("deps_sha256") == rec["deps_sha256"]
                 and old.get("source_sha256") == rec["source_sha256"]
                 and (old.get("object") != rec["object"] or
                      (old.get("object_canon") is not None and old["object_canon"] != rec["object_canon"]))):
             tampered.append(rel)
-    if stale:
-        raise SystemExit(f"link_cycle: {len(stale)} object(s) are not current for their sources (stale cache), "
-                         f"e.g. {stale[:5]}; run with --build")
     if tampered:
         raise SystemExit(f"link_cycle: {len(tampered)} object(s) changed with no compile behind the change, "
                          f"e.g. {tampered[:5]}; delete them (and their .deps.json) and run with --build")
@@ -1700,6 +1745,7 @@ def receipt_core(receipt):
             "untracked_sha256", "closure_graph_sha256", "rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
             "retail_sha256", "toolchain_sha256", "inputs", "objects_digest", "provenance_sha256", "objects",
             "objects_missing", "compile_failed", "currency_proofs", "quarantine_sha256", "stubs_sha256",
+            "compile_input_run", "compile_inputs_sha256",
             "not_ordered", "not_ordered_bytes", "analyze",
             "scaffold", "final_link", "series")
     return {k: receipt[k] for k in keep if k in receipt}
@@ -1744,7 +1790,8 @@ def write_receipt(out, receipt, name="receipt.json"):
     import shutil
     expected = {CLOSURE_GRAPH: receipt.get("closure_graph_sha256"),
                 "link_status.csv": receipt.get("series", {}).get("link_status_sha256"),
-                "provenance.json": receipt.get("provenance_sha256")}
+                "provenance.json": receipt.get("provenance_sha256"),
+                COMPILE_INPUTS: receipt.get("compile_inputs_sha256")}
     for member, want in expected.items():
         source = Path(out) / member
         if source.exists():
@@ -1811,22 +1858,17 @@ def cycle(args):
     start = input_state(getattr(args, "allow_dirty", False))                      # bound at START, re-proved before recording
     rows = census.ledger()
     compile_failed = []
+    receipts = None
     if args.build:
         t = time.time()
         os.environ.setdefault("BUILD_POOL", str(max(1, (os.cpu_count() or 2) - 2)))
         build.ensure_case_shims()
         sources = census.compile_sources(rows)
-        try:
-            build.compile_rows(rows, sources)
-        except SystemExit as e:
-            # every other TU still compiled (the pool drains); a failed TU's object, old or
-            # absent, is left out of the link and named in the receipt
-            compile_failed = sorted(Path(s).relative_to(ROOT).as_posix() for s in sources
-                                    if Path(s).suffix.lower() != build.LIB_SUFFIX
-                                    and not build.compile_is_current(Path(s), build.obj_path(Path(s))))
-            print(f"link_cycle: {len(compile_failed)} TU(s) failed to compile ({e}): {compile_failed[:5]}",
-                  flush=True)
+        receipts, compile_failed = compile_cycle_rows(rows, sources, out)
         times["compile"] = round(time.time() - t)
+    else:
+        receipts = cycle_input_receipts(out)
+    compile_inputs = compile_input_binding(receipts)
     t = time.time()
     present, missing = census.objects(rows)
     failed_objs = {build.obj_path(ROOT / s) for s in compile_failed}
@@ -1839,7 +1881,7 @@ def cycle(args):
     objs = Objects(present)
     units, astat = analyze(rows, objs)
     obj_digest = objects_digest(objs, present)
-    prov_digest, proofs, canon = provenance(rows, present, objs, out)
+    prov_digest, proofs, canon = provenance(rows, present, objs, out, receipts=receipts)
     times["provenance"] = round(time.time() - t)
     pe_r, R, rsecs, rimp = pe_view(build.EXE)
     text0, textsz = rsecs[".text"]
@@ -1928,7 +1970,7 @@ def cycle(args):
     t = time.time()
     res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, shift_res is not None, args.shift_base)
     times["measure"] = round(time.time() - t)
-    receipt = dict(start, **canon, tool="link_cycle", rules=RULES,
+    receipt = dict(start, **canon, **compile_inputs, tool="link_cycle", rules=RULES,
                    settings={"shift_base": args.shift_base, "raw_dumps": args.raw_dumps},
                    closure_graph_sha256=res["closure_graph_sha256"],
                    date_utc=time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
@@ -1953,9 +1995,11 @@ def cycle(args):
     current_objs = Objects(present)
     if objects_digest(current_objs, present) != obj_digest:
         moved.append("objects_digest")
-    end_prov, end_proofs, end_canon = provenance(rows, present, current_objs, out)
+    end_prov, end_proofs, end_canon = provenance(rows, present, current_objs, out, receipts=receipts)
     if (end_prov, end_proofs, end_canon) != (prov_digest, proofs, canon):
         moved.append("provenance")
+    if compile_input_binding(receipts) != compile_inputs:
+        moved.append("compile_inputs")
     record_run_evidence(receipt, start, end, args)
     receipt["authoritative"] = receipt["authoritative"] and not moved
     times["total"] = round(time.time() - t_all)
@@ -2308,6 +2352,8 @@ def main(argv=None):
 
 def remeasure(args):
     out = Path(args.out)
+    receipts = cycle_input_receipts(out)
+    compile_inputs = compile_input_binding(receipts)
     start = input_state(getattr(args, "allow_dirty", False))
     rows = census.ledger()
     present, _ = census.objects(rows)
@@ -2328,12 +2374,15 @@ def remeasure(args):
     t = time.time()
     diagnostic = out / "remeasured" / str(time.time_ns())
     diagnostic.mkdir(parents=True)
+    if receipts is not None:
+        import shutil
+        shutil.copyfile(receipts.path, diagnostic / COMPILE_INPUTS)
     obj_digest = objects_digest(objs, present)
-    prov_digest, proofs, canon = provenance(rows, present, objs, diagnostic)
+    prov_digest, proofs, canon = provenance(rows, present, objs, diagnostic, receipts=receipts)
     res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, True, args.shift_base, artifact_out=diagnostic)
     print(json.dumps(res, indent=1))
     path = out / "receipt.json"
-    receipt = dict(start, **canon, tool="link_cycle", rules=RULES, authoritative=False,
+    receipt = dict(start, **canon, **compile_inputs, tool="link_cycle", rules=RULES, authoritative=False,
                    source_receipt_sha256=sha256(path) if path.exists() else None,
                    diagnostic="remeasured, link input currency not proven", series=res,
                    objects_digest=obj_digest, provenance_sha256=prov_digest, currency_proofs=proofs,
@@ -2341,11 +2390,12 @@ def remeasure(args):
                    settings={"shift_base": args.shift_base, "raw_dumps": args.raw_dumps},
                    seconds={"measure": round(time.time() - t)})
     current_objs = Objects(present)
-    end_prov = provenance(rows, present, current_objs, diagnostic)
+    end_prov = provenance(rows, present, current_objs, diagnostic, receipts=receipts)
     end = input_state(getattr(args, "allow_dirty", False), final=True)
     record_run_evidence(receipt, start, end, args, remeasure=True)
     if (start != end
             or objects_digest(current_objs, present) != obj_digest
+            or compile_input_binding(receipts) != compile_inputs
             or end_prov != (prov_digest, proofs, canon)):
         raise SystemExit("link_cycle: inputs moved during diagnostic remeasurement")
     write_receipt(diagnostic, receipt)

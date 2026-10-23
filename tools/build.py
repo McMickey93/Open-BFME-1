@@ -1391,11 +1391,69 @@ def _compile_receipt_preflight(source, output):
     return meta, is_cl, legacy_header_free, retry_dirs
 
 
+def validate_coff(data):
+    """Reject incomplete i386 objects before trusting a compile receipt."""
+    if len(data) < 20:
+        raise ValueError("truncated COFF header")
+    machine, nsec, _, symptr, nsym, opt, _ = struct.unpack_from("<HHIIIHH", data)
+    if machine != 0x14c or opt != 0:
+        raise ValueError("not an i386 COFF object")
+    section_end = 20 + nsec * 40
+    if section_end > len(data):
+        raise ValueError("truncated COFF section table")
+    strings = b""
+    if symptr or nsym:
+        end = symptr + nsym * 18
+        if symptr < section_end or end + 4 > len(data):
+            raise ValueError("truncated COFF symbol table")
+        length = u32(data, end)
+        if length < 4 or end + length > len(data):
+            raise ValueError("truncated COFF string table")
+        strings = data[end:end + length]
+
+    def long_name(offset):
+        if offset < 4 or offset >= len(strings) or strings.find(b"\0", offset) < 0:
+            raise ValueError("invalid COFF string offset")
+
+    for k in range(nsec):
+        offset = 20 + k * 40
+        name = data[offset:offset + 8].rstrip(b"\0")
+        if name.startswith(b"/"):
+            long_name(int(name[1:]))
+        size, raw, rel = struct.unpack_from("<III", data, offset + 16)
+        nrel, nline = struct.unpack_from("<HH", data, offset + 32)
+        line = u32(data, offset + 28)
+        if ((raw and (raw < section_end or raw + size > len(data)))
+                or (nrel and (rel < section_end or rel + nrel * 10 > len(data)))
+                or (nline and (line < section_end or line + nline * 6 > len(data)))):
+            raise ValueError("truncated COFF section contents")
+        if size and not raw and not (u32(data, offset + 36) & 0x80):
+            raise ValueError("missing COFF section contents")
+    index = 0
+    while index < nsym:
+        offset = symptr + index * 18
+        if data[offset:offset + 4] == b"\0" * 4:
+            long_name(u32(data, offset + 4))
+        index += 1 + data[offset + 17]
+        if index > nsym:
+            raise ValueError("truncated COFF auxiliary symbols")
+
+
+def object_is_valid(output):
+    try:
+        validate_coff(Path(output).read_bytes())
+        return True
+    except (OSError, ValueError, struct.error):
+        return False
+
+
 def compile_is_current(source, output, *, check_command=True, inventory_cache=None):
     """Reuse only when command, source, included headers and search paths agree.
     This is what makes skipping a TU in the full gate safe — the old behavior
     (recompile everything / trust BUILD_RECOMPILE_ONLY blindly) either burned
     ~17 min per gate or could re-verify a stale obj after a header edit."""
+    if not object_is_valid(output):
+        return False
     receipt = _compile_receipt_preflight(source, output)
     if receipt is None:
         return False
@@ -2935,7 +2993,7 @@ def compile_rows(rows, sources, *, input_proof=None):
     if recompile_only is not None:
         wanted = {w for w in recompile_only.split(";") if w}
         to_compile = [s for s in sources
-                      if str(s.relative_to(ROOT)) in wanted or not source_outputs[s].exists()]
+                      if str(s.relative_to(ROOT)) in wanted or not object_is_valid(source_outputs[s])]
         print(f"Incremental compile: {len(to_compile)} of {len(sources)} source(s)")
     else:
         # Sound dep-cache: skip every TU whose obj provably matches its current

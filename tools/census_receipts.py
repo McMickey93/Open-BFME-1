@@ -322,6 +322,8 @@ class Receipts:
         try:
             if entry["source"] != str(source.resolve()) or entry["object"] != digest(output):
                 return False, "receipt inputs differ: source or object"
+            if not build.object_is_valid(output):
+                return False, "receipt object is not a complete COFF object"
             command, env = build.compiler_command(source, output)
             # Retry flags are deterministic and stored only for this fresh
             # successful compile; require the base command to be its prefix.

@@ -167,9 +167,9 @@ def target_identity(path):
         pe.close()
 
 
-def current_object(source, obj, **kwargs):
-    import build
-    return build.compile_is_current(source, obj, **kwargs)
+def current_object(source, obj, *, receipts=None, **kwargs):
+    import link_census
+    return link_census.object_current(source, obj, receipts=receipts, **kwargs)
 
 
 def source_kind(row):

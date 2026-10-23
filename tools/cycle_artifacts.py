@@ -58,7 +58,8 @@ RANK_JSON = "data_back_rank.json"
 CYCLE_DIFF = "cycle_diff.json"
 MEMBERS = (RECEIPT, LINK_STATUS, CLOSURE_GRAPH, CLOSURE_ROOTS, CLOSURE_BLOCKERS, RANK_JSON)
 PROVENANCE = "provenance.json"
-OPTIONAL = (CYCLE_DIFF, PROVENANCE)
+COMPILE_INPUTS = "compile_inputs.json"
+OPTIONAL = (CYCLE_DIFF, PROVENANCE, COMPILE_INPUTS)
 TAG_PREFIX = "bfme1-link-cycle/"
 TAG = re.compile(r"^bfme1-link-cycle/([0-9a-f]{12})-(\d{8}T\d{6}Z)-([0-9a-f]{12})$")
 SHA = re.compile(r"^[0-9a-f]{64}$")
@@ -340,7 +341,30 @@ def check_receipt(receipt, root=ROOT):
     for key in ("objects_digest", "objects_canon_digest", "provenance_sha256", "provenance_canon_sha256"):
         if not SHA.fullmatch(str(receipt.get(key, ""))):
             raise BundleError(f"receipt lacks {key}")
+    if receipt.get("compile_input_run") or receipt.get("compile_inputs_sha256") \
+            or receipt.get("currency_proofs", {}).get("receipt"):
+        if not isinstance(receipt.get("compile_input_run"), str) or not receipt["compile_input_run"] \
+                or not SHA.fullmatch(str(receipt.get("compile_inputs_sha256", ""))):
+            raise BundleError("receipt lacks compile input proof identity")
     core_check(receipt, root)
+
+
+def check_compile_inputs(directory, receipt):
+    """Bind the witnessed compile proof as a run and bundle member."""
+    path = Path(directory) / COMPILE_INPUTS
+    want = receipt.get("compile_inputs_sha256")
+    if not want:
+        if path.exists():
+            raise BundleError("unbound compile input receipts")
+        return
+    if not path.is_file() or path.is_symlink():
+        raise BundleError("missing compile input receipts")
+    same("compile input receipts", sha256_file(path), want)
+    doc = read_json(path)
+    same("compile input receipt version", doc.get("version"), 1)
+    same("compile input receipt run", doc.get("run"), receipt["compile_input_run"])
+    if not isinstance(doc.get("entries"), dict):
+        raise BundleError("invalid compile input receipt entries")
 
 
 def binding_of(receipt):
@@ -351,7 +375,9 @@ def binding_of(receipt):
             "closure_graph_sha256", "canon_rules", "measure_env", "toolchain_sha256",
             "checkout_start", "checkout_end", "run_options", "dirty", "allow_dirty", "warm_start",
             "compile_failed", "moved_during_run", "diagnostic")
-    return {k: receipt.get(k) for k in keys}
+    binding = {k: receipt.get(k) for k in keys}
+    binding.update({k: receipt[k] for k in ("compile_input_run", "compile_inputs_sha256") if k in receipt})
+    return binding
 
 
 def read_manifest(directory):
@@ -461,6 +487,7 @@ def _validate(d, root):
         raise BundleError("manifest is a symlink")
     receipt = read_json(d / RECEIPT)
     check_receipt(receipt, root)
+    check_compile_inputs(d, receipt)
     same("commit", manifest.get("commit"), receipt["commit"])
     same("tag", manifest.get("tag"), tag_for((d / RECEIPT).read_bytes()))
     same("binding", manifest.get("binding"), binding_of(receipt))

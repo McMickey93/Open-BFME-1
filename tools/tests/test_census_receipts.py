@@ -3,6 +3,7 @@ import json
 import sys
 import os
 import subprocess
+import struct
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -246,7 +247,7 @@ def fixture(tmp_path, monkeypatch):
                   + header.read_bytes() + source.read_bytes())
             return SimpleNamespace(returncode=0, stdout=pp,
                                    stderr=('Note: including file: ' + str(header)).encode())
-        output.write_bytes(b'compiled object')
+        output.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
         return SimpleNamespace(returncode=0, stdout='Note: including file: ' + str(header))
     monkeypatch.setattr(build.subprocess, 'run', run)
     # Input-proof unit tests replace the compiler with the same byte transcript
@@ -284,7 +285,7 @@ def header_free(tmp_path, monkeypatch, *flags):
         if '-E' in cmd:
             return SimpleNamespace(returncode=0, stderr=b'',
                                    stdout=f'#line 1 "{source}"\n'.encode() + source.read_bytes())
-        obj.write_bytes(b'compiled object')
+        obj.write_bytes(struct.pack("<HHIIIHH", 0x14c, 0, 0, 0, 0, 0, 0))
         return SimpleNamespace(returncode=0, stdout='')
     monkeypatch.setattr(build.subprocess, 'run', run)
     return source, obj, command, env
