@@ -1992,31 +1992,36 @@ def cycle(args):
         shift = None
         # The shifted link runs alongside on Windows; under Wine two concurrent link.exe runs
         # exit 0 without writing their /MAP, so there it runs after the base link.
-        concurrent_shift = args.shift_base and sys.platform == "win32"
-        if concurrent_shift:   # used when this iteration converges
-            pool = concurrent.futures.ThreadPoolExecutor(1)
-            shift = pool.submit(link, SHIFT_TAG, inputs, order, entry, args.shift_base, out)
-        log, code, secs = link(BASE_TAG, inputs, order, entry, BASE, out)
-        d = diagnostics(log)
-        if not (out / "base.map").exists():
-            raise SystemExit(f"link_cycle: the base link wrote no map (exit {code}): {log[:2000]}")
-        mapped = read_map((out / "base.map").read_text(encoding="latin-1"), BASE, zz_names(out)[0])
-        culprits, nmiss = drift_culprits(items, mapped[0])
-        history.append({"link": f"iter{iters}", "secs": round(secs), "exit": code, "placed_units": len(placed),
-                        "drift": len(culprits), "missing_names": nmiss, "new_unresolved": len(d["unresolved"])})
-        print(f"link_cycle: iteration {iters}: {len(placed):,} units ordered, {len(culprits):,} drift culprits, "
-              f"{len(d['unresolved'])} new unresolved", flush=True)
-        if d["unresolved"]:
-            stubs = sorted(set(stubs) | set(d["unresolved"]))
-            save_cache(sfile, obj_digest, stubs)
-        if (not culprits and not d["unresolved"]) or iters >= args.max_iter:
-            break
-        if shift:
-            if not shift.cancel():   # already running: let it finish before the next link
-                shift.result()
-            shift = None
-        quarantine |= set(culprits)
-        save_cache(qfile, obj_digest, sorted(quarantine))
+        pool = None
+        try:
+            concurrent_shift = args.shift_base and sys.platform == "win32"
+            if concurrent_shift:   # used when this iteration converges
+                pool = concurrent.futures.ThreadPoolExecutor(1)
+                shift = pool.submit(link, SHIFT_TAG, inputs, order, entry, args.shift_base, out)
+            log, code, secs = link(BASE_TAG, inputs, order, entry, BASE, out)
+            d = diagnostics(log)
+            if not (out / "base.map").exists():
+                raise SystemExit(f"link_cycle: the base link wrote no map (exit {code}): {log[:2000]}")
+            mapped = read_map((out / "base.map").read_text(encoding="latin-1"), BASE, zz_names(out)[0])
+            culprits, nmiss = drift_culprits(items, mapped[0])
+            history.append({"link": f"iter{iters}", "secs": round(secs), "exit": code, "placed_units": len(placed),
+                            "drift": len(culprits), "missing_names": nmiss, "new_unresolved": len(d["unresolved"])})
+            print(f"link_cycle: iteration {iters}: {len(placed):,} units ordered, {len(culprits):,} drift culprits, "
+                  f"{len(d['unresolved'])} new unresolved", flush=True)
+            if d["unresolved"]:
+                stubs = sorted(set(stubs) | set(d["unresolved"]))
+                save_cache(sfile, obj_digest, stubs)
+            if (not culprits and not d["unresolved"]) or iters >= args.max_iter:
+                break
+            if shift:
+                if not shift.cancel():   # already running: let it finish before the next link
+                    shift.result()
+                shift = None
+            quarantine |= set(culprits)
+            save_cache(qfile, obj_digest, sorted(quarantine))
+        finally:
+            if pool is not None:
+                pool.shutdown(wait=True)
     save_cache(qfile, obj_digest, sorted(quarantine))
     if shift:
         shift_res = shift.result()

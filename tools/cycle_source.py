@@ -57,6 +57,7 @@ def dependency_locations():
 
 @functools.lru_cache(maxsize=8192)
 def _installed_hash(path, generation):
+    # Memory only: every interpreter run must read its own installation bytes.
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
@@ -69,22 +70,30 @@ def file_hash(path):
 def runtime_identity():
     stdlib, native, packages = runtime_paths()
     files = {}
-    # Do not recurse into arbitrary site-packages, .pth paths or zip archives.
-    for directory, dirs, names in os.walk(stdlib):
-        dirs[:] = [d for d in dirs if d not in ("site-packages", "dist-packages", "__pycache__", "test", "tests")]
-        for name in names:
-            path = Path(directory) / name
-            if path.suffix in (".py", ".so", ".pyd", ".dll"):
-                files["stdlib/" + path.relative_to(stdlib).as_posix()] = file_hash(path)
+    # -B stops cache writes, not pre-bootstrap cache reads (notably encodings).
+    # Resource files and test packages can also supply behavior. Bind every
+    # file, including symlinked providers; only separately bound packages are
+    # excluded. Refuse directory cycles rather than silently omitting inputs.
+    def inventory(directory, prefix, ancestors=frozenset()):
+        resolved = directory.resolve()
+        if resolved in ancestors:
+            raise ValueError(f"recursive interpreter installation: {directory}")
+        for path in sorted(directory.iterdir()):
+            name = prefix + path.name
+            if path.is_dir():
+                if path.name not in ("site-packages", "dist-packages"):
+                    inventory(path, name + "/", ancestors | {resolved})
+            elif path.is_file():
+                files[name] = file_hash(path)
+
+    inventory(stdlib, "stdlib/")
     for name, path in dependency_locations().items():
         candidates = path.rglob("*") if path.is_dir() else (path,)
         for item in candidates:
             if item.is_file() and "__pycache__" not in item.parts:
                 files["packages/" + item.relative_to(path.parent).as_posix()] = file_hash(item)
-    if not native.is_relative_to(stdlib):
-        for path in native.glob("*"):
-            if path.is_file() and path.suffix.lower() in (".pyd", ".dll"):
-                files["native/" + path.name] = file_hash(path)
+    if not native.is_relative_to(stdlib) and native.is_dir():
+        inventory(native, "native/")
     # Startup files are never executed, but installation changes remain visible.
     for path in sorted(packages.glob("*.pth")) + [packages / "sitecustomize.py", packages / "usercustomize.py",
                                                 Path(sys.executable).absolute().parent.parent / "pyvenv.cfg"]:
@@ -205,11 +214,7 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
     modules = {}
     runtime_modules = {}
     identity = runtime_identity()
-    for name, module in tuple(sys.modules.items()):
-        spec = getattr(module, "__spec__", None)
-        if spec and spec.origin in ("built-in", "frozen"):
-            runtime_modules[name] = {"origin": spec.origin + ":" + name,
-                                     "sha256": identity["executable_sha256"]}
+    preloaded = tuple(sys.modules.items())
     log = Path(audited) / (uuid.uuid4().hex + ".json") if audited else None
 
     writer_lock = threading.RLock()
@@ -274,6 +279,19 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
         raw = loader.get_data(path)
         record(path, fullname, raw)
         return loader.source_to_code(raw, path)
+
+    # Include modules loaded by CPython before BOOTSTRAP, as well as imports
+    # needed to install this recorder. Their bytecode/data is bound by identity
+    # even when __spec__.origin reports the corresponding source file.
+    for name, module in preloaded:
+        spec = getattr(module, "__spec__", None)
+        origin = getattr(spec, "origin", None)
+        path = getattr(module, "__file__", None)
+        if origin in ("built-in", "frozen") or not path:
+            runtime_modules[name] = {"origin": (origin or "interpreter") + ":" + name,
+                                     "sha256": identity["executable_sha256"]}
+        else:
+            record(path, name, Path(path).read_bytes())
 
     def refuse_bytecode(loader, fullname):
         refuse(f"sourceless module refused in cycle snapshot: {fullname}")
@@ -397,8 +415,14 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
 
         def isolated_spawn_command(args):
             executable = os.fsdecode(args[0])
+            environment = dict(os.environ)
+            # cycle() sets this after clean_environment has filtered callers.
+            # It controls scheduling only; never preserve it from caller envs.
+            workers = environment.pop("BUILD_POOL", None)
             if Path(executable).resolve() != Path(sys.executable).resolve() \
-                    or dict(os.environ) != clean_environment():
+                    or environment != clean_environment() \
+                    or (workers is not None and (not workers.isascii() or not workers.isdecimal()
+                                                or int(workers) < 1)):
                 invalidate()
                 raise ValueError("unbootstrapped multiprocessing environment")
             args = [os.fsdecode(a) for a in args]
@@ -438,8 +462,9 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
 
 # Execute this .py directly before any snapshot import, including itself.
 BOOTSTRAP = """import sys
-# This recorder is installed before the first non-builtin/frozen import. With
-# -I -S, no startup code, caller path, site or environment loader can run first.
+# CPython has already imported startup modules such as encodings. Their
+# installation bytes and origins are bound by install(); -B does not stop reads.
+# From here on, record and validate imports before executing them.
 _boot = sys.modules['_frozen_importlib']
 _external = sys.modules['_frozen_importlib_external']
 _early = {'pending': [], 'meta_path': tuple(sys.meta_path)}

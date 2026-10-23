@@ -791,7 +791,8 @@ def run_evidence_failure(directory, receipt, root):
     for name, entry in runtime.items():
         try:
             origin, digest = entry["origin"], entry["sha256"]
-            if origin in ("built-in:" + name, "frozen:" + name):
+            if origin in ("built-in:" + name, "frozen:" + name) or (
+                    name in ("__main__", "__mp_main__") and origin == "interpreter:" + name):
                 expected = receipt["rule_identity"]["runtime"]["executable_sha256"]
             else:
                 kind, rel = origin.split("/", 1)
