@@ -34,12 +34,14 @@ extern GlobalData *TheWritableGlobalData;
 class RTS2DScene;
 class RTS3DScene;
 class RTS3DInterfaceScene;
-// retail global: RTS3DScene *W3DDisplay::m_3DScene (0x012F8058),
-// mangled ?m_3DScene@W3DDisplay@@2PAVRTS3DScene@@A.
+// retail globals: RTS3DScene *W3DDisplay::m_3DScene (0x012F8058),
+// mangled ?m_3DScene@W3DDisplay@@2PAVRTS3DScene@@A, and RTS2DScene
+// *W3DDisplay::m_2DScene (0x012F805C), ?m_2DScene@W3DDisplay@@2PAVRTS2DScene@@A.
 class W3DDisplay
 {
 public:
 	static RTS3DScene *m_3DScene;
+	static RTS2DScene *m_2DScene;
 };
 
 // Declared as an object by camerashakesystem.cpp; BFME holds a pointer at its first dword.
@@ -96,7 +98,6 @@ public:
 	Gen006EF850(void);
 	virtual ~Gen006EF850(void);
 
-	static RTS2DScene *m_2DScene;
 	static RTS3DInterfaceScene *m_3DInterfaceScene;
 
 private:
@@ -130,7 +131,7 @@ Gen006EF850::Gen006EF850(void) :
 	m_initialized = false;
 
 	W3DDisplay::m_3DScene = 0;
-	m_2DScene = 0;
+	W3DDisplay::m_2DScene = 0;
 	m_3DInterfaceScene = 0;
 
 	m_averageFPS = (float)TheWritableGlobalData->m_framesPerSecondLimit;
