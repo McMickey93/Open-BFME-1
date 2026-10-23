@@ -22,6 +22,9 @@ AptValue *Rva008B6B10Get() { return g_bfmeFallbackDB; }
 
 AptBoolean *Rva008A52E0Create() { return AptBoolean::Create(false); }
 AptInteger *Rva008B6C20Create() { return AptInteger::Create(0); }
+// 0x008B6FE0: same shape, the native getter the matched Rva008B73B0Properties
+// installs for property 27 (DIR32 0x008B7F54).
+AptInteger *Rva008B6FE0Create() { return AptInteger::Create(0); }
 
 struct Rva00892B80
 {
