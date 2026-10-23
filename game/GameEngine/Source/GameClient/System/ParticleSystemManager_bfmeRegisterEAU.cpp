@@ -30,10 +30,7 @@ class AsciiString
 public:
 	AsciiString(const AsciiString &source) : StringBase<char>(source) {}
 
-	int compare(const AsciiString &other) const
-	{
-		return ((const AsciiStringCompareShim *)this)->compare(other);
-	}
+	int compare(const AsciiString &other) const;
 	void set(const AsciiString &source)
 	{
 		StringBase<char>::set(source);

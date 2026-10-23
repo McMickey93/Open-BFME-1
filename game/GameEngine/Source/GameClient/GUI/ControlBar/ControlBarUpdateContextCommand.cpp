@@ -67,11 +67,7 @@ class GameWindow
 public:
 	UnsignedInt _bfme_winSetStatus( UnsignedInt status );
 
-	Bool winIsHidden()
-	{
-		union { void (*raw)(); Bool (GameWindow::*fn)(); } call = { j_0003a5b7 };
-		return (this->*call.fn)();
-	}
+	Bool winIsHidden();
 	void winEnable( Bool enable )
 	{
 		union { void (*raw)(); void (GameWindow::*fn)( Bool ); } call = { j_0004a1fb };
@@ -87,22 +83,14 @@ public:
 		union { void (*raw)(); void (GameWindow::*fn)( Bool ); } call = { j_00027f2a };
 		(this->*call.fn)( hide );
 	}
-	UnsignedInt winGetStatus()
-	{
-		union { void (*raw)(); UnsignedInt (GameWindow::*fn)(); } call = { j_00023dda };
-		return (this->*call.fn)();
-	}
+	UnsignedInt winGetStatus();
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/NameKeyGenerator.h
 class NameKeyGenerator
 {
 public:
-	NameKeyType nameToKey( const char *name )
-	{
-		union { void (*raw)(); NameKeyType (NameKeyGenerator::*fn)( const char * ); } call = { j_0003add7 };
-		return (this->*call.fn)( name );
-	}
+	NameKeyType nameToKey( const char *name );
 };
 
 #define WINDOW_SLOT(n) virtual void slot##n();
@@ -181,11 +169,7 @@ class Object
 public:
 	ProductionUpdateInterface *getProductionUpdateInterface();
 	ContainModuleInterface *getContain() const { return m_contain; }
-	Bool isLocallyControlled() const
-	{
-		union { void (*raw)(); Bool (Object::*fn)() const; } call = { j_0001ff91 };
-		return (this->*call.fn)();
-	}
+	Bool isLocallyControlled() const;
 
 	unsigned char m_pad000[ 0x1FC ];
 	ContainModuleInterface *m_contain;				// +0x1fc

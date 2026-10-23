@@ -47,10 +47,7 @@ public:
 	~AsciiString() { releaseBuffer(); }
 
 	Bool isNone() const;
-	Bool isEmpty() const
-	{
-		return m_data == 0 || m_data->m_length == 0;
-	}
+	Bool isEmpty() const;
 	const char *str() const
 	{
 		return m_data ? m_data->m_text : "";

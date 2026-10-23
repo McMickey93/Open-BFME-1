@@ -31,17 +31,7 @@ public:
 	void clear() { m_data.releaseBuffer(); }
 	AsciiString &operator=(const AsciiString &o) { m_data.set(o.m_data); return *this; }
 	void setEmpty() { m_data.set("", 0); }
-	int compare(const AsciiString &str) const
-	{
-		const int len = str.m_data.m_data ? str.m_data.m_data->length : 0;
-		const char *data = str.m_data.m_data ? &str.m_data.m_data->data[0] : "";
-		const int myLen = m_data.m_data ? m_data.m_data->length : 0;
-		const char *myData = m_data.m_data ? &m_data.m_data->data[0] : "";
-		const int result = memcmp(myData, data, myLen < len ? myLen : len);
-		if (result != 0)
-			return result;
-		return myLen - len;
-	}
+	int compare(const AsciiString &str) const;
 	StringBase<char> m_data;
 };
 

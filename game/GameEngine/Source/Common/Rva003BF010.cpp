@@ -16,7 +16,7 @@ public:
 	{
 	}
 	~AsciiString() {}
-	bool isEmpty() const { return StringBase<char>::isEmpty(); }
+	bool isEmpty() const;
 };
 
 class Gen_00609320

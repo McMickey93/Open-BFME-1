@@ -32,10 +32,7 @@ class ObjectTypes
 public:
 	virtual ~ObjectTypes() {}
 
-	__forceinline AsciiString getNthInList(Int index) const
-	{
-		return m_objectTypes[index];
-	}
+	__forceinline AsciiString getNthInList(Int index) const;
 
 	__forceinline Int getListSize(void) const
 	{

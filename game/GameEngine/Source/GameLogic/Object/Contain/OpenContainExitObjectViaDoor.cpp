@@ -174,11 +174,7 @@ public:
 	void updateGoal(Object *object, const Coord3D *position,
 		PathfindLayerEnum layer, const char *file, Int line);
 	Bool adjustToPossibleDestination(Object *object,
-        const LocomotorSet &locomotorSet, Coord3D *destination) {
-        union { void (*route)(); Bool (Pathfinder::*method)(Object *, const LocomotorSet &, Coord3D *); } call;
-        call.route = j_00011252;
-        return (this->*call.method)(object, locomotorSet, destination);
-    }
+        const LocomotorSet &locomotorSet, Coord3D *destination);
 };
 
 class TerrainLogic

@@ -24,11 +24,7 @@ class AsciiString : private StringBase<char>
 public:
 	AsciiString(const AsciiString &source) : StringBase<char>(source) {}
 
-	int compare(const AsciiString &other) const
-	{
-		return ((const AsciiStringCompareShim *)this)->compare(
-			(const AsciiStringCompareShim &)other);
-	}
+	int compare(const AsciiString &other) const;
 
 	~AsciiString() {}
 };

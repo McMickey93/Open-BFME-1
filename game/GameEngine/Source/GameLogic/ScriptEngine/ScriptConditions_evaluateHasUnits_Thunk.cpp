@@ -50,11 +50,7 @@ public:
 		return ((const StringBase<char> *)this)->compare(text);
 	}
 
-	Int compare(const AsciiString &other) const
-	{
-		return ((const StringBase<char> *)this)->compare(
-			*(const StringBase<char> *)&other);
-	}
+	Int compare(const AsciiString &other) const;
 };
 
 // Script parameters keep their string at +0x10, as shown by the initial copy

@@ -57,12 +57,7 @@ protected:
 class SpecialPowerTemplate : public Overridable
 {
 public:
-    AsciiString getName() const
-    {
-        const SpecialPowerTemplate *finalTemplate =
-            (const SpecialPowerTemplate *)friend_getFinalOverride();
-        return finalTemplate->m_name;
-    }
+    AsciiString getName() const;
 
     Bool hasPublicTimer() const
     {
