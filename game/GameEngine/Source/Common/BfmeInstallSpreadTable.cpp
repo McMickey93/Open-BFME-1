@@ -221,3 +221,11 @@ void __cdecl bfmeInstallSpreadTable(void)
 		g_bfmeSlotB40 = (void *)&copyTwelveVec3;
 	}
 }
+
+// Retail 0x009C6D20, the slot filler installed above for the SSE and MMX
+// tiers, is `emms; ret`: it only clears the MMX state.
+#include <mmintrin.h>
+void __cdecl Rva009C6D20(void)
+{
+	_mm_empty();
+}
