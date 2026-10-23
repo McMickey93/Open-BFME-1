@@ -31,6 +31,9 @@ private:
 };
 }
 
+// Retail calls the existing resize ILT at 0x0002BB34.
+extern void j_0002bb34();
+
 struct Rva00759A40String
 {
 	struct Data
@@ -176,7 +179,12 @@ bool Rva00759A40ObjectDraw::rva00759A40(
 		if (world == 0)
 			return false;
 	}
-	positions->resize(4);
+    union {
+        void (*raw)();
+        void (_STL::vector<Coord3D, _STL::allocator<Coord3D> >::*resize)(unsigned int);
+    } target;
+    target.raw = j_0002bb34;
+    (positions->*target.resize)(4);
 	bool valid[4];
 	for (int i = 0; i < 4; ++i)
 	{
