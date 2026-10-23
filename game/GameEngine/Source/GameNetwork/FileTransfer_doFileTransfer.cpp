@@ -104,8 +104,16 @@ class BfmeAptScreenMapTransfer
 public:
 	void setCurrentFilename(const AsciiString &filename);
 	void processTimeout(int secondsLeft);
-	void update(int percentage);
+
 	void processProgress(int playerID, int percentage, UnicodeString state);
+};
+
+// The frame pump at 0x0050FF30 is the matched MapTransferLoadScreen body.
+// FileTransfer calls it through ILT 0x00015D0C on the same screen pointer.
+class MapTransferLoadScreen
+{
+public:
+	void update(int percentage);
 };
 
 extern NetworkInterface *TheNetwork;
@@ -131,7 +139,7 @@ bool doFileTransfer(AsciiString filename, int mask)
 		screen->setCurrentFilename(filename);
 		UnsignedInt startTime = timeGetTime();
 		screen->processTimeout(600);
-		screen->update(0);
+		((MapTransferLoadScreen *)screen)->update(0);
 
 		int fileCommandID = 0;
 		bool sentFile = false;
@@ -219,7 +227,7 @@ bool doFileTransfer(AsciiString filename, int mask)
 				break;
 
 			screen->processTimeout((startTime + 600000 - now) / 1000);
-			screen->update(fileTransferPercent);
+			((MapTransferLoadScreen *)screen)->update(fileTransferPercent);
 		}
 
 		if (!fileTransferDone)
