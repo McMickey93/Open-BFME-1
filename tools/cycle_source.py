@@ -29,7 +29,8 @@ AUDIT_ENV = "BFME_CYCLE_MODULE_AUDIT"
 # any installed provider is imported. Startup files read by CPython itself are
 # covered by runtime_inventory. Keep the recorder independent of import hooks.
 IO_BOOTSTRAP = r'''import sys
-_cycle_io = {'events': {}, 'directories': {}, 'errors': [], 'paused': set()}
+_cycle_io = {'events': {}, 'reads': {}, 'read_errors': set(), 'directories': {},
+             'errors': [], 'paused': set(), 'ignored_inputs': set()}
 sys._bfme_cycle_io = _cycle_io
 _io_os = None
 _io_pending = []
@@ -45,11 +46,18 @@ def _cycle_open_audit(event, args):
     _cycle_io['paused'].add(tid)
     try:
         path = args[0] if args else '.'
+        descriptor = None
         if path is None:
             path = '.'
         if isinstance(path, int):
             if _io_os.name == 'posix':
-                path = '/proc/self/fd/' + str(path)
+                descriptor = _io_os.fstat(path)
+                if descriptor.st_mode & 0o170000 != 0o100000:
+                    return
+                path = _io_os.readlink('/proc/self/fd/' + str(path))
+                resolved = _io_os.stat(path)
+                if (resolved.st_dev, resolved.st_ino) != (descriptor.st_dev, descriptor.st_ino):
+                    raise ValueError('cannot resolve audited file descriptor')
             else:
                 import ctypes, msvcrt
                 kernel = ctypes.windll.kernel32
@@ -76,9 +84,31 @@ def _cycle_open_audit(event, args):
             generation = (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
         except FileNotFoundError:
             generation = None
+        if descriptor is not None and generation != (descriptor.st_dev, descriptor.st_ino,
+                descriptor.st_size, descriptor.st_mtime_ns, descriptor.st_ctime_ns):
+            raise ValueError('cannot resolve audited file descriptor generation')
         previous = _cycle_io['events'].setdefault(path, generation)
         if previous != generation:
             _cycle_io['errors'].append(path)
+        # The audit fires before open. Hash a readable regular file immediately,
+        # retaining both content and inode generation, independently of rule
+        # classification. Writes are not consumption of their previous bytes.
+        flags = args[2] if event == 'open' and len(args) > 2 else 0
+        readable = event == 'open' and not flags & _io_write_flags
+        if readable and generation is not None and st.st_mode & 0o170000 == 0o100000:
+            if not any(path == top or path.startswith(top + _io_os.sep)
+                       for top in _cycle_io['ignored_inputs']):
+                previous = _cycle_io['reads'].get(path)
+                if previous is None:
+                    import hashlib
+                    with open(path, 'rb') as stream:
+                        digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+                        end = _io_fstat(stream.fileno())
+                    if (end.st_dev, end.st_ino, end.st_size, end.st_mtime_ns, end.st_ctime_ns) != generation:
+                        _cycle_io['read_errors'].add(path)
+                    _cycle_io['reads'][path] = {'generation': generation, 'sha256': digest}
+                elif tuple(previous['generation']) != generation:
+                    _cycle_io['read_errors'].add(path)
         if event != 'open':
             entries = tuple(sorted(_io_os.listdir(path)))
             previous = _cycle_io['directories'].setdefault(path, entries)
@@ -87,15 +117,44 @@ def _cycle_open_audit(event, args):
     except OSError:
         # Failed opens/listings do not supply bytes. If the file subsequently
         # appears, the saved absent generation above makes that fail closed.
-        pass
+        if event == 'open' and args and isinstance(args[0], int):
+            _cycle_io['read_errors'].add('<unresolved descriptor>')
+        elif event == 'open':
+            _cycle_io['read_errors'].add(path)
     finally:
         _cycle_io['paused'].remove(tid)
 sys.addaudithook(_cycle_open_audit)
 import _thread as _io_thread
 import os as _io_os
+_io_write_flags = _io_os.O_WRONLY | _io_os.O_TRUNC
+_io_fstat = _io_os.fstat
 for _event, _args in _io_pending:
     _cycle_open_audit(_event, _args)
 _io_pending.clear()
+# os.open's audit event omits dir_fd and runs before success. Suppress that
+# ambiguous event and observe the descriptor actually returned by the kernel.
+_cycle_os_open = _io_os.open
+def _cycle_descriptor_open(*args, **kwargs):
+    tid = _io_thread.get_ident()
+    if tid in _cycle_io['paused']:
+        return _cycle_os_open(*args, **kwargs)
+    _cycle_io['paused'].add(tid)
+    try:
+        fd = _cycle_os_open(*args, **kwargs)
+    finally:
+        _cycle_io['paused'].remove(tid)
+    flags = args[1] if len(args) > 1 else kwargs['flags']
+    # Fresh exclusive/truncated outputs do not supply previous file bytes.
+    if flags & (_io_os.O_WRONLY | _io_os.O_TRUNC) or (flags & _io_os.O_CREAT and flags & _io_os.O_EXCL):
+        return fd
+    try:
+        _cycle_open_audit('open', (fd, None, flags))
+    except BaseException:
+        _cycle_io['read_errors'].add('<unresolved descriptor>')
+        _io_os.close(fd)
+        raise
+    return fd
+sys._bfme_cycle_descriptor_open = _cycle_descriptor_open
 '''
 
 
@@ -323,12 +382,12 @@ def mapped_files_windows(api=None):
     return paths
 
 
-def mapped_files():
+def mapped_files(*, data=False):
     if os.name == "nt":
-        return mapped_files_windows()
+        return set() if data else mapped_files_windows()
     if not sys.platform.startswith("linux"):
         raise ValueError("mapped runtime evidence requires Linux or Windows")
-    paths = set()
+    paths, executable = set(), set()
     with open("/proc/self/maps", encoding="utf-8") as stream:
         for line in stream:
             fields = line.rstrip("\n").split(None, 5)
@@ -350,7 +409,58 @@ def mapped_files():
                 if st.st_ino != int(fields[4]):
                     raise ValueError("mapped runtime file changed: " + name)
                 paths.add(str(path))
-    return paths
+                if "x" in fields[1]:
+                    executable.add(str(path))
+    # A library's read-only segments belong to the same native module as its
+    # executable segment. A PE parsed as data has no executable mapping.
+    return paths - executable if data else executable
+
+
+def input_epoch(root, *, prepare=False, outputs=None):
+    """Allow compile/link outputs to settle before consuming their final bytes.
+
+    Ledger/retail reads remain observed throughout. Only explicitly mutable
+    build outputs are excluded during preparation, including Python workers.
+    """
+    observer = getattr(sys, "_bfme_cycle_io", None)
+    if observer is None:
+        return
+    ignored = {str((Path(root) / "build").resolve())} if prepare else set()
+    if outputs is not None:
+        ignored.add(str(Path(outputs).resolve()))
+    observer["ignored_inputs"] = ignored
+    os.environ["BFME_CYCLE_INPUT_PREPARE"] = "1" if prepare else "0"
+
+
+class InputChanged(ValueError):
+    pass
+
+
+def consumed_inputs(root):
+    observer = getattr(sys, "_bfme_cycle_io", None)
+    if observer is None:
+        raise ValueError("missing opened-file audit hook")
+    if "<unresolved descriptor>" in observer["read_errors"]:
+        raise InputChanged("incomplete consumed input: unresolved opened descriptor")
+    tops = tuple((Path(root) / name).resolve() for name in ("build", "inputs", "targets"))
+    for name in observer["read_errors"]:
+        path = Path(name)
+        if any(path == top or path.is_relative_to(top) for top in tops):
+            raise InputChanged("moved_during_run: consumed input changed or unreadable: " + name)
+    result = {}
+    for name, entry in tuple(observer["reads"].items()):
+        path = Path(name)
+        if not any(path == top or path.is_relative_to(top) for top in tops):
+            continue
+        try:
+            same = (_generation(path.stat()) == tuple(entry["generation"])
+                    and file_hash(path) == entry["sha256"])
+        except (OSError, ValueError):
+            same = False
+        if not same or name in observer["read_errors"]:
+            raise InputChanged("moved_during_run: consumed input changed: " + name)
+        result[name] = entry
+    return result
 
 
 def observed_runtime(root, audited=None):
@@ -373,7 +483,6 @@ def observed_runtime(root, audited=None):
         snapshots = {root}
         if audited:
             audit = Path(audited).resolve()
-            inputs.add(audit)
             # The launcher has a unique workspace; the seed exports into s/.
             snapshots.update((audit.parent / "seed", audit.parent / "s"))
         _, inventory = runtime_inventory(runtime_roots(), snapshot=root)
@@ -381,6 +490,8 @@ def observed_runtime(root, audited=None):
 
         def classification(path):
             p = Path(path)
+            if audited and (p == audit or p.is_relative_to(audit)):
+                return "audit-output"
             if any(p == top or p.is_relative_to(top) for top in inputs):
                 return "measurement-input"
             if any(p == top or p.is_relative_to(top) for top in snapshots):
@@ -389,6 +500,8 @@ def observed_runtime(root, audited=None):
                 return "runtime-root"
             return "runtime"
 
+        # Check input generations before excluding them from rule identity.
+        observed_runtime.inputs = consumed_inputs(root)
         opened, listed, classified = {}, {}, {}
         for path, generation in tuple(observer["events"].items()):
             kind = classification(path)
@@ -411,6 +524,17 @@ def observed_runtime(root, audited=None):
                     raise ValueError("runtime directory changed during measurement: " + path)
                 listed[path] = names
         mapped = {p: file_hash(p) for p in sorted(mapped_files())}
+        for path in sorted(mapped_files(data=True)):
+            kind = classification(path)
+            if kind == "measurement-input":
+                # mmap normally follows an observed open. Refuse an unobserved
+                # data mapping rather than guessing its original generation.
+                if any(path == top or path.startswith(top + os.sep) for top in observer["ignored_inputs"]):
+                    continue
+                if path not in observed_runtime.inputs:
+                    raise InputChanged("incomplete consumed input: unobserved data mapping: " + path)
+            elif kind == "runtime":
+                opened[path] = file_hash(path)
         evidence = {"opened_files": dict(sorted(opened.items())), "mapped_files": mapped,
                     "directories": dict(sorted(listed.items()))}
         observed_runtime.cost = {"opened_files": len(observer["events"]),
@@ -496,7 +620,8 @@ def clean_environment(environment=None):
         clean["HOME"] = pwd.getpwuid(os.getuid()).pw_dir
     supplied = os.environ if environment is None else environment
     # Only launcher-owned coordination fields survive recursive Python helpers.
-    for name in (AUDIT_ENV, "BFME_CYCLE_EXPECTED_SEMANTIC", "LINK_CYCLE_ROOT", "GIT_CEILING_DIRECTORIES"):
+    for name in (AUDIT_ENV, "BFME_CYCLE_EXPECTED_SEMANTIC", "LINK_CYCLE_ROOT", "GIT_CEILING_DIRECTORIES",
+                 "BFME_CYCLE_INPUT_PREPARE"):
         if name in supplied:
             clean[name] = supplied[name]
     clean["BFME_OBJSTORE"] = "off"
@@ -580,12 +705,76 @@ def audit_runtime(directory, *, roots):
     return evidence
 
 
+def audit_inputs(directory, *, roots, receipt=None, target=None, compile_inputs=None, canonical=False):
+    """Validate consumed bytes, separately from runtime/rule evidence.
+
+    Absolute paths and stat generations stay in the ephemeral audit. Receipt
+    bindings use their existing canonical hashes, so parser lifetime and unique
+    snapshot paths cannot perturb the reproducible measurement identity.
+    """
+    allowed = {str(Path(p).resolve()) for p in roots}
+    union, hashes = {}, {}
+    logs = list(Path(directory).glob("*.json"))
+    if not logs:
+        raise ValueError("missing consumed-input evidence")
+    for log in logs:
+        record = json.loads(log.read_bytes())
+        if record.get("tools") not in allowed or record.get("complete") is not True:
+            raise ValueError("incomplete consumed-input evidence: " + str(record.get("moved_during_run") or log))
+        entries = record.get("consumed_inputs")
+        if not isinstance(entries, dict):
+            raise ValueError("incomplete consumed-input evidence")
+        root = Path(record["tools"]).parent
+        for name, entry in entries.items():
+            path = Path(name)
+            try:
+                same = (_generation(path.stat()) == tuple(entry["generation"])
+                        and file_hash(path) == entry["sha256"])
+            except (OSError, ValueError):
+                same = False
+            if not same or (name in union and union[name] != entry):
+                raise ValueError("moved_during_run: consumed input changed: " + name)
+            union[name] = entry
+            # Resolve input roots too: build/ may be a symlink to an object
+            # store, without making its bytes runtime/rule dependencies.
+            relative = next(((Path(top) / path.relative_to((root / top).resolve())).as_posix()
+                             for top in ("build", "inputs", "targets")
+                             if path.is_relative_to((root / top).resolve())), None)
+            if relative is None:
+                raise ValueError("invalid consumed-input origin: " + name)
+            if relative in hashes and hashes[relative] != entry["sha256"]:
+                raise ValueError("moved_during_run: consumed input changed across snapshots: " + relative)
+            hashes[relative] = entry["sha256"]
+            if receipt is not None:
+                bound = receipt.get("consumed_inputs", {}).get(relative)
+                if bound is not None and entry["sha256"] != bound:
+                    raise ValueError("moved_during_run: consumed input differs from receipt: " + name)
+                expected = receipt.get("inputs", {}).get(relative)
+                if expected is not None:
+                    normalized = hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                    if normalized != expected:
+                        raise ValueError("moved_during_run: consumed input differs from receipt: " + name)
+                raw_expected = None
+                if target is not None and relative == Path(target).as_posix():
+                    raw_expected = receipt.get("retail_sha256")
+                if path == Path(compile_inputs or root / "build/link_cycle/compile_inputs.json").resolve():
+                    raw_expected = receipt.get("compile_inputs_sha256")
+                if path.parts[-3:-1] == ("Vc7", "bin"):
+                    raw_expected = receipt.get("toolchain_sha256", {}).get(path.name, raw_expected)
+                if raw_expected is not None and entry["sha256"] != raw_expected:
+                    raise ValueError("moved_during_run: consumed input differs from receipt: " + name)
+    return dict(sorted(hashes.items())) if canonical else union
+
+
 def install(tools=None, *, bootstrap_raw=None, early=None):
     if not (sys.flags.isolated and sys.flags.no_site and sys.flags.dont_write_bytecode):
         raise RuntimeError("source-only snapshot requires Python -I -S -B")
     sys.dont_write_bytecode = True
+    os.open = sys._bfme_cycle_descriptor_open
     tools = Path(tools or Path(__file__).parent).resolve()
     root = tools.parent
+    if os.environ.get("BFME_CYCLE_INPUT_PREPARE") == "1":
+        input_epoch(root, prepare=True)
     audited = os.environ.get(AUDIT_ENV)
     declared = declared_files(tools) if audited else None
     if declared:
@@ -599,15 +788,24 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
     writer_lock = threading.RLock()
     failed = False
     completed = False
+    input_failure = None
 
     def write(complete=False):
-        nonlocal failed, completed
+        nonlocal failed, completed, input_failure
         if log:
             with writer_lock:
                 evidence = None
                 if complete:
                     try:
                         evidence = observed_runtime(root, audited)
+                    except InputChanged as error:
+                        # Preserve an incomplete audit for the launcher, even
+                        # when the driver itself finished normally. Never stamp
+                        # a measurement whose consumed generation moved.
+                        input_failure = str(error)
+                        failed = True
+                        write(False)
+                        return
                     except BaseException:
                         failed = True
                         write(False)
@@ -617,7 +815,10 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
                 temporary.write_text(json.dumps({"complete": complete and not failed, "tools": str(tools),
                                                  "modules": modules, "runtime_modules": runtime_modules,
                                                  "runtime_identity": identity,
+                                                 "moved_during_run": input_failure,
                                                  "runtime_evidence": evidence,
+                                                 "consumed_inputs": (getattr(observed_runtime, "inputs", None)
+                                                                     if complete else None),
                                                  "runtime_cost": getattr(observed_runtime, "cost", None)}, sort_keys=True))
                 os.replace(temporary, log)
 

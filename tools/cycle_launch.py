@@ -86,6 +86,20 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         receipt = ca.read_json(run / ca.RECEIPT)
         ca.same("snapshot measured commit", receipt["commit"], commit)
         ca.same("executed semantic dependency digest", receipt["rule_identity"], rules)
+        measured = ca.link_cycle_module(root)
+        target = measured.build.EXE.relative_to(measured.build.ROOT)
+        compile_input_path = run / ca.COMPILE_INPUTS
+        def check_inputs():
+            try:
+                return cycle_source.audit_inputs(audit, roots=(seed / "tools", snapshot / "tools"),
+                                                 receipt=receipt, target=target, compile_inputs=compile_input_path,
+                                                 canonical=True)
+            except ValueError as error:
+                raise ca.Refused(str(error), "not-authoritative", "moved_during_run") from error
+        # Retain exact consumed bytes in the signed receipt. Stat generations
+        # remain ephemeral; existing semantic ledger/object/compile hashes own
+        # the reproducible core (raw compile receipts contain run IDs).
+        receipt["consumed_inputs"] = check_inputs()
         actual = cycle_source.audit_modules(audit, roots=(seed / "tools", snapshot / "tools"))
         runtime = cycle_source.audit_modules(audit, roots=(seed / "tools", snapshot / "tools"), runtime=True)
         observed = cycle_source.audit_runtime(audit, roots=(seed / "tools", snapshot / "tools"))
@@ -127,6 +141,7 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
             if ca.ancestry(commit, root)[0] is not True:
                 raise ca.Refused("origin/master changed during measurement", "not-authoritative", "non-ancestor")
             ca.same("unchanged observed runtime", cycle_source.current_runtime_evidence(observed), observed)
+            check_inputs()
             digest = ca.sha256_file(stage / ca.MANIFEST)
             record = {"schema": stamp.SCHEMA, "manifest_sha256": digest,
                       "key_id": hashlib.sha256(secret).hexdigest(),

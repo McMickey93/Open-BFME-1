@@ -1724,7 +1724,9 @@ def provenance(rows, present, objs, out, *, receipts=None):
     if tampered:
         raise SystemExit(f"link_cycle: {len(tampered)} object(s) changed with no compile behind the change, "
                          f"e.g. {tampered[:5]}; delete them (and their .deps.json) and run with --build")
-    path.write_text(json.dumps(prov, indent=0, sort_keys=True), encoding="utf-8")
+    content = json.dumps(prov, indent=0, sort_keys=True)
+    if not path.exists() or path.read_text(encoding="utf-8") != content:
+        path.write_text(content, encoding="utf-8")
     return (sha256(path), dict(sorted(collections.Counter(r.get("proof", "no source") for r in prov.values()).items())),
             canonical_digests(prov))
 
@@ -1904,6 +1906,7 @@ def cycle(args):
     times = {}
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+    cycle_source.input_epoch(ROOT, prepare=True)
     getattr(census, "refuse_unsupported_ledgers", lambda: None)()
     start = input_state(getattr(args, "allow_dirty", False))                      # bound at START, re-proved before recording
     rows = census.ledger()
@@ -1928,6 +1931,7 @@ def cycle(args):
     if not args.raw_dumps:
         SWAP.update(load_swap(rows))
         present = list(dict.fromkeys(SWAP.get(p.resolve(), p) for p in present))
+    cycle_source.input_epoch(ROOT, outputs=out)
     objs = Objects(present)
     units, astat = analyze(rows, objs)
     obj_digest = objects_digest(objs, present)
@@ -2032,6 +2036,7 @@ def cycle(args):
     times["link"] = round(time.time() - t_link)
 
     t = time.time()
+    cycle_source.input_epoch(ROOT)
     res = measure(out, units, chunks, objs, R, rsecs, rimp, pins, shift_res is not None, args.shift_base)
     times["measure"] = round(time.time() - t)
     receipt = dict(start, **canon, **compile_inputs, tool="link_cycle", rules=RULES,
@@ -2064,6 +2069,11 @@ def cycle(args):
         moved.append("provenance")
     if compile_input_binding(receipts) != compile_inputs:
         moved.append("compile_inputs")
+    if getattr(sys, "_bfme_cycle_io", None) is not None:
+        try:
+            cycle_source.consumed_inputs(ROOT)
+        except ValueError as error:
+            moved.append(str(error))
     record_run_evidence(receipt, start, end, args)
     receipt["authoritative"] = receipt["authoritative"] and not moved
     times["total"] = round(time.time() - t_all)
