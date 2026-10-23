@@ -5,27 +5,21 @@
 extern "C" __declspec(dllimport) int __cdecl _memicmp(const void *left,
 	const void *right, unsigned int count);
 
+template <class T> class StringBase;
+static __forceinline int compareNoCase(const StringBase<char> &self,
+	const StringBase<char> &other);
+
 template <class T>
 class StringBase
 {
+	friend int compareNoCase(const StringBase<char> &self,
+		const StringBase<char> &other);
 public:
 	void set(const StringBase<T> &other);
 	StringBase<T> &operator=(const StringBase<T> &other)
 	{
 		set(other);
 		return *this;
-	}
-	__forceinline int compareNoCase(const StringBase<T> &other) const
-	{
-		int otherLength = other.m_data ? other.m_data->m_length : 0;
-		const T *otherData = other.m_data ? other.m_data->m_data : (const T *)"";
-		int thisLength = m_data ? m_data->m_length : 0;
-		const T *thisData = m_data ? m_data->m_data : (const T *)"";
-		int count = thisLength < otherLength ? thisLength : otherLength;
-		int result = _memicmp(thisData, otherData, count);
-		if (result != 0)
-			return result;
-		return thisLength - otherLength;
 	}
 	__forceinline bool startsWithUnderscore(void) const
 	{
@@ -50,6 +44,20 @@ private:
 	friend struct Q3SortElem4;
 };
 
+static __forceinline int compareNoCase(const StringBase<char> &self,
+	const StringBase<char> &other)
+{
+	int otherLength = other.m_data ? other.m_data->m_length : 0;
+	const char *otherData = other.m_data ? other.m_data->m_data : "";
+	int thisLength = self.m_data ? self.m_data->m_length : 0;
+	const char *thisData = self.m_data ? self.m_data->m_data : "";
+	int count = thisLength < otherLength ? thisLength : otherLength;
+	int result = _memicmp(thisData, otherData, count);
+	if (result != 0)
+		return result;
+	return thisLength - otherLength;
+}
+
 struct Q3SortElem4
 {
 	Q3SortElem4(const Q3SortElem4 &other) : m_base(other.m_base) {}
@@ -71,8 +79,8 @@ struct Q3SortCompare
 		const Q3SortElem4 &right) const
 	{
 		if (left.m_base.startsWithUnderscore() && right.m_base.startsWithUnderscore())
-			return left.m_base.compareNoCase(right.m_base) > 0;
-		return left.m_base.compareNoCase(right.m_base) < 0;
+			return compareNoCase(left.m_base, right.m_base) > 0;
+		return compareNoCase(left.m_base, right.m_base) < 0;
 	}
 };
 
