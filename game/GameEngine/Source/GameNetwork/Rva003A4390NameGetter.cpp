@@ -26,6 +26,11 @@ template <> RetailUShortIntTree::iterator RetailUShortIntTree::_M_insert(
     _STL::_Rb_tree_node_base *, _STL::_Rb_tree_node_base *,
     const RetailUShortIntPair &, _STL::_Rb_tree_node_base *);
 
+// The hinted insertion already has a retail provider at 0x0037BC70.
+// This TU only needs its call boundary, not another instantiated tree body.
+template <> RetailUShortIntTree::iterator RetailUShortIntTree::insert_unique(
+    RetailUShortIntTree::iterator, const RetailUShortIntPair &);
+
 #include "ascii_string.h"
 
 class Rva003A4390Owner
