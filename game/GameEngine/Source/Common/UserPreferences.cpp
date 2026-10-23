@@ -61,6 +61,19 @@
 #include "GameClient/ChallengeGenerals.h"
 #include "GameNetwork/GameSpy/PeerDefs.h"
 
+// UnicodeString is StringBase<WideChar>, and retail inlined the one-line
+// forwarder away: the implicit LadderPref copy assignment calls
+// ?set@?$StringBase@G@@QAEXABV1@@Z at 0x00888530 directly, not the ZH
+// ?set@UnicodeString@@QAEXABV1@@Z spelling (which resolves to the NARROW
+// StringBase<char> body at 0x00887C90).
+#include "string_base.h"
+
+inline void UnicodeString::set( const UnicodeString &stringSrc )
+{
+	reinterpret_cast<StringBase<WideChar> &>( *this ).set(
+		reinterpret_cast<const StringBase<WideChar> &>( stringSrc ) );
+}
+
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
