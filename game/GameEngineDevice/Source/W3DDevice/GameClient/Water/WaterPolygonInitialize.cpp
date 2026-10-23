@@ -50,6 +50,13 @@ enum WaterTextureIndex
 	WATER_TEXTURE_0 = 0
 };
 
+// ILT 0x000490A3 reaches the matched 0x0079E4C0 cleanup body.
+class BfmeThingUND
+{
+public:
+	void bfmeClearUND();
+};
+
 class Rva007A1230ArrayOwner
 {
 public:
@@ -58,7 +65,6 @@ public:
 	void setTexture(const AsciiString &name, WaterTextureIndex index);
 
 private:
-	void releaseOwnedState(void);
 
 	unsigned char m_flag04;
 	unsigned char m_padding05[3];
@@ -216,7 +222,7 @@ void Rva007A1230ArrayOwner::rva007A4D40(void *source)
 {
 	Rva007A4D40Source *record = (Rva007A4D40Source *)source;
 
-	releaseOwnedState();
+	((BfmeThingUND *)this)->bfmeClearUND();
 
 	m_flag04 = record->getFlag40();
 	m_field08 = record->getField44();
