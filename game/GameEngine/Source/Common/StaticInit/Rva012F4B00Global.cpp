@@ -5,3 +5,4 @@
 #include "ascii_string.h"
 #pragma auto_inline(off)
 AsciiString g_rva012F4B00("Palantir.apt");
+#pragma auto_inline(on)
