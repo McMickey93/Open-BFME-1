@@ -231,10 +231,35 @@ def model_tier(name, provider, pattern, selected_verdict, strong):
     return "Sol High", "provider/consumer specialization analysis needed"
 
 
-def analyze(index, intervals, patterns=None, references=None, reference_scan=None):
+def retail_homes(root, names):
+    """Read only the requested identities; pins alone are not proven homes."""
+    homes = collections.defaultdict(set)
+    if not names:
+        return homes
+    with (root / "targets/game/reverse/functions.csv").open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("status") != "matched" or "icf-owner=" in (row.get("notes") or ""):
+                continue
+            identities = {row["name"]}
+            if "gen-alias" not in (row.get("notes") or ""):
+                identities.add(link_census.build.ledger_object_symbol(row))
+            for name in identities & names:
+                homes[name].add(int(row["target_rva"], 16))
+    data = root / "targets/game/reverse/data_rows.csv"
+    if data.is_file():
+        with data.open(newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                if row.get("status") == "matched" and row["name"] in names:
+                    address = int(row["address"], 16)
+                    homes[row["name"]].add(address - 0x400000 if row["address_kind"] == "va" else address)
+    return homes
+
+
+def analyze(index, intervals, patterns=None, references=None, reference_scan=None, homes=None):
     """Pure analysis over the BFME1 census tables. Does not open/write files."""
     patterns = patterns or {}
     references = references or {}
+    homes = homes or {}
     sources = collections.defaultdict(list)
     affected = collections.defaultdict(set)
     for source, entry in index["blockers"].items():
@@ -262,9 +287,14 @@ def analyze(index, intervals, patterns=None, references=None, reference_scan=Non
                     "digest": digest, "retail_verdict": verdict}
 
         proven = [unit(i, d, v) for i, d, v in copies if v == "retail"]
+        # RetailTruth's verdict is existential over candidate homes. Distinct
+        # retail digests cannot establish one provider, even without the ledger
+        # on an offline reader. Several proven addresses are ambiguous even
+        # when their bytes happen to agree (retail did not use ICF).
+        ambiguous = len({p["digest"] for p in proven}) > 1 or len(homes.get(name, ())) > 1
         # Prefer the proven ledger owner's TU, then the first proven copy.
         proven.sort(key=lambda p: (p["object"] not in selection.get("owners", {}).get(name, ()), p["link_order"]))
-        provider = proven[0] if proven else None
+        provider = proven[0] if proven and not ambiguous else None
         if provider:
             provider = {**provider, "evidence": "census RetailTruth: bytes and relocations retail-proven for this exact name",
                         "ledger_owner": provider["object"] in selection.get("owners", {}).get(name, ()),
@@ -276,13 +306,16 @@ def analyze(index, intervals, patterns=None, references=None, reference_scan=Non
         ready = {s for s in affected[name] if blocked_names(index["blockers"][s]) <= {name}
                  and not index["blockers"][s].get("addresses")}
         ready_spans = merge_intervals([part for s in ready for part in intervals.get(s, ())])
-        status = "owner-held" if owner else "needs provider analysis" if not provider else "provider proven"
+        status = ("ambiguous provider — needs analysis" if ambiguous else "owner-held" if owner
+                  else "needs provider analysis" if not provider else "provider proven")
         pattern = patterns.get(name, [])
         consumer_objects = sorted(references.get(name, ()))
         consumers = affected[name] | {s for obj in consumer_objects for s in sources[obj]}
         tier, reason = model_tier(name, provider, pattern, selected_verdict, exclusive)
         families.append({"family": name, "claim_key": f"0x{link_check.claim_key(name):08X}",
                          "status": status, "owner_family": owner or None,
+                         "retail_homes": [f"0x{rva:08X}" for rva in sorted(homes.get(name, ()))],
+                         "ambiguous_provider": ambiguous,
                          "canonical_provider": provider, "proven_copies": proven,
                          "definers": [unit(i, d, v) for i, d, v in copies] + [unit(i, verdict="strong") for i in sorted(exclusive - {j for j, _, _ in copies})],
                          "wrong_emitters": wrong,
@@ -298,7 +331,7 @@ def analyze(index, intervals, patterns=None, references=None, reference_scan=Non
                          "bfme2_pattern": bool(pattern), "bfme2_evidence": pattern,
                          "bfme2_pattern_status": "exact evidence found" if pattern else "not established by bounded lookup",
                          "repair_applicability": "template specialization hypothesis" if "?$" in name else "non-template name; decl-only applicability unestablished",
-                         "confidence": "needs provider analysis" if not provider else "established pattern" if pattern else "provider proven; repair unestablished",
+                         "confidence": status if ambiguous else "needs provider analysis" if not provider else "established pattern" if pattern else "provider proven; repair unestablished",
                          "suggested_model_tier": tier, "tier_reason": reason,
                          "servable": bool(provider and wrong and "?$" in name and not owner and not exclusive and selected_verdict != "unknown"),
                          "hypothesis": HYPOTHESIS})
@@ -375,7 +408,7 @@ def main(argv=None):
         intervals = source_intervals(ROOT, wanted)
         patterns, scan = bfme2_patterns(args.bfme2, names)
         references, reference_scan = census_consumers(index, names, args.objects_dir)
-        report = analyze(index, intervals, patterns, references, reference_scan)
+        report = analyze(index, intervals, patterns, references, reference_scan, retail_homes(ROOT, names))
         report["bfme2_lookup"] = scan
         report["index"] = str(args.index.resolve())
         if args.command == "next":

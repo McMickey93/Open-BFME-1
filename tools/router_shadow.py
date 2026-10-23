@@ -142,7 +142,7 @@ def bundle_view(directory):
     # Reproduces ALL root scores and joint summary from the graph, not just hashes.
     items, _notes, joint = repair_queue.closure_queue(bundle)
     proof = {r["root"].lower(): r["conditional_gain_bytes"] for r in report["roots"]}
-    return {"items": items, "proof": proof, "joint_only": joint, "status": status,
+    return {"items": items, "proof": proof, "joint_only": joint, "status": status, "graph": graph,
             "metadata": {"path": str(directory.resolve()), "commit": receipt["commit"],
                          "freshness": fr, "authoritative": fr["authoritative"],
                          "reason": fr.get("reason"), "sub_reason": fr.get("sub_reason"),
@@ -342,11 +342,16 @@ def run(args):
             index = pickle.load(handle)
         names = comdat.candidate_names(index)
         sources = {s for s, e in index["blockers"].items() if not e["linked"] and comdat.blocked_names(e) & names}
-        families = comdat.analyze(index, comdat.source_intervals(ROOT, sources))["families"]
+        families = comdat.analyze(index, comdat.source_intervals(ROOT, sources), homes=comdat.retail_homes(ROOT, names))["families"]
         donors = sweep.load_report(args.donors) if args.donors else None
         queues = {"closure": [closure_candidate(i, view["proof"]) for i in view["items"]],
                   "family": [family_candidate(f) for f in families if f["servable"]],
                   "donor": [donor_candidate(r, h) for r, h in sweep.ranked(donors)] if donors else []}
+        stale_skips = {lane: [] for lane in queues}
+        if view["metadata"].get("commit"):
+            for lane, candidates in queues.items():
+                queues[lane], stale_skips[lane] = repair_queue.current_bundle_items(
+                    candidates, view["metadata"]["commit"], root=ROOT, graph=view.get("graph"))
         # Narrow ledger filter: never retain the whole functions.csv.
         edits = {(t["name"], t["source"]) for c in queues["family"] for t in c["edit_targets"]}
         matched = set()
@@ -361,7 +366,8 @@ def run(args):
         records, seen_old = [], set()
         for n in range(args.count):
             lane = args.lanes[n % len(args.lanes)]
-            candidate, ok, free, skipped = None, None, None, []
+            candidate, ok, free, skipped = None, None, None, stale_skips[lane]
+            stale_skips[lane] = []
             while queues[lane]:
                 proposed = queues[lane].pop(0)
                 key = int(proposed["key"], 16)

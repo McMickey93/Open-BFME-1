@@ -631,6 +631,123 @@ def closure_queue(b):
     return items, notes, joint
 
 
+def candidate_scope(item, graph=None):
+    """Sources and addresses whose measured state supports this candidate."""
+    sources = set(item.get("sources") or [item.get("source", "")]) - {"", "(no unit)"}
+    address = item.get("target_rva") or item.get("rva")
+    addresses = {int(address, 16)} if address else set()
+    if graph is None:
+        return sources, addresses
+    ok, edges, rows, describe = graph
+    nodes = {n for n in ok if describe(n).get("source") in sources
+             or (describe(n).get("retail_rva") and int(describe(n)["retail_rva"], 16) in addresses)}
+    nodes.update(r["node"] for r in rows if r["source"] in sources or r["rva"] in addresses)
+    pending = list(nodes)
+    while pending:
+        for target in edges.get(pending.pop(), ()):
+            if target not in nodes:
+                nodes.add(target)
+                pending.append(target)
+    for node in nodes:
+        desc = describe(node)
+        if desc.get("source"):
+            sources.add(desc["source"])
+        if desc.get("retail_rva"):
+            addresses.add(int(desc["retail_rva"], 16))
+    for row in rows:
+        if row["node"] in nodes:
+            sources.add(row["source"])
+            addresses.add(row["rva"])
+    return sources, addresses
+
+
+def _currency_row_relevant(row, path, sources, addresses):
+    raw = row.get("target_rva") or row.get("address")
+    candidates = set()
+    if raw:
+        value = int(raw, 16)
+        candidates.add(value)
+        if row.get("address_kind") == "va" or path.endswith("symbols.csv"):
+            candidates.add(value - 0x400000)
+    return bool(candidates & addresses or row.get("source") in sources)
+
+
+def _currency_rows(stream, path, sources, addresses):
+    return {tuple(sorted(row.items())) for row in csv.DictReader(stream)
+            if _currency_row_relevant(row, path, sources, addresses)}
+
+
+def _currency_ledger(root, commit, path, sources, addresses):
+    """Stream a revision's ledger, retaining only candidate/dependency rows."""
+    # Distinguish a genuinely absent ledger from an unreadable Git object.
+    listing = subprocess.run(["git", "-C", str(root), "ls-tree", "--name-only", commit, "--", path],
+                             check=True, capture_output=True, text=True)
+    if not listing.stdout.strip():
+        return set()
+    command = ["git", "-C", str(root), "show", f"{commit}:{path}"]
+    found = set()
+    with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                          text=True, encoding="utf-8") as proc:
+        found = _currency_rows(proc.stdout, path, sources, addresses)
+        if proc.wait():
+            raise subprocess.CalledProcessError(proc.returncode, command)
+    return found
+
+
+def current_bundle_items(items, commit, *, root=None, graph=None):
+    """Never serve work whose measured sources/dependencies/ledger rows moved.
+
+    An ancestor bundle's age/authority says nothing about a later repair. Diff
+    paths first, then compare only relevant rows in changed ledgers; unrelated
+    ledger additions do not stale every root. Git uncertainty fails closed.
+    """
+    if not items:
+        return [], []
+    root = ROOT if root is None else root
+    scopes = [candidate_scope(item, graph) for item in items]
+    try:
+        changed = set(subprocess.run(
+            ["git", "-C", str(root), "diff", "--no-renames", "--name-only", "-z", f"{commit}..HEAD"],
+            check=True, capture_output=True, text=True).stdout.split("\0")) - {""}
+        # Local source/header edits must not revive stale measurements either.
+        local_changed = set(subprocess.run(
+            ["git", "-C", str(root), "diff", "--no-renames", "--name-only", "-z", "HEAD"],
+            check=True, capture_output=True, text=True).stdout.split("\0")) - {""}
+        changed.update(local_changed)
+        headers = {p for p in changed if Path(p).suffix.lower() in (".h", ".hpp", ".inl", ".inc")}
+        ledgers = {f"targets/game/reverse/{name}.csv" for name in ("functions", "symbols", "data_rows")} & changed
+        sources = set().union(*(s for s, _ in scopes))
+        addresses = set().union(*(a for _, a in scopes))
+        deltas = {}
+        for path in ledgers:
+            before = _currency_ledger(root, commit, path, sources, addresses)
+            after = _currency_ledger(root, "HEAD", path, sources, addresses)
+            deltas[path] = before ^ after
+            if path in local_changed:
+                try:
+                    with (Path(root) / path).open(newline="", encoding="utf-8") as stream:
+                        local = _currency_rows(stream, path, sources, addresses)
+                except FileNotFoundError:
+                    local = set()
+                deltas[path].update(after ^ local)
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return [], [dict(item, reason="stale", stale_reason="cannot compare measured commit with HEAD") for item in items]
+    kept, skipped = [], []
+    for item, (sources, addresses) in zip(items, scopes):
+        moved = sorted((sources & changed) | headers)
+        for path, rows in deltas.items():
+            # Reuse the same address/source filter on the narrow row delta.
+            for values in rows:
+                if _currency_row_relevant(dict(values), path, sources, addresses):
+                    moved.append(path)
+                    break
+        if moved:
+            skipped.append(dict(item, reason="stale", stale_reason="changed since measurement: " + ", ".join(sorted(set(moved)))))
+        else:
+            kept.append(item)
+    return kept, skipped
+
+
 def _bundle_queue(bundle, *, closure=False, now=None, allow_stale=False):
     ca = cycle_artifacts()
     b, fr, lines = ca.serve(bundle_path(bundle), root=ROOT, now=now, allow_stale=allow_stale,
@@ -639,13 +756,17 @@ def _bundle_queue(bundle, *, closure=False, now=None, allow_stale=False):
         items, notes, joint = closure_queue(b)
     else:
         items, notes, joint = cycle_items(b.link_status), [], None
+    import closure_report as cr
+    graph = cr.load_graph(b.closure_graph, b.receipt["closure_graph_sha256"])
+    items, skipped = current_bundle_items(items, b.commit, root=ROOT, graph=graph)
+    notes.extend(f"stale candidate {i['target_rva']}: {i['stale_reason']}" for i in skipped)
     items = eligible_link_items(items)
     authoritative = fr["authoritative"]
     for item in items:
         item.update(authoritative=authoritative, diagnostic=not authoritative)
     notes.insert(0, bundle_note(b, fr, f"{len(items)} {'closure root' if closure else 'row'}(s)", allow_stale))
     warnings = [line for line in lines if line.startswith(("STALE", "NOT AUTHORITATIVE", "NOT THE NEWEST", "WARNING"))]
-    return {"items": items, "notes": notes, "warnings": warnings, "joint_only": joint,
+    return {"items": items, "notes": notes, "warnings": warnings, "joint_only": joint, "skipped_candidates": skipped,
             "authoritative": authoritative, "diagnostic": not authoritative, "freshness": fr,
             "source_kind": "bundle", "bundle": str(b.dir), "tag": b.tag, "commit": b.commit}
 

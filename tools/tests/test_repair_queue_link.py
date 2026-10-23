@@ -30,6 +30,9 @@ def rq(monkeypatch):
     monkeypatch.delenv("REPAIR_LINK_STATUS", raising=False)
     import repair_queue
     module = importlib.reload(repair_queue)
+    # These serialization/routing fixtures invent the measured commit. Real
+    # source/ledger currency is exercised with Git in review2 currency tests.
+    monkeypatch.setattr(module, "current_bundle_items", lambda items, *a, **kw: (items, []))
     # Never fetch real host claims or run fleet discovery. Specific tests replace
     # this with the shared predicate's test double and assert it is called.
     monkeypatch.setattr(eligibility, "servable", lambda **kw: lambda rva: True)

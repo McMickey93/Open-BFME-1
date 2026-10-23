@@ -79,6 +79,10 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
                    BFME_OBJSTORE="off", **{cycle_source.AUDIT_ENV: str(audit)})
         subprocess.run(snapshot_command(seed, root, commit, snapshots), cwd=root, env=env, check=True)
         snapshot = snapshots / commit[:10]
+        marker = ca.read_json(snapshot / "SNAPSHOT.json")
+        ca.same("snapshot build origin", marker.get("build_origin"), "empty-export/1")
+        if (snapshot / "build").is_symlink() or not (snapshot / "build").is_dir():
+            raise ca.BundleError("snapshot build/ escaped the launcher-owned directory")
         # Hash the actual export again, and bind the preflight to the receipt.
         cycle_source.reject_bytecode(snapshot)
         ca.same("snapshot tools after execution", ca.local_rules(snapshot), rules)

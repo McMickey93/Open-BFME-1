@@ -1653,6 +1653,18 @@ def tree_manifest(top):
 
 
 SNAPSHOT_MARK = "SNAPSHOT.json"
+SNAPSHOT_BUILD = "empty-export/1"
+
+
+def snapshot_build_dir(top, *, empty=False):
+    """The build tree belongs to the run, never to the archived commit/cache."""
+    path = Path(top) / "build"
+    if path.is_symlink() or (path.exists() and not path.is_dir()):
+        raise SystemExit("link_cycle: snapshot build/ must be a local directory")
+    if empty and path.exists() and any(path.iterdir()):
+        raise SystemExit("link_cycle: launcher requires an empty snapshot build/ directory")
+    path.mkdir(exist_ok=True)
+    return path
 
 
 def export_snapshot(rev, parent):
@@ -1675,8 +1687,10 @@ def export_snapshot(rev, parent):
     mark = dest / SNAPSHOT_MARK
     if mark.exists():
         meta = json.loads(mark.read_text())
-        if meta.get("commit") != sha or tree_manifest(dest) != meta.get("tree_manifest"):
+        if (meta.get("commit") != sha or meta.get("build_origin") != SNAPSHOT_BUILD
+                or tree_manifest(dest) != meta.get("tree_manifest")):
             raise SystemExit(f"link_cycle: snapshot {dest} no longer matches its marker; delete it and re-export")
+        snapshot_build_dir(dest, empty=bool(os.environ.get("BFME_CYCLE_EXPECTED_SEMANTIC")))
         cycle_source.reject_bytecode(dest)
         return dest
     tmp = dest                         # extracted in place; the marker, written last, makes it complete
@@ -1689,7 +1703,13 @@ def export_snapshot(rev, parent):
     def extract(repo, commit, into):
         proc = subprocess.Popen(["git", "-C", str(repo), "archive", "--format=tar", commit], stdout=subprocess.PIPE)
         with tarfile.open(fileobj=proc.stdout, mode="r|") as tar:
-            tar.extractall(into, filter="tar")
+            # Exclude the ENTIRE top-level build tree before extraction: even
+            # tracked symlinks/hardlinks must never import an external cache.
+            for member in tar:
+                relative = Path(into).relative_to(tmp) / member.name
+                if relative.parts and relative.parts[0] == "build":
+                    continue
+                tar.extract(member, into, filter="data")
         if proc.wait():
             raise SystemExit(f"link_cycle: git archive {commit} in {repo} failed")
     extract(ROOT, sha, tmp)
@@ -1697,6 +1717,8 @@ def export_snapshot(rev, parent):
     for line in git("ls-tree", "-r", sha).splitlines():
         mode, kind, obj, path = line.split(None, 3)
         if mode == "160000":
+            if Path(path).parts[0] == "build":
+                continue
             if subprocess.run(["git", "-C", str(ROOT / path), "cat-file", "-e", obj + "^{commit}"],
                               capture_output=True).returncode:
                 raise SystemExit(f"link_cycle: submodule {path} lacks its pinned commit {obj}")
@@ -1704,6 +1726,7 @@ def export_snapshot(rev, parent):
             extract(ROOT / path, obj, tmp / path)
             subs[path] = obj
     cycle_source.reject_bytecode(tmp)
+    snapshot_build_dir(tmp, empty=True)
     # The launcher binds the exported tools before even the shim helper runs.
     expected = os.environ.get("BFME_CYCLE_EXPECTED_SEMANTIC")
     if expected and context.digest({n: text_sha256(tmp / "tools" / n) for n in context.MEASUREMENT_FILES}) != expected:
@@ -1712,6 +1735,7 @@ def export_snapshot(rev, parent):
     subprocess.run(cycle_source.command(tmp / "tools", "import gen_case_shims; gen_case_shims.ensure_case_shims()"),
                    cwd=tmp, check=True, env=dict(os.environ))
     cycle_source.reject_bytecode(tmp)
+    snapshot_build_dir(tmp, empty=True)
     return finish_snapshot(tmp, dest, sha, subs, round(time.time() - t))
 
 
@@ -1719,6 +1743,7 @@ def finish_snapshot(tmp, dest, sha, subs, seconds):
     """Write the marker of a complete extraction (tmp; moved to dest if they
     differ). Without its marker a directory is an unfinished export."""
     meta = {"commit": sha, "submodules": subs, "tree_manifest": tree_manifest(tmp),
+            "build_origin": SNAPSHOT_BUILD,
             "exported_utc": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()), "export_seconds": seconds}
     (tmp / SNAPSHOT_MARK).write_text(json.dumps(meta, indent=1))
     if tmp != dest:

@@ -61,6 +61,11 @@ PROTECTED = (
     "targets/game/reverse/publisher_mode",
     # the linked-build rules
     "tools/link_census.py", "tools/link_debt.py", "tools/alias_guard.py",
+    # cycle measurement, closure credit, local authority and work admission
+    "tools/link_cycle.py", "tools/link_cycle_context.py", "tools/cycle_source.py",
+    "tools/closure_report.py", "tools/cycle_artifacts.py", "tools/publish_cycle.py",
+    "tools/cycle_diff.py", "tools/data_back_rank.py", "tools/cycle_launch.py", "tools/cycle_stamp.py",
+    "tools/repair_queue.py", "tools/router_shadow.py", "tools/comdat_families.py",
     # ledger, identity and direction guards the hooks call
     "tools/check_csv.py", "tools/check_case_collisions.py", "tools/conversion_gate.py", "tools/identity_guard.py",
     "tools/multi_name.py", "tools/ctor_vtable.py", "tools/null_reloc.py",
