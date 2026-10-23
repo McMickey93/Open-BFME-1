@@ -10,6 +10,8 @@ void __cdecl operator delete[](void *);
 template <typename T> class StringBase
 {
 	friend class AsciiString;
+public:
+	Int getLength() const { return m_data ? m_data->length : 0; }
 private:
 	StringBase() : m_data(0) {}
 	StringBase(const T *text);
@@ -28,7 +30,7 @@ public:
 	AsciiString(const char *text) : StringBase<char>(text) {}
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
 	~AsciiString() {}
-	Int getLength() const { return m_data ? m_data->length : 0; }
+	using StringBase<char>::getLength;
 	const char *str() const { return m_data ? m_data->text : ""; }
 };
 

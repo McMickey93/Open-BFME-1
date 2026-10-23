@@ -65,7 +65,7 @@ void Rva004776E0Parse(INI *ini, void *instance, void *store, const void *userDat
 	entry.m_style = 0;
 
 	AsciiString token = ini->getNextAsciiString();
-	while (token.getLength() != 0)
+	while (token.StringBase<char>::getLength() != 0)
 	{
 		if (inlineCompareNoCase(token, "+bold", 5) == 0)
 			entry.m_style = 1;
@@ -79,6 +79,6 @@ void Rva004776E0Parse(INI *ini, void *instance, void *store, const void *userDat
 	}
 
 	_STL::vector<Rva00477050Element> *list = (_STL::vector<Rva00477050Element> *)store;
-	if (entry.m_name.getLength() > 0)
+	if (entry.m_name.StringBase<char>::getLength() > 0)
 		list->push_back(entry);
 }
