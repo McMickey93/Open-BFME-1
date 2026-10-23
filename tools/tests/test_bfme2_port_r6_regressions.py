@@ -316,6 +316,7 @@ def test_property_mutating_random_file_under_every_loadable_root_changes_identit
         prefixes.append(root)
     for name, value in zip(('prefix', 'base_prefix', 'exec_prefix', 'base_exec_prefix'), prefixes):
         monkeypatch.setattr(sys, name, str(value))
+    (home / 'pyvenv.cfg').write_text('home = base\n')
     monkeypatch.setattr(sys, 'executable', str(py))
     monkeypatch.setattr(sys, '_base_executable', str(py))
     packages = stdlib / 'site-packages'
@@ -336,13 +337,18 @@ def test_property_mutating_random_file_under_every_loadable_root_changes_identit
     monkeypatch.setattr(cs.sysconfig, 'get_config_var',
                         lambda name: str(library.parent) if name == 'LIBDIR' else original_config(name))
     roots = cs.runtime_roots()
-    assert {str(p) for p in prefixes} <= set(roots)
+    # Bare prefixes are not loadable roots (on Linux sys.base_prefix is /usr); a
+    # venv's pyvenv.cfg is, since it selects the base installation.
+    assert not {str(p) for p in prefixes} & set(roots)
+    assert str(home / 'pyvenv.cfg') in roots
     assert {str(py), str(library), str(extra), str(archive), str(packages)} <= set(roots)
     assert all(Path(root).is_relative_to(home) for root in roots)
     generator = random.Random(0xBF6)
     before = cs.runtime_identity()
     for root in roots:
         _, files = cs.runtime_inventory((root,))
+        if not files:   # an absent optional root (exec prefix pyvenv.cfg): bound as absent
+            continue
         target = Path(generator.choice(sorted(files)))
         raw = target.read_bytes()
         try:
@@ -469,3 +475,10 @@ def test_loaded_libpython_is_bound_independently_of_sysconfig(monkeypatch):
     assert str(provider) in cs.runtime_roots()
     _, files = cs.runtime_inventory((provider,))
     assert str(provider) in files
+
+
+def test_host_runtime_roots_exclude_bare_prefixes():
+    """sys.base_prefix is /usr on Linux: walking it binds gigabytes Python never
+    loads, including unreadable files, so no host could ever be authoritative."""
+    roots = set(cs.runtime_roots())
+    assert not {sys.prefix, sys.base_prefix, sys.exec_prefix, sys.base_exec_prefix} & roots

@@ -127,7 +127,9 @@ def loaded_runtime_library():
 
 def runtime_roots():
     stdlib, native, packages = runtime_paths()
-    roots = [sys.prefix, sys.base_prefix, sys.exec_prefix, sys.base_exec_prefix,
+    # The bare prefixes are not loadable roots (sys.base_prefix is /usr on Linux):
+    # only their library trees are, plus a venv's pyvenv.cfg, which selects the base.
+    roots = [*(Path(prefix) / "pyvenv.cfg" for prefix in {sys.prefix, sys.exec_prefix}),
              *isolated_search_path(), stdlib, native, packages, *dependency_roots(),
              *(path.parent for path in dependency_locations().values()),
              loaded_runtime_library(), Path(sys.executable).resolve(),
