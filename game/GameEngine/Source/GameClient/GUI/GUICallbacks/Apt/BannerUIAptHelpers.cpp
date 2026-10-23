@@ -37,9 +37,15 @@ class WindowManager
 {
 public:
 	int findAptMovieIndex( const AsciiString &movie );
-	void unidentified_00015235( int movie, const char *function, int argumentCount,
-		const void *argument1, const void *argument2, const void *argument3,
-		const void *argument4, const void *argument5 );
+
+};
+
+// ILT 0x00015235 forwards to the matched eight-word body at 0x004675F0.
+// Reuse its established owner and ABI, as the other APT dispatch callers do.
+class BfmeLevelAN
+{
+public:
+	char *bfmeBuildAN(unsigned int, int, int, int, int, int, int, int);
 };
 
 extern WindowManager *g_rva012F19E8WindowManager;
@@ -49,9 +55,9 @@ void DeleteBanner( int id )
 	char idText[ 16 ];
 	sprintf( idText, "%d", id );
 	AsciiString movie( "BannerUI.apt" );
-	g_rva012F19E8WindowManager->unidentified_00015235(
+	((BfmeLevelAN *)g_rva012F19E8WindowManager)->bfmeBuildAN(
 		g_rva012F19E8WindowManager->findAptMovieIndex( movie ),
-		"DeleteBanner", 1, idText, 0, 0, 0, 0 );
+		(int)"DeleteBanner", 1, (int)idText, 0, 0, 0, 0 );
 }
 
 void AddBanner( int id, const AsciiString &name, const AsciiString &label )
@@ -59,9 +65,9 @@ void AddBanner( int id, const AsciiString &name, const AsciiString &label )
 	char idText[ 16 ];
 	sprintf( idText, "%d", id );
 	AsciiString movie( "BannerUI.apt" );
-	g_rva012F19E8WindowManager->unidentified_00015235(
+	((BfmeLevelAN *)g_rva012F19E8WindowManager)->bfmeBuildAN(
 		g_rva012F19E8WindowManager->findAptMovieIndex( movie ),
-		"AddBanner", 3, idText, name.str(), label.str(), 0, 0 );
+		(int)"AddBanner", 3, (int)idText, (int)name.str(), (int)label.str(), 0, 0 );
 }
 
 void SetBannerState( int id, unsigned int state )
@@ -77,9 +83,9 @@ void SetBannerState( int id, unsigned int state )
 	case 3: label = "_disabled"; break;
 	default: return;
 	}
-	g_rva012F19E8WindowManager->unidentified_00015235(
+	((BfmeLevelAN *)g_rva012F19E8WindowManager)->bfmeBuildAN(
 		g_rva012F19E8WindowManager->findAptMovieIndex( AsciiString( "BannerUI.apt" ) ),
-		"SetBannerState", 2, idText, label, 0, 0, 0 );
+		(int)"SetBannerState", 2, (int)idText, (int)label, 0, 0, 0 );
 }
 
 void SetBannerProgress( int id, int progress )
@@ -89,7 +95,7 @@ void SetBannerProgress( int id, int progress )
 	sprintf( idText, "%d", id );
 	sprintf( progressText, "%d", progress );
 	AsciiString movie( "BannerUI.apt" );
-	g_rva012F19E8WindowManager->unidentified_00015235(
+	((BfmeLevelAN *)g_rva012F19E8WindowManager)->bfmeBuildAN(
 		g_rva012F19E8WindowManager->findAptMovieIndex( movie ),
-		"SetBannerProgress", 2, idText, progressText, 0, 0, 0 );
+		(int)"SetBannerProgress", 2, (int)idText, (int)progressText, 0, 0, 0 );
 }
