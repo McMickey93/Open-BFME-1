@@ -1990,10 +1990,16 @@ def cycle(args):
                    [(n, 1, 4 * i, EXTERNAL) for i, n in enumerate(stubs)])
         inputs = base_inputs + [out / "stubs.obj"]
         shift = None
-        if args.shift_base:   # the shifted link runs alongside; it is used when this iteration converges
+        # The shifted link runs alongside on Windows; under Wine two concurrent link.exe runs
+        # exit 0 without writing their /MAP, so there it runs after the base link.
+        concurrent_shift = args.shift_base and sys.platform == "win32"
+        if concurrent_shift:   # used when this iteration converges
             pool = concurrent.futures.ThreadPoolExecutor(1)
             shift = pool.submit(link, SHIFT_TAG, inputs, order, entry, args.shift_base, out)
         log, code, secs = link(BASE_TAG, inputs, order, entry, BASE, out)
+        if args.shift_base and not concurrent_shift:
+            pool = concurrent.futures.ThreadPoolExecutor(1)
+            shift = pool.submit(link, SHIFT_TAG, inputs, order, entry, args.shift_base, out)
         d = diagnostics(log)
         if not (out / "base.map").exists():
             raise SystemExit(f"link_cycle: the base link wrote no map (exit {code}): {log[:2000]}")
