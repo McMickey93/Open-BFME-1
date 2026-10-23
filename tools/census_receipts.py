@@ -371,6 +371,14 @@ class Receipts:
             # and the complete fresh PP stream, never timestamps as proof.
             found.pop("generations")
             expected = {k: v for k, v in entry["input"].items() if k != "generations"}
+            # Version-1 receipts from the original writer lack these later
+            # evidence fields. Compare them whenever recorded, while retaining
+            # the exact comparison of every original input/signature field.
+            if "preprocessed_canon" not in expected:
+                found.pop("preprocessed_canon", None)
+            if "environment" not in expected["signature"]:
+                found["signature"] = {k: v for k, v in found["signature"].items()
+                                      if k != "environment"}
             if found != expected:
                 return False, "receipt inputs differ: preprocessed inputs"
             if digest(output) != entry["object"]:

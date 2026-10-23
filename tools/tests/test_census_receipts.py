@@ -7,7 +7,7 @@ import struct
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
@@ -15,6 +15,84 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import build
 import census_receipts as proofs
+
+
+@pytest.fixture(scope='module')
+def old_receipt_writer():
+    """Run the actual origin/master producer, not a hand-built old schema."""
+    root = Path(__file__).resolve().parents[2]
+    code = subprocess.check_output(
+        ['git', 'show', 'origin/master:tools/census_receipts.py'], cwd=root)
+    module = ModuleType('old_census_receipts')
+    exec(compile(code, 'origin/master:tools/census_receipts.py', 'exec'), module.__dict__)
+    return module
+
+
+def schema_receipt(tmp_path, monkeypatch, writer):
+    source, header, obj, command, env, _ = fixture(tmp_path, monkeypatch)
+    obj.write_bytes(struct.pack('<HHIIIHH', 0x14c, 0, 0, 0, 0, 0, 0))
+    # Only the PP process is inert: both real snapshot implementations hash
+    # these files and the same transcript, and the reader checks the real OBJ.
+    transcript = (f'#line 1 "{source}"\nint schema_control_marker;\n').encode()
+    capture = lambda *a: SimpleNamespace(
+        returncode=0, stdout=transcript,
+        stderr=f'Note: including file: {header}\n'.encode())
+    monkeypatch.setattr(writer, 'capture_preprocessor', capture)
+    monkeypatch.setattr(proofs, 'capture_preprocessor', capture)
+    inputs = writer.snapshot(source, command, env)
+    receipt = writer.Receipts(tmp_path / 'compile_inputs.json', entries={str(obj.resolve()): {
+        'source': str(source.resolve()), 'object': writer.digest(obj),
+        'command': command, 'input': inputs}})
+    receipt.save()
+    restored = proofs.Receipts.load(receipt.path, receipt.run)
+    assert restored is not None
+    return source, header, obj, restored, inputs
+
+
+@pytest.mark.parametrize('old_writer', [True, False], ids=['OLD-writer', 'NEW-writer'])
+def test_receipt_producer_reader_compatibility(tmp_path, monkeypatch, old_receipt_writer, old_writer):
+    writer = old_receipt_writer if old_writer else proofs
+    source, _, obj, receipt, inputs = schema_receipt(tmp_path, monkeypatch, writer)
+    assert ('preprocessed_canon' in inputs) is not old_writer
+    assert ('environment' in inputs['signature']) is not old_writer
+    assert json.loads(receipt.path.read_text())['version'] == 1
+    saved = receipt.path.read_bytes()
+    assert receipt.check(source, obj) == (True, '')
+    assert receipt.path.read_bytes() == saved
+
+
+@pytest.mark.parametrize('field', ['preprocessed_canon', 'environment'])
+def test_new_receipt_added_evidence_must_match(tmp_path, monkeypatch, field):
+    source, _, obj, receipt, _ = schema_receipt(tmp_path, monkeypatch, proofs)
+    inputs = receipt.entries[str(obj.resolve())]['input']
+    if field == 'environment':
+        inputs['signature'][field]['include'] = 'tampered include path'
+    else:
+        inputs[field] = '0' * 64
+    assert receipt.check(source, obj) == (False, 'receipt inputs differ: preprocessed inputs')
+
+
+@pytest.mark.parametrize('field', [
+    'preprocessed', 'files', 'command', 'fingerprint', 'implicit_flags', 'source', 'object',
+])
+def test_old_receipt_still_requires_original_evidence(
+        tmp_path, monkeypatch, old_receipt_writer, field):
+    source, header, obj, receipt, _ = schema_receipt(tmp_path, monkeypatch, old_receipt_writer)
+    entry = receipt.entries[str(obj.resolve())]
+    if field == 'files':
+        # The inert PP stream stays fixed, but the opened file's bytes change.
+        header.write_text('#define VALUE 18\n')
+    elif field == 'source':
+        source.write_text(source.read_text() + '// changed\n')
+    elif field == 'object':
+        obj.write_bytes(obj.read_bytes() + b'changed')
+    elif field == 'preprocessed':
+        entry['input'][field] = '0' * 64
+    elif field == 'command':
+        entry['command'] = ['different compiler', '-c', str(source)]
+    else:
+        entry['input']['signature'][field] = 'tampered'
+    assert receipt.check(source, obj)[0] is False
 
 
 @pytest.mark.parametrize('error', [
