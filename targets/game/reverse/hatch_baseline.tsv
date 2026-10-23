@@ -2140,7 +2140,6 @@ emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doMoveCameraAlo
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doRemoveCommandBarButton_Thunk.cpp	*	463
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doRotateCameraTowardObject_Thunk.cpp	*	118
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doSkirmishCommandButtonOnMostValuable_Thunk.cpp	*	795
-emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamUseCommandButtonOnNearestObjectType_Thunk.cpp	*	273
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doUnitGarrisonNearestBuilding_Thunk.cpp	*	451
 emit	game/GameEngine/Source/GameLogic/System/GameLogic.cpp	*	1510
 emit	game/GameEngine/Source/GameLogic/System/GameLogicDispatchDoSetRallyPointThunk.cpp	*	880
