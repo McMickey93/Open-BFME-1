@@ -1997,9 +1997,6 @@ def cycle(args):
             pool = concurrent.futures.ThreadPoolExecutor(1)
             shift = pool.submit(link, SHIFT_TAG, inputs, order, entry, args.shift_base, out)
         log, code, secs = link(BASE_TAG, inputs, order, entry, BASE, out)
-        if args.shift_base and not concurrent_shift:
-            pool = concurrent.futures.ThreadPoolExecutor(1)
-            shift = pool.submit(link, SHIFT_TAG, inputs, order, entry, args.shift_base, out)
         d = diagnostics(log)
         if not (out / "base.map").exists():
             raise SystemExit(f"link_cycle: the base link wrote no map (exit {code}): {log[:2000]}")
@@ -2015,12 +2012,18 @@ def cycle(args):
         if (not culprits and not d["unresolved"]) or iters >= args.max_iter:
             break
         if shift:
-            shift.cancel()
-            shift.result()
+            if not shift.cancel():   # already running: let it finish before the next link
+                shift.result()
+            shift = None
         quarantine |= set(culprits)
         save_cache(qfile, obj_digest, sorted(quarantine))
     save_cache(qfile, obj_digest, sorted(quarantine))
-    shift_res = shift.result() if shift else None
+    if shift:
+        shift_res = shift.result()
+    elif args.shift_base:   # under Wine, only the final iteration's layout is linked shifted
+        shift_res = link(SHIFT_TAG, inputs, order, entry, args.shift_base, out)
+    else:
+        shift_res = None
     times["link"] = round(time.time() - t_link)
 
     t = time.time()
