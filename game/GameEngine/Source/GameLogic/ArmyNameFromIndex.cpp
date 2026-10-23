@@ -7,7 +7,16 @@ public:
 	AsciiString &operator=(const char *text);
 };
 
-void __stdcall armyNameFromIndex(unsigned int index, AsciiString *out)
+// Retail 0x003601A0, 100 bytes. A thiscall member that ignores this: the
+// matched caller BfmeFirstWalkOnArmy::lookupWaypoints (0x00360220) loads ecx
+// (mov ecx,edx) before calling it through ILT 0x00038915.
+class BfmeFirstWalkOnArmy
+{
+public:
+	void armyNameFromIndex(unsigned int index, AsciiString *out);
+};
+
+void BfmeFirstWalkOnArmy::armyNameFromIndex(unsigned int index, AsciiString *out)
 {
 	switch (index)
 	{
