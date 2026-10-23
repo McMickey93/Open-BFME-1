@@ -83,8 +83,6 @@ protected:
 
 class LivingWorldLogic;
 extern LivingWorldLogic *TheLivingWorldLogic;
-class Glo012F1028Type;
-extern Glo012F1028Type *Glo012F1028;
 
 class CampaignManager
 {
@@ -227,7 +225,7 @@ void BfmeAptScreenObjectives::bfmeProvideObjectiveText(
 	{
 		Int objective = rva0052AE20(index);
 		if (objective >= 0)
-			text = ((CampaignManager *)Glo012F1028)->rva003BF580(objective);
+			text = ((CampaignManager *)TheLivingWorldLogic)->rva003BF580(objective);
 	}
 
 	if (text.m_data != 0 && text.m_data->m_length != 0
