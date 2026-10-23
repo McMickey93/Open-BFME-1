@@ -117,11 +117,10 @@ class Lab:
         monkeypatch.setattr(pb.build, "EXE", self.exe)
         monkeypatch.setattr(pb.build, "FUNCTIONS", self.functions)
         monkeypatch.setattr(pb.build, "SYMBOLS", self.symbols)
-        # No named lifts in the fixture. Production uses eligibility's real
-        # classifier, including its proven naked/__emit inventory.
-        monkeypatch.setattr(pb.eligibility, "_lift_keys", lambda: frozenset())
         def forbidden(*args, **kwargs):
-            pytest.fail("discovery attempted a subprocess / compilation / writer")
+            pytest.fail("discovery attempted a subprocess / compilation / writer / whole-ledger load")
+        monkeypatch.setattr(pb.eligibility, "load_rows", forbidden)
+        monkeypatch.setattr(pb.build, "load_all_function_rows", forbidden)
         monkeypatch.setattr(pb.locate.harvest, "compile_obj", forbidden)
         monkeypatch.setattr(pb.build, "compile_source", forbidden)
         monkeypatch.setattr(pb.build.subprocess, "run", forbidden)
@@ -523,3 +522,18 @@ def test_changed_object_after_scan_discards_the_entire_report(lab, monkeypatch):
     monkeypatch.setattr(pb, "Evidence", evidence_then_changed)
     with pytest.raises(ValueError, match="object changed"):
         lab.scan()
+
+
+def test_naked_cpp_row_cannot_filter_candidates_or_harvest_pins(lab):
+    compiled, first, relocs = lab.call(target=0x1400)
+    _, second, _ = lab.call(rva=0x1180, target=0x1440)
+    lab.object([("?f@@YAXXZ", compiled, relocs)])
+    lab.image({0x1080: first, 0x1180: second})
+    (lab.source.parent / "Real.cpp").write_text("__declspec(naked) void callee() { __asm { ret } }\n")
+    lab.ledgers([row("?callee@@YAXXZ", 0x1400)])
+    assert lab.scan()["bodies"][0]["candidate_rva"] is None
+    lab.source.write_text("__declspec(naked) void f() { __asm { ret } }\n")
+    lab.image({0x1080: first})
+    report = lab.scan()
+    assert "non-identity-source" in report["bodies"][0]["blocked_by"]
+    assert report["possible_pins"] == []

@@ -152,10 +152,27 @@ def masked_hits(retail, span, relocs):
     return body, hits, None
 
 
-def identity_source(row):
-    """Delegate generated/dump/lift/assembly and identity classification to BFME1."""
-    return (pin_consistency.names_identity(row) and not eligibility.is_dump_row(row)
-            and not row["source"].startswith(one_identity.NOT_EVIDENCE))
+def identity_source_keys(rows):
+    """Read BFME1 identity witnesses, without querying or selecting open work.
+
+    eligibility.is_dump_row's default lift inventory loads the entire ledger
+    and invokes Git scans. This diagnostic only needs to exclude naked callers,
+    including suspect lifts; reuse progress's parser on these source texts.
+    """
+    progress = pin_consistency.progress
+    possible = [r for r in rows if pin_consistency.names_identity(r)
+                and not eligibility.is_anonymous(r["name"])
+                and Path(r["source"]).suffix.lower() in progress.CPP_SUFFIXES
+                and not r["source"].startswith(one_identity.NOT_EVIDENCE)]
+    matched = {(r["name"], r["target_rva"]): (int(r["target_size"]), r["source"])
+               for r in possible}
+    texts = {}
+    for source in {r["source"] for r in possible}:
+        path = build.ROOT / source
+        if path.is_file():
+            texts[source] = path.read_text(encoding="utf-8", errors="replace")
+    naked = progress.naked_cpp_rows(matched, texts, target_reader=build.read_target_bytes)
+    return set(matched) - naked
 
 
 class Evidence:
@@ -181,7 +198,8 @@ class Evidence:
                         and intervals[i][0] < rva + int(row["target_size"]))):
                     rows.append(row)
         self.rows = rows
-        identity_rows = [r for r in rows if identity_source(r)]
+        self.identity_keys = identity_source_keys(rows)
+        identity_rows = [r for r in rows if (r["name"], r["target_rva"]) in self.identity_keys]
         self.owners = one_identity.real_names_by_address(identity_rows)
         # Use the existing pin guard's identity owner API as well as the
         # one_identity real-name check. Neither is an admission bypass.
@@ -226,7 +244,8 @@ class Evidence:
 
     def overlaps(self, rva, size):
         return [{"name": r["name"], "rva": int(r["target_rva"], 16),
-                 "size": int(r["target_size"]), "identity_source": identity_source(r)}
+                 "size": int(r["target_size"]),
+                 "identity_source": (r["name"], r["target_rva"]) in self.identity_keys}
                 for r in self.rows if r["status"] == "matched"
                 and int(r["target_rva"], 16) < rva + size
                 and rva < int(r["target_rva"], 16) + int(r["target_size"])]
@@ -324,8 +343,8 @@ def discover(inputs, *, minimum=20, denylist=DENYLIST):
                 entry["blocked_by"].append("other-identity")
             # A scanned assembly/generated TU cannot provide caller identities.
             probe = dict(name=entry["name"], status="matched", source=entry["source"], notes="",
-                         target_rva=f"0x{entry['candidate_rva']:08X}")
-            if not identity_source(probe):
+                         target_rva=f"0x{entry['candidate_rva']:08X}", target_size=str(entry["size"]))
+            if not identity_source_keys([probe]):
                 entry["blocked_by"].append("non-identity-source")
             if any(r["rva"] != entry["candidate_rva"] or r["size"] != entry["size"]
                    for r in viable[0]["overlapping_rows"]):
