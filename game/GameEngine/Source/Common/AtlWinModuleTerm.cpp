@@ -81,3 +81,24 @@ extern "C" HRESULT __stdcall AtlWinModuleTerm(AtlWinModule *pWinModule, void *hI
 	pWinModule->cbSize = 0;
 	return 0;
 }
+
+// Retail 0x007E7880, just before AtlWinModuleTerm, is an out-of-line copy of
+// the same bounds-checked two-byte element accessor that the function above
+// inlines (CSimpleArray<ATOM>::operator[] shape: index test, RaiseException
+// 0xC000008C on failure). Only its ILT entry 0x00001CB2 reaches it, so the
+// owning instantiation is not proven and the class name keeps the address.
+class Rva007E7880AtomArray
+{
+public:
+	ATOM &operator[](int nIndex);
+
+	ATOM *m_aT;
+	int m_nSize;
+};
+
+ATOM &Rva007E7880AtomArray::operator[](int nIndex)
+{
+	if (nIndex < 0 || nIndex >= m_nSize)
+		AtlRaiseException(0xC000008C);
+	return m_aT[nIndex];
+}
