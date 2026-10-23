@@ -69,6 +69,13 @@ namespace _STL
 	};
 }
 
+// Retail's resize calls route through this independently matched ILT.
+class Rva0000366BICoord2DVectorResizeThunk
+{
+public:
+    void forward(unsigned int newSize);
+};
+
 class WorldHeightMap
 {
 	protected:
@@ -100,7 +107,7 @@ Bool WorldHeightMap::ParseHeightMapData(DataChunkInput &file, DataChunkInfo *inf
 	if (info->version >= 4)
 	{
 		numBorders = file.readInt();
-		m_boundaries.resize(numBorders);
+		reinterpret_cast<Rva0000366BICoord2DVectorResizeThunk *>(&m_boundaries)->forward(numBorders);
 		for (i = 0; i < numBorders; ++i)
 		{
 			m_boundaries[i].x = file.readInt();
@@ -109,7 +116,7 @@ Bool WorldHeightMap::ParseHeightMapData(DataChunkInput &file, DataChunkInfo *inf
 	}
 	else
 	{
-		m_boundaries.resize(1);
+		reinterpret_cast<Rva0000366BICoord2DVectorResizeThunk *>(&m_boundaries)->forward(1);
 		m_boundaries[0].x = m_width - 2 * m_borderSize;
 		m_boundaries[0].y = m_height - 2 * m_borderSize;
 	}
