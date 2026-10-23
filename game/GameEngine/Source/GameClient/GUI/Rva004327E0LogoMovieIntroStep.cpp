@@ -77,6 +77,11 @@ private:
 typedef _STL::map<AsciiString, AsciiString, _STL::less<AsciiString>,
 	_STL::allocator<_STL::pair<const AsciiString, AsciiString> > > PreferenceMap;
 
+// The retail map lookup is reached through this existing ILT. Keep its
+// observed member ABI without depending on competing template emitters.
+extern void j_0003e6da();
+
+
 class UserPreferences : public PreferenceMap
 {
 public:
@@ -119,7 +124,12 @@ int Rva004327E0(int, bool start)
 			TheDisplay->playLogoMovie("IntelLogo", seen, 8);
 			TheDisplay->playLogoMovie("THXLogo", seen, 8);
 			TheDisplay->playLogoMovie("Opening_Game_Cinematic", true, 0x30);
-			assignText(prefs["HasSeenLogoMovies"], "yes");
+            union {
+                void (*raw)();
+                AsciiString &(PreferenceMap::*lookup)(const AsciiString &);
+            } target;
+            target.raw = j_0003e6da;
+            assignText((static_cast<PreferenceMap &>(prefs).*target.lookup)("HasSeenLogoMovies"), "yes");
 			prefs.write();
 		}
 		TheWritableGlobalData->m_afterIntro = true;

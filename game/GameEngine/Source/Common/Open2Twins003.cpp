@@ -35,6 +35,11 @@ typedef _STL::map<AsciiString, AsciiString, _STL::less<AsciiString>,
                   _STL::allocator<_STL::pair<const AsciiString, AsciiString> > >
     PreferenceMap;
 
+// The retail map lookup is reached through this existing ILT. Keep its
+// observed member ABI without depending on competing template emitters.
+extern void j_0003e6da();
+
+
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/UserPreferences.h
 class UserPreferences : public PreferenceMap
 {
@@ -55,7 +60,12 @@ void Open2Option086F30::store(int value)
 {
     AsciiString text;
     text.format("%d", value);
-    (*this)["Color"] = text;
+    union {
+        void (*raw)();
+        AsciiString &(PreferenceMap::*lookup)(const AsciiString &);
+    } target;
+    target.raw = j_0003e6da;
+    (reinterpret_cast<PreferenceMap *>(reinterpret_cast<char *>(this) + 4)->*target.lookup)("Color") = text;
 }
 
 class Open2Option087010 : public UserPreferences
@@ -70,7 +80,12 @@ void Open2Option087010::store(int value)
 {
     AsciiString text;
     text.format("%d", value);
-    (*this)["PlayerTemplate"] = text;
+    union {
+        void (*raw)();
+        AsciiString &(PreferenceMap::*lookup)(const AsciiString &);
+    } target;
+    target.raw = j_0003e6da;
+    (reinterpret_cast<PreferenceMap *>(reinterpret_cast<char *>(this) + 4)->*target.lookup)("PlayerTemplate") = text;
 }
 
 class Open2Option0AD8C0 : public UserPreferences
@@ -85,5 +100,10 @@ void Open2Option0AD8C0::store(int value)
 {
     AsciiString text;
     text.format("%d", value);
-    (*this)["Color"] = text;
+    union {
+        void (*raw)();
+        AsciiString &(PreferenceMap::*lookup)(const AsciiString &);
+    } target;
+    target.raw = j_0003e6da;
+    (reinterpret_cast<PreferenceMap *>(reinterpret_cast<char *>(this) + 4)->*target.lookup)("Color") = text;
 }
