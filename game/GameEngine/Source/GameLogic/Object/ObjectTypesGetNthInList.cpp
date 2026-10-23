@@ -11,9 +11,6 @@
 #include <vector>
 #include "ascii_string.h"
 
-// AsciiString::TheEmptyString; ascii_string.h does not declare it.
-extern const AsciiString Rva01336E50EmptyString;
-
 class Xfer;
 
 class ObjectTypes
@@ -34,5 +31,5 @@ public:
 
 AsciiString ObjectTypes::getNthInList(int index) const
 {
-	return (index < getListSize()) ? m_objectTypes[index] : Rva01336E50EmptyString;
+	return (index < getListSize()) ? m_objectTypes[index] : AsciiString::TheEmptyString;
 }

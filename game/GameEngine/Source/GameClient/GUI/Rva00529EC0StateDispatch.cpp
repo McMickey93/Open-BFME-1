@@ -107,8 +107,6 @@ public:
 
 int bfmeGo1022L( int window );
 
-extern const AsciiString Rva01336E50EmptyString;
-
 // 0x4025 is the ZH GCM_SELECTED arm (combo slot loop), 0x4008 the GBM_SELECTED
 // start-position button arm, 0x4014 the map list selection (mData2 = row).
 // BFME renumbered the gadget messages, so they keep their values as names.
@@ -274,7 +272,7 @@ int Rva00529EC0State::dispatch( int message, void *argument, void *data )
 				int selected = (int)data;
 				if( selected < 0 )
 				{
-					( (MpGameSetup *)this )->bfmeSetMap( Rva01336E50EmptyString );
+					( (MpGameSetup *)this )->bfmeSetMap( AsciiString::TheEmptyString );
 				}
 				else
 				{
