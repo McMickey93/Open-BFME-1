@@ -1,5 +1,5 @@
-// ?method@Rva001D48A0@@QAEXPAVXfer@@@Z
-// Recovered from the retail body at 0x001D48A0; identity not proven.
+// ?DoXfer@Object@@MAEXAAVXfer@@@Z
+// EA identity: Object::DoXfer (see identity_evidence/ea-worldbuilder-labels.md).
 // Size ends before the int3 run at +0x0F94 (3988 bytes).
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /I. /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
@@ -322,20 +322,24 @@ struct Rva001D48A0StatePosition
 };
 typedef Matrix3D Rva001D48A0Matrix;
 
-class Rva001D48A0
+// DoXfer's this is the Snapshot-subobject view (owner = this-0x60): the vptr
+// is not at +0 of this view, so no data member may be declared here (any
+// member would sit past a vptr retail does not have at +0). All storage is
+// reached by absolute offset through field(); 0x244 below is this-relative
+// (= TRUE Object+0x2A4, the weapon-slot bytes).
+class Object
 {
+protected:
+    virtual void DoXfer(Xfer &xfer);
 public:
-    void method(Xfer *xfer);
     template<class T> __forceinline T &field(int offset) { return rva001D48A0Field<T>(this, offset); }
-    char m_pad[0x244];
-    signed char m_weaponSlotBytes[4];
 };
 
-// ?method@Rva001D48A0@@QAEXPAVXfer@@@Z
-void Rva001D48A0::method(Xfer *xfer)
+// ?DoXfer@Object@@MAEXAAVXfer@@@Z
+void Object::DoXfer(Xfer &xfer)
 {
-    Rva001D48A0XferView *receiver = reinterpret_cast<Rva001D48A0XferView *>(xfer);
-    MidVirtualSlot90Receiver *typed = reinterpret_cast<MidVirtualSlot90Receiver *>(xfer);
+    Rva001D48A0XferView *receiver = reinterpret_cast<Rva001D48A0XferView *>(&xfer);
+    MidVirtualSlot90Receiver *typed = reinterpret_cast<MidVirtualSlot90Receiver *>(&xfer);
     Rva001D48A0Version version = { 1, 11 };
     receiver->version(&version);
     receiver->text(&field<AsciiString>(0x1e8));
@@ -350,15 +354,15 @@ void Rva001D48A0::method(Xfer *xfer)
     if (!receiver->IsLightCRC())
     {
         Rva001D48A0Matrix matrix = field<Rva001D48A0Matrix>(-0x58);
-        BfmeParticleSystemXferMatrix(*xfer, &matrix);
+        BfmeParticleSystemXferMatrix(xfer, &matrix);
         if (receiver->IsLoading())
             rva001D48A0Call<void, const Rva001D48A0Matrix *>(j_000361ce, owner, &matrix);
     }
     receiver->unsignedByte(&field<unsigned char>(0x2e4));
     if (nonLightCRC)
-        xferBlob_0010CC40(xfer, &field<unsigned int>(0x1c4));
+        xferBlob_0010CC40(&xfer, &field<unsigned int>(0x1c4));
     else
-        rva001D48A0Call<void, Xfer *>(j_0000335f, &field<unsigned int>(0x1c4), xfer);
+        rva001D48A0Call<void, Xfer *>(j_0000335f, &field<unsigned int>(0x1c4), &xfer);
     receiver->snapshot(field<void *>(0x1b0));
     receiver->unsignedInteger(&field<unsigned int>(0x240));
     if (receiver->IsLightCRC())
@@ -420,10 +424,10 @@ void Rva001D48A0::method(Xfer *xfer)
         rva001D48A0Call<void, unsigned int>(j_00005a7e, draw, drawableId);
     }
     receiver->text(&field<AsciiString>(0x24));
-    rva001D48A0Call<void, Xfer *>(j_00035a0d, &field<unsigned int>(0x30), xfer);
+    rva001D48A0Call<void, Xfer *>(j_00035a0d, &field<unsigned int>(0x30), &xfer);
     receiver->integerCoord2(&field<int>(0x3c));
     receiver->integerCoord2(&field<int>(0x44));
-    rva001D48A0Call<void, Xfer *>(j_00026dd7, &field<unsigned int>(0xb0), xfer);
+    rva001D48A0Call<void, Xfer *>(j_00026dd7, &field<unsigned int>(0xb0), &xfer);
     receiver->unsignedByte(&field<unsigned char>(0x2e3));
     receiver->unsignedInteger(&field<unsigned int>(0x30c));
     if (receiver->IsLoading())
@@ -443,7 +447,7 @@ void Rva001D48A0::method(Xfer *xfer)
     receiver->real(&field<float>(0x134));
     receiver->real(&field<float>(0x138));
     receiver->real(&field<float>(0x13c));
-    rva001D48A0Call<void, Xfer *>(j_00008e72, &field<unsigned int>(0x144), xfer);
+    rva001D48A0Call<void, Xfer *>(j_00008e72, &field<unsigned int>(0x144), &xfer);
     receiver->boolean(&field<bool>(0x2e7));
     for (int i = 0; i < 11; ++i)
         receiver->unsignedInteger(&field<unsigned int>(0x148 + i * 4));
@@ -538,11 +542,11 @@ void Rva001D48A0::method(Xfer *xfer)
     Rva0010C3C0(typed, &field<unsigned int>(0x270));
     receiver->unsignedInteger(&field<unsigned int>(0x274));
     receiver->snapshot(field<void *>(0x188));
-    rva001D48A0Call<void, Xfer *>(j_00044ce7, &field<unsigned int>(0x23c), xfer);
-    signed char *weaponSlot = m_weaponSlotBytes;
+    rva001D48A0Call<void, Xfer *>(j_00044ce7, &field<unsigned int>(0x23c), &xfer);
+    signed char *weaponSlot = &field<signed char>(0x244);
     for (int i = 0; i < 4; ++i) *receiver == weaponSlot[i];
     receiver->snapshot(&field<unsigned int>(0x204));
-    rva001D48A0Call<void, Xfer *>(j_0002fc1b, &field<unsigned int>(0x260), xfer);
+    rva001D48A0Call<void, Xfer *>(j_0002fc1b, &field<unsigned int>(0x260), &xfer);
     receiver->text(&field<AsciiString>(0x2c8));
     if (version.version >= 11) receiver->text(&field<AsciiString>(0x2cc));
     receiver->boolean(&field<bool>(0x2e1));
@@ -554,7 +558,7 @@ void Rva001D48A0::method(Xfer *xfer)
         unsigned int count = field<_STL::vector<Rva001D28F0Element> >(0x2ec).size();
         receiver->unsignedInteger(&count);
         for (_STL::vector<Rva001D28F0Element>::iterator i = field<_STL::vector<Rva001D28F0Element> >(0x2ec).begin(); i != field<_STL::vector<Rva001D28F0Element> >(0x2ec).end(); ++i)
-            reinterpret_cast<Rva001D48A0DamageVirtual *>(&*i)->transfer(xfer);
+            reinterpret_cast<Rva001D48A0DamageVirtual *>(&*i)->transfer(&xfer);
     }
     else
     {
@@ -564,7 +568,7 @@ void Rva001D48A0::method(Xfer *xfer)
         for (unsigned int i = 0; i < count; ++i)
         {
             Rva001D28F0Element item;
-            rva001D48A0Call<void, Xfer *>(j_0003f75b, &item, xfer);
+            rva001D48A0Call<void, Xfer *>(j_0003f75b, &item, &xfer);
             field<_STL::vector<Rva001D28F0Element> >(0x2ec).push_back(item);
         }
     }
@@ -584,7 +588,7 @@ void Rva001D48A0::method(Xfer *xfer)
             receiver->text(&oldName);
         }
         if (version.version >= 7)
-            rva001D48A0Call<void, Xfer *>(j_0003fbcf, &field<unsigned int>(0x314), xfer);
+            rva001D48A0Call<void, Xfer *>(j_0003fbcf, &field<unsigned int>(0x314), &xfer);
         else if (version.version >= 6)
         {
             receiver->integer(&field<int>(0x318));
