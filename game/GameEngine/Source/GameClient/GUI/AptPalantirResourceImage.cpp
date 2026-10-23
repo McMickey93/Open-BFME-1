@@ -1,9 +1,13 @@
 // cl: /DNDEBUG /MD /EHsc
 
+class AsciiString;
+static inline bool isNotEmpty(const AsciiString &string);
+
 template <typename T>
 class StringBase
 {
 	friend class AsciiString;
+	friend bool isNotEmpty(const AsciiString &string);
 
 private:
 	StringBase(const T *text);
@@ -22,11 +26,13 @@ public:
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
 	~AsciiString(void) {}
 
-	bool isNotEmpty(void) const
-	{
-		return m_data != 0 && *(const unsigned short *)(m_data + 4) != 0;
-	}
+	friend bool isNotEmpty(const AsciiString &string);
 };
+
+static inline bool isNotEmpty(const AsciiString &string)
+{
+	return string.m_data != 0 && *(const unsigned short *)(string.m_data + 4) != 0;
+}
 
 AsciiString operator+(AsciiString left, const AsciiString &right);
 
@@ -59,7 +65,7 @@ private:
 // ?cacheResourceImage@Rva00592570ResourceImageSlot@@QAEXABVAsciiString@@@Z
 void Rva00592570ResourceImageSlot::cacheResourceImage(const AsciiString &suffix)
 {
-	if (suffix.isNotEmpty())
+	if (isNotEmpty(suffix))
 		m_resourceImage = TheMappedImageCollection->findImageByName(AsciiString("ResourceBar_") + suffix);
 	else
 		m_resourceImage = 0;
@@ -91,7 +97,7 @@ void Rva00592A90ResourceImageSlot::cacheResourceImage(const AsciiString &suffix)
 		m_helpBoxShown = false;
 	}
 
-	if (suffix.isNotEmpty())
+	if (isNotEmpty(suffix))
 		m_resourceImage = TheMappedImageCollection->findImageByName(AsciiString("ResourceBar_") + suffix);
 	else
 		m_resourceImage = 0;

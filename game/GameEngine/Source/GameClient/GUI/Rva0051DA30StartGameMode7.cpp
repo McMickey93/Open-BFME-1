@@ -25,6 +25,9 @@ struct BfmeStringData
 };
 
 
+class AsciiString;
+static inline Bool isNotEmpty(const AsciiString &string);
+
 // Retail inlines this wrapper into StringBase<char> directly; declare just the
 // StringBase<char> members it reaches (see build/whatif/wrapfix.py).
 template <class T> class StringBase
@@ -41,14 +44,16 @@ class AsciiString
 public:
 	AsciiString &operator=(const AsciiString &that) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&that); return *this; }
 
-	Bool isNotEmpty() const
-	{
-		return m_data != 0 && ((const BfmeStringData *)m_data)->m_length != 0;
-	}
+	friend Bool isNotEmpty(const AsciiString &string);
 
 private:
 	void *m_data;
 };
+
+static inline Bool isNotEmpty(const AsciiString &string)
+{
+	return string.m_data != 0 && ((const BfmeStringData *)string.m_data)->m_length != 0;
+}
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/GlobalData.h
 class GlobalData
@@ -138,7 +143,7 @@ void Rva0051DA30Host::startGameMode7(Int)
 {
 	((U4Sink0060D3B0 *)TheGameLogic)->push(false, false);
 
-	if (TheWritableGlobalData->m_field1200.isNotEmpty())
+	if (isNotEmpty(TheWritableGlobalData->m_field1200))
 	{
 		TheWritableGlobalData->m_pendingFile = TheWritableGlobalData->m_field1200;
 		((Rva00386090 *)TheGameLogic)->set(
