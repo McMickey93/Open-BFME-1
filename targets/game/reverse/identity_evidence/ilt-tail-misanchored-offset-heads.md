@@ -129,3 +129,5 @@ claims were byte coincidences and are retired:
 
 Zero Hour's errorCallback/successQuitCallback/successNoQuitCallback sit in that address
 order; BFME replaces HandleCanceledDownload with the +0x259 flag clear the cancel button uses.
+
+| 0x007832F0 | 25 | ?dup_7832fe @0x007832FE (deleteInstance alias) | handler slot 15 of bfmeInstallHandlersVB: delete the object when flags & 0x406 |

@@ -38,3 +38,33 @@ void Rva007832B0InvokeCallbackWithArg(const char *name, void *context)
 {
 	g_rva012F19E8WindowManager->invokeCallbackWithArg_0046CE60(name, context);
 }
+
+// Handler slot 15 installed by bfmeInstallHandlersVB (DIR32 0x007894DC,
+// recorded there as bfmeHandler15VB): deletes the object through its virtual
+// destructor when any of the 0x406 flag bits is set.
+class Rva007832F0Object
+{
+public:
+	virtual ~Rva007832F0Object();
+};
+
+// ?Rva007832F0@@YAXPAVRva007832F0Object@@I@Z
+void Rva007832F0(Rva007832F0Object *object, unsigned int flags)
+{
+	if ((flags & 0x406) && object)
+		delete object;
+}
+
+// Handler slot 24 (DIR32 0x00789536, recorded as bfmeHandler24VB): returns a
+// block to its memory pool.
+class MemoryPool
+{
+public:
+	void freeBlock(void *block);
+};
+
+// ?Rva00786C90@@YAXPAVMemoryPool@@PAX@Z
+void Rva00786C90(MemoryPool *pool, void *block)
+{
+	pool->freeBlock(block);
+}
