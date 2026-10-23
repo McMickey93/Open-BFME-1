@@ -6,11 +6,11 @@ same receipt), with BFME1's binding rules:
 
   - Retail was linked /INCREMENTAL: a call or a vtable slot encodes the ILT
     thunk (`jmp body`, 0x1000..0x5B000, or a `?j_` row), never the body.
-    This link is /INCREMENTAL:NO (/ORDER forbids an ILT), so a reference that
-    lands on the body counts when retail's thunk jumps to that body
-    (`ilt_routes`); one that lands on the thunk's own unit counts directly.
-  - No ICF in retail (/OPT:NOICF here too); the twin rule stays, as the
-    diagnostic it was in BFME2, and certifies nothing it cannot prove.
+    This link is /INCREMENTAL:NO (/ORDER forbids an ILT), so a direct call
+    to the body counts when retail's thunk jumps there (`ilt_routes`).
+    Taken addresses, including vtable slots, retain the thunk's identity.
+  - No ICF in retail (/OPT:NOICF here too); distinct retail bodies cannot
+    share a provider through byte-twin equivalence.
   - One .text group: BFME1 places EH funclets next to their functions, so a
     filler never carries a $x/$yc/$yd group name.
   - Dumps (game/gen_asm/, game/masm_dumps/, other .asm) and generated rows are
@@ -41,32 +41,31 @@ fixes of research 29, 31 and the round-2 review:
   4. Measure (per ledger row, every failing relocation, not the first):
      - a unit counts only when the /MAP shows the link selected its own copy
        of the head symbol (`not-selected` otherwise: /FORCE kept another);
-     - code references translate through the unit or filler that holds the
-       linked target and must equal retail's target;
+     - code references translate through verified ledger extents or fillers
+       and must equal retail's target; unrelocated direct branches create
+       closure edges too;
      - an __ehhandler$ thunk counts as its owner function's (owner + offset)
        only when the row is that owner and the FuncInfo, unwind and try maps
-       and funclet bodies equal retail's;
-     - an other-name copy is an ICF twin only from the fold list this tool
-       builds: the definition the /MAP says the link put there (at its own
-       offset in its section), retail's row size within its extent, equal
-       non-relocation bytes, every relocation resolving to retail's target;
+       equal retail's, with verified providers for the handler, funclets
+       and catch descriptors (including their dependency closures);
      - data references must map 1:1, and the linked datum's bytes must equal
        retail's at the referenced address; a datum whose name is pinned in
        symbols.csv must sit at its pin (the `pinned` series also fails
        unpinned data). Pointers INSIDE a datum are references too: code
        pointers translate, data pointers must map 1:1, reach a real datum
        (not a stub) and agree with its pin, and that datum is checked the
-       same way, to any depth (`data-ptr-*` failures);
+       same way, to any depth (`data-ptr-*` failures). Whole-datum mappings
+       preserve identity and offsets; literal image pointers fail closed;
      - imports match on (dll, name or ordinal). Retail's duplicate IAT slots
        of one import are one datum only for references that read through the
        slot (call/jmp/push/mov [slot]) on both sides; a reference that can
        observe the slot itself keeps the 1:1 rule.
-     Closed-strict: the closure graph holds units, certified twins, datums and
+     Closed-strict: the closure graph holds units, datums and
      EH thunks; a node is ok when self-strict AND shift-verified (5), and a
      row closes when its unit reaches only ok nodes. A filler, a stub or a
      node the graph does not hold is never a leaf. Credit = unique retail
-     bytes of placed, closed-strict authored rows; fillers, stubs and aliases
-     never count.
+     bytes of placed, closed-strict rows in progress.py's recovered source
+     lanes; fillers, stubs, generated rows, dumps and prebuilt libraries never count.
   5. A second link at a shifted base (default 0x10000000) with the same
      inputs. The layout must be identical; in every node's bytes (rows'
      code, twins, datums, EH FuncInfo and its maps) non-relocation bytes must
@@ -130,6 +129,8 @@ import link_census as census  # noqa: E402
 import link_cycle_context as context  # noqa: E402
 import cycle_source  # noqa: E402
 import census_receipts  # noqa: E402
+import progress  # noqa: E402
+import retail_relocs  # noqa: E402
 
 OUT = ROOT / "build" / "link_cycle"
 COMPILE_INPUTS = "compile_inputs.json"
@@ -248,17 +249,18 @@ def order_name(name):
     return name[1:] if name.startswith("_") else name
 
 
-def row_kind(row):
+def row_kind(row, naked=False):
     notes = row.get("notes", "")
     for k in ("gen-funclet", "gen-import", "gen-alias"):
         if k in notes:
             return k
     src = row.get("source", "")
-    if src.startswith(("game/gen_asm/", "game/gen_small/")):
+    lane = progress.source_lane(src, notes, naked)
+    if src.startswith(("game/gen_asm/", "game/gen_small/")) or lane == "generated":
         return "generated"
-    if src.lower().endswith(".asm"):
+    if lane == "dump":
         return "asm"
-    return "real"
+    return "real" if lane in progress.DECOMPILED_LANES else lane
 
 
 def group_of(secname):
@@ -347,13 +349,23 @@ class Objects:
 
 def analyze(rows, objs):
     """Units: one per object section holding >= 1 matched row."""
+    matched = {(r["name"], r["target_rva"]): (int(r.get("target_size") or 0), r["source"]) for r in rows}
+    texts = {}
+    for source in {r["source"] for r in rows if Path(r["source"]).suffix.lower() in progress.CPP_SUFFIXES}:
+        path = ROOT / source
+        if path.is_file():
+            text = path.read_text(encoding="utf-8", errors="replace")
+            if "_asm" in text or "naked" in text or "_emit" in text:
+                texts[source] = text
+    naked = progress.naked_cpp_rows(matched, texts)
     units, keyed = [], {}
     stat = collections.Counter()
     for r in rows:
         rva, size = int(r["target_rva"], 16), int(r.get("target_size") or 0)
         p = row_obj(r)
         sym = (re.search(r"(?:^|;)object-symbol=([^;]+)", r.get("notes", "")) or [None, r["name"]])[1]
-        rec = {"name": r["name"], "sym": sym, "rva": rva, "size": size, "kind": row_kind(r), "source": r["source"]}
+        rec = {"name": r["name"], "sym": sym, "rva": rva, "size": size,
+               "kind": row_kind(r, (r["name"], r["target_rva"]) in naked), "source": r["source"]}
         o = objs.get(p)
         y = None
         if o is not None:
@@ -725,38 +737,31 @@ except ImportError:  # pragma: no cover
     _CS = _CSD = None
 
 
-def _norm(ins):
-    return ins.mnemonic + " " + re.sub(r"0x[0-9a-f]{6,8}", "ADDR", ins.op_str)
-
-
-def funclet_equal(I, la, R, ra, lbase, rbase, translate=None):
-    """Funclet bodies equal up to the first ret/jmp, address operands masked; a
-    direct call/jmp target must translate to retail's when it is mapped."""
-    a = list(_CS.disasm(bytes(I[la:la + 64]), la + lbase))
-    b = list(_CS.disasm(bytes(R[ra:ra + 64]), ra + rbase))
-    for x, y in zip(a, b):
-        if _norm(x) != _norm(y):
-            return False
-        if translate and x.mnemonic in ("call", "jmp") and x.op_str.startswith("0x") and y.op_str.startswith("0x"):
-            t = translate(int(x.op_str, 16) - lbase)
-            if t is not None and t != int(y.op_str, 16) - rbase:
-                return False
-        if x.mnemonic in ("jmp", "ret"):
-            return True
-    return len(a) == len(b)
-
-
 def funcinfo(m, a, base):
+    def extent(at, size):
+        if at < 0 or size < 0 or at + size > len(m):
+            raise ValueError("EH table outside image")
+    extent(a, 24)
     magic, maxst, pu, ntry, ptry, _ = struct.unpack_from("<IiIIII", m, a)
-    un = [struct.unpack_from("<iI", m, pu - base + 8 * i) for i in range(max(0, min(maxst, 400)))] if pu else []
+    if not 0 <= maxst <= 400 or ntry > 50 or (maxst and not pu) or (ntry and not ptry):
+        raise ValueError("unsupported EH table extent")
+    if maxst:
+        extent(pu - base, maxst * 8)
+    if ntry:
+        extent(ptry - base, ntry * 20)
+    un = [struct.unpack_from("<iI", m, pu - base + 8 * i) for i in range(maxst)]
     tr = []
-    for i in range(min(ntry, 50)):
+    for i in range(ntry):
         lo, hi, ch, nc, ph = struct.unpack_from("<iiiiI", m, ptry - base + 20 * i)
-        tr.append((lo, hi, ch, nc, [struct.unpack_from("<IIiI", m, ph - base + 16 * j) for j in range(min(nc, 20))]))
+        if not 0 <= nc <= 20 or (nc and not ph):
+            raise ValueError("unsupported catch table extent")
+        if nc:
+            extent(ph - base, nc * 16)
+        tr.append((lo, hi, ch, nc, [struct.unpack_from("<IIiI", m, ph - base + 16 * j) for j in range(nc)]))
     return magic, maxst, ntry, un, tr
 
 
-def eh_verdict(I, lt, R, rt, lbase, rbase, translate=None):
+def eh_verdict(I, lt, R, rt, lbase, rbase, translate=None, reference=None):
     """None when the linked __ehhandler$ thunk at lt and retail's at rt (mov eax,
     FuncInfo; jmp handler) carry equal EH data; else the first difference."""
     # Both 10-byte thunks must lie in their image: a retail target past its bytes
@@ -766,10 +771,20 @@ def eh_verdict(I, lt, R, rt, lbase, rbase, translate=None):
         return "thunk outside the image"
     if I[lt] != 0xB8 or R[rt] != 0xB8 or I[lt + 5] != 0xE9 or R[rt + 5] != 0xE9:
         return "thunk shape differs"
+    def proven(la, ra, *, direct=False, data=False):
+        if reference is not None:
+            return reference(la, ra, direct=direct, data=data)
+        # Address translation alone proves no provider bytes or dependencies.
+        return False
+
+    lh = lt + 10 + struct.unpack_from("<i", I, lt + 6)[0]
+    rh = rt + 10 + struct.unpack_from("<i", R, rt + 6)[0]
+    if not proven(lh, rh):
+        return "handler target unverified"
     try:
         a = funcinfo(I, u32(I, lt + 1) - lbase, lbase)
         b = funcinfo(R, u32(R, rt + 1) - rbase, rbase)
-    except (struct.error, IndexError):
+    except (struct.error, IndexError, ValueError):
         return "FuncInfo unparsable"
     if a[:3] != b[:3]:
         return "FuncInfo header differs"
@@ -777,17 +792,20 @@ def eh_verdict(I, lt, R, rt, lbase, rbase, translate=None):
         return "unwind map differs"
     if any((x[1] == 0) != (y[1] == 0) for x, y in zip(a[3], b[3])):
         return "unwind action presence differs"
-    if not all(funclet_equal(I, x[1] - lbase, R, y[1] - rbase, lbase, rbase, translate)
+    if not all(proven(x[1] - lbase, y[1] - rbase)
                for x, y in zip(a[3], b[3]) if x[1] and y[1]):
-        return "unwind funclet differs"
+        return "unwind funclet unverified"
     if [t[:4] for t in a[4]] != [t[:4] for t in b[4]]:
         return "try map differs"
     for t, v in zip(a[4], b[4]):
         if [(h[0], h[2]) for h in t[4]] != [(h[0], h[2]) for h in v[4]]:
             return "catch map differs"
-        if not all(funclet_equal(I, h[3] - lbase, R, g[3] - rbase, lbase, rbase, translate)
+        if any((h[1] == 0) != (g[1] == 0) or (h[1] and not proven(h[1] - lbase, g[1] - rbase, data=True))
+               for h, g in zip(t[4], v[4])):
+            return "catch type unverified"
+        if not all(h[3] and g[3] and proven(h[3] - lbase, g[3] - rbase)
                    for h, g in zip(t[4], v[4])):
-            return "catch funclet differs"
+            return "catch funclet unverified"
     return None
 
 
@@ -811,6 +829,36 @@ def hardcoded_operands(code, va, masked, lo, hi, starts=frozenset()):
             if (lo <= v < hi or v in starts) and not any(j in masked for j in range(k, k + 4)):
                 out.append(k)
     return out
+
+
+def code_flow(code, va):
+    """Reachable instructions and fallthrough beyond an extent. Decode branch
+    destinations separately so inline data cannot hide a later direct call."""
+    if _CSD is None:
+        return [], False, False
+    work, seen, covered, fallthrough = [0], {}, set(), False
+    while work:
+        at = work.pop()
+        if at in seen:
+            continue
+        ins = next(_CSD.disasm(bytes(code[at:at + 15]), va + at, count=1), None)
+        if ins is None or any(k in covered for k in range(at, at + ins.size)):
+            return list(seen.values()), False, fallthrough
+        seen[at] = ins
+        covered.update(range(at, at + ins.size))
+        branch = ins.mnemonic == "call" or ins.mnemonic.startswith(("j", "loop"))
+        if branch and ins.operands and ins.operands[0].type == capstone.x86.X86_OP_IMM:
+            target = ins.operands[0].imm - va
+            if 0 <= target < len(code):
+                work.append(target)
+        if ins.mnemonic == "jmp" or ins.mnemonic.startswith(("ret", "iret")) or ins.mnemonic in ("int3", "ud2", "hlt"):
+            continue
+        end = at + ins.size
+        if end < len(code):
+            work.append(end)
+        else:
+            fallthrough = True
+    return list(seen.values()), True, fallthrough
 
 
 # ---------------------------------------------------------------- measure
@@ -837,7 +885,11 @@ class Measure:
                 la = None
             u["linked"] = la
             if la is not None and len(u["starts"]) == 1:
-                items.append((la, la + u["size"], u["starts"][0], ("unit", u["id"])))
+                # Only ledger extents are checked by run(). The rest of a
+                # COFF section (helpers, gaps, tails) has no verified provider.
+                for r in u["rows"]:
+                    if 0 <= r["off"] < r["off"] + r["size"] <= u["size"]:
+                        items.append((la + r["off"], la + r["off"] + r["size"], r["rva"], ("unit", u["id"])))
         for a, b in chunks:
             la = self.pub.get(fill_name(a))
             if la is not None:
@@ -853,6 +905,9 @@ class Measure:
         self.resolved, self.dnodes, self.twin_edges, self.twin_rels, self.twin_body = {}, {}, {}, {}, {}
         self.import_equiv = 0       # read-through references kept by the (dll, name) rule, not 1:1
         self.ilt_routes = collections.Counter()
+        self.eh_nodes = {}
+        self.datum_conflicts = set()
+        self.retail_sites = None
 
     def T(self, a):
         i = bisect.bisect_right(self.istarts, a) - 1
@@ -895,8 +950,15 @@ class Measure:
         I, R = self.I, self.R
         secs, syms, raw = o
         sec = secs[secno - 1]
+        if not (0 <= off <= off + size <= sec.size and 0 <= L <= L + size <= len(I)
+                and 0 <= rva <= rva + size <= len(R)):
+            return ["code-extent"], set(), set(), [], []
         got, want = I[L:L + size], R[rva:rva + size]
         fails, edges, masked, data, rels = [], set(), set(), [], []
+        instructions, decoded, fallthrough = code_flow(got, L + self.lbase)
+        direct_calls = {ins.address - L - self.lbase + ins.imm_offset for ins in instructions
+                        if ins.mnemonic == "call" and ins.operands
+                        and ins.operands[0].type == capstone.x86.X86_OP_IMM}
         for va, si, ty in sec.relocs:
             if not off <= va < off + size:
                 continue
@@ -921,7 +983,8 @@ class Measure:
             else:
                 lt, rt = (lv - self.lbase) & 0xFFFFFFFF, (rv - self.rbase) & 0xFFFFFFFF
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
-                f, e = self.code_ref(lt, rt, tn, owner)
+                direct = ty == REL32 and fo in direct_calls
+                f, e = self.code_ref(lt, rt, tn, owner, direct=direct)
                 if f:
                     fails.append(f)
                 elif e:
@@ -933,35 +996,85 @@ class Measure:
         nd = nonreloc_diffs(got, want, masked)
         if nd:
             fails.append(f"bytes:{nd}")
+        # Same-section and literal rel32 branches need no COFF relocation.
+        # Their targets still belong to the source dependency closure.
+        if _CSD is None:
+            fails.append("code-decoder-missing")
+        else:
+            if not decoded:
+                fails.append("code-decode-incomplete")
+            if fallthrough:
+                f, e = self.code_ref(L + size, rva + size, "fallthrough", owner)
+                if f:
+                    fails.append(f)
+                elif e:
+                    edges.add(e)
+            for ins in instructions:
+                if ins.mnemonic != "call" and not ins.mnemonic.startswith(("j", "loop")):
+                    continue
+                if not ins.operands or ins.operands[0].type != capstone.x86.X86_OP_IMM:
+                    continue
+                fo = ins.address - L - self.lbase + ins.imm_offset
+                if any(k in masked for k in range(fo, fo + ins.imm_size)):
+                    continue
+                lt = ins.operands[0].imm - self.lbase
+                rt = rva + (lt - L)  # identical unrelocated displacement
+                f, e = self.code_ref(lt, rt, "direct-branch", owner, direct=ins.mnemonic == "call")
+                if f:
+                    fails.append(f)
+                elif e:
+                    edges.add(e)
         return fails, edges, masked, data, rels
 
     def ilt_body(self, rt):
         """The body a retail ILT thunk (or `?j_` row) at rt jumps to; rt itself otherwise."""
         for _ in range(3):
-            if (ILT[0] <= rt < ILT[1] or rt in self.thunk_rows) and self.R[rt] == 0xE9:
+            if (0 <= rt <= len(self.R) - 5
+                    and (ILT[0] <= rt < ILT[1] or rt in self.thunk_rows) and self.R[rt] == 0xE9):
                 rt = (rt + 5 + struct.unpack_from("<i", self.R, rt + 1)[0]) & 0xFFFFFFFF
             else:
                 break
         return rt
 
-    def code_ref(self, lt, rt, tn, owner):
+    def code_ref(self, lt, rt, tn, owner, *, direct=False):
         tr, item = self.T(lt)
         if tr is not None and tr == rt:
             return None, item
-        if tr is not None and self.ilt_body(rt) == tr:
+        if direct and tr is not None and self.ilt_body(rt) == tr:
             self.ilt_routes["call"] += 1      # retail bound at the thunk, this link at its body
             return None, item
         s = self.sym_at(lt)
-        if s and s[1].startswith("__ehhandler$"):
+        if s and s[0] == lt and s[1].startswith("__ehhandler$"):
             if s[1][len("__ehhandler$"):] != owner:
                 self.eh["foreign thunk"] += 1
                 return f"eh-foreign:{tn}", None
-            v = eh_verdict(self.I, s[0], self.R, rt - (lt - s[0]), self.lbase, self.rbase, self.translate)
+            node = self.eh_nodes.setdefault(s[0], {"fails": [], "edges": set(), "refs": []})
+
+            def reference(la, ra, *, direct=False, data=False):
+                if data:
+                    sym = self.sym_at(la)
+                    found = self.objs.lookup(sym[2], sym[1]) if sym else None
+                    if not found:
+                        return False
+                    o, y = found
+                    node["refs"].append((la, ra, sym[1], y, o, la - sym[0], "addr"))
+                    return True
+                # EH helper bodies need a verified provider, including all
+                # of that provider's code/data dependencies and shifted bytes.
+                tr, edge = self.T(la)
+                if tr is None or (tr != ra and not (direct and self.ilt_body(ra) == tr)):
+                    return False
+                node["edges"].add(edge)
+                return True
+
+            v = eh_verdict(self.I, s[0], self.R, rt - (lt - s[0]), self.lbase, self.rbase,
+                           self.translate, reference)
+            if v:
+                node["fails"].append(v)
             self.eh[v or "verified"] += 1
             return (f"eh:{v}", None) if v else (None, ("eh", s[0]))
-        if s and s[0] == lt and rt in self.ledger_starts:
-            self.twins.setdefault((lt, rt), None)
-            return None, ("twin", lt, rt)          # judged in settle_twins; a rejected twin fails the row
+        # BFME1 retail has no ICF: equal bodies at distinct retail addresses
+        # retain distinct identities, including when the provider is a dump.
         if tr is None:
             return f"code-unmapped:{tn}", None
         return f"code-wrong:{tn}", None
@@ -1009,16 +1122,16 @@ class Measure:
             if S is not None and not found and self.communal(tn):
                 # an uninitialized global: a COMMON record sizes it (the linker takes the
                 # largest), and the map names an object that does not define it
-                return None if lt < S else (S, self.communal(tn), lt - S, o, None, 0, S)
+                size = self.communal(tn)
+                return (S, size, lt - S, o, None, 0, S) if S <= lt < S + size else None
             if S is None or not found:
                 return None
             o, ys = found
             sec, P, base = o[0][ys.sec - 1], ys.value + (lt - S), ys.value
-        if P < base:
+        if P < base or P >= sec.size:
             return None
         vals = self.objs.defined(o)[1].get(sec.idx, [])
-        q = min(P, sec.size - 1)
-        i = bisect.bisect_right(vals, q) - 1
+        i = bisect.bisect_right(vals, P) - 1
         v0 = vals[i] if i >= 0 else 0
         v1 = vals[i + 1] if i + 1 < len(vals) else sec.size
         return lt - (P - v0), v1 - v0, P - v0, o, sec, v0, S
@@ -1091,10 +1204,7 @@ class Measure:
             rt = (u32(want, fo) - self.rbase) & 0xFFFFFFFF
             if self.ltext[0] <= lt < self.ltext[0] + self.ltext[1]:
                 tr, item = self.T(lt)
-                if tr is not None and tr != rt and self.ilt_body(rt) == tr:
-                    self.ilt_routes["pointer"] += 1     # retail's slot holds the ILT thunk
-                    node["edges"].add(item)
-                elif tr != rt:
+                if tr != rt:
                     node["fails"].append(f"data-codeptr:{name}")
                 else:
                     node["edges"].add(item)
@@ -1103,6 +1213,28 @@ class Measure:
                 node["refs"].append((lt, rt, tn, y, o, addend, "addr"))
         if nonreloc_diffs(got, want, masked):
             node["fails"].append(f"data-content:{name}")
+        # Retail's retained HIGHLOW list distinguishes pointers from numbers
+        # and strings. Without that evidence, a possible image pointer fails
+        # closed. Inspect unaligned words too (packed structs are valid).
+        sites = self.retail_sites
+        offsets = (range(max(0, size - 3)) if sites is None else
+                   (v - rstart for v in sites[bisect.bisect_left(sites, rstart):
+                                              bisect.bisect_left(sites, rstart + size)]))
+        rsecs = getattr(self, "rsecs", self.isecs)
+        relocated = {fo for fo, ty, _ in node["rels"] if ty == DIR32}
+        for fo in offsets:
+            if fo in relocated:
+                continue
+            if fo + 4 > size:
+                node["fails"].append(f"data-pointer-straddle:{name}")
+                break
+            lv, rv = u32(got, fo), u32(want, fo)
+            ra = rv - self.rbase
+            rinside = (rsecs.name_at(ra) != "outside" if hasattr(rsecs, "name_at") else
+                       any(a <= ra < a + z for a, z in rsecs.values()))
+            if (sites is not None or self.lsec(lv - self.lbase) != "outside" or rinside):
+                node["fails"].append(f"data-unrelocated-pointer:{name}")
+                break
         return node
 
     def discover(self, refs):
@@ -1115,10 +1247,29 @@ class Measure:
             self.back[ref[1]].add(ref[0])
             r = self.resolve(ref)
             if r[0] == "datum":
+                start, rstart, _ = r[1]
+                # Interior references must agree on the identity and offset
+                # of the whole datum, not merely on each accessed address.
+                self.fwd[start].add(rstart)
+                self.back[rstart].add(start)
                 node = self.dnodes[r[1]]
                 if not node.get("seen"):
                     node["seen"] = True
                     work.extend(node["refs"])
+        # Overlapping extents must preserve the same displacement in both
+        # directions; otherwise distinct storage has been merged or split.
+        for axis in (0, 1):
+            group, end, deltas = [], -1, set()
+            for key in sorted(self.dnodes, key=lambda k: k[axis]):
+                if key[axis] >= end:
+                    if len(deltas) > 1:
+                        self.datum_conflicts.update(group)
+                    group, end, deltas = [], -1, set()
+                group.append(key)
+                end = max(end, key[axis] + key[2])
+                deltas.add(key[1] - key[0])
+            if len(deltas) > 1:
+                self.datum_conflicts.update(group)
 
     def one_to_one(self, lt, rt, tn):
         out = []
@@ -1155,6 +1306,10 @@ class Measure:
             what = {"stub": "data-stub", "outside": "data-outside-image", "unmapped": "data-unmapped"}[kind[0]]
             return fails + [f"{what}:{tn}"], set(), False
         S = kind[2]
+        start, rstart, _ = kind[1]
+        fails += self.one_to_one(start, rstart, tn) if (start, rstart) != (lt, rt) else []
+        if kind[1] in self.datum_conflicts:
+            fails.append(f"data-identity:{tn}")
         pinned = tn in self.pins
         if pinned and not pin_matches(self.pins[tn], rt - (lt - S), self.rbase):
             fails.append(f"data-pin:{tn}")
@@ -1212,8 +1367,14 @@ class Measure:
                 for ref in data:
                     self.pending.append((rec, ref))
         self.collect_twins()
-        self.discover([ref for _, ref in self.pending] + [ref for b in self.twin_body.values() for ref in b[2]])
+        self.discover([ref for _, ref in self.pending] + [ref for b in self.twin_body.values() for ref in b[2]]
+                      + [ref for node in self.eh_nodes.values() for ref in node["refs"]])
         self.judge_datums()
+        for node in self.eh_nodes.values():
+            for ref in node["refs"]:
+                f, e, _ = self.ref_with_datum(ref)
+                node["fails"] += f
+                node["edges"] |= e
         for rec, ref in self.pending:
             f, e, pinned = self.ref_with_datum(ref)
             rec["fails"] += f
@@ -1272,30 +1433,9 @@ class Measure:
                     work.append((x[1], x[2]))
 
     def settle_twins(self):
-        """Certify twins: equal bytes, every relocation (code, and data with its
-        datum's own failures) resolving to retail's target, twins of twins
-        included."""
-        body, ok, edges = self.twin_body, {}, {}
-        for key, (f, e, data, rels) in body.items():
-            fails, es = list(f), set(e)
-            for ref in data:
-                rf, redges, _ = self.ref_with_datum(ref)
-                fails += rf
-                es |= redges
-            ok[key], edges[key] = fails, es
-            self.twin_rels[key] = rels
-        good = {k for k, v in ok.items() if not v}
-        changed = True
-        while changed:
-            changed = False
-            for k in list(good):
-                if any(x[0] == "twin" and (x[1], x[2]) not in good for x in edges[k]):
-                    good.discard(k)
-                    ok[k] = ["calls a rejected twin"]
-                    changed = True
-        self.twin_edges = edges
-        for k in body:
-            self.twins[k] = (k in good, (ok[k] or ["certified"])[0].split(":")[0])
+        """Retain rejected diagnostics; BFME1 never grants ICF twin credit."""
+        self.twins = {key: (False, "bfme1-no-icf") for key in self.twins}
+        self.twin_edges = {}
 
     def judge_twins(self):
         """collect_twins, their data, settle_twins in one call (tests)."""
@@ -2103,6 +2243,10 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
     for q in modified:                 # a renamed copy is the bytes the link read
         objs.by_base[names[q]] = out / "zzobj" / q
     m = Measure(units, chunks, mapped, I, R, isecs, rimp, limp, pins, objs, ledger_starts)
+    m.rsecs = rsecs
+    # A real BFME1 image must have its retained relocation evidence; the
+    # loader raises rather than silently dropping a missing/truncated table.
+    m.retail_sites = retail_relocs.site_rvas() if R[:2] == b"MZ" else None
     recs = m.run()
     textsz = rsecs[".text"][1]
     sh = Shifted(out, I, isecs, rsecs, have_shift, shift_base, {BASE + r["row"]["rva"] for r in recs})
@@ -2135,10 +2279,12 @@ def measure(out, units, chunks, objs, R, rsecs, rimp, pins, have_shift, shift_ba
     for es in list(edges.values()):
         for e in es:
             if e[0] == "eh" and e not in ok:
-                ok[e] = not sh.eh(e[1])
+                node = m.eh_nodes[e[1]]
+                ok[e] = not node["fails"] and not sh.eh(e[1])
+                edges[e] |= node["edges"]
     # a dump (generated/asm unit) is retail bytes re-encoded, not source: in the
     # source closure an edge into one closes nothing, like a filler
-    dump_units = {u["id"] for u in units if u["rows"] and u["rows"][0]["kind"] in ("generated", "asm")}
+    dump_units = {u["id"] for u in units if any(r["kind"] in ("generated", "asm", "library") for r in u["rows"])}
     src_edges = {n: {("dump", e[1]) if e[0] == "unit" and e[1] in dump_units else e for e in es}
                  for n, es in edges.items()}
     closed = greatest_closure(ok, src_edges, bad_targets=("fill", "stub", "dump"))
@@ -2285,6 +2431,8 @@ def closure_graph_doc(m, recs, hard, ok, edges):
             node = m.dnodes[n[1]]
             d.update(rva=n[1][1], linked=n[1][0], size=n[1][2], name=node["name"])
             d["failures"].update(node["fails"] or ([] if v else ["shift"]))
+        elif kind == "eh":
+            d["failures"].update(m.eh_nodes[n[1]]["fails"] or ([] if v else ["shift"]))
         elif not v:
             d["failures"].add("shift")
     for d in nodes.values():
@@ -2371,7 +2519,7 @@ class Shifted:
             fi = u32(I, lt + 1) - BASE
             if eh_tables(I, fi, BASE) != eh_tables(S, fi, self.base_s):
                 return self._note("eh", "FuncInfo not adjusted")
-        except (struct.error, IndexError):
+        except (struct.error, IndexError, ValueError):
             return self._note("eh", "FuncInfo unparsable")
         return None
 

@@ -413,7 +413,7 @@ def graph_from_doc(doc):
             raise ReportError("invalid graph row extent, flags or unit")
         if kind == "real" and context.source_kind({"source": source}) != "real":
             raise ReportError("generated/assembly source cannot be real credit")
-        if kind in ("generated", "asm"):
+        if kind in ("generated", "asm", "library"):
             dump_units.add(key)
     if any(t in dump_units for ts in doc["edges"].values() for t in ts):
         raise ReportError("graph contains a generated/assembly source closure dependency")

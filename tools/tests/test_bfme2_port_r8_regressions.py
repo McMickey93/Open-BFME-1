@@ -209,7 +209,8 @@ linked = bytearray(consumed)
 linked[0x1000] = 0xc3
 judge = lc.Measure.__new__(lc.Measure)
 judge.I, judge.R = linked, consumed
-obj = ([SimpleNamespace(relocs=[])], {}, b'')
+judge.lbase = judge.rbase = lc.BASE
+obj = ([SimpleNamespace(relocs=[], size=1)], {}, b'')
 assert not judge.relocs(0x1000, 0x1000, 1, obj, 1, 0, '_f')[0]
 pe, restored, _, _ = lc.pe_view(p)
 pe.close()
@@ -281,7 +282,7 @@ print('FACTS=' + json.dumps(facts))
                for f in facts)
 
 
-def test_sound_real_run7_graph_credit_and_roots():
+def test_sound_real_run7_graph_credit_and_roots(monkeypatch):
     import closure_report as cr
     import link_cycle as lc
     project = Path(__file__).resolve().parents[5]
@@ -300,13 +301,20 @@ def test_sound_real_run7_graph_credit_and_roots():
                             cwd=Path(lc.__file__).parents[1], check=True, capture_output=True, text=True).stdout
     tree = ast.parse(source)
     selected = ast.Module(body=[n for n in tree.body if isinstance(n, ast.FunctionDef)
-                                and n.name in {"receipt_core", "receipt_canon_core"}], type_ignores=[])
+                                and n.name in {"receipt_core", "receipt_canon_core", "row_kind"}], type_ignores=[])
     namespace = {}
     exec(compile(selected, '<run7 core serializers only>', 'exec'), namespace)
     assert lc.digest_of(namespace["receipt_core"](receipt)) == receipt["core_sha256"]
     assert lc.digest_of(namespace["receipt_canon_core"](receipt)) == receipt["core_canon_sha256"]
     assert lc.sha256(run / "link_status.csv") == receipt["series"]["link_status_sha256"]
-    graph = cr.load_graph(run / cr.GRAPH_FILE, receipt["closure_graph_sha256"])
+    # Review 2 rejects the archive's prebuilt-library "real" rows under
+    # today's provenance policy. Preserve this historical serializer check
+    # with the archive's own classifier; this grants no current admission.
+    with pytest.raises(cr.ReportError, match="cannot be real credit"):
+        cr.load_graph(run / cr.GRAPH_FILE, receipt["closure_graph_sha256"])
+    with monkeypatch.context() as patch:
+        patch.setattr(cr.context, "source_kind", namespace["row_kind"])
+        graph = cr.load_graph(run / cr.GRAPH_FILE, receipt["closure_graph_sha256"])
     ok, edges, rows, describe = graph
     closed = cr.reference_closure(ok, edges)
     assert closed == lc.greatest_closure(ok, edges)

@@ -218,10 +218,11 @@ def _measure_state():
         twin_fails={(0x600, 0x3000): ["bytes", "extent differs"]},
         dnodes={d1: {"name": "_g", "fails": ["data-content"]}, d2: {"name": "_h", "fails": []},
                 d3: {"name": "_k", "fails": []}},
+        eh_nodes={0x77: {"fails": []}, 0x78: {"fails": []}, 0x79: {"fails": ["catch type unverified"]}},
         sym_at=lambda a: (a, f"_sym{a:X}", "o.obj", a + 1) if a != 0x700 else None)
     ok = {("unit", 0): False, ("unit", 1): False, ("unit", 2): False, ("twin", 0x500, 0x1000): True,
           ("twin", 0x600, 0x3000): False, ("twin", 0x700, 0x4000): False, ("datum", d1): False, ("datum", d2): False,
-          ("datum", d3): True, ("eh", 0x77): False, ("eh", 0x78): True}
+          ("datum", d3): True, ("eh", 0x77): False, ("eh", 0x78): True, ("eh", 0x79): False}
     edges = {("unit", 0): {("datum", d1), ("twin", 0x500, 0x1000), ("fill", 0x5000)}, ("unit", 2): {("eh", 0x77)},
              ("twin", 0x500, 0x1000): {("datum", d2), ("stub",)}, ("unit", 1): set()}
     return m, recs, hard, ok, edges
@@ -229,9 +230,9 @@ def _measure_state():
 
 def test_link_cycles_graph_emit_reads_the_measure_and_changes_nothing(tmp_path):
     m, recs, hard, ok, edges = _measure_state()
-    before = copy.deepcopy((recs, ok, edges, m.twins, m.twin_fails, m.dnodes)), dict(hard)
+    before = copy.deepcopy((recs, ok, edges, m.twins, m.twin_fails, m.dnodes, m.eh_nodes)), dict(hard)
     doc = lc.closure_graph_doc(m, recs, hard, ok, edges)
-    assert (copy.deepcopy((recs, ok, edges, m.twins, m.twin_fails, m.dnodes)), dict(hard)) == before   # read only
+    assert (copy.deepcopy((recs, ok, edges, m.twins, m.twin_fails, m.dnodes, m.eh_nodes)), dict(hard)) == before   # read only
     assert doc["schema"] == lc.CLOSURE_GRAPH_SCHEMA == cr.GRAPH_SCHEMA and lc.CLOSURE_GRAPH == cr.GRAPH_FILE
     n = doc["nodes"]
     assert n["unit:0"] == {"kind": "unit", "ok": False, "name": "?a@@YAXXZ", "rva": 0x0F00, "source": "game/a.cpp",
@@ -245,6 +246,7 @@ def test_link_cycles_graph_emit_reads_the_measure_and_changes_nothing(tmp_path):
     assert n["datum:36864:32768:4"]["failures"] == ["data-content"]             # its shift check was never asked
     assert n["datum:37120:-16:8"]["failures"] == ["shift"] and n["eh:119"]["failures"] == ["shift"]
     assert n["eh:120"] == {"kind": "eh", "ok": True, "failures": []}
+    assert n["eh:121"]["failures"] == ["catch type unverified"]
     assert doc["edges"] == {"twin:1280:4096": ["datum:37120:-16:8", "stub"],
                             "unit:0": ["datum:36864:32768:4", "fill:20480", "twin:1280:4096"], "unit:2": ["eh:119"]}
     assert doc["rows"][0] == ["?a2@@YAXXZ", "real", "game/a.cpp", 0x0F00, 8, "unit:0", 1, 0]

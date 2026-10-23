@@ -238,13 +238,14 @@ def _funcinfo(buf, at, unwind_to, base=B):
 def test_eh_thunk_counts_for_its_owner_only_when_funcinfo_matches():
     I, R = bytearray(0x6000), bytearray(0x6000)
     for buf, thunk, fi in ((I, 0x1C00, 0x3000), (R, 0x1D00, 0x3400)):
-        _put(buf, thunk, b"\xb8" + struct.pack("<I", B + fi) + b"\xe9\0\0\0\0")
+        _put(buf, thunk, b"\xb8" + struct.pack("<I", B + fi) + b"\xe9" + struct.pack("<i", 0x1800 - thunk - 10))
         _funcinfo(buf, fi, [-1, 0])
-    m = _measure(I, R, [], [(0x1C00, "__ehhandler$?f@@YAXXZ", "a.obj")])
+    items = [(0x1800, 0x1801, 0x1800, ("unit", 7))]
+    m = _measure(I, R, items, [(0x1C00, "__ehhandler$?f@@YAXXZ", "a.obj")])
     assert m.code_ref(0x1C00, 0x1D00, "__ehhandler$?f@@YAXXZ", "?f@@YAXXZ") == (None, ("eh", 0x1C00))
     assert m.code_ref(0x1C00, 0x1D00, "x", "?g@@YAXXZ")[0].startswith("eh-foreign")   # not its owner
     _funcinfo(R, 0x3400, [-1, -1])                          # positive control: unwind map differs
-    m = _measure(I, R, [], [(0x1C00, "__ehhandler$?f@@YAXXZ", "a.obj")])
+    m = _measure(I, R, items, [(0x1C00, "__ehhandler$?f@@YAXXZ", "a.obj")])
     assert m.code_ref(0x1C00, 0x1D00, "x", "?f@@YAXXZ")[0] == "eh:unwind map differs"
 
 
@@ -261,16 +262,12 @@ def _twin_setup(callee_retail):
     return m
 
 
-def test_icf_twin_needs_resolved_relocations_not_masked_bytes():
-    m = _twin_setup(0x1900)                                  # same bytes and same resolved callee
-    assert m.code_ref(0x1C00, 0x1D00, "?copy@@YAXXZ", "?r@@YAXXZ") == (None, ("twin", 0x1C00, 0x1D00))
-    m.judge_twins()
-    assert m.twins[(0x1C00, 0x1D00)] == (True, "certified")
-    assert m.twin_edges[(0x1C00, 0x1D00)] == {("unit", 7)}
-    m = _twin_setup(0x1950)                                  # masked bytes equal, callee differs
-    m.code_ref(0x1C00, 0x1D00, "?copy@@YAXXZ", "?r@@YAXXZ")
-    m.judge_twins()
-    assert m.twins[(0x1C00, 0x1D00)] == (False, "code-wrong")
+def test_bfme1_distinct_identities_never_acquire_twin_credit():
+    for callee in (0x1900, 0x1950):  # even equal bytes and resolved callees cannot prove identity
+        m = _twin_setup(callee)
+        assert m.code_ref(0x1C00, 0x1D00, "?copy@@YAXXZ", "?r@@YAXXZ") == ("code-unmapped:?copy@@YAXXZ", None)
+        m.judge_twins()
+        assert not m.twins and not m.twin_edges
 
 
 def test_unmapped_call_without_ledger_target_fails():
@@ -281,13 +278,13 @@ def test_unmapped_call_without_ledger_target_fails():
 
 def test_relocs_records_every_failure_not_the_first():
     I, R = bytearray(0x6000), bytearray(0x6000)
-    code = b"\xe8\0\0\0\0\xe8\0\0\0\0\x90"
-    _put(I, 0x1000, b"\xe8" + struct.pack("<i", 0x1C00 - 0x1005) + b"\xe8" + struct.pack("<i", 0x1C00 - 0x100A) + b"\x90")
-    _put(R, 0x1000, b"\xe8" + struct.pack("<i", 0x1D00 - 0x1005) + b"\xe8" + struct.pack("<i", 0x1D00 - 0x100A) + b"\x91")
-    o = ([_sec(1, ".text", 11, relocs=[(1, 0, lc.REL32), (6, 1, lc.REL32)])],
+    code = b"\xe8\0\0\0\0\xe8\0\0\0\0\x90\xc3"
+    _put(I, 0x1000, b"\xe8" + struct.pack("<i", 0x1C00 - 0x1005) + b"\xe8" + struct.pack("<i", 0x1C00 - 0x100A) + b"\x90\xc3")
+    _put(R, 0x1000, b"\xe8" + struct.pack("<i", 0x1D00 - 0x1005) + b"\xe8" + struct.pack("<i", 0x1D00 - 0x100A) + b"\x91\xc3")
+    o = ([_sec(1, ".text", 12, relocs=[(1, 0, lc.REL32), (6, 1, lc.REL32)])],
          {0: _sym(0, "?a@@YAXXZ", 0), 1: _sym(1, "?b@@YAXXZ", 0)}, code)
     m = _measure(I, R, [], [])
-    fails, _, masked, _, rels = m.relocs(0x1000, 0x1000, 11, o, 1, 0, "?f@@YAXXZ")
+    fails, _, masked, _, rels = m.relocs(0x1000, 0x1000, 12, o, 1, 0, "?f@@YAXXZ")
     assert fails == ["code-unmapped:?a@@YAXXZ", "code-unmapped:?b@@YAXXZ", "bytes:1"]
     assert masked == set(range(1, 5)) | set(range(6, 10))
     assert rels == [(1, lc.REL32, False), (6, lc.REL32, False)]
@@ -295,14 +292,14 @@ def test_relocs_records_every_failure_not_the_first():
 
 def test_absolute_except_list_compares_raw_value():
     I, R = bytearray(0x6000), bytearray(0x6000)
-    code = b"\x64\xa1\0\0\0\0"
+    code = b"\x64\xa1\0\0\0\0\xc3"
     _put(I, 0x1000, code)
     _put(R, 0x1000, code)
-    o = ([_sec(1, ".text", 6, relocs=[(2, 0, lc.DIR32)])], {0: _sym(0, "__except_list", 0)}, code)
+    o = ([_sec(1, ".text", 7, relocs=[(2, 0, lc.DIR32)])], {0: _sym(0, "__except_list", 0)}, code)
     m = _measure(I, R, [], [])
-    assert m.relocs(0x1000, 0x1000, 6, o, 1, 0, "?f@@YAXXZ")[0] == []
+    assert m.relocs(0x1000, 0x1000, 7, o, 1, 0, "?f@@YAXXZ")[0] == []
     _put(I, 0x1002, struct.pack("<I", B + 0x5000))           # positive control: a stub, not absolute 0
-    assert m.relocs(0x1000, 0x1000, 6, o, 1, 0, "?f@@YAXXZ")[0] == ["abs:__except_list"]
+    assert m.relocs(0x1000, 0x1000, 7, o, 1, 0, "?f@@YAXXZ")[0] == ["abs:__except_list"]
 
 
 # ---- link-cycle-2: closure through data, shifted base, imports, selected copies, receipts ----
@@ -607,9 +604,7 @@ def test_read_through_operand_forms():
     assert not lc.read_through(b"\x8d\x05\0\0\0\0", 2)         # lea eax,[slot]
 
 
-def test_twin_is_judged_on_the_selected_copy_inside_its_section():
-    """A section holding two functions: link-cycle-1 rejected the second on
-    'extent' (offset != 0); the /MAP's copy at its own offset is judged now."""
+def test_selected_copy_diagnostics_do_not_grant_twin_credit():
     I, R = bytearray(0x6000), bytearray(0x6000)
     body = b"\x90" * 0x10 + b"\xe8\0\0\0\0\xc3" + b"\xcc" * 10
     _put(I, 0x1C00, b"\x90" * 0x10 + b"\xe8" + struct.pack("<i", 0x1800 - 0x1C15) + b"\xc3")
@@ -619,14 +614,16 @@ def test_twin_is_judged_on_the_selected_copy_inside_its_section():
     m = _measure(I, R, [(0x1800, 0x1810, 0x1900, ("unit", 7))],
                  [(0x1C00, "?f@@YAXXZ", "b.obj"), (0x1C10, "?g@@YAXXZ", "b.obj")],
                  objs=FakeObjs({"b.obj": tw}), ledger_starts={0x1D00: 6})
-    assert m.code_ref(0x1C10, 0x1D00, "?g@@YAXXZ", "?r@@YAXXZ") == (None, ("twin", 0x1C10, 0x1D00))
+    assert m.selected_copy(0x1C10, 6)[2] is None  # the diagnostic still identifies the selected copy
+    assert m.code_ref(0x1C10, 0x1D00, "?g@@YAXXZ", "?r@@YAXXZ") == ("code-unmapped:?g@@YAXXZ", None)
     m.judge_twins()
-    assert m.twins[(0x1C10, 0x1D00)] == (True, "certified")
+    assert not m.twins
     m = _measure(I, R, [], [(0x1C10, "?g@@YAXXZ", "b.obj")], objs=FakeObjs({"b.obj": tw}),
                  ledger_starts={0x1D00: 0x12})                          # retail's row is longer: not this copy
     m.code_ref(0x1C10, 0x1D00, "?g@@YAXXZ", "?r@@YAXXZ")
     m.judge_twins()
-    assert m.twins[(0x1C10, 0x1D00)] == (False, "extent differs")
+    assert m.selected_copy(0x1C10, 0x12)[2] == "extent differs"
+    assert not m.twins
 
 
 def test_unit_whose_copy_the_link_did_not_select_is_not_measured():
@@ -689,10 +686,11 @@ def test_call_bound_at_the_ilt_thunk_counts_when_the_thunk_reaches_the_body():
     _put(R, 0x1200, b"\xe9" + struct.pack("<i", 0x1A00 - 0x1205))            # a thunk to another body
     items = [(0x1800, 0x1810, 0x1900, ("unit", 1))]                          # linked body = retail 0x1900
     m = _measure(I, R, items, [])
-    assert m.code_ref(0x1800, 0x1100, "?f@@YAXXZ", "?r@@YAXXZ") == (None, ("unit", 1))
+    assert m.code_ref(0x1800, 0x1100, "?f@@YAXXZ", "?r@@YAXXZ", direct=True) == (None, ("unit", 1))
     assert m.ilt_routes["call"] == 1
     # positive control: a thunk to a different body is a wrong target
-    assert m.code_ref(0x1800, 0x1200, "?f@@YAXXZ", "?r@@YAXXZ") == ("code-wrong:?f@@YAXXZ", None)
+    assert m.code_ref(0x1800, 0x1200, "?f@@YAXXZ", "?r@@YAXXZ", direct=True) == ("code-wrong:?f@@YAXXZ", None)
+    assert m.code_ref(0x1800, 0x1100, "?f@@YAXXZ", "?r@@YAXXZ")[0] == "code-wrong:?f@@YAXXZ"
     assert m.ilt_body(0x1100) == 0x1900 and m.ilt_body(0x1900) == 0x1900
 
 
@@ -704,8 +702,8 @@ def test_vtable_slot_through_the_ilt():
     vt = ([_sec(1, ".rdata", 4, relocs=[(0, 0, lc.DIR32)])], {0: _sym(0, "??_7X@@6B@", 1)}, b"")
     m = _measure(I, R, [(0x1800, 0x1810, 0x1900, ("unit", 1))], [(0x3000, "??_7X@@6B@", "a.obj")])
     fails, edges, _ = m.data_ref(0x3000, 0x3100, "??_7X@@6B@", vt[1][0], vt, 0)
-    assert fails == [] and edges == {("datum", (0x3000, 0x3100, 4))} and m.ilt_routes["pointer"] == 1
-    assert m.dnodes[(0x3000, 0x3100, 4)]["edges"] == {("unit", 1)}
+    assert fails == ["data-codeptr:??_7X@@6B@"] and edges == {("datum", (0x3000, 0x3100, 4))}
+    assert not m.ilt_routes and not m.dnodes[(0x3000, 0x3100, 4)]["edges"]
 
 
 def test_row_kinds_keep_dumps_out_of_credit():

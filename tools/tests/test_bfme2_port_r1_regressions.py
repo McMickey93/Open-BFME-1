@@ -616,7 +616,10 @@ def test_sound_differential_measurement_and_verdicts(tmp_path, monkeypatch):
     old_tree = ast.parse(original)
     old_nodes = {n.name: n for n in old_tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef))}
     new_nodes = {n.name: n for n in current_tree.body if isinstance(n, (ast.FunctionDef, ast.ClassDef))}
-    for name in ("Measure", "Shifted", "analyze", "row_kind", "load_pins", "greatest_closure",
+    # Review 2 deliberately tightens Measure/Shifted and source provenance.
+    # Their refusing counterexamples live in test_cycle_review2_evidence;
+    # retain differential coverage of the unaffected link setup and closure.
+    for name in ("load_pins", "greatest_closure",
                  "plan_order", "filler_chunks", "read_map", "zz_objects", "object_identity"):
         assert ast.dump(old_nodes[name]) == ast.dump(new_nodes[name]), name
     # Currency now accepts caller-owned receipts and reports the proof kind.
@@ -671,7 +674,7 @@ def test_sound_differential_measurement_and_verdicts(tmp_path, monkeypatch):
             results.append(result)
             statuses.append((out / "link_status.csv").read_bytes())
         assert results[0] == results[1] and statuses[0] == statuses[1]
-    print("SOUND old/new: 8 measure scenarios identical; 64 keep_rule and 256 judge_selected cases identical; ILT/Measure/Shifted AST identical")
+    print("SOUND old/new: 8 finished-record scenarios identical; 64 keep_rule and 256 judge_selected cases identical; link setup AST identical")
 
 
 def test_r1_unstamped_bundle_has_labelled_diagnostic_cli(checkout, tmp_path, monkeypatch, capsys):
