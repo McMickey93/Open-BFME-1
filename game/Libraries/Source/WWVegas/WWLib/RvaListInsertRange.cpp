@@ -102,16 +102,32 @@ struct Rva00381D80Element
 	char m_body[ 216 ];
 };
 
+extern void j_0002806a();
+
 namespace _STL
 {
-// A 216-byte element is not trivially copyable, so the element's copy
-// constructor is out of line: retail's list insert for this element calls the
-// element _Construct (pinned 0x0002806A, the shape the push_back at 0x00381D80
-// calls).  Declaring the specialization and never defining it is what makes
-// every use of it a call under that name instead of an inline bit copy; an
-// inline body would emit a copy this element's insert does not have.
+// The node value is copied through ILT 0x0002806A -> 0x00381C30,
+// whose body invokes the proven ExperienceLevel copy constructor. Keep
+// this opaque list's native link sequence while using that existing route.
 template <>
-void _Construct(Rva00381D80Element *p, const Rva00381D80Element &value);
+inline list<Rva00381D80Element>::iterator
+list<Rva00381D80Element>::insert(iterator position, const Rva00381D80Element &value)
+{
+    _Node *node = this->_M_node.allocate(1);
+    union {
+        void (*raw)();
+        void (__cdecl *construct)(Rva00381D80Element *, const Rva00381D80Element &);
+    } target;
+    target.raw = j_0002806a;
+    target.construct(&node->_M_data, value);
+    _List_node_base *at = position._M_node;
+    _List_node_base *before = at->_M_prev;
+    node->_M_next = at;
+    node->_M_prev = before;
+    before->_M_next = node;
+    at->_M_prev = node;
+    return node;
+}
 }
 
 // retail 0x00381D10, an 88-byte helper for the 224-byte list node
