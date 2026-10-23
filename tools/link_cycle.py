@@ -1073,7 +1073,119 @@ class Measure:
                     return [(lt, rt, nul + 1 - rt, False)]
         return []
 
-    def address_uses(self, instructions, origin, register, lt, rt, indexed=False, opaque=False):
+    def callee_pops(self, instructions, o, sec, off, L):
+        """Stack cleanup proved by BFME1 ABI evidence or callee decoration."""
+        import callee_protos
+        x = capstone.x86
+        relocations = {site: o[1].get(si) for site, si, ty in sec.relocs if ty in (DIR32, REL32)}
+        result = {}
+        for ins in instructions:
+            if ins.mnemonic != 'call' or not ins.operands:
+                continue
+            op = ins.operands[0]
+            if op.type == x.X86_OP_IMM:
+                target, operand = op.imm - self.lbase, ins.imm_offset
+                retail = self.translate(target)
+                if retail is not None:
+                    evidence = callee_protos.load().get(self.ilt_body(retail), {})
+                    rets = evidence.get('ret_bytes', '').split()
+                    if len(rets) == 1 and rets[0].isdigit():
+                        result[ins.address] = int(rets[0])
+            elif op.type == x.X86_OP_MEM and not op.mem.base and not op.mem.index:
+                target, operand = op.mem.disp - self.lbase, ins.disp_offset
+                if target not in self.limports:
+                    continue
+            else:
+                continue  # register-indirect calls establish no callee ABI
+            symbol = relocations.get(off + ins.address - self.lbase - L + operand)
+            names = [symbol.name] if symbol else []
+            names += [name for name, _ in self.syms_at(target)]
+            pops = set()
+            for name in names:
+                decorated = re.fullmatch(r'(?:__imp_)?_[^@]+@(\d+)', name)
+                if decorated:
+                    pops.add(int(decorated[1]))
+                elif name.startswith('?'):
+                    declared = callee_protos.declared(name)
+                    if declared and declared[0] in ('__stdcall', '__thiscall'):
+                        pops.add(4 * declared[1])
+            if ins.address in result:
+                pops.add(result[ins.address])
+            if len(pops) == 1 and 0 <= next(iter(pops)) <= 65535 and next(iter(pops)) % 4 == 0:
+                result[ins.address] = pops.pop()
+            else:
+                result.pop(ins.address, None)
+        return result
+
+    def bounded_byte_map(self, instructions, ins, L, rva, size, o, secno, off):
+        """Only cmp/ja; movzx byte-map; jmp dword-table, with no bypass entry.
+
+        The complete map and every selected slot must belong to verified code
+        storage. Slot identities use BFME1 body_guard's same-section rule.
+        """
+        import body_guard
+        x = capstone.x86
+        ordered = sorted(instructions, key=lambda i: i.address)
+        n = next((n for n, i in enumerate(ordered) if i.address == ins.address), -1)
+        if n < 2 or n + 1 >= len(ordered):
+            return None
+        cmp, branch, load, jump = ordered[n-2:n+2]
+        if (cmp.mnemonic != 'cmp' or branch.mnemonic != 'ja' or load.mnemonic != 'movzx'
+                or jump.mnemonic != 'jmp' or any(a.address + a.size != b.address
+                    for a, b in zip((cmp, branch, load), (branch, load, jump)))
+                or len(cmp.operands) != 2 or len(load.operands) != 2 or len(jump.operands) != 1):
+            return None
+        index, bound = cmp.operands
+        dest, byte = load.operands
+        table = jump.operands[0]
+        if (index.type != x.X86_OP_REG or index.size != 4 or bound.type != x.X86_OP_IMM
+                or not 0 <= bound.imm < size or dest.type != x.X86_OP_REG or dest.size != 4
+                or byte.type != x.X86_OP_MEM or byte.size != 1
+                or byte.mem.base != index.reg or byte.mem.index
+                or table.type != x.X86_OP_MEM or table.size != 4 or table.mem.base
+                or table.mem.index != dest.reg or table.mem.scale != 4):
+            return None
+        lo, hi = cmp.address, jump.address + jump.size
+        if any(lo < self.lbase + L + entry < hi for entry in self.code_entries[L]):
+            return None
+        if any(i.operands and i.operands[0].type == x.X86_OP_IMM
+               and (i.mnemonic == 'call' or i.mnemonic.startswith(('j', 'loop')))
+               and lo < i.operands[0].imm < hi for i in instructions):
+            return None
+        start, slots = byte.mem.disp - self.lbase, table.mem.disp - self.lbase
+        count = bound.imm + 1
+        if not L <= start < start + count <= L + size:
+            return None
+        values = bytes(self.I[start:start+count])
+        if values != bytes(self.R[rva+start-L:rva+start-L+count]):
+            return None
+        end = slots + 4 * (max(values) + 1)
+        if not L <= slots < end <= L + size or max(slots, start) < min(end, start + count):
+            return None
+        sec, syms, raw = o[0][secno - 1], o[1], o[2]
+        relocations = {site: (syms.get(si), ty) for site, si, ty in sec.relocs}
+        # Both storage bases must be compiler-local same-section relocations.
+        for instruction, address in ((load, start), (jump, slots)):
+            site = off + instruction.address - self.lbase - L + instruction.disp_offset
+            symbol, ty = relocations.get(site, (None, None))
+            if (ty != DIR32 or symbol is None or symbol.sec != secno or symbol.cls != STATIC
+                    or not symbol.name.startswith('$') or address != L + symbol.value - off + u32(raw, sec.ptr + site)):
+                return None
+        for at in range(slots, end, 4):
+            site = off + at - L
+            symbol, ty = relocations.get(site, (None, None))
+            if ty != DIR32 or symbol is None or symbol.sec != secno or not symbol.name.startswith('$'):
+                return None
+            addend = u32(raw, sec.ptr + site)
+            target = self.lbase + L + symbol.value - off + addend
+            expected = body_guard.ltable_address(rva, off, symbol.value, addend, self.rbase)
+            if (u32(self.I, at) != target or u32(self.R, rva + at - L) != expected
+                    or not self.lbase + L <= target < self.lbase + min(start, slots)
+                    or lo < target < hi):
+                return None
+        return count
+
+    def address_uses(self, instructions, origin, register, lt, rt, indexed=False, opaque=False, callee_pops=None):
         """Conservative register provenance, not execution or index evaluation.
 
         Walk the reachable CFG with address tags and constant displacements.
@@ -1335,6 +1447,12 @@ class Measure:
                 # We cannot follow an unknown callee's register effects.
                 for n in ('eax', 'ecx', 'edx'):
                     new.pop(n, None)
+                popped = (callee_pops or {}).get(ins.address, 0)
+                # The callee discards these arguments. Rebase surviving locals
+                # before a branch join or a later load can reuse their tags.
+                if popped:
+                    new = {('stack:' + str(int(n[6:]) - popped) if n.startswith('stack:') else n): tag
+                           for n, tag in new.items() if not n.startswith('stack:') or int(n[6:]) + 4 > popped}
             if mn == 'mov' and len(ops) == 2 and stack_slot(ops[0]) and not (
                     ops[1].type == x.X86_OP_REG and reg(ops[1].reg) in state):
                 new.pop(stack_slot(ops[0]), None)
@@ -1379,6 +1497,9 @@ class Measure:
         got, want = I[L:L + size], R[rva:rva + size]
         fails, edges, masked, data, rels = failures if failures is not None else [], set(), set(), [], []
         instructions, decoded, fallthrough = code_flow(got, L + self.lbase, self.code_entries[L])
+        pops = self.callee_pops(instructions, o, sec, off, L)
+        def address_uses(*args, **kwargs):
+            return self.address_uses(*args, **kwargs, callee_pops=pops)
         # Internal direct branches are already traversed here; only entries
         # discovered outside this traversal need to schedule another pass.
         direct_calls = {ins.address - L - self.lbase + ins.imm_offset for ins in instructions
@@ -1418,6 +1539,10 @@ class Measure:
                             indexed |= bool(operand.mem.index or operand.mem.base)
                             pointer_words |= (ins.mnemonic in ("mov", "push", "jmp", "call") and operand.size == 4
                                               and not operand.mem.base and operand.mem.scale == 4)
+                    if indexed and self.lsec(lt) == '.text':
+                        bounded = self.bounded_byte_map(instructions, ins, L, rva, size, o, secno, off)
+                        if bounded is not None:
+                            width, indexed = bounded, False
                     # x86 bit strings use a register offset beyond the nominal
                     # operand width. BFME1's whole datum rule covers that use.
                     indexed |= ins.mnemonic in ("bt", "bts", "btr", "btc") and any(
@@ -1428,24 +1553,24 @@ class Measure:
                         and ins.mnemonic == "push"):
                     uses = self.argument_range(instructions, ins, lt, rt)
                     if not uses:
-                        uses, escapes, numeric = self.address_uses(instructions, ins, "stack:0", lt, rt)
+                        uses, escapes, numeric = address_uses(instructions, ins, "stack:0", lt, rt)
                 elif (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
                         and ins.mnemonic == "mov" and ins.operands[0].type == capstone.x86.X86_OP_REG):
-                    uses, escapes, numeric = self.address_uses(instructions, ins, ins.operands[0].reg, lt, rt)
+                    uses, escapes, numeric = address_uses(instructions, ins, ins.operands[0].reg, lt, rt)
                     numeric |= ins.operands[0].size != 4
                 elif (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
                       and ins.mnemonic == "add" and ins.operands[0].type == capstone.x86.X86_OP_REG):
-                    uses, escapes, numeric = self.address_uses(instructions, ins, ins.operands[0].reg, lt, rt, indexed=True)
+                    uses, escapes, numeric = address_uses(instructions, ins, ins.operands[0].reg, lt, rt, indexed=True)
                 elif (ty == DIR32 and ins.address - L - self.lbase + ins.disp_offset == fo
                       and ins.mnemonic == "lea" and ins.operands[0].type == capstone.x86.X86_OP_REG):
                     mem = ins.operands[1].mem
-                    uses, escapes, numeric = self.address_uses(instructions, ins, ins.operands[0].reg, lt, rt,
+                    uses, escapes, numeric = address_uses(instructions, ins, ins.operands[0].reg, lt, rt,
                                                               indexed=bool(mem.base or mem.index))
                 elif (ty == DIR32 and ins.address - L - self.lbase + ins.imm_offset == fo
                       and ins.mnemonic == "mov" and ins.operands[0].type == capstone.x86.X86_OP_MEM):
                     mem = ins.operands[0].mem
                     if _CSD.reg_name(mem.base) == "esp" and not mem.index:
-                        uses, escapes, numeric = self.address_uses(instructions, ins, "stack:" + str(mem.disp), lt, rt)
+                        uses, escapes, numeric = address_uses(instructions, ins, "stack:" + str(mem.disp), lt, rt)
                     else:
                         # docs/matching.md requires a known pointer context,
                         # not an arbitrary integer destination for an address.
@@ -1469,7 +1594,7 @@ class Measure:
                             numeric = True
                         elif ins.mnemonic == "mov" and ins.operands[0].type == capstone.x86.X86_OP_REG:
                             a, b = (u32(I, lt) - self.lbase, u32(R, rt) - self.rbase) if not indexed else (0, 0)
-                            pointer_uses, lost, bad = self.address_uses(instructions, ins, ins.operands[0].reg,
+                            pointer_uses, lost, bad = address_uses(instructions, ins, ins.operands[0].reg,
                                                                       a, b, opaque=indexed)
                             numeric |= bad
                             if not indexed and self.lsec(a) == ".text":
@@ -1741,6 +1866,8 @@ class Measure:
             nul = blob.find(b"\0", max(0, P - v0))
             if nul >= 0:
                 v1 = v0 + nul + 1
+            if v0 <= P < v1:
+                v0 = P  # body_guard compares the suffix; S retains symbol identity
         return lt - (P - v0), v1 - v0, P - v0, o, sec, v0, S
 
     def communal(self, name):
@@ -1937,6 +2064,10 @@ class Measure:
                 # of the whole datum, not merely on each accessed address.
                 self.fwd[start].add(rstart)
                 self.back[rstart].add(start)
+                if ref[2].startswith('$SG'):
+                    symbol, retail_symbol = r[2], ref[1] - (ref[0] - r[2])
+                    self.fwd[symbol].add(retail_symbol)
+                    self.back[retail_symbol].add(symbol)
                 node = self.dnodes[r[1]]
                 if not node.get("seen"):
                     node["seen"] = True
@@ -1996,6 +2127,8 @@ class Measure:
             return fails + [f"{what}:{tn}"], set(), False
         S = kind[2]
         start, rstart, size = kind[1]
+        if tn.startswith('$SG') and S != start:
+            fails += self.one_to_one(S, rt - (lt - S), tn)
         width = ref[7] if len(ref) > 7 else 0
         indexed = ref[8] if len(ref) > 8 else False
         # BFME1 data_rows.py:443: allocation only bounds size. Fixed

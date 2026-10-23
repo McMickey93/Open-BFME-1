@@ -35,7 +35,7 @@ MEASUREMENT_FILES = (
     "coffar.py", "gen_case_shims.py", "portable_lock.py", "target_guard.py",
     "dump_relocs.py", "dump_apply.py", "retail_relocs.py",
     "layout_history.py", "gaps.py", "list_naked_candidates.py", "eligibility.py",
-    "re_log.py", "yield_model.py", "audit_ret_arity.py",
+    "re_log.py", "yield_model.py", "audit_ret_arity.py", "callee_protos.py", "lift_arity.py",
 )
 RUN_OPTIONS = ("allow_dirty", "allow_stale_cache", "measure_only", "snapshot", "remeasure")
 
