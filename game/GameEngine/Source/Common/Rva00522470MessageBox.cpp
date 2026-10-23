@@ -1,4 +1,4 @@
-// cl: /O2
+// cl: /O2 /MD
 //
 // AptGuiFX::MessageBoxShown callback, retail 0x00522470 (52B).
 // The 0x00522E00 constructor registers this callback by its ILT 0x0002924E;

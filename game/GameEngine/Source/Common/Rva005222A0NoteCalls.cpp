@@ -1,4 +1,4 @@
-// cl: /O2
+// cl: /O2 /MD
 //
 // Owner unified by constructor00522E00: its typed callbacks bind the same
 // complete receiver; the Showing registration names the former opaque apply.

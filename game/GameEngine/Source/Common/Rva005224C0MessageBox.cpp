@@ -1,4 +1,4 @@
-// cl: /O2
+// cl: /O2 /MD
 //
 // AptGuiFX::MessageBoxHiding callback, retail 0x005224C0 (52B).
 // The 0x00522E00 constructor registers this callback by its ILT 0x0002C381;

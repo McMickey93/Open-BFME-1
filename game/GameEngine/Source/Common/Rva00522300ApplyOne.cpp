@@ -1,4 +1,4 @@
-// cl: /O2
+// cl: /O2 /MD
 //
 // Constructor00522E00 binds this member to its complete Gen00522E00 receiver.
 // Fourth 66B twin of the d_0050fec0.asm cluster documented in

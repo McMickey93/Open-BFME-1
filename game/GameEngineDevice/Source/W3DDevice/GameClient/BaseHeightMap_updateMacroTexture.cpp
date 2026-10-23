@@ -15,7 +15,9 @@ public:
 	CharType *m_data;
 
 private:
-	~StringBase();
+	~StringBase() { releaseBuffer(); }
+private:
+	void releaseBuffer();
 
 	friend class AsciiString;
 };

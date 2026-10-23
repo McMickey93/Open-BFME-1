@@ -1,3 +1,4 @@
+// cl: /MD
 // Open-BFME: the shared two-slot callback body at retail RVA 0x004C6000.
 
 #include <exception>
