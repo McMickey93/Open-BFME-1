@@ -12,6 +12,7 @@ import hmac
 import io
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -65,6 +66,7 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         seed.mkdir()
         rules = frozen_tools(root, commit, seed)
         preflight = cycle_source.clean_runtime_identity(seed / "tools")
+        preflight_evidence = cycle_source.clean_runtime_identity.evidence
         ca.same("clean preflight interpreter installation", preflight, rules["runtime"])
         executed = {n: cycle_source.module_record(seed / "tools", seed / "tools" / n,
                                                 (seed / "tools" / n).read_bytes())[1]
@@ -86,6 +88,10 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         ca.same("executed semantic dependency digest", receipt["rule_identity"], rules)
         actual = cycle_source.audit_modules(audit, roots=(seed / "tools", snapshot / "tools"))
         runtime = cycle_source.audit_modules(audit, roots=(seed / "tools", snapshot / "tools"), runtime=True)
+        observed = cycle_source.audit_runtime(audit, roots=(seed / "tools", snapshot / "tools"))
+        observed = cycle_source.merge_runtime_evidence([
+            {"runtime_evidence": preflight_evidence}, {"runtime_evidence": observed},
+            {"runtime_evidence": getattr(cycle_source.isolated_search_path, "evidence", observed)}])
         ca.same("executed module set", actual, executed)
         ca.same("receipt executed module set", receipt.get("executed_modules"), actual)
         ca.same("receipt runtime module set", receipt.get("runtime_modules"), runtime)
@@ -93,13 +99,26 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
         failure = ca.context.run_authority_failure(receipt)
         if failure or receipt.get("authoritative") is not True:
             raise ca.Refused("snapshot was diagnostic: " + str(failure), "not-authoritative", failure or "diagnostic")
+        # All children have exited, so the union includes late reads, spawned
+        # helpers and their transitive native dependencies. Preserve the original
+        # measurement archive; finalize a separate receipt with this rule evidence.
+        receipt["runtime_evidence"] = observed
+        ca.link_cycle_module(root).stamp_cores(receipt)
+        finalized = workspace / "final-run"
+        finalized.mkdir()
+        for name in (ca.CLOSURE_GRAPH, "link_status.csv", ca.LINK_STATUS, ca.PROVENANCE, ca.COMPILE_INPUTS):
+            if (run / name).is_file():
+                shutil.copyfile(run / name, finalized / name)
+        (finalized / ca.RECEIPT).write_text(ca.dumps(receipt), encoding="utf-8")
+        run = finalized
         # Publish on the destination filesystem, even if snapshots use /tmp.
         out.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(prefix=f".{out.name}.launch-", dir=out.parent) as publishing:
             stage = Path(publishing) / "bundle"
             manifest = pc.make_bundle(run, stage, producer, root=root)
             manifest["execution"] = {"launcher": "cycle_launch/1", "commit": commit, "snapshot": True,
-                                     "semantic_sha256": expected}
+                                     "semantic_sha256": expected,
+                                     "runtime_evidence_sha256": ca.context.digest(observed)}
             (stage / ca.MANIFEST).write_text(ca.dumps(manifest), encoding="utf-8")
             ca.validate(stage, root=root)
             failure = ca.run_evidence_failure(stage, receipt, root)
@@ -107,6 +126,7 @@ def measure(out, producer, *, root=ca.ROOT, rev=ca.UPSTREAM, key=stamp.DEFAULT_K
                 raise ca.Refused("snapshot evidence failed: " + failure, "not-authoritative", failure)
             if ca.ancestry(commit, root)[0] is not True:
                 raise ca.Refused("origin/master changed during measurement", "not-authoritative", "non-ancestor")
+            ca.same("unchanged observed runtime", cycle_source.current_runtime_evidence(observed), observed)
             digest = ca.sha256_file(stage / ca.MANIFEST)
             record = {"schema": stamp.SCHEMA, "manifest_sha256": digest,
                       "key_id": hashlib.sha256(secret).hexdigest(),

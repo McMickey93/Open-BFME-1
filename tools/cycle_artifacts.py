@@ -652,10 +652,17 @@ def freshness(receipt, now=None, root=ROOT, ref=UPSTREAM, max_age_hours=FRESH_HO
     end = receipt_end(receipt)
     anc, behind, note = ancestry(receipt["commit"], root, ref)
     mine, theirs = local_rules(root), rules_of(receipt)
+    observed_match = True
+    if "runtime_evidence" in receipt:
+        import cycle_source
+        try:
+            observed_match = cycle_source.current_runtime_evidence(receipt["runtime_evidence"]) == receipt["runtime_evidence"]
+        except (OSError, ValueError, TypeError):
+            observed_match = False
     local = local_tool_digest(root)
     age = (now - end) / 3600
     return {"rules": receipt.get("rules"), "bundle_rules": theirs, "local_rules": mine,
-            "rules_match": None if mine is None else mine == theirs,
+            "rules_match": None if mine is None else mine == theirs and observed_match,
             "measured_end_utc": iso_utc(end), "age_hours": round(age, 2), "future": now + FUTURE_SKEW < end,
             "max_age_hours": max_age_hours, "stale": age > max_age_hours, "ref": ref,
             "ancestor": anc, "behind": behind, "ancestry": note,
@@ -764,6 +771,8 @@ def run_evidence_failure(directory, receipt, root):
     execution = read_manifest(d).get("execution")
     want = {"launcher": "cycle_launch/1", "commit": receipt["commit"], "snapshot": True,
             "semantic_sha256": receipt["rule_identity"]["implementation_sha256"]}
+    if "runtime_evidence" in receipt:
+        want["runtime_evidence_sha256"] = context.digest(receipt["runtime_evidence"])
     if execution != want or receipt.get("snapshot") is not True:
         return "snapshot-required"
     modules = receipt.get("executed_modules")

@@ -25,6 +25,79 @@ import uuid
 
 AUDIT_ENV = "BFME_CYCLE_MODULE_AUDIT"
 
+# This is the first code run by every measurement/helper, before pathlib or
+# any installed provider is imported. Startup files read by CPython itself are
+# covered by runtime_inventory. Keep the recorder independent of import hooks.
+IO_BOOTSTRAP = r'''import sys
+_cycle_io = {'events': {}, 'directories': {}, 'errors': [], 'paused': set()}
+sys._bfme_cycle_io = _cycle_io
+_io_os = None
+_io_pending = []
+def _cycle_open_audit(event, args):
+    if event not in ('open', 'os.listdir', 'os.scandir'):
+        return
+    if _io_os is None:
+        _io_pending.append((event, args))
+        return
+    tid = _io_thread.get_ident()
+    if tid in _cycle_io['paused']:
+        return
+    _cycle_io['paused'].add(tid)
+    try:
+        path = args[0] if args else '.'
+        if path is None:
+            path = '.'
+        if isinstance(path, int):
+            if _io_os.name == 'posix':
+                path = '/proc/self/fd/' + str(path)
+            else:
+                import ctypes, msvcrt
+                kernel = ctypes.windll.kernel32
+                handle = ctypes.c_void_p(msvcrt.get_osfhandle(path))
+                # Subprocess pipes have no regular-file identity.
+                kind = kernel.GetFileType(handle)
+                if not kind:
+                    raise ValueError('cannot classify audited file descriptor')
+                if kind != 1:
+                    return
+                buffer = ctypes.create_unicode_buffer(32768)
+                length = kernel.GetFinalPathNameByHandleW(handle, buffer, len(buffer), 0)
+                if not length or length >= len(buffer):
+                    raise ValueError('cannot resolve audited file descriptor')
+                path = buffer.value
+                # Match ordinary resolved snapshot paths, including UNC paths.
+                if path.startswith(chr(92) * 2 + '?' + chr(92)):
+                    path = path[4:]
+                    if path.startswith('UNC' + chr(92)):
+                        path = chr(92) * 2 + path[4:]
+        path = _io_os.path.realpath(_io_os.fsdecode(path))
+        try:
+            st = _io_os.stat(path)
+            generation = (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+        except FileNotFoundError:
+            generation = None
+        previous = _cycle_io['events'].setdefault(path, generation)
+        if previous != generation:
+            _cycle_io['errors'].append(path)
+        if event != 'open':
+            entries = tuple(sorted(_io_os.listdir(path)))
+            previous = _cycle_io['directories'].setdefault(path, entries)
+            if previous != entries:
+                _cycle_io['errors'].append(path)
+    except OSError:
+        # Failed opens/listings do not supply bytes. If the file subsequently
+        # appears, the saved absent generation above makes that fail closed.
+        pass
+    finally:
+        _cycle_io['paused'].remove(tid)
+sys.addaudithook(_cycle_open_audit)
+import _thread as _io_thread
+import os as _io_os
+for _event, _args in _io_pending:
+    _cycle_open_audit(_event, _args)
+_io_pending.clear()
+'''
+
 
 # Installation files are an accepted same-account trust boundary, but changes
 # must change rule identity. Never discover dependencies via site or caller paths.
@@ -93,10 +166,15 @@ def isolated_search_path():
     # caller's cwd, PYTHONPATH, pytest paths or site startup additions.
     if sys.flags.isolated and sys.flags.no_site:
         return getattr(sys, "_bfme_cycle_startup_path", _STARTUP_PATH)
-    result = subprocess.run([_INTERPRETER, "-I", "-S", "-B", "-c",
-                             "import sys,json; print(json.dumps(sys.path))"],
+    program = IO_BOOTSTRAP + ("\np=sys.argv[1]; ns={'__file__':p, '__name__':'path_preflight'}; "
+                             "exec(compile(open(p,'rb').read(),p,'exec'),ns); "
+                             "print(ns['json'].dumps({'paths':sys.path, "
+                             "'evidence':ns['observed_runtime'](ns['Path'](p).parent.parent)}))")
+    result = subprocess.run([_INTERPRETER, "-I", "-S", "-B", "-c", program, __file__],
                             env=clean_environment({}), check=True, capture_output=True, text=True)
-    return tuple(json.loads(result.stdout))
+    value = json.loads(result.stdout)
+    isolated_search_path.evidence = value["evidence"]
+    return tuple(value["paths"])
 
 
 
@@ -138,8 +216,9 @@ def runtime_roots():
     if library:
         roots.append(Path(sysconfig.get_config_var("LIBDIR") or Path(sys.executable).parent) / library)
     # On Windows libpython is a DLL beside the executable/base installation.
-    for directory in {Path(sys.executable).resolve().parent, Path(sys.base_prefix)}:
-        roots.extend(directory.glob("python*.dll"))
+    if os.name == "nt":
+        for directory in {Path(sys.executable).resolve().parent, Path(sys.base_prefix)}:
+            roots.extend(directory.glob("python*.dll"))
     return tuple(sorted({str(Path(p).absolute()) for p in roots}))
 
 
@@ -206,15 +285,197 @@ def runtime_identity(*, snapshot=None):
             "files_sha256": digest}
 
 
+def mapped_files_windows(api=None):
+    """Enumerate the actual process modules, including transitive DLL loads.
+
+    The injectable API is used only by unit tests; production always calls the
+    process APIs with pointer-sized handles (also on 64-bit Windows).
+    """
+    import ctypes
+    from ctypes import wintypes
+    if api is None:
+        kernel = ctypes.windll.kernel32
+        psapi = ctypes.windll.psapi
+        kernel.GetCurrentProcess.restype = wintypes.HANDLE
+        psapi.EnumProcessModules.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.HMODULE),
+                                            wintypes.DWORD, ctypes.POINTER(wintypes.DWORD)]
+        psapi.GetModuleFileNameExW.argtypes = [wintypes.HANDLE, wintypes.HMODULE,
+                                             wintypes.LPWSTR, wintypes.DWORD]
+        api = (kernel.GetCurrentProcess, psapi.EnumProcessModules, psapi.GetModuleFileNameExW)
+    current, enumerate_modules, filename = api
+    process = current()
+    capacity = 256
+    while True:
+        modules = (wintypes.HMODULE * capacity)()
+        needed = wintypes.DWORD()
+        if not enumerate_modules(process, modules, ctypes.sizeof(modules), ctypes.byref(needed)):
+            raise OSError("cannot enumerate mapped runtime modules")
+        if needed.value <= ctypes.sizeof(modules):
+            break
+        capacity = needed.value // ctypes.sizeof(wintypes.HMODULE) + 1
+    paths = set()
+    for handle in modules[:needed.value // ctypes.sizeof(wintypes.HMODULE)]:
+        buffer = ctypes.create_unicode_buffer(32768)
+        length = filename(process, handle, buffer, len(buffer))
+        if not length or length >= len(buffer):
+            raise OSError("cannot resolve mapped runtime module")
+        paths.add(str(Path(buffer.value).resolve(strict=True)))
+    return paths
+
+
+def mapped_files():
+    if os.name == "nt":
+        return mapped_files_windows()
+    if not sys.platform.startswith("linux"):
+        raise ValueError("mapped runtime evidence requires Linux or Windows")
+    paths = set()
+    with open("/proc/self/maps", encoding="utf-8") as stream:
+        for line in stream:
+            fields = line.rstrip("\n").split(None, 5)
+            if len(fields) != 6 or not fields[5].startswith("/"):
+                continue
+            name = fields[5]
+            # A deleted mapping cannot be rehashed from its original pathname.
+            if name.endswith(" (deleted)"):
+                raise ValueError("mapped runtime file was deleted: " + name)
+            # proc escapes newlines in pathnames with octal sequences.
+            import re
+            name = re.sub(r"\\([0-7]{3})", lambda m: chr(int(m[1], 8)), name)
+            path = Path(name).resolve(strict=True)
+            st = path.stat()
+            if stat.S_ISREG(st.st_mode):
+                # Refuse a replaced inode behind a still-live old mapping.
+                # Overlay/bind mounts can report different device IDs through
+                # stat and maps on this host; the inode still identifies the file.
+                if st.st_ino != int(fields[4]):
+                    raise ValueError("mapped runtime file changed: " + name)
+                paths.add(str(path))
+    return paths
+
+
+def observed_runtime(root, audited=None):
+    """End-of-process external reads and native mappings, excluding bound inputs.
+
+    Snapshot build objects/receipts, retail inputs and ledgers already have
+    dedicated identities. The seed/export/audit directories are launcher-owned
+    outputs. Everything else outside the static inventory is rule evidence.
+    Observation's own hashing/listing must not recursively expand the read set.
+    """
+    observer = getattr(sys, "_bfme_cycle_io", None)
+    if observer is None:
+        raise ValueError("missing opened-file audit hook")
+    started = time.monotonic()
+    tid = threading.get_ident()
+    observer["paused"].add(tid)
+    try:
+        root = Path(root).resolve()
+        inputs = {(root / name).resolve() for name in ("build", "inputs", "targets")}
+        snapshots = {root}
+        if audited:
+            audit = Path(audited).resolve()
+            inputs.add(audit)
+            # The launcher has a unique workspace; the seed exports into s/.
+            snapshots.update((audit.parent / "seed", audit.parent / "s"))
+        _, inventory = runtime_inventory(runtime_roots(), snapshot=root)
+        directories = tuple(Path(p).resolve() for p in runtime_roots() if Path(p).is_dir())
+
+        def classification(path):
+            p = Path(path)
+            if any(p == top or p.is_relative_to(top) for top in inputs):
+                return "measurement-input"
+            if any(p == top or p.is_relative_to(top) for top in snapshots):
+                return "snapshot"
+            if path in inventory or any(p == top or p.is_relative_to(top) for top in directories):
+                return "runtime-root"
+            return "runtime"
+
+        opened, listed, classified = {}, {}, {}
+        for path, generation in tuple(observer["events"].items()):
+            kind = classification(path)
+            classified[kind] = classified.get(kind, 0) + 1
+            if kind != "runtime":
+                continue
+            try:
+                st = Path(path).stat()
+            except FileNotFoundError:
+                if generation is not None:
+                    raise ValueError("opened runtime file disappeared: " + path)
+                continue
+            if _generation(st) != generation or path in observer["errors"]:
+                raise ValueError("opened runtime file changed during measurement: " + path)
+            if stat.S_ISREG(st.st_mode):
+                opened[path] = file_hash(path)
+            if path in observer["directories"]:
+                names = sorted(os.listdir(path))
+                if names != list(observer["directories"][path]):
+                    raise ValueError("runtime directory changed during measurement: " + path)
+                listed[path] = names
+        mapped = {p: file_hash(p) for p in sorted(mapped_files())}
+        evidence = {"opened_files": dict(sorted(opened.items())), "mapped_files": mapped,
+                    "directories": dict(sorted(listed.items()))}
+        observed_runtime.cost = {"opened_files": len(observer["events"]),
+                                 "external_opened_files": len(opened), "mapped_libs": len(mapped),
+                                 "classified": classified, "seconds": time.monotonic() - started}
+        return evidence
+    finally:
+        observer["paused"].remove(tid)
+
+
+def merge_runtime_evidence(records):
+    evidence = {"opened_files": {}, "mapped_files": {}, "directories": {}}
+    file_digests = {}
+    for record in records:
+        value = record.get("runtime_evidence")
+        if not isinstance(value, dict) or set(value) != set(evidence):
+            raise ValueError("missing observed runtime evidence")
+        for kind, entries in value.items():
+            if not isinstance(entries, dict):
+                raise ValueError("invalid observed runtime entries")
+            for path, digest in entries.items():
+                if path in evidence[kind] and evidence[kind][path] != digest:
+                    raise ValueError("runtime dependency changed across subprocesses: " + path)
+                evidence[kind][path] = digest
+                if kind != "directories":
+                    if path in file_digests and file_digests[path] != digest:
+                        raise ValueError("runtime dependency changed across subprocesses: " + path)
+                    file_digests[path] = digest
+    return {kind: dict(sorted(entries.items())) for kind, entries in evidence.items()}
+
+
+def current_runtime_evidence(evidence):
+    """Rehash the recorded dependency set; never inventory unrelated host files."""
+    if not isinstance(evidence, dict) or set(evidence) != {"opened_files", "mapped_files", "directories"}:
+        raise ValueError("invalid observed runtime evidence")
+    result = {}
+    for kind, entries in evidence.items():
+        if not isinstance(entries, dict):
+            raise ValueError("invalid observed runtime entries")
+        result[kind] = {}
+        for path, value in entries.items():
+            p = Path(path)
+            if not p.is_absolute() or str(p.resolve(strict=True)) != path:
+                raise ValueError("non-canonical runtime dependency: " + path)
+            if kind == "directories":
+                result[kind][path] = sorted(os.listdir(path))
+            else:
+                if not p.is_file() or not isinstance(value, str) or len(value) != 64:
+                    raise ValueError("invalid runtime dependency: " + path)
+                result[kind][path] = file_hash(path)
+    return result
+
+
 def clean_runtime_identity(tools):
     """Launcher preflight: independent clean process, before measurement starts."""
     source = Path(tools).resolve() / "cycle_source.py"
-    program = ("import sys; p=sys.argv[1]; ns={'__file__':p, '__name__':'runtime_preflight'}; "
+    program = IO_BOOTSTRAP + ("\np=sys.argv[1]; ns={'__file__':p, '__name__':'runtime_preflight'}; "
                "exec(compile(open(p,'rb').read(),p,'exec'),ns); "
-               "print(ns['json'].dumps(ns['runtime_identity'](),sort_keys=True))")
+               "print(ns['json'].dumps({'identity':ns['runtime_identity'](), "
+               "'evidence':ns['observed_runtime'](ns['Path'](p).parent.parent)},sort_keys=True))")
     result = subprocess.run([sys.executable, "-I", "-S", "-B", "-c", program, str(source)],
                             env=clean_environment({}), check=True, capture_output=True, text=True)
-    return json.loads(result.stdout)
+    value = json.loads(result.stdout)
+    clean_runtime_identity.evidence = value["evidence"]
+    return value["identity"]
 
 
 def clean_environment(environment=None):
@@ -302,6 +563,23 @@ def audit_modules(directory, *, require_complete=True, roots=None, runtime=False
     return dict(sorted(modules.items()))
 
 
+def audit_runtime(directory, *, roots):
+    # Validate every process, including otherwise empty worker/tracker records.
+    records = [json.loads(path.read_bytes()) for path in Path(directory).glob("*.json")]
+    if not records:
+        raise ValueError("missing observed runtime evidence")
+    allowed = {str(Path(p).resolve()) for p in roots}
+    for record in records:
+        if record.get("tools") not in allowed:
+            raise ValueError("executed module origin outside snapshot tools")
+        if record.get("complete") is not True:
+            raise ValueError("incomplete executed-module evidence")
+    evidence = merge_runtime_evidence(records)
+    if current_runtime_evidence(evidence) != evidence:
+        raise ValueError("observed runtime changed after measurement")
+    return evidence
+
+
 def install(tools=None, *, bootstrap_raw=None, early=None):
     if not (sys.flags.isolated and sys.flags.no_site and sys.flags.dont_write_bytecode):
         raise RuntimeError("source-only snapshot requires Python -I -S -B")
@@ -320,14 +598,27 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
 
     writer_lock = threading.RLock()
     failed = False
+    completed = False
 
     def write(complete=False):
+        nonlocal failed, completed
         if log:
             with writer_lock:
+                evidence = None
+                if complete:
+                    try:
+                        evidence = observed_runtime(root, audited)
+                    except BaseException:
+                        failed = True
+                        write(False)
+                        raise
+                    completed = True
                 temporary = log.with_suffix(".tmp")
                 temporary.write_text(json.dumps({"complete": complete and not failed, "tools": str(tools),
                                                  "modules": modules, "runtime_modules": runtime_modules,
-                                                 "runtime_identity": identity}, sort_keys=True))
+                                                 "runtime_identity": identity,
+                                                 "runtime_evidence": evidence,
+                                                 "runtime_cost": getattr(observed_runtime, "cost", None)}, sort_keys=True))
                 os.replace(temporary, log)
 
     def invalidate(*args):
@@ -505,6 +796,7 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
         # Resolve/cache only the fixed account/system API DLL handles before
         # enforcing package-only ctypes providers for measurement code.
         clean_environment({})
+        mapped_files()
     sys.addaudithook(native_library)
     sys.path_importer_cache.clear()
     # The directly compiled bootstrap is itself an executed semantic module.
@@ -599,11 +891,16 @@ def install(tools=None, *, bootstrap_raw=None, early=None):
 
         early["finish_helpers"] = finish_helpers
 
+        import atexit
+        # Registered before provider callbacks, so this runs after them. A late
+        # read or mutation cannot escape the completed process record.
+        atexit.register(lambda: write(completed))
+
     return record, write, declared
 
 
 # Execute this .py directly before any snapshot import, including itself.
-BOOTSTRAP = """import sys
+BOOTSTRAP = IO_BOOTSTRAP + """
 sys._bfme_cycle_startup_path = tuple(sys.path)
 # CPython has already imported startup modules such as encodings. Their
 # installation bytes and origins are bound by install(); -B does not stop reads.

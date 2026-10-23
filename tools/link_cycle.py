@@ -1788,7 +1788,7 @@ def receipt_core(receipt):
     inputs must agree on. Times, dates, link history and the warm-start path are
     left out; the instance tag additionally binds exact receipt bytes."""
     keep = ("checkout_start", "checkout_end", "run_options", "diagnostic",
-            "rule_identity", "executed_modules", "runtime_modules", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
+            "rule_identity", "executed_modules", "runtime_modules", "runtime_evidence", "allow_dirty", "tool_dependencies", "measure_env", "target", "settings",
             "untracked_sha256", "closure_graph_sha256", "rules", "commit", "submodules", "snapshot", "dirty", "diff_sha256", "tool_digest",
             "retail_sha256", "toolchain_sha256", "inputs", "objects_digest", "provenance_sha256", "objects",
             "objects_missing", "compile_failed", "currency_proofs", "quarantine_sha256", "stubs_sha256",
