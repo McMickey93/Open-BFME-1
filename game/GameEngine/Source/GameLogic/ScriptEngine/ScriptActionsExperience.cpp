@@ -41,11 +41,10 @@ class BfmeAgentBS;
 class BfmeInfoBS;
 struct BfmeObjectD120;
 struct BfmeObjectD150;
-struct BfmeOwnerBHE;
 extern int __cdecl bfmeApplyBS(BfmeAgentBS *, BfmeInfoBS *);
 extern int __cdecl bfmeRva0037D120AddExperience(BfmeObjectD120 *, int);
 extern int __cdecl bfmeRva0037D150Apply(BfmeObjectD150 *, int);
-extern int __cdecl bfmeGoBHE(BfmeOwnerBHE *);
+extern void __cdecl bfmeTeamRefreshExperienceVisitor(Object *, void *);
 
 class ExperienceLevelSystem
 {
@@ -127,7 +126,7 @@ void ScriptActions::doTeamGiveExperienceLevel(
 
 	BfmeInnerIterable *members = (BfmeInnerIterable *)team;
 	members->bfmeVisit(reinterpret_cast<BfmeObjectVisitor>(bfmeApplyBS), level);
-	members->bfmeVisit(reinterpret_cast<BfmeObjectVisitor>(bfmeGoBHE), 0);
+	members->bfmeVisit(bfmeTeamRefreshExperienceVisitor, 0);
 }
 
 // ?doTeamGiveExperiencePoints@ScriptActions@@IAEXABVAsciiString@@H@Z
@@ -154,5 +153,5 @@ void ScriptActions::doTeamSetExperiencePoints(
 
 	BfmeInnerIterable *members = (BfmeInnerIterable *)team;
 	members->bfmeVisit(reinterpret_cast<BfmeObjectVisitor>(bfmeRva0037D150Apply), (void *)points);
-	members->bfmeVisit(reinterpret_cast<BfmeObjectVisitor>(bfmeGoBHE), 0);
+	members->bfmeVisit(bfmeTeamRefreshExperienceVisitor, 0);
 }
