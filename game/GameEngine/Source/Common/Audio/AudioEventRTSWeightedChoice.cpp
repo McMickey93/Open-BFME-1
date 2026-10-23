@@ -161,7 +161,7 @@ void AudioEventRTS::generatePlayInfo()
 		}
 		else
 		{
-			m_decayName.clear();
+			((StringBase<char> *)&m_decayName)->clear();
 		}
 	}
 	else

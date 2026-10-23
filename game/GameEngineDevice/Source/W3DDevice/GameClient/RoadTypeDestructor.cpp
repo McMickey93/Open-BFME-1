@@ -41,7 +41,7 @@ class AsciiString
 {
 public:
 	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
-	void clear() { m_data = 0; }
+	friend class RoadType;
 
 private:
 	void *m_data;
@@ -97,7 +97,7 @@ RoadType::RoadType()
 	m_uniqueID = -1;
 	m_isAutoLoaded = false;
 	m_stackingOrder = 0;
-	m_texturePath.clear();
+	m_texturePath.m_data = 0;
 }
 
 RoadType::~RoadType()
