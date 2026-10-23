@@ -19,6 +19,10 @@ struct Rva00746420Record
 
 typedef std::vector<Rva00746420Record> Rva00746420Records;
 
+// The retail push_back ILT has an existing address-derived provider. Its
+// payload is opaque here; avoid emitting another incompatible specialization.
+extern void j_00044495();
+
 class Bridge;
 
 class TerrainLogic
@@ -168,7 +172,12 @@ Bool W3DView::screenToTerrain(const ICoord2D *screen, Coord3D *world,
 		request.first = *pixel;
 		request.second = *out;
 		request.found = found;
-		m_locationRequests.push_back(request);
+        union {
+            void (*raw)();
+            void (Rva00746420Records::*push)(const Rva00746420Record &);
+        } target;
+        target.raw = j_00044495;
+        (m_locationRequests.*target.push)(request);
 	}
 
 	return found;
