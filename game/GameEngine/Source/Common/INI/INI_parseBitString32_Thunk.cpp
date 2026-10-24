@@ -40,7 +40,7 @@ void INI::parseBitString32( INI* ini, void * /*instance*/, void *store, const vo
 
 	for (const char *token = ini->getNextTokenOrNull(); token != NULL; token = ini->getNextTokenOrNull())
 	{
-		if (stricmp(token, "NONE") == 0)
+		if (_strcmpi(token, "NONE") == 0)
 		{
 			if (foundNormal || foundAddOrSub)
 			{
