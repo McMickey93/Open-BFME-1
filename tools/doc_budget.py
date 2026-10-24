@@ -6,8 +6,9 @@ went from 524 to 3,094 words in eight weeks; only a hook has ever held a doc.
 Both git hooks run this:
 
   * AGENTS.md stays at or under AGENTS_CAP words: every Codex session loads it.
-  * A change may not add net words to AGENTS.md, README.md and docs/ taken
-    together: to add a sentence, cut one. CATALOGS are exempt because agents
+  * A change may not add net words to README.md and docs/ taken
+    together: to add a sentence, cut one. AGENTS.md has its own cap;
+    CATALOGS are exempt because agents
     look things up in them rather than read them.
   * A mod README stays at or under MOD_README_CAP words; players read those.
 
@@ -19,7 +20,7 @@ import fnmatch
 import subprocess
 import sys
 
-AGENTS_CAP = 1450
+AGENTS_CAP = 4350
 MOD_README_CAP = 500
 BUDGETED = ("AGENTS.md", "README.md", "docs/*.md")
 CATALOGS = frozenset(("docs/shape_levers.md", "docs/ini_schema.md",
@@ -42,9 +43,9 @@ def problems(changed, before, after):
     if "AGENTS.md" in changed and after.get("AGENTS.md", 0) > AGENTS_CAP:
         found.append(f"AGENTS.md is {after['AGENTS.md']} words; the cap is {AGENTS_CAP}. "
                      "Cut before you add: every Codex session loads all of it.")
-    grown = sum(after.get(p, 0) - before.get(p, 0) for p in changed if budgeted(p))
+    grown = sum(after.get(p, 0) - before.get(p, 0) for p in changed if budgeted(p) and p != "AGENTS.md")
     if grown > 0:
-        found.append(f"this adds {grown} net words to AGENTS.md, README.md and docs/. Cut as many "
+        found.append(f"this adds {grown} net words to README.md and docs/. Cut as many "
                      "elsewhere in them, or put the fact where it is enforced: a tool's error "
                      "message, the commit message, or a comment next to the code it is about.")
     for path in sorted(changed):

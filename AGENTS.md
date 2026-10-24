@@ -1,3 +1,9 @@
+## Instruction freshness
+
+Before continuing work, reread `AGENTS.md` if 24 hours have elapsed
+since the last read. Reread it immediately whenever a user message
+or commit message reports an edit to `AGENTS.md`.
+
 # Contributing
 
 Many agents push to `origin/master` all day. Keep each change small, verified
@@ -37,32 +43,113 @@ own ledger and verification.
    message, then `claims.py release --landed <sha>`. STLport, string and
    `The*` names have one owner each (`next --family F`).
    Never reorder `functions.csv` rows for COMDAT selection.
-2. `python3 tools/next_work.py` is the byte-matching default and explains its
+2. **Run the reference lanes before dump or structural reconstruction.** They are
+   separate from the default picker; a zero result in one is no reason to skip
+   the others. Follow the BFME 2 and Zero Hour reference pass below before
+   choosing a new reconstruction target.
+3. `python3 tools/next_work.py` is the byte-matching default and explains its
    tiers. Its `finish` tier serves a banked attempt scoring 0.90+: start from
    that stash, even after a later `blocked`.
-3. Most remaining work is anonymous `?d_` bodies; the brief's evidence pack
+4. Most remaining work is anonymous `?d_` bodies; the brief's evidence pack
    is the lead. A proven identity gets its real name, evidence cited. An
    unproven one gets an opaque name that keeps the address
    (`RvaXXXXXXXX::method`, `?dup_XXXXXXXX`). Never ship a plausible
    guessed name: no gate can see it. `docs/carving.md` and
    `tools/carve_unclaimed.py` serve bodies found by boundary evidence.
-4. Named `__emit` lifts are dumps too; `python3 tools/lift_lane.py` lists them.
+5. Named `__emit` lifts are dumps too; `python3 tools/lift_lane.py` lists them.
    Names are often wrong; follow the brief's EXTENT and IDENTITY CHECK
    lines. Write the real body in the TU its `// readable body of` comment
    names, land it with `add_match --replace-existing` at the proven extent,
    delete the naked function.
-5. When `next_work.py` is dry, `python3 tools/list_naked_candidates.py game`
+6. When `next_work.py` is dry, `python3 tools/list_naked_candidates.py game`
    serves `game/gen_asm/` dumps with proven boundaries.
-6. Replacing generator-written C++ scores +0; take it last. Only
+7. Replacing generator-written C++ scores +0; take it last. Only
    `gen-tgrid`/`gen-shim` rows have source to write.
-7. **EA renames.** `python3 tools/ea_queue.py next` serves one rename to EA's
+8. **EA renames.** `python3 tools/ea_queue.py next` serves one rename to EA's
    own name and every file it touches.
-8. **Names.** `python3 tools/name_lane.py next --model <your model>` serves one
+9. **Names.** `python3 tools/name_lane.py next --model <your model>` serves one
    file's placeholder names. A name lands only when another vendor's model
    proposes it; never rename placeholders by hand.
 
 `tools/eligibility.py` alone decides whether a body is open work; never
 re-derive it.
+
+## Reference-source sweeps
+
+Use `inputs/reference/open-bfme-2` as a source and evidence reference, not a
+replacement for BFME 1's own build inputs. Initialize it with
+`git submodule update --init inputs/reference/open-bfme-2`.
+Initialize cross-repository references without recursion. Do not initialize a
+nested reference back to BFME 1 or BFME 2. Initialize other required build
+dependencies explicitly. Zero Hour is already available in BFME 1's own
+`inputs/reference/CnC_Generals_Zero_Hour/`; do not obtain a second copy through
+BFME 2.
+
+1. **Sweep BFME 2 before rediscovering shared fixes.** Compare the current BFME 1
+   target or blocker family with BFME 2's `Code/`, `reverse/functions.csv`,
+   shared headers, linking repairs and dependency reconciliations. Use narrow
+   `rg` searches for supported names, callers, strings and class families;
+   inspect relevant donor commits and their verification evidence. Consult
+   BFME 2's `docs/recipes.md` and pertinent `reverse/attempt_support/` records.
+   BFME 1 has no `bfme2_sweep.py`: do this targeted source/evidence pass rather
+   than running BFME 2's BFME 1 sweep in the opposite direction.
+2. For Zero Hour, use `GeneralsMD/`, not `Generals/`. Run
+   `python3 tools/zh_sweep.py compile` when the object cache is missing or its
+   source, headers, toolchain or flags changed (`--force` for changed inputs),
+   then `python3 tools/zh_sweep.py match` and
+   `python3 tools/zh_sweep.py packets`. Inspect the resulting evidence before
+   selecting a new dump or structural target; an empty exact-match result does
+   not exhaust near matches or adaptable reference source.
+3. Try a supported donor repair directly, then adapt it locally. Preserve
+   BFME 1 layouts, addresses, ABI, behavior and compiler context. A BFME 2 name,
+   placement or linking result is a lead, not BFME 1 proof. Claim the BFME 1
+   target, port into its proper `game/` unit, and pass BFME 1's identity,
+   boundary, relocation, byte and linking checks. Never edit the donor tree or
+   redirect BFME 1's build to BFME 2's toolchain or nested references.
+4. Record the donor revision, paths and evidence reviewed, whether a repair is
+   inherited, applicable, blocked or inapplicable, and the concrete reason in
+   the attempt evidence. Reuse that record while its inputs remain unchanged;
+   revisit it when donor evidence or dependencies change. Do not repeatedly
+   scan an unchanged donor tree. After a supported repair succeeds, sweep
+   related BFME 1 units for the same cause, batch compatible fixes and refresh
+   the affected blockers.
+
+**Translate the donor layout explicitly.** Paths in BFME 2 sources, ledgers,
+flags and handoffs are relative to BFME 2's root, not this checkout:
+
+- BFME 2 `Code/<path>` normally maps to BFME 1 `game/<path>`; confirm the
+  official BFME 1 unit and exact filename case rather than blindly copying or
+  overwriting an existing source.
+- BFME 2 `reverse/` evidence corresponds to BFME 1
+  `targets/game/reverse/`; addresses, symbol pins and ledger rows are specific
+  to each executable and must be established independently.
+- BFME 2 `reference/open-bfme-1/inputs/reference/`, `inputs/vendor/` and
+  `inputs/toolchains/` under that nested BFME 1 prefix refer to this repo's own
+  corresponding `inputs/` trees. Older donor paths may use `reference/`,
+  `vendor/`, `build/toolchains/` or `Code/` instead. Resolve the actual paths at
+  the reviewed revisions; never initialize BFME 2's BFME 1 reference to satisfy
+  those stale paths.
+- Rewrite each donor `// cl:` include path and relevant quoted include against
+  the intended BFME 1 header. BFME 2 `reference/shims/` has no automatic
+  one-to-one mapping to BFME 1 `inputs/reference/shims/`: check definitions,
+  layouts and include order, using a justified local adaptation when needed.
+  Preserve or deliberately reconcile compiler flags, defines and STLport
+  selection; do not import BFME 2 compiler overrides by accident.
+
+BFME 2's `tools/bfme1_sweep.py` and `tools/build.py` contain forward mappings;
+they are examples to inspect, not an installed reverse resolver in BFME 1.
+Before judging a donor trial, verify every rewritten include directory exists
+and inspect dependency output or compiler include tracing to confirm the actual
+headers used. MSVC can ignore missing include directories and still compile
+against unintended headers. Record the donor-to-local mapping and build context;
+invalidate affected cached trials when mapped source, headers, flags or the
+compiler change. A path/setup failure is not evidence the donor body is wrong.
+
+An explicit assigned lane still takes precedence. Linking remains first; use
+this donor pass within linking work as well as before new reconstruction.
+For reference-only updates, preserve dirty or unpublished work, review the
+upstream changes and record the donor revision used. Do not automatically
+advance the pointer for each candidate or recursively update submodules.
 
 **Claim a body first:** `python3 tools/claims.py claim 0xRVA` (if held, take
 another; claims expire after 4 h). After pushing, `claims.py release --landed`
@@ -86,9 +173,22 @@ refused. First run `python3 tools/find_declared_unmatched.py
 <file>`: row the body, or mark a known unpinned one
 `// ?<Class::method> present-unmatched`.
 
-Finish or revert each body before the next; after about 30 minutes without
-byte progress take a fresh candidate. Never leave a non-matching reconstruction
-in `game/`.
+**Stay with one substantive target.** Before experimenting, read its banked
+source, relevant attempt log entries, handoffs and prior compiler evidence.
+Finish or revert each body before the next. After about 30 minutes without
+meaningful progress, reassess; this is a review point, not an automatic stopping
+time. Continue while testing a new evidence-backed hypothesis; identity,
+layout, dependency and compiler discoveries count as progress. Bank and switch
+when viable hypotheses are exhausted or a concrete prerequisite blocks further
+work. Do not repeat disproven trials or leave a non-matching reconstruction in
+`game/`.
+
+A persistent mismatch may reflect a compiler quirk or unexpected instruction
+ordering. Compare the specific assembly difference, consult
+`docs/shape_levers.md` and relevant BFME 2 recipes, then systematically test
+justified equivalent C++ variants with isolated output paths. Preserve the
+flags, minimal source transformation, generated-code effect, useful failed
+trials and evidence for the next agent; distinguish observations from hypotheses.
 
 ## Work the file
 
@@ -109,7 +209,10 @@ edit costs a full gate: edit every dependent body and pay once.
    header or shim runs the full gate (40-60 minutes): poll it; never relaunch it
    or pipe it through anything that hides its exit code.
    Baselines may only shrink; never add a line to one to go green.
-5. `git pull --rebase origin master`, `git push`, then pull again; on rejection,
+5. Accumulate verified commits and push them together when practical,
+   especially banked attempts, blocker notes and homogeneous linking repairs.
+   Keep substantive reconstructions as separate atomic commits. Then
+   `git pull --rebase origin master`, `git push`, and pull again; on rejection,
    rebase, recheck the ledger, retry.
 6. `python3 tools/progress.py origin/master` shows what your session added.
 

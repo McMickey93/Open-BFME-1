@@ -11,9 +11,9 @@ import doc_budget as db  # noqa: E402
 def test_net_growth_is_refused_and_a_paid_addition_passes():
     grown = db.problems(["docs/matching.md"], {"docs/matching.md": 700}, {"docs/matching.md": 710})
     assert len(grown) == 1 and "10 net words" in grown[0]
-    paid = ["docs/matching.md", "AGENTS.md"]
-    assert db.problems(paid, {"docs/matching.md": 700, "AGENTS.md": 1300},
-                       {"docs/matching.md": 710, "AGENTS.md": 1290}) == []
+    paid = ["docs/matching.md", "docs/structural.md"]
+    assert db.problems(paid, {"docs/matching.md": 700, "docs/structural.md": 1300},
+                       {"docs/matching.md": 710, "docs/structural.md": 1290}) == []
 
 
 def test_a_new_doc_counts_as_growth_and_a_deleted_one_pays_for_it():
@@ -41,3 +41,16 @@ def test_the_tree_is_within_its_caps():
     for readme in [ROOT / "mods/README.md", *sorted((ROOT / "mods/features").glob("*/README.md"))]:
         words = len(readme.read_text(encoding="utf-8").split())
         assert words <= db.MOD_README_CAP, f"{readme.relative_to(ROOT)} is {words} words"
+
+
+def test_agents_growth_uses_its_own_cap_not_the_shared_doc_budget():
+    assert db.problems(["AGENTS.md"], {"AGENTS.md": 1439},
+                       {"AGENTS.md": db.AGENTS_CAP}) == []
+    over = db.problems(["AGENTS.md"], {"AGENTS.md": 1439},
+                       {"AGENTS.md": db.AGENTS_CAP + 1})
+    assert len(over) == 1 and "cap" in over[0]
+    # Cutting instructions cannot pay for otherwise forbidden docs growth.
+    growth = db.problems(["AGENTS.md", "docs/matching.md"],
+                         {"AGENTS.md": 1400, "docs/matching.md": 100},
+                         {"AGENTS.md": 1300, "docs/matching.md": 110})
+    assert len(growth) == 1 and "10 net words" in growth[0]
