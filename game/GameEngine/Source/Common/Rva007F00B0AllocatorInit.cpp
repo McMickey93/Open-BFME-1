@@ -12,7 +12,22 @@ struct Rva007F00B0Allocator
 typedef void *(__cdecl *Rva007F00B0Allocate)(unsigned int, int);
 
 Rva007F00B0Allocator *g_Rva0130A5B0;
-extern void *g_0112A5C4[];
+// Retail table at VA 0x0112A5C4: 6 slots, ending before 0x0112A5DC.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern "C" void __identifier("?dup_007eff40@@YAXXZ")();
+extern "C" void __identifier("?dup_007eff50@@YAXXZ")();
+extern "C" void __identifier("?call@Rva007EFF60@@QAEXPAX0@Z")();
+extern "C" void __identifier("?bfmeGo929B@BfmeThing929B@@QAEXPAX0@Z")();
+extern "C" void __identifier("?value@Rva007EFFA0Zero@@QBEHXZ")();
+extern "C" void __identifier("?value@Rva007EFFB0Zero@@QBEHXZ")();
+void *g_0112A5C4[] = {
+    reinterpret_cast<void *>(&__identifier("?dup_007eff40@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?dup_007eff50@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?call@Rva007EFF60@@QAEXPAX0@Z")),
+    reinterpret_cast<void *>(&__identifier("?bfmeGo929B@BfmeThing929B@@QAEXPAX0@Z")),
+    reinterpret_cast<void *>(&__identifier("?value@Rva007EFFA0Zero@@QBEHXZ")),
+    reinterpret_cast<void *>(&__identifier("?value@Rva007EFFB0Zero@@QBEHXZ")),
+};
 
 // The default callbacks this body installs are retail's pooled operator
 // new/delete forwarders at VA 0x00BEFFE0 and 0x00BEFFF0 (RVA 0x007EFFE0 and
