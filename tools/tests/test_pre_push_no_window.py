@@ -16,7 +16,7 @@ ZERO = "0" * 40
 PASS = ("check_csv", "one_identity", "target_hooks", "conversion_gate", "name_regression",
         "name_history", "name_oracle", "retired_guard", "doc_budget", "ea_name_guard",
         "pin_consistency", "b_pin_check", "delta_sources", "header_dependents", "ledger_guard",
-        "check_case_collisions")
+        "check_case_collisions", "empty_commits", "duplicate_global")
 
 
 def git(cwd, *args, stdin=None):

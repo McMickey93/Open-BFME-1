@@ -10,7 +10,7 @@ import pytest
 
 HOOK = Path(__file__).resolve().parents[2] / '.githooks' / 'pre-commit'
 # Checkers the hook runs only when the tree has them (its present() guard).
-PRESENT_GUARDED = ('ea_name_guard', 'name_lane', 'ilt_guard', 'alias_guard', 'hatch_counters',
+PRESENT_GUARDED = ('ea_name_guard', 'name_lane', 'ilt_guard', 'alias_guard', 'duplicate_global', 'hatch_counters',
                    'tu_ownership')
 
 
@@ -84,7 +84,7 @@ python3() {
     case "$1" in
         tools/delta_sources.py) cat deltas ;;
         tools/layout_migration.py) return 0 ;;
-        tools/ilt_guard.py|tools/alias_guard.py|tools/hatch_counters.py|tools/tu_ownership.py) return 0 ;;
+        tools/ilt_guard.py|tools/alias_guard.py|tools/duplicate_global.py|tools/hatch_counters.py|tools/tu_ownership.py) return 0 ;;
         tools/find_declared_unmatched.py) cat > find-declared-stdin ;;
         tools/adopt_header.py|tools/class_gate.py|tools/ledger_guard.py|tools/name_oracle.py|tools/name_regression.py|tools/retired_guard.py) return 0 ;;
         tools/check_case_collisions.py|tools/conversion_gate.py|tools/check_csv.py|tools/pin_consistency.py|tools/identity_guard.py|tools/gate_baseline.py) return 0 ;;
@@ -327,6 +327,7 @@ def test_present_checkers_all_run_and_name_nothing_missing(hook_runner):
 @pytest.mark.parametrize('tool,reason', [
     ('ilt_guard', "retail's thunk table contradicts a new name"),
     ('alias_guard', 'an alias binds a call to another body'),
+    ('duplicate_global', 'a new global at a named retail address'),
     ('hatch_counters', 'escape hatches grew'),
 ])
 def test_a_present_checker_still_refuses(hook_runner, tool, reason):

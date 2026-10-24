@@ -155,7 +155,8 @@ STUBS = ("check_case_collisions", "conversion_gate", "name_regression", "name_or
          "eol_guard", "retired_guard", "doc_budget", "ea_name_guard", "name_lane", "link_debt", "target_hooks",
          "layout_migration", "check_csv", "pin_consistency", "b_pin_check", "find_declared_unmatched",
          "delta_sources", "identity_guard", "adopt_header", "one_identity", "gate_baseline",
-         "class_gate", "ledger_guard", "ilt_guard", "alias_guard", "hatch_counters", "tu_ownership")
+         "class_gate", "ledger_guard", "ilt_guard", "alias_guard", "duplicate_global",
+         "hatch_counters", "tu_ownership", "empty_commits")
 
 
 @pytest.fixture
