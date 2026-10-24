@@ -11,7 +11,7 @@
 
 #include "../../../../../Libraries/Source/WWVegas/WWLib/ascii_string.h"
 
-class BfmeOwnerXC
+class CommandSetUpgradeModuleData
 {
 public:
 	char m_bfmePad00[0x70];					// +0x00
@@ -46,7 +46,7 @@ protected:
 void CommandSetUpgrade::upgradeImplementation()
 {
 	BfmeTargetXC *target = *(BfmeTargetXC **)((char *)this - 8);
-	BfmeOwnerXC *owner = *(BfmeOwnerXC **)((char *)this - 0xC);
+	CommandSetUpgradeModuleData *owner = *(CommandSetUpgradeModuleData **)((char *)this - 0xC);
 
 	{
 		AsciiString label(owner->m_bfmeLabel);
