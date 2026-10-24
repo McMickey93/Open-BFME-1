@@ -5,9 +5,11 @@
 // installs a different vftable address, which is what says these are different
 // classes; the addresses themselves are DIR32 the patcher fills from retail.
 
-struct T2EmptyDtor_008018a0 { virtual ~T2EmptyDtor_008018a0(); };
+struct T2EmptyDtor_008018a0 { T2EmptyDtor_008018a0(); virtual ~T2EmptyDtor_008018a0(); };
 // ??1T2EmptyDtor_008018a0@@UAE@XZ absent-from-retail
 T2EmptyDtor_008018a0::~T2EmptyDtor_008018a0() {}
+// constructor: mov eax,ecx / mov [eax],<this class's vftable> / ret
+T2EmptyDtor_008018a0::T2EmptyDtor_008018a0() {}
 
 struct T2EmptyDtor_00802360 { T2EmptyDtor_00802360(); virtual ~T2EmptyDtor_00802360(); };
 // ??1T2EmptyDtor_00802360@@UAE@XZ absent-from-retail
