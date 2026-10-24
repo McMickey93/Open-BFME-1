@@ -33,7 +33,9 @@ static NameKeyType parentKeyboardOptionsMenuID = NAMEKEY_INVALID;
 static GameWindow *parentKeyboardOptionsMenu = NULL;
 
 static NameKeyType comboBoxCategoryListID = NAMEKEY_INVALID;
-static GameWindow *comboBoxCategoryList = NULL;
+// Shared with the matched category population and input callbacks.
+GameWindow *g_012F3AC0 = NULL;
+#define comboBoxCategoryList g_012F3AC0
 
 static NameKeyType listBoxCommandListID = NAMEKEY_INVALID;
 static GameWindow *listBoxCommandList = NULL;
