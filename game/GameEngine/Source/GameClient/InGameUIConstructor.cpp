@@ -65,22 +65,21 @@ public:
 // Independent evidence: the body calls SubsystemInterface::SubsystemInterface,
 // installs vtable 0x010F9AAC (whose slot 2 is loadIniFilesFromLegend), zeros
 // +0x08..+0x1c, returns this in EAX, and has a plain ret (no stack arguments).
-// Retail allocates 0x24 bytes here; the last dword is not initialized by it.
-// Use the existing BfmeThingCCF::bfmeInitCCF entry without introducing an alias.
-// The scoped storage guard gives raw allocation the same delete-on-throw
-// behavior as the retail new expression and preserves its returned receiver.
-struct BfmeThingCCF {
-    BfmeThingCCF *bfmeInitCCF();
+// The body is the constructor ??0Gen_00490100@@QAE@XZ (BfmeConv577.cpp): the
+// class owns vtable ??_7Gen_00490100@@6B@ at 0x010F9AAC and the matched
+// complete destructor ??1Gen_00490100@@UAE@XZ at 0x00490100. Retail allocates
+// 0x24 bytes here; the constructor initializes +0x08..+0x1c and leaves the
+// last dword alone. A real new expression compiles to retail's body (null
+// test, ctor call through its result) and to retail's own delete-on-throw
+// unwind funclet, which the allocation guard this replaces could not emit.
+class Gen_00490100 {
+public:
+    Gen_00490100();
+    unsigned int m_field_000[9]; // +0x00..+0x24: vptr slot, m_name, seven body dwords
 };
 struct Subsystem0048F090CallView {
     virtual ~Subsystem0048F090CallView();
     virtual void init();
-};
-class AllocationGuard0044B800 {
-public:
-    void *memory;
-    AllocationGuard0044B800(void *p) : memory(p) {}
-    ~AllocationGuard0044B800() { if (memory) ::operator delete(memory); }
 };
 struct BfmeOwnerVNY {
     void bfmeResetVNY();
@@ -299,11 +298,7 @@ InGameUI::InGameUI()
   m_mousedOverDrawableID = 0;
   m_currentlyPlayingMovie.clear();
   m_militarySubtitle = 0;
-  {
-    AllocationGuard0044B800 storage(::operator new(0x24));
-    m_field_81c = storage.memory ? (Subsystem0048F090CallView*)((BfmeThingCCF*)storage.memory)->bfmeInitCCF() : 0;
-    storage.memory = 0;
-  }
+  m_field_81c = (Subsystem0048F090CallView *)new Gen_00490100;
   m_field_81c->init();
   m_popupMessageData = 0;
   m_field_12b0 = false;
