@@ -9,11 +9,13 @@ class StringClass
 {
 public:
 	StringClass(const StringClass &string, bool hint_temporary = false);
-	~StringClass();
+	~StringClass() { Free_String(); }
 	const StringClass &operator+=(const char *string);
 	operator const char *() const { return m_buffer; }
 
 private:
+	// Retail cleanup calls Free_String directly, not the separate destructor stub.
+	void Free_String();
 	char *m_buffer;
 };
 
