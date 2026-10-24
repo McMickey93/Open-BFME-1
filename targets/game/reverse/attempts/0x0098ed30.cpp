@@ -1,5 +1,5 @@
 // ?Render@LineGroupClass@@QAEXAAVRenderInfoClass@@@Z
-// partial score=0.9914634146341463 date=2026-09-26
+// partial score=0.9915 date=2026-09-26
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/Wwutil /Igame/Libraries/Source/WWVegas/WWDownload /Igame/Libraries/Source/Compression /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 // BFME renamed GeneralsMD Matrix4x4 -> Matrix4; neutralize the old name in this TU.
 #define Matrix4x4 Matrix4
