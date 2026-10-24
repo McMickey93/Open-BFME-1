@@ -8,7 +8,9 @@ extern "C" void *(__cdecl *bfme_memmove_ptr)(void *dst, const void *src, unsigne
 #include <vector>
 #undef memmove
 
-extern "C" __declspec(dllimport) void * __cdecl BfmeMemMove(void *dst, const void *src, unsigned int count);
+// The static-CRT header declares memmove without dllimport. Retail calls the
+// native IAT cell instead; C linkage adds the leading underscore to this name.
+extern "C" void *(__cdecl *_imp__memmove)(void *dst, const void *src, unsigned int count);
 
 class BfmeNodeAK
 {
@@ -107,7 +109,7 @@ int BfmeListAK::bfmeDropAK(void *key, void *value)
 					void **next = p + 1;
 
 					if (n->m_bfmeValuesAK.end() != next)
-						BfmeMemMove(p, next, (char *)n->m_bfmeValuesAK.end() - (char *)next);
+						_imp__memmove(p, next, (char *)n->m_bfmeValuesAK.end() - (char *)next);
 
 					((BfmeVectorRawAK *)&n->m_bfmeValuesAK)->m_bfmeEndAK--;
 					return 1;
