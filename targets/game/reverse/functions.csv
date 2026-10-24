@@ -38461,7 +38461,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_008c3c00@@YAXXZ,,0x008C3C00,510,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00cc3c00
 ?d_008c5a60@@YAXXZ,,0x008C5A60,189,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned;abs-ref end=ret+int3 refs=1
 ?d_008c64c0@@YAXXZ,,0x008C64C0,470,game/gen_asm/d_008c39e0.asm,matched,gen-dump;ghidra=FUN_00cc64c0
-?d_008c66a0@@YAXXZ,,0x008C66A0,129,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_008c6ad0@@YAXXZ,,0x008C6AD0,233,game/gen_asm/d_008c4940.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_008c8ac0@@YAXXZ,,0x008C8AC0,2954,game/gen_asm/d_008c39e0.asm,matched,gen-dump;ghidra=FUN_00cc8ac0
 ?d_008c9650@@YAXXZ,,0x008C9650,1304,game/gen_asm/d_008c39e0.asm,matched,gen-dump;ghidra=FUN_00cc9650
@@ -173122,3 +173121,4 @@ uw_00c18e50,,0x00C18E50,8,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEn
 ?groupDoSpecialPowerAtLocation@Rva00150C90AIGroup@@QAEXIPBUCoord3D@@MPBVObject@@I@Z,,0x00150C90,187,game/GameEngine/Source/GameLogic/AI/AIGroup_groupDoSpecialPowerAtLocation.cpp,matched,clean C++; logicMessageDispatcher caller; AI +0x48 store is conditional on the member having an AI (no continue); ILT window contradicts AIGroup so owner keeps the address token;model=claude-opus-5-5;host=vm
 ?internalSetState@StateMachine@@QAE?AW4StateReturnType@@I@Z,,0x000A1360,200,game/GameEngine/Source/Common/StateMachine_internalSetState.cpp,matched,Zero Hour body against BFME StateMachine layout with internalGetState inlined;model=claude-opus-5-5;host=vm
 ?optimize@Path@@QAEXPBVObject@@H_N@Z,,0x00401660,669,game/GameEngine/Source/GameLogic/AI/PathOptimize.cpp,matched,clean C++ replacing the naked __emit lift;model=claude-opus-5-5;host=vm
+?dup_008c66a0@@YAPAVAptValue@@XZ,,0x008C66A0,129,game/Libraries/Source/EA/Apt/Rva008C66A0SlotRelease.cpp,matched,boundary RET+0x7A and RET+0x80 then int3 proves 129B; holder table slots indexed through 0x1230 array form fixes SIB order; callees toInteger and releaseAll ledger-named; identity unknown so dup_ address name kept;model=claude-opus-5-5;host=vm
