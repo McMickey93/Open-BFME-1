@@ -122,7 +122,7 @@ extern BfmeOwnVVD *g_bfmeSingletonVVD;
 #define RVA004585F0_WRITABLE_DATA ((Rva004585F0WritableGlobalData *)TheWritableGlobalData)
 #define RVA004585F0_LOOK_AT_TRANSLATOR ((Rva004585F0LookAtTranslator *)g_bfmeSingletonVVD)
 
-extern "C" __declspec(dllimport) double bfmeMathVE(double);
+extern "C" __declspec(dllimport) double ceil(double);
 extern Real bfmeSinVNB(Real);
 
 // ?update@RadiusDecal@@QAEXXZ
@@ -141,7 +141,7 @@ void Rva004585F0RadiusDecal::update()
 		goto update_extra;
 
 	UnsignedInt frame = RVA004585F0_GAME_CLIENT->getFrame();
-	Real throbTime = (Real)bfmeMathVE(
+	Real throbTime = (Real)ceil(
 		m_template->opacityThrobTime * RVA004585F0_THROB_SCALE);
 	UnsignedInt cycle;
 	__asm fld throbTime
