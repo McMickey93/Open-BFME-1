@@ -43,6 +43,21 @@ own ledger and verification.
    message, then `claims.py release --landed <sha>`. STLport, string and
    `The*` names have one owner each (`next --family F`).
    Never reorder `functions.csv` rows for COMDAT selection.
+   **Sweep BFME 2 linking repairs before rediscovering shared fixes.** For the
+   selected blocker or family, inspect the BFME 2 reference's shared headers,
+   providers and consumers, global ownership, import bindings and COMDAT
+   repairs, not just its reconstructed function bodies. Consult its relevant
+   commits and verification evidence; prioritize supported repairs that unblock
+   the most BFME 1 bytes. A same-name or link-clean BFME 2 provider is a lead,
+   not proof. Reconcile BFME 1 layouts, ABI, paths and thunk-versus-body
+   identity before adapting the repair. Verify affected BFME 1 bytes and check
+   providers and consumers together; an unchanged caller body alone does not
+   prove that the selected provider is correct or the unit links. If the census
+   index or current dependencies are unavailable, report the preview as unknown
+   rather than claiming linked bytes. Record donor evidence and ruled-out
+   adaptations, sweep related units after a supported fix, and batch compatible
+   repairs. Revisit recorded blockers when their dependencies or donor evidence
+   change instead of repeating unchanged scans.
 2. **Run the reference lanes before dump or structural reconstruction.** They are
    separate from the default picker; a zero result in one is no reason to skip
    the others. Follow the BFME 2 and Zero Hour reference pass below before
@@ -147,9 +162,72 @@ compiler change. A path/setup failure is not evidence the donor body is wrong.
 
 An explicit assigned lane still takes precedence. Linking remains first; use
 this donor pass within linking work as well as before new reconstruction.
-For reference-only updates, preserve dirty or unpublished work, review the
-upstream changes and record the donor revision used. Do not automatically
-advance the pointer for each candidate or recursively update submodules.
+
+## Prefer coverage-first reference sweeps
+
+Prefer reference-source sweeps first whenever compatible reference units exist;
+optimize for verified unique bytes per effort by batching compatible units,
+especially library families whose dependencies already exist. Escalate before
+abandoning a reference for dump reconstruction:
+
+1. Direct reuse or small evidence-backed repair (constants, declarations,
+   offsets, helper selection, compiler settings) that preserves the verified body
+   and semantics.
+2. Moderate repair of control flow, data access, calls, layouts or compiler
+   shape while identity and relationship stay well supported. Make evidence-backed
+   adaptations; preserve the reference function's established purpose and
+   semantics while reconciling target-specific differences.
+3. Substantial reconstruction from the reference while retail evidence supports
+   identity, ABI, behavior, call relationships and data usage; the reference
+   stays the semantic and structural guide.
+4. Byte-true reconstruction of the `game/gen_asm/` body as real C++, only once the
+   reference paths are exhausted or no longer applicable.
+
+Use compiler variants from matched siblings, with caching and isolated trials;
+preserve provenance, dependencies and compiler settings; continue through viable
+independent candidates; commit successful imports with their ledger updates
+coherently. Do not force a weak reference: once evidence no longer supports the
+same identity or semantics, or reasonable repairs stop progressing, move on.
+Re-run sweeps as dependencies, identities, compiler configurations and sibling
+matches land.
+
+## Compile BFME 2 donors beyond byte matches
+
+A lack of byte-identical BFME 2 retail bodies does not exhaust reusable donor
+source. Before treating BFME 2 references as exhausted, compile plausible clean
+C++ donor TUs with BFME 1's toolchain and settings (flags from matched siblings),
+adapting paths as above, and compare the emitted bodies with the BFME 1 retail
+target. Prioritize supported identities and siblings of successful transfers;
+exclude dumps and retired or refuted candidates unless new evidence addresses
+the earlier finding. Use explicit private object outputs through BFME 1's
+`tools/build.py` compile API for exploratory trials; BFME 1 has no
+`tools/place_bodies.py`, and BFME 2's tool targets a different executable.
+Never claim the external donor path as BFME 1 source. Port supported bodies into
+an allowed `game/` TU, preserving the donor revision, flags and dependencies,
+and pass BFME 1's scoped build and normal byte and identity gates. A placement
+proves neither identity nor recovery.
+
+## Investigate shared deltas first
+
+When multiple failures suggest the same layout, offset, callee, compiler, ABI or
+wrapper difference, test that shared explanation before retrying each body.
+Apply a shared fix only where target evidence supports it; similar symptoms alone
+do not establish a common cause. Do not repeat
+attempts blocked on the same unresolved dependency: continue with independent
+candidates and resweep affected units once it is resolved.
+
+## BFME 2 reference freshness
+
+Use the `inputs/reference/open-bfme-2` submodule for donor discovery and shared
+reconstruction, linking and naming evidence. On initialization, and before BFME 1
+work when the last successful check is missing or over 72 hours old, fetch
+official `Open-BFME/Open-BFME-2` `master`, compare commit IDs, and preserve dirty
+or unpublished submodule work.
+
+Initialize cross-repository references without recursion. Do not initialize a
+nested reference back to BFME 1 or BFME 2. Initialize other required build
+dependencies explicitly.
+
 
 **Claim a body first:** `python3 tools/claims.py claim 0xRVA` (if held, take
 another; claims expire after 4 h). After pushing, `claims.py release --landed`
@@ -258,6 +336,24 @@ For 0.9+, run `tools/probe.py` and read
   they hide mismatches.
 
 ## Names and identity
+
+**Sweep BFME 2 for naming evidence.** Before replacing placeholders in a
+shared subsystem, consult the reference's corresponding declarations,
+implementations, naming evidence and relevant commits. Prefer the same name
+where BFME 1 evidence establishes the same identity or member role; retain
+better-established EA names and BFME 1 naming conventions. Map by witnessed
+class, behavior and relationships, not equal RVAs, offsets or filenames: shared
+classes can have shifted fields or different meanings. Record the donor revision,
+path, proposed mapping and BFME 1 evidence. Verify affected bytes and relocations;
+an unchanged byte match does not prove a name is correct.
+
+Use the existing evidence/header-adoption checks or naming lane to land names;
+BFME 2 spelling alone is not an exemption. An agent-inferred BFME 2 name is a
+hint, not an original EA name or an independent vendor vote. Keep donor name
+suggestions out of blind-voting sessions; do not manufacture agreement by asking
+both vendors to copy them. If evidence or the normal lane cannot establish a
+name, keep the placeholder and record the lead. Batch compatible verified renames
+rather than pushing each separately.
 
 - A wrong name compiles to the same bytes. A matched caller naming the symbol
   is the strongest evidence.
