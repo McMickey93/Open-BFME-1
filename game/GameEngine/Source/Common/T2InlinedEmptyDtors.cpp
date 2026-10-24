@@ -9,21 +9,29 @@ struct T2EmptyDtor_008018a0 { virtual ~T2EmptyDtor_008018a0(); };
 // ??1T2EmptyDtor_008018a0@@UAE@XZ absent-from-retail
 T2EmptyDtor_008018a0::~T2EmptyDtor_008018a0() {}
 
-struct T2EmptyDtor_00802360 { virtual ~T2EmptyDtor_00802360(); };
+struct T2EmptyDtor_00802360 { T2EmptyDtor_00802360(); virtual ~T2EmptyDtor_00802360(); };
 // ??1T2EmptyDtor_00802360@@UAE@XZ absent-from-retail
 T2EmptyDtor_00802360::~T2EmptyDtor_00802360() {}
+// constructor: mov eax,ecx / mov [eax],<this class's vftable> / ret
+T2EmptyDtor_00802360::T2EmptyDtor_00802360() {}
 
-struct T2EmptyDtor_00802450 { virtual ~T2EmptyDtor_00802450(); };
+struct T2EmptyDtor_00802450 { T2EmptyDtor_00802450(); virtual ~T2EmptyDtor_00802450(); };
 // ??1T2EmptyDtor_00802450@@UAE@XZ absent-from-retail
 T2EmptyDtor_00802450::~T2EmptyDtor_00802450() {}
+// constructor: mov eax,ecx / mov [eax],<this class's vftable> / ret
+T2EmptyDtor_00802450::T2EmptyDtor_00802450() {}
 
-struct T2EmptyDtor_00802a70 { virtual ~T2EmptyDtor_00802a70(); };
+struct T2EmptyDtor_00802a70 { T2EmptyDtor_00802a70(); virtual ~T2EmptyDtor_00802a70(); };
 // ??1T2EmptyDtor_00802a70@@UAE@XZ absent-from-retail
 T2EmptyDtor_00802a70::~T2EmptyDtor_00802a70() {}
+// constructor: mov eax,ecx / mov [eax],<this class's vftable> / ret
+T2EmptyDtor_00802a70::T2EmptyDtor_00802a70() {}
 
-struct T2EmptyDtor_00802ea0 { virtual ~T2EmptyDtor_00802ea0(); };
+struct T2EmptyDtor_00802ea0 { T2EmptyDtor_00802ea0(); virtual ~T2EmptyDtor_00802ea0(); };
 // ??1T2EmptyDtor_00802ea0@@UAE@XZ absent-from-retail
 T2EmptyDtor_00802ea0::~T2EmptyDtor_00802ea0() {}
+// constructor: mov eax,ecx / mov [eax],<this class's vftable> / ret
+T2EmptyDtor_00802ea0::T2EmptyDtor_00802ea0() {}
 
 struct T2EmptyDtor_00806460 { virtual ~T2EmptyDtor_00806460(); };
 // ??1T2EmptyDtor_00806460@@UAE@XZ absent-from-retail

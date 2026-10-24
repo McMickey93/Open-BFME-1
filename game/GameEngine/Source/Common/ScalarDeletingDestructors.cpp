@@ -24,6 +24,7 @@
 	class NAME                                                                \
 	{                                                                         \
 	public:                                                                   \
+		NAME();                                                               \
 		virtual ~NAME();                                                      \
 	};                                                                        \
 	NAME::~NAME()                                                             \
@@ -77,4 +78,8 @@ BFME_SCALAR_DELETING_DTOR( Rva00938BF0Deleting )
 BFME_SCALAR_DELETING_DTOR( Rva00942EB0Deleting )
 BFME_SCALAR_DELETING_DTOR( Rva0095C6F0Deleting )
 BFME_SCALAR_DELETING_DTOR( Rva009CDDF0Deleting )
+// Its constructor at 0x009CDD60 only stores this class's vftable.
+Rva009CDDF0Deleting::Rva009CDDF0Deleting()
+{
+}
 BFME_SCALAR_DELETING_DTOR( Rva009DB610Deleting )
