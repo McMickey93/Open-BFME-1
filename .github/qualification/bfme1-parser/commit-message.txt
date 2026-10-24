@@ -1,0 +1,20 @@
+list_naked_candidates: reject partial MASM procedure bytes
+
+The MASM reader concatenated db operands while silently omitting symbolic
+dd, call and jmp statements. This fabricated shorter candidate bodies:
+the 7-byte d_006bba90 import stub appeared as 3 bytes, the 8-byte d_00c5fdfe
+tail-call funclet as 3 bytes, and d_00c20b7b as 13 instead of 22 bytes.
+
+Only return complete literal-db procedures. Ignore non-emitting comments
+and labels, require the matching ENDP, and reject unsupported statements,
+PROC attributes and malformed or out-of-range byte operands. Do not guess
+relocation bytes or assemble symbolic instructions in the queue reader.
+
+At d55f6d07421dc793dc0db6f6372c1093e535936c, this excludes 2,272 incomplete
+procedures (1,909 within the 512-byte queue limit). All 49,863 retained
+procedures preserve their exact bytes and source positions; none are added.
+
+Validation: 22 focused tests pass, including JSON queue integration and
+three real mixed-body shapes. Eleven new tests failed before the fix.
+
+Verifier-Change: reject incomplete ASM candidate bodies instead of silently dropping statements that emit bytes

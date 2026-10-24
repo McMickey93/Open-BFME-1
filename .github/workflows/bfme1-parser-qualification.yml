@@ -1,0 +1,88 @@
+name: Temporary BFME1 parser qualification
+
+# Temporary, manually dispatched qualification on the contributor fork only.
+# Keep inherited workflows disabled when activating Actions for this job.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bfme1-parser-windows-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/master'
+    runs-on: windows-2022
+    timeout-minutes: 10
+    env:
+      # Apply before either checkout, so the candidate's bytes stay exact.
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - name: Read this run's qualification inputs
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: qualification
+          sparse-checkout: |
+            .github/qualification/bfme1-parser
+            .github/workflows/bfme1-parser-qualification.yml
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+          architecture: x64
+          check-latest: false
+
+      - name: Check out the clean official source separately
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: e439b456df920cbe6bc9efc9ba038e5f5d6a37e9
+          path: source
+          persist-credentials: false
+          # The exact outgoing range is the pinned base plus one normal commit.
+          fetch-depth: 2
+          submodules: false
+          lfs: false
+
+      - name: Qualify the exact patch through the ordinary hooks
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 qualification
+          python3 -u ../qualification/.github/qualification/bfme1-parser/qualify.py
+
+      - name: Retain the logs and exact candidate evidence for one day
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-parser-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 1
+          compression-level: 9
+          include-hidden-files: false

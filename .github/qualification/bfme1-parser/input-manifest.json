@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "repository": "McMickey93/Open-BFME-1",
+  "branch": "master",
+  "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
+  "base": "e439b456df920cbe6bc9efc9ba038e5f5d6a37e9",
+  "base_tree": "893296286e27cce3e61d5329e0b17c611f1f8afb",
+  "candidate_tree": "ad81d94b6205df55b1159416ef2b51d05075c3cb",
+  "patch_sha256": "5974dfc912abb045c253d4eb7477e0b88599feb0da39086d87504dd351abde6a",
+  "message_sha256": "42b6d52c882bdfc4fc847e544f9346188f87091f069944351aadb4bc3f2cb964",
+  "files": [
+    {
+      "path": "tools/list_naked_candidates.py",
+      "mode": "100755",
+      "base_blob": "f85f70ed60f51d2f15628f52680ef517a5256cfb",
+      "candidate_blob": "ed463849268c2c9d9516ad5838b9e9cf8ae1b6c3",
+      "sha256": "079bba3780d19ef7837d82dcfd399ed2b71a52977fcf26a43dc2fcab8a578454"
+    },
+    {
+      "path": "tools/tests/test_list_naked_candidates.py",
+      "mode": "100644",
+      "base_blob": "ede2b2fd8f9c77b637580fb9a9df90a9cb4f9774",
+      "candidate_blob": "debe5a7b393aa8f064e56ddc8955107e348f6b40",
+      "sha256": "3875063729b93ae06380fb16d2a38ff07496324b83c791baae30006131429c25"
+    }
+  ],
+  "compiler_path": "inputs/toolchains/vs2003/Program Files/Microsoft Visual Studio .NET 2003/Vc7/bin/cl.exe",
+  "compiler_sha256": "2ecf86a3edfd3deae498e08298e210e984537ce9e11759930561e43f40bd2515"
+}
