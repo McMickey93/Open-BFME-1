@@ -42,8 +42,7 @@ public:
 // method would link straight to the builder and change the bytes, so the thunk
 // is referenced and the cast keeps the proc type initFromINIMultiProc declares
 // for its second argument.
-void __cdecl j_0004128b(void);
-typedef void (__cdecl *FieldParseProc)(MultiIniFieldParse &);
+extern "C" void __cdecl LevelGrantSpecialPowerFieldParse(MultiIniFieldParse &parse);	// DIR32-recorded name of ILT 0x0044128B
 
 class LevelGrantSpecialPower
 {
@@ -61,7 +60,7 @@ ModuleData *LevelGrantSpecialPower::friend_newModuleData(INI *ini)
 {
 	LevelGrantSpecialPowerModuleData *data = new LevelGrantSpecialPowerModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, (FieldParseProc)&j_0004128b);
+		ini->initFromINIMultiProc(data, LevelGrantSpecialPowerFieldParse);
 	return (ModuleData *)data;
 }
 

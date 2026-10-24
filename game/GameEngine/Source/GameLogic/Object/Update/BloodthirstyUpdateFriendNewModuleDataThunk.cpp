@@ -48,7 +48,7 @@ public:
 // identity of the builder it reaches is
 // ?buildFieldParse@BloodthirstyUpdateModuleData@@SAXAAVMultiIniFieldParse@@@Z,
 // still address-derived in the ledger.
-void __cdecl j_0002c822();
+extern "C" void __cdecl BloodthirstyUpdateFieldParse(MultiIniFieldParse &parse);	// DIR32-recorded name of ILT 0x0042C822
 
 class BloodthirstyUpdate
 {
@@ -62,6 +62,6 @@ ModuleData *BloodthirstyUpdate::friend_newModuleData(INI *ini)
 	BloodthirstyUpdateModuleData *data = new BloodthirstyUpdateModuleData;
 	if (ini)
 		ini->initFromINIMultiProc(data,
-			reinterpret_cast<void (__cdecl *)(MultiIniFieldParse &)>( &j_0002c822 ));
+			BloodthirstyUpdateFieldParse);
 	return (ModuleData *)data;
 }

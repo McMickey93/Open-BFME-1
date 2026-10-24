@@ -37,8 +37,7 @@ public:
 // straight to it and change the pushed immediate, so the thunk is referenced
 // and the cast keeps the proc type initFromINIMultiProc declares for its
 // second argument.
-void __cdecl j_000318bd(void);
-typedef void (__cdecl *FieldParseProc)(MultiIniFieldParse &);
+extern "C" void __cdecl FadeAndDieOrnamentUpdateFieldParse(MultiIniFieldParse &parse);	// DIR32-recorded name of ILT 0x004318BD
 
 class FadeAndDieOrnamentUpdate
 {
@@ -51,6 +50,6 @@ ModuleData *FadeAndDieOrnamentUpdate::friend_newModuleData(INI *ini)
 {
 	FadeAndDieOrnamentUpdateModuleData *data = new FadeAndDieOrnamentUpdateModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, (FieldParseProc)&j_000318bd);
+		ini->initFromINIMultiProc(data, FadeAndDieOrnamentUpdateFieldParse);
 	return (ModuleData *)data;
 }
