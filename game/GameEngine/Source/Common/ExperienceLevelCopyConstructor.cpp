@@ -63,6 +63,24 @@ public:
 	void operator=(const Rva00458450 &that);
 };
 
+// Retail's operator= clears m_attributeModifiers through the shared
+// vector-of-strings range erase: ILT 0x00024C17 jumping to 0x00065960, the
+// route CRCParameterCheck::clear and the EnragedBehavior module-data
+// constructor already spell.  ilt_oracle CONFIRMS
+// ?erase@?$vector@VAsciiString@@... at that thunk and CONTRADICTS it at the
+// 0x006FA560 row's own thunk, so the name is pin-only; this TU-scoped view
+// spells the call against its symbols.csv pin at 0x00024C17 and keeps this
+// object from emitting vector<AsciiString>::erase's wrong-shaped copy.
+class Rva00065960AttributeRange
+{
+public:
+	void erase( void *first, void *last );
+
+	void *m_begin;
+	void *m_end;
+	void *m_endOfStorage;
+};
+
 class UpgradeTemplate;
 
 struct ModelConditionFlags
@@ -229,8 +247,9 @@ ExperienceLevel &ExperienceLevel::operator=(const ExperienceLevel &that)
 	m_multiPlayerOnly = that.m_multiPlayerOnly;
 	m_emotionType = that.m_emotionType;
 	_ReadWriteBarrier();
-	attributeModifiers->erase(
-		attributeModifiers->begin(), attributeModifiers->end());
+	((Rva00065960AttributeRange *)(void *)attributeModifiers)->erase(
+		((Rva00065960AttributeRange *)(void *)attributeModifiers)->m_begin,
+		((Rva00065960AttributeRange *)(void *)attributeModifiers)->m_end);
 	for (unsigned int i = 0; i < that.m_attributeModifiers.size(); ++i)
 		attributeModifiers->push_back(that.m_attributeModifiers[i]);
 	m_upgrades.clear();
