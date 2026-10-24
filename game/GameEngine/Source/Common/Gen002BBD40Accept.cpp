@@ -56,12 +56,11 @@ Xfer & Rva0010C3C0(MidVirtualSlot90Receiver *receiver, void *context);
 
 class Gen_002BBD40;
 
-class Gen_0014F150
+// Retail ILT 0x00022363 reaches this matched StateMachine-family transfer.
+class Rva000A1510Owner
 {
-    friend class Gen_002BBD40;
-
-private:
-	void bfmeAccept(BfmeSeedTarget *target);
+public:
+	void transfer(Xfer *xfer);
 };
 
 template <typename T> class StringBase
@@ -175,7 +174,7 @@ void Gen_002BBD40::bfmeAccept(BfmeSeedTarget *target)
 	if (target->bfmeSkip())
 		return;
 
-	((Gen_0014F150 *)this)->bfmeAccept(target);
+	((Rva000A1510Owner *)this)->transfer((Xfer *)target);
 
 	BfmeSeedPair pair;
 	pair.m_bfmeFirst = 1;
