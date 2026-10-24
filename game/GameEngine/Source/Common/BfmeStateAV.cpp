@@ -11,9 +11,8 @@
 // initialiser is spelled as that class's constructor and the name argument is
 // a real AsciiString, not a TU-local stand-in.
 //
-// The vftable store is retail's own (0x01098188), not one this TU emits: the
-// derived class is not polymorphic here, and the extern below has no definition
-// anywhere in the tree yet.
+// The derived layout is not polymorphic here; its installed table below
+// supplies the exact seventeen retail slots at VA 0x01098188.
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
 #include "../../../Libraries/Source/WWVegas/WWLib/string_base.h"
@@ -28,7 +27,44 @@ public:
 	State( StateMachine *machine, AsciiString name );
 };
 
-extern "C" void *bfmeVftableAV[];			// retail 0x01098188
+// Retail table at VA 0x01098188: 17 slots, ending before 0x010981CC.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern void j_00044634();
+extern void j_00026c60();
+extern void j_000131ce();
+extern void j_0003992d();
+extern void j_0003e6e9();
+extern void j_00040a07();
+extern void j_0000272f();
+extern void j_0000c79d();
+extern void j_00028b87();
+extern void j_00023416();
+extern void j_00015d9d();
+extern void j_000273bd();
+extern void j_0002cb42();
+extern void j_00021a7b();
+extern void j_000351b1();
+extern void j_00007405();
+extern void j_00016b3a();
+extern "C" void *bfmeVftableAV[] = {
+    reinterpret_cast<void *>(&j_00044634),
+    reinterpret_cast<void *>(&j_00026c60),
+    reinterpret_cast<void *>(&j_000131ce),
+    reinterpret_cast<void *>(&j_0003992d),
+    reinterpret_cast<void *>(&j_0003e6e9),
+    reinterpret_cast<void *>(&j_00040a07),
+    reinterpret_cast<void *>(&j_0000272f),
+    reinterpret_cast<void *>(&j_0000c79d),
+    reinterpret_cast<void *>(&j_00028b87),
+    reinterpret_cast<void *>(&j_00023416),
+    reinterpret_cast<void *>(&j_00015d9d),
+    reinterpret_cast<void *>(&j_000273bd),
+    reinterpret_cast<void *>(&j_0002cb42),
+    reinterpret_cast<void *>(&j_00021a7b),
+    reinterpret_cast<void *>(&j_000351b1),
+    reinterpret_cast<void *>(&j_00007405),
+    reinterpret_cast<void *>(&j_00016b3a),
+};
 
 class BfmeStateAV : public State
 {
