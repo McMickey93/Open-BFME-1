@@ -184,20 +184,11 @@ extern void j_000338ed();
 extern void j_0003df14();
 extern void j_0002567b();
 // The AptOnline selector callbacks this constructor registers are retail ILT
-// thunks: retail stored the thunk address itself in each binding, so the address
-// the binding carries is the thunk.  Each union below reinterprets that thunk
-// address as the __single_inheritance FunctorMethod the binding field holds; the
-// member function each callback reached is never named or defined in this TU.
-extern void j_00013d31();
-extern void j_0003ff76();
-extern void j_0001b3dd();
-extern void j_00018886();
-extern void j_000286be();
-extern void j_0003a44a();
-extern void j_0004a5ca();
-extern void j_00029d61();
-extern void j_00029249();
-extern void j_00047258();
+// thunks: retail stored the thunk address itself in each binding. Each union
+// below reinterprets the member pointer the DIR32 ledger records at that thunk
+// address (BfmeAptScreenOnlineChat::rva004XXXXXX, the ILT's VA) as the
+// __single_inheritance FunctorMethod the binding field holds. The members are
+// declared, not defined, in this TU.
 
 void _bfme_setAptScreenRef( const AsciiString &name,
 	Rva0050F840FunctorHolder callback );
@@ -207,6 +198,17 @@ class BfmeAptScreenOnlineChat : public _bfme_AptGameWindow
 public:
 	BfmeAptScreenOnlineChat( int context );
 	virtual ~BfmeAptScreenOnlineChat();
+
+	void rva00413d31();			///< ILT 0x00413D31
+	void rva0043ff76();			///< ILT 0x0043FF76
+	void rva0041b3dd();			///< ILT 0x0041B3DD
+	void rva00418886();			///< ILT 0x00418886
+	void rva004286be();			///< ILT 0x004286BE
+	void rva0043a44a();			///< ILT 0x0043A44A
+	void rva0044a5ca();			///< ILT 0x0044A5CA
+	void rva00429d61();			///< ILT 0x00429D61
+	void rva00429249();			///< ILT 0x00429249
+	void rva00447258();			///< ILT 0x00447258
 
 private:
 	char m_flag3C;
@@ -251,14 +253,14 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 			_bfme_showAptScreen( name, Rva0050F8B0FunctorHolder( (unsigned int)j_0002567b ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_00013d31 };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva00413d31 };
 			AsciiString name( "AptOnline::OnlineChat::OnBttnCancel" );
 			_bfme_showAptScreen( name,
 				Rva0050F8B0FunctorHolder( OnlineChatBinding(
 					u.call, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_0003ff76 };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva0043ff76 };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnAccept" );
 			_bfme_showAptScreen( name,
@@ -266,7 +268,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_0001b3dd };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva0041b3dd };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnEnterText" );
 			_bfme_showAptScreen( name,
@@ -274,7 +276,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_00018886 };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva00418886 };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnAddFriend" );
 			_bfme_showAptScreen( name,
@@ -282,7 +284,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_000286be };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva004286be };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnAddIgnore" );
 			_bfme_showAptScreen( name,
@@ -290,7 +292,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_0003a44a };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva0043a44a };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnFriendList" );
 			_bfme_showAptScreen( name,
@@ -298,7 +300,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_0004a5ca };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva0044a5ca };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnIgnoreList" );
 			_bfme_showAptScreen( name,
@@ -306,7 +308,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_00029d61 };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva00429d61 };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::OnlineChat::OnBttnPlayerList" );
 			_bfme_showAptScreen( name,
@@ -314,7 +316,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_00029249 };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva00429249 };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnline::Chat::OnBttnRemoveIgnore" );
 			_bfme_showAptScreen( name,
@@ -322,7 +324,7 @@ BfmeAptScreenOnlineChat::BfmeAptScreenOnlineChat( int context )
 					callback, (FunctorTarget *)this ) ) );
 		}
 		{
-			union { void (*fn)(); FunctorMethod call; } u = { j_00047258 };
+			union { void (BfmeAptScreenOnlineChat::*fn)(); FunctorMethod call; } u = { &BfmeAptScreenOnlineChat::rva00447258 };
 			FunctorMethod callback = u.call;
 			AsciiString name( "AptOnlineChat::InitGadgets" );
 			_bfme_setAptScreenRef( name,
