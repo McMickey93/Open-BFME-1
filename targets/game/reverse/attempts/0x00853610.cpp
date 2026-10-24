@@ -1,5 +1,5 @@
 // ?prepFile@INI@@IAEXVAsciiString@@W4INILoadType@@@Z
-// partial score=0.82 date=2026-09-27
+// partial score=0.8091 date=2026-09-27
 // cl: /DNDEBUG /O2 /GR- /EHsc /MD /Iinputs/reference/shims/ini
 // Reconstruction of INI::prepFile (GeneralsMD INI.h:389) at retail 0x00853610; BFME adds the #define MACRO pre-pass. Scratch shape for probe.py; the landed body belongs in game/GameEngine/Source/Common/INI/INI_stl.cpp (stlport TU: the body calls the _STL hashtable at 0x00852340/0x00852760 and StringBase).
 #include "Common/INIException.h"
