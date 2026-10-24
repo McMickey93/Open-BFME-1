@@ -1,9 +1,20 @@
-// ?optimize@Path@@QAEXPBVObject@@H_N@Z
-// partial score=0.936 date=2026-09-28
-// cl: /DNDEBUG /MD /EHsc
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Include
+// readable body of ?optimize@Path@@: game/GameEngine/Source/GameLogic/AI/AIPathfind.cpp
+
+// Path::optimize, retail 0x00401660 (669 B, ret 0xC). BFME rewrote Zero
+// Hour's optimizer: each anchor scans forward, counting steps and distance,
+// accepting a node when the pathfinder's cell test, a straight or diagonal
+// run, an already-costed intermediate node or a line-passable check lets it
+// through; layer changes past 30 units break the segment, and a crusher may
+// still pass a short gap with an unobstructed world line. The crusher bit is
+// the final template's KindOf bit 11.
 //
-// Retail 0x003E10F0: Pathfinder::buildActualPath.
-//
+// Three spellings carry the codegen: the outer loop takes the next node in
+// its condition (retail's exit blocks follow that order), count is cleared
+// before distance, and the step seed is computed after the layers are read.
+// The ground-or-bridge test is a named Bool, which keeps retail's block
+// order for the bridge-layer branch.
+
 class Object;
 class PathfindCell;
 class Path;
@@ -22,7 +33,7 @@ enum PathfindLayerEnum
 	LAYER_FIRST_BRIDGE = 16
 };
 
-struct Coord3D { float x, y, z; };
+#include "Lib/Coord3D.h"
 
 // BFME's object template keeps the override chain at +0x04 and kind-of flags
 // at +0xC8.  This is the same view used by the matched Player build-list
@@ -73,9 +84,6 @@ public:
 class Pathfinder
 {
 public:
-	Int isLinePassable(Object *obj, Int acceptableSurfaces,
-		PathfindLayerEnum layer, const Coord3D *start, const Coord3D *end,
-		Bool blocked);
 	Int bfmeCellTypeTwoWithoutFlag(const Coord3D *pos, PathfindLayerEnum layer);
 	Bool bfmeWorldLineHasNoHit(const Coord3D *start, const Coord3D *end);
 	Path *buildActualPath( const Object *obj, LocomotorSurfaceTypeMask acceptableSurfaces,
@@ -93,9 +101,36 @@ private:
 	Pathfinder *m_pathfinder;
 };
 
-extern "C" AI *TheAIParseDefinitionAI;
+extern AI *TheAI;						// 0x012EF214
 
-// upstream layout: reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/AIPathfind.h
+// The six-argument line test at 0x003EE8D0, reached through ILT 0x00014EE8.
+// Retail pushes optimize's Bool argument unconverted, while the ledger's
+// spelling of the callee takes an Int last argument (the callee forwards the
+// dword untouched); neither spelling fits the ILT window, so the call is made
+// through the thunk with the Bool view the caller compiles against.
+extern void j_00014ee8();
+
+class BfmeLinePassableView
+{
+public:
+	Int isLinePassable(Object *obj, Int acceptableSurfaces,
+		PathfindLayerEnum layer, const Coord3D *start, const Coord3D *end,
+		Bool blocked);
+};
+
+static __forceinline Int bfmeIsLinePassable(Pathfinder *pathfinder, Object *obj,
+	Int acceptableSurfaces, PathfindLayerEnum layer, const Coord3D *start,
+	const Coord3D *end, Bool blocked)
+{
+	typedef Int (BfmeLinePassableView::*Function)(Object *, Int,
+		PathfindLayerEnum, const Coord3D *, const Coord3D *, Bool);
+	union { void (*raw)(void); Function member; } fn;
+	fn.raw = j_00014ee8;
+	return (reinterpret_cast<BfmeLinePassableView *>(pathfinder)->*fn.member)(
+		obj, acceptableSurfaces, layer, start, end, blocked);
+}
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/AIPathfind.h
 class Path
 {
 public:
@@ -134,15 +169,13 @@ void Path::optimize(const Object *obj, LocomotorSurfaceTypeMask acceptableSurfac
 	Int steps;
 	Bool passable;
 
-	while (anchor)
+	while (anchor && (node = anchor->getNext()) != 0)
 	{
-		node = anchor->getNext();
-		if (!node) break;
-		steps = anchor->m_costSoFar != 0x7fffffff ? 0 : 3;
 		layer = anchor->getLayer();
 		curLayer = layer;
-		distance = 0;
+		steps = anchor->m_costSoFar != 0x7fffffff ? 0 : 3;
 		count = 0;
+		distance = 0;
 
 		while (node)
 		{
@@ -151,7 +184,7 @@ void Path::optimize(const Object *obj, LocomotorSurfaceTypeMask acceptableSurfac
 			++steps;
 			passable = false;
 
-			if ((unsigned char)TheAIParseDefinitionAI->pathfinder()->bfmeCellTypeTwoWithoutFlag(
+			if ((unsigned char)TheAI->pathfinder()->bfmeCellTypeTwoWithoutFlag(
 				node->getPosition(), layer))
 			{
 				passable = true;
@@ -191,12 +224,13 @@ void Path::optimize(const Object *obj, LocomotorSurfaceTypeMask acceptableSurfac
 
 			if (!passable)
 			{
-				if ((unsigned char)TheAIParseDefinitionAI->pathfinder()->isLinePassable(
+				if ((unsigned char)bfmeIsLinePassable(TheAI->pathfinder(),
 					(Object *)obj, acceptableSurfaces, layer,
 					anchor->getPosition(), node->getPosition(), blocked)) passable = true;
 			}
 
-			if (curLayer == LAYER_GROUND || curLayer >= LAYER_FIRST_BRIDGE)
+			Bool onGround = curLayer == LAYER_GROUND || curLayer >= LAYER_FIRST_BRIDGE;
+			if (onGround)
 			{
 				if (node->getLayer() != curLayer) {
 					layer = node->getLayer();
@@ -205,7 +239,7 @@ void Path::optimize(const Object *obj, LocomotorSurfaceTypeMask acceptableSurfac
 				if (crusher && !passable) {
 					if (IABS((Int)(node->getPosition()->y-m_pathTail->getPosition()->y)) +
 						IABS((Int)(node->getPosition()->x-m_pathTail->getPosition()->x)) < 40)
-						if (TheAIParseDefinitionAI->pathfinder()->bfmeWorldLineHasNoHit(anchor->getPosition(),node->getPosition())) passable=true;
+						if (TheAI->pathfinder()->bfmeWorldLineHasNoHit(anchor->getPosition(),node->getPosition())) passable=true;
 				}
 			} else {
 				PathNode *next=node->getNext();
