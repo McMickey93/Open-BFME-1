@@ -56,6 +56,7 @@ extern "C" void __cdecl __identifier( BFME_CLEANUP_009EDD30 )();
 	class NAME                                                                \
 	{                                                                         \
 	public:                                                                   \
+		NAME();                                                               \
 		virtual ~NAME();                                                      \
 	};                                                                        \
 	NAME::~NAME()                                                             \
@@ -81,3 +82,22 @@ BFME_VPTR_CLEANUP_DELETING_DTOR( Rva007F4900CleanupDeleting, BFME_CLEANUP_007FA6
 BFME_VPTR_CLEANUP_DELETING_DTOR( Rva007FADF0CleanupDeleting, BFME_CLEANUP_007EB6C0 )
 BFME_VPTR_CLEANUP_DELETING_DTOR( Rva007FC120CleanupDeleting, BFME_CLEANUP_007EB6C0 )
 BFME_VPTR_CLEANUP_DELETING_DTOR( Rva009EEA70CleanupDeleting, BFME_CLEANUP_009EDD30 )
+
+// The constructors of eight of these classes sit 0x10 bytes before their
+// deleting destructors: `mov eax,ecx / mov [eax],<offset vftable> / ret`,
+// storing exactly the vftable whose slot 0 is the class's own ??_G.  MSVC 7.1
+// emits those nine bytes for an empty out-of-line constructor of a class
+// whose only state is its vptr.
+#define BFME_VPTR_CLEANUP_CTOR( NAME ) \
+	NAME::NAME() \
+	{ \
+	}
+
+BFME_VPTR_CLEANUP_CTOR( Rva007E92C0CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007F0C80CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007F1DB0CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007F2650CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007F2F50CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007F37F0CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007F41E0CleanupDeleting )
+BFME_VPTR_CLEANUP_CTOR( Rva007FADF0CleanupDeleting )
