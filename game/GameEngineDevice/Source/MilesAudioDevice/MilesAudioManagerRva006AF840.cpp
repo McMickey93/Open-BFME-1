@@ -138,6 +138,9 @@ namespace rts
 typedef _STL::hash_map< AsciiString, UnicodeString, rts::hash<AsciiString>,
 	rts::equal_to<AsciiString> > Rva006AF840RealMap;
 
+// Use the separately verified retail provider; suppress this competing copy.
+namespace _STL { template <> void hashtable<pair<const AsciiString, UnicodeString>, AsciiString, rts::hash<AsciiString>, _Select1st<pair<const AsciiString, UnicodeString> >, rts::equal_to<AsciiString>, allocator<pair<const AsciiString, UnicodeString> > >::resize(unsigned int); }
+
 // Retail's global at 0x012ED5C8 is EA's GlobalData *TheWritableGlobalData, defined
 // once in Common/GlobalData.cpp. Only the field this body reads is described on a
 // TU-local view; the real class is never redeclared.
