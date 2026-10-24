@@ -775,7 +775,6 @@ int WWMemoryLogClass::Get_Free_Count()
 	return FreeCount;
 }
 
-// ?Init@WWMemoryLogClass@@SAXXZ present-unmatched
 void WWMemoryLogClass::Init()
 {
 	Get_Log()->Init();

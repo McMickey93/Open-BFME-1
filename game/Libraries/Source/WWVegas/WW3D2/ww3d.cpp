@@ -1469,7 +1469,6 @@ void WW3D::Start_Single_Frame_Movie_Capture(const char *filename_base)
  * HISTORY:                                                                                    *
  *   5/19/99    GTH : Created.                                                                 *
  *=============================================================================================*/
-// ?Capture_Next_Movie_Frame@WW3D@@ present-unmatched
 void WW3D::Capture_Next_Movie_Frame()
 {
 	RecordNextFrame = true;
@@ -1488,7 +1487,6 @@ void WW3D::Capture_Next_Movie_Frame()
  * HISTORY:                                                                                    *
  *   5/19/99    GTH : Created.                                                                 *
  *=============================================================================================*/
-// ?Pause_Movie@WW3D@@ present-unmatched
 void WW3D::Pause_Movie(bool mode)
 {
 	PauseRecord = mode;
@@ -1507,7 +1505,6 @@ void WW3D::Pause_Movie(bool mode)
  * HISTORY:                                                                                    *
  *   5/19/99    GTH : Created.                                                                 *
  *=============================================================================================*/
-// ?Is_Movie_Paused@WW3D@@ present-unmatched
 bool WW3D::Is_Movie_Paused()
 {
 	return PauseRecord;
