@@ -1,4 +1,4 @@
-// ?d_003664a0@@YAXXZ
+// ?handle@Rva003664A0Collection@@QAEXAAV?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@@Z
 // partial score=0.97 date=2026-09-20
 // cl: /EHsc /MD /O2 /GR- /EHsc- /D_STLP_USE_STATIC_LIB
 // stlport

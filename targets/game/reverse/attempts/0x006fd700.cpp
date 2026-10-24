@@ -1,4 +1,4 @@
-// ?d_006fd700@@YAXXZ
+// ?build@Rva006FD700CameraTransform@@QAEXPAVMatrix3D@@MM@Z
 // partial score=0.963740458 date=2026-09-27
 // cl: /DNDEBUG /MD /EHsc /O2 /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWDebug /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Include
 #include "camera.h"

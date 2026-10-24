@@ -1,4 +1,4 @@
-// ?d_003f7020@@YAXXZ
+// ?method@Rva003F7020@@YAHPAX@Z
 // partial score=0.9658 date=2026-10-16
 class PathfindCell;
 struct PathfindCellInfo

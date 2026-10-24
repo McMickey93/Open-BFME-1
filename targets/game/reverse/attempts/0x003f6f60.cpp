@@ -1,4 +1,4 @@
-// ?d_003f6f60@@YAXXZ
+// ?method@Rva003F6F60@@YAHPAVPathfindCellInfo@@@Z
 // partial score=0.9658 date=2026-10-12
 // Retail 0x003F6F60 (146 B): the closed-list walk of Zero Hour's
 // PathfindCell::releaseClosedList(list) with releaseInfo() inlined, over BFME

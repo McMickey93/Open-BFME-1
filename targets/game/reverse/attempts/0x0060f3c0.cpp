@@ -1,4 +1,4 @@
-// ?d_0060f3c0@@YAXXZ
+// ?playSound@BfmeLivingWorldManager@@QAEXXZ
 // partial score=0.95 date=2026-09-07
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 

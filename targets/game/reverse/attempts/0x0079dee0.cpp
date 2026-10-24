@@ -1,4 +1,4 @@
-// ?d_0079dee0@@YAXXZ
+// ?renderRadarViewBox@AptPalantir@@UAEXXZ
 // partial score=0.978 date=2026-09-28
 // ?renderRadarViewBox@AptPalantir@@UAEXXZ
 // Identity: vtable 0x01127A48 slot +0x28 routes through 0x000392D4 to 0x0079DEE0.

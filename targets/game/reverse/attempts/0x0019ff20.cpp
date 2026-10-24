@@ -1,4 +1,4 @@
-// ?d_0019ff20@@YAXXZ
+// ?rva0019FF20@Rva001A0320Owner@@QAEXXZ
 // partial score=0.9668 date=2026-09-28
 // cl: /O2 /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 // 2026-09-28 opus-5.5: early returns (if(!TheAudio) return; if(name.isEmpty()) return;) give retail's or esi,-1 CSE and 693 B;

@@ -1,4 +1,4 @@
-// ?d_004354f0@@YAXXZ
+// ??0Rva00435A40Sink@@QAE@PAVGameFont@@MMHHHH@Z
 // partial score=0.9729 date=2026-09-30
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /O2 /Ob2 /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS
 // stlport

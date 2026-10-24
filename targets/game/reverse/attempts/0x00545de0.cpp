@@ -1,4 +1,4 @@
-// ?d_00545de0@@YAXXZ
+// ?Rva00545DE0@@YAMPAHH@Z
 // partial score=0.9826 date=2026-09-28
 // cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringbaseunicode /Igame/Libraries/Source/WWVegas/WWLib /D_STLP_USE_STATIC_LIB
 // stlport
