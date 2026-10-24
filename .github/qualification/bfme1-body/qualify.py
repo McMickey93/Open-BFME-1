@@ -461,8 +461,8 @@ def main(data):
             command += ["--correct-identity", target["old_symbol"], "--identity-evidence", target["identity_evidence"]]
         run("verified-add-match-" + target["rva"], command)
     run("ordinary-scoped-build", [str(git_bash), "build.sh", body["source"]])
-    run("ledger-check", [sys.executable, "tools/check_csv.py"])
     stage_result(data, base)
+    run("ledger-check", [sys.executable, "tools/check_csv.py"])
     for refresh in range(MAX_REFRESHES + 1):
         RESULT["active_attempt"] = refresh
         verify_claims(data, "before-normal-commit")
