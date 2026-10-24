@@ -103,11 +103,17 @@ public:
 	virtual void bfmeSet996(int a, int b);
 };
 
+// ILT 0x00038163 routes to the matched range classifier at 0x007E2EB0.
+class BfmeB996Range
+{
+public:
+	char checkRange(int first, unsigned int *second, char *stop);
+};
+
 class BfmeB996
 {
 public:
 	char bfmeGo996B(int a, int b, char *c);
-	char bfmeTry996(int a, int b, char *c);
 
 	char m_bfmePad[4];
 	BfmeDev996 *m_bfmeDev;
@@ -116,7 +122,7 @@ public:
 
 char BfmeB996::bfmeGo996B(int a, int b, char *c)
 {
-	if (m_bfmeKind == 6 && bfmeTry996(a, b, c) && !*c) {
+	if (m_bfmeKind == 6 && reinterpret_cast<BfmeB996Range *>(this)->checkRange(a, (unsigned int *)b, c) && !*c) {
 		m_bfmeDev->bfmeSet996(-8, 1);
 		return 1;
 	}

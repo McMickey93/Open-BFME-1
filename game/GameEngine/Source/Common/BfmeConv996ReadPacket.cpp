@@ -25,12 +25,18 @@ void *operator new[](unsigned int size);
 void operator delete[](void *block);
 extern "C" void *memset(void *destination, int value, unsigned int size);
 
+// ILT 0x00038163 routes to the matched range classifier at 0x007E2EB0.
+class BfmeB996Range
+{
+public:
+	char checkRange(int first, unsigned int *second, char *stop);
+};
+
 class BfmeB996
 {
 public:
 	char readPacket(int **output, int *first, int *second,
 		char *stop, char flag);
-	char bfmeTry996(int first, int second, char *stop);
 
 private:
 	char m_pad[4];
@@ -50,7 +56,7 @@ char BfmeB996::readPacket(int **output, int *first, int *second,
 	char *stopPointer = stop;
 	int **outputPointer = output;
 
-	if (!reader->bfmeTry996((int)firstPointer, (int)secondPointer, stopPointer))
+	if (!reinterpret_cast<BfmeB996Range *>(reader)->checkRange((int)firstPointer, (unsigned int *)secondPointer, stopPointer))
 		return 0;
 
 	if (flag)
