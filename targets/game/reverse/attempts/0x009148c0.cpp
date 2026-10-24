@@ -1,12 +1,13 @@
 // ?rva009148C0@PointGroupClass@@QAEXPAVVector3@@PAMPAEH@Z
-// partial score=0.9911 date=2026-10-24
+// partial score=0.9925 date=2026-10-24
 // ?rva009148C0@PointGroupClass@@QAEXPAVVector3@@PAMPAEH@Z
 // cl: /O2 /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/Wwutil /Igame/Libraries/Source/WWVegas/WWDownload /Igame/Libraries/Source/Compression /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 // Ported from Open-BFME-2 Code/Libraries/Source/WWVegas/WW3D2/PointGroupClassRva0017A890.cpp
 // (commit d1720ae604, matched there for the BFME2 binary) with BFME1 include paths and
-// without /arch:SSE /G7. Against BFME1 0x009148C0 it is 9232/9232 bytes with all
-// cases exact except case 7 (QUADS_SIZE_ORIENT): its ground cursor bias is +0x14
-// (retail +0x10) and the view-transform row sums differ in operand order.
+// without /arch:SSE /G7, and BFME1's full DX8Wrapper::Get_Transform body (D3DMATRIX
+// local, device default branch). 9232/9232 bytes; every case exact except case 7,
+// where the view-transform row sums differ in operand order (69 bytes).
+// PointGroupClass vertex-location fill, retail RVA 0x0017A890 (VA 0x009148C0),
 // PointGroupClass vertex-location fill, retail RVA 0x0017A890 (VA 0x009148C0),
 // 12000 bytes including its 12-entry dispatch table. Called by the matched
 // array-update helper 0x0017F3A0 (PointGroupClassUpdateArrays00917B10.cpp),
@@ -33,21 +34,24 @@
 #include "matrix3d.h"
 struct RenderStateStruct { unsigned char opaque[0x1EC]; Matrix4 world; Matrix4 view; };
 class DX8Wrapper { public:
- static __forceinline void Get_Transform(int transform,Matrix4& matrix4) {
+ struct Rva009148C0Device { virtual long GetTransform(int transform, void *matrix); };
+ static Rva009148C0Device *_Get_D3D_Device8();
+ static unsigned number_of_DX8_calls;
+ static __forceinline void Get_Transform(int transform,Matrix4& m) {
+  struct { float e[16]; } mat;
   switch (transform) {
 	case 0x100:
-		if (render_state_changed&(1<<18)) matrix4.Make_Identity();
-		else matrix4=render_state.world.Transpose();
+		if (render_state_changed&(1<<18)) m.Make_Identity();
+		else m=render_state.world.Transpose();
 		break;
 	case 2:
-		if (render_state_changed&(1<<19)) matrix4.Make_Identity();
-		else matrix4=render_state.view.Transpose();
-		break;
-	case 3:
-		matrix4=ProjectionMatrix.Transpose();
+		if (render_state_changed&(1<<19)) m.Make_Identity();
+		else m=render_state.view.Transpose();
 		break;
 	default:
-		matrix4.Make_Identity();
+		_Get_D3D_Device8()->GetTransform(transform,&mat); number_of_DX8_calls++;
+		m=*(Matrix4*)&mat;
+		m=m.Transpose();
 		break;
   }
  }
