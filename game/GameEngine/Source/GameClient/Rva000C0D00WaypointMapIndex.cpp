@@ -12,6 +12,21 @@
 #include "Common/AsciiString.h"
 #include <map>
 
+// Retail AsciiString::compare shape (repe cmpsb over the shared prefix, then
+// the length difference), spelled as the StringBase<char> specialization: the
+// shim's inline AsciiString::compare would otherwise emit its own COMDAT under
+// the AsciiString name next to retail's 0x0005FEB0. Same spelling as
+// game/GameEngine/Source/GameNetwork/Rva00692570KeyLess.cpp.
+template <> inline int StringBase<char>::compare(const StringBase<char> &str) const
+{
+	int otherLength = str.m_data ? str.m_data->length : 0;
+	const char *otherData = str.m_data ? str.m_data->data : (const char *)"";
+	int length = m_data ? m_data->length : 0;
+	const char *data = m_data ? m_data->data : (const char *)"";
+	int result = memcmp(data, otherData, length < otherLength ? length : otherLength);
+	return result ? result : length - otherLength;
+}
+
 // Retail inlines ~AsciiString: temporaries are released by a direct call to
 // StringBase<char>::releaseBuffer (0x00887940), not the ??1AsciiString stub.
 inline AsciiString::~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
@@ -22,7 +37,8 @@ template <> struct less<AsciiString>
 {
 	bool operator()( const AsciiString &left, const AsciiString &right ) const
 	{
-		return left.compare( right ) < 0;
+		// Retail calls the out-of-line compare at 0x0005FEB0.
+		return ((const StringBase<char> &)left).compare((const StringBase<char> &)right) < 0;
 	}
 };
 }
