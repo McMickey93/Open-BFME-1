@@ -107,7 +107,7 @@ public:
  static __forceinline void Get_Render_State(RenderStateStruct& state) { state=render_state; }
  static void Draw_Triangles(unsigned short,unsigned short,unsigned short,unsigned short);
 };
-class WW3D { public: static bool IsSortingEnabled; static bool Is_Sorting_Enabled(){return IsSortingEnabled;} };
+#include "ww3d.h"
 void bfmeAccount(int,int);
 class SortingNodeStruct : public DLNodeClass<SortingNodeStruct>
 {

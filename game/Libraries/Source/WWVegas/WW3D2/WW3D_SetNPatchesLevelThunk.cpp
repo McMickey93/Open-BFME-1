@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WWDebug
 // readable body of ?Set_NPatches_Level@WW3D@@: game/Libraries/Source/WWVegas/WW3D2/ww3d.cpp
 // Open-BFME5: WW3D::Set_NPatches_Level, spelled against the retail BFME shape.
 //
@@ -29,21 +29,15 @@ extern DX8MeshRendererClass *TheDX8MeshRenderer;
 unsigned NPatchesLevel = 1;	// 0x012D6D8C, WW3D::NPatchesLevel
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2/ww3d.h
-class WW3D
-{
-public:
-	static void Set_NPatches_Level( unsigned level );
-	static bool IsSortingEnabled;
-	static void Enable_Sorting(bool enabled);
-};
+#include "ww3d.h"
 
 void WW3D::Set_NPatches_Level( unsigned level )
 {
 	if( level > 8 ) level = 8;
 	if( level < 1 ) level = 1;
-	if( NPatchesLevel == 1 && level > 1 ) TheDX8MeshRenderer->Invalidate( false );
-	if( NPatchesLevel > 1 && level == 1 ) TheDX8MeshRenderer->Invalidate( false );
-	NPatchesLevel = level;
+	if( ::NPatchesLevel == 1 && level > 1 ) TheDX8MeshRenderer->Invalidate( false );
+	if( ::NPatchesLevel > 1 && level == 1 ) TheDX8MeshRenderer->Invalidate( false );
+	::NPatchesLevel = level;
 }
 
 // ?Rva008FD4A0InvalidateRenderer@@YA_NXZ
