@@ -2026,74 +2026,6 @@ void ScriptActions::doMoveCameraAlongWaypointPath(const AsciiString& waypoint, R
 }
 
 //-------------------------------------------------------------------------------------------------
-/** doCreateObject */
-//-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doCreateObject_Thunk.cpp
-// ?doCreateObject@ScriptActions@@IAEXABVAsciiString@@00PAUCoord3D@@M@Z present-unmatched
-void ScriptActions::doCreateObject(const AsciiString& objectName, const AsciiString& thingName, const AsciiString& teamName, Coord3D *pos, Real angle )
-{
-	Object* pOldObj = NULL;
-
-	if (objectName != m_unnamedUnit) {
-		 pOldObj = TheScriptEngine->getUnitNamed(objectName);
-
-		if (pOldObj && !pOldObj->isEffectivelyDead()) {
-			AsciiString str = "WARNING - Object with name ";
-			str.concat(objectName);
-			str.concat(" already exists. Failed Create.");
-			TheScriptEngine->AppendDebugMessage(str, false);
-				// Unit by that name already exists
-			return;
-		}
-	}
-
-	Team *theTeam = TheScriptEngine->getTeamNamed( teamName );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// triggered the condition.  jba. :)
-	if (theTeam==NULL) {
-		// We may need to create the team.
-		theTeam = TheTeamFactory->createTeam( teamName );
-	}
-	if (!theTeam) {
-		TheScriptEngine->AppendDebugMessage("***WARNING - Team not found:***", false);
-		TheScriptEngine->AppendDebugMessage(teamName, true);
-		DEBUG_LOG(("WARNING - Team %s not found.\n", teamName.str()));
-		return;
-	}
-	const ThingTemplate *thingTemplate;
-	// get thing template based from map object name
-	thingTemplate = TheThingFactory->findTemplate(thingName);
-	if (thingTemplate) {
-		// create new object in the world
-		Object *obj = TheThingFactory->newObject( thingTemplate, theTeam );
-		if( obj )
-		{
-			if (objectName != m_unnamedUnit) {
-				obj->setName(objectName);
-				if (pOldObj || TheScriptEngine->didUnitExist(objectName)) {
-					TheScriptEngine->transferObjectName(objectName, obj);
-				} else {
-					TheScriptEngine->addObjectToCache(obj);
-				}
-			}
-
-			obj->setOrientation(angle);
-			obj->setPosition( pos );
-      
-      if ( obj->isKindOf( KINDOF_BLAST_CRATER ) ) // since these footprints are permanent
-      {
-        TheTerrainLogic->createCraterInTerrain( obj );
-        TheAI->pathfinder()->addObjectToPathfindMap( obj );
-      }
-
-
-		}  // end if
-	} else {
-		DEBUG_LOG(("WARNING - ThingTemplate '%s' not found.\n", thingName.str()));
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
 /** doAttack */
 //-------------------------------------------------------------------------------------------------
 // ?doAttack@ScriptActions@@IAEXABVAsciiString@@0@Z present-unmatched
@@ -2354,6 +2286,106 @@ class Bfme5WalkOwner
 public:
 	void bfmeNotifyAll( void );
 };
+
+extern void j_0002b855(void);
+extern void j_00022057(void);
+
+// retail concatenates through the ILT thunks 0x0002B855 (StringBase<char>::concat
+// of a string, body 0x00062980) and 0x00022057 (of a char pointer, body
+// 0x00061C30); both bodies carry their real names, so the call goes through the
+// thunk symbol.
+class BfmeIltConcat
+{
+public:
+	void concatString( const AsciiString &s )
+	{
+		typedef void (BfmeIltConcat::*Concat)( const AsciiString & );
+		union
+		{
+			void (*freeFunction)(void);
+			Concat memberFunction;
+		} concat;
+		concat.freeFunction = j_0002b855;
+		(this->*concat.memberFunction)(s);
+	}
+	void concatChars( const char *s )
+	{
+		typedef void (BfmeIltConcat::*Concat)( const char * );
+		union
+		{
+			void (*freeFunction)(void);
+			Concat memberFunction;
+		} concat;
+		concat.freeFunction = j_00022057;
+		(this->*concat.memberFunction)(s);
+	}
+};
+
+// 0x002F8FD0 is Zero Hour's doCreateObject in behaviour (its literals, ret 0x14,
+// and both call sites in executeAction), but retail's ILT slot for it (49345)
+// refutes ?doCreateObject@ScriptActions@@IAEXABVAsciiString@@00PAUCoord3D@@M@Z
+// and no other spelling fits, so it keeps an address-derived name.
+class Rva002F8FD0ScriptActions
+{
+public:
+	void createObject( const AsciiString& objectName, const AsciiString& thingName, const AsciiString& teamName, Coord3D *pos, Real angle );
+};
+
+void Rva002F8FD0ScriptActions::createObject(const AsciiString& objectName, const AsciiString& thingName, const AsciiString& teamName, Coord3D *pos, Real angle )
+{
+	Object* pOldObj = NULL;
+	const AsciiString &unnamedUnit = ((const BfmeScriptActionsUnitName *)this)->friend_unnamedUnit();
+
+	if (((const AsciiStringCompareShim *)&objectName)->compare(unnamedUnit) != 0) {
+		pOldObj = ((BfmeScriptEngineVtbl_6c *)TheScriptEngine)->getUnitNamedByValue(objectName);
+
+		if (pOldObj && !((BfmeCreatedObject *)pOldObj)->isEffectivelyDead()) {
+			BFMERetailAsciiString str = "WARNING - Object with name ";
+			((BfmeIltConcat *)&str)->concatString(objectName);
+			((BfmeIltConcat *)&str)->concatChars(" already exists. Failed Create.");
+			TheScriptEngine->AppendDebugMessage((const AsciiString &)str, false);
+				// Unit by that name already exists
+			return;
+		}
+	}
+
+	Team *theTeam = ((BfmeScriptEngineVtbl_44 *)TheScriptEngine)->getTeamNamed(teamName, TRUE);
+	if (theTeam == NULL) {
+		{
+			BFMERetailAsciiString str = "***WARNING - Team not found:***";
+			TheScriptEngine->AppendDebugMessage((const AsciiString &)str, false);
+		}
+		TheScriptEngine->AppendDebugMessage(teamName, true);
+		DEBUG_LOG(("WARNING - Team %s not found.\n", teamName.str()));
+		return;
+	}
+
+	const ThingTemplate *thingTemplate = ((BfmeThingFactory *)TheThingFactory)->findTemplate(thingName);
+	if (thingTemplate) {
+		// create new object in the world
+		Object *obj = ((BfmeThingFactory *)TheThingFactory)->newObject(thingTemplate, theTeam, BfmeObjectStatusMask(), 0);
+		if( obj )
+		{
+			if (((const AsciiStringCompareShim *)&objectName)->compare(unnamedUnit) != 0) {
+				BfmeObjectNameSlot *bfmeObj =
+					reinterpret_cast<BfmeObjectNameSlot *>(obj);
+				AsciiString &objName = bfmeObj->m_name;
+				objName.set(objectName);
+				if (pOldObj || ((BfmeScriptEngineVtbl_7c *)TheScriptEngine)->didUnitExist(objectName)) {
+					((BfmeScriptEngineVtbl_7c *)TheScriptEngine)->transferObjectName(objectName, obj);
+				} else {
+					((BfmeScriptEngineVtbl_7c *)TheScriptEngine)->addObjectToCache(obj);
+				}
+			}
+
+			obj->setOrientation(angle);
+			obj->setPosition( pos );
+			((Bfme5WalkOwner *)obj)->bfmeNotifyAll();
+		}  // end if
+	} else {
+		DEBUG_LOG(("WARNING - ThingTemplate '%s' not found.\n", thingName.str()));
+	}
+}
 
 void ScriptActions::createUnitOnTeamAt(const AsciiString& unitName, const AsciiString& objType,
 	const AsciiString& teamName, const AsciiString& waypoint)
