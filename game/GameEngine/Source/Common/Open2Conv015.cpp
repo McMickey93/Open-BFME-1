@@ -33,8 +33,9 @@ public:
 
 	~Open2Handle()
 	{
-		if( m_held != 0 && --m_held->m_refs <= 0 )
-			m_held->release( 1 );
+		Open2Counted *held = m_held;
+		if( held != 0 && --held->m_refs <= 0 )
+			held->release( 1 );
 	}
 
 	Open2Counted *m_held;
