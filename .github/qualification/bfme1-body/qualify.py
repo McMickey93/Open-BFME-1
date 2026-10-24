@@ -334,7 +334,10 @@ def stage_result(data, base):
     untracked = set(git("untracked-paths", "ls-files", "--others", "--exclude-standard", "-z").decode().split("\0")) - {""}
     require(not untracked, "Unexpected untracked files: " + ", ".join(sorted(untracked)))
     require(changes and changes <= allowed_result_paths(data), "Admission changed an undeclared path")
-    git("stage-explicit-paths", "add", "--", *sorted(changes))
+    unstaged = set(git("unstaged-paths", "diff", "--name-only", "-z").decode().split("\0")) - {""}
+    require(unstaged <= changes, "Unstaged changes exceed the admitted result")
+    if unstaged:
+        git("stage-explicit-paths", "add", "--", *sorted(unstaged))
     git("staged-whitespace-check", "diff", "--cached", "--check")
     require(not git("unstaged-result", "diff", "--name-only"), "Unstaged result remains")
     return changes
