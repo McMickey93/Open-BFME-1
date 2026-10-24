@@ -46,7 +46,7 @@ public:
 	{
 		return m_data ? &m_data->data[0] : "";
 	}
-	const char *reverseFind(char match) const
+	__forceinline const char *reverseFind(char match) const
 	{
 		const char *first = str();
 		const char *p = first + (m_data ? m_data->length : 0);
