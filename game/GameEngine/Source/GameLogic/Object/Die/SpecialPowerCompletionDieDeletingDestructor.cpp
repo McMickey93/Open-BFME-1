@@ -6,22 +6,28 @@
 // this 30-byte wrapper.  Retail teardown evidence includes the class's
 // complete destructor at 0x00255FD0 and nested/base teardown at 0x00255DD0.
 
-// The retail slot calls the compiler's complete-destructor ILT at 0x00033866,
-// whose object symbol is the generated placeholder name below.  Keep that
-// TU-local spelling so the relocation resolves to retail nested teardown;
-// the typedef carries the recovered class identity used by the force site.
-class Gen_dtor_00255f30
+// ILT 0x00033866 reaches the ledger-owned nested teardown at 0x00255DD0.
+class Rva00255DD0NestedDtor
 {
 public:
-	virtual ~Gen_dtor_00255f30();
-
-private:
-	friend void forceSpecialPowerCompletionDieDeletingDestructor();
+	virtual ~Rva00255DD0NestedDtor();
 };
 
-typedef Gen_dtor_00255f30 SpecialPowerCompletionDie;
+void operator delete(void *);
 
-void forceSpecialPowerCompletionDieDeletingDestructor()
+// An explicit scalar-deletion wrapper avoids emitting a second vtable for
+// the nested teardown's class. The public destructor identity remains in
+// the ledger; this source-level helper is named by its address.
+class Rva00255F30
 {
-	SpecialPowerCompletionDie value;
+public:
+	void *method(unsigned flags);
+};
+
+void *Rva00255F30::method(unsigned flags)
+{
+	((Rva00255DD0NestedDtor *)this)->Rva00255DD0NestedDtor::~Rva00255DD0NestedDtor();
+	if (flags & 1)
+		operator delete(this);
+	return this;
 }
