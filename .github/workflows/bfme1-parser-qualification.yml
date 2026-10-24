@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Open-BFME/Open-BFME-1
-          ref: 28e8691472497ca76f980f617f0b35b948fa9ee9
+          ref: e19912cf64454a8597d54741a8049cb1489709f8
           path: source
           persist-credentials: false
           # The exact outgoing range is the pinned base plus one normal commit.
