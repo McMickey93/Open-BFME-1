@@ -81,7 +81,7 @@ class SkirmishScreenState
 {
 public:
 	bool handlePlayerSelection( int index );
-	void refreshPlayerTeamControl( int index );
+	void rva005294F0( int index );
 
 private:
 	unsigned char m_vtable[ 4 ];
@@ -95,6 +95,8 @@ private:
 	GameWindow *m_playerTypeCombos[ 8 ];
 };
 
+// The dependent control helper retains its proven address-derived identity:
+// retail ILT 0x0002D38A routes to rowed rva005294F0 (0x005294F0).
 // Apply a host-selected player type, and rebuild that row when it crosses the
 // human/AI boundary because the dependent controls have different choices.
 // ?handlePlayerSelection@SkirmishScreenState@@QAE_NH@Z
@@ -132,7 +134,7 @@ bool SkirmishScreenState::handlePlayerSelection( int index )
 	if( m_owner->setPlayerState( slot, state, name ) )
 	{
 		if( slot->isAI() ^ wasAI )
-			refreshPlayerTeamControl( index );
+			rva005294F0( index );
 		m_dirty = true;
 		return true;
 	}
