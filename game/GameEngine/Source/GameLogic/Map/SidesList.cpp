@@ -2889,3 +2889,52 @@ void TeamsInfoRec::removeTeam(Int i)
 
 	--m_numTeams;
 }
+
+// BFME RVA 00194150 (ret 0x10 at +0x91, int3 from +0x94: 148 bytes). The
+// owner is a table of 32 keyed 0x1C-byte entries at +0x66C, each holding two
+// BuildListInfo vectors; side 0 or 1 picks one and the indexed record is
+// copied out through BuildListInfo::operator= (0x001927A0 via ILT 0x0000D4CC).
+// No caller, vtable slot or string names the method, so the owner keeps an
+// address-derived name.
+struct Rva00194150Entry
+{
+	Int m_key;
+	std::vector<BuildListInfo> m_range0;
+	std::vector<BuildListInfo> m_range1;
+};
+
+class Rva00194150Table
+{
+public:
+	Bool getIndexedRecord(Int key, Int index, BuildListInfo &dest, Int side) const;
+
+private:
+	unsigned char m_prefix[0x66C];
+	Rva00194150Entry m_entries[32];
+};
+
+Bool Rva00194150Table::getIndexedRecord(Int key, Int index, BuildListInfo &dest, Int side) const
+{
+	if (side != 0 && side != 1)
+		return false;
+	for (Int i = 0; i < 32; ++i)
+	{
+		if (m_entries[i].m_key == key)
+		{
+			if (side == 0)
+			{
+				if (index >= (Int)m_entries[i].m_range0.size())
+					return false;
+				dest = m_entries[i].m_range0[index];
+			}
+			else if (side == 1)
+			{
+				if (index >= (Int)m_entries[i].m_range1.size())
+					return false;
+				dest = m_entries[i].m_range1[index];
+			}
+			return true;
+		}
+	}
+	return false;
+}
