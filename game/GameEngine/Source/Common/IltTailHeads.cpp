@@ -149,8 +149,8 @@ public:
 	virtual bool slotC8( void *argument );
 };
 #undef BFME_SLOT
-class GameSpyInfo;
-extern GameSpyInfo *TheGameSpyInfo;
+class GameSpyInfoInterface;
+extern GameSpyInfoInterface *TheGameSpyInfo;
 class Rva00537A10
 {
 public:
