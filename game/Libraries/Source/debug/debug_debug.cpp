@@ -178,38 +178,8 @@ bool Debug::SkipNext(void)
   return e->status==Skip;
 }
 
-// byte-exact reconstruction: game/Libraries/Source/debug/DebugAssertBeginThunk.cpp
-// ?AssertBegin@Debug@@SAAAV1@PBDH0@Z present-unmatched
-Debug& Debug::AssertBegin(const char *file, int line, const char *expr)
-{
-  // avoid infinite recursion...
-  ++Instance.disableAssertsEtc;
-
-  // anything to flush first?
-  if (Instance.curType!=DebugIOInterface::StringType::MAX)
-    Instance.FlushOutput();
-
-  // set new output
-  __ASSERT(Instance.curFrameEntry==NULL);
-  Instance.curFrameEntry=Instance.GetFrameEntry(curStackFrame,FrameTypeAssert,file,line);
-  if (Instance.curFrameEntry->status==NoSkip)
-  {
-    Instance.StartOutput(DebugIOInterface::StringType::Assert,"%s(%i)",
-                  Instance.curFrameEntry->fileOrGroup,
-                  Instance.curFrameEntry->line);
-    ++Instance.curFrameEntry->hits;
-
-    // if there is a \code\ section in the filename truncate
-    // everything before that (including \code\)
-    const char *p=strstr(file,"\\code\\");
-    p=p?p+6:file;
-
-    Instance << "\n" << RepeatChar('=',80) << "\nAssertion failed in " << p << ", line " << line 
-             << ",\nexpression " << expr;
-  }
-
-  return Instance;
-}
+// Legacy static AssertBegin/CheckBegin/LogBegin bodies have no retail rows.
+// BFME member entry points live in their byte-verified Debug_* units.
 
 // ?AssertDone@Debug@@QAE_NXZ present-unmatched
 bool Debug::AssertDone(void)
@@ -310,38 +280,6 @@ bool Debug::AssertDone(void)
   return false;
 }
 
-// ?CheckBegin@Debug@@SAAAV1@PBDH0@Z present-unmatched
-Debug& Debug::CheckBegin(const char *file, int line, const char *expr)
-{
-  // avoid infinite recursion...
-  ++Instance.disableAssertsEtc;
-
-  // anything to flush first?
-  if (Instance.curType!=DebugIOInterface::StringType::MAX)
-    Instance.FlushOutput();
-
-  // set new output
-  __ASSERT(Instance.curFrameEntry==NULL);
-  Instance.curFrameEntry=Instance.GetFrameEntry(curStackFrame,FrameTypeCheck,file,line);
-  if (Instance.curFrameEntry->status==NoSkip)
-  {
-    ++Instance.curFrameEntry->hits;
-    Instance.StartOutput(DebugIOInterface::StringType::Check,"%s(%i)",
-                  Instance.curFrameEntry->fileOrGroup,
-                  Instance.curFrameEntry->line);
-
-    // if there is a \code\ section in the filename truncate
-    // everything before that (including \code\)
-    const char *p=strstr(file,"\\code\\");
-    p=p?p+6:file;
-
-    Instance << "\n" << RepeatChar('=',80) << "\nCheck failed in " << p << ", line " << line 
-             << ",\nexpression " << expr;
-  }
-
-  return Instance;
-}
-
 // ?CheckDone@Debug@@QAE_NXZ present-unmatched
 bool Debug::CheckDone(void)
 {
@@ -395,40 +333,6 @@ bool Debug::CheckDone(void)
   return false;
 }
 
-// ?LogBegin@Debug@@SAAAV1@PBD@Z present-unmatched
-Debug& Debug::LogBegin(const char *fileOrGroup)
-{
-  // avoid infinite recursion...
-  ++Instance.disableAssertsEtc;
-
-  // anything to flush first?
-  if (Instance.curType!=DebugIOInterface::StringType::MAX&&
-      Instance.curType!=DebugIOInterface::StringType::Log)
-    Instance.FlushOutput();
-
-  // set new output
-  __ASSERT(Instance.curFrameEntry==NULL);
-  Instance.curFrameEntry=Instance.GetFrameEntry(curStackFrame,FrameTypeLog,fileOrGroup,0);
-  if (Instance.curFrameEntry->status==NoSkip)
-  {
-    ++Instance.curFrameEntry->hits;
-
-    // we're doing all this extra work so that DLOGs can be spread across
-    // multiple calls
-    if (Instance.curType==DebugIOInterface::StringType::Log&&
-        strcmp(Instance.curSource,Instance.curFrameEntry->fileOrGroup))
-      Instance.FlushOutput();
-
-    if (Instance.curType!=DebugIOInterface::StringType::Log)
-      Instance.StartOutput(DebugIOInterface::StringType::Log,"%s",
-                    Instance.curFrameEntry->fileOrGroup);
-  }
-  else if (Instance.curType!=DebugIOInterface::StringType::MAX)
-    Instance.FlushOutput();
-  
-  return Instance;
-}
-
 // ?LogDone@Debug@@QAE_NXZ present-unmatched
 bool Debug::LogDone(void)
 {
@@ -440,7 +344,7 @@ bool Debug::LogDone(void)
   return false;
 }
 
-// ?CrashBegin@Debug@@SAAAV1@PBDH@Z present-unmatched
+// The legacy static crash entry retains a rowed RepeatChar emitter.
 Debug& Debug::CrashBegin(const char *file, int line)
 {
   // avoid infinite recursion...
@@ -452,7 +356,14 @@ Debug& Debug::CrashBegin(const char *file, int line)
 
   // set new output
   __ASSERT(Instance.curFrameEntry==NULL);
-  Instance.curFrameEntry=Instance.GetFrameEntry(curStackFrame,FrameTypeAssert,file,line);
+  // Keep this legacy body's RepeatChar constructor emitter, which has a
+  // retail row, without emitting a conflicting GetFrameEntry COMDAT.
+  FrameHashEntry *entry=Instance.LookupFrame(curStackFrame);
+  if (!entry)
+    entry=Instance.AddFrameEntry(curStackFrame,FrameTypeAssert,file,line);
+  if (entry->status==Unknown)
+    Instance.UpdateFrameStatus(*entry);
+  Instance.curFrameEntry=entry;
   if (Instance.curFrameEntry->status==NoSkip)
   {
     Instance.StartOutput(DebugIOInterface::StringType::Crash,"%s(%i)",file,line);
@@ -473,6 +384,7 @@ Debug& Debug::CrashBegin(const char *file, int line)
 
   return Instance;
 }
+
 
 // NOTE ?CrashDone@Debug@@QAE_N_N@Z matched 1353 bytes (Open-BFME5)
 __declspec(naked) bool Debug::CrashDone(bool)
