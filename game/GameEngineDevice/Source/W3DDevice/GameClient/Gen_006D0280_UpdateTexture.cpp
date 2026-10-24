@@ -42,7 +42,6 @@ private:
 class AsciiString
 {
 public:
-	void set(const AsciiString &other) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&other); }
 	int compare(const AsciiString &other) const;
 	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 
@@ -95,13 +94,13 @@ void Gen006D0280Owner::updateTexture(AsciiString textureName)
 	if (textureName.m_data == 0 ||
 		*(unsigned short *)((char *)textureName.m_data + 4) == 0)
 	{
-		textureName.set(m_defaultTextureName);
+		((StringBase<char> *)&textureName)->set(*(const StringBase<char> *)&m_defaultTextureName);
 	}
 
 	AsciiString *name = &m_textureName;
 	if (textureName.compare(*name) != 0)
 	{
-		name->set(textureName);
+		((StringBase<char> *)name)->set(*(const StringBase<char> *)&textureName);
 
 		const char *text;
 		if (name->m_data)
