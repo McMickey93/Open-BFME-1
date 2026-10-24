@@ -1050,4 +1050,3 @@ dir32,0x0134FBA8,__commode,"nothing in the ledger owns 0x0134FBA8. Give the datu
 dir32,0x0134FBAC,__fmode,"nothing in the ledger owns 0x0134FBAC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x013571F8,__adjust_fdiv,"nothing in the ledger owns 0x013571F8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 tail,0x00C23607,?dup_00C23607@@YAXXZ,"compiled=32 ledger=24 tail=8: 3 byte(s) differ from retail, first +24"
-genalias,0x003AA640,??$__uninitialized_copy@PBVW3DAnimationInfo@@PAV1@@_STL@@YAPAVW3DAnimationInfo@@PBV1@0PAV1@ABU__false_type@0@@Z,masked call is not a retail twin; fix the callee or drop the gen-alias note
