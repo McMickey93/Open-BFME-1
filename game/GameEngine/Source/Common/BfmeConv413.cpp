@@ -1,6 +1,13 @@
 // Retail VA 0x01073734 is Gdiplus::Bitmap's vtable, emitted by the existing
 // ATL image TUs; its deleting-destructor slot routes to 0x0005E110.
-extern "C" unsigned char __identifier("bfmeVftAPA")[];
+// Retail table at VA 0x01073734: 2 slots, ending before 0x0107373C.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern "C" void __identifier("?j_00012aee@@YAXXZ")();
+extern "C" void __identifier("?j_0000e97b@@YAXXZ")();
+extern "C" void *bfmeVftAPA[] = {
+    reinterpret_cast<void *>(&__identifier("?j_00012aee@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0000e97b@@YAXXZ")),
+};
 
 namespace Gdiplus { class GpBitmap; }
 // Existing import-stub owners: GdipCreateBitmapFromFileICM and
@@ -22,7 +29,7 @@ public:
 
 BfmeThingAPA *BfmeThingAPA::bfmeInitAPA(void *one, void *two)
 {
-	m_bfmeVft = __identifier("bfmeVftAPA");
+	m_bfmeVft = bfmeVftAPA;
 	Gdiplus::GpBitmap *got = 0;
 	if (two != 0)
 	{
@@ -40,7 +47,7 @@ BfmeThingAPA *BfmeThingAPA::bfmeInitAPA(void *one, void *two)
 // ?bfmeInitScan0APA@BfmeThingAPA@@QAEPAV1@PAX0000@Z
 BfmeThingAPA *BfmeThingAPA::bfmeInitScan0APA(void *width, void *height, void *stride, void *format, void *scan0)
 {
-	m_bfmeVft = __identifier("bfmeVftAPA");
+	m_bfmeVft = bfmeVftAPA;
 	int got = 0;
 	m_bfmeWhat = GdipCreateBitmapFromScan0(width, height, stride, format, scan0, &got);
 	m_bfmeGot = got;
