@@ -32,7 +32,8 @@ public:
 	char bfmeRunESM(BfmeCoordESM coord, float *out);
 };
 
-extern BfmeHostESM *g_bfmeStateDF;
+class Rva006092D0State;
+extern Rva006092D0State *g_rva012F7048LivingWorld;
 
 // class-gate: allow Coord3D the by-value argument needs a user copy constructor and an empty destructor for retail's saved-esp slot; the canonical Lib struct has neither
 struct Coord3D
@@ -84,7 +85,7 @@ void Gen003BDE80Element::rva003A44A0(bool flag)
 {
 	float height;
 	if (flag)
-		g_bfmeStateDF->bfmeRunESM(BfmeCoordESM(m_pos0C), &height);
+		reinterpret_cast<BfmeHostESM *>(g_rva012F7048LivingWorld)->bfmeRunESM(BfmeCoordESM(m_pos0C), &height);
 	for (unsigned int i = 0; i < m_items48.size(); ++i) {
 		if (flag) {
 			Coord3D pos;
