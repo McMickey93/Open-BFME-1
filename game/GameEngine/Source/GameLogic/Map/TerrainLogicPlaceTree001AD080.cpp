@@ -1,7 +1,15 @@
 // ?placeAt001AD080@Rva001AD080TerrainLogic@@QAEXPBVThingTemplate@@PBUCoord3D@@PBVMatrix3D@@M@Z
-// partial score=0.9714 date=2026-10-13
 // cl: /DNDEBUG /MD /EHsc- /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
+//
+// Open-BFME: retail 0x001AD080 (594B, ret 0x10 at +0x24F, int3 from +0x252).
+// Reached from 0x0038C1E0 (Rva0038C1E0UnitTimings::unitTimings). It places a
+// tree: it records the frame, finds the template's draw-module resource
+// (reporting "Tree <name> requires a W3DTreeDrawModule." when there is none),
+// buckets a new record by position and hands the drawable to the terrain
+// visual. Owner and method keep address-derived names. Passing the two
+// template strings straight into the visual call (not through reference
+// locals) gives retail's argument-load schedule.
 
 #include <vector>
 
@@ -14,6 +22,7 @@ typedef bool Bool;
 typedef float Real;
 enum DrawableID { INVALID_DRAWABLE_ID = 0 };
 
+// class-gate: allow Coord3D BFME's user copy constructor and destructor, absent from the canonical header, give the by-value position argument retail's copy and saved-ESP store
 struct Coord3D
 {
 	Real x;
@@ -47,12 +56,20 @@ struct Rva001AD080Entry
 	char pad0c[8];
 };
 
+// The module list at ThingTemplate+0x2A0: its first two words are the
+// begin and end of the entry vector this body walks.
+struct Rva001AD080ModuleInfo
+{
+	Rva001AD080Entry *m_begin;
+	Rva001AD080Entry *m_end;
+};
+
 class ThingTemplate
 {
 public:
- int count001AD080() const {return int(m_end-m_begin);}
+ int count001AD080() const {return int(m_drawModuleInfo.m_end-m_drawModuleInfo.m_begin);}
  Rva001AD080Resource *resource001AD080(unsigned int i)const {
-  if(i < (unsigned int)count001AD080()) return m_begin[i].resource;
+  if(i < (unsigned int)count001AD080()) return m_drawModuleInfo.m_begin[i].resource;
   return 0;
  }
 
@@ -72,12 +89,11 @@ private:
 	char m_pad50[0x2a0 - 0x50];
 
 public:
-	Rva001AD080Entry *m_begin;
-	Rva001AD080Entry *m_end;
+	Rva001AD080ModuleInfo m_drawModuleInfo;
 	char m_pad2a8[0x46c - 0x2a8];
 	Int m_field46c;
 	char m_pad470[0x482 - 0x470];
-	UnsignedShort m_field482;
+	UnsignedShort m_shadowType;
 	char m_pad484[0x48b - 0x484];
 	unsigned char m_field48b;
 	unsigned char m_field48c;
@@ -155,13 +171,13 @@ public:
 
 extern "C" Rva001AD080TerrainVisual *g_bfmeTerrainVisual;
 
-class Rva001AD080Record
+class Rva001A5A60Record
 {
 public:
- Rva001AD080Record(const Coord3D &pos,int id,int value,const ThingTemplate *templ,int limit,unsigned char flag2c,unsigned char flag2d,unsigned short old)
+ Rva001A5A60Record(const Coord3D &pos,int id,int value,const ThingTemplate *templ,int limit,unsigned char flag2c,unsigned char flag2d,unsigned short old)
  :m_field00(pos.x),m_field04(pos.y),m_field08(pos.z),m_field0c(id),m_field10(value),m_field14((int)templ),m_field18(0),m_field28(limit),m_field2c(flag2c),m_field2d(flag2d),m_field2e(old) {}
 
-	Rva001AD080Record(const Rva001AD080Record &other) throw();
+	Rva001A5A60Record(const Rva001A5A60Record &other) throw();
 
 	Real m_field00;
 	Real m_field04;
@@ -213,7 +229,7 @@ private:
 	char m_pad00[0x3c];
 	UnsignedInt m_value3c;
 	char m_pad40[0x51c];
-	std::vector<Rva001AD080Record> m_records;
+	std::vector<Rva001A5A60Record> m_records;
 	short m_words[2500];
 	UnsignedInt m_value18f0;
 
@@ -263,11 +279,9 @@ void Rva001AD080TerrainLogic::placeAt001AD080(const ThingTemplate *thingTemplate
 	++m_value3c;
 	unsigned char f2d = templatePtr->m_field48c;
 	unsigned char f2c = templatePtr->m_field48b;
-	Rva001AD080Record record(*position,id,oldValue,templatePtr,limit,f2c,f2d,oldWord);
+	Rva001A5A60Record record(*position,id,oldValue,templatePtr,limit,f2c,f2d,oldWord);
 	m_records.push_back(record);
-	Int shadowType = templatePtr->m_field482;
-	const AsciiString &nameString = templatePtr->m_nameString;
-	const AsciiString &shadowTextureName = templatePtr->m_shadowTextureName;
+	Int shadowType = templatePtr->m_shadowType;
 	g_bfmeTerrainVisual->slot33(id, *position, extra, matrix, 0, found,
-		shadowType, shadowTextureName, nameString);
+		shadowType, templatePtr->m_shadowTextureName, templatePtr->m_nameString);
 }
