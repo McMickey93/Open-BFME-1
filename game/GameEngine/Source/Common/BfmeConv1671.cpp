@@ -1,4 +1,4 @@
-extern "C" __declspec(dllimport) int __cdecl bfmeCheckEQH(void *buffer, void *what, void **out);
+extern "C" __declspec(dllimport) int __cdecl vsprintf(void *buffer, void *what, void **out);
 extern "C" unsigned char g_bfmeBufferEQH[];
 
 struct BfmeSinkEQH
@@ -10,6 +10,6 @@ struct BfmeSinkEQH
 
 void __cdecl bfmeReportEQH(BfmeSinkEQH *sink, void *what, void *out)
 {
-	if (bfmeCheckEQH(g_bfmeBufferEQH, what, &out) >= 0)
+	if (vsprintf(g_bfmeBufferEQH, what, &out) >= 0)
 		sink->bfmeSendEQH(g_bfmeBufferEQH);
 }
