@@ -29,14 +29,23 @@ such TU is fixed in this lane. A TU that merely references a dir32 VA it does
 not define (callers through pins, vtable installers, float tables) keeps its
 source: the name it uses is the link-visible one and agrees with the object.
 
-NOT WIRED into .githooks/pre-commit or identity_guard: a fail-if-any gate would
-go red fleet-wide until every hit lands, and a count baseline would record
-today's debt as tomorrow's allowance. Run it per repair seat instead.
+The full scan is not a gate: a fail-if-any gate would go red fleet-wide until
+every hit lands, and a count baseline would record today's debt as tomorrow's
+allowance. The hooks judge only what a change ADDS (--staged, --range): a
+(identifier, VA) hit that the changed file did not already carry, against the
+base side's dir32_addresses.csv, so recording the invented name in the same
+commit does not admit it. `static` definitions are not judged (the linker never
+sees them). Existing hits stay listed for the repair seat.
 
-  python3 tools/duplicate_global.py
+  python3 tools/duplicate_global.py                 # every hit (repair seat)
+  python3 tools/duplicate_global.py --staged        # pre-commit: index vs HEAD
+  python3 tools/duplicate_global.py --range OLD NEW # pre-push
 """
+import argparse
 import csv
+import io
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -60,10 +69,11 @@ SKIP_DIRS = ("game/gen_small/", "game/gen_asm/", "game/masm_dumps/")
 SKIP_RECS = ("??_7", "__real@")
 
 
-def load_dir32():
-    """VA int -> [names] from dir32_addresses.csv."""
+def load_dir32(text=None):
+    """VA int -> [names] from dir32_addresses.csv (or its `text`)."""
     by_va = {}
-    with DIR32.open(newline="") as handle:
+    handle = io.StringIO(text) if text is not None else DIR32.open(newline="")
+    with handle:
         for row in csv.DictReader(handle):
             by_va.setdefault(int(row["va"], 16), []).append(row["name"])
     return by_va
@@ -76,16 +86,24 @@ def strip_comment(line):
 def scan_file(path, by_va):
     """[(lineno, identifier, token, va, recorded)] candidates in one source."""
     rel = path.relative_to(ROOT).as_posix()
-    if rel.startswith(SKIP_DIRS):
-        return []
-    hits = []
     try:
         text = path.read_text(encoding="utf-8", errors="replace")
     except OSError:
-        return hits
+        return []
+    return scan_text(rel, text, by_va)
+
+
+def scan_text(rel, text, by_va, skip_static=False):
+    """scan_file over `text` as the source `rel`."""
+    if rel.startswith(SKIP_DIRS):
+        return []
+    hits = []
     depth = 0
     for lineno, raw in enumerate(text.splitlines(), start=1):
         line = strip_comment(raw)
+        if skip_static and line.lstrip().startswith("static"):
+            depth += line.count("{") - line.count("}")
+            continue
         if depth == 0 and "extern" not in line and "return" not in line:
             for match in IDENT.finditer(line):
                 ident = match.group(0)
@@ -154,7 +172,67 @@ def confirmed(path, ident):
     return False
 
 
+def git(*args):
+    """stdout of a git command in ROOT, or None when it fails."""
+    out = subprocess.run(["git", *args], cwd=ROOT, capture_output=True)
+    return out.stdout.decode("utf-8", errors="replace") if out.returncode == 0 else None
+
+
+def show(rev, path):
+    """`path` at `rev` (":" is the index), or "" where it does not exist."""
+    spec = f":{path}" if rev == ":" else f"{rev}:{path}"
+    return git("show", spec) or ""
+
+
+def changed_sources(base, head):
+    """game/ C and C++ sources added or modified from `base` to `head` (":" = index)."""
+    args = ["diff", "--name-only", "--diff-filter=ACMR"]
+    args += ["--cached", base] if head == ":" else [base, head]
+    out = git(*args, "--", "game/") or ""
+    return [p for p in out.splitlines() if p.endswith((".cpp", ".c")) and not p.startswith(SKIP_DIRS)]
+
+
+def added_hits(base, head):
+    """[(path, lineno, identifier, va, recorded)] hits in `head` that `base` lacks.
+
+    Recorded names come from base's dir32_addresses.csv: the change cannot
+    admit its own invented global by recording it."""
+    paths = changed_sources(base, head)
+    if not paths:
+        return []
+    by_va = load_dir32(show(base, DIR32.relative_to(ROOT).as_posix()) or "name,va\n")
+    out = []
+    for path in paths:
+        old = {(h[1], h[3]) for h in scan_text(path, show(base, path), by_va, skip_static=True)}
+        for lineno, ident, _token, va, names in scan_text(path, show(head, path), by_va,
+                                                          skip_static=True):
+            if (ident, va) not in old:
+                out.append((path, lineno, ident, va, names))
+    return out
+
+
+def gate(base, head):
+    hits = added_hits(base, head)
+    for path, lineno, ident, va, names in hits:
+        print(f"{path}:{lineno}: defines {ident} at 0x{va:08X}, which "
+              f"{DIR32.relative_to(ROOT).as_posix()} records as {', '.join(names[:3])}"
+              f"{' ...' if len(names) > 3 else ''}", file=sys.stderr)
+    if hits:
+        print("duplicate_global: the link would carry a second object at a retail address that "
+              "already has a name. Declare the recorded global (extern) and use it, or cast it "
+              "to your view; do not define an invented one.", file=sys.stderr)
+    return 1 if hits else 0
+
+
 def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--staged", action="store_true", help="judge what the index adds to HEAD")
+    ap.add_argument("--range", nargs=2, metavar=("OLD", "NEW"), help="judge what NEW adds to OLD")
+    args = ap.parse_args()
+    if args.staged:
+        return gate("HEAD", ":")
+    if args.range:
+        return gate(*args.range)
     by_va = load_dir32()
     sources = sorted(GAME.rglob("*.cpp")) + sorted(GAME.rglob("*.c"))
     dirty, clean, unbuilt = 0, 0, 0
