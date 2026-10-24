@@ -56,7 +56,7 @@ extern const float g_bfmeK1266B;
 extern const float g_01076C24;
 extern const float g_bfmeDisplayTwoPi;
 
-extern "C" __declspec(dllimport) double __cdecl bfmeMathVE(double value);
+extern "C" __declspec(dllimport) double __cdecl ceil(double value);
 extern "C" double __cdecl sin(double value);
 extern "C" double __cdecl cos(double value);
 #pragma intrinsic(sin, cos)
@@ -91,7 +91,7 @@ void W3DDisplay::drawRemainingRectClock(float startX, float startY, float width,
 	float maxHalf = (halfWidth > halfHeight) ? halfWidth : halfHeight;
 	float countValue = maxHalf;
 	countValue *= fraction;
-	float countAsFloat = (float)bfmeMathVE((double)(countValue * g_bfmeK1266B));
+	float countAsFloat = (float)ceil((double)(countValue * g_bfmeK1266B));
 	int count = floatToLong(countAsFloat);
 	float angleStep = angleRange / (float)count;
 	float angle = 0.0f;
