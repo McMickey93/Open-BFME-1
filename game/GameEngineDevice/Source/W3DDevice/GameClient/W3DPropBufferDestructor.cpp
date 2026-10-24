@@ -32,6 +32,9 @@ private:
 };
 
 // BFME array entries: 0x30-byte props and 0x18-byte prop types.
+// ??0TProp@@QAE@XZ -- the empty element ctor the W3DPropBuffer constructor
+// pushes to the EH vector constructor iterator for m_props (retail 0x00702610
+// through ILT 0x00004660).
 struct TProp
 {
 	TProp() {}

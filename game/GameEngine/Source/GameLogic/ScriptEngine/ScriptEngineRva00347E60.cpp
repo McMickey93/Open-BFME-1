@@ -69,7 +69,12 @@ private:
 	char m_data[124];
 };
 
+// ??0ActionTemplate@@QAE@XZ -- the implicit element ctor the ScriptEngine
+// constructor pushes to the EH vector constructor iterator for
+// m_actionTemplates (retail 0x0033B090 through ILT 0x000030F8).
 class ConditionTemplate : public Template {};
+// ??1ConditionTemplate@@QAE@XZ -- the implicit element destructor pushed with
+// it (retail 0x00339590 through ILT 0x0001053C, tail-jumping ??1Template).
 class ActionTemplate : public Template {};
 
 class AttackPriorityInfo
