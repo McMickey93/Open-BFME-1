@@ -49,3 +49,15 @@ void Rva00C6C7E0()
 {
 	g_Va0130A454 = 0x3D088889;
 }
+
+// 0x00C6AA40: CRT startup-table entry at RVA 0x00EA565C publishes the
+// static holder at VA 0x012A7A4C through the canonical map-list pointer.
+// See identity_evidence/012ed5dc-object-pointer.md for the independently
+// decoded writer and readers. RET+0x0A / INT3+0x0B prove the 11-byte extent.
+class BfmeMapObjectListHolder;
+extern BfmeMapObjectListHolder *BfmeTheMapObjectListHolder;
+extern BfmeMapObjectListHolder g_Va012A7A4C;
+void Rva00C6AA40()
+{
+	BfmeTheMapObjectListHolder = &g_Va012A7A4C;
+}
