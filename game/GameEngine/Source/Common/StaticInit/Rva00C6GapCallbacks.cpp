@@ -1,6 +1,7 @@
 // cl: /O2 /MD /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 #include "ascii_string.h"
+#include "unicode_string.h"
 
 // Retail CRT cleanup callbacks. The initializers at 00C6A8F0 and 00C6A910
 // register these exact entry points, and their globals occupy 012ED4EC/F0.
@@ -41,4 +42,15 @@ extern Rva000782A0 g_rva012F15CC;
 void Rva00C70040Release()
 {
     g_rva012F15CC.invoke();
+}
+
+// Registered by the push at RVA 0x0048DE57, followed by the zero store
+// constructing this UnicodeString and the atexit call at 0x0048DE6C.
+// The callback jumps via ILT 0x0003B304 to its existing destructor;
+// INT3 starts at 0x00C700FA, immediately after the 10-byte body.
+extern UnicodeString g_rva012F3348;
+
+void Rva00C700F0Release()
+{
+    g_rva012F3348.~UnicodeString();
 }
