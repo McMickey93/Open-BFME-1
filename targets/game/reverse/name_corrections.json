@@ -21041,4 +21041,26 @@
   "evidence": "targets/game/reverse/identity_evidence/2026-10-23-00100570-geometryrecord-vector-clear.md",
   "reason": "The generated row named a clear over the placeholder element Gen_t_000ff890_p16cd; ilt_oracle contradicts the GeometryRecord spelling for this clear and for its erase callee, so the proven body keeps the opaque dup_ name with object-symbol= the emitted clear."
  }
+,
+ {
+ "old_path": "targets/game/reverse/attempts/0x004ecd10.cpp",
+ "new_path": "game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/Rva004ECD10BuddyMessageNotify.cpp",
+ "old_name": "showNotificationBox",
+ "new_name": "Rva004EBA70NotificationDispatch",
+ "before_sha256": "e75de2cd8c421b93b66fb8398dcfe9aeab9674f528a89502c0d1d0d1cfd0ed91",
+ "after_sha256": "7b90e6361f2ef68e7c1839761abb72584cb27e9c892d7c7c719cf8742dfc0f47",
+ "evidence": "targets/game/reverse/identity_evidence/004ecd10-buddy-message-notification.md",
+ "reason": "False pairing across a deleted stash: the banked attempts copy carried the refuted lift name showNotificationBox and the new TU merely declares the independently matched Rva004EBA70NotificationDispatch at 0x004EBA70; the body at 0x004ECD10 is reconstructed under Rva004ECD10BuddyMessageNotify per the cited identity evidence."
+}
+,
+ {
+ "old_path": "targets/game/reverse/functions.csv",
+ "new_path": "targets/game/reverse/functions.csv",
+ "old_name": "showNotificationBox",
+ "new_name": "Rva004ECD10BuddyMessageNotify",
+ "before_sha256": "37aafcdf045bf5a443ab464eb13bca742af9658371f2cd64ab5105f6630994b7",
+ "after_sha256": "7bf566a3d369e4e991eeadc421d276fa0f45167e8c948fa85b91ef829804bf51",
+ "evidence": "targets/game/reverse/identity_evidence/004ecd10-buddy-message-notification.md",
+ "reason": "Identity correction, not a rename: the lift's ?showNotificationBox@@YAXVAsciiString@@VUnicodeString@@@Z signature is refuted by four matched callers that build a 24-byte by-value BuddyMessage; no retail evidence names 0x004ECD10, so the corrected row keeps the address token as Rva004ECD10BuddyMessageNotify."
+}
 ]

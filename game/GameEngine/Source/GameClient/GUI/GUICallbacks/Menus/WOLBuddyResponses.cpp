@@ -307,9 +307,10 @@ class Rva004EE060Tree
 	unsigned int erase(const int &key);
 };
 void addBuddyMessage(const BuddyMessage &);
-// Existing address-bearing symbol: the old row's two-string signature is
-// stale. The full body consumes and destroys a 24-byte BuddyMessage by value.
-extern "C" void bfme_showNotificationBox_4ECD10(BuddyMessage);
+// The buddy-message notification path at 0x004ECD10, reconstructed in
+// Rva004ECD10BuddyMessageNotify.cpp: the full body consumes and destroys a
+// 24-byte BuddyMessage by value.
+void Rva004ECD10BuddyMessageNotify(BuddyMessage);
 void updateBuddyInfo();
 void PopulateLobbyPlayerListbox();
 void RefreshGameListBoxes();
@@ -425,7 +426,7 @@ void HandleBuddyResponses(void)
 				message.m_senderNick = nick;
 				addBuddyMessage(message);
 
-				bfme_showNotificationBox_4ECD10(message);
+				Rva004ECD10BuddyMessageNotify(message);
 			}
 			break;
 			case BuddyResponse::BUDDYRESPONSE_REQUEST: {
@@ -470,7 +471,7 @@ void HandleBuddyResponses(void)
 				message.m_message = TheGameText->fetch("Buddy:AddNotification");
 				message.m_message.format(message.m_message, message.m_senderNick.str());
 				addBuddyMessage(message);
-				bfme_showNotificationBox_4ECD10(message);
+				Rva004ECD10BuddyMessageNotify(message);
 			}
 			break;
 			case BuddyResponse::BUDDYRESPONSE_STATUS: {
@@ -531,7 +532,7 @@ void HandleBuddyResponses(void)
 					message.m_message = TheGameText->fetch(marker);
 					message.m_message.format(message.m_message, message.m_senderNick.str());
 					addBuddyMessage(message);
-					bfme_showNotificationBox_4ECD10(message);
+					Rva004ECD10BuddyMessageNotify(message);
 				}
 				else if (newStatus == GP_RECV_GAME_INVITE && !seenPreviously)
 				{
@@ -542,7 +543,7 @@ void HandleBuddyResponses(void)
 					message.m_message = TheGameText->fetch("Buddy:OnlineNotification");
 					message.m_message.format(message.m_message, message.m_senderNick.str());
 					addBuddyMessage(message);
-					bfme_showNotificationBox_4ECD10(message);
+					Rva004ECD10BuddyMessageNotify(message);
 				}
 			}
 			break;

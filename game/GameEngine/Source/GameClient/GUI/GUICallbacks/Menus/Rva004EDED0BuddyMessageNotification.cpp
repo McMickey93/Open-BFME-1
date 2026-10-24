@@ -64,7 +64,7 @@ public:
 	virtual BuddyMessageList *getBuddyMessages() = 0;
 };
 
-extern "C" void bfme_showNotificationBox_4ECD10(BuddyMessage message);
+extern void Rva004ECD10BuddyMessageNotify(BuddyMessage message);
 
 void Rva004EDED0BuddyMessageNotification(void)
 {
@@ -74,6 +74,6 @@ void Rva004EDED0BuddyMessageNotification(void)
 		mIt != messages->end(); ++mIt)
 	{
 		BuddyMessage message = *mIt;
-		bfme_showNotificationBox_4ECD10(message);
+		Rva004ECD10BuddyMessageNotify(message);
 	}
 }
