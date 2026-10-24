@@ -32,18 +32,9 @@
 #include "Common/Debug.h"
 #include "Common/GameType.h"	// TimeOfDay, for the BFME Display shim
 #include "GameClient/Display.h"
-// BFME's Mouse is 0x10 bytes longer than inputs/reference/shims/mouselayout models it.
-// DirectInputMouse derives from Mouse directly and never sees Win32Mouse, yet
-// openMouse @0x6BB6C9 reads m_pDirectInput at +0x4E14 and getMouseEvent
-// @0x6BBC28 reads m_pMouseDevice at +0x4E18 - so sizeof(Mouse) is 0x4E14 on its
-// own, and the 0x10 the shim parks at the front of Win32Mouse is really Mouse's
-// tail. Moving it there is the true fix and is byte-neutral for W3DMouse.cpp
-// (the total stays 0x368, so no Win32Mouse offset changes), but editing a shim
-// forces the full gate, which is currently red on eight pre-existing DIR32
-// inconsistencies that have nothing to do with this file. So the same 0x10 is
-// modelled here instead, ahead of DirectInputMouse's own members, which lands
-// them on the retail offsets. Nothing outside this translation unit names
-// DirectInputMouse.
+// BFME's Mouse is 0x4E14 bytes (inputs/reference/shims/mouselayout models its
+// tail): openMouse @0x6BB6C9 reads m_pDirectInput at +0x4E14 and getMouseEvent
+// @0x6BBC28 reads m_pMouseDevice at +0x4E18.
 #define __WIN32DIMOUSE_H_
 #ifndef DIRECTINPUT_VERSION
 #	define DIRECTINPUT_VERSION	0x800
@@ -116,8 +107,6 @@ protected:
 	void closeMouse( void );  ///< close and release mouse resources
 	/// map direct input mouse data to our own format
 	void mapDirectInputMouse( MouseIO *mouse, DIDEVICEOBJECTDATA *mdat );
-
-	char _bfme_mouse_tail[ 0x10 ];  ///< Mouse's, not ours; see above
 
 	// internal data members for our direct input mouse
 	LPDIRECTINPUT8 m_pDirectInput;  ///< pointer to direct input interface

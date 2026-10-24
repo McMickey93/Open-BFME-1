@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/ini /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/debug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/mouselayout /Iinputs/reference/shims/ini /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/debug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main
 // stlport
 #define Matrix4x4 Matrix4  // BFME renamed it
 #define __PLACEMENT_VEC_NEW_INLINE  // always.h/GameMemory.h define array placement-new themselves
@@ -467,7 +467,6 @@ CursorInfo::CursorInfo( void )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-// ??0Mouse@@ present-unmatched
 Mouse::Mouse( void )
 {
 	// device info
@@ -482,10 +481,17 @@ Mouse::Mouse( void )
 	m_dragToleranceMS = 0;
 	//
 	
+	m_bfmeFlag4DA3 = FALSE;
+	m_bfmeFlag4DA4 = FALSE;
+	m_bfmeFlag4DA5 = FALSE;
+
 	//m_tooltipString.clear();	// redundant
 	m_displayTooltip = FALSE;
+	m_bfmeString1100.clear();
+	m_bfmeString1104.clear();
 	m_tooltipDisplayString = NULL;
   m_tooltipDelay = -1;  // default value
+	m_bfmeFlag108C = FALSE;
 	// initialize all the mouse io data
 	memset( m_mouseEvents, 0, sizeof( m_mouseEvents ) );
 	memset( &m_currMouse, 0, sizeof( m_currMouse ) );
@@ -503,11 +509,13 @@ Mouse::Mouse( void )
 	m_inputMovesAbsolute = FALSE;
 
 	m_currentCursor = ARROW;
-	if (TheGlobalData && TheGlobalData->m_winCursors)
+	// BFME moved GlobalData::m_winCursors to +0xA95 (see Mouse_init.cpp)
+	if (TheGlobalData && reinterpret_cast<const Bool *>(TheGlobalData)[0xA95])
 		m_currentRedrawMode = RM_WINDOWS;
 	else
 		m_currentRedrawMode = RM_W3D;//RM_WINDOWS;
 	m_visible = FALSE;
+	m_bfmeFlag4DA2 = TRUE;
 	m_tooltipFontName = "Times New Roman";
 	m_tooltipFontSize = 12;
 	m_tooltipFontIsBold = FALSE;
@@ -556,6 +564,12 @@ Mouse::Mouse( void )
 	m_tooltipBackColor.green = 0;
 	m_tooltipBackColor.blue = 0;
 	m_tooltipBackColor.alpha = 255;
+
+	m_bfmeValue4E04 = -1;
+	m_bfmeValue4E08 = -1;
+	m_bfmeValue4E10 = -1;
+	m_bfmeFlag4E0D = FALSE;
+	m_bfmeFlag4E0C = TRUE;
 
 }  // end Mouse
 

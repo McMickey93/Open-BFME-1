@@ -104,9 +104,8 @@ protected:
 	UnsignedInt m_nextGetIndex;  /** events retrieved through getMouseEvent
 															 will come from this index, then it will be
 															 incremented to the next index */
-	// and 0x10 more here: setCursorDirection @0x700790 writes +0x5E20 where
-	// ours is +0x5AB8, taking the total shift to 0x368.
-	char		_bfme_hole_beforeWin32Cursor[0x10];
+	// (BFME's extra 0x10 bytes that setCursorDirection @0x700790 implies here
+	// are Mouse's tail; see Mouse.h.)
 	MouseCursor m_currentWin32Cursor;	///< keep track of last cursor image sent to D3D.
 	Int m_directionFrame;	///< current frame of directional cursor (frome 0 points up).
 	Bool m_lostFocus;		///< flag if window has lost focues and mouse should stop being updated.	

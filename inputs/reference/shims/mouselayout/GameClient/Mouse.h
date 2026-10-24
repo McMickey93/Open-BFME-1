@@ -305,17 +305,19 @@ public:
 	Int m_tooltipDelayTime;						///< milliseconds to wait before showing tooltip
 	Real m_tooltipWidth;							///< default tooltip width in screen width %
 	Real m_lastTooltipWidth;
+	// BFME: one more flag here. Mouse::Mouse @0x5A5AE0 clears a byte at
+	// +0x108C and stores the tooltip colours from +0x1090, so the four
+	// bytes this shim used to park before m_currentRedrawMode live here.
+	Bool m_bfmeFlag108C;
 	RGBAColorInt m_tooltipColorText;
 	RGBAColorInt m_tooltipColorHighlight;
 	RGBAColorInt m_tooltipColorShadow;
 	RGBAColorInt m_tooltipColorBackground;
 	RGBAColorInt m_tooltipColorBorder;
 	// BFME has 0x34C more bytes ahead of m_currentRedrawMode: initPolygonAssets
-	// @0x700950 tests it at +0x10E0 where our probe puts it at +0xD94.
-	// Ten of those cursors account for 0x348 of the 0x34C bytes the probe
-	// measured ahead of m_currentRedrawMode (CursorInfo is 0x54 bytes, a size
-	// retail confirms in setCursorDirection's imul); four bytes are left.
-	char		_bfme_hole_beforeRedrawMode[4];
+	// @0x700950 tests it at +0x10E0 where Zero Hour's layout puts it at +0xD94.
+	// Ten more cursors account for 0x348 (CursorInfo is 0x54 bytes, a size
+	// retail confirms in setCursorDirection's imul); m_bfmeFlag108C is the rest.
 	RedrawMode	m_currentRedrawMode;	///< mouse cursor drawing method
 	Bool m_useTooltipAltTextColor;		///< draw tooltip text with house colors?
 	Bool m_useTooltipAltBackColor;		///< draw tooltip backgrounds with house colors?
@@ -348,6 +350,11 @@ protected:
 	Bool m_forceFeedback;				///< set to TRUE if mouse supprots force feedback
 
 	UnicodeString m_tooltipString;	///< tooltip text
+	// BFME: two more strings follow. Mouse::Mouse @0x5A5AE0 constructs them at
+	// +0x1100/+0x1104 (two more unwind states) and clears both; every later
+	// member moves by 8 (retail reads m_currMouse at +0x4D10, @0x006BBD32).
+	UnicodeString m_bfmeString1100;
+	UnicodeString m_bfmeString1104;
 	DisplayString *m_tooltipDisplayString; ///< tooltipDisplayString
 	Bool m_displayTooltip;  /**< when the mouse has been still long enough this will be
 													set to TRUE indicating it's Ok to fire off a tooltip */
@@ -373,9 +380,12 @@ protected:
 
 	Bool m_visible;	// visibility status
 	
-	// and 0xC more before m_currentCursor: the same function reads it at
-	// +0x4DA8 against our +0x4A50, a total shift of 0x358.
-	char		_bfme_hole_beforeCurrentCursor[0xC];
+	// m_currentCursor sits at +0x4DA8 (initPolygonAssets), a total shift of
+	// 0x358 from Zero Hour. Four BFME flags: Mouse::Mouse sets +0x4DA2 and clears +0x4DA3..+0x4DA5.
+	Bool m_bfmeFlag4DA2;
+	Bool m_bfmeFlag4DA3;
+	Bool m_bfmeFlag4DA4;
+	Bool m_bfmeFlag4DA5;
 	MouseCursor m_currentCursor;		///< current mouse cursor
 
 	DisplayString *m_cursorTextDisplayString;		///< text to display on the cursor (if specified)
@@ -391,6 +401,15 @@ protected:
 	RGBAColorInt m_tooltipBackColor;
 
 	Int m_eventsThisFrame;
+
+	// BFME's Mouse ends 0x10 later (sizeof 0x4E14: Win32Mouse's event buffer
+	// starts at +0x4E14 @0x006BC0E0, DirectInputMouse's members at +0x4E14).
+	// Mouse::Mouse stores -1, -1, TRUE, FALSE, -1 into them.
+	Int m_bfmeValue4E04;
+	Int m_bfmeValue4E08;
+	Bool m_bfmeFlag4E0C;
+	Bool m_bfmeFlag4E0D;
+	Int m_bfmeValue4E10;
 
 };  // end class Mouse
 
