@@ -28,7 +28,46 @@ public:
 	AIInternalMoveToState( StateMachine *machine, AsciiString name );
 };
 
-extern "C" void *bfmeVftableAW[];			// retail 0x0109B748
+// Retail table at VA 0x0109B748: 18 slots, ending before 0x0109B790.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern "C" void __identifier("?j_00011f5e@@YAXXZ")();
+extern "C" void __identifier("?j_00026c60@@YAXXZ")();
+extern "C" void __identifier("?j_00025fa4@@YAXXZ")();
+extern "C" void __identifier("?j_0002d411@@YAXXZ")();
+extern "C" void __identifier("?j_00033046@@YAXXZ")();
+extern "C" void __identifier("?j_00049189@@YAXXZ")();
+extern "C" void __identifier("?j_0003d6f4@@YAXXZ")();
+extern "C" void __identifier("?j_0000c79d@@YAXXZ")();
+extern "C" void __identifier("?j_00028b87@@YAXXZ")();
+extern "C" void __identifier("?j_00023416@@YAXXZ")();
+extern "C" void __identifier("?j_00015d9d@@YAXXZ")();
+extern "C" void __identifier("?j_000273bd@@YAXXZ")();
+extern "C" void __identifier("?j_0002cb42@@YAXXZ")();
+extern "C" void __identifier("?j_00021a7b@@YAXXZ")();
+extern "C" void __identifier("?j_000351b1@@YAXXZ")();
+extern "C" void __identifier("?j_00007405@@YAXXZ")();
+extern "C" void __identifier("?j_00016b3a@@YAXXZ")();
+extern "C" void __identifier("?j_0002ca66@@YAXXZ")();
+extern "C" void *bfmeVftableAW[] = {
+    reinterpret_cast<void *>(&__identifier("?j_00011f5e@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00026c60@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00025fa4@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0002d411@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00033046@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00049189@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0003d6f4@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0000c79d@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00028b87@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00023416@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00015d9d@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_000273bd@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0002cb42@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00021a7b@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_000351b1@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00007405@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00016b3a@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0002ca66@@YAXXZ")),
+};
 
 class BfmeStateAW : public AIInternalMoveToState
 {
