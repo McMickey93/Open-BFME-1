@@ -1,5 +1,6 @@
 // ??8XferSave@@UAEAAVXfer@@AAUXferReservedTag@@@Z
-// partial score=0.7 date=2026-09-07
+// partial score=0.395 date=2026-10-24
+// ??8XferSave@@UAEAAVXfer@@AAUXferReservedTag@@@Z
 // scratch probe for the XferSave reserved-tag virtual at 0x009D7DE0
 
 struct XferException
@@ -70,70 +71,70 @@ private:
 	int m_total;
 };
 
+extern "C" unsigned int __cdecl strlen(const char *);
+#pragma intrinsic(strlen)
+
 Xfer &XferSave::operator==(XferReservedTag &value)
 {
 	if (m_stream == 0)
 		return *this;
-	if (!m_flag)
-		return *this;
-	XferReservedTag *tag = &value;
-	if (tag->m_name == 0 || *tag->m_name == 0)
-		return *this;
-
-	int marker = 0x44534352;
-	if (m_stream->write(&marker, 4) != 4)
+	if (!(!m_flag))
 	{
-		XferException error;
-		bfmeFormatText(&error, 1, 0);
-		_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
+		XferReservedTag *tag = &value;
+		if (tag->m_name == 0 || *tag->m_name == 0)
+			return *this;
+
+		int marker = 0x44534352;
+		if (m_stream->write(&marker, 4) != 4)
+		{
+			XferException error;
+			bfmeFormatText(&error, 1, 0);
+			_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
+		}
+
+		register char *name = tag->m_name;
+		char *key = name;
+		SelfPair pair = m_map.make(&key);
+		void *found = pair.m_value;
+		if (found != 0)
+		{
+			unsigned char prefix = 0xff;
+			if (m_stream->write(&prefix, 1) != 1)
+			{
+				XferException error;
+				bfmeFormatText(&error, 1, 0);
+				_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
+			}
+
+			char *payload = static_cast<char *>(found) + 8;
+			if (m_stream->write(payload, 4) != 4)
+			{
+				XferException error;
+				bfmeFormatText(&error, 1, 0);
+				_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
+			}
+		}
+
+		unsigned int length = strlen(name);
+		if (length > 0xfe)
+			length = 0xfe;
+
+		if (m_stream->write(&length, 1) != 1)
+		{
+			XferException error;
+			bfmeFormatText(&error, 1, 0);
+			_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
+		}
+
+		if (m_stream->write(name, static_cast<int>(length)) !=
+			static_cast<int>(length))
+		{
+			XferException error;
+			bfmeFormatText(&error, 1, 0);
+			_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
+		}
+
+		*reinterpret_cast<int *>(m_map.bfmeAt(reinterpret_cast<void **>(&key))) = m_count + m_total;
 	}
-
-	register char *name = tag->m_name;
-	char *key = name;
-	SelfPair pair = m_map.make(&key);
-	void *found = pair.m_value;
-	if (found == 0)
-		return *this;
-
-	unsigned char prefix = 0xff;
-	if (m_stream->write(&prefix, 1) != 1)
-	{
-		XferException error;
-		bfmeFormatText(&error, 1, 0);
-		_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
-	}
-
-	char *payload = static_cast<char *>(found) + 8;
-	if (m_stream->write(payload, 4) != 4)
-	{
-		XferException error;
-		bfmeFormatText(&error, 1, 0);
-		_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
-	}
-
-	const char *cursor = name;
-	while (*cursor != 0)
-		++cursor;
-	unsigned int length = static_cast<unsigned int>(cursor - name);
-	if (length > 0xfe)
-		length = 0xfe;
-
-	if (m_stream->write(&length, 1) != 1)
-	{
-		XferException error;
-		bfmeFormatText(&error, 1, 0);
-		_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
-	}
-
-	if (m_stream->write(name, static_cast<int>(length)) !=
-		static_cast<int>(length))
-	{
-		XferException error;
-		bfmeFormatText(&error, 1, 0);
-		_CxxThrowException(&error, &g_guardTargetTypeThrowInfo);
-	}
-
-	void *slot = m_map.bfmeAt(reinterpret_cast<void **>(&key));
-	*reinterpret_cast<int *>(slot) = m_count + m_total;
 	return *this;
 }
