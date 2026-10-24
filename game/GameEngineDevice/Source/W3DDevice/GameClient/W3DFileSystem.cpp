@@ -203,15 +203,15 @@ char const * GameFileClass::Set_Name( char const *filename )
 
 	// test the extension to recognize a few key file types
 	GameFileType fileType = FILE_TYPE_COMPLETELY_UNKNOWN;  // MBL FILE_TYPE_UNKNOWN change due to compile error
-	if( stricmp( extension, ".w3d" ) == 0 )
+	if( _strcmpi( extension, ".w3d" ) == 0 )
 		fileType = FILE_TYPE_W3D;
-	else if( stricmp( extension, ".tga" ) == 0 )
+	else if( _strcmpi( extension, ".tga" ) == 0 )
 		fileType = FILE_TYPE_TGA;
-	else if( stricmp( extension, ".png" ) == 0 )
+	else if( _strcmpi( extension, ".png" ) == 0 )
 		fileType = FILE_TYPE_PNG;
-	else if( stricmp( extension, ".dds" ) == 0 )
+	else if( _strcmpi( extension, ".dds" ) == 0 )
 		fileType = FILE_TYPE_DDS;
-	else if( stricmp( extension, ".jpg" ) == 0 )
+	else if( _strcmpi( extension, ".jpg" ) == 0 )
 		fileType = FILE_TYPE_JPG;
 
 	// Now try the main lookup of hitting local files and big files
