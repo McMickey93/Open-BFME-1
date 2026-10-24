@@ -1,5 +1,6 @@
 // ?dup_008c66a0@@YAPAVAptValue@@XZ
-// partial score=0.4651 date=2026-09-30
+// partial score=0.9457 date=2026-10-24
+// ?dup_008c66a0@@YAPAVAptValue@@XZ
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 // Address-owned Apt callback. Its registered name and semantic identity are unknown.
 
@@ -48,19 +49,19 @@ extern Rva008AE770Stack Rva008AE770TheStack;
 AptValue *__cdecl dup_008c66a0()
 {
 	AptValue *value = g_bfmeArr1233[Rva008AE770TheStack.m_count - 1];
-	if (value->isUndefined())
-		return g_bfmeFallbackDB;
-
+	if (!value->isUndefined())
+	{
 	int index = value->toInteger();
 	char *holder = Rva008A5380Holder;
-	char *entries = *(char **)(holder + 0x1230);
 	int offset = index << 5;
+	char *entries = *(char **)(holder + 0x1230);
 	if (*(void **)(offset + (unsigned int)entries))
 	{
 		((Rva008A0FF0ValueStack *)(offset + (unsigned int)entries))->m_field04->release();
 		((Rva008A0FF0ValueStack *)(offset + (int)*(char **)(Rva008A5380Holder + 0x1230)))->m_field00 = 0;
 		((Rva008A0FF0ValueStack *)(offset + (int)*(char **)(Rva008A5380Holder + 0x1230)))->releaseAll();
 		--*(int *)(Rva008A5380Holder + 0x1234);
+	}
 	}
 	return g_bfmeFallbackDB;
 }

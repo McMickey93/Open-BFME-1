@@ -1,5 +1,6 @@
 // ?provideBattleStat@BfmeAptScreenScoreScreen@@QAEXHPAD_N@Z
-// partial score=0.86 date=2026-09-02
+// partial score=0.4397 date=2026-10-23
+// ?provideBattleStat@BfmeAptScreenScoreScreen@@QAEXHPAD_N@Z
 // cl: /DNDEBUG /MD /EHsc
 
 extern "C" int __declspec(dllimport) __cdecl sprintf(
@@ -9,6 +10,9 @@ class BfmeAptScreenScoreScreen
 {
 public:
 	void provideBattleStat( int index, char *text, bool setting );
+
+	unsigned char m_unmodelled00[0x294];
+	int m_battleStats[7][3];				// +0x294
 };
 
 void BfmeAptScreenScoreScreen::provideBattleStat(
@@ -17,26 +21,14 @@ void BfmeAptScreenScoreScreen::provideBattleStat(
 	if (setting)
 		return;
 
-	char *output = text;
-	int columns = 3;
-	int group = index / columns;
-	int column = index % columns;
-	*(short *)output = '0';
-	if (group < 0)
-		return;
-	if (group >= 7)
-		return;
-	if (column < 0)
-		return;
-	if (column >= columns)
+	int row = index / 3;
+	int column = index % 3;
+	*(short *)text = '0';
+	if (row < 0 || row >= 7 || column < 0 || column >= 3)
 		return;
 
-	if (column == 1) {
-		int value = *(int *)((char *)this + 0x298 + group * 12);
-		sprintf(output, "x %d", value);
-		return;
-	}
-
-	int tableIndex = group + 0x37 + column * 2;
-	sprintf(output, "%d", ((int *)this)[tableIndex]);
+	if (column == 1)
+		sprintf(text, "x %d", m_battleStats[row][1]);
+	else
+		sprintf(text, "%d", m_battleStats[row][column]);
 }

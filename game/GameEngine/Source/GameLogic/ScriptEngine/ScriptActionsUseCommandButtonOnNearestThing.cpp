@@ -1,7 +1,7 @@
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/stringinline
 // Retail 0x002FDAC0 (416 B): file-static nearest-object command helper shared by
 // the named and team NEAREST_OBJECTTYPE script actions. Keeping it static next to
-// a caller lets VC7.1 choose retail's private ABI (unit ESI, button EDI, template on stack).
+// its callers lets VC7.1 choose retail's private ABI (unit ESI, button EDI, template on stack).
 
 #include "StringInline.h"
 
@@ -13,6 +13,7 @@ typedef unsigned int UnsignedInt;
 class Object;
 class ObjectTypes;
 class Player;
+class Team;
 
 #include "../command_source_type.h"
 
@@ -55,6 +56,35 @@ private:
 	const T *m_overridable;
 };
 
+// Object's DLINK pointer-to-member layout, as in inputs/reference/shims/objectdlink/
+// ObjectDlinkPmf.h: vptr @ +0, DLINK base @ +4, vbptr-carrying base @ +0x68, so
+// &Object::dlink_next_TeamMemberList encodes {0x00401140, -100, 0}. The field base
+// keeps this TU's members at their retail offsets inside that skeleton.
+class BfmeObjectVirtualTail { public: unsigned char m_vt[4]; };
+
+class BfmeObjectVbptrCarrier : public virtual BfmeObjectVirtualTail
+{
+public:
+	unsigned char m_carrier[4];
+};
+
+class BfmeObjectVtbl { public: virtual void bfmeObjectSlot0( void ); };
+
+class BfmeObjectDlinkBase
+{
+public:
+	Object *dlink_next_TeamMemberList( void ) const;
+};
+
+class BfmeObjectFields
+{
+public:
+	OVERRIDE<ThingTemplate> m_template;
+	unsigned char m_beforePosition[0x30];
+	Coord3D m_position;
+	unsigned char m_afterPosition[0x64 - 0x40];
+};
+
 class CommandButton
 {
 public:
@@ -65,14 +95,10 @@ public:
 	UnsignedInt m_options;
 };
 
-class Object
+class Object : public BfmeObjectVtbl, public BfmeObjectDlinkBase,
+	public BfmeObjectFields, public BfmeObjectVbptrCarrier
 {
 public:
-	void *m_vtable;
-	OVERRIDE<ThingTemplate> m_template;
-	unsigned char m_beforePosition[0x30];
-	Coord3D m_position;
-
 	const Coord3D *getPosition() const { return &m_position; }
 	const ThingTemplate *getTemplate() const { return m_template; }
 
@@ -171,7 +197,7 @@ public:
 	virtual void slot14() = 0;
 	virtual void slot15() = 0;
 	virtual void slot16() = 0;
-	virtual void slot17() = 0;
+	virtual Team *getTeamNamed(AsciiString name, Bool exact) = 0;
 	virtual void slot18() = 0;
 	virtual void slot19() = 0;
 	virtual ObjectTypes *getObjectTypes(const AsciiString &name) = 0;
@@ -208,6 +234,7 @@ extern TerrainLogic *TheTerrainLogic;
 
 extern void j_000022bb();
 extern void j_000414d9();
+extern void j_0002990b();
 
 class ScriptActions;
 
@@ -300,6 +327,9 @@ protected:
 	void doNamedUseCommandButtonOnNearestObjectType(
 		const AsciiString &unitName, const AsciiString &commandAbility,
 		const AsciiString &objectTypeName);
+	void doTeamUseCommandButtonOnNearestObjectType(
+		const AsciiString &teamName, const AsciiString &commandAbility,
+		const AsciiString &objectTypeName);
 };
 
 // Retail 0x002FDCD0 (173 B), action 429; supplies the helper's private-ABI call site.
@@ -340,4 +370,113 @@ void ScriptActions::doNamedUseCommandButtonOnNearestObjectType(
 		return;
 
 	useCommandButtonOnNearestThing_002FDAC0(unit, button, thingTemplate);
+}
+
+// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/GameCommon.h
+template <class OBJCLASS>
+class DLINK_ITERATOR
+{
+public:
+	typedef OBJCLASS *(OBJCLASS::*GetNextFunc)() const;
+
+private:
+	OBJCLASS *m_cur;
+	GetNextFunc m_getNextFunc;
+
+public:
+	DLINK_ITERATOR(OBJCLASS *cur, GetNextFunc getNextFunc)
+		: m_cur(cur), m_getNextFunc(getNextFunc) {}
+
+	void advance()
+	{
+		if (m_cur)
+			m_cur = (m_cur->*m_getNextFunc)();
+	}
+
+	Bool done() const { return m_cur == 0; }
+	OBJCLASS *cur() const { return m_cur; }
+};
+
+// Team member-list slice (head at +0x0C), as in the matched team walks.
+class Team
+{
+private:
+	void *m_vptr;
+	void *m_prototype;
+	void *m_id;
+	Object *m_head;
+
+public:
+	DLINK_ITERATOR<Object> iterate_TeamMemberList() const
+	{
+		return DLINK_ITERATOR<Object>(m_head, Object::dlink_next_TeamMemberList);
+	}
+};
+
+// Retail 0x002FE110 (273 B, ret 0xC), the team twin of the named action above:
+// executeAction's TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_OBJECTTYPE arm calls it.
+// The template comes from the object nearest the team's estimated position (or
+// the factory), then every ready member runs the shared helper.
+void ScriptActions::doTeamUseCommandButtonOnNearestObjectType(
+	const AsciiString &teamName, const AsciiString &commandAbility,
+	const AsciiString &objectTypeName)
+{
+	Team *team = TheScriptEngine->getTeamNamed(teamName, false);
+	if (!team)
+		return;
+
+	const CommandButton *button =
+		TheControlBar->findCommandButton(commandAbility);
+	if (!button)
+		return;
+
+	const ThingTemplate *thingTemplate;
+	if (ObjectTypes *objectTypes =
+		TheScriptEngine->getObjectTypes(objectTypeName))
+	{
+		class FindClosestObjectCall
+		{
+		public:
+			Object *findClosestObject(const Coord3D *, ObjectTypes *, Player *);
+		};
+		class EstimateTeamPositionCall
+		{
+		public:
+			Coord3D *getEstimateTeamPosition(Coord3D *) const;
+		};
+		typedef Object *(FindClosestObjectCall::*FindFunction)(
+			const Coord3D *, ObjectTypes *, Player *);
+		typedef Coord3D *(EstimateTeamPositionCall::*EstimateFunction)(
+			Coord3D *) const;
+		union { void (*raw)(void); FindFunction member; } find;
+		union { void (*raw)(void); EstimateFunction member; } estimate;
+		find.raw = j_000414d9;
+		estimate.raw = j_0002990b;
+
+		Coord3D teamPosition;
+		Object *nearest = (reinterpret_cast<FindClosestObjectCall *>(this)->*
+			find.member)(
+			(reinterpret_cast<const EstimateTeamPositionCall *>(team)->*
+				estimate.member)(&teamPosition),
+			objectTypes, 0);
+		if (!nearest)
+			return;
+
+		thingTemplate = nearest->getTemplate();
+	}
+	else
+	{
+		thingTemplate = ((BfmeThingFactory *)TheThingFactory)->findTemplate(objectTypeName);
+	}
+
+	if (!thingTemplate)
+		return;
+
+	DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList();
+	for (iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance())
+	{
+		Object *member = iter.cur();
+		if (button->isReady(member))
+			useCommandButtonOnNearestThing_002FDAC0(member, button, thingTemplate);
+	}
 }

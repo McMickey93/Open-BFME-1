@@ -2080,7 +2080,6 @@ emit	game/GameEngine/Source/GameLogic/AI/AIHuntState_update_Thunk.cpp	*	800
 emit	game/GameEngine/Source/GameLogic/AI/AIMoveToState_onEnter_Thunk.cpp	*	322
 emit	game/GameEngine/Source/GameLogic/AI/AIPanicState_onEnter_Thunk.cpp	*	353
 emit	game/GameEngine/Source/GameLogic/AI/AIPathfind.cpp	*	3969
-emit	game/GameEngine/Source/GameLogic/AI/AIPathfind_Path_optimize_Thunk.cpp	*	669
 emit	game/GameEngine/Source/GameLogic/AI/AIPlayerUpdateBridgeRepairThunk.cpp	*	1077
 emit	game/GameEngine/Source/GameLogic/AI/AIPlayer_queueDozerMethodThunk.cpp	*	490
 emit	game/GameEngine/Source/GameLogic/AI/AIStates.cpp	*	1398
@@ -2140,7 +2139,6 @@ emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doMoveCameraAlo
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doRemoveCommandBarButton_Thunk.cpp	*	463
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doRotateCameraTowardObject_Thunk.cpp	*	118
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doSkirmishCommandButtonOnMostValuable_Thunk.cpp	*	795
-emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamUseCommandButtonOnNearestObjectType_Thunk.cpp	*	273
 emit	game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doUnitGarrisonNearestBuilding_Thunk.cpp	*	451
 emit	game/GameEngine/Source/GameLogic/System/GameLogic.cpp	*	1510
 emit	game/GameEngine/Source/GameLogic/System/GameLogicDispatchDoSetRallyPointThunk.cpp	*	880
@@ -10388,7 +10386,6 @@ object_symbol	targets/game/reverse/functions.csv	0x00400A90	1
 object_symbol	targets/game/reverse/functions.csv	0x004014A0	1
 object_symbol	targets/game/reverse/functions.csv	0x00401600	1
 object_symbol	targets/game/reverse/functions.csv	0x00401630	1
-object_symbol	targets/game/reverse/functions.csv	0x00401660	1
 object_symbol	targets/game/reverse/functions.csv	0x004019B0	1
 object_symbol	targets/game/reverse/functions.csv	0x004019F0	1
 object_symbol	targets/game/reverse/functions.csv	0x00401A80	1

@@ -36587,7 +36587,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_000a0a10@@YAXXZ,,0x000A0A10,11,game/GameEngine/Source/Common/RvaA0A10SecondArgumentStore.cpp,matched,object-symbol=?store@RvaA0A10SecondArgumentStore@@QAEPAV1@II@Z;hand-reconciled C++
 ?d_000a0ce0@@YAXXZ,,0x000A0CE0,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getTwentySecond@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
 ?d_000a0d00@@YAXXZ,,0x000A0D00,11,game/GameEngine/Source/Common/RvaA0D00ValueCopy.cpp,matched,object-symbol=?copy@RvaA0D00ValueCopy@@QAEPAIPAI@Z;hand-reconciled C++
-?d_000a1360@@YAXXZ,,0x000A1360,200,game/gen_asm/d_0009fff0.asm,matched,gen-dump;ghidra=FUN_004a1360
 ?d_000a2170@@YAXXZ,,0x000A2170,7,game/GameEngine/Source/Common/RvaA2170Offset140Getter.cpp,matched,object-symbol=?get_value@RvaA2170Offset140Getter@@QAEIXZ;Open-BFME5 clean C++ RVA A2170 offset 140 getter
 ?d_000a2180@@YAXXZ,,0x000A2180,7,game/GameEngine/Source/Common/RvaA2180Offset144Getter.cpp,matched,object-symbol=?get_value@RvaA2180Offset144Getter@@QAEIXZ;Open-BFME5 clean C++ RVA A2180 offset 144 getter
 ?d_000a2190@@YAXXZ,,0x000A2190,7,game/GameEngine/Source/Common/RvaA2190Offset276Getter.cpp,matched,object-symbol=?get_value@RvaA2190Offset276Getter@@QAEIXZ;Open-BFME5 clean C++ RVA A2190 offset 276 getter
@@ -36784,7 +36783,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_000f2a00@@YAXXZ,,0x000F2A00,674,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_004f2a00
 ?d_000f2d50@@YAXXZ,,0x000F2D50,468,game/gen_asm/d_000e5b30.asm,matched,gen-dump;ghidra=FUN_004f2d50
 ?d_000f2fb0@@YAXXZ,,0x000F2FB0,528,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004f2fb0
-?d_000f4e20@@YAXXZ,,0x000F4E20,214,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004f4e20
 ?d_000f5e40@@YAXXZ,,0x000F5E40,1293,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_004f5e40
 ?d_000f9410@@YAXXZ,,0x000F9410,5,game/GameEngine/Source/Common/RvaF9410IdentityWithArgumentThunk.cpp,matched,object-symbol=?identity@RvaF9410IdentityWithArgumentThunk@@QAEPAU1@H@Z;Open-BFME5 clean C++ RVA F9410 identity with one argument
 ?d_000fa8b0@@YAXXZ,,0x000FA8B0,188,game/gen_asm/d_000f2fb0.asm,matched,gen-dump;ghidra=FUN_004fa8b0
@@ -37105,7 +37103,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0014c8e0@@YAXXZ,,0x0014C8E0,196,game/gen_asm/d_0014af50.asm,matched,gen-dump;ghidra=FUN_0054c8e0
 ?d_0014d120@@YAXXZ,,0x0014D120,1951,game/gen_asm/d_0014af50.asm,matched,gen-dump;ghidra=FUN_0054d120
 ?d_00150a70@@YAXXZ,,0x00150A70,181,game/gen_asm/d_0014af50.asm,matched,gen-dump;ghidra=FUN_00550a70
-?d_00150c90@@YAXXZ,,0x00150C90,187,game/gen_asm/d_0014af50.asm,matched,gen-dump;ghidra=FUN_00550c90
 ?d_00155490@@YAXXZ,,0x00155490,509,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00555490
 ?d_00156c60@@YAXXZ,,0x00156C60,3172,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00556c60
 ?d_00157be0@@YAXXZ,,0x00157BE0,2937,game/gen_asm/d_00096570.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00557be0
@@ -39533,7 +39530,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?doTeamUseCommandButtonAbilityOnNamed@ScriptActions@@IAEXABVAsciiString@@00@Z,,0x002F4AB0,141,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_d_002f4ab0.cpp,matched,
 ?doTeamUseCommandButtonOnNamed@ScriptActions@@IAEXABVAsciiString@@00@Z,,0x002F54C0,204,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActionsCommandButton.cpp,matched,clean C++ exact 204B; BFME ScriptEngine ABI and command-button layout
 ?doTeamUseCommandButtonOnNearestEnemy@ScriptActions@@IAEXABVAsciiString@@0@Z,,0x002FB170,713,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamUseCommandButtonOnNearestEnemy.cpp,matched,sibling TeamCommandQuery idiom ZH twin confirmed;model=muse-spark-1.3-contributor
-?doTeamUseCommandButtonOnNearestObjectType@ScriptActions@@IAEXABVAsciiString@@00@Z,,0x002FE110,273,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamUseCommandButtonOnNearestObjectType_Thunk.cpp,matched,Open-BFME5 exact C++ __emit thunk converted from MASM dump
 ?doTeamWander@ScriptActions@@IAEXABVAsciiString@@0@Z,,0x00301ED0,212,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActionsTeamWanderPanic.cpp,matched,TEAM_WANDER action table and adjacent TEAM_PANIC twin prove identity; clean C++ wander path uses locomotor set 3 and aiWander
 ?doTeamWanderInPlace@ScriptActions@@IAEXABVAsciiString@@@Z,,0x00301FE0,134,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamWanderInPlace.cpp,matched,
 ?doTesselatedUpdate@W3DTerrainBackground@@QAEXABUIRegion2D@@PAVWorldHeightMap@@_N@Z,,0x0072C7F0,2068,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DTerrainBackgroundTesselatedUpdate.cpp,matched,BFME rewrite of ZH doTesselatedUpdate reconstructed natively from Ghidra decompile; lift replaced;model=claude-opus-5-5
@@ -127383,7 +127379,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?openMouse@DirectInputMouse@@IAEXXZ,,0x006BBAA0,271,game/GameEngineDevice/Source/Win32Device/GameClient/Win32DIMouse.cpp,matched,
 ?openScreen@BfmeAptScreenOnlineShell@@QAEXPBD@Z,,0x0055D030,225,game/GameEngine/Source/GameClient/GUI/OnlineShellOpenScreen.cpp,matched,OnlineShell screen-table dispatch; closes current screen and records the selected reference
 ?openSpareSocket@FirewallHelperClass@@QAE_NG@Z,,0x0066EA30,194,game/GameEngine/Source/GameNetwork/FirewallHelper.cpp,matched,
-?optimize@Path@@QAEXPBVObject@@H_N@Z,,0x00401660,669,game/GameEngine/Source/GameLogic/AI/AIPathfind_Path_optimize_Thunk.cpp,matched,Open-BFME5 exact C++ __emit thunk converted from MASM dump;object-symbol=_bfme_Path_optimize_401660
 ?optimizeGroundPath@Path@@QAEXH@Z,,0x003FDEF0,590,game/GameEngine/Source/GameLogic/AI/PathOptimizeGround.cpp,matched,
 ?orBits@Rva00537680Or@@QAEXH@Z,,0x00537680,15,game/GameEngine/Source/Common/Rva00537600Swap.cpp,matched,cpp-reconstruction;or-at-8
 ?orValues@Rva000B5E90@@SAIII@Z,,0x000B5E90,9,game/GameEngine/Source/Common/Bfme/Rva000B5E90_orValues.cpp,matched,address-derived structural OR; retail combines two stack dwords with bitwise OR
@@ -173122,3 +173117,8 @@ uw_00c18e50,,0x00C18E50,8,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEn
 ??1CullLinkClass@@UAE@XZ,,0x008DCC90,7,game/Libraries/Source/WWVegas/WW3D2/CullLinkClass_Dtor_Thunk.cpp,matched,CullLinkClass empty virtual dtor (release WWASSERT gone): reseats vftable 0x01137808 whose slot 0 is the matched ??_GCullLinkClass 0x20 later;model=claude-opus-5-5;host=vm
 ??1Vector3Randomizer@@UAE@XZ,,0x0095C6E0,7,game/Libraries/Source/WWVegas/WWMath/v3_rnd.cpp,matched,Vector3Randomizer inline empty virtual dtor; vftable 0x0113E098 ??_7Vector3Randomizer; see identity_evidence/0095c6e0-vector3-randomizer.md;model=claude-opus-5-5;host=vm
 ??_GVector3Randomizer@@UAEPAXI@Z,,0x0095C6F0,31,game/Libraries/Source/WWVegas/WWMath/v3_rnd.cpp,matched,slot 0 of vftable 0x0113E098 ??_7Vector3Randomizer (dtor plus five __purecall slots); moved from 0x008E2260 where it aliased ??_GCullSystemClass; identity_evidence/0095c6e0-vector3-randomizer.md;model=claude-opus-5-5;host=vm
+?doTeamUseCommandButtonOnNearestObjectType@ScriptActions@@IAEXABVAsciiString@@00@Z,,0x002FE110,273,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActionsUseCommandButtonOnNearestThing.cpp,matched,clean C++ in the private-ABI helper TU; identity from executeAction TEAM_ALL_USE_COMMANDBUTTON_ON_NEAREST_OBJECTTYPE arm; replaces naked __emit lift;model=claude-opus-5-5;host=vm
+?rva000F4E20@Team@@QAE_NXZ,,0x000F4E20,214,game/GameEngine/Source/Common/RTS/TeamMemberQueries.cpp,matched,clean C++ beside the other Team member walks; caller Team::updateState 0x000F4F30 via ILT 0x00008A71; address-derived name kept;model=claude-opus-5-5;host=vm
+?groupDoSpecialPowerAtLocation@Rva00150C90AIGroup@@QAEXIPBUCoord3D@@MPBVObject@@I@Z,,0x00150C90,187,game/GameEngine/Source/GameLogic/AI/AIGroup_groupDoSpecialPowerAtLocation.cpp,matched,clean C++; logicMessageDispatcher caller; AI +0x48 store is conditional on the member having an AI (no continue); ILT window contradicts AIGroup so owner keeps the address token;model=claude-opus-5-5;host=vm
+?internalSetState@StateMachine@@QAE?AW4StateReturnType@@I@Z,,0x000A1360,200,game/GameEngine/Source/Common/StateMachine_internalSetState.cpp,matched,Zero Hour body against BFME StateMachine layout with internalGetState inlined;model=claude-opus-5-5;host=vm
+?optimize@Path@@QAEXPBVObject@@H_N@Z,,0x00401660,669,game/GameEngine/Source/GameLogic/AI/PathOptimize.cpp,matched,clean C++ replacing the naked __emit lift;model=claude-opus-5-5;host=vm

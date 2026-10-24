@@ -9,8 +9,9 @@
 //   0x000F4B60  hasAnyObjects(filter)    136B  is any member accepted by a filter
 //   0x000F4C10  hasAnyUnits              179B  is any member a live unit
 //   0x000F4CF0  hasAnyObjects            237B  is any member a live object
+//   0x000F4E20  rva000F4E20              214B  is an active team's every horde settled
 //
-// All five walk the list at Team+0x0C through the same Object DLINK
+// All six walk the list at Team+0x0C through the same Object DLINK
 // pointer-to-member, and all five sat in files carrying their own copy of the
 // iterator and of Team.
 //
@@ -127,6 +128,46 @@ public:
 	Bool isKindOf(KindOfType kind) const;
 };
 
+class HordeContainInterface
+{
+public:
+	virtual int slot00() = 0; virtual int slot01() = 0; virtual int slot02() = 0; virtual int slot03() = 0;
+	virtual int slot04() = 0; virtual int slot05() = 0; virtual int slot06() = 0; virtual int slot07() = 0;
+	virtual int slot08() = 0; virtual int slot09() = 0; virtual int slot10() = 0; virtual int slot11() = 0;
+	virtual int slot12() = 0; virtual int slot13() = 0; virtual int slot14() = 0; virtual int slot15() = 0;
+	virtual int slot16() = 0; virtual int slot17() = 0; virtual int slot18() = 0; virtual int slot19() = 0;
+	virtual int slot20() = 0; virtual int slot21() = 0; virtual int slot22() = 0; virtual int slot23() = 0;
+	virtual int slot24() = 0; virtual int slot25() = 0; virtual int slot26() = 0; virtual int slot27() = 0;
+	virtual int slot28() = 0; virtual int slot29() = 0; virtual int slot30() = 0; virtual int slot31() = 0;
+	virtual int slot32() = 0; virtual int slot33() = 0; virtual int slot34() = 0; virtual int slot35() = 0;
+	virtual int slot36() = 0; virtual int slot37() = 0; virtual Bool slot38() = 0; virtual Bool slot39() = 0;
+	virtual int slot40() = 0; virtual int slot41() = 0; virtual int slot42() = 0; virtual int slot43() = 0;
+	virtual int slot44() = 0; virtual int slot45() = 0; virtual int slot46() = 0; virtual int slot47() = 0;
+	virtual int slot48() = 0; virtual int slot49() = 0; virtual int slot50() = 0; virtual int slot51() = 0;
+	virtual int slot52() = 0; virtual int slot53() = 0; virtual int slot54() = 0; virtual int slot55() = 0;
+	virtual int slot56() = 0; virtual int slot57() = 0; virtual int slot58() = 0; virtual int slot59() = 0;
+	virtual int slot60() = 0; virtual int slot61() = 0; virtual int slot62() = 0; virtual int slot63() = 0;
+	virtual int slot64() = 0; virtual int slot65() = 0; virtual int slot66() = 0; virtual int slot67() = 0;
+	virtual int slot68() = 0; virtual int slot69() = 0; virtual int slot70() = 0; virtual int slot71() = 0;
+	virtual int slot72() = 0; virtual int slot73() = 0; virtual int slot74() = 0; virtual int slot75() = 0;
+	virtual int slot76() = 0; virtual int slot77() = 0; virtual int slot78() = 0; virtual int slot79() = 0;
+	virtual int slot80() = 0; virtual int slot81() = 0; virtual int slot82() = 0; virtual int slot83() = 0;
+	virtual int getHordeMemberCount(Bool countRiders) = 0;
+};
+
+class ContainModuleInterface
+{
+public:
+	virtual int slot00() = 0; virtual int slot01() = 0; virtual int slot02() = 0; virtual int slot03() = 0;
+	virtual int slot04() = 0; virtual int slot05() = 0; virtual int slot06() = 0; virtual int slot07() = 0;
+	virtual int slot08() = 0; virtual int slot09() = 0; virtual int slot10() = 0; virtual int slot11() = 0;
+	virtual int slot12() = 0; virtual int slot13() = 0; virtual int slot14() = 0; virtual int slot15() = 0;
+	virtual int slot16() = 0; virtual int slot17() = 0; virtual int slot18() = 0; virtual int slot19() = 0;
+	virtual int slot20() = 0; virtual int slot21() = 0; virtual int slot22() = 0; virtual int slot23() = 0;
+	virtual int slot24() = 0; virtual int slot25() = 0;
+	virtual HordeContainInterface *getHordeContainInterface() = 0;
+};
+
 // The four views the four files carried, stated once. Reached by casting the
 // Object pointer, which is what retail does; the offsets are the claim, the
 // class is only somewhere to write them.
@@ -145,7 +186,9 @@ public:
 	unsigned char m_status94;					// +0x94
 	unsigned char m_mid95[0x118 - 0x95];
 	unsigned char m_status118;					// +0x118
-	unsigned char m_tail[0x344 - 0x119];
+	unsigned char m_mid119[0x1FC - 0x119];
+	ContainModuleInterface *m_contain;				// +0x1FC
+	unsigned char m_tail[0x344 - 0x200];
 	unsigned char m_dead;						// +0x344, bit 0
 };
 
@@ -185,11 +228,14 @@ public:
 	Bool hasAnyUnits() const;
 	Bool hasAnyObjects(const ObjectFilter *filter, Bool bfmeFlag) const;
 	Bool hasAnyObjects(Bool bfmeFlag) const;
+	Bool rva000F4E20();
 
 	void *m_vptr;
 	void *m_proto;
 	void *m_id;
 	Object *m_head;							// +0x0C
+	unsigned char m_pad10[0xE6 - 0x10];
+	unsigned char m_isActive;					// +0xE6
 
 	DLINK_ITERATOR<Object> iterate_TeamMemberList() const
 	{
@@ -352,4 +398,45 @@ Bool Team::hasAnyObjects(Bool bfmeFlag) const
 			return true;
 	}
 	return false;
+}
+
+// ?rva000F4E20@Team@@QAE_NXZ
+// Team::updateState (0x000F4F30 +0x5B) asks this through ILT 0x00008A71 before
+// running the create script. An inactive team answers true; otherwise a member
+// with status bit 0x04 at +0x90 answers false, and so does a member whose final
+// template has KindOf word 3 bit 0x1000 and whose contain module's horde
+// interface is empty, or reports slot 39 without slot 38. The re-test of the
+// member the loop condition just proved non-null keeps VC7.1 from aligning the
+// loop head, as retail does not.
+Bool Team::rva000F4E20()
+{
+	if (m_isActive)
+	{
+		for (DLINK_ITERATOR<Object> iter = iterate_TeamMemberList(); !iter.done(); iter.advance())
+		{
+			BfmeObjectStatusView *obj = (BfmeObjectStatusView *)iter.cur();
+			if (!obj)
+				continue;
+			if ((obj->m_status90 & 4) != 0)
+				return false;
+
+			if ((((ThingTemplate *)bfmeFinalTemplate(iter.cur()))->m_kindOf3 & 0x1000) == 0)
+				continue;
+
+			ContainModuleInterface *contain = obj->m_contain;
+			if (contain == 0)
+				continue;
+			HordeContainInterface *horde = contain->getHordeContainInterface();
+			if (horde == 0)
+				continue;
+			if (horde->getHordeMemberCount(false) == 0)
+				return false;
+			if (!horde->slot39())
+				continue;
+			if (!horde->slot38())
+				return false;
+		}
+		return true;
+	}
+	return true;
 }
