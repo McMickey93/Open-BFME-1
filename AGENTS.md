@@ -81,14 +81,19 @@ rerun the gate, all in the same commit; use an address-derived name if its
 meaning is unproven. Switch bodies when the evidence is ambiguous or the repair
 spreads.
 
-Finish or revert each body before the next. After several failed shapes or
-about 30 minutes without byte progress take a fresh candidate; never leave a non-matching
-reconstruction in `game/`.
+A staged source defining any function the ledger lacks is
+refused. First run `python3 tools/find_declared_unmatched.py
+<file>`: row the body, or mark a known unpinned one
+`// ?<Class::method> present-unmatched`.
+
+Finish or revert each body before the next; after about 30 minutes without
+byte progress take a fresh candidate. Never leave a non-matching reconstruction
+in `game/`.
 
 ## Work the file
 
-`next_work.py` lists the other queued bodies in the same file; work them
-together, since siblings share layout, offsets and callee pins. A shared header
+Work the other queued bodies `next_work.py` lists in the same file together:
+siblings share layout, offsets and callee pins. A shared header
 edit costs a full gate: edit every dependent body and pay once.
 
 ## Convert, verify, commit, push
@@ -113,9 +118,9 @@ or temp branch.
 
 ## Verdicts and near misses
 
-Convert to clean C++. Use MASM or inline asm only for a proven codegen blocker
-(compiler machinery, x87 shape, SEH). A `__declspec(naked)`/`__emit` lift is
-not a conversion, and the hooks refuse it. Ghidra boundaries, xrefs and vtables
+Use MASM or inline asm only for a proven codegen blocker (compiler machinery,
+x87 shape, SEH). A `__declspec(naked)`/`__emit` lift is
+not a conversion; hooks refuse it. Ghidra boundaries, xrefs and vtables
 are identity evidence; decompiled C is not byte-match proof.
 
 Record outcomes with
@@ -126,13 +131,15 @@ a `partial` or long `blocked`, and `blocked-on=0x<rva>` for unlanded blockers.
 
 Bank a near miss for the next agent:
 `partial '<what is wrong>' --stash <your .cpp> --score <0..1>`; with no body,
-record `blocked`. For 0.9+, run `tools/probe.py` and read
+record `blocked`. After long attempts, commit a handoff (ruled-out hypotheses,
+remaining mismatch) under `targets/game/reverse/attempt_support/` and cite it.
+For 0.9+, run `tools/probe.py` and read
 `docs/shape_levers.md` first.
 
 ## File placement
 
 - The game baseline is `inputs/baselines/bfme1/retail-1.03-unpacked` (since
-  2026-09-27; older verdicts blaming the baseline predate it); its
+  2026-09-27); its
   `no_ground_truth` addresses are retired. Mods build from the workshop exe.
 - Game source lives under `game/` at its official BFME path, MASM dumps in
   `game/masm_dumps/`, and scratch in untracked `build/`. Banked attempts
@@ -144,13 +151,13 @@ record `blocked`. For 0.9+, run `tools/probe.py` and read
   does the swap; see `docs/header_adoption.md`.
 - Never load `functions.csv`, `ghidra_functions.csv` or `exports.csv` whole; use
   `rg` or narrow filters.
-- Preserve unrelated dirty-tree work; revert only your own attempt. No fallback
-  paths: they hide mismatches.
+- Preserve others' work; revert only your own attempt. No fallback paths:
+  they hide mismatches.
 
 ## Names and identity
 
-- A green byte-match says nothing about a name: a wrong name compiles to the
-  same bytes. A matched caller naming the symbol is the strongest evidence.
+- A wrong name compiles to the same bytes. A matched caller naming the symbol
+  is the strongest evidence.
 - Ask before you invent a member, type or file name:
   `tools/name_oracle.py --class <C> --offset <N>`, and `docs/naming_evidence.md`
   for the rules. An address-derived name is honest; drop the address only for a
@@ -174,12 +181,12 @@ record `blocked`. For 0.9+, run `tools/probe.py` and read
 ## Generated and vendored claims
 
 `gen-*` rows (`game/gen_small/`, `game/gen_asm/`) are byte-true placeholders,
-not progress, and no generator remains to rebuild them. Recover the identity in
+not progress. Recover the identity in
 clean C++ at the proper `game/` path and repoint the row with
 `tools/add_match.py <real-name> <rva> <size> <source> --replace-rva <rva>`
 (`--replace-existing` when the name is unchanged). Never edit files under
-`game/gen_asm/` or `game/gen_small/`: a hand edit there is permanent and
-unchecked. After landing a batch, check your own rows: one body per address.
+`game/gen_asm/` or `game/gen_small/`. After landing a batch, check your own
+rows: one body per address.
 
 `vendored=<lib>-<ver>` rows carry the upstream's real identities, and the header
 comment names the exact release. Library sources live at their official BFME
