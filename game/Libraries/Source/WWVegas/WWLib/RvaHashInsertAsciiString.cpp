@@ -510,6 +510,9 @@ typedef _STL::hashtable<Rva0046C2A0Value, AsciiString, rts::hash<AsciiString>,
 	Rva0046C2A0ExtractKey, _STL::equal_to<AsciiString>,
 	_STL::allocator<Rva0046C2A0Value> > AsciiStringMapped8Hash0046C2A0;
 
+// Use the dedicated retail resize instead of emitting an out-of-line-hash copy.
+namespace _STL { template <> void AsciiStringMapped8Hash0046C2A0::resize(unsigned int); }
+
 // retail 0x0046C2A0, a 0x10-byte node
 void BfmeHashInsertAnchor0046C2A0( AsciiStringMapped8Hash0046C2A0 &table, const Rva0046C2A0Value &value )
 {
