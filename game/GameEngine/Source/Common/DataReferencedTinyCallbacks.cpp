@@ -41,3 +41,11 @@ void Rva00C6C7D0()
 {
 	g_Va0130A44C = 0x3E4CCCCD;
 }
+
+// 0x00C6C7E0: the next CRT startup-table entry, RVA 0x00EA5AE0.
+// RET at +0x0A and INT3 at +0x0B bound the complete dword store.
+extern unsigned int g_Va0130A454;
+void Rva00C6C7E0()
+{
+	g_Va0130A454 = 0x3D088889;
+}
