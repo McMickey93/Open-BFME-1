@@ -1,7 +1,14 @@
 // cl: /O2 /Ob0
 
 // Retail global at 0x0112C6F4, recorded as ?g_bfmeVftUUA@@3PAPAXA.
-extern void *g_bfmeVftUUA[];
+// Retail table at VA 0x0112C6F4: 2 slots, ending before 0x0112C6FC.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern "C" void __identifier("?update@Rva00803080@@QAEXI@Z")();
+extern "C" void __identifier("??_GGen008030A0@@UAEPAXI@Z")();
+void *g_bfmeVftUUA[] = {
+    reinterpret_cast<void *>(&__identifier("?update@Rva00803080@@QAEXI@Z")),
+    reinterpret_cast<void *>(&__identifier("??_GGen008030A0@@UAEPAXI@Z")),
+};
 
 class Rva00803080
 {
