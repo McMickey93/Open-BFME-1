@@ -1,12 +1,12 @@
 // ?rva009148C0@PointGroupClass@@QAEXPAVVector3@@PAMPAEH@Z
-// partial score=0.9925 date=2026-10-24
+// partial score=0.9955 date=2026-10-25
 // ?rva009148C0@PointGroupClass@@QAEXPAVVector3@@PAMPAEH@Z
 // cl: /O2 /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWSaveLoad /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/Wwutil /Igame/Libraries/Source/WWVegas/WWDownload /Igame/Libraries/Source/Compression /Igame/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/shims/sweep
 // Ported from Open-BFME-2 Code/Libraries/Source/WWVegas/WW3D2/PointGroupClassRva0017A890.cpp
 // (commit d1720ae604, matched there for the BFME2 binary) with BFME1 include paths and
 // without /arch:SSE /G7, and BFME1's full DX8Wrapper::Get_Transform body (D3DMATRIX
 // local, device default branch). 9232/9232 bytes; every case exact except case 7,
-// where the view-transform row sums differ in operand order (69 bytes).
+// where the view-transform row sums differ in operand order (42 bytes).
 // PointGroupClass vertex-location fill, retail RVA 0x0017A890 (VA 0x009148C0),
 // PointGroupClass vertex-location fill, retail RVA 0x0017A890 (VA 0x009148C0),
 // 12000 bytes including its 12-entry dispatch table. Called by the matched
@@ -292,7 +292,6 @@ void PointGroupClass::rva009148C0(Vector3 *point_loc, float *point_size, unsigne
 				if (!Get_Flag(BILLBOARD)) {
 					Matrix4 rotMat;
 					Matrix4 view;
-					Vector4 result;
 					DX8Wrapper::Get_Transform(D3DTS_VIEW,view);
 					for (int i = 0; i < active_points; i++) {
 						D3DXMatrixRotationZ(&(D3DXMATRIX&) rotMat, ((float)point_orientation[0] / 255.0f * 2 * D3DX_PI));
@@ -314,7 +313,7 @@ void PointGroupClass::rva009148C0(Vector3 *point_loc, float *point_size, unsigne
 						vertex_loc[3].X = point_loc->X - dx1;
 						vertex_loc[3].Y = point_loc->Y - dy1;
 						vertex_loc[3].Z = point_loc->Z;
-						result = view * vertex_loc[0];
+						Vector4 result = view * vertex_loc[0];
 						vertex_loc[0].X = result.X;
 						vertex_loc[0].Y = result.Y;
 						vertex_loc[0].Z = result.Z;
