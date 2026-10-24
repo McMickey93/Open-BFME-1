@@ -1,7 +1,9 @@
 // cl: /O2 /EHsc /MD /D__BUILDING_STLPORT
 // stlport
 #include <string>
-#include <locale>
+#include <stl/_locale.h>
+// Only locale declarations are needed; <locale> also instantiates unrelated
+// stream facets against the library-internal locale constructors below.
 #include <clocale>
 
 // _STL::locale::global, STLport 4.6 src/locale_impl.cpp, retail 0x008366E0
