@@ -45,7 +45,7 @@ private:
 class AsciiString
 {
 public:
-	void set(const AsciiString &other);
+	void set(const AsciiString &other) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&other); }
 	int compare(const AsciiString &other) const;
 	~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 
