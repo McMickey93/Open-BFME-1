@@ -16,12 +16,12 @@ template <typename T> class StringBase
 
 public:
 	void set( const StringBase<T> &other );
+	~StringBase() { releaseBuffer(); }
 
 private:
 	StringBase() : m_data( 0 ) {}
 	StringBase( const T *text );
 	StringBase( const StringBase<T> &other );
-	~StringBase() { releaseBuffer(); }
 private:
 	void releaseBuffer();
 
@@ -53,10 +53,14 @@ public:
 	int winEnable( bool enable );
 };
 
-class GameSpyStagingRoom
+class GameSpyStagingRoom;
+
+// Retail ILT 0x0002C7B4 reaches the matched +0x418 wide-string accessor,
+// not the separately named +0x3A0 GameSpyStagingRoom::getGameName body.
+class Rva00385F20Host
 {
 public:
-	UnicodeString getGameName();
+	StringBase<unsigned short> copyStringAt418();
 };
 
 #define GAMESPY_SLOT( n ) virtual void gamespySlot##n() = 0
@@ -125,7 +129,7 @@ void BfmeAptScreenOnlineCustomMatch::applyPreferredGameNamePassword( bool fromPr
 	{
 		GameSpyStagingRoom *room = findSelectedStagingRoom();
 		if( room )
-			nameText.set( room->getGameName() );
+			nameText.set( reinterpret_cast<Rva00385F20Host *>(room)->copyStringAt418() );
 	}
 
 	m_namePasswordApplied = 1;
