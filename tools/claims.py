@@ -8,15 +8,23 @@ else's work in progress. On 2026-09-27 three bodies were converted twice
 and a bank that appeared at 0x008FA4B0 mid-seat), and each duplicate threw a
 seat's work away.
 
-HOW. A claim is the ref `refs/claims/0xRVA` on origin, pointing at a tiny
+HOW. A claim is the branch `refs/heads/claims/0xRVA` on origin, pointing at a tiny
 parentless commit whose message is JSON {owner, host, run, nonce, created,
 expires}. Creating a ref that already exists is refused by a non-forced push,
 so a claim is atomic across hosts with no server to run; `--atomic` makes a
 multi-body claim all-or-nothing per attempt. An expired claim is taken over
 with `--force-with-lease=<ref>:<old>` (compare-and-swap), and a release deletes
-a ref only if it is still the owner's. Refs under refs/claims/ are not
-branches: nobody checks them out or merges them, and nothing about pushing to
-master changes.
+a ref only if it is still the owner's. Nobody checks a claim branch out or
+merges it, and nothing about pushing to master changes.
+
+BRANCHES (2026-10-24). Claims were refs/claims/0xRVA until Claude Code's cloud
+sessions joined: their git proxy refuses (403) every push that is not a branch,
+and every branch deletion. So claims are branches now, and a release that
+cannot delete its branch overwrites it with an already-expired marker commit
+instead (same compare-and-swap). Readers still honour live claims left under
+refs/claims/ by older checkouts (a claim under refs/heads/claims/ wins when
+both are live); nothing new is written there. `claims.py prune` deletes claim
+refs that expired long ago, in both places.
 
 eligibility.busy_rvas() includes every live claim, so every picker that asks
 it (next_work, brief, pick_anon, pick_big, gap_seats, astra_seats, ...) skips
@@ -30,6 +38,7 @@ claimed bodies. fleet_run and astra_seats claim what they serve.
   python3 tools/claims.py release 0xRVA [...]  # release your own claims
   python3 tools/claims.py release --landed [SHA]
       # release claims whose rows are ON origin/master (SHA: rows it names by Claim-Lease trailer)
+  python3 tools/claims.py prune [--hours N]    # delete claim refs expired over N h (default 24)
 
 FAIL-CLOSED (2026-09-29, linking_plan.md workstream G). claim() used to
 return ([], []) when origin was unreachable, which a caller cannot tell from
@@ -69,7 +78,8 @@ from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-NS = "refs/claims/"
+NS = "refs/heads/claims/"
+LEGACY_NS = "refs/claims/"  # read only: claims older checkouts still write
 # Git keeps refs/worktree/ private to the current checkout. Ordinary refs are
 # shared by every linked worktree: concurrent claim fetches then race their
 # expected-old-SHA updates and report an available origin as unreachable.
@@ -77,6 +87,7 @@ NS = "refs/claims/"
 # every worker against the same authoritative claim. (Ported from Open-BFME-2
 # 542acb66c4; the old shared refs/claims-seen/ mirror is no longer read.)
 SEEN = "refs/worktree/claims-seen/"  # local mirror; never pushed
+LEGACY_MIRROR = "refs/worktree/claims-seen-legacy/"  # mirror of LEGACY_NS
 MASTER_SEEN = "refs/worktree/claims-master"  # origin/master as settlement saw it
 LEGACY_SEEN = "refs/claims-seen/"    # the old shared mirror: older checkouts still read it
 TTL_HOURS = float(os.environ.get("BFME_CLAIM_TTL_HOURS", "4"))
@@ -210,8 +221,15 @@ def current_lease(rva, who=None, root=None):
     return entry[1].get("lease") or entry[0]
 
 
-def ref_of(rva):
-    return f"{NS}0x{int(rva, 16) if isinstance(rva, str) else rva:08X}"
+def ref_of(rva, ns=NS):
+    return f"{ns}0x{int(rva, 16) if isinstance(rva, str) else rva:08X}"
+
+
+def _branch_sha(rva, root=None):
+    """The claim branch's sha in the local mirror, or "" when it has none
+    (the claim, if any, is a legacy ref). Leases on the branch use this."""
+    got = _git("rev-parse", "-q", "--verify", SEEN + ref_of(rva)[len(NS):], cwd=root)
+    return got.stdout.strip() if got.returncode == 0 else ""
 
 
 def _ints(rvas):
@@ -253,7 +271,7 @@ def fetch(root=None):
     # A claim marker has no submodule inputs: an inherited submodule.recurse
     # setting must not make this coordination fetch touch other remotes.
     got = _git("fetch", "-q", "--prune", "--no-tags", "--recurse-submodules=no",
-               REMOTE, f"+{NS}*:{SEEN}*", cwd=root, timeout=120)
+               REMOTE, f"+{NS}*:{SEEN}*", f"+{LEGACY_NS}*:{LEGACY_MIRROR}*", cwd=root, timeout=120)
     # The old shared refs/claims-seen/ mirror is NOT pruned here: checkouts
     # still running claims.py from before 53a0bc2eb4 read it as their live
     # mirror, and deleting it made their queued landings lease-less (review
@@ -262,8 +280,20 @@ def fetch(root=None):
 
 
 def _read_local(root=None):
-    """{rva: (sha, info)} from the local mirror."""
-    out = _git("for-each-ref", "--format=%(refname)%09%(objectname)%09%(contents:subject)", SEEN,
+    """{rva: (sha, info)} from the local mirror: the claim branch, or a claim
+    an older checkout left under LEGACY_NS when only that one is live."""
+    claims = _read_mirror(SEEN, root)
+    now = time.time()
+    for rva, entry in _read_mirror(LEGACY_MIRROR, root).items():
+        mine = claims.get(rva)
+        if mine is None or mine[1].get("expires", 0) <= now < entry[1].get("expires", 0):
+            claims[rva] = entry
+    return claims
+
+
+def _read_mirror(mirror, root=None):
+    """{rva: (sha, info)} from one mirror."""
+    out = _git("for-each-ref", "--format=%(refname)%09%(objectname)%09%(contents:subject)", mirror,
                cwd=root).stdout
     claims = {}
     for line in out.splitlines():
@@ -325,9 +355,11 @@ def claim(rvas, who=None, ttl_hours=TTL_HOURS, note="", root=None):
     lease = uuid.uuid4().hex
     sha = _record(who, ttl_hours, note, root, lease=lease)
 
+    branch = {r: _branch_sha(r, root) for r in wanted}
+
     def spec(rva):
-        old = current.get(rva)
-        return (f"--force-with-lease={ref_of(rva)}:{old[0]}" if old else None,
+        old = branch[rva]
+        return (f"--force-with-lease={ref_of(rva)}:{old}" if old else None,
                 f"{sha}:{ref_of(rva)}" if not old else f"+{sha}:{ref_of(rva)}")
 
     def push(batch):
@@ -404,11 +436,16 @@ def renew(tokens, who=None, ttl_hours=TTL_HOURS, note="", root=None):
                       lease=entry[1].get("lease") or token,
                       since=entry[1].get("since") or entry[1].get("created"))
         token = entry[0]                                    # the generation we replace
-        pushed = _git("push", "-q", f"--force-with-lease={ref_of(rva)}:{token}", REMOTE,
+        # A legacy claim moves to its branch, which must not exist yet.
+        branch = _branch_sha(rva, root)
+        moved = branch != token
+        pushed = _git("push", "-q", f"--force-with-lease={ref_of(rva)}:{branch}", REMOTE,
                       f"+{sha}:{ref_of(rva)}", cwd=root, timeout=120)
         if pushed.returncode == 0:
             renewed[rva] = sha
             _mirror(rva, sha, root)
+            if moved:                   # the legacy ref would outlive a later release
+                _drop(rva, token, who, root, ns=LEGACY_NS)
             continue
         if not fetch(root):
             raise ClaimsUnavailable("claims: renew push failed and origin cannot be re-read")
@@ -461,7 +498,7 @@ def holds(rva, token, root=None):
     """True when origin's claim ref for `rva` is still exactly `token` (the
     fencing check a publisher makes before landing). Raises ClaimsUnavailable
     when origin cannot be asked."""
-    got = _git("ls-remote", REMOTE, ref_of(rva), cwd=root, timeout=120)
+    got = _git("ls-remote", REMOTE, ref_of(rva), ref_of(rva, LEGACY_NS), cwd=root, timeout=120)
     if got.returncode:
         raise ClaimsUnavailable(f"claims: cannot ask origin about {ref_of(rva)}")
     return any(line.split("\t")[0] == token for line in got.stdout.splitlines())
@@ -486,13 +523,53 @@ def release(rvas, who=None, force=False, root=None, tokens=None):
             continue
         if rva in tokens and entry[0] != tokens[rva]:
             continue                    # taken over since: not ours to delete
-        gone = _git("push", "-q", f"--force-with-lease={ref_of(rva)}:{entry[0]}", REMOTE,
-                    f":{ref_of(rva)}", cwd=root, timeout=120)
-        if gone.returncode == 0:
+        if _drop(rva, entry[0], who, root):
             done.append(rva)
-            _mirror(rva, None, root)
     active.cache_clear()
     return done
+
+
+def _drop(rva, sha, who, root=None, ns=None):
+    """Delete the claim ref of `rva` while it is still `sha`. A proxy that
+    refuses branch deletions (Claude Code's cloud sessions) still lets the
+    branch be overwritten, compare-and-swap, by an already-expired marker."""
+    if ns == LEGACY_NS or _branch_sha(rva, root) != sha:     # a legacy ref
+        ref = ref_of(rva, LEGACY_NS)
+        gone = _git("push", "-q", f"--force-with-lease={ref}:{sha}", REMOTE, f":{ref}",
+                    cwd=root, timeout=120)
+        if gone.returncode == 0:
+            _git("update-ref", "-d", LEGACY_MIRROR + ref[len(LEGACY_NS):], cwd=root)
+        return gone.returncode == 0
+    lease = f"--force-with-lease={ref_of(rva)}:{sha}"
+    if _git("push", "-q", lease, REMOTE, f":{ref_of(rva)}", cwd=root, timeout=120).returncode == 0:
+        _mirror(rva, None, root)
+        return True
+    expired = _record(who, 0, "released", root)
+    if _git("push", "-q", lease, REMOTE, f"+{expired}:{ref_of(rva)}", cwd=root, timeout=120).returncode == 0:
+        _mirror(rva, expired, root)
+        return True
+    return False
+
+
+def prune(hours=24.0, root=None):
+    """Delete claim refs (both namespaces) that expired over `hours` ago, each
+    compare-and-swapped on what was fetched. Returns the pruned ints; a host
+    that may not delete branches prunes nothing."""
+    if not fetch(root):
+        raise ClaimsUnavailable("claims: cannot fetch claims from origin to prune")
+    cutoff = time.time() - hours * 3600
+    done = []
+    for ns, mirror in ((NS, SEEN), (LEGACY_NS, LEGACY_MIRROR)):
+        for rva, (sha, info) in sorted(_read_mirror(mirror, root).items()):
+            if info.get("expires", 0) > cutoff:
+                continue
+            ref = ref_of(rva, ns)
+            if _git("push", "-q", f"--force-with-lease={ref}:{sha}", REMOTE, f":{ref}",
+                    cwd=root, timeout=120).returncode == 0:
+                _git("update-ref", "-d", mirror + ref[len(ns):], cwd=root)
+                done.append(rva)
+    active.cache_clear()
+    return sorted(set(done))
 
 
 # ---- release on authoritative landing -------------------------------------
@@ -885,10 +962,12 @@ def release_landed(sha=None, root=None, who=None, keep_days=1.0, hold=()):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("action", choices=["list", "claim", "lease", "release", "whoami"])
+    ap.add_argument("action", choices=["list", "claim", "lease", "release", "prune", "whoami"])
     ap.add_argument("rvas", nargs="*")
     ap.add_argument("--note", default="")
     ap.add_argument("--force", action="store_true", help="release: also claims owned by others")
+    ap.add_argument("--hours", type=float, default=24.0,
+                    help="prune: delete claim refs expired at least this long ago")
     ap.add_argument("--landed", nargs="?", const="", default=None, metavar="SHA",
                     help="release: claims whose rows origin/master holds (this checkout's queued "
                          "landings; with SHA also rows that commit adds under a Claim-Lease: 0xRVA=<lease> trailer)")
@@ -948,6 +1027,14 @@ def main(argv=None):
             print(f"released {len(released)} landed claim(s) origin/master now holds: "
                   f"{' '.join(f'0x{r:08X}' for r in released)}")
         return 0 if not refused else 1
+    if args.action == "prune":
+        try:
+            done = prune(args.hours)
+        except ClaimsUnavailable as error:
+            print(error, file=sys.stderr)
+            return 2
+        print(f"pruned {len(done)} claim ref(s) expired over {args.hours:g} h ago")
+        return 0
     if args.action == "release" and args.landed is not None:
         try:
             done, waiting = release_landed(args.landed or None)

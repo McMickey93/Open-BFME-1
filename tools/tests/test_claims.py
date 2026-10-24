@@ -886,3 +886,85 @@ def test_pull_merge_puts_base_on_second_parent_and_replay_mixes_lineages(hosts):
         print(rev, _git(b, "ls-tree", "-r", rev, "--", "game").strip())
     hosts("a")
     assert claims.release_landed() == ([], [0x100])
+
+
+def _proxy(origin):
+    """Make the fixture origin behave like Claude Code's cloud git proxy:
+    only branch pushes, and no branch deletions."""
+    hook = Path(origin) / "hooks" / "pre-receive"
+    hook.write_text("#!/bin/sh\nwhile read old new ref; do\n"
+                    "  case \"$ref\" in refs/heads/*) ;; *) echo \"403 $ref\" >&2; exit 1 ;; esac\n"
+                    "done\n", newline="\n")
+    hook.chmod(0o755)
+    _git(origin, "config", "receive.denyDeletes", "true")
+
+
+def _legacy_claim(rva, ttl_hours=4):
+    """A claim as checkouts before the branch namespace wrote it."""
+    sha = claims._record(claims.owner(), ttl_hours)
+    claims._git("push", "-q", "origin", f"{sha}:{claims.ref_of(rva, claims.LEGACY_NS)}")
+    claims.active.cache_clear()
+    return sha
+
+
+def test_claims_are_branches_a_cloud_proxy_accepts(hosts):
+    _proxy(hosts.origin)
+    hosts("a")
+    assert claims.claim([0x100]) == ([0x100], [])
+    assert _git(hosts.origin, "for-each-ref", "--format=%(refname)").split() == [
+        "refs/heads/claims/0x00000100"]
+    hosts("b")
+    assert claims.claim([0x100]) == ([], [0x100])
+    hosts("a")
+    token = claims._branch_sha(0x100)
+    renewed, lost = claims.renew({0x100: token})
+    assert lost == [] and claims.holds(0x100, renewed[0x100])
+
+
+def test_a_release_the_proxy_cannot_delete_leaves_an_expired_marker(hosts):
+    _proxy(hosts.origin)
+    hosts("a")
+    claims.claim([0x100])
+    assert claims.release([0x100]) == [0x100]
+    assert claims.active() == {}
+    assert "refs/heads/claims/0x00000100" in _git(hosts.origin, "for-each-ref")
+    hosts("b")
+    assert claims.claim([0x100]) == ([0x100], [])                 # free again
+    assert claims.prune(hours=0) == []                             # live, and no deletions anyway
+
+
+def test_live_legacy_claims_are_still_honoured(hosts):
+    hosts("a")
+    token = _legacy_claim(0x100)
+    hosts("b")
+    assert set(claims.active()) == {0x100}
+    assert claims.claim([0x100]) == ([], [0x100])
+    assert claims.holds(0x100, token)
+    hosts("a")
+    renewed, lost = claims.renew({0x100: token})                   # moves to its branch
+    assert lost == [] and claims.holds(0x100, renewed[0x100])
+    assert _git(hosts.origin, "for-each-ref", "--format=%(refname)").split() == [
+        "refs/heads/claims/0x00000100"]                            # the legacy ref is gone
+    assert claims.release([0x100]) == [0x100]
+    assert claims.active() == {}
+
+
+def test_a_live_claim_branch_wins_over_a_live_legacy_ref(hosts):
+    hosts("a")
+    _legacy_claim(0x100)
+    hosts("b")
+    sha = claims._record("b", 4)
+    claims._git("push", "-q", "origin", f"{sha}:{claims.ref_of(0x100)}")   # a race an old checkout lost
+    claims.active.cache_clear()
+    assert claims.active()[0x100]["owner"] == "b"
+
+
+def test_prune_deletes_long_expired_claims_in_both_namespaces(hosts):
+    hosts("a")
+    claims.claim([0x100], ttl_hours=-48)
+    claims.claim([0x200])
+    _legacy_claim(0x300, ttl_hours=-48)
+    _legacy_claim(0x400, ttl_hours=-1)
+    assert claims.prune(hours=24) == [0x100, 0x300]
+    assert _git(hosts.origin, "for-each-ref", "--format=%(refname)").split() == [
+        "refs/claims/0x00000400", "refs/heads/claims/0x00000200"]

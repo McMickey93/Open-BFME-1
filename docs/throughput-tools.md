@@ -491,7 +491,7 @@ disk counts only through `verify_record(record, key)` (signed with
 6. **Ruleset (the flip).** In repository rules, add a branch ruleset on
    `master` that restricts updates, blocks force pushes and deletions, and
    bypasses only the publisher bot. `refs/submit/*` stays writable, as
-   `refs/claims/*` is today. Prove it: a `--no-verify` push and a GitHub API
+   claim branches (`refs/heads/claims/*`) are today. Prove it: a `--no-verify` push and a GitHub API
    fast-forward of master must both fail. Until then a direct push still
    lands, and the publisher only logs `foreign_push`
    (`test_no_verify_direct_push_is_only_stopped_by_the_admin_ruleset`).
@@ -596,7 +596,7 @@ consecutive days that include a fleet peak.
    itself, deletes the submit refs it ingested and publishes results.
 4. Admin, so `--no-verify` and other accounts cannot bypass the hook. This
    is classic branch protection: it covers only branches matching
-   `master`, so `refs/submit/*` and `refs/claims/*` stay writable, and the
+   `master`, so `refs/submit/*` and claim branches (`refs/heads/claims/*`) stay writable, and the
    existing "Protect master" ruleset (no force push, no deletion) stays as
    it is. `enforce_admins` is required because two other org admins push.
 

@@ -37,7 +37,7 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
     # Shared body claims (tools/claims.py) are parentless marker commits with an
     # empty tree, not code: there is no ledger or source in them to verify.
     # So are leftover publish-window refs (refs/landing/*), which no gate reads.
-    case "${_remote_ref:-}" in refs/claims/*|refs/landing/*) continue ;; esac
+    case "${_remote_ref:-}" in refs/claims/*|refs/heads/claims/*|refs/landing/*) continue ;; esac
     # A fleet run whose shared claim was lost or expired (tools/fleet_run.py
     # Heartbeat) may not publish: another worker owns those bodies now.
     if [ -n "${BFME_RUN_DIR:-}" ] && [ -f "$BFME_RUN_DIR/claim_lost" ]; then
