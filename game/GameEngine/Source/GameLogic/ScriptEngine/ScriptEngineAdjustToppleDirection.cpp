@@ -48,14 +48,9 @@ public:
 		((StringBase<char> *)this)->releaseBuffer();
 	}
 
-	Bool isEmpty(void) const
-	{
-		return m_data == 0 || m_data->m_len == 0;
-	}
-
 	Int compare(const AsciiString &right) const throw();
 
-private:
+public:
 	BfmeAsciiStringData *m_data;
 };
 
@@ -98,7 +93,7 @@ void ScriptEngine::adjustToppleDirection(Object *object, Coord3D *direction)
 {
 	ScriptEngine *engine = this;
 	AsciiString objectName = object->getName();
-	if (objectName.isEmpty() || !direction) {
+	if ((objectName.m_data == 0 || objectName.m_data->m_len == 0) || !direction) {
 		return;
 	}
 
