@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB
+// cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 // These three STLport bodies are kept under honest RVA-scoped owners.  Their
 // destroy loop uses BfmeOwnVUG; the erase bodies use a separate 20-byte
@@ -6,6 +6,7 @@
 
 #define _STLP_NO_EXCEPTIONS 1
 #include <vector>
+#include "ascii_string.h"
 
 typedef bool Bool;
 
@@ -19,9 +20,16 @@ public:
 class Rva001417F0ModuleInfo
 {
 public:
+	// Same nontrivial layout as ModuleInfoClearModuleDataWithTag.cpp; opaque
+	// bytes incorrectly emit a trivial-copy __copy helper.
 	struct Nugget
 	{
-		unsigned char m_data[20];
+		AsciiString first;
+		AsciiString m_moduleTag;
+		const void *second;
+		int interfaceMask;
+		bool copiedFromDefault;
+		bool inheritable;
 		~Nugget();
 	};
 };
