@@ -130,20 +130,8 @@ MultiplayerColorDefinition * MultiplayerSettings::getColor(Int which)
 
 // byte-exact reconstruction: game/GameEngine/Source/Common/MultiplayerSettings_findMultiplayerColorDefinitionByName.cpp
 // ?findMultiplayerColorDefinitionByName@MultiplayerSettings@@ present-unmatched
-MultiplayerColorDefinition * MultiplayerSettings::findMultiplayerColorDefinitionByName(AsciiString name)
-{
-	MultiplayerColorIter iter = m_colorList.begin();
+// The retail-matched implementation lives in its dedicated translation unit.
 
-	while (iter != m_colorList.end())
-	{
-		if (iter->second.getTooltipName() == name)
-			return &(iter->second);
-
-		++iter;
-	}
-
-	return NULL;
-}
 
 // ?newMultiplayerColorDefinition@MultiplayerSettings@@ present-unmatched
 MultiplayerColorDefinition * MultiplayerSettings::newMultiplayerColorDefinition(AsciiString name)
@@ -169,10 +157,11 @@ void MultiplayerSettings::addStartingMoneyChoice( const Money & money, Bool isDe
   }
 }
 
-// ??4MultiplayerColorDefinition@@ present-unmatched
+// Keep the RGB accessor COMDAT emitters required by existing rows; the
+// tooltip copy accesses its member directly to avoid a second getter body.
 MultiplayerColorDefinition * MultiplayerColorDefinition::operator =(const MultiplayerColorDefinition& other)
 {
-	m_tooltipName = other.getTooltipName();
+	m_tooltipName = other.m_tooltipName;
 	m_rgbValue = other.getRGBValue();
 	m_color = other.getColor();
 	m_rgbValueNight = other.getRGBNightValue();
@@ -180,6 +169,7 @@ MultiplayerColorDefinition * MultiplayerColorDefinition::operator =(const Multip
 
 	return this;
 }
+
 
 void MultiplayerColorDefinition::setColor( RGBColor rgb )
 {

@@ -561,29 +561,9 @@ void UpdateStartButton(void)
 
 // -----------------------------------------------------------------------------
 
-static void populateQMColorComboBox(QuickMatchPreferences& pref)
-{
-	Int numColors = TheMultiplayerSettings->getNumColors();
-	UnicodeString colorName;
+// The matched APT helper is provided by populateQMColorComboBox_Thunk.cpp.
+void populateQMColorComboBox(QuickMatchPreferences& pref);
 
-	GadgetComboBoxReset(comboBoxColor);
-
-	MultiplayerColorDefinition *def = TheMultiplayerSettings->getColor(PLAYERTEMPLATE_RANDOM);
-	Int newIndex = GadgetComboBoxAddEntry(comboBoxColor, TheGameText->fetch("GUI:???"), def->getColor());
-	GadgetComboBoxSetItemData(comboBoxColor, newIndex, (void *)-1);
-
-	for (Int c=0; c<numColors; ++c)
-	{
-		def = TheMultiplayerSettings->getColor(c);
-		if (!def)
-			continue;
-
-		colorName = TheGameText->fetch(def->getTooltipName().str());
-		newIndex = GadgetComboBoxAddEntry(comboBoxColor, colorName, def->getColor());
-		GadgetComboBoxSetItemData(comboBoxColor, newIndex, (void *)c);
-	}
-	GadgetComboBoxSetSelectedPos(comboBoxColor, pref.getColor());
-}
 
 // -----------------------------------------------------------------------------
 
