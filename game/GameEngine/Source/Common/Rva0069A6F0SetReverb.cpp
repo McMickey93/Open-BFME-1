@@ -1,11 +1,11 @@
 // cl: /O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD
 // Miles reverb switch: stream/sample reverb levels or 3D effects level.
 
-extern "C" __declspec(dllimport) void __stdcall _AIL_set_stream_reverb_levels(
+extern "C" __declspec(dllimport) void __stdcall AIL_set_stream_reverb_levels(
 	int handle, float dry, float wet);
-extern "C" __declspec(dllimport) void __stdcall _AIL_set_sample_reverb_levels(
+extern "C" __declspec(dllimport) void __stdcall AIL_set_sample_reverb_levels(
 	int handle, float dry, float wet);
-extern "C" __declspec(dllimport) void __stdcall _AIL_set_3D_sample_effects_level(
+extern "C" __declspec(dllimport) void __stdcall AIL_set_3D_sample_effects_level(
 	int handle, float level);
 
 struct Rva0069A6F0AudioInfo
@@ -66,19 +66,19 @@ void Rva0069A6F0Owner::setReverb(Rva0069A6F0Playing **pp)
 		if (m_bytes[0x633])
 		{
 			Rva0069A6F0AudioInfo *info = p->m_event->m_info;
-			_AIL_set_stream_reverb_levels(p->m_handle, info->m_dry, info->m_wet);
+			AIL_set_stream_reverb_levels(p->m_handle, info->m_dry, info->m_wet);
 		}
 		else
-			_AIL_set_stream_reverb_levels(p->m_handle, 1.0f, 0.0f);
+			AIL_set_stream_reverb_levels(p->m_handle, 1.0f, 0.0f);
 		return;
 	case 0:
 		if (m_bytes[0x633])
 		{
 			Rva0069A6F0AudioInfo *info = p->m_event->m_info;
-			_AIL_set_sample_reverb_levels(p->m_handle, info->m_dry, info->m_wet);
+			AIL_set_sample_reverb_levels(p->m_handle, info->m_dry, info->m_wet);
 		}
 		else
-			_AIL_set_sample_reverb_levels(p->m_handle, 1.0f, 0.0f);
+			AIL_set_sample_reverb_levels(p->m_handle, 1.0f, 0.0f);
 		return;
 	case 1:
 	case 2:
@@ -91,7 +91,7 @@ void Rva0069A6F0Owner::setReverb(Rva0069A6F0Playing **pp)
 				level = p->m_event->m_info->m_wet * p->m_effectsScale;
 			else
 				level = 0.0f;
-			_AIL_set_3D_sample_effects_level(handle, level);
+			AIL_set_3D_sample_effects_level(handle, level);
 		}
 		return;
 	}
