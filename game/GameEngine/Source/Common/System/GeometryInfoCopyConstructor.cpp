@@ -53,6 +53,14 @@ struct GeometryRecord
 	~GeometryRecord();
 };
 
+// The record vector copy has its own retail-proven emitter.  Keep this
+// partial record layout from instantiating its placement-copy helpers.
+namespace _STL
+{
+template <>
+vector<GeometryRecord>::vector(const vector<GeometryRecord> &);
+}
+
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Snapshot.h
 class Xfer;
 
