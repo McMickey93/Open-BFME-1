@@ -92,6 +92,79 @@ def test_same_address_with_different_hex_format_is_allowed(repo):
     assert L.staged() == 0
 
 
+def test_failed_staged_listing_refuses_instead_of_treating_it_as_empty(repo, monkeypatch, capsys):
+    put(repo, "game/A.cpp", NAMED)
+    git(repo, "commit", "-qm", "base")
+    put(repo, "game/A.cpp", LITERAL)
+    # An unreadable index is not evidence that no sources were staged.
+    broken_index = repo / "broken-index"
+    broken_index.write_bytes(b"not a git index\n")
+    monkeypatch.setenv("GIT_INDEX_FILE", str(broken_index))
+    assert L.main(["--staged"]) == 1
+    error = capsys.readouterr().err
+    assert "git diff" in error and "index" in error
+
+
+def test_failed_report_listing_refuses_instead_of_reporting_no_debt(repo, monkeypatch, capsys):
+    broken_index = repo / "broken-index"
+    broken_index.write_bytes(b"not a git index\n")
+    monkeypatch.setenv("GIT_INDEX_FILE", str(broken_index))
+    assert L.main(["--report"]) == 1
+    output = capsys.readouterr()
+    assert "git ls-files" in output.err and "index" in output.err
+    assert "0 hard-coded image addresses" not in output.out
+
+
+def test_git_cannot_start_refuses_with_a_diagnostic(repo, monkeypatch, capsys):
+    def unavailable(*args, **kwargs):
+        raise FileNotFoundError("fixture: git is unavailable")
+
+    monkeypatch.setattr(L.subprocess, "run", unavailable)
+    assert L.main(["--staged"]) == 1
+    error = capsys.readouterr().err
+    assert "cannot run git" in error and "git is unavailable" in error
+
+
+@pytest.mark.parametrize("ref", ["HEAD", ""])
+def test_failed_source_read_refuses_instead_of_treating_it_as_empty(repo, monkeypatch, capsys, ref):
+    source = "game/source with spaces.cpp"
+    put(repo, source, NAMED)
+    git(repo, "commit", "-qm", "base")
+    put(repo, source, NAMED + "// changed\n")
+    run = subprocess.run
+
+    def fail_one_read(command, *args, **kwargs):
+        if command == ["git", "show", f"{ref}:{source}"]:
+            return subprocess.CompletedProcess(command, 128, "", "fixture: cannot read object")
+        return run(command, *args, **kwargs)
+
+    monkeypatch.setattr(L.subprocess, "run", fail_one_read)
+    assert L.main(["--staged"]) == 1
+    error = capsys.readouterr().err
+    assert "git show" in error and source in error and "cannot read object" in error
+
+
+def test_first_commit_needs_no_head_blob(repo):
+    put(repo, "game/A.cpp", NAMED)
+    assert L.main(["--staged"]) == 0
+    put(repo, "game/A.cpp", LITERAL)
+    assert L.main(["--staged"]) == 1
+
+
+def test_deleting_source_needs_no_index_blob(repo):
+    put(repo, "game/A.cpp", LITERAL)
+    git(repo, "commit", "-qm", "base")
+    git(repo, "rm", "game/A.cpp")
+    assert L.main(["--staged"]) == 0
+
+
+def test_renaming_source_with_spaces_and_unicode_keeps_its_count(repo):
+    put(repo, "game/old name.cpp", LITERAL)
+    git(repo, "commit", "-qm", "base")
+    git(repo, "mv", "game/old name.cpp", "game/Größe name.cpp")
+    assert L.main(["--staged"]) == 0
+
+
 def test_masks_and_comments_are_not_addresses():
     assert L.literals("if (x & 0x80000000) {}  // *(int *)0x012ED5C8\n") == []
 
