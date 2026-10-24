@@ -16,7 +16,8 @@ public:
 	FunctorNotSet() : std::exception() {}
 };
 
-extern float g_millisecondsToSeconds;
+// Retail VA 0x010766EC stores IEEE-754 0x3A83126F (0.001f).
+float g_millisecondsToSeconds = 0.001f;
 
 class TimedOperation
 {
