@@ -3,7 +3,7 @@
 
 typedef float Real;
 
-extern "C" __declspec(dllimport) double __cdecl bfmeMathGI(double value);
+extern "C" __declspec(dllimport) double __cdecl ceil(double value);
 extern const Real g_bfmeScaleGI;
 
 class BfmePrimaryGI
@@ -20,7 +20,7 @@ public:
 
 void W3DModelDraw::setAnimationLoopDuration(unsigned int amount)
 {
-	Real result = (Real)bfmeMathGI((Real)amount * g_bfmeScaleGI);
+	Real result = (Real)ceil((Real)amount * g_bfmeScaleGI);
 	BfmePrimaryGI *primary = (BfmePrimaryGI *)((char *)this - 0xc);
 	Real *resultPtr = &result;
 	primary->bfmeApplyGI(*resultPtr);
