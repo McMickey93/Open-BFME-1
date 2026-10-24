@@ -59,6 +59,9 @@ public:
 	unsigned char m_byte4B0;                 // 0x4b0
 };
 
+// Retail ILT 0x0002A284 jumps to applyMotiveForce at 0x0029AC40.
+extern void j_0002a284();
+
 class PhysicsBehavior
 {
 public:
@@ -169,7 +172,13 @@ void Object::rva001C7CF0(Real angleDegrees,
 	force.x *= magnitude;
 	force.y *= magnitude;
 	force.z = magnitude * verticalScale;
-	physics->applyMotiveForce(&force);
+	{
+		// Keep the retail thunk route instead of the wrong selected provider.
+		typedef void (PhysicsBehavior::*Function)(const Coord3D *);
+		union { void (*raw)(void); Function member; } fn;
+		fn.raw = j_0002a284;
+		(physics->*fn.member)(&force);
+	}
 	physics->rva0029A6A0(true);
 
 	setModelCondition(this, BFME_MODELCONDITION_BIT120);
