@@ -85,3 +85,13 @@ void Rva00C708F0Release()
 {
     g_rva012F7768.~ExitStringSet();
 }
+
+// The other set is independently registered at RVA 0x006B17D7 and
+// passed to atexit at 0x006B17DF. Its callback uses the same proven
+// destructor route and ends at the INT3 run at 0x00C7091A.
+extern ExitStringSet g_rva012F7750;
+
+void Rva00C70910Release()
+{
+    g_rva012F7750.~ExitStringSet();
+}
