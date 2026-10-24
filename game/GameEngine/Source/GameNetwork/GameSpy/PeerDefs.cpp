@@ -29,6 +29,10 @@
 #define _BFME_RETAIL_PLAYER_INFO_LAYOUT
 #define __PLACEMENT_VEC_NEW_INLINE
 #include <map>
+
+// Use the retail placement-copy helper from UnicodeStringConstruct.cpp.
+class UnicodeString;
+namespace _STL { template <> void _Construct(UnicodeString *, const UnicodeString &); }
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 #include <set>
 
