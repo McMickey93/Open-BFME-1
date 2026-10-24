@@ -45,11 +45,11 @@ public:
 // ?buildFieldParse@Rva00265880@@SAXAAVWideMulti@@@Z in
 // Common/WideBuildFieldParse.cpp, which chains the base builder at the thunk
 // RVA 0x0002AF8B then registers its own .rdata table).  The thunk is the address
-// retail pushes, so the reference spells the thunk the ledger owns there; the real
-// EA identity of the builder it reaches is
+// retail pushes, so the reference spells the name the DIR32 ledger records there,
+// _ScavengerSpecialPowerFieldParse; the real EA identity of the builder it reaches is
 // ?buildFieldParse@ScavengerSpecialPowerModuleData@@SAXAAVMultiIniFieldParse@@@Z,
 // still address-derived in the ledger.
-void __cdecl j_0000f9e3();
+extern "C" void __cdecl ScavengerSpecialPowerFieldParse(MultiIniFieldParse &);
 
 class ScavengerSpecialPower
 {
@@ -62,7 +62,6 @@ ModuleData *ScavengerSpecialPower::friend_newModuleData(INI *ini)
 {
 	ScavengerSpecialPowerModuleData *data = new ScavengerSpecialPowerModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data,
-			reinterpret_cast<void (__cdecl *)(MultiIniFieldParse &)>( &j_0000f9e3 ));
+		ini->initFromINIMultiProc(data, ScavengerSpecialPowerFieldParse);
 	return (ModuleData *)data;
 }
