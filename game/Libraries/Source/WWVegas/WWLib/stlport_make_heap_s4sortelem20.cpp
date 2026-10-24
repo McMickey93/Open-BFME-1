@@ -1,16 +1,29 @@
 // cl: /DNDEBUG /MD /EHsc
+// stlport
 
 // Open-BFME: _STL::__make_heap<S4SortElem20 *, S4Cmp002EB8E0,
 // S4SortElem20, int>, retail 0x002EACD0, 184 bytes.  The neighboring
 // STLport sort bodies identify the twenty-byte element and comparator.
 
 #include "ascii_string.h"
+#include <vector>
+
+// Retail ILT 0x0000E921 routes to the vector destructor at 0x002E1260.
+struct Gen002E1260;
+namespace _STL
+{
+template <> vector<Gen002E1260>::~vector();
+}
 
 class BfmeSortElem20Tail
 {
 public:
 	BfmeSortElem20Tail(const BfmeSortElem20Tail &other);
-	~BfmeSortElem20Tail(void);
+	__forceinline ~BfmeSortElem20Tail(void)
+	{
+		typedef _STL::vector<Gen002E1260> RetailVector;
+		reinterpret_cast<RetailVector *>(this)->~RetailVector();
+	}
 
 private:
 	int m_bfmeBody[3];

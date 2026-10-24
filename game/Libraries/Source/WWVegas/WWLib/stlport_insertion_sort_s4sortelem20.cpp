@@ -1,4 +1,5 @@
 // cl: /DNDEBUG /MD /EHsc
+// stlport
 
 // Open-BFME5: _STL::__insertion_sort<S4SortElem20 *, S4Cmp002EB8E0>, retail
 // 0x002EB270, 144 bytes. The body carried only a machine byte-dump row;
@@ -22,12 +23,24 @@
 // bytes -- does not appear.
 
 #include "ascii_string.h"
+#include <vector>
+
+// Retail ILT 0x0000E921 routes to the vector destructor at 0x002E1260.
+struct Gen002E1260;
+namespace _STL
+{
+template <> vector<Gen002E1260>::~vector();
+}
 
 class BfmeSortElem20Tail
 {
 public:
 	BfmeSortElem20Tail(const BfmeSortElem20Tail &other);	// ILT 0x000266BB
-	~BfmeSortElem20Tail(void);
+	__forceinline ~BfmeSortElem20Tail(void)
+	{
+		typedef _STL::vector<Gen002E1260> RetailVector;
+		reinterpret_cast<RetailVector *>(this)->~RetailVector();
+	}
 
 private:
 	int m_bfmeBody[3];
