@@ -12,7 +12,6 @@ extern void j_00041c09();
 extern void j_0003c9cf();
 extern void j_00014556();
 extern void j_000391a8();
-extern void j_00011897();
 
 struct BfmeA1054
 {
@@ -149,7 +148,7 @@ void bfmeCategoryHead1054(BfmeCategoryHead1054 *p)
 	p->m_zero18 = z;
 	p->m_zero1c = z;
 	p->m_key2 = bfmeMake1054(2);
-	p->m_callback2 = j_00011897;
+	p->m_callback2 = bfmeHookB1054;
 	p->m_zero28 = z;
 	p->m_zero2c = z;
 	bfmeTailB1054Cdecl(reinterpret_cast<BfmeB1054 *>(p));

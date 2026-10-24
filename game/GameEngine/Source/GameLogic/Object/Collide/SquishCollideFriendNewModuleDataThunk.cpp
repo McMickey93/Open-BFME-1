@@ -30,9 +30,13 @@ public:
 		void (__cdecl *buildFieldParse)(MultiIniFieldParse &));
 };
 
-// The proc retail passes is VA 0x004173DC, the ILT stub ?j_000173dc@@YAXXZ (jumps to the
-// one-byte no-op builder at 0x00122E80, shared with HordeMemberCollide).
-extern void j_000173dc();
+// The proc retail passes is VA 0x004173DC, the ILT stub at RVA 0x000173DC
+// (jumps to the one-byte no-op builder at 0x00122E80, shared with
+// HordeMemberCollide).  No SquishCollide-specific builder name can be proven
+// for the shared stub (its former spelling was retired), so the reference
+// spells the name the DIR32 ledger records there,
+// _HordeMemberCollideFieldParse.
+extern "C" void __cdecl HordeMemberCollideFieldParse(MultiIniFieldParse &parse);
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/SquishCollide.h
 class SquishCollide
@@ -46,6 +50,6 @@ ModuleData *SquishCollide::friend_newModuleData(INI *ini)
 {
 	SquishCollideModuleData *data = new SquishCollideModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, (void (__cdecl *)(MultiIniFieldParse &))&j_000173dc);
+		ini->initFromINIMultiProc(data, HordeMemberCollideFieldParse);
 	return (ModuleData *)data;
 }

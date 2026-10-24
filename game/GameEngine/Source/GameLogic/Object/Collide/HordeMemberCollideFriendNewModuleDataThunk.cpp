@@ -40,10 +40,11 @@ public:
 };
 
 // Retail's second argument is the address of the module-data buildFieldParse
-// proc, which here rides the matched ILT thunk ?j_000173dc@@YAXXZ at RVA
-// 0x000173DC (route 0x00122E80). The pushed immediate is the thunk's own
-// address, not its target's.
-void __cdecl j_000173dc();
+// proc, which rides the matched ILT thunk at RVA 0x000173DC
+// (route 0x00122E80, a one-byte no-op builder shared with SquishCollide's
+// factory).  The reference spells the name the DIR32 ledger records there,
+// _HordeMemberCollideFieldParse.
+extern "C" void __cdecl HordeMemberCollideFieldParse(MultiIniFieldParse &parse);
 
 class HordeMemberCollide
 {
@@ -56,7 +57,6 @@ ModuleData *HordeMemberCollide::friend_newModuleData(INI *ini)
 {
 	HordeMemberCollideModuleData *data = new HordeMemberCollideModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data,
-			reinterpret_cast<void (__cdecl *)(MultiIniFieldParse &)>(&j_000173dc));
+		ini->initFromINIMultiProc(data, HordeMemberCollideFieldParse);
 	return (ModuleData *)data;
 }

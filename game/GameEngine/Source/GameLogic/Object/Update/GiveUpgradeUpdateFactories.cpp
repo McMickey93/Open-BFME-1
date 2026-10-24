@@ -33,14 +33,13 @@ public:
 };
 
 // The pushed immediate is 0x00410CEE = the five-byte ILT thunk at 0x00010CEE,
-// which the ledger defines as ?j_00010cee@@YAXXZ and which chains to the
-// GiveUpgradeUpdate field-parse builder ?buildFieldParse@Rva0025D970@@ (matched
-// body 0x0065D970 in game/GameEngine/Source/Common/WideBuildFieldParse.cpp).
-// Naming the real method would link straight to the builder and change the
-// bytes, so the thunk is referenced and the cast keeps the proc type
-// initFromINIMultiProc declares for its second argument.
-void __cdecl j_00010cee(void);
-typedef void (__cdecl *FieldParseProc)(MultiIniFieldParse &);
+// which chains to the GiveUpgradeUpdate field-parse builder
+// ?buildFieldParse@Rva0025D970@@ (matched body 0x0065D970 in
+// game/GameEngine/Source/Common/WideBuildFieldParse.cpp).  The reference spells
+// the name the DIR32 ledger records there, _GiveUpgradeUpdateFieldParse; the
+// real EA identity of the builder it reaches stays address-derived in the
+// ledger.
+extern "C" void __cdecl GiveUpgradeUpdateFieldParse(MultiIniFieldParse &parse);
 
 class GiveUpgradeUpdate
 {
@@ -58,7 +57,7 @@ ModuleData *GiveUpgradeUpdate::friend_newModuleData(INI *ini)
 {
 	GiveUpgradeUpdateModuleData *data = new GiveUpgradeUpdateModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, (FieldParseProc)&j_00010cee);
+		ini->initFromINIMultiProc(data, GiveUpgradeUpdateFieldParse);
 	return (ModuleData *)data;
 }
 

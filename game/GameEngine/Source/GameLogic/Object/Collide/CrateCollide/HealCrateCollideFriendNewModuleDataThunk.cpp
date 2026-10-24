@@ -22,9 +22,6 @@ class CrateCollideModuleData
 public:
 	CrateCollideModuleData();
 
-	// the clsmd::buildFieldParse the module-data macro hands to INI
-	static void buildFieldParse(MultiIniFieldParse &parse);
-
 private:
 	virtual void bfmeVtableSlot00();
 
@@ -42,6 +39,14 @@ public:
 		void (__cdecl *buildFieldParse)(MultiIniFieldParse &));
 };
 
+// Retail's second argument is the address of the module-data buildFieldParse
+// proc, which rides the ILT thunk at VA 0x00412742; the reference spells the
+// name the DIR32 ledger records there, _HealCrateCollideFieldParse.  The
+// builder it reaches is ?buildFieldParse@CrateCollideModuleData@@SAXAAVMultiIniFieldParse@@@Z
+// (matched body 0x00217AB0 in game/GameEngine/Source/Common/MidTableRegisterForwarders.cpp),
+// shared with ShroudCrateCollide's factory, which pushes the same thunk.
+extern "C" void __cdecl HealCrateCollideFieldParse(MultiIniFieldParse &parse);
+
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/HealCrateCollide.h
 class HealCrateCollide
 {
@@ -54,6 +59,6 @@ ModuleData *HealCrateCollide::friend_newModuleData(INI *ini)
 {
 	CrateCollideModuleData *data = new CrateCollideModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, &CrateCollideModuleData::buildFieldParse);
+		ini->initFromINIMultiProc(data, HealCrateCollideFieldParse);
 	return (ModuleData *)data;
 }
