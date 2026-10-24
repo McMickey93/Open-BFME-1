@@ -1,8 +1,14 @@
 // ?tryToIgnite@FlammableUpdate@@QAEXXZ
-// partial score=0.5911 date=2026-09-28
+// partial score=0.5598 date=2026-10-24
 // ?tryToIgnite@FlammableUpdate@@QAEXXZ
-// Candidate only: 962 bytes versus 961; normalized instruction match 0.985.
-// Refined native FX wrappers; owner spill and cursor/element slots still differ.
+// Candidate: 950 bytes versus 961; 128 non-reloc diffs, first at +01c4.
+// FXList static wrappers now carry the landed FXListDoFXObjStatic.cpp shape
+// (named `self` const_cast local): that alone fixed the whole prologue and
+// callee-saved assignment (me->ebp, 1->edi, data->edi reuse), 391->128 diffs.
+// Remaining: retail rotates the loop with a cursor home at [esp+0x10] and a
+// head reload (+01d4 jmp / +01d6 mov eax,[esp+0x10] / align pad, the 12
+// missing bytes); ours keeps the cursor in ebx. Retail slots: cursor 0x10,
+// self 0x14, elem 0x18; ours: elem 0x10, cursor 0x18.
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Igame/GameEngine/Source/GameLogic/Object
 // stlport
 //
@@ -268,13 +274,23 @@ private:
 };
 
 // ?tryToIgnite@FlammableUpdate@@QAEXXZ
-__forceinline void FXList::doFXPos(const FXList *fx, const Coord3D *pos, const Matrix3D *matrix, float speed, const Coord3D *secondary)
+__forceinline void FXList::doFXPos(const FXList *fxList, const Coord3D *pos, const Matrix3D *matrix, float speed, const Coord3D *secondary)
 {
-    if (fx) { if (!fx->bfmeIsBlocked()) fx->doFXPos(pos,matrix,speed,secondary); }
+    if (fxList)
+    {
+        FXList *self = const_cast<FXList *>(fxList);
+        if (!self->bfmeIsBlocked())
+            self->doFXPos(pos,matrix,speed,secondary);
+    }
 }
-__forceinline void FXList::doFXObj(const FXList *fx, const Object *object, const Object *secondary)
+__forceinline void FXList::doFXObj(const FXList *fxList, const Object *object, const Object *secondary)
 {
-    if (fx) { if (!fx->bfmeIsBlocked()) fx->doFXObj(object,secondary); }
+    if (fxList)
+    {
+        FXList *self = const_cast<FXList *>(fxList);
+        if (!self->bfmeIsBlocked())
+            self->doFXObj(object,secondary);
+    }
 }
 
 void FlammableUpdate::tryToIgnite()
