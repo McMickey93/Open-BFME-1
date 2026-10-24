@@ -1,0 +1,205 @@
+diff --git a/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp b/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp
+index ecc9523f5e4000543936f3f69c3f9aa6749949fb..e6c1ff2e8fe77ae5a95c7de30b4a451a6054349d 100644
+--- a/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp
++++ b/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp
+@@ -1,8 +1,16 @@
+-// cl: /O2 /Ob0 /MD
+-// Open-BFME5: STLport ios_base::iword, retail 0x0083F0C0, 117 bytes.
+-
++// cl: /O2 /Ob1 /MD
++// stlport
++// ios_base auxiliary slots and callback registration, using the vendored types.
++// BFME1: iword 0x0083F0C0/117B, pword 0x0083F140/117B,
++// register_callback 0x0083F1C0/132B, callback growth 0x0083EF20/147B.
++// The callback helper returns a non-POD pair; C++ provides its return storage.
++// Evidence: targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md.
++// grow_array is the existing recovery's spelling, not a claimed native name.
++#define _STLP_USE_STATIC_LIB
++#define _STLP_NO_EXCEPTIONS
++#include <ios>
+ #include <stdio.h>
+-
++#include <stdlib.h>
+ namespace _STL
+ {
+ 
+@@ -16,67 +24,78 @@ struct GrowPair
+ template <class T>
+ GrowPair<T> *grow_array(GrowPair<T> *, T *, unsigned int, unsigned int);
+ 
+-// Separate four-byte fallback cells returned by the two retail wrappers.
++// Keep the separately owned fallback cells of the two existing wrappers.
+ long g_0130BD24 = 0;
+ void *g_0130BD28 = 0;
+ 
+-class ios_base
+-{
+-public:
+-	long &iword(int index);
+-	void *&pword(int index);
+-
+-private:
+-	char m_vtable[4];
+-	int m_fmtflags;
+-	int m_iostate;
+-	int m_openmode;
+-	int m_seekdir;
+-	int m_exception_mask;
+-	int m_precision;
+-	int m_width;
+-	char m_locale[4];
+-	void *m_callbacks;
+-	unsigned int m_num_callbacks;
+-	unsigned int m_callback_index;
+-	long *m_iwords;
+-	unsigned int m_num_iwords;
+-	void **m_pwords;
+-	unsigned int m_num_pwords;
+-};
+-
+ long &ios_base::iword(int index)
+ {
+ 	GrowPair<long> grown;
+-	grow_array(&grown, m_iwords, m_num_iwords, index);
++	grow_array(&grown, _M_iwords, _M_num_iwords, index);
+ 	if (grown.first)
+ 	{
+-		m_iwords = grown.first;
+-		m_num_iwords = grown.second;
+-		return m_iwords[index];
++		_M_iwords = grown.first;
++		_M_num_iwords = grown.second;
++		return _M_iwords[index];
+ 	}
+ 
+-	m_iostate |= 1;
+-	if (m_iostate & m_exception_mask)
+-		fputs("ios failure", stderr);
++	_M_iostate |= 1;
++	if (_M_iostate & _M_exception_mask)
++		::fputs("ios failure", stderr);
+ 	return g_0130BD24;
+ }
+ 
+ void *&ios_base::pword(int index)
+ {
+ 	GrowPair<void *> grown;
+-	grow_array(&grown, m_pwords, m_num_pwords, index);
++	grow_array(&grown, _M_pwords, _M_num_pwords, index);
+ 	if (grown.first)
+ 	{
+-		m_pwords = grown.first;
+-		m_num_pwords = grown.second;
+-		return m_pwords[index];
++		_M_pwords = grown.first;
++		_M_num_pwords = grown.second;
++		return _M_pwords[index];
+ 	}
+ 
+-	m_iostate |= 1;
+-	if (m_iostate & m_exception_mask)
+-		fputs("ios failure", stderr);
++	_M_iostate |= 1;
++	if (_M_iostate & _M_exception_mask)
++		::fputs("ios failure", stderr);
+ 	return g_0130BD28;
+ }
+ 
++template<class T> inline const T &stlp_max(const T&a,const T&b) { return a<b?b:a; }
++template<class T> __declspec(noinline) pair<T *,unsigned> grow_array(T *old_ptr,unsigned old_count,unsigned index) {
++
++ if((int)old_count<(int)(index+1)) {
++  unsigned needed=index+1;
++  unsigned grown=old_count+old_count;
++  unsigned count=stlp_max(grown,needed);
++  unsigned bytes=count*sizeof(T);
++  T *p=(T *)::realloc(old_ptr,bytes);
++  if(p) {
++   T zero=T();
++   T *end=(T *)(count*sizeof(T)+(unsigned)p);
++   T *dst=p+old_count;
++   if(dst!=end)do { *dst=zero; ++dst; } while(dst!=end);
++   return pair<T *,unsigned>(p,count);
++  }
++  return pair<T *,unsigned>(0,0);
++ }
++ return pair<T *,unsigned>(old_ptr,old_count);
++}
++// ?register_callback@ios_base@_STL@@QAEXP6AXW4event@12@AAV12@H@ZH@Z present-unmatched
++void ios_base::register_callback(event_callback fn,int index) {
++ typedef pair<event_callback,int> Callback;
++ pair<Callback *,unsigned> grown=grow_array(_M_callbacks,_M_num_callbacks,_M_callback_index);
++ if(grown.first) {
++  pair<Callback *,unsigned> tmp=grown;
++  _M_num_callbacks=tmp.second;
++  _M_callbacks=tmp.first;
++  Callback cb; cb.first=fn; cb.second=index;
++  _M_callbacks[_M_callback_index++]=cb;
++  return;
++ }
++ _M_iostate|=1;
++ if(_M_iostate&_M_exception_mask) ::fputs("ios failure",stderr);
++}
++
+ }
+diff --git a/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md b/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..5766b9900777c8dde0408e0063d316bc83b83215
+--- /dev/null
++++ b/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md
+@@ -0,0 +1,55 @@
++# Callback registration and its returned pair
++
++The target is the complete 132-byte function at RVA `0x0083F1C0`, with
++`ret 8` on both exits and no branch outside its extent. The existing evidence
++in `0083f1c0-bfme2-callback-retry.md` establishes the callback payload, receiver
++fields and failure-reporting imports. Its requested reopening condition is
++now met: Open-BFME-2 at `d8dcd30e0cda47386f50b031c2bbcc8b9910cc02` contains a
++verified `ios_base::register_callback` in
++`Code/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp`, at target RVA
++`0x0001C090`. Its evidence is
++`reverse/attempt_support/ios-callback-local-count-20261021/readme.md`.
++
++An independent comparison of the two retail images finds the same 48
++instructions over 132 bytes. Only the grow call, imported `_iob`, literal
++`ios failure` and imported `fputs` operands differ. The 147-byte grow bodies
++at BFME1 `0x0083EF20` and BFME2 `0x0001BEC0` likewise have the same 60
++instructions, differing only in the `realloc` import address. The two existing
++117-byte BFME1 iword/pword bodies have the same instruction sequences as their
++BFME2 counterparts, with the expected target-specific bindings.
++
++The source hypothesis uses the actual vendored `ios_base` and
++`pair<event_callback, int>` definitions. The pair returned by the grow helper
++is non-POD, so C++ supplies its hidden return-storage argument. This recovers
++the native call shape without an explicit output-pointer declaration. The
++donor shows why this distinction matters: the old declaration yields the
++same helper bytes but chooses the wrong stderr register in its caller.
++The target callback layout and uses are established independently above;
++the original helper spelling is not established. `grow_array` remains the
++existing recovery's spelling, with its return and payload types corrected.
++
++The existing helper identity at `0x0083EF20` is:
++
++```
++??$grow_array@UCallback@_STL@@@_STL@@YAPAU?$GrowPair@UCallback@_STL@@@0@PAU10@PAUCallback@0@II@Z
++```
++
++Its proposed replacement compiled identity is:
++
++```
++??$grow_array@U?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@@_STL@@YA?AU?$pair@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@I@0@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@0@II@Z
++```
++
++BFME1 has no ICF allowance. If native qualification succeeds, replace this
++one helper owner through normal `add_match --correct-identity`, rather than
++adding the second identity used by the BFME2 donor. Its old standalone source
++must then be removed. The two existing fallback data cells retain their
++names, sizes and source owner. Leave the generated ASM file unchanged, as
++required for a converted row.
++
++Use BFME1's own vendored headers. Their version macro is `0x460`; the donor's
++is `0x452`. The relevant pair constructors and callback layout agree, but
++this is not a substitute for native BFME1 compilation. Ordinary admission
++must verify all four bodies, the two data rows, imports and relocations.
++The new recovery can credit only the 132 callback bytes; rehoming the existing
++147-byte helper and retaining the two 117-byte wrappers add no coverage.

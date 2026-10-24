@@ -1,0 +1,114 @@
+{
+  "base": "e3d9540a365c3946d08f471b8145c78af3fba415",
+  "mode": "explore",
+  "body": {
+    "rva": "0x0083F1C0",
+    "size": 132,
+    "symbol": "?register_callback@ios_base@_STL@@QAEXP6AXW4event@12@AAV12@H@ZH@Z",
+    "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+    "replace": "rva"
+  },
+  "claims": [
+    {
+      "rva": "0x0083EF20",
+      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
+    },
+    {
+      "rva": "0x0083F0C0",
+      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
+    },
+    {
+      "rva": "0x0083F140",
+      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
+    },
+    {
+      "rva": "0x0083F1C0",
+      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
+    }
+  ],
+  "model": "gpt-6-astra-pro",
+  "notes": "Callback 132B complete retail extent and returned-pair ABI; identity evidence targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md; native diagnostic only; official claim run 40123706404",
+  "admissions": [
+    {
+      "rva": "0x0083EF20",
+      "size": 147,
+      "symbol": "??$grow_array@U?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@@_STL@@YA?AU?$pair@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@I@0@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@0@II@Z",
+      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "replace": "identity",
+      "old_symbol": "??$grow_array@UCallback@_STL@@@_STL@@YAPAU?$GrowPair@UCallback@_STL@@@0@PAU10@PAUCallback@0@II@Z",
+      "identity_evidence": "targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md"
+    },
+    {
+      "rva": "0x0083F1C0",
+      "size": 132,
+      "symbol": "?register_callback@ios_base@_STL@@QAEXP6AXW4event@12@AAV12@H@ZH@Z",
+      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "replace": "rva"
+    }
+  ],
+  "schema_version": 1,
+  "repository": "McMickey93/Open-BFME-1",
+  "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
+  "base_tree": "51d224d9301bd69563c650464cc33f1941f8f06e",
+  "patch_tree": "36fd61704a52599612ea0252c225735614a6b691",
+  "patch_sha256": "8238a20186913a732437f6c3a72aa405f1268ab8f5c0a602b19c66fca40b7310",
+  "message_sha256": "6086c603f66be663adaad6a89808fa3c689734fb6f6e0e027359c690a9ff085a",
+  "files": [
+    {
+      "path": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "mode": "100644",
+      "base_blob": "ecc9523f5e4000543936f3f69c3f9aa6749949fb",
+      "candidate_blob": "e6c1ff2e8fe77ae5a95c7de30b4a451a6054349d",
+      "sha256": "c69a607d13edda6294bf4aa05da5285ad2d945eebab0375eace4b3d626f3927a"
+    },
+    {
+      "path": "targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md",
+      "mode": "100644",
+      "base_blob": null,
+      "candidate_blob": "5766b9900777c8dde0408e0063d316bc83b83215",
+      "sha256": "20c8da0141c537692aedc7ae8d89f5ae2021bc764e9121389ecc3df84c419b72"
+    }
+  ],
+  "base_rows": [
+    {
+      "name": "??$grow_array@UCallback@_STL@@@_STL@@YAPAU?$GrowPair@UCallback@_STL@@@0@PAU10@PAUCallback@0@II@Z",
+      "export_rva": "",
+      "target_rva": "0x0083EF20",
+      "target_size": "147",
+      "source": "game/stlport/IosBaseCallbackArrayGrow.cpp",
+      "status": "matched",
+      "notes": "STLport callback array growth with live zero Callback temporary"
+    },
+    {
+      "name": "?d_0083f1c0@@YAXXZ",
+      "export_rva": "",
+      "target_rva": "0x0083F1C0",
+      "target_size": "132",
+      "source": "game/gen_asm/d_00838560.asm",
+      "status": "matched",
+      "notes": "gen-dump;ghidra=FUN_00c3f1c0"
+    },
+    {
+      "name": "?iword@ios_base@_STL@@QAEAAJH@Z",
+      "export_rva": "",
+      "target_rva": "0x0083F0C0",
+      "target_size": "117",
+      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "status": "matched",
+      "notes": "STLport ios_base::iword; exact C++ wrapper over matched grow_array<long>"
+    },
+    {
+      "name": "?pword@ios_base@_STL@@QAEAAPAXH@Z",
+      "export_rva": "",
+      "target_rva": "0x0083F140",
+      "target_size": "117",
+      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "status": "matched",
+      "notes": "STLport ios_base::pword; exact C++ wrapper over matched grow_array<void*>"
+    }
+  ]
+}

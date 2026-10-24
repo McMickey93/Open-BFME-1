@@ -1,0 +1,15 @@
+Explore ios_base callback registration through its returned pair
+
+Use the vendored STLport callback and pair types with the BFME2
+donor at d8dcd30e0cda47386f50b031c2bbcc8b9910cc02. Preserve the
+existing iword/pword bodies and their two fallback data cells.
+
+This payload is diagnostic only. Before any recovery can be
+committed, a qualifying revision must remove the superseded
+standalone helper and pass canonical identity admission, all
+four body checks, data checks, and normal commit/pre-push hooks.
+
+Claim-Lease: 0x0083EF20=37308152e1c94f1a9bd7ce8a72892c7d
+Claim-Lease: 0x0083F0C0=37308152e1c94f1a9bd7ce8a72892c7d
+Claim-Lease: 0x0083F140=37308152e1c94f1a9bd7ce8a72892c7d
+Claim-Lease: 0x0083F1C0=37308152e1c94f1a9bd7ce8a72892c7d
