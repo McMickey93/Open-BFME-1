@@ -1,4 +1,9 @@
-extern "C" unsigned char bfmeVftVD[];
+// Retail table at VA 0x010EE4EC: 1 slots, ending before 0x010EE4F0.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern "C" void __identifier("?j_0002c7dc@@YAXXZ")();
+extern "C" void *bfmeVftVD[] = {
+    reinterpret_cast<void *>(&__identifier("?j_0002c7dc@@YAXXZ")),
+};
 
 
 class BfmeThingVD
