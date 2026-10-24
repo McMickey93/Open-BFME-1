@@ -1,6 +1,6 @@
 {
   "base": "e3d9540a365c3946d08f471b8145c78af3fba415",
-  "mode": "explore",
+  "mode": "qualify",
   "body": {
     "rva": "0x0083F1C0",
     "size": 132,
@@ -31,7 +31,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Callback 132B complete retail extent and returned-pair ABI; identity evidence targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md; native diagnostic only; official claim run 40123706404",
+  "notes": "STLport returned-pair ABI; complete 147B helper and 132B callback retail extents; native diagnostic run 40124446904; identity evidence targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md",
   "admissions": [
     {
       "rva": "0x0083EF20",
@@ -54,9 +54,9 @@
   "repository": "McMickey93/Open-BFME-1",
   "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
   "base_tree": "51d224d9301bd69563c650464cc33f1941f8f06e",
-  "patch_tree": "36fd61704a52599612ea0252c225735614a6b691",
-  "patch_sha256": "8238a20186913a732437f6c3a72aa405f1268ab8f5c0a602b19c66fca40b7310",
-  "message_sha256": "6086c603f66be663adaad6a89808fa3c689734fb6f6e0e027359c690a9ff085a",
+  "patch_tree": "f27329e18bc055e499c21e78d53a4cb7316da8fe",
+  "patch_sha256": "a254b8c3b0286086ee353faf2b9cb04599c095b4825533dd0ceed3b39b3f3914",
+  "message_sha256": "fcb0101540f6a24f97b7ea1246230b076e10f99b0b201c51bdf64e81b312a4c4",
   "files": [
     {
       "path": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
@@ -66,11 +66,19 @@
       "sha256": "c69a607d13edda6294bf4aa05da5285ad2d945eebab0375eace4b3d626f3927a"
     },
     {
+      "path": "game/stlport/IosBaseCallbackArrayGrow.cpp",
+      "mode": "100644",
+      "base_blob": "aefb32339cafb2e80f1e94f38d3ae06764619569",
+      "candidate_blob": null,
+      "sha256": null,
+      "deleted": true
+    },
+    {
       "path": "targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "5766b9900777c8dde0408e0063d316bc83b83215",
-      "sha256": "20c8da0141c537692aedc7ae8d89f5ae2021bc764e9121389ecc3df84c419b72"
+      "candidate_blob": "84f05b84c9c71cb8dfaec59441ac5e9ea01a79fe",
+      "sha256": "20f0cfc8bd7f151d9c5acf7f4cbf180966c8b1f74425ec253c44b9ceff87f0e1"
     }
   ],
   "base_rows": [

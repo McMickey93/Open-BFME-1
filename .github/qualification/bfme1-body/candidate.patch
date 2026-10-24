@@ -142,12 +142,94 @@ index ecc9523f5e4000543936f3f69c3f9aa6749949fb..e6c1ff2e8fe77ae5a95c7de30b4a451a
 +}
 +
  }
+diff --git a/game/stlport/IosBaseCallbackArrayGrow.cpp b/game/stlport/IosBaseCallbackArrayGrow.cpp
+deleted file mode 100644
+index aefb32339cafb2e80f1e94f38d3ae06764619569..0000000000000000000000000000000000000000
+--- a/game/stlport/IosBaseCallbackArrayGrow.cpp
++++ /dev/null
+@@ -1,76 +0,0 @@
+-// cl: /O2 /MD
+-
+-// Open-BFME5: STLport ios_base callback-array grow, retail 0x0083EF20, 147
+-// bytes. The live zero-valued Callback temporary is intentional: it preserves
+-// the retail register allocation through the callback-pair tail fill.
+-
+-// Retail calls MSVCR71.dll!realloc through IAT 0x01359474.
+-#include <stdlib.h>
+-
+-namespace _STL
+-{
+-
+-struct Callback
+-{
+-	typedef void (*event_callback)(int, void *, int);
+-	event_callback fn;
+-	int index;
+-	Callback() : fn(0), index(0) {}
+-};
+-
+-template <class T>
+-struct GrowPair
+-{
+-	T *first;
+-	unsigned int second;
+-};
+-
+-template <class T>
+-inline const T &stlp_max(const T &a, const T &b)
+-{
+-	return a < b ? b : a;
+-}
+-
+-template <class T>
+-GrowPair<T> *grow_array(GrowPair<T> *out, T *old_ptr, unsigned int old_count, unsigned int index)
+-{
+-	if ((int)old_count < (int)(index + 1))
+-	{
+-		unsigned int needed = index + 1;
+-		unsigned int grown = old_count + old_count;
+-		unsigned int count = stlp_max(grown, needed);
+-		unsigned int bytes = count * sizeof(T);
+-		T *p = (T *)realloc(old_ptr, bytes);
+-		if (p != 0)
+-		{
+-			Callback zero;
+-			T *end = (T *)(count * sizeof(T) + (unsigned int)p);
+-			T *dst = p + old_count;
+-			if (dst != end)
+-			{
+-				do
+-				{
+-					*dst = zero;
+-					++dst;
+-				}
+-				while (dst != end);
+-			}
+-
+-			out->second = count;
+-			out->first = p;
+-			return out;
+-		}
+-
+-		out->first = 0;
+-		out->second = 0;
+-		return out;
+-	}
+-
+-	out->second = old_count;
+-	out->first = old_ptr;
+-	return out;
+-}
+-
+-template GrowPair<Callback> *grow_array(GrowPair<Callback> *, Callback *, unsigned int, unsigned int);
+-
+-}
 diff --git a/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md b/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..5766b9900777c8dde0408e0063d316bc83b83215
+index 0000000000000000000000000000000000000000..84f05b84c9c71cb8dfaec59441ac5e9ea01a79fe
 --- /dev/null
 +++ b/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,87 @@
 +# Callback registration and its returned pair
 +
 +The target is the complete 132-byte function at RVA `0x0083F1C0`, with
@@ -203,3 +285,35 @@ index 0000000000000000000000000000000000000000..5766b9900777c8dde0408e0063d316bc
 +must verify all four bodies, the two data rows, imports and relocations.
 +The new recovery can credit only the 132 callback bytes; rehoming the existing
 +147-byte helper and retaining the two 117-byte wrappers add no coverage.
++
++## Native diagnostic
++
++[Windows run 40124446904](https://github.com/McMickey93/Open-BFME-1/actions/runs/40124446904)
++compiled this source with the repository's original compiler on 2026-10-24.
++The tested source blob is `e6c1ff2e8fe77ae5a95c7de30b4a451a6054349d`
++(SHA-256 `c69a607d13edda6294bf4aa05da5285ad2d945eebab0375eace4b3d626f3927a`).
++All four `tools/probe.py --all --shape` checks report exact instruction bytes
++modulo relocation slots, at their complete retail sizes:
++
++| Body | RVA | Bytes | Relocations |
++| --- | --- | ---: | ---: |
++| Callback grow helper | `0x0083EF20` | 147 | 1 |
++| `ios_base::iword` | `0x0083F0C0` | 117 | 5 |
++| `ios_base::pword` | `0x0083F140` | 117 | 5 |
++| `ios_base::register_callback` | `0x0083F1C0` | 132 | 4 |
++
++The corresponding `tools/explain_mismatch.py` checks resolve the helper,
++iword and pword relocations and report `OK: bytes match`. For the callback,
++the only remaining difference is its REL32 operand at `+0x18`, naming the
++new helper identity above, which this diagnostic deliberately had not yet
++admitted. The prior three stderr-register byte differences are absent.
++
++This result supports the returned-pair ABI correction; it is not an admission
++or a coverage claim. Ordinary `add_match` must first replace the helper's
++existing identity, then replace the callback dump row, and both normal commit
++and push gates must pass. The qualification patch removes the superseded
++`game/stlport/IosBaseCallbackArrayGrow.cpp` while preserving the tested
++source bytes. No additional helper identity, symbol pin or generated ASM
++edit is needed. A retail rel32 caller scan through `tools/delta_sources.py`
++finds only the callback's call at `0x0083F1D7` targeting `0x0083EF20`, with no
++incremental-link thunk for that helper.
