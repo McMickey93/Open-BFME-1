@@ -27,6 +27,22 @@ fail() {
     exit 1
 }
 
+# shadow_cap CMD...: a backstop for a shadow detector, which bounds itself
+# (tools/shadow_budget.py, $BFME_SHADOW_BUDGET_S, default 10 s): GNU timeout at the
+# budget plus 30 s where it exists (Git Bash, Linux, Wine runners). Windows' own
+# timeout.exe is another program, hence the --version probe; without GNU timeout the
+# command runs uncapped. (Ported from Open-BFME-2.)
+shadow_cap() {
+    local cap=${BFME_SHADOW_BUDGET_S:-10}
+    cap=${cap%%.*}
+    case "$cap" in ''|*[!0-9]*) cap=10 ;; esac
+    if [ "$cap" -gt 0 ] && timeout --version >/dev/null 2>&1; then
+        timeout -k 5 $((10#$cap + 30)) "$@"
+    else
+        "$@"
+    fi
+}
+
 refs="$(cat || true)"
 remote_name="${1:-origin}"
 
@@ -122,6 +138,16 @@ while read -r _local_ref local_sha _remote_ref remote_sha; do
         git show "$local_sha:tools/protected_paths.py" | python3 - --range "$base" "$local_sha" \
             || fail "protected verifier/baseline change in outgoing range (see above)"
     fi
+
+    # Empty commits: one parent, and that parent's tree. On Open-BFME-2 a seat re-landing
+    # work already on master pushed 57 of them in four days; every gate below passes a
+    # commit that changes no file. One git log.
+    python3 tools/empty_commits.py --range "$base" "$local_sha" || fail "empty commit(s) in the outgoing range (see above)"
+    # Replays of commits already upstream (Open-BFME-2 saw 3,541 in two days, each a
+    # duplicate row every byte gate passes). Bounded by $BFME_SHADOW_BUDGET_S (default
+    # 10 s), then shadow_cap. Reports, never fails the push.
+    shadow_cap python3 tools/replay_check.py --shadow --range "$base" "$local_sha" < /dev/null \
+        || echo "pre-push: replay_check shadow check failed to run (ignored)" >&2
 
     # Direction gate over the OUTGOING range, same call verify_pr.sh makes on a
     # PR. pre-commit runs it too, but --no-verify and clones that never ran
