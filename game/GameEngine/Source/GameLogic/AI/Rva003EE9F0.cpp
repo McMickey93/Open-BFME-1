@@ -37,19 +37,19 @@ public:
 class Pathfinder;
 class Object;
 
-enum ObjectID
-{
-	INVALID_ID = 0,
-	FORCE_OBJECTID_TO_LONG_SIZE = 0x7ffffff
-};
-
 class Pathfinder
 {
 public:
 	bool bfmeStepD4F90(void *state, PathfindCell *cell);
-	bool slowDoesPathExist(Object *object, const Coord3D *from,
-		const Coord3D *to, ObjectID ignoreObject);
 };
+
+// Retail calls ILT 0x0004A327 -> 0x003EDF90 with four stack words.
+// The fourth word is zero here; its meaning remains under ABI audit.
+extern void j_0004a327();
+typedef bool (Pathfinder::*Rva0004A327Call)(
+	Object *, const Coord3D *, const Coord3D *, unsigned int);
+typedef char Rva0004A327MemberPointerSize[
+	sizeof(Rva0004A327Call) == sizeof(void (*)()) ? 1 : -1];
 
 class TerrainLogic
 {
@@ -129,8 +129,14 @@ check_type:
 	position.z = TheTerrainLogic->getLayerHeight(position.x, position.y,
 		(PathfindLayerEnum)layer, 0, true);
 
-	if (m_pathfinder->slowDoesPathExist(
-		m_object, &m_object->m_position, &position, INVALID_ID))
+	union Rva0004A327Binding
+	{
+		void (*address)();
+		Rva0004A327Call member;
+	} pathCheck;
+	pathCheck.address = &j_0004a327;
+	if ((m_pathfinder->*pathCheck.member)(
+		m_object, &m_object->m_position, &position, 0))
 	{
 		m_found = 1;
 		return true;
