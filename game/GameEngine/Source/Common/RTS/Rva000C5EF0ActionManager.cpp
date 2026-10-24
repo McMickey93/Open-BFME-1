@@ -113,6 +113,10 @@ public:
 
 extern SpecialPowerStore *TheSpecialPowerStore;
 
+// Retail calls ILT 0x00020F04, which jumps to the lookup at 0x000BA930.
+// Preserve that route instead of selecting an unrelated inline COMDAT copy.
+extern void j_00020f04();
+
 // The real SpecialAbilityUpdate derives from the special-power update module;
 // this ABI view retains its primary base slot while declaring the named
 // target-check member used by the GiveUpgrade caller.
@@ -151,9 +155,12 @@ Bool ActionManager::queryRva000C5EF0(Object *object, Object *target, int)
 	if (target->isKindOf(KINDOF_TARGET))
 		goto fail;
 
-	power =
-		TheSpecialPowerStore->findSpecialPowerTemplate(
-			"SpecialAbilityGiveUpgrade");
+	{
+		typedef const SpecialPowerTemplate *(SpecialPowerStore::*Function)(AsciiString);
+		union { void (*raw)(void); Function member; } fn;
+		fn.raw = j_00020f04;
+		power = (TheSpecialPowerStore->*fn.member)("SpecialAbilityGiveUpgrade");
+	}
 	if (power == 0)
 		goto fail;
 

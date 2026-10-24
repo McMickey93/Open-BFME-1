@@ -71,6 +71,10 @@ extern GameLogic *TheGameLogic;
 extern AudioManager *TheAudio;
 extern SpecialPowerStore *TheSpecialPowerStore;
 
+// Retail calls ILT 0x00020F04, which jumps to the lookup at 0x000BA930.
+// Preserve that route instead of selecting an unrelated inline COMDAT copy.
+extern void j_00020f04();
+
 #define TheAudioClientUpdate ((void *)TheAudio)
 
 // ?ObjectDoSpecialPower@@YAHPAUlua_State@@@Z
@@ -84,8 +88,13 @@ int ObjectDoSpecialPower(lua_State *state)
 	Object *object = TheGameLogic->findObjectByID(id);
 	if (!object)
 		return 0;
-	const SpecialPowerTemplate *power =
-		TheSpecialPowerStore->findSpecialPowerTemplate(lua_tostring(state, 2));
+	const SpecialPowerTemplate *power;
+	{
+		typedef const SpecialPowerTemplate *(SpecialPowerStore::*Function)(AsciiString);
+		union { void (*raw)(void); Function member; } fn;
+		fn.raw = j_00020f04;
+		power = (TheSpecialPowerStore->*fn.member)(lua_tostring(state, 2));
+	}
 	if (!power)
 		return 0;
 	SpecialPowerModuleInterface *module =
