@@ -46,18 +46,6 @@ public:
 	{
 		return m_data ? &m_data->data[0] : "";
 	}
-	__forceinline const char *reverseFind(char match) const
-	{
-		const char *first = str();
-		const char *p = first + (m_data ? m_data->length : 0);
-		while (p != first)
-		{
-			--p;
-			if (*p == match)
-				return p;
-		}
-		return 0;
-	}
 
 	static const AsciiString TheEmptyString;
 	friend AsciiString GetBaseFileFromFile(AsciiString fname);
@@ -66,7 +54,18 @@ public:
 
 AsciiString GetBaseFileFromFile(AsciiString fname)
 {
-	const char *separator = fname.reverseFind('.');
+	const char *first = fname.str();
+	const char *p = first + (fname.m_data ? fname.m_data->length : 0);
+	const char *separator = 0;
+	while (p != first)
+	{
+		--p;
+		if (*p == '.')
+		{
+			separator = p;
+			break;
+		}
+	}
 	if (separator)
 	{
 		int prefixLength = separator - fname.str();
