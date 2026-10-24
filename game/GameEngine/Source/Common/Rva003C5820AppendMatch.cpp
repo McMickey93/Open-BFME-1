@@ -1,7 +1,9 @@
+// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB
 // Address-derived reconstruction of the STLport vector append at 0x003C5820.
 // The owning vector is at this+0 and the destination vector is at output+4.
 // stlport
 
+#define _STLP_NO_EXCEPTIONS 1
 #define _M_insert_overflow j_000100d7
 #include <vector>
 #undef _M_insert_overflow
