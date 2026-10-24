@@ -6,21 +6,24 @@
 // this 30-byte wrapper.  Retail teardown evidence includes the class's
 // complete destructor at 0x00289E50 and nested/base teardown at 0x00289B00.
 
-// Retail's slot calls the compiler's complete-destructor ILT at 0x00018156,
-// whose TU-local object symbol remains the generated placeholder spelling.
-// The recovered typedef preserves the named class identity at the force site.
-class Gen_dtor_00289bb0
+// ILT 0x00018156 reaches the rowed BfmeOwnerZX complete destructor.
+class BfmeOwnerZX
 {
 public:
-	virtual ~Gen_dtor_00289bb0();
-
-private:
-	friend void forceBroadcastStealthUpdateDeletingDestructor();
+	virtual ~BfmeOwnerZX();
 };
 
-typedef Gen_dtor_00289bb0 BroadcastStealthUpdate;
-
-void forceBroadcastStealthUpdateDeletingDestructor()
+// Spell out the scalar wrapper to avoid emitting another owner's vtable.
+class Rva00289BB0
 {
-	BroadcastStealthUpdate value;
+public:
+	void *method(unsigned int flags);
+};
+
+void *Rva00289BB0::method(unsigned int flags)
+{
+	reinterpret_cast<BfmeOwnerZX *>(this)->BfmeOwnerZX::~BfmeOwnerZX();
+	if (flags & 1)
+		::operator delete(this);
+	return this;
 }
