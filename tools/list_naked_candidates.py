@@ -159,8 +159,11 @@ def block_bytes(lines, start):
     return bytes(data), end
 
 
-DB_RE = re.compile(r"^\s*db\s+(.*)$")
-PROC_RE = re.compile(r"^(\S+)\s+PROC\b")
+DB_RE = re.compile(r"^db\s+(.*)$", re.IGNORECASE)
+BYTE_RE = re.compile(r"[0-9][0-9a-f]*h", re.IGNORECASE)
+PROC_RE = re.compile(r"^(\S+)\s+PROC\b", re.IGNORECASE)
+ENDP_RE = re.compile(r"^(\S+)\s+ENDP$", re.IGNORECASE)
+LABEL_RE = re.compile(r"\S+:{1,2}")
 
 
 def asm_proc_blocks(lines):
@@ -169,24 +172,40 @@ def asm_proc_blocks(lines):
     game/gen_asm/ holds the scaled dump pass: 4.5 MB of machine bodies in `db`
     rows, which no __declspec(naked) scan can see. Without this reader the
     convert lane goes empty the moment dumping replaces the .cpp wave form.
+
+    Only literal hexadecimal `db` operands can be read without assembling.
+    Skip the whole procedure if any statement emits bytes we cannot recover:
+    dropping a symbolic `dd`, `call` or `jmp` would manufacture a shorter body.
     """
     blocks = []
     start, symbol, data = None, None, []
+    supported = False
     for index, line in enumerate(lines):
+        line = line.split(";", 1)[0].strip()
         match = PROC_RE.match(line)
         if match:
             start, symbol, data = index, match.group(1), []
+            supported = not line[match.end():].strip()
             continue
         if start is None:
             continue
-        if line.startswith(symbol) and " ENDP" in line:
-            blocks.append((symbol, bytes(data), start, index))
+        end = ENDP_RE.fullmatch(line)
+        if end and end.group(1) == symbol:
+            if supported:
+                blocks.append((symbol, bytes(data), start, index))
             start = None
             continue
+        if not line or LABEL_RE.fullmatch(line):
+            continue
         db = DB_RE.match(line)
-        if db:
-            data.extend(int(token.strip().rstrip("hH"), 16)
-                        for token in db.group(1).split(","))
+        tokens = [token.strip() for token in db.group(1).split(",")] if db else []
+        if not tokens or not all(BYTE_RE.fullmatch(token) for token in tokens):
+            supported = False
+            continue
+        try:
+            data.extend(bytes(int(token[:-1], 16) for token in tokens))
+        except ValueError:  # a hexadecimal literal outside the byte range
+            supported = False
     return blocks
 
 

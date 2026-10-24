@@ -64,6 +64,96 @@ import pytest  # noqa: E402
 import re_log  # noqa: E402
 
 
+def test_asm_literal_db_body_preserves_bytes_and_source_positions():
+    lines = [
+        "; before the procedure",
+        "?literal@@YAXXZ PROC",
+        "    db 08Bh, 0C1h",
+        "    db 0C3h",
+        "?literal@@YAXXZ ENDP",
+    ]
+    assert queue.asm_proc_blocks(lines) == [
+        ("?literal@@YAXXZ", bytes.fromhex("8b c1 c3"), 1, 4)]
+
+
+@pytest.mark.parametrize("body", [
+    # d_006bba90: the four-byte import operand must not disappear (7 -> 3 B).
+    ["db 0FFh, 015h", "dd g_Va01359054", "db 0CCh"],
+    # d_00c5fdfe: the tail jump must not disappear (8 -> 3 B).
+    ["db 08Dh, 04Dh, 004h", "jmp ?j_00030652@@YAXXZ"],
+    # d_00c20b7b: both an address and a call must not disappear (22 -> 13 B).
+    ["db 068h", "dd ??1AIUpdateArrayElement@@QAE@XZ",
+     "db 06Ah, 00Ah, 06Ah, 00Ch, 08Dh, 085h, 078h, 0FFh, 0FFh, 0FFh, 050h",
+     "call ??_M@YGXPAXIHP6EX0@Z@Z", "db 0C3h"],
+    ["db 090h", "dw 0000h", "db 0C3h"],
+    ["db 090h", "align 4", "db 0C3h"],
+    ["db 090h", "nop", "db 0C3h"],
+])
+def test_asm_mixed_body_is_not_returned_as_a_truncated_candidate(body):
+    lines = ["?mixed@@YAXXZ PROC", *body, "?mixed@@YAXXZ ENDP"]
+    assert queue.asm_proc_blocks(lines) == []
+
+
+@pytest.mark.parametrize("operand", ["090h, 100h", "090h, target", "2 dup(090h)", "090h,", "90"])
+def test_asm_unsupported_db_operands_discard_the_whole_body_and_resume(operand):
+    lines = [
+        "?unsupported@@YAXXZ PROC", "db 055h", f"db {operand}",
+        "?unsupported@@YAXXZ ENDP",
+        "?complete@@YAXXZ PROC", "db 0C3h", "?complete@@YAXXZ ENDP",
+    ]
+    assert queue.asm_proc_blocks(lines) == [("?complete@@YAXXZ", b"\xc3", 4, 6)]
+
+
+def test_asm_comments_and_labels_do_not_emit_bytes():
+    lines = [
+        "?literal@@YAXXZ PROC ; literal dump",
+        "    ; call example is only a comment",
+        "",
+        "label:",
+        "    db 08Bh, 0C1h ; mov eax, ecx",
+        "    DB 0C3H ; ret",
+        "?literal@@YAXXZ ENDP ; end of dump",
+    ]
+    assert queue.asm_proc_blocks(lines) == [
+        ("?literal@@YAXXZ", bytes.fromhex("8b c1 c3"), 0, 6)]
+
+
+def test_asm_incomplete_procedure_is_not_returned():
+    assert queue.asm_proc_blocks(["?unfinished@@YAXXZ PROC", "db 0C3h"]) == []
+
+
+def test_asm_proc_attributes_cannot_be_assumed_to_emit_no_bytes():
+    assert queue.asm_proc_blocks([
+        "?prologue@@YAXXZ PROC USES ebx", "db 0C3h", "?prologue@@YAXXZ ENDP",
+    ]) == []
+
+
+def test_asm_endp_must_name_the_same_procedure():
+    assert queue.asm_proc_blocks([
+        "?literal@@YAXXZ PROC", "db 0C3h", "?literal@@YAXXZ_extra ENDP",
+    ]) == []
+
+
+def test_json_queue_never_offers_a_partial_asm_body(tmp_path, monkeypatch, capsys):
+    source = tmp_path / "game/gen_asm/example.asm"
+    source.parent.mkdir(parents=True)
+    source.write_text(
+        "?partial@@YAXXZ PROC\n"
+        "db 0FFh, 015h\ndd target\ndb 0CCh\n?partial@@YAXXZ ENDP\n"
+        "?complete@@YAXXZ PROC\ndb 0C3h\n?complete@@YAXXZ ENDP\n",
+        encoding="utf-8")
+    monkeypatch.setattr(queue.build, "ROOT", tmp_path)
+    monkeypatch.setattr(queue, "collect_rows", lambda: ({}, {}))
+    monkeypatch.setattr(queue, "matched_body_index", lambda *_: {})
+    monkeypatch.setattr(sys, "argv", ["list_naked_candidates.py", "game/gen_asm",
+                                     "--all", "--include-logged", "--json"])
+    queue.main()
+    candidates = json.loads(capsys.readouterr().out)["candidates"]
+    assert len(candidates) == 1
+    assert candidates[0]["symbol"] == "?complete@@YAXXZ"
+    assert candidates[0]["bytes_hex"] == "c3" and candidates[0]["size"] == 1
+
+
 SCRIPT_LIST = (
     "?ParseScriptListDataChunk@ScriptList@@SA_NAAVDataChunkInput@@"
     "PAUDataChunkInfo@@PAX@Z"
