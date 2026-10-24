@@ -334,59 +334,8 @@ static Object *TunnelNetworkScan(Object *owner)
 }
 
 //--------------------------------------------------------------------------------------
-// ?update@AITNGuardInnerState@@ present-unmatched
-StateReturnType AITNGuardInnerState::update( void )
-{	
-	Object* nemesis = TheGameLogic->findObjectByID(getGuardMachine()->getNemesisID()) ;
-	Player *ownerPlayer = getMachineOwner()->getControllingPlayer();
-	TunnelTracker *tunnels = NULL;
-	if (ownerPlayer) {
-		tunnels = ownerPlayer->getTunnelSystem();
-	}
+// The retail update body is owned by AITNGuardInnerState_update_Bfme.cpp.
 
-	Object* owner = getMachineOwner();
-	// killed him.
-	Object *teamVictim = owner->getTeam()->getTeamTargetObject();
-	if (nemesis == NULL) 
-	{
-		if (teamVictim) 
-		{
-			getGuardMachine()->setNemesisID(teamVictim->getID());
-			m_exitConditions.m_attackGiveUpFrame = TheGameLogic->getFrame() + TheAI->getAiData()->m_guardChaseUnitFrames;
-			return STATE_CONTINUE;	
-		}
-
-		// Check tunnel.
-		if (tunnels) {
-			nemesis = tunnels->getCurNemesis();
-			if (nemesis) {
-				getGuardMachine()->setNemesisID(nemesis->getID());
-				m_exitConditions.m_attackGiveUpFrame = TheGameLogic->getFrame() + TheAI->getAiData()->m_guardChaseUnitFrames;
-				return STATE_CONTINUE;	
-			}
-		}
-
-		if (m_scanForEnemy) {
-			m_scanForEnemy = false; // we just do 1 scan.
-			nemesis = TunnelNetworkScan(owner);
-			if (nemesis) {
-				m_attackState->onExit(EXIT_RESET);
-				m_attackState->getMachine()->setGoalObject(nemesis);
-				if (tunnels) {
-					tunnels->updateNemesis(nemesis);
-				}
-				StateReturnType returnVal = m_attackState->onEnter();
-				return returnVal;
-			}
-		}
-	} else {
-		if (nemesis != teamVictim && teamVictim != NULL) {
-			tunnels->updateNemesis(nemesis);
-			getGuardMachine()->setNemesisID(teamVictim->getID());	
-		}
-	}
-	return m_attackState->update();
-}
 
 //--------------------------------------------------------------------------------------
 // ?onExit@AITNGuardInnerState@@ present-unmatched
