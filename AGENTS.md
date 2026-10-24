@@ -106,8 +106,15 @@ BFME 2.
    `rg` searches for supported names, callers, strings and class families;
    inspect relevant donor commits and their verification evidence. Consult
    BFME 2's `docs/recipes.md` and pertinent `reverse/attempt_support/` records.
-   BFME 1 has no `bfme2_sweep.py`: do this targeted source/evidence pass rather
-   than running BFME 2's BFME 1 sweep in the opposite direction.
+   `python3 tools/bfme2_sweep.py linking --limit 20` ranks blocker-provider
+   packets; `sources --limit 20` inventories corresponding source units. Run
+   `scan` after donor/target images, ledgers or reviewed donor sources change;
+   it caches relocation-aware binary placements. `ranked` serves exact-unique
+   leads; `near` serves approximate ones; `show --rva 0xRVA` explains a target;
+   `packets` writes work packets. These commands recheck eligibility and shared
+   claims; `--offline` means inspection only. Stale input hashes require a new
+   scan. Ambiguous, truncated and conflicting-string matches never qualify as
+   unique recoveries. No search result establishes identity or verifies a row.
 2. For Zero Hour, use `GeneralsMD/`, not `Generals/`. Run
    `python3 tools/zh_sweep.py compile` when the object cache is missing or its
    source, headers, toolchain or flags changed (`--force` for changed inputs),
@@ -151,8 +158,9 @@ flags and handoffs are relative to BFME 2's root, not this checkout:
   Preserve or deliberately reconcile compiler flags, defines and STLport
   selection; do not import BFME 2 compiler overrides by accident.
 
-BFME 2's `tools/bfme1_sweep.py` and `tools/build.py` contain forward mappings;
-they are examples to inspect, not an installed reverse resolver in BFME 1.
+BFME 2's `tools/bfme1_sweep.py` and `tools/build.py` contain forward mappings.
+BFME 1's `bfme2_trial.py` resolves known nested-input paths and explicit include
+maps; unknown or missing paths fail rather than silently selecting headers.
 Before judging a donor trial, verify every rewritten include directory exists
 and inspect dependency output or compiler include tracing to confirm the actual
 headers used. MSVC can ignore missing include directories and still compile
@@ -199,13 +207,41 @@ C++ donor TUs with BFME 1's toolchain and settings (flags from matched siblings)
 adapting paths as above, and compare the emitted bodies with the BFME 1 retail
 target. Prioritize supported identities and siblings of successful transfers;
 exclude dumps and retired or refuted candidates unless new evidence addresses
-the earlier finding. Use explicit private object outputs through BFME 1's
-`tools/build.py` compile API for exploratory trials; BFME 1 has no
-`tools/place_bodies.py`, and BFME 2's tool targets a different executable.
+the earlier finding. Use `python3 tools/bfme2_sweep.py compile Code/path/File.cpp` for a private
+compile; `--map MAP.json` supplies explicit donor include-prefix to BFME 1
+root-relative directory mappings. It records compiler arguments, include traces
+and stable dependency hashes without touching shared objects. A failed compile
+keeps its diagnostics. Run `match build/bfme2_sweep/trials/ID/trial.json` to
+place the compiled COFF bodies in BFME 1 retail, then `packets --matches
+build/bfme2_sweep/trials/ID/match.json` for current eligibility/claim context.
+COFF relocation masking is discovery only; full relocation verification follows.
 Never claim the external donor path as BFME 1 source. Port supported bodies into
 an allowed `game/` TU, preserving the donor revision, flags and dependencies,
 and pass BFME 1's scoped build and normal byte and identity gates. A placement
 proves neither identity nor recovery.
+
+## Donor repair and landing tools
+
+`python3 tools/bfme2_sweep.py globals game/path/File.cpp` proposes typed global
+reference repairs from BFME 1's matched data ledger; `--apply` claims affected
+rows, verifies providers and consumers, and restores its edit on failed byte
+verification. It never creates vtable aliases or imports donor addresses.
+`rehome --home game/path/Home.cpp --split game/path/Split.cpp` verifies whether
+the home object reproduces every split row; `--apply --model MODEL` repoints
+through `add_match.py`. Inspect an emptied split unit before deleting it; the
+helper never deletes files. Use `link_check.py` for the current linking verdict;
+missing census evidence remains unknown, even after a byte check passes.
+
+`naming --source game/path/File.cpp [--donor-source Code/path/File.cpp]` prints
+naming evidence for review, never votes or automatic renames. Keep these hints
+out of independent blind-voting sessions.
+
+After adapting a donor into `game/` and recording independent BFME 1 identity
+and boundary evidence, `land --source game/path/File.cpp --name SYMBOL --rva
+0xRVA --size BYTES --evidence targets/game/reverse/identity_evidence/NOTE.md
+--model MODEL [--replace-existing]` claims the row and invokes normal
+`add_match.py` verification. No sweep command commits or pushes. Use `--help`
+on each subcommand for its options; global and rehome application is explicit.
 
 ## Investigate shared deltas first
 
