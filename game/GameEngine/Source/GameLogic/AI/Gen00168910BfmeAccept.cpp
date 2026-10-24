@@ -132,7 +132,6 @@ public:
 // Named directly, so no stand-in spelling can hide a wrong reference.
 extern "C" void *__identifier("??_7TeamInQueue@@6B@")[];
 extern void j_0002fee6();
-extern void j_00008224();
 extern void j_0003e81f();
 
 typedef void (__cdecl *BfmeFieldXfer)(BfmeSeedTarget *target, void *value);
@@ -149,16 +148,17 @@ static BfmeNode_00161220 *bfmeNext04(BfmeNode_00161220 *node)
 	return (node->*fn.member)();
 }
 
+// ILT 0x00008224 is recorded as TeamInQueue::dlink_next_TeamReadyQueue; the
+// node is the TeamInQueue seen through this TU's own layout.
+class TeamInQueue
+{
+public:
+	TeamInQueue *dlink_next_TeamReadyQueue() const;
+};
+
 static BfmeNode_00161220 *bfmeNext0C(BfmeNode_00161220 *node)
 {
-	typedef BfmeNode_00161220 *(BfmeNode_00161220::*Function)();
-	union
-	{
-		void (*raw)(void);
-		Function member;
-	} fn;
-	fn.raw = j_00008224;
-	return (node->*fn.member)();
+	return (BfmeNode_00161220 *)((TeamInQueue *)node)->dlink_next_TeamReadyQueue();
 }
 
 class Gen_00168910

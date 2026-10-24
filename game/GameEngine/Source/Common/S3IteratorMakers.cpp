@@ -26,6 +26,7 @@ struct BfmeIterator
 // ILTs at RVAs 0x00022A70, 0x0002FEE6 and 0x00008224 jump to the next-link
 // getters at 0x000C8A30, 0x001604E0 and 0x001605D0 respectively. Keep the
 // thunk addresses: substituting the getter body would change the stored word.
+// The ledger records 0x00008224 as TeamInQueue::dlink_next_TeamReadyQueue.
 void j_00022a70();
 
 class Gen_000CBB80
@@ -50,7 +51,13 @@ private:
 	void *m_bfmeNode;					// +0x4
 };
 
-void j_00008224();
+class TeamInQueue
+{
+public:
+	TeamInQueue *dlink_next_TeamReadyQueue() const;
+};
+
+typedef TeamInQueue *(TeamInQueue::*BfmeNextGetter)() const;
 
 class Gen_001612B0
 {
@@ -86,7 +93,13 @@ BfmeIterator Gen_00161290::bfmeMake(void)
 // ?bfmeMake@Gen_001612B0@@QAE?AUBfmeIterator@@XZ
 BfmeIterator Gen_001612B0::bfmeMake(void)
 {
-	return BfmeIterator(m_bfmeNode, (void *)&j_00008224);
+	union
+	{
+		BfmeNextGetter member;
+		void *raw;
+	} getter;
+	getter.member = &TeamInQueue::dlink_next_TeamReadyQueue;
+	return BfmeIterator(m_bfmeNode, getter.raw);
 }
 
 // ?bfmeMake@Gen_004C14F0@@QAE?AUBfmeIterator@@XZ
