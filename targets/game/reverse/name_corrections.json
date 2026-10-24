@@ -21062,5 +21062,25 @@
  "after_sha256": "7bf566a3d369e4e991eeadc421d276fa0f45167e8c948fa85b91ef829804bf51",
  "evidence": "targets/game/reverse/identity_evidence/004ecd10-buddy-message-notification.md",
  "reason": "Identity correction, not a rename: the lift's ?showNotificationBox@@YAXVAsciiString@@VUnicodeString@@@Z signature is refuted by four matched callers that build a 24-byte by-value BuddyMessage; no retail evidence names 0x004ECD10, so the corrected row keeps the address token as Rva004ECD10BuddyMessageNotify."
-}
+},
+  {
+    "old_path": "targets/game/reverse/attempts/0x0061df60.cpp",
+    "new_path": "game/Libraries/Source/WWVegas/WW3D2/BfmeAnimationHolderDeltaMove.cpp",
+    "old_name": "Update",
+    "new_name": "rva0061DF60",
+    "before_sha256": "06ba21f8114aabbd26c8ef3991f4529f93e55d57070cf212f7f5edd31259ffba",
+    "after_sha256": "e84fa04b5fa450378886d9c2df900dc5a7f785c37d5fb338c6d547803e539cb2",
+    "evidence": "targets/game/reverse/identity_evidence/0x0061df60-slot4-method.md",
+    "reason": "No caller, string or RTTI names vtable 0x01115C60 slot 4; the bank names Update and slot4 were behavioural guesses, so the landed method keeps 0x0061DF60."
+  },
+  {
+    "old_path": "targets/game/reverse/attempts/0x0061df60.cpp",
+    "new_path": "game/Libraries/Source/WWVegas/WW3D2/BfmeAnimationHolderDeltaMove.cpp",
+    "old_name": "slot4",
+    "new_name": "rva0061DF60",
+    "before_sha256": "06ba21f8114aabbd26c8ef3991f4529f93e55d57070cf212f7f5edd31259ffba",
+    "after_sha256": "e84fa04b5fa450378886d9c2df900dc5a7f785c37d5fb338c6d547803e539cb2",
+    "evidence": "targets/game/reverse/identity_evidence/0x0061df60-slot4-method.md",
+    "reason": "No caller, string or RTTI names vtable 0x01115C60 slot 4; the bank names Update and slot4 were behavioural guesses, so the landed method keeps 0x0061DF60."
+  }
 ]
