@@ -54,3 +54,19 @@ void Rva00C700F0Release()
 {
     g_rva012F3348.~UnicodeString();
 }
+
+// Registered at RVA 0x0098ADF1 and passed to atexit at 0x0098AE12.
+// The target at 0x009845A0 already has this matched, opaque member name.
+// Keep it rather than guessing an owner or destructor identity. The
+// callback's final JMP ends at 0x00C714FA, where INT3 padding begins.
+class BfmeThing943G
+{
+public:
+    void bfmeGo943G();
+};
+extern BfmeThing943G g_rva0134C63C;
+
+void Rva00C714F0Release()
+{
+    g_rva0134C63C.bfmeGo943G();
+}
