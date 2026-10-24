@@ -32,3 +32,12 @@ int __cdecl Rva00AFE910(int index)
 {
 	return g_Va012E6040[index];
 }
+
+// 0x00C6C7D0: CRT startup-table entry at RVA 0x00EA5ADC. The complete
+// body stores this dword at VA 0x0130A44C, returns at +0x0A, then reaches
+// INT3 padding at +0x0B. Keep the raw value; its owning type is unproven.
+extern unsigned int g_Va0130A44C;
+void Rva00C6C7D0()
+{
+	g_Va0130A44C = 0x3E4CCCCD;
+}
