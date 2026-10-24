@@ -2,6 +2,7 @@
 // stlport
 #include "ascii_string.h"
 #include "unicode_string.h"
+#include <set>
 
 // Retail CRT cleanup callbacks. The initializers at 00C6A8F0 and 00C6A910
 // register these exact entry points, and their globals occupy 012ED4EC/F0.
@@ -69,4 +70,18 @@ extern BfmeThing943G g_rva0134C63C;
 void Rva00C714F0Release()
 {
     g_rva0134C63C.bfmeGo943G();
+}
+
+// ILT 0x0003B2B9 reaches the matched out-of-line set<AsciiString>
+// destructor at 0x00077FB0. Its definition remains in PeerDefs.cpp.
+template <> _STL::set<AsciiString>::~set();
+typedef _STL::set<AsciiString> ExitStringSet;
+
+// Registered at RVA 0x006B73DB, then passed to atexit at 0x006B73E3.
+// MOV ECX / JMP ends at +0x0A, immediately before the INT3 run.
+extern ExitStringSet g_rva012F7768;
+
+void Rva00C708F0Release()
+{
+    g_rva012F7768.~ExitStringSet();
 }
