@@ -42,9 +42,7 @@ public:
 class Parameter
 {
 public:
-	const AsciiString &getString(void) const { return m_string; }
-
-private:
+	// TU-local retail layout; no external accessor copy is needed.
 	unsigned char m_beforeString[0x10];
 	AsciiString m_string;
 };
@@ -142,7 +140,7 @@ protected:
 Bool ScriptConditions::evaluateHasCommandPointsToBuildTeam(Parameter *player,
 	Parameter *team)
 {
-	AsciiString teamName = team->getString();
+	AsciiString teamName = team->m_string;
 	AsciiString canonical =
 		((BfmeScriptEngineSlashName *)TheScriptEngine)->bfmeName(teamName);
 	TeamPrototype *prototype =
