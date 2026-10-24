@@ -124,6 +124,9 @@ typedef _STL::hashtable<Rva000D6C60Value, AsciiString, rts::hash<AsciiString>,
 	Rva000D6C60ExtractKey, _STL::equal_to<AsciiString>,
 	_STL::allocator<Rva000D6C60Value> > AsciiStringIntHash000D6C60;
 
+// Use the separately verified resize; this TU has an out-of-line hash functor.
+namespace _STL { template <> void AsciiStringIntHash000D6C60::resize(unsigned int); }
+
 // retail 0x000D6C60
 void BfmeHashInsertAnchor000D6C60( AsciiStringIntHash000D6C60 &table, const Rva000D6C60Value &value )
 {
