@@ -76,13 +76,14 @@ def watched(path):
 
 
 def git(*args):
-    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+    result = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True,
+                            encoding="utf-8", errors="replace")
+    result.check_returncode()
+    return result
 
 
 def blob(ref, path):
-    result = git("show", f"{ref}:{path}")
-    return result.stdout if result.returncode == 0 else None
+    return git("show", f"{ref}:{path}").stdout
 
 
 def staged():
@@ -156,7 +157,15 @@ def main(argv=None):
     mode.add_argument("--staged", action="store_true")
     mode.add_argument("--report", action="store_true")
     args = ap.parse_args(argv)
-    return staged() if args.staged else report()
+    try:
+        return staged() if args.staged else report()
+    except subprocess.CalledProcessError as error:
+        print(f"link_debt: {' '.join(error.cmd)} failed ({error.returncode}): "
+              f"{(error.stderr or '').strip()}", file=sys.stderr)
+        return 1
+    except OSError as error:
+        print(f"link_debt: cannot run git: {error}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
