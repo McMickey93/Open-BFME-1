@@ -120,7 +120,7 @@ extern WindowManager *g_rva012F19E8WindowManager;
 template<> inline bool StringBase<char>::isEmpty() const { return !m_data || m_data->length == 0; }
 #include "ascii_string.h"
 
-extern "C" __declspec(dllimport) int __cdecl _stricmp(const char *, const char *);
+extern "C" __declspec(dllimport) int __cdecl _strcmpi(const char *, const char *);
 
 class BfmeStrVMZ;
 char bfmeGetParamVMZ(const char *hay, const char *key, BfmeStrVMZ *out);
@@ -149,7 +149,7 @@ static Int getMode0046F280( Rva0046F3D0ModeSource *source )
 		return 2;
 	for (unsigned int i = 0; i < 6; ++i)
 	{
-		if (_stricmp(g_Va010F738C[i].name, value.str()) == 0)
+		if (_strcmpi(g_Va010F738C[i].name, value.str()) == 0)
 			return g_Va010F738C[i].mode;
 	}
 	return 2;
