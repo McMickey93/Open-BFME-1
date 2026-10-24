@@ -38432,7 +38432,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0089edf0@@YAXXZ,,0x0089EDF0,256,game/gen_asm/d_0089a830.asm,matched,gen-dump;ghidra=FUN_00c9edf0
 ?d_0089fda0@@YAXXZ,,0x0089FDA0,466,game/gen_asm/d_0089a830.asm,matched,gen-dump;ghidra=FUN_00c9fda0
 ?d_008a15f0@@YAXXZ,,0x008A15F0,718,game/gen_asm/d_008a0830.asm,matched,gen-dump;ghidra=FUN_00ca15f0
-?d_008a1c20@@YAXXZ,,0x008A1C20,196,game/gen_asm/d_008a0830.asm,matched,gen-dump;ghidra=FUN_00ca1c20
 ?d_008a1e80@@YAXXZ,,0x008A1E80,483,game/gen_asm/d_008a0830.asm,matched,gen-dump;ghidra=FUN_00ca1e80
 ?d_008a2130@@YAXXZ,,0x008A2130,1092,game/gen_asm/d_0083c710.asm,matched,gen-dump;switch-carved start=int3-aligned end=switch-table+int3 refs=0
 ?d_008a25c0@@YAXXZ,,0x008A25C0,1454,game/gen_asm/d_008a0830.asm,matched,gen-dump;ghidra=FUN_00ca25c0
@@ -173122,3 +173121,4 @@ uw_00c18e50,,0x00C18E50,8,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEn
 ?internalSetState@StateMachine@@QAE?AW4StateReturnType@@I@Z,,0x000A1360,200,game/GameEngine/Source/Common/StateMachine_internalSetState.cpp,matched,Zero Hour body against BFME StateMachine layout with internalGetState inlined;model=claude-opus-5-5;host=vm
 ?optimize@Path@@QAEXPBVObject@@H_N@Z,,0x00401660,669,game/GameEngine/Source/GameLogic/AI/PathOptimize.cpp,matched,clean C++ replacing the naked __emit lift;model=claude-opus-5-5;host=vm
 ?dup_008c66a0@@YAPAVAptValue@@XZ,,0x008C66A0,129,game/Libraries/Source/EA/Apt/Rva008C66A0SlotRelease.cpp,matched,boundary RET+0x7A and RET+0x80 then int3 proves 129B; holder table slots indexed through 0x1230 array form fixes SIB order; callees toInteger and releaseAll ledger-named; identity unknown so dup_ address name kept;model=claude-opus-5-5;host=vm
+?remove008A1C20@Manager008C3F10@@QAEXPAVRva008C3F10Value@@@Z,,0x008A1C20,196,game/Libraries/Source/Apt/Manager008C3F10Remove008A1C20.cpp,matched,boundary RET4 at +0xC1 then int3 proves 196B; name from matched caller Rva008C3F10Value::cleanup call at 008C3F10+0x114 and existing pin; repeated slot-table subscripts instead of an entry local give retail EBP entry and spilled index;model=claude-opus-5-5;host=vm
