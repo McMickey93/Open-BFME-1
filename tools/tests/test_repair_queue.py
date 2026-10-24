@@ -74,6 +74,33 @@ def test_bfme2_gate_debt_items_and_pass_test(tmp_path):
     assert rq.pass_test("tail 0x00001000 ?a@Loco@@QAEXXZ")[0] is False                  # already gone
 
 
+@pytest.mark.parametrize("layout", ["bfme1", "bfme2"])
+@pytest.mark.parametrize("error", [FileNotFoundError, PermissionError, KeyboardInterrupt])
+def test_interrupted_pass_test_restores_baseline_bytes(tmp_path, monkeypatch, layout, error):
+    rq, rev, _ = load(tmp_path, layout, LEDGER)
+    if layout == "bfme1":
+        path = rev / "body_guard_baseline.csv"
+        line = "tail,0x00001000,?a@Loco@@QAEXXZ,tail mismatch"
+        raw = ("check,target_rva,name,detail\r\n" + line + "\r\n"
+               "strnul,0x00002000,?c@Body@@QAEXXZ,literal mismatch\n").encode()
+    else:
+        path = rev / "gate_baseline.txt"
+        line = "tail 0x00001000 ?a@Loco@@QAEXXZ"
+        raw = ("# gate debt\r\n" + line + "\r\n"
+               "strnul 0x00002000 ?c@Body@@QAEXXZ\n").encode()
+    path.write_bytes(raw)
+
+    def interrupted_build(*args, **kwargs):
+        # The checker must see the debt removed, but that removal is provisional.
+        assert line.encode() not in path.read_bytes()
+        raise error("build did not complete")
+
+    monkeypatch.setattr(rq.subprocess, "run", interrupted_build)
+    with pytest.raises(error, match="build did not complete"):
+        rq.pass_test(line)
+    assert path.read_bytes() == raw
+
+
 def test_bfme1_body_guard_items(tmp_path):
     rq, rev, _ = load(tmp_path, "bfme1", LEDGER, [
         ("targets/game/reverse/body_guard_baseline.csv",

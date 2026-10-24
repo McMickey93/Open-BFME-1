@@ -261,11 +261,17 @@ def pass_test(line, build_cmd=None):
     raw = path.read_bytes()
     eol = b"\r\n" if b"\r\n" in raw else b"\n"
     kept = [l for l in raw.split(eol) if l.decode("utf-8", "replace").strip() != line.strip()]
-    path.write_bytes(eol.join(kept))
     cmd = build_cmd or [sys.executable, str(ROOT / "tools" / "build.py"), source]
-    result = subprocess.run(cmd, cwd=ROOT)
-    if result.returncode != 0:
-        path.write_bytes(raw)
+    verified = False
+    try:
+        path.write_bytes(eol.join(kept))
+        verified = subprocess.run(cmd, cwd=ROOT).returncode == 0
+    finally:
+        # A missing executable or an interrupted build has verified nothing.
+        # Keep the deletion only after the checker completed successfully.
+        if not verified:
+            path.write_bytes(raw)
+    if not verified:
         return False, f"{item['check']} still fails for {item['function']} ({source}); line restored"
     return True, (f"PASS: {item['function']} passes {item['check']}; the line is deleted from "
                   f"{item['baseline']} -- commit it with the fix")
