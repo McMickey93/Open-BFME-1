@@ -6,7 +6,7 @@
 
 #include "../GameClient/System/FXParticleSystem/fx_particle_system.h"
 extern void j_000410dd();
-extern void j_00008b39();
+extern "C" void bfmeHookA1054(void);
 extern void j_00041c09();
 extern void j_0003c9cf();
 extern void j_000391a8();
@@ -84,7 +84,7 @@ void __cdecl bfmeInitH45_005CEF60( BfmeB1054 *p )
 	p->m_48 = z;
 	p->m_4c = z;
 	p->m_h5 = (int)FXParticleSystem::GetKey( (FXParticleSystem::ModuleCategory)5 );
-	p->m_fn5 = j_00008b39;
+	p->m_fn5 = bfmeHookA1054;
 	p->m_58 = z;
 	p->m_5c = z;
 	bfmeTailA1054Impl( reinterpret_cast<BfmeA1054 *>( p ) );

@@ -7,7 +7,6 @@ extern "C" void bfmeHookA1054(void);
 extern "C" void bfmeHookB1054(void);
 extern void j_00041de9();
 extern void j_000410dd();
-extern void j_00008b39();
 extern void j_0002ed75();
 extern void j_00041c09();
 extern void j_0003c9cf();
@@ -99,7 +98,7 @@ void bfmeTailB1054Impl(BfmeB1054 *p)
 	p->m_bfme48 = z;
 	p->m_bfme4c = z;
 	p->m_bfmeH5 = bfmeMake1054(5);
-	p->m_bfmeFn5 = j_00008b39;
+	p->m_bfmeFn5 = bfmeHookA1054;
 	p->m_bfme58 = z;
 	p->m_bfme5c = z;
 	bfmeTailA1054Cdecl(reinterpret_cast<BfmeA1054 *>(p));

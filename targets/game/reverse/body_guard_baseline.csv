@@ -10,7 +10,6 @@ dir32,0x00405277,??1?$vector@W4ScienceType@@V?$allocator@W4ScienceType@@@_STL@@@
 dir32,0x0040602D,??0MoveHint0043AAD0@@QAE@XZ,"nothing in the ledger owns 0x0040602D. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00407617,??1BoneOCLInfo@@QAE@XZ,"nothing in the ledger owns 0x00407617. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0040768A,??0AttackPriorityInfo@@QAE@XZ,"nothing in the ledger owns 0x0040768A. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x00408B39,?j_00008b39@@YAXXZ,"retail 0x00408B39 is already recorded as _bfmeHookA1054; reference that name, not a new one"
 dir32,0x0040A27C,?j_0000a27c@@YAXXZ,"retail 0x0040A27C is already recorded as ?supplyTruckSubMachineWantsToEnter@WorkerStateMachine@@SA_NPAVState@@PAX@Z; reference that name, not a new one"
 dir32,0x0040A95C,?bfmeRva0037D150Apply@@YAHPAUBfmeObjectD150@@H@Z,"retail 0x0040A95C is already recorded as ?bfmeTeamSetExperiencePointsVisitor@@YAXPAVObject@@PAX@Z; reference that name, not a new one"
 dir32,0x0040C5E0,?ownerNotDockingOrIdle@SupplyTruckStateMachine@@SA_NPAVState@@PAX@Z,"nothing in the ledger owns 0x0040C5E0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
