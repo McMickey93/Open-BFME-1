@@ -21,8 +21,6 @@ inline AsciiString::~AsciiString()
 	((StringBase<char> *)this)->releaseBuffer();
 }
 
-bool getUnsignedIntFromRegistry(HKEY root, AsciiString path, AsciiString key, unsigned int &val);
-
 static const char *registryString(const AsciiString &value)
 {
 	char *data = *reinterpret_cast<char *const *>(&value);
@@ -35,6 +33,29 @@ static int registryLength(const AsciiString &value)
 	return data ? *(unsigned short *)(data + 4) : 0;
 }
 
+bool getUnsignedIntFromRegistry(HKEY root, AsciiString path, AsciiString key, unsigned int &val)
+{
+	HKEY handle;
+	unsigned char buffer[4];
+	unsigned long size = 4;
+	unsigned long type;
+	int returnValue;
+
+	if ((returnValue = RegOpenKeyEx(root, registryString(path), 0, KEY_READ, &handle)) == ERROR_SUCCESS)
+	{
+		returnValue = RegQueryValueEx(handle, registryString(key), NULL, &type, buffer, &size);
+		RegCloseKey(handle);
+	}
+
+	if (returnValue == ERROR_SUCCESS)
+	{
+		val = *(unsigned int *)buffer;
+		return true;
+	}
+
+	return false;
+}
+
 bool GetUnsignedIntFromRegistry(AsciiString path, AsciiString key, unsigned int &val)
 {
 	AsciiString fullPath = "SOFTWARE\\Electronic Arts\\EA Games\\The Battle for Middle-earth";
@@ -44,4 +65,22 @@ bool GetUnsignedIntFromRegistry(AsciiString path, AsciiString key, unsigned int 
 		return true;
 
 	return getUnsignedIntFromRegistry(HKEY_CURRENT_USER, registryString(fullPath), registryString(key), val);
+}
+
+// ?bfmeLocalUserMapsReady@@YA_NXZ @0x00109EB0
+// Cached UseLocalUserMaps registry flag (0x012ABE78); negative until first read.
+// The direct write to the out value inside the same-TU callee chain is what lets
+// VC7.1 pack `registryValue` onto the first by-value saved-esp slot (frame 8).
+bool bfmeLocalUserMapsReady(void)
+{
+	static int value = -1;
+	if (value < 0)
+	{
+		unsigned int registryValue;
+		value = GetUnsignedIntFromRegistry("", "UseLocalUserMaps", registryValue)
+			? registryValue
+			: 1;
+	}
+
+	return value != 0;
 }
