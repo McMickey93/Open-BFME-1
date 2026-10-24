@@ -338,7 +338,11 @@ def stage_result(data, base):
     require(unstaged <= changes, "Unstaged changes exceed the admitted result")
     if unstaged:
         git("stage-explicit-paths", "add", "--", *sorted(unstaged))
-    git("staged-whitespace-check", "diff", "--cached", "--check")
+    git("staged-whitespace-check", "diff", "--cached", "--check", "--", ".", ":(exclude)" + LEDGER)
+    # .gitattributes keeps this legacy ledger CRLF; preserve its exact bytes.
+    git("staged-ledger-whitespace-check", "-c",
+        "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+        "diff", "--cached", "--check", "--", LEDGER)
     require(not git("unstaged-result", "diff", "--name-only"), "Unstaged result remains")
     return changes
 
