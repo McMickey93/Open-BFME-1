@@ -26,3 +26,19 @@ void Rva00C6E380Register()
 {
     atexit(bfmeGoDXE);
 }
+
+// Registered by the push at RVA 0x004555F3 before atexit at 0x004555FB.
+// The complete 10-byte callback loads VA 0x012F15CC into ECX and jumps
+// through ILT 0x0001F951 to the existing Rva000782A0::invoke body.
+// INT3 starts at 0x00C7004A; no semantic owner name is inferred.
+class Rva000782A0
+{
+public:
+    void invoke();
+};
+extern Rva000782A0 g_rva012F15CC;
+
+void Rva00C70040Release()
+{
+    g_rva012F15CC.invoke();
+}
