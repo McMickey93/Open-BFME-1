@@ -7,7 +7,30 @@ static inline void storeRva0061DA30(volatile int &dest, int value)
 	dest = value;
 }
 
-extern void *g_Va01117624[];
+// Retail table at VA 0x01117624: 10 slots, ending before 0x0111764C.
+// Keep each witnessed ILT target symbolic so the table relocates with the image.
+extern "C" void __identifier("?j_0002259d@@YAXXZ")();
+extern "C" void __identifier("?j_00038997@@YAXXZ")();
+extern "C" void __identifier("?j_0002441a@@YAXXZ")();
+extern "C" void __identifier("?j_00025ced@@YAXXZ")();
+extern "C" void __identifier("?j_00037290@@YAXXZ")();
+extern "C" void __identifier("?j_00037df3@@YAXXZ")();
+extern "C" void __identifier("?j_00005b78@@YAXXZ")();
+extern "C" void __identifier("?j_00010069@@YAXXZ")();
+extern "C" void __identifier("?j_0002c25a@@YAXXZ")();
+extern "C" void __identifier("?j_00005498@@YAXXZ")();
+void *g_Va01117624[] = {
+    reinterpret_cast<void *>(&__identifier("?j_0002259d@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00038997@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0002441a@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00025ced@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00037290@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00037df3@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00005b78@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00010069@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_0002c25a@@YAXXZ")),
+    reinterpret_cast<void *>(&__identifier("?j_00005498@@YAXXZ")),
+};
 
 class Rva0061DA30Base
 {
