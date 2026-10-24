@@ -177,13 +177,14 @@ def merge_repair(path, drop=frozenset()):
 
 
 def _rva(row):
-    for value in row[1:3]:
-        if value.startswith("0x"):
-            try:
-                return int(value, 16)
-            except ValueError:
-                return None
-    return None
+    # Tombstones name the retail target, not the export address in column 1.
+    # Leave malformed records for check_csv rather than guessing their identity.
+    if len(row) != len(FIELDS):
+        return None
+    try:
+        return int(row[FIELDS.index("target_rva")], 16)
+    except ValueError:
+        return None
 
 
 def main(argv=None):
