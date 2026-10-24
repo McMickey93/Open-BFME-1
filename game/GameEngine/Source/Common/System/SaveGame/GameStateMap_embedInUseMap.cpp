@@ -27,13 +27,13 @@ public:
 	int tag;
 };
 
-extern __declspec(dllimport) void *__cdecl bfmeFopenVIF(
+extern "C" extern __declspec(dllimport) void *__cdecl fopen(
 	const char *name, const char *mode);
 extern "C" __declspec(dllimport) int __cdecl fseek(void *stream, Int offset, int origin);
 extern "C" __declspec(dllimport) Int __cdecl ftell(void *stream);
 extern "C" __declspec(dllimport) unsigned int __cdecl fread(
 	void *buffer, unsigned int size, unsigned int count, void *stream);
-extern __declspec(dllimport) void __cdecl bfmeFreeUXB(void *stream);
+extern "C" extern __declspec(dllimport) void __cdecl fclose(void *stream);
 
 class BFMERetailAsciiString
 {
@@ -82,7 +82,7 @@ public:
 static __declspec(noinline) void embedInUseMap(AsciiString map, Xfer *xfer)
 {
 	UnsignedInt size;
-	void *fp = bfmeFopenVIF(map.str(), "rb");
+	void *fp = fopen(map.str(), "rb");
 	if (fp == 0)
 	{
 		throw XferException(5, 0);
@@ -112,7 +112,7 @@ static __declspec(noinline) void embedInUseMap(AsciiString map, Xfer *xfer)
 	xfer->xferUser(buffer, size);
 	xfer->endBlock();
 
-	bfmeFreeUXB(fp);
+	fclose(fp);
 	::operator delete[](buffer);
 }
 
