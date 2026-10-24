@@ -5908,3 +5908,4 @@ game/GameEngine/Source/Common/LadderPreferences_loadProfile_Bfme.cpp|local|rever
 game/GameEngine/Source/Common/LadderPreferences_loadProfile_Bfme.cpp|local|LadderPreferences::loadProfile|p,709de1c7597fff19a12596b6,gpt-6.1-sol,20261016145118-d0941b,2026-10-16
 game/GameEngine/Source/GameClient/InGameUICreateCommandHint.cpp|member||m_field00c,3fd7c83db8cdbbdcfdca4466,glm,20261024141241-ab80a4,2026-10-24
 game/GameEngine/Source/GameClient/InGameUICreateCommandHint.cpp|member||m_field00d,8c33950b2fb2f95a8ab7b357,glm,20261024141241-ab80a4,2026-10-24
+game/GameEngine/Source/GameLogic/Object/Upgrade/CommandSetUpgradeUpgradeImplementation.cpp|type||BfmeOwnerXC,5f96a5cf25db5b3ed832c63a,glm,20261024142631-72fe55,2026-10-24
