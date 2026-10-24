@@ -3,9 +3,9 @@
   "repository": "McMickey93/Open-BFME-1",
   "branch": "master",
   "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
-  "base": "e439b456df920cbe6bc9efc9ba038e5f5d6a37e9",
-  "base_tree": "893296286e27cce3e61d5329e0b17c611f1f8afb",
-  "candidate_tree": "ad81d94b6205df55b1159416ef2b51d05075c3cb",
+  "base": "28e8691472497ca76f980f617f0b35b948fa9ee9",
+  "base_tree": "c88b05fc7124838a0e37d64c66baf52bfa0caf7e",
+  "candidate_tree": "374999ce2208c66c1f9b5c80f98a9591e1ca1668",
   "patch_sha256": "5974dfc912abb045c253d4eb7477e0b88599feb0da39086d87504dd351abde6a",
   "message_sha256": "42b6d52c882bdfc4fc847e544f9346188f87091f069944351aadb4bc3f2cb964",
   "files": [

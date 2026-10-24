@@ -80,6 +80,10 @@ def tip(label):
 def main():
     require(sys.platform == "win32" and sys.version_info[:2] == (3, 12),
             "Use native Windows Python 3.12, not MSYS Python or Wine.")
+    git_bash = Path(os.environ.get("BFME_QUALIFICATION_BASH", ""))
+    require(git_bash.is_absolute() and git_bash.is_file(),
+            "The calling Git Bash must supply its absolute Windows executable path.")
+    RESULT["git_bash"] = str(git_bash)
     require(os.environ.get("GITHUB_REPOSITORY") == INPUT["repository"], "Wrong fork")
     require(os.environ.get("GITHUB_REF") == "refs/heads/" + INPUT["branch"], "Wrong branch")
     for name, digest in (("parser.patch", INPUT["patch_sha256"]),
@@ -107,7 +111,7 @@ def main():
     run("python-packages", [sys.executable, "-m", "pip", "freeze"])
     run("initial-ledger-check", [sys.executable, "tools/check_csv.py"])
     git("candidate-branch", "switch", "-c", "qualification/parser-candidate")
-    run("setup-hooks", ["bash", "tools/setup_hooks.sh"])
+    run("setup-hooks", [str(git_bash), "tools/setup_hooks.sh"])
     require(git("hooks-path", "config", "--get", "core.hooksPath").decode().strip()
             == ".githooks", "Ordinary repository hooks are required")
     git("author-name", "config", "user.name", "ChatGPT")
@@ -147,7 +151,7 @@ def main():
     refs = f"refs/heads/qualification/parser-candidate {commit} refs/heads/master {base}\n"
     (EVIDENCE / "pre-push-stdin.txt").write_text(refs, encoding="utf-8", newline="\n")
     # Invoke the genuine hook against the just-advertised official master; never git push.
-    run("normal-pre-push", ["bash", ".githooks/pre-push", "origin", INPUT["upstream"]],
+    run("normal-pre-push", [str(git_bash), ".githooks/pre-push", "origin", INPUT["upstream"]],
         stdin=refs.encode())
     tip("final-advertised-master")
     require(not git("final-status", "status", "--porcelain", "--untracked-files=no"),

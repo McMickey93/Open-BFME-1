@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Open-BFME/Open-BFME-1
-          ref: e439b456df920cbe6bc9efc9ba038e5f5d6a37e9
+          ref: 28e8691472497ca76f980f617f0b35b948fa9ee9
           path: source
           persist-credentials: false
           # The exact outgoing range is the pinned base plus one normal commit.
@@ -74,6 +74,9 @@ jobs:
           set -euo pipefail
           source .githooks/python3.sh
           require_python3 qualification
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_QUALIFICATION_BASH="$(cygpath -aw "$git_bash")"
           python3 -u ../qualification/.github/qualification/bfme1-parser/qualify.py
 
       - name: Retain the logs and exact candidate evidence for one day
