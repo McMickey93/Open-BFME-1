@@ -1,9 +1,5 @@
 // cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD
 
-extern "C" __declspec(dllimport) int __cdecl _memicmp(
-	const void *left, const void *right, unsigned int count);
-extern "C" __declspec(dllimport) unsigned int __cdecl strlen(const char *text);
-
 // Open-BFME: ?rva006AD9B0@MilesAudioManager@@QAE_NXZ, retail 0x006AD9B0, 234 bytes.
 //
 // __thiscall member that ignores `this`: both retail callers load ecx right
@@ -24,8 +20,8 @@ extern "C" __declspec(dllimport) unsigned int __cdecl strlen(const char *text);
 //   PreferenceMap::find via ILT 0x0000AEAC -> 0x00080600 (STLport _M_find<AsciiString>)
 //   StringBase<char>::releaseBuffer 0x00887940 (key temporary destructor)
 //   StringBase<char>(const StringBase &) 0x00887B60 (value copy)
-//   AsciiString::compareNoCase(const char *) self-contained below (TU-local
-//   COMDAT; retail reaches its own copy through ILT 0x0002F1D5 -> FUN_00aad9b0)
+//   StringBase<char>::compareNoCase(const char *) through ILT 0x000405E8
+//   -> 0x00075E00; the nonthrowing ABI preserves the retail EH states.
 //   StringBase<char>::releaseBuffer 0x00887940 (value destructor)
 //   OptionPreferences::~OptionPreferences() via ILT 0x00001307 -> 0x00090450
 //
@@ -43,6 +39,9 @@ template <typename T> class StringBase
 {
 	friend class AsciiString;
 
+public:
+	int compareNoCase(const T *text) const throw();
+
 private:
 	StringBase(const T *text);
 	StringBase(const StringBase &other);
@@ -53,35 +52,11 @@ private:
 
 class AsciiString : private StringBase<char>
 {
-private:
-	struct Header
-	{
-		int m_refCount;
-		unsigned short m_length;
-		unsigned short m_capacity;
-	};
-
 public:
 	AsciiString(const char *s) : StringBase<char>(s) {}
 	AsciiString(const AsciiString &that) : StringBase<char>(that) {}
 	~AsciiString() { releaseBuffer(); }
 
-	// Inlined at the call site when small, outlined as this TU's COMDAT
-	// otherwise; either way this TU emits no reference to the unrecovered
-	// out-of-line AsciiString::compareNoCase body (retail FUN_00aad9b0).
-	int compareNoCase(const char *text) const
-	{
-		const Header *header = (const Header *)((const StringBase<char> *)this)->m_data;
-		const int thisLength = header ? header->m_length : 0;
-		const char *data = header ? (const char *)(header + 1) : "";
-		const int length = text ? strlen(text) : 0;
-		int difference = _memicmp(data, text, thisLength < length ? thisLength : length);
-		if (difference != 0)
-		{
-			return difference;
-		}
-		return thisLength - length;
-	}
 };
 
 struct PreferenceNode
@@ -143,7 +118,7 @@ bool MilesAudioManager::rva006AD9B0(void)
 		return true;
 
 	AsciiString value(it->m_value);
-	if (value.compareNoCase("false") == 0 || value.compareNoCase("no") == 0)
+	if (((const StringBase<char> *)&value)->compareNoCase("false") == 0 || ((const StringBase<char> *)&value)->compareNoCase("no") == 0)
 		return false;
 
 	return true;

@@ -26,10 +26,6 @@ public:
 	AsciiString( const AsciiString &other ) : StringBase<char>( other ) {}
 	~AsciiString() {}
 
-	int compareNoCase( const char *text ) const
-	{
-		return ((const StringBase<char> *)this)->compareNoCase( text );
-	}
 };
 
 bool GetStringFromRegistry( AsciiString path, AsciiString key, AsciiString &value );
@@ -44,5 +40,5 @@ bool BfmeAptScreenOnlineLogin::_bfme_loginGadgetsState()
 {
 	AsciiString registeredValue;
 	GetStringFromRegistry( "", "Registered", registeredValue );
-	return registeredValue.compareNoCase( "true" ) == 0;
+	return ((const StringBase<char> *)&registeredValue)->compareNoCase( "true" ) == 0;
 }
