@@ -41,7 +41,8 @@ class IMEManagerInterface;
 extern IMEManagerInterface *TheIMEManager;
 extern void HideInGameChat( void );
 extern void j_00023cc7( void );
-extern int g_012F4994;
+// Retail VA 0x012F4994: shared zero-initialized chat update counter.
+int g_012F4994 = 0;
 
 class AptInGameChat
 {
