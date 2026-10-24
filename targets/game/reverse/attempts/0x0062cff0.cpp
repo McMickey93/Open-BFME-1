@@ -1,5 +1,5 @@
 // ?gameTooltip@@YAXPAVGameWindow@@PAVWinInstanceData@@I@Z
-// partial score=0.3895 date=2026-10-10
+// partial score=0.6492 date=2026-10-24
 // cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 // Copyright 2025 Electronic Arts Inc. SPDX-License-Identifier: GPL-3.0-or-later
 // BFME gameTooltip 0062CFF0..0062D668 (1656 B). Saved whole-body reconstruction.
@@ -91,6 +91,7 @@ class GameInfo {public: AsciiString getMap()const;};
 class GameSpyStagingRoom : public GameInfo {public:
 char field_000[0x428];bool m_requiresPassword;char field_429[7];
 unsigned m_exeCRC,m_iniCRC,m_bfme438;char field_43c[0x14];unsigned short m_ladderPort;
+unsigned short getLadderPort() const { return m_ladderPort; }
 UnicodeString getGameName();AsciiString getLadderIP()const;
 GameSpyGameSlot *getGameSpySlot(int);
 };
@@ -145,10 +146,23 @@ class LadderList {public: const LadderInfo *findLadder(const AsciiString&,unsign
 extern LadderList *TheLadderList;
 class GlobalData;extern GlobalData *TheGlobalData;
 int Rva0009B4B0(int,int);
+// Retail unwind states 0 and 1 (FuncInfo 0x00E2FEEC): two class-typed
+// lifetimes in a scope the optimizer deleted, numbered before checkTooltip
+// makes state 2.  The type they held cannot be recovered from the image, so
+// this shim is named for its address and only has to be class-typed with a
+// destructor this TU cannot fold.
+struct Rva0062CFF0EliminatedLifetime { ~Rva0062CFF0EliminatedLifetime(); };
+void rva0062CFF0EliminatedSink(const void *, const void *);
 void gameTooltip(GameWindow *window,
 													WinInstanceData *instData,
 													UnsignedInt mouse)
 {
+	if (0) {
+		// Unreachable: retail unwind states 0 and 1, two no-cleanup lifetimes.
+		Rva0062CFF0EliminatedLifetime eliminated0;
+		Rva0062CFF0EliminatedLifetime eliminated1;
+		rva0062CFF0EliminatedSink(&eliminated0, &eliminated1);
+	}
 	Int x, y, row, col;
 	x = LOLONGTOSHORT(mouse);
 	y = HILONGTOSHORT(mouse);
@@ -227,10 +241,9 @@ void gameTooltip(GameWindow *window,
 	UnicodeString tmp;
 	tooltip.format(TheGameText->fetch("TOOLTIP:GameInfoGameName"), room->getGameName().str());
 	const GameSpyStagingRoom *bfmeRoom = room;
-	const unsigned short ladderPort = bfmeRoom->m_ladderPort;
-	if (ladderPort != 0)
+	if (bfmeRoom->getLadderPort() != 0)
 	{
-		const LadderInfo *linfo = TheLadderList->findLadder(bfmeRoom->getLadderIP(), ladderPort);
+		const LadderInfo *linfo = TheLadderList->findLadder(bfmeRoom->getLadderIP(), bfmeRoom->getLadderPort());
 		if (linfo)
 		{
 			tmp.format(TheGameText->fetch("TOOLTIP:GameInfoLadderName"), linfo->name.str());
