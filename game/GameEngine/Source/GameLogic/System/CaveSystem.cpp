@@ -159,7 +159,6 @@ void CaveSystem::registerNewCave( Int theIndex )
 		m_tunnelTrackerVector[theIndex] = ::new TunnelTracker;
 }
 
-// ?unregisterCave@CaveSystem@@QAEXH@Z present-unmatched
 void CaveSystem::unregisterCave( Int theIndex )
 {
 	// Doesn't need to do a thing.  ContainModule logic knows how to say goodbye, and a TunnelTracker
