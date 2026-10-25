@@ -264,7 +264,7 @@ public:
 extern void j_0000795a();
 
 extern int g_012F02D4;
-#define g_Rva012F02D4 g_012F02D4
+// Retired binding ?g_Rva012F02D4@@3HA; the matched route provider owns this int.
 
 extern void j_0002191d();
 extern "C" void _ReadWriteBarrier(void);
@@ -320,7 +320,7 @@ StateReturnType GiantBirdNormalFlightState::onEnter()
 		typedef void (Rva002BC260GoalOwner::*Run)(void *, void *, void *, void *);
 		union { void (*fn)(); Run call; } runCast;
 		runCast.fn = j_0000795a;
-		(((Rva002BC260GoalOwner *)ai)->*runCast.call)(&goal, &g_Rva012F02D4, 0, (void *)1);
+		(((Rva002BC260GoalOwner *)ai)->*runCast.call)(&goal, &g_012F02D4, 0, (void *)1);
 		return ai->m_continue424 ? (StateReturnType)0 : (StateReturnType)-2;
 	}
 }
