@@ -63,6 +63,24 @@
       "payload_commit": "6612601b93cacae459ce872a405a062af45180ce",
       "model": "gpt-6-astra-pro",
       "patch_from_best": "07-to-08.patch"
+    },
+    {
+      "variant": "09",
+      "source_bytes": 8383,
+      "source_git_blob": "4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9",
+      "source_sha256": "65c44e200bcf7cf6427616ac29ccfdfe0d62c10a9e1c07114dc46bd57c5f0186",
+      "workflow_run": "40188653016",
+      "payload_commit": "f55757c5a0451883f92b7a9eb4804870de8c7c16",
+      "model": "gpt-6-astra-pro",
+      "patch_from_best": "07-to-09.patch",
+      "raw_table_identical_to": "05",
+      "reused_preserved_probe": "probe-05-008c6ad0.txt",
+      "artifact_id": 12597577012,
+      "artifact_sha256": "b4c978b6f23627e710648f43eb36c6ce4b5bc918149e52461d4fa18428e11540",
+      "artifact_verification_path": "Open-BFME-1-body-runner/build/native-coercion/09/artifact-verification.json",
+      "artifact_verification_sha256": "5ceff8dff8e67b8927a27b9dab463fe55e157b2e276ab922bd0a2dde2f581210",
+      "all_input_and_candidate_hashes_verified": true,
+      "actual_base": "1f190a83f3c2236db2da4906c46d38c3185a6a42"
     }
   ],
   "preserved_probes": [

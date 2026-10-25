@@ -6,7 +6,9 @@ This is preservation of a **non-exact** reconstruction, not a recovery or a
 canonical bank update. Variant 07 emits 229 bytes for the independently bounded
 233-byte retail body, with 120 non-relocation byte differences. Its measured
 instruction-shape score is 0.893; that is not a byte-match fraction. Variant 08
-emits the identical instruction table. No C++ exact bytes were gained.
+emits the identical instruction table. The later variant 09 exactly repeats
+05's 237-byte instruction table, so 07 remains the best preserved candidate.
+No C++ exact bytes were gained.
 
 The canonical `re_log.py partial --stash` operation is **pending native
 remeasurement**. The tool recompiles both the incoming and retained candidates
@@ -32,7 +34,7 @@ The whole-TU source is `best-whole-tu.cpp.txt`, exactly variant 07:
 Git blob `6f590f236f882e4fa62d50b22b5214ed2c5a4b8c`, SHA256
 `872ab57f5654deadc23c474e1307b6a73709030d396b5cfd923b3c827539f927`.
 It is the simpler equivalent of 08. Patches `07-to-03.patch` through
-`07-to-08.patch` reproduce the other measured variants from that same file;
+`07-to-09.patch` reproduce the other measured variants from that same file;
 there is no patch for 07 itself. `native-inputs.json` records each reconstructed
 source hash, immutable GitHub payload commit and completed workflow run.
 Apply a patch to a temporary copy of the best source, never cumulatively.
@@ -45,13 +47,21 @@ comparison tables: filling retail relocations into a displaced block corrupts
 the explanatory rendering and is not reliable operand evidence.
 Only line endings and trailing whitespace are normalized in the preserved
 probes; `native-inputs.json` records both original and preserved file hashes.
+The 09 artifact is also verified: run `40188653016`, artifact `12597577012`,
+SHA256 `b4c978b6f23627e710648f43eb36c6ce4b5bc918149e52461d4fa18428e11540`.
+The controller receipt is
+`Open-BFME-1-body-runner/build/native-coercion/09/artifact-verification.json`;
+its digest and immutable input hashes are recorded in `native-inputs.json`.
+That receipt and a direct table comparison establish complete raw-table
+identity with 05, so no duplicate 09 disassembly is stored here.
 
 The reviewed source base was
 `3d3b0681294a0de92aae10ea1a753ae22068f091`; unchanged native guards accepted
 unrelated upstream advances. Run 08 used actual upstream
 `adf0790854f08041700a3b401cafdefdb905a140`. The following official
 `7a54fc6ed91a7803fdf555072d465023bf5b6431` appends unrelated linking verdicts;
-preserve those entries when recording the native partial verdict. Compiler
+preserve those entries when recording the native partial verdict. Run 09 used
+the published preservation base `1f190a83f3c2236db2da4906c46d38c3185a6a42`. Compiler
 inputs were the original MSVC 7.1 and the whole source's existing
 `/O2 /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc` configuration. Diagnostic objects
 must not be reused as verified build receipts.
@@ -76,7 +86,7 @@ The remaining failure is branch linearization and jump relaxation. Independent
 instruction-inventory review found the same 68 non-branch instructions and
 193 non-branch bytes in retail and the corrected measured variants. All have
 16 conditional jumps. Retail needs two long jumps (233 bytes), 04/06/07/08
-have one (229 bytes), and 05 has three (237 bytes). This does not make any of
+have one (229 bytes), and 05/09 have three (237 bytes). This does not make any of
 the candidates byte-exact.
 
 | Block | Retail offset | Best 07 offset |
@@ -103,6 +113,7 @@ native experiment. No admission or complete relocation-aware gate was run.
 | 06 | Cached type plus one inline-helper entry barrier | Complete raw instruction table identical to 04 |
 | 07 | Single numeric label inside structured negative guard; early false returns retained | 229/233; 120 differences; both coercion type tests together; table equals 03 except the corrected three array/count instructions |
 | 08 | Coercion made the explicit `else` arm of 07 | Complete raw instruction table identical to 07 |
+| 09 | Separate positive type-6/type-7 jumps with 07's separate tagged early false returns | Complete raw instruction table identical to 05: 237/233, 116 differences, first `+0x3C`, seven displaced relocation sites, shape 0.798; sibling remains exact |
 
 The pre-existing nine if/switch/ternary/Boolean-output trials were not repeated
 unchanged. Initial scratch variants 00-02 were not compiled in this continuation.
@@ -125,17 +136,20 @@ no flag sweep was performed, and no sibling behavior was altered. The
 post-call tags, helper-entry boundary, flat labels, structured numeric label
 and explicit-else context now have concrete measured outcomes.
 
-A more specific untested combination remains: 05's separate positive
-`isType(6)`/`isType(7)` jumps to coercion, together with 07's separate tagged
-early false returns for fallback and predicate. Variant 05 instead used
+The additional 09 test combined 05's separate positive
+`isType(6)`/`isType(7)` jumps to coercion with 07's separate tagged early false
+returns for fallback and predicate. Variant 05 instead used
 common-false gotos; 07 instead used the combined negative type guard. Old log
 54855 lists nine source forms but reports merged false tails for all its
 if-chain forms, and the preserved old banks have no differing barrier tags.
-It does not establish that this exact combination was tested. The
+It did not establish that this exact combination had been tested. The
 `docs/shape_levers.md` witness at `0x0068D730` (129-byte bounded string append)
 shows split early-return guards changing shared-block placement. Its guards
-return instead of jumping to a coercion arm, so it motivates this precise
-future diagnostic without guaranteeing a result. No such trial was run here.
+return instead of jumping to a coercion arm, so it motivated a precise
+diagnostic without guaranteeing a result. The completed 09 experiment now
+rules out that exact combination as an improvement: its entire raw instruction
+table equals 05. No further coercion trials followed this result; work moved
+to a separately reviewed whole TU.
 
 An isolated forced-inline member helper remains an untested source-context
 idea. Existing Apt members establish the class/layout context, but there is

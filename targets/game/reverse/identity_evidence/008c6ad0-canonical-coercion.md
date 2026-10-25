@@ -4,9 +4,10 @@
 
 The 233-byte body remains **non-exact**. Original MSVC 7.1 compiled the best
 preserved whole-file candidate to 229 bytes, with 120 non-relocation byte
-differences and instruction-shape score 0.893. Its final control-flow variant
-emitted the same instruction table. No recovered C++ bytes or successful
-complete byte gate are claimed.
+differences and instruction-shape score 0.893. Variant 08 emitted the same
+instruction table. The additional split-guard/early-return variant 09 exactly
+repeated 05's non-exact 237-byte instruction table. No recovered C++ bytes or
+successful complete byte gate are claimed.
 
 The [tracked handoff](../attempt_support/008c6ad0-tail-order-20261025/readme.md)
 preserves the exact best source, useful source transformations, raw native
