@@ -41,12 +41,8 @@ private:
 	PlayerLeaveStatus m_playerLeaveStatus[8];		// +0x1B0
 };
 
-PlayerLeaveStatus *GameLogic::getPlayerLeaveStatus(int playerIndex)
-{
-	if (playerIndex < 0 || playerIndex >= 8)
-		return 0;
-	return &m_playerLeaveStatus[playerIndex];
-}
+// The exact accessor is owned by GameLogicGameOverDetails.cpp.
+
 
 void GameLogic::setPlayerLeaveStatus(int playerIndex, int status)
 {
