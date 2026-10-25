@@ -6,6 +6,7 @@
 // INIWaterTextureList.cpp hands to initFromINI ("Texture" through
 // INI::parseAsciiStringVectorAppend at offset 8) and its zero terminator,
 // read from the image. The getter below returns its address.
+// External symbol: ?g_0108132C@@3QBUFieldParse@@B
 extern const FieldParse g_0108132C[];
 const FieldParse g_0108132C[] =
 {

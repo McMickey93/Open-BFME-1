@@ -20,6 +20,7 @@ private:
 	char m_unmodelled[ 0x58 ];
 };
 
+// External symbol: ?g_rva012F496CBfmeAptScreenMapTransfer@@3PAVBfmeAptScreenMapTransfer@@A
 BfmeAptScreenMapTransfer *g_rva012F496CBfmeAptScreenMapTransfer;
 
 // ?_bfme_showMapTransferLoadScreen@@YA_NPAX@Z

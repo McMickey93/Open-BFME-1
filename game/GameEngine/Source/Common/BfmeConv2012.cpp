@@ -63,6 +63,7 @@ public:
 
 // Native VA 0x01337864 is one zero-filled .data callback cell (the installer at
 // bfmeInstallHandlersVB stores slot 12 here); address-derived name, no EA name proven.
+// External symbol: ?g_rva01337864@@3P6AXPBD0@ZA
 void (__cdecl *g_rva01337864)(const char *a, const char *b) = 0;
 
 char __stdcall bfmeReportEAW(void *unused, BfmeStrEAW *other, BfmeHostEAW *host)

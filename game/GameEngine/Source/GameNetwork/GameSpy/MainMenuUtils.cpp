@@ -860,6 +860,7 @@ int asyncGethostbyname(char * szName)
 // GameSpy's HTTP SDK has had at least 1 crash bug, so we're going to just bail and
 // never try again if they crash us.  We won't be able to get back online again (we'll
 // time out) but at least we'll live.
+// External symbol: ?isHttpOk@@3_NA
 Bool isHttpOk = TRUE;
 
 // HTTPThinkWrapper is supplied by the retail-matched HTTPThinkWrapperBFME.cpp.

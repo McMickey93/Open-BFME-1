@@ -6844,7 +6844,6 @@ name,va
 ?TheBattlePlanUpdatePool@?1??getClassMemoryPool@BattlePlanUpdate@@CAPAVMemoryPool@@XZ@4PAV3@A,0x012EFEA4
 ?TheBeaconClientUpdatePool@?1??getClassMemoryPool@BeaconClientUpdate@@CAPAVMemoryPool@@XZ@4PAV3@A,0x012F7020
 ?TheBeta@@3PAVGenBeta@@A,0x01307178
-?TheBfmeAptScreenMapTransfer@@3PAVBfmeAptScreenMapTransfer@@A,0x012F496C
 ?TheBfmeAttributePool@@3UBfmeAttributeEntryPool@@A,0x012F1000
 ?TheBfmeAttributePool@@3UBfmeAttributePool@@A,0x012F1000
 ?TheBfmeAttributePool@@3VBfmeAttributePool@@A,0x012F1000
@@ -6911,7 +6910,6 @@ name,va
 ?TheBfmeManager_00094700@@3PAVGen_00094700Manager@@A,0x012ED604
 ?TheBfmeManager_00094730@@3PAVGen_00094730Manager@@A,0x012ED604
 ?TheBfmeMaskTable@@3PAHA,0x0112EC4C
-?TheBfmeMixFileInfoCount@@3HA,0x012F1098
 ?TheBfmeObject_0005C450@@3VGen_0005C450Target@@A,0x0134FB18
 ?TheBfmeObject_006D1870@@3VGen_006D1870Target@@A,0x012F7FF0
 ?TheBfmeObject_009372E0@@3VGen_009372E0Target@@A,0x01346E74
@@ -6973,9 +6971,7 @@ name,va
 ?TheBfmeObject_00C70970@@3VGen_00C70970Target@@A,0x012F8044
 ?TheBfmeObject_00C709A0@@3VGen_00C709A0Target@@A,0x012F878C
 ?TheBfmeObject_00C709B0@@3VGen_00C709B0Target@@A,0x012F9800
-?TheBfmeObject_00C709C0@@3VGen_00C709C0Target@@A,0x012F9808
 ?TheBfmeObject_00C70AB0@@3VGen_00C70AB0Target@@A,0x01306978
-?TheBfmeObject_00C70AD0@@3VGen_00C70AD0Target@@A,0x01306C6C
 ?TheBfmeObject_00C70B00@@3VGen_00C70B00Target@@A,0x01306F3C
 ?TheBfmeObject_00C70B10@@3VGen_00C70B10Target@@A,0x01306F54
 ?TheBfmeObject_00C70B40@@3VGen_00C70B40Target@@A,0x01307214
@@ -7261,7 +7257,6 @@ name,va
 ?TheGen001336E5C@@3PAVGen001336E5C@@A,0x01336E5C
 ?TheGen001336E5C@@3PAVSubtitleDebugManager@@A,0x01336E5C
 ?TheGen00587600@@3PAVGen00587600@@A,0x012F4B78
-?TheGen012F496C@@3PAVGen012F496C@@A,0x012F496C
 ?TheGen012F6D88@@3PAVGen0090F680@@A,0x012F6D88
 ?TheGen012F6DFC@@3PAVGen0090F680@@A,0x012F6DFC
 ?TheGenActionContext@@3PAXA,0x012B7D80
@@ -8201,7 +8196,6 @@ name,va
 ?bfmeHandler31VB@@YAXXZ,0x00B833A0
 ?bfmeHandler32VB@@YAXXZ,0x00B833B0
 ?bfmeHelper760@@YAHPAXH@Z,0x006ED760
-?bfmeHttpOk@@3EA,0x012B9469
 ?bfmeIdCWB@@3HA,0x012F102C
 ?bfmeIdCWC@@3HA,0x012F14A0
 ?bfmeIdCWD@@3HA,0x012F3694
@@ -8757,7 +8751,6 @@ name,va
 ?g_AITNGuardPickUpCrateStateVTable@@3HA,0x0109B748
 ?g_AITNGuardReturnStateVTable@@3HA,0x0109B6D0
 ?g_AIWanderStateVTable@@3HA,0x0109A8A8
-?g_BFMEFontCharsList@@3VBFMEFontCharsList@@A,0x01306C6C
 ?g_BFMEIndexBufferDebug@@3PAVBFMEDebugClass008FC660@@A,0x01336E5C
 ?g_BFMEIndexBufferDebug@@3PAVBFMEDebugClass008FC710@@A,0x01336E5C
 ?g_BFMEIndexBufferDebug@@3PAVBFMEDebugClass008FCF40@@A,0x01336E5C
@@ -9330,7 +9323,6 @@ name,va
 ?g_Va012F4248@@3EA,0x012F4248
 ?g_Va012F45B8@@3IA,0x012F45B8
 ?g_Va012F4964@@3HA,0x012F4964
-?g_Va012F496C@@3HA,0x012F496C
 ?g_Va012F4970@@3EA,0x012F4970
 ?g_Va012F4988@@3HA,0x012F4988
 ?g_Va012F4998@@3HA,0x012F4998
@@ -9822,7 +9814,6 @@ name,va
 ?g_bfmeColorAdjust_00783070@@3UBfmeColorAdjust_00783070@@A,0x01306978
 ?g_bfmeColorBias_00783070@@3MA,0x0107C64C
 ?g_bfmeColorScale_00783070@@3MA,0x01084068
-?g_bfmeCompareEAW@@3P6AXPBD0@ZA,0x01337864
 ?g_bfmeCoord2DFormat@@3QBDB,0x011443F8
 ?g_bfmeCoord3DFormat@@3QBDB,0x01144348
 ?g_bfmeCount1054@@3HA,0x0134054C
@@ -10331,7 +10322,6 @@ name,va
 ?g_bfmeLitB1079@@3PADA,0x01107384
 ?g_bfmeLitC1060@@3PADA,0x01109BC4
 ?g_bfmeLitC1062@@3PADA,0x01109B98
-?g_bfmeLiveGU@@3HA,0x012F1098
 ?g_bfmeLockZS@@3PAVBfmeLockVHX@@A,0x012F9858
 ?g_bfmeLog1013@@3PAVBfmeLog1013@@A,0x012F19E8
 ?g_bfmeLog1020@@3PAVPalantirAptWindow@@A,0x012F19E8
@@ -10529,7 +10519,6 @@ name,va
 ?g_bfmeParseBVHI@@3PAUBfmeParseVHI@@A,0x010898A0
 ?g_bfmeParseVHG@@3PAUBfmeParseVHG@@A,0x01083270
 ?g_bfmePathfindFreeList@@3PAVPathfindCellInfo@@A,0x012F1094
-?g_bfmePathfindInfoIssued@@3HA,0x012F1098
 ?g_bfmePeerReqE4@@3HA,0x012B9660
 ?g_bfmePeerReqE8@@3HA,0x012B9664
 ?g_bfmePiOverTwo@@3MA,0x01097114
@@ -10731,7 +10720,6 @@ name,va
 ?g_bfmeSlot11VA@@3HA,0x0130BCF4
 ?g_bfmeSlot11VB@@3P6AXXZA,0x0133785C
 ?g_bfmeSlot12VA@@3HA,0x0130BCF0
-?g_bfmeSlot12VB@@3P6AXXZA,0x01337864
 ?g_bfmeSlot13VA@@3HA,0x0130BCEC
 ?g_bfmeSlot13VB@@3P6AXXZA,0x01337868
 ?g_bfmeSlot14VA@@3HA,0x0130BCE8
@@ -11198,7 +11186,6 @@ name,va
 ?g_get_007164e0@@3HA,0x0134EDA8
 ?g_get_007164f0@@3HA,0x01340530
 ?g_get_00730520@@3DA,0x011213D8
-?g_glob12F496C@@3HA,0x012F496C
 ?g_global12EF1D8@@3PAXA,0x012EF1D8
 ?g_global@@3PAXA,0x013592F0
 ?g_global@_STL@@3PAXA,0x013592F0
@@ -11906,7 +11893,6 @@ name,va
 ?g_w3dMouseD3DDevice@@3PAVD3DDeviceInterface@@A,0x01340534
 ?g_w3dMouseDrawTarget@@3PAVW3DMouseDrawInterface@@A,0x012F4C5C
 ?g_w3dMouseIsThread@@3_NA,0x012F8788
-?g_w3dMouseThread@@3VMouseThreadClass@@A,0x012F9808
 ?g_w3dMouseThreadRunLock@@3EA,0x012F9800
 ?g_w3dStatusCircleNeedUpdate@@3_NA,0x012F9D8C
 ?g_waypointListHead@@3PAVWaypoint@@A,0x012EF4D0

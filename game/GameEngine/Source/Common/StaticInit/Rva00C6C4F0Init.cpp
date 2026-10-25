@@ -4,6 +4,7 @@ class MouseThreadClass
 public:
     unsigned char m_storage[0x54];
 };
+// External symbol: ?g_rva012F9808Object@@3VMouseThreadClass@@A
 MouseThreadClass g_rva012F9808Object;
 extern void j_0003cdd0();
 void bfmeForward_00C709C0();

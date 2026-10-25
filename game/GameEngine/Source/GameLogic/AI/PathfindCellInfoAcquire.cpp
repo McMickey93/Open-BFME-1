@@ -33,6 +33,7 @@ public:
 // Retail RVA 0x003F6B2A/0x003F6B40 load/store this four-byte free-list head.
 // VA 0x012F1094 is zero-filled; BFME's intrusive pool has no proven EA name.
 void *g_rva012F1094 = 0;
+// External symbol: ?g_rva012F1098@@3HA
 int g_rva012F1098 = 0;                          // retail 0x012F1098
 
 PathfindCellInfo *__cdecl bfmeAcquirePathfindCellInfo(
