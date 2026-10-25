@@ -11,7 +11,8 @@ void __cdecl operator delete(void *);
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Weapon.h
 class Weapon
 {
-public:
+	friend class WeaponStore;
+protected:
 	Weapon(const WeaponTemplate *, WeaponSlotType);
 private:
 	unsigned char m_pad[0x5c];
