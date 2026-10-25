@@ -76,6 +76,8 @@ float g_milesVolume012BA13C = 1.0f;
 
 // The pushed float fallbacks: 0x0109F748 is __real@3f400000 (0.75) and
 // 0x010B933C is __real@3f0ccccd (0.55) per dir32_addresses.csv.
+// Existing matched COFF data owners (also used by the keyed repair locator):
+// ?g_real3f400000@@3MB and ?g_real3f0ccccd@@3MB.
 extern const float g_real3f400000 = 0.75f;
 extern const float g_real3f0ccccd = 0.55f;
 
@@ -307,23 +309,23 @@ void AudioManager::init()
 	// `fstp`s the local, and the local's dword copy is what reaches the global.
 	// Assigning the ternary straight into the global lets MSVC copy a dword
 	// through a general-purpose register instead and the whole block changes shape.
-	float volume = getAudioSettings() ? getAudioSettings()->m_preferredSpeechVolume : g_real3f0ccccd;
+	float volume = getAudioSettings() ? getAudioSettings()->m_preferredSpeechVolume : 0.55f;
 	g_milesVolume012BA134 = volume;
 	j_00047f3c(2);
 
-	volume = getAudioSettings() ? getAudioSettings()->m_preferredSoundVolume : g_real3f400000;
+	volume = getAudioSettings() ? getAudioSettings()->m_preferredSoundVolume : 0.75f;
 	g_milesVolume012BA12C = volume;
 	j_00047f3c(0);
 
-	volume = getAudioSettings() ? getAudioSettings()->m_preferredAmbientVolume : g_real3f0ccccd;
+	volume = getAudioSettings() ? getAudioSettings()->m_preferredAmbientVolume : 0.55f;
 	g_milesVolume012BA13C = volume;
 	j_00047f3c(4);
 
-	volume = getAudioSettings() ? getAudioSettings()->m_preferred3DSoundVolume : g_real3f0ccccd;
+	volume = getAudioSettings() ? getAudioSettings()->m_preferred3DSoundVolume : 0.55f;
 	g_milesVolume012BA130 = volume;
 	j_00047f3c(1);
 
-	volume = getAudioSettings() ? getAudioSettings()->m_preferredMusicVolume : g_real3f0ccccd;
+	volume = getAudioSettings() ? getAudioSettings()->m_preferredMusicVolume : 0.55f;
 	g_milesVolume012BA138 = volume;
 	j_00047f3c(3);
 
