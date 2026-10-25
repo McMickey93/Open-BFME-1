@@ -27,6 +27,7 @@ NetworkInterface *TheNetwork = 0;
 // Zero Hour Network.cpp:62-64: release builds initialise NET_CRC_INTERVAL to 100.
 // Retail .data holds 0x00000064 at VA 0x012A7040; GameInfo::reset copies it
 // into m_crcInterval (Zero Hour GameInfo.cpp:305).
+// Matched data provider: ?NET_CRC_INTERVAL@@3HA.
 Int NET_CRC_INTERVAL = 100;
 
 class Network : public NetworkInterface

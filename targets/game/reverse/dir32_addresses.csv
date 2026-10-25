@@ -6221,7 +6221,6 @@ name,va
 ?OSVersionNumberMinor@CPUDetectClass@@0IA,0x0134ED10
 ?OSVersionPlatformId@CPUDetectClass@@0IA,0x0134EDB4
 ?OUTWARD_EMISSION_VELOCITY_MODULE_TEMPLATE_PARSE_TABLE@FXParticleSystem@@3QBDB,0x01113FE4
-?OpenBFME5_netCRCInterval@@3HA,0x012A7040
 ?OurLanguage@@3W4LanguageID@@A,0x012ED5D4
 ?Owner0040A260@@3PAXA,0x012F10D8
 ?OwnerThreadId@DX8Wrapper@@0KA,0x01340584
@@ -11264,7 +11263,6 @@ name,va
 ?g_msToSec@@3MA,0x010766EC
 ?g_negate_high@@3T__m64@@B,0x0114F400
 ?g_negate_low@@3T__m64@@B,0x0114F3F8
-?g_netCRCInterval@@3HA,0x012A7040
 ?g_networkTimingOverruns@@3HA,0x012F7724
 ?g_obj12F060C@@3PAUBfmeObj2B1@@A,0x012F060C
 ?g_obj12F060C@@3PAULuaDrawableState@@A,0x012F060C
@@ -11899,7 +11897,6 @@ name,va
 ?g_value12A6FA8@@3HA,0x012A6FA8
 ?g_value12A6FB0@@3HA,0x012A6FB0
 ?g_value12A6FB4@@3HA,0x012A6FB4
-?g_value12A7040@@3HA,0x012A7040
 ?g_vector3Buffer@@3PAV?$ShareBufferClass@VVector3@@@@A,0x012F6DC8
 ?g_vector4Buffer@@3PAV?$ShareBufferClass@VVector4@@@@A,0x012F6DCC
 ?g_verifyClientCRC@@3_NA,0x012ED4E4

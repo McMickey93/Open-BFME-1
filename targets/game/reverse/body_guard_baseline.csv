@@ -671,7 +671,6 @@ dir32,0x012A6280,___xi_a,"nothing in the ledger owns 0x012A6280. Give the datum 
 dir32,0x012A6384,___xi_z,"nothing in the ledger owns 0x012A6384. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012A6918,?Rva00EA6918ModelConditionNames@@3PAPBDA,"retail 0x012A6918 is already recorded as ?ModelConditionNames@@3QBQBDB (+3 more); reference that name, not a new one"
 dir32,0x012A6918,?names1CB270@@3PAPBDA,"retail 0x012A6918 is already recorded as ?ModelConditionNames@@3QBQBDB (+3 more); reference that name, not a new one"
-dir32,0x012A7040,?NET_CRC_INTERVAL@@3HA,"retail 0x012A7040 is already recorded as ?OpenBFME5_netCRCInterval@@3HA (+2 more); reference that name, not a new one"
 dir32,0x012A72A4,?g_012A72A4@@3MA,"nothing in the ledger owns 0x012A72A4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012A77B8,?g_Key001ABC90_012A77B8@@3VKey001ABC90@@A,"nothing in the ledger owns 0x012A77B8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012A77C0,?g_Key001ABC90_012A77C0@@3VKey001ABC90@@A,"nothing in the ledger owns 0x012A77C0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
