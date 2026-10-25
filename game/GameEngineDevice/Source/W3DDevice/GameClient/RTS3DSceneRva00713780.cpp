@@ -159,8 +159,10 @@ public:
 	void bfmePopFT();
 };
 
-extern bool g_rva01341220Flag;
-extern unsigned char g_rva012D6E04Value;
+// Retail byte stores share the setters' and ShaderClass::Apply's recorded globals.
+// Retired bindings: ?g_rva01341220Flag@@3_NA, ?g_rva012D6E04Value@@3EA.
+extern unsigned char g_00710e10;
+extern unsigned char g_00710e20;
 
 class RTS3DScene
 {
@@ -432,14 +434,14 @@ void RTS3DScene::rva00713780(RenderInfoClass &rinfo, RenderObjClass *robj,
 
 		if (draw && draw->m_flag0e4)
 		{
-			g_rva01341220Flag = true;
+			g_00710e10 = 1;
 			UnsignedInt value0f0 = draw->m_value0f0;
-			g_rva012D6E04Value = (unsigned char)value0f0;
+			g_00710e20 = (unsigned char)value0f0;
 		}
 		else
 		{
-			g_rva01341220Flag = false;
-			g_rva012D6E04Value = 0x60;
+			g_00710e10 = 0;
+			g_00710e20 = 0x60;
 		}
 
 		if (drawInfo)
