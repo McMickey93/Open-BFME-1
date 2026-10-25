@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Measure canonical declaration and native member argument contexts
+      - name: Bank measured canonical improvement with normal hooks and continue finish loop
         working-directory: source
         shell: bash
         run: |
@@ -157,21 +157,76 @@ jobs:
                   if not method_const: candidate=candidate.replace('((const Rva00925D10NormalArray *)pm)','((Rva00925D10NormalArray *)pm)')
                   variants['member-order-%s-%d'%('const' if method_const else 'mutable',i)]=(candidate,'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z')
           variants['member-unsigned-count']=(best.replace(signature,signature.replace('int count','unsigned count')),'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z')
-          results=[]
-          for name,(candidate,symbol) in variants.items():
-              assert claims.holds(0x00925D10,token)
-              path=out/(name+'.cpp');path.write_text(candidate,encoding='utf-8')
-              print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
-              p=subprocess.run([sys.executable,'tools/probe.py',str(path),symbol,'0x00925D10','--shape'],capture_output=True,text=True)
-              log=p.stdout+'\n'+p.stderr;(out/(name+'.log')).write_text(log,encoding='utf-8')
-              print(log,flush=True)
-              item={'name':name,'symbol':symbol,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest(),'exit':p.returncode,'exact':'result   EXACT' in log}
-              results.append(item)
-              if p.returncode:
-                  print('TRIAL_UNAVAILABLE '+name,flush=True);continue
-              if item['exact']:
-                  print('EXACT_CANDIDATE '+name,flush=True);print(candidate,flush=True);break
-          (out/'canonical-and-member-argument-trials.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
+          
+          candidate,symbol=variants['canonical-direct-view']
+          assert hashlib.sha256(candidate.encode()).hexdigest()=='940c67b6dca70271cf52780566f2a96f3bdc4b1fb2315c5ebf7f012290da395f'
+          assert claims.holds(0x00948BD0,token) and claims.holds(0x00925D10,token)
+          base=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          path=out/'canonical-direct-view.cpp';path.write_text(candidate,encoding='utf-8')
+          p=subprocess.run([sys.executable,'tools/probe.py',str(path),symbol,'0x00925D10','--all','--shape'],capture_output=True,text=True)
+          log=p.stdout+'\n'+p.stderr;(out/'bank-source-probe.log').write_text(log,encoding='utf-8')
+          print(log,flush=True);assert p.returncode==0 and 'diffs    16 ' in p.stdout and 'ours=1634 retail=1634' in p.stdout
+          p=subprocess.run([sys.executable,'tools/class_gate.py',str(path)],capture_output=True,text=True)
+          (out/'canonical-class-gate.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
+          print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
+          doc="# DX8 shard: native context controls and improved mesh bank (2026-10-25)\n\nThe >512-byte finish lane served 0x00948BD0 and the same generated ASM source\nalso queued 0x00925D10. Both bodies were reserved and examined together, with\nnormal claim-reader and generation fencing before each private experiment.\nBFME 1 input was f633d0e97a953289405438821be0c09b28527bbb; AGENTS.md remains\n06b755567bb147dfee3a89f70f7bbcd38410b5b4. All compiler work used original\nMSVC 7.1 on native Windows with the bank's compiler controls.\n\n## DX8TextureCategoryClass::Render, 0x00948BD0\n\nThe complete 4397-byte bank reproduces 36 non-relocation differences, 291\nrelocations, first differing byte +0x685, normalized instruction shape 0.996.\nThe existing caller and RET/INT3 identity/boundary evidence was retained.\nThe 25 October matrix-storage report and all prior target verdicts were read.\n\nFive new native-context controls retain exactly this result: raw base-offset\ngetter without const, a real int field at +0x304 with const/nonconst accessors,\nvisible noinline unsorted polygon Render, and that provider combined with the\nnative field getter. Compile-time checks establish RefCountClass size 8 and\nthe field's offset. The independently checked provider at 0x0092CB30 emits all\n118 bytes with five relocations in both visibility trials. Those 118 bytes\nwere already matched, so this supplies no new C++ progress.\n\nThis rejects these finite field/visibility hypotheses, not all allocator\ncontexts. The sorted offset/sphere register cascade and task-join choice remain\nunresolved. No preferred bank, pin, header or production source was changed.\n\n- Baselines: [40238771374](https://github.com/McMickey93/Open-BFME-1/actions/runs/40238771374/artifacts/12616380269),\n  zip SHA256 889fade99c2392c9d668e37deb5d59c1ae1958653cf7fa83a3490a48339237bd.\n- Native contexts: [40239147784](https://github.com/McMickey93/Open-BFME-1/actions/runs/40239147784/artifacts/12615169839),\n  zip SHA256 6c47efed11ac0155330937f3ebf43db3a191dae42920b8cf10ebf69813c3bf96.\n\n## MeshGeometryClass deformation, 0x00925D10\n\nThe old preferred bank emitted 1634 bytes with 20 differences, three aligned\nrelocations, and shape 0.988. RET12 at +0x65F and INT3 at +0x662 prove the\nextent; the matched MeshClass caller proves the real three-pointer overload.\nRead the existing finish-residue, buffer-provenance and 25 October retry\nreports for the independently decoded buffers, ownership and HTree layout.\n\nThe new best source emits 1634 bytes with **16** differences and the same three\naligned relocations; shape is 0.992. Canonical measurement quality is 0.9902.\nIt is a partial, not byte-exact C++ or new progress bytes.\n\nThe normal-array operation is a three-argument const member on a TU-local,\nlayout-identical Matrix3D view, following the native WWMath array-member and\nBFME 2 Matrix3DBlend patterns. Its body reads protected Row[3], transforms each\nnormal, and advances the two array walkers. The caller uses the pointer receiver\nand removes the now-unused matrix reference and input/output declarations.\nThis preserves every already-matching weighted-loop byte and fixes four\nsingle-normal bytes. Leaving those dead caller declarations in the first\ndiagnostic generator gave 269 differences; those sources are discarded controls.\n\nThe method now uses the existing meshgeometry.h declaration, the call-proven\nMeshGeometryClass name and pointer ABI, and a field view with the independently\ndecoded BFME offsets. Repeated direct views preserve 16 differences; an\nadditional named view local worsens the code to 401. No private copy of the\nregistered MeshGeometryClass is introduced. Nothing was installed in game/.\n\nOther bounded controls were rejected: seven normal-only RHS parenthesis masks;\nfour member Row/accessor/parenthesis combinations; 36 blend-walker order pairs\nconditional on a local region improvement; eight cleaned pointer/reference\nmember forms; all six member argument orders with const/nonconst receivers;\nand unsigned count. These are distinct from the prior 156-trial free\nfour-parameter helper and earlier-blend parenthesis experiment.\n\nOnly single-bone normal arithmetic and the two store SIB bytes remain:\n+0x59E, +0x5A1, +0x5A6, +0x5A9; +0x5B6, +0x5B7, +0x5B9, +0x5BA,\n+0x5BF, +0x5C2, +0x5C7; +0x5D8, +0x5D9, +0x5DB, +0x5DC, +0x5E1.\nFurther work must verify the complete body, not splice locally improved regions.\nNo source requires unused-variable padding or a dead conditional block.\n\n- Initial member controls: [40239440036](https://github.com/McMickey93/Open-BFME-1/actions/runs/40239440036/artifacts/12616106277),\n  zip SHA256 34d4e657d56e90a866e29209d7276b85174750095f75d615a3e6175432d0340f.\n- Region/walker controls: [40239820302](https://github.com/McMickey93/Open-BFME-1/actions/runs/40239820302/artifacts/12616895599),\n  zip SHA256 d907d72c7e691985bbef723e175c46ce52018c49ec52435010d8e909707c9f5d.\n- Clean members: [40240188199](https://github.com/McMickey93/Open-BFME-1/actions/runs/40240188199/artifacts/12616712354),\n  zip SHA256 d304515a92b4f7255af8a59bc8d6c6fcab8eee44b20376e89fb7dc6a9ca33829.\n- Canonical declaration and member arguments:\n  [40240632429](https://github.com/McMickey93/Open-BFME-1/actions/runs/40240632429/artifacts/12616628100),\n  zip SHA256 b627c88241a1b20c6313716d5e6f227834e3a5d4bfccc05944c8b9121ee2e1af.\n\nSources, complete probe outputs, objects and receipts are retained for 90 days.\nThe current BFME 2 donor file Rva0016BF40DeformedVertices.cpp has unchanged blob\ne0689ba436c73818f9f2722bfc8d97e51a736bf2 at both 8db6f7dd and 442550ad; no new\nbinary sweep or dependency-receipt bypass was performed.\n\n## Verification and continuation\n\nThe new preferred source is banked through re_log.py after a fresh original-\ncompiler probe and class_gate check. The attempt, history, evidence and append\nuse normal commit/pre-push gates. Production code, headers, pins and matched rows\nremain unchanged. progress.py origin/master reports +0 C++ exact bytes.\n"
+          docpath=Path('targets/game/reverse/attempt_support/20261025-dx8-shard-native-context.md')
+          assert not docpath.exists();docpath.write_text(doc,encoding='utf-8',newline='\n')
+          logpath=Path('targets/game/reverse/re_attempts.log');old=logpath.read_bytes()
+          evidence='Natural three-argument Matrix3D normal-array member with pointer receiver and removal of unused caller declarations improves1634B20diff to1634B16diff,3 alignedrelocs, shape0.992, measuredquality0.9902. Canonical meshgeometry.h/call-proven MeshGeometryClass pointer ABI preserves16 and class_gate passes; real named view local401diff. Member argument/const/count controls retain16; no exact body. RET12+65F INT3+662 and typed MeshClass caller remain evidence. handoff=targets/game/reverse/attempt_support/20261025-dx8-shard-native-context.md blocker=float/x87-normal-operand-keys-and-sib t=34min model=gpt-6'
+          subprocess.run([sys.executable,'tools/re_log.py','record',symbol,'0x00925D10','1634','partial',evidence,'--stash',str(path),'--score','0.9902'],check=True)
+          dxev='Five independent native base-field/const-getter and real noinline polygon Render visibility controls all retain4397B36diff291relocs,first+685,shape0.996. Provider0092CB30 verified118B5relocs already matched; no new C++ bytes or production change. Canonical field offset304 and RefCountsize8 compile assertions passed. Prior matrix/argument controls not repeated. handoff=targets/game/reverse/attempt_support/20261025-dx8-shard-native-context.md blocker=regalloc/sorted-sphere-home t=13min model=gpt-6'
+          subprocess.run([sys.executable,'tools/re_log.py','record','?Render@DX8TextureCategoryClass@@QAEXXZ','0x00948BD0','4397','blocked',dxev],check=True)
+          new=logpath.read_bytes();assert new.startswith(old);append=new[len(old):].decode('utf-8')
+          subprocess.run([sys.executable,'tools/check_csv.py'],check=True)
+          subprocess.run(['git','config','user.name','McMickey93'],check=True)
+          subprocess.run(['git','config','user.email','347452154+McMickey93@users.noreply.github.com'],check=True)
+          subprocess.run(['git','config','core.hooksPath','.githooks'],check=True)
+          changed=subprocess.check_output(['git','status','--porcelain','--untracked-files=all','--','targets/game/reverse'],text=True)
+          paths=[]
+          for line in changed.splitlines():
+              f=line[3:].replace('\\','/');assert f==str(logpath).replace('\\','/') or f==str(docpath).replace('\\','/') or f=='targets/game/reverse/attempts/0x00925d10.cpp' or f.startswith('targets/game/reverse/attempt_history/0x00925d10/')
+              paths.append(f)
+          assert len(paths)>=4
+          subprocess.run(['git','add','--',*paths],check=True)
+          message='Improve canonical mesh deformation bank from20to16differences\n\nPreserve the native normal-member discovery and independent DX8 visibility controls. No matched rows or production code changed; C++ exact progress remains zero.\n\n'+claims.trailer(0x00925D10,entry[1]['lease'])+'\n'+claims.trailer(0x00948BD0,entry[1]['lease'])
+          (out/'commit-message.txt').write_text(message,encoding='utf-8')
+          p=subprocess.run(['git','commit','-F',str(out/'commit-message.txt')],capture_output=True,text=True)
+          (out/'normal-commit.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
+          print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          git_bash=Path(os.environ['BFME_NATIVE_BASH']);assert git_bash.is_file()
+          os.environ['PATH']=str(git_bash.parent)+os.pathsep+os.environ['PATH']
+          p=subprocess.run([str(git_bash),'.githooks/pre-push','origin','https://github.com/Open-BFME/Open-BFME-1.git'],input='refs/heads/master '+head+' refs/heads/master '+base+'\n',capture_output=True,text=True)
+          (out/'normal-pre-push.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
+          print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
+          assert claims.holds(0x00948BD0,token) and claims.holds(0x00925D10,token)
+          subprocess.run(['git','bundle','create',str(out/'bank-handoff.bundle'),base+'..HEAD'],check=True)
+          files=[{'path':f,'content':Path(f).read_text(encoding='utf-8')} for f in paths if f!=str(logpath).replace('\\','/')]
+          receipt={'base':base,'native_commit':head,'tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),'paths':paths,'files':files,'append':append,'message':message,'claim_token':token,'claim_lease':entry[1]['lease']}
+          print('DX8_SKIN_BANK_HANDOFF '+json.dumps(receipt),flush=True)
+          (out/'bank-handoff-receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
+          import json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          import claims,eligibility,next_work,build
+          assert claims.fetch(), 'Cannot read shared claims'
+          busy=eligibility.busy_rvas()
+          rows=build.load_all_function_rows()
+          busy_sources={row.get('source') for row in rows if row.get('target_rva','').lower() in busy}
+          candidates=next_work.finish_candidates(min_score=0.9,max_attempts=0,cooldown_days=0)
+          pool=[c for c in candidates if int(c['target_size'])>512 and c['target_rva'].lower() not in busy and c['source'] not in busy_sources]
+          candidate=next_work.finish_choice(pool) if pool else None
+          print('LARGE_HARD_FINISH_SELECTION '+json.dumps({'selection':candidate,'pool':len(pool),'all_finish':len(candidates),'busy':len(busy),'cluster':next_work.cluster_of(candidate,candidates) if candidate else []}),flush=True)
+          if candidate:
+              rva=candidate['target_rva']
+              subprocess.run([sys.executable,'tools/brief.py','--rvas',rva],check=True)
+              assert claims.fetch()
+              assert int(rva,16) not in claims.live(claims._read_local())
+              marker=claims._record(os.environ['BFME_CLAIM_OWNER'],4,note='Pending explicit connector claim for served large hard-finish whole file')
+              record=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
+              base=subprocess.check_output(['git','rev-parse','origin/master'],text=True).strip()
+              print('NEXT_CLAIM_TRANSPORT '+json.dumps({'rva':rva,'record':record,'base':base,'tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
           
           PY
       - name: Measure unchanged baseline
@@ -187,7 +242,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-skin-canonical-member
+          name: bfme1-hard-finish-skin-banked-16
           path: |
             source/build/contributor_hard_finish_skin_20261025/
             source/build/experiments/
