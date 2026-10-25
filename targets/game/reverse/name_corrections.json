@@ -21111,4 +21111,15 @@
   "evidence": "targets/game/reverse/identity_evidence/0x0083f1c0-ios-callback.md",
   "reason": "The bank uses a reconstructed grow_array spelling and private POD return surrogate; no independent retail evidence establishes that spelling. The real STLport pair return reproduces the native hidden-result ABI and all 132 caller bytes. Keep the proven helper address rather than assigning the invented spelling to its corrected native-type signature."
  }
+ ,
+ {
+  "old_path": "targets/game/reverse/attempts/0x008c6ad0.cpp",
+  "new_path": "targets/game/reverse/attempts/0x008c6ad0.cpp",
+  "old_name": "g_bfmeCount1233",
+  "new_name": "Rva008AE770TheStack",
+  "before_sha256": "2e2b65f2b1b66346c58bfe3b57cec2a093eb142abbdf967849547f42ea1826f9",
+  "after_sha256": "4de6d65be117b96f6736977b5ce5e873866d1252c84a99e0ff9440d6f93a9ee5",
+  "evidence": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "reason": "The old bank's g_bfmeCount1233 used a different image base. Retail reads the stack count at VA 0x01338748 and its array pointer at VA 0x01338750. Rva00C6DCC0StaticInit.cpp independently binds the existing canonical object Rva008AE770TheStack at 0x01338748; the matched adjacent Rva008C6800.cpp consumer establishes the same count+0 and array+8 prefix. This corrects the bank's data binding to that proven owner without inventing an identity."
+ }
 ]
