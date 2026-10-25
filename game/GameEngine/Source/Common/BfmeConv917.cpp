@@ -10,16 +10,15 @@ public:
 	void rva00144DC0(AssetList &assets, void *context);
 };
 
-class BfmeResFHH;
-
-class BfmeGlobFHH
+class AsciiString;
+class BfmeThingFactory
 {
 public:
-	BfmeResFHH *bfmeLookFHH(BfmeSubFHH *s);
+    const ThingTemplate *findTemplate(const AsciiString &name);
 };
 
 // Retail global 0x012EF1D8 is EA's ThingFactory singleton, defined once in
-// Common/Thing/ThingFactory.cpp; this TU keeps its own BfmeGlobFHH view of it.
+// Common/Thing/ThingFactory.cpp. Use the rowed factory lookup contract.
 class ThingFactory;
 
 extern ThingFactory *TheThingFactory;
@@ -49,8 +48,9 @@ void bfmeGo917F(BfmeArg917F *a, void *b, void *c)
 		return;
 	if (s->m_bfmeLen == 0)
 		return;
-	BfmeResFHH *r = ((BfmeGlobFHH *)TheThingFactory)->bfmeLookFHH(k);
+	const ThingTemplate *r = reinterpret_cast<BfmeThingFactory *>(TheThingFactory)->findTemplate(
+        *reinterpret_cast<const AsciiString *>(k));
 	if (!r)
 		return;
-	reinterpret_cast<ThingTemplate *>(r)->rva00144DC0(*static_cast<AssetList *>(b), c);
+	const_cast<ThingTemplate *>(r)->rva00144DC0(*static_cast<AssetList *>(b), c);
 }
