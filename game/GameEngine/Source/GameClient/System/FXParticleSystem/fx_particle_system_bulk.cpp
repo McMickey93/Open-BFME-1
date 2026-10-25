@@ -122,7 +122,8 @@ extern void *g_vtbl_0110F9AC[];
 // ?g_vtbl_0110F9CC@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0110F9E4[];
-extern void *g_vtbl_0110F9E8[];
+// ?g_vtbl_0110F9E8@@3PAPAXA: use the owner recorded at 0x0110F9E8.
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0110FA14[];
 extern void *g_vtbl_0111098C[];
 extern void *g_vtbl_011109CC[];
@@ -236,8 +237,10 @@ extern "C" void *__identifier("??_7ParticleLifeEventModuleTemplate@FXParticleSys
 // ?g_vtbl_01111424@@3PAPAXA: use the owner recorded at 0x01111424.
 extern "C" void *__identifier("??_7ParticleLifeEventModuleTemplate@FXParticleSystem@@6BPLEMT_Base@1@@")[];
 extern void *g_vtbl_01111438[];
-extern void *g_vtbl_0111144C[];
-extern void *g_vtbl_01111450[];
+// ?g_vtbl_0111144C@@3PAPAXA: use the owner recorded at 0x0111144C.
+extern "C" void *__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@")[];
+// ?g_vtbl_01111450@@3PAPAXA: use the owner recorded at 0x01111450.
+extern "C" void *__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@")[];
 extern "C" void *__identifier("??_7TailX005EB6B0@@6B@")[];
 extern "C" void *__identifier("??_7MidX005EB6B0@@6B@")[];
 // ?g_vtbl_01111DB4@@3PAPAXA: use the owner recorded at 0x01111DB4.
@@ -295,8 +298,10 @@ extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot1@@@")[];
 extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot0@@@")[];
 // ?g_vtbl_011121D4@@3PAPAXA: use the owner recorded at 0x011121D4.
 extern "C" void *__identifier("??_7T1Derived_005E6580@@6BT1P2_005E3950@@@")[];
-extern void *g_vtbl_011121E8[];
-extern void *g_vtbl_011121EC[];
+// ?g_vtbl_011121E8@@3PAPAXA: use the owner recorded at 0x011121E8.
+extern "C" void *__identifier("??_7MidX005ED230@@6B@")[];
+// ?g_vtbl_011121EC@@3PAPAXA: use the owner recorded at 0x011121EC.
+extern "C" void *__identifier("??_7GenX005ED230@@6B@")[];
 // ?g_vtbl_01112204@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@")[];
 extern void *g_vtbl_01112218[];
@@ -306,16 +311,21 @@ extern "C" void *__identifier("??_7GenX005ED360@@6B@")[];
 extern "C" void *__identifier("??_7Rva005ED4E0@@6BV3Slot2@@@")[];
 // ?g_vtbl_01112248@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005ED4E0@@6BV3Slot1@@@")[];
-extern void *g_vtbl_0111224C[];
-extern void *g_vtbl_01112264[];
+// ?g_vtbl_0111224C@@3PAPAXA: use the owner recorded at 0x0111224C.
+extern "C" void *__identifier("??_7Rva005ED4E0@@6BV3Slot0@@@")[];
+// ?g_vtbl_01112264@@3PAPAXA: use the owner recorded at 0x01112264.
+extern "C" void *__identifier("??_7T1Derived_005E6850@@6BT1P2_005E3B90@@@")[];
 // ?g_vtbl_01112278@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7MidX005ED510@@6B@")[];
 // Former ?g_vtbl_0111227C@@3PAPAXA: retail 0x0111227C is recorded vtable ??_7GenX005ED510@@6B@.
 extern "C" void *__identifier("??_7GenX005ED510@@6B@")[];
-extern void *g_vtbl_01112294[];
-extern void *g_vtbl_011122A8[];
+// ?g_vtbl_01112294@@3PAPAXA: use the owner recorded at 0x01112294.
+extern "C" void *__identifier("??_7T1Derived_005E6940@@6BT1P2_005E3C90@@@")[];
+// ?g_vtbl_011122A8@@3PAPAXA: use the owner recorded at 0x011122A8.
+extern "C" void *__identifier("??_7MidX005ED630@@6B@")[];
 extern void *g_vtbl_011122AC[];
-extern void *g_vtbl_011122C4[];
+// ?g_vtbl_011122C4@@3PAPAXA: use the owner recorded at 0x011122C4.
+extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot3@@@")[];
 // ?g_vtbl_011122D8@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@")[];
 // ?g_vtbl_011122DC@@3PAPAXA: use the owner recorded at 0x011122DC.
@@ -343,7 +353,8 @@ extern void *g_vtbl_0111239C[];
 extern void *g_vtbl_011123A0[];
 // ?g_vtbl_011123C4@@3PAPAXA: use the owner recorded at 0x011123C4.
 extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@")[];
-extern void *g_vtbl_011123D8[];
+// ?g_vtbl_011123D8@@3PAPAXA: use the owner recorded at 0x011123D8.
+extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot2@@@")[];
 extern void *g_vtbl_011123DC[];
 // ?g_vtbl_011123E0@@3PAPAXA: use the owner recorded at 0x011123E0.
 extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot0@@@")[];
@@ -742,7 +753,7 @@ __forceinline void initializePointEmissionVolumeModule(void *module)
     *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot1@@@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@");
-    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_011122C4;
+    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot3@@@");
 }
 
 class DefaultModuleTemplate0CtorShim {
@@ -992,7 +1003,7 @@ __forceinline void initializeCylinderEmissionVolumeModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005EDDE0@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_011123DC;
-    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_011123D8;
+    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005EDDE0@@6BV3Slot2@@@");
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@");
 }
 
@@ -1025,8 +1036,8 @@ public:
 __forceinline void initializeOutwardEmissionVelocityModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_011122AC;
-    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_011122A8;
-    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112294;
+    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7MidX005ED630@@6B@");
+    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7T1Derived_005E6940@@6BT1P2_005E3C90@@@");
 }
 
 class CylindricalEmissionVelocityModuleCtorShim {
@@ -1038,7 +1049,7 @@ __forceinline void initializeCylindricalEmissionVelocityModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)__identifier("??_7GenX005ED510@@6B@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7MidX005ED510@@6B@");
-    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112264;
+    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7T1Derived_005E6850@@6BT1P2_005E3B90@@@");
 }
 
 class SphericalEmissionVelocityModuleCtorShim {
@@ -1060,7 +1071,7 @@ public:
 
 __forceinline void initializeHemisphericalEmissionVelocityModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_0111224C;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005ED4E0@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7Rva005ED4E0@@6BV3Slot1@@@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005ED4E0@@6BV3Slot2@@@");
 }
@@ -1634,8 +1645,8 @@ public:
     __forceinline TerrainCollisionTemplateAllocation()
     {
         ((TerrainCollisionTemplateCtorShim *)this)->construct();
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111450;
-        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_0111144C;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@");
+        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x0c) = (unsigned int)g_vtbl_01111438;
     }
 
@@ -1731,8 +1742,8 @@ public:
 
 __forceinline void initializeOrthoEmissionVelocityModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_011121EC;
-    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_011121E8;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7GenX005ED230@@6B@");
+    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7MidX005ED230@@6B@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7T1Derived_005E6580@@6BT1P2_005E3950@@@");
 }
 
@@ -3154,7 +3165,7 @@ ConcreteModuleTemplate<DefaultModuleTag<2> >::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9E8;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3338,7 +3349,7 @@ ConcreteModuleTemplate<ModuleTag<2, RENDEROBJECT_UPDATE_MODULE_KEY, RENDEROBJECT
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9E8;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -4167,8 +4178,8 @@ LifeEventModule *ConcreteModuleTemplate<ModuleTag<8, LIFE_EVENT_MODULE_KEY, LIFE
 ConcreteModuleTemplate<ModuleTag<8, TERRAIN_COLLISION_MODULE_KEY, TERRAIN_COLLISION_MODULE_NAME, TerrainCollisionModule, TerrainCollisionModuleTemplate, ParticleTerrainCollisionModule, ParticleTerrainCollisionModuleTemplate> >::ConcreteModuleTemplate(const ConcreteModuleTemplate<ModuleTag<8, TERRAIN_COLLISION_MODULE_KEY, TERRAIN_COLLISION_MODULE_NAME, TerrainCollisionModule, TerrainCollisionModuleTemplate, ParticleTerrainCollisionModule, ParticleTerrainCollisionModuleTemplate> > &that)
 {
     ((TerrainCollisionTemplateCopyCtorShim *)this)->construct(&that);
-    *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111450;
-    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_0111144C;
+    *(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@");
+    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 12) = (unsigned int)g_vtbl_01111438;
 }
 
@@ -4176,8 +4187,8 @@ ConcreteModuleTemplate<ModuleTag<8, TERRAIN_COLLISION_MODULE_KEY, TERRAIN_COLLIS
 ConcreteModuleTemplate<ModuleTag<8, TERRAIN_COLLISION_MODULE_KEY, TERRAIN_COLLISION_MODULE_NAME, TerrainCollisionModule, TerrainCollisionModuleTemplate, ParticleTerrainCollisionModule, ParticleTerrainCollisionModuleTemplate> >::ConcreteModuleTemplate()
 {
     ((TerrainCollisionTemplateCtorShim *)this)->construct();
-    *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111450;
-    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_0111144C;
+    *(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@");
+    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 12) = (unsigned int)g_vtbl_01111438;
 }
 
