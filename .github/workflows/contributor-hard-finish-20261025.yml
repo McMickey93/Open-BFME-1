@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Verify native mask provider and measure its caller visibility
+      - name: Prepare handoff with normal commit and full push hooks
         working-directory: source
         shell: bash
         run: |
@@ -57,88 +57,52 @@ jobs:
           source .githooks/python3.sh
           require_python3 contributor-hard-finish
           python3 - <<'PY'
-          import json, os, subprocess, sys
+          import hashlib,json,os,subprocess,sys
           from pathlib import Path
           sys.path.insert(0,'tools')
           import claims
-          rva=0x001EDCA0
-          token='910b0d6b2329fa9bd666f48eb0947a66564c15ba'
+          rva=0x001EDCA0; token='910b0d6b2329fa9bd666f48eb0947a66564c15ba'
           assert claims.fetch()
           entry=claims.live(claims._read_local()).get(rva)
           assert entry and entry[0]==token and entry[1]['owner']==os.environ['BFME_CLAIM_OWNER']
+          assert entry[1]['lease']=='86bb693184074854a5d4d12c2a127df4'
           assert claims.holds(rva,token)
-          print('CLAIM_FENCED '+json.dumps(entry),flush=True)
-          subprocess.run([sys.executable,'tools/callees.py','0x001EDCA0','1944'],check=True)
-          subprocess.run([sys.executable,'tools/find_declared_unmatched.py','game/GameEngine/Source/GameLogic/Object/Behavior/AutoAbilityBehaviorModuleDataDestructorThunk.cpp'],check=False)
-          for line in Path('targets/game/reverse/re_attempts.log').read_text(encoding='utf-8',errors='replace').splitlines():
-              if '001edca0' in line.lower():
-                  print('TARGET_HISTORY '+line,flush=True)
-          reports=[]
-          for folder in ('targets/game/reverse/attempt_support','targets/game/reverse/identity_evidence'):
-              for path in Path(folder).rglob('*.md'):
-                  text=path.read_text(encoding='utf-8',errors='replace')
-                  if '001edca0' in text.lower():
-                      reports.append(path)
-                      print('TARGET_REPORT '+str(path),flush=True)
-                      print(text,flush=True)
-          assert [p.as_posix() for p in reports] == ['targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md'], 'New target reports require review'
-          assert subprocess.check_output(['git','hash-object',str(reports[0])],text=True).strip() == 'cb20531adcdfc4a09e9907dba0299b84e3b0a15c'
-          p=subprocess.run([sys.executable,'tools/probe.py','targets/game/reverse/attempts/0x001edca0.cpp','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--all','--shape'],capture_output=True,text=True)
+          bank='targets/game/reverse/attempts/0x001edca0.cpp'
+          assert subprocess.check_output(['git','hash-object',bank],text=True).strip()=='576b068db3801a64f55d1629ec99d99f9859a763'
           out=Path('build/contributor_hard_finish_20261025');out.mkdir(parents=True,exist_ok=True)
-          (out/'preferred-probe.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
-          print(p.stdout,flush=True); print(p.stderr,flush=True)
-          assert p.returncode==0
-          
-          source=Path('targets/game/reverse/attempts/0x001edca0.cpp').read_text(encoding='utf-8')
-          expression='((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words)'
-          assert source.count(expression)==1
-          anchor='UpdateSleepTime AutoAbilityBehavior::update()'
-          assert source.count(anchor)==1
-          state_expression='(object->m_110.words[6] >> 11) & 1'
-          assert source.count(state_expression)==1
-          
-          # Inspect the existing exact provider before exposing it to the caller.
-          provider=Path('game/GameEngine/Source/Common/Rva001ED9A0MaskIntersection.cpp')
-          assert subprocess.check_output(['git','hash-object',str(provider)],text=True).strip()=='a84c2e5694c2fc123e7b18ea95fd3b4aa502a66b'
-          print('PROVIDER_SOURCE '+provider.read_text(encoding='utf-8'),flush=True)
-          import hashlib
-          declaration='class Rva001ED9A0Mask {\npublic:\n    bool intersects(const UInt *);\n};'
-          assert source.count(declaration)==1
-          algorithm='''    MaskWords001EDCA0 result = m_words;
-              for (UInt index = 0; index < 10; ++index) result.words[index] &= mask[index];
-              for (UInt index = 0; index < 10; ++index) {
-                  if (result.words[index] != 0) return true;
-              }
-              return false;'''
-          outline_class='class Rva001ED9A0Mask { public: __declspec(noinline) bool intersects(const UInt *mask); private: MaskWords001EDCA0 m_words; };'
-          outline_definition='bool Rva001ED9A0Mask::intersects(const UInt *mask) {\n'+algorithm+'\n}\n'
-          inline_class='class Rva001ED9A0Mask { public: __declspec(noinline) bool intersects(const UInt *mask) {\n'+algorithm+'\n} private: MaskWords001EDCA0 m_words; };'
-          variants={
-           'visible-mask-outline':source.replace(declaration,outline_class).replace(anchor,outline_definition+'\n'+anchor),
-           'visible-mask-inclass':source.replace(declaration,inline_class),
-          }
-          obj_helper='static inline bool testForbidden001EDCA0(const Object *object, const MaskWords001EDCA0 &mask) { return ((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words); }\n'
-          variants['visible-mask-with-object-helper']=variants['visible-mask-outline'].replace(expression,'testForbidden001EDCA0(object, mask)').replace(anchor,obj_helper+'\n'+anchor)
-          summary=[]
-          for name,candidate in variants.items():
-              assert claims.holds(rva,token)
-              path=out/(name+'.cpp')
-              path.write_text(candidate,encoding='utf-8')
-              print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
-              item={'name':name,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest()}
-              for suffix,symbol,target in [('provider','?intersects@Rva001ED9A0Mask@@QAE_NPBI@Z','0x001ED9A0'),('caller','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0')]:
-                  p=subprocess.run([sys.executable,'tools/probe.py',str(path),symbol,target,'--shape'],capture_output=True,text=True)
-                  log=p.stdout+'\n'+p.stderr
-                  (out/(name+'-'+suffix+'.log')).write_text(log,encoding='utf-8')
-                  print('TRIAL_SYMBOL '+name+' '+suffix,flush=True);print(log,flush=True)
-                  item[suffix+'_exit']=p.returncode;item[suffix+'_exact']='result   EXACT' in log
-                  assert p.returncode==0
-              summary.append(item)
-              if item['caller_exact']:
-                  print('EXACT_CANDIDATE '+name,flush=True)
-                  print(candidate,flush=True)
-                  break
-          (out/'visibility-trials.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
+          base=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          path=Path('targets/game/reverse/attempt_support/001edca0-native-object-context-20261025.md')
+          assert not path.exists()
+          doc="# AutoAbility update: native object-context controls (2026-10-25)\n\n## Scope and inputs\n\nThe unbounded project finish picker served 0x001EDCA0, the complete 1944-byte\nAutoAbilityBehavior update body, in run 40236435719. Its whole current source\nunit contains the naked dump only. The existing preferred bank was retained.\n\n- BFME 1 source: f633d0e97a953289405438821be0c09b28527bbb.\n- Preferred bank blob: 576b068db3801a64f55d1629ec99d99f9859a763.\n- AGENTS.md blob: 06b755567bb147dfee3a89f70f7bbcd38410b5b4.\n- Original MSVC 7.1, native Windows Actions, build defaults /O2 /GR- /EHsc-,\n  then the bank's /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB and\n  WWLib/GameLogic include flags, with STLport and the bank's two defines.\n- Every diagnostic source/object lived under private build paths. Claims were\n  fetched through the normal reader, owner/lease checked, and the exact claim\n  generation fenced with claims.holds before experiments.\n\nThe complete RET at 0x001EE437 and following INT3 establish the old extent.\nThe constructor-installed update-interface vtable and ILT evidence are in the\nbank. The independent 16 October ILT-oracle report already retired the wrong\nModuleData destructor identity; the current ledger uses the opaque dup alias.\nThis investigation changes no identity, provider, pin, or production source.\n\n## Reference lead and measured controls\n\nBFME 2 revision 442550ad8af2bd63e636ccf140ab4863af48baf3,\nCode/GameEngine/Source/GameLogic/Object/Body/ActiveBody.cpp (blob\nb1e720073a89520677062b47bc2d7f4474addc37), documents static inline mask helpers\ntaking Object explicitly to retain the damage-info register. This suggested\nchanging the early intersection-call context while leaving all kind-bit order,\nloops, callee ABI, and lifetimes unchanged. It is a lead, not BFME 1 proof.\n\nRun [40237262539](https://github.com/McMickey93/Open-BFME-1/actions/runs/40237262539)\nreproduced the bank, then measured six controls: Object/mask helper, reversed\nhelper parameters, receiver/words helper without Object, Object helper for the\nstate bit, and that state helper combined with each Object/mask order.\nAll produced 1944 bytes, 74 relocations, 66 non-relocation byte differences from\n+0x27B, two misaligned relocation sites, and instruction-shape similarity 0.995.\nNo variant improved the preferred bank.\n\nThe separate callee-visibility hypothesis used the already matched real\nRva001ED9A0Mask::intersects provider, whose source blob is\na84c2e5694c2fc123e7b18ea95fd3b4aa502a66b. Run\n[40237520843](https://github.com/McMickey93/Open-BFME-1/actions/runs/40237520843)\ntested its real ten-word intersection as an out-of-class noinline definition,\nan in-class noinline definition, and with the early Object/mask helper.\nEach provider reproduced all 189 retail bytes with zero relocations. Each\ncaller retained exactly the same 1944/66/+0x27B result and two layout warnings.\nThe 189 provider bytes were already matched and add no new progress.\n\nThe two successful runs retain private sources, probe logs, objects and\ndependency receipts for 90 days:\n[object contexts](https://github.com/McMickey93/Open-BFME-1/actions/runs/40237262539/artifacts/12615567272),\nzip SHA256 69009119f9ada075fcf7480057a70757e13e65f869a51ccb320144ae1bf61248;\n[provider visibility](https://github.com/McMickey93/Open-BFME-1/actions/runs/40237520843/artifacts/12615782004),\nzip SHA256 61feab87124d818d6c799d770750470298820b058edec23d96d33d076575611f.\nThe fork workflow at a6142c19e1c5921f83678aeea0366838fad9be78 and\na64699ce7777679bf9ad16fe5fc1a4bf4429c0c9 records exact transformations.\n\n## Remaining blocker\n\nRetail materializes EBX=0x100 and EDI=0x400 at +0x27B/+0x280. The bank\nmaterializes EDI=0x100 and EBX=0x800, then folds bit 10 to TEST CH,4 instead of\nretail's dword memory/register TEST. The second structural difference is near\n+0x320. This is still a failed complete-body match, not a relocation or byte\nacceptance. The two relocation-layout warnings also prevent treating its masked\nscore as strict verification.\n\nEarlier evidence already rules out 24 bit-test permutations, return-width and\nnative bitset alternatives, word-mask wrappers, loop/nesting/lifetime families,\nand visible recursive override lookup. The new controls rule out transferring\nthis particular early Object-mask recipe and exposing this particular genuine\ncallee. They do not prove all C++ spellings unreachable.\n\nKeep the preferred bank. A retry needs a distinct evidence-backed cause for\nmask invariant selection / instruction choice, then complete raw and resolved\nbody verification. Progress against origin/master remained +0 C++ exact bytes.\n"
+          path.write_text(doc,encoding='utf-8',newline='\n')
+          logpath=Path('targets/game/reverse/re_attempts.log')
+          old=logpath.read_bytes()
+          evidence="Native MSVC7.1 reproduces preferred bank1944B/74relocs/66nonrelocdiffs from+27B with2misalignedrelocsites, shape0.995. Six early Object/mask context controls from BFME2 ActiveBody recipe and three independently exact189B mask-provider visibility controls leave same caller result. Provider189B already matched, no new C++ bytes. Preferred bank retained; current ledger dup identity already correct. handoff=targets/game/reverse/attempt_support/001edca0-native-object-context-20261025.md blocker=regalloc/loop-mask-constant-selection t=18min model=gpt-6"
+          subprocess.run([sys.executable,'tools/re_log.py','record','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','1944','blocked',evidence],check=True)
+          new=logpath.read_bytes()
+          assert new.startswith(old)
+          append=new[len(old):].decode('utf-8')
+          subprocess.run([sys.executable,'tools/check_csv.py'],check=True)
+          subprocess.run(['git','config','user.name','McMickey93'],check=True)
+          subprocess.run(['git','config','user.email','347452154+McMickey93@users.noreply.github.com'],check=True)
+          subprocess.run(['git','config','core.hooksPath','.githooks'],check=True)
+          subprocess.run(['git','add','--',str(path),str(logpath)],check=True)
+          message='Document native AutoAbility hard-finish controls\n\nPreserve nine new context and callee-visibility controls without changing the preferred bank or counting the existing 189-byte helper again.\n\n'+claims.trailer(rva,entry[1]['lease'])
+          (out/'commit-message.txt').write_text(message,encoding='utf-8')
+          p=subprocess.run(['git','commit','-F',str(out/'commit-message.txt')],capture_output=True,text=True)
+          (out/'normal-commit.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
+          print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          p=subprocess.run(['bash','.githooks/pre-push','origin','https://github.com/Open-BFME/Open-BFME-1.git'],input='refs/heads/master '+head+' refs/heads/master '+base+'\n',capture_output=True,text=True)
+          (out/'normal-pre-push.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
+          print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
+          assert claims.holds(rva,token)
+          subprocess.run(['git','bundle','create',str(out/'handoff.bundle'),base+'..HEAD'],check=True)
+          files=[str(path).replace('\\','/'),str(logpath).replace('\\','/')]
+          receipt={'base':base,'native_commit':head,'tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),'paths':files,'message':message,'append':append,'document':doc,'claim_token':token,'claim_lease':entry[1]['lease']}
+          print('HARD_FINISH_HANDOFF '+json.dumps(receipt),flush=True)
+          (out/'handoff-receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
+          subprocess.run([sys.executable,'tools/next_work.py','--tier','finish','--max-attempts','0','--cooldown-days','0','--json'],check=True)
           
           PY
       - name: Measure unchanged baseline
@@ -154,7 +118,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-001edca0-callee-visibility
+          name: bfme1-hard-finish-001edca0-gated-handoff
           path: |
             source/build/contributor_hard_finish_20261025/
             source/build/experiments/
