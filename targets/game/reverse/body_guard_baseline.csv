@@ -197,7 +197,6 @@ dir32,0x0109B828,??_7TurretStateMachine@@6B@,"retail 0x0109B828 is already recor
 dir32,0x0109BFD4,?g_0109BFD4@@3PAHA,"retail 0x0109BFD4 is already recorded as ??_7BfmeParserBindingVE@@6B@; reference that name, not a new one"
 dir32,0x0109C030,_g_0109C030,"nothing in the ledger owns 0x0109C030. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0109C33C,?g_0109C33C@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x0109C33C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x0109C3DC,??_7Waypoint@@6B@,"nothing in the ledger owns 0x0109C3DC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0109D84C,?g_0109D84C@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x0109D84C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0109D860,?TheFieldParse@?1??getFieldParse@LocomotorTemplate@@QBEPBUFieldParse@@XZ@4QBU3@B,"retail 0x0109D860 is already recorded as ?g_0109D860@@3PADA; reference that name, not a new one"
 dir32,0x0109DEF0,??_7Locomotor@@6B@,"retail 0x0109DEF0 is already recorded as _bfmeVftTH; reference that name, not a new one"
