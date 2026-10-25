@@ -1,0 +1,130 @@
+name: Contributor BFME1 short hard finish
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-short-finish-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-short-hard-finish
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:short-finish-20261025
+    steps:
+      - name: Read the current official tree without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate the official ledger and read upstream master
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 short-finish
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+      - name: Serve a bounded item from the tools current finish pool
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 short-finish
+          python3 -u - <<'PY'
+          import hashlib,json,os,subprocess,sys,time,traceback
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          out=root/"build/contributor-short-finish-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          sys.path.insert(0,str(root/"tools"))
+          import claims,next_work
+          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[]}
+          def save():
+              (out/"selection-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          def run(label,args,required=True,show=False):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(cp.stdout)
+              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
+              save()
+              print("SHORT_COMMAND",label,"exit",cp.returncode,flush=True)
+              if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
+              if required and cp.returncode: raise RuntimeError(label+" failed")
+              return cp.stdout.decode("utf-8","replace")
+          try:
+              result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
+              result["origin_master"]=subprocess.check_output(["git","rev-parse","origin/master"],cwd=root).decode().strip()
+              if result["source_sha"]!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Unexpected official pin")
+              if subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root).decode().strip()!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
+              if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
+              active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
+              result["active_claims"]=active
+              text=run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"])
+              pool=json.loads(text)["finish"]
+              # Selection is from the tool's eligible pool only. This assigned lane is
+              # bounded by target size; completed work and active reservations are fenced.
+              lane=[c for c in pool if 0<int(c["target_size"])<=512 and c.get("source") and c["target_rva"].upper() not in {"0X00078640","0X003D59C0"}]
+              held=[c for c in lane if c["target_rva"] in active]
+              candidates=[c for c in lane if c["target_rva"] not in active]
+              result.update(pool_count=len(pool),bounded_count=len(lane),held_count=len(held),candidate_count=len(candidates),bounded_pool=lane)
+              print("SHORT_POOL "+json.dumps({"pool":len(pool),"bounded":len(lane),"held":len(held),"available":len(candidates),"items":[{k:c.get(k) for k in ("target_rva","target_size","function","score","latest_verdict","stash")} for c in lane]}),flush=True)
+              if not candidates:
+                  result["status"]="empty-bounded-tool-pool"
+              else:
+                  selected=next_work.weighted_choice(candidates)
+                  result["selection"]=selected
+                  print("SHORT_SELECTED "+json.dumps(selected),flush=True)
+                  rva=selected["target_rva"]
+                  size=str(selected["target_size"])
+                  run("selected-brief",[sys.executable,"tools/brief.py",rva],False,True)
+                  run("selected-callees",[sys.executable,"tools/callees.py",rva,size],False,True)
+                  run("selected-extent",[sys.executable,"tools/row_extent.py",rva],False,True)
+                  stash=root/selected["stash"]
+                  result["stash_sha256"]=hashlib.sha256(stash.read_bytes()).hexdigest()
+                  result["stash_blob"]=subprocess.check_output(["git","hash-object",str(stash)],cwd=root).decode().strip()
+                  result["status"]="served-readonly-before-claim"
+              run("clean-tree",["git","diff","--exit-code"])
+              run("session-progress",[sys.executable,"tools/progress.py","origin/master"],False,True)
+              save()
+              print("SHORT_FINAL "+json.dumps(result),flush=True)
+          except BaseException as err:
+              result.update(status="failed",error=str(err))
+              (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
+              save()
+              raise
+          
+          PY
+      - name: Preserve selection and narrow native context
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-short-finish-${{ github.run_id }}-${{ github.run_attempt }}
+          path: source/build/contributor-short-finish-20261025/
+          retention-days: 90
+          if-no-files-found: warn
+          compression-level: 9
