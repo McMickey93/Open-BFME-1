@@ -1822,21 +1822,21 @@ extern const char g_010AF400[];
 // ?g_0109D84C@FXParticleSystem@@3QBDB: 6 retail bytes including the NUL.
 extern const char g_0109D84C[] = "Speed";
 extern const char g_01113FD4[];
-extern const char g_01113894[];
-extern const char g_01113884[];
-extern const char g_01113874[];
-extern const char g_01113868[];
+extern const char g_01113894[] = "MultiRenderObjects";
+extern const char g_01113884[] = "RenderGroup1";
+extern const char g_01113874[] = "NumObjects1";
+extern const char g_01113868[] = "Percent1";
 // ?g_0111385C@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
 extern const char g_0111385C[] = "Shader1";
-extern const char g_0111384C[];
-extern const char g_0111383C[];
-extern const char g_01113830[];
+extern const char g_0111384C[] = "RenderGroup2";
+extern const char g_0111383C[] = "NumObjects2";
+extern const char g_01113830[] = "Percent2";
 // ?g_01113824@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
 extern const char g_01113824[] = "Shader2";
-extern const char g_01113814[];
-extern const char g_01113804[];
+extern const char g_01113814[] = "RenderGroup3";
+extern const char g_01113804[] = "NumObjects3";
 extern const char g_011137F8[];
-extern const char g_011137EC[];
+extern const char g_011137EC[] = "Shader3";
 // ?g_011137D0@FXParticleSystem@@3QBDB: 23 retail bytes including the NUL.
 extern const char g_011137D0[] = "SinkOnTerrainCollision";
 // Former ?g_010A6938@FXParticleSystem@@3QBDB: retail 0x010A6938 is "SinkRate".
