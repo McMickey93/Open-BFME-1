@@ -6,6 +6,7 @@ typedef int Int;
 typedef int Color;
 
 #include <vector>
+#include <algorithm>
 #include "ascii_string.h"
 
 class GameWindow
@@ -93,14 +94,16 @@ extern void *GadgetListBoxGetItemData(GameWindow *listbox, Int row, Int column);
 // vector escapes, and keeps the listed-colour vector's begin iterator in
 // registers across the list-box calls exactly as retail does.  noinline keeps
 // the call bound to the matched symbol.
-bool bfmeBitIteratorEqual(_STL::_Bit_const_iterator first,
-	_STL::_Bit_const_iterator last, _STL::_Bit_const_iterator other);
+namespace _STL {
+template <> __declspec(noinline) bool equal(
+    _Bit_const_iterator first, _Bit_const_iterator last, _Bit_const_iterator other);
+}
 
 __declspec(noinline) bool bfmeBitVectorEqual(const _STL::vector<bool> &first,
 	const _STL::vector<bool> &second)
 {
 	return first.size() == second.size() &&
-		bfmeBitIteratorEqual(first.begin(), first.end(), second.begin());
+		_STL::equal(first.begin(), first.end(), second.begin());
 }
 
 // Image combo-box adapter methods.  Each retail body is matched under an

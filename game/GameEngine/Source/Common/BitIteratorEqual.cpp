@@ -14,12 +14,4 @@ bool bfmeBitIteratorEqual(
 	return _STL::equal(first, last, other);
 }
 
-// Compare two complete packed-boolean ranges.
-// ?bfmeBitVectorEqual@@YA_NABV?$vector@_NV?$allocator@_N@_STL@@@_STL@@0@Z
-bool bfmeBitVectorEqual(
-	const _STL::vector<bool> &first,
-	const _STL::vector<bool> &second)
-{
-	return first.size() == second.size() &&
-		bfmeBitIteratorEqual(first.begin(), first.end(), second.begin());
-}
+// Complete vector equality is owned by SkirmishScreenStateRebuildColorCombo.cpp.
