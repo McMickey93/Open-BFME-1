@@ -1,319 +1,236 @@
-diff --git a/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp b/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp
-index ecc9523f5e4000543936f3f69c3f9aa6749949fb..e6c1ff2e8fe77ae5a95c7de30b4a451a6054349d 100644
---- a/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp
-+++ b/game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp
-@@ -1,8 +1,16 @@
--// cl: /O2 /Ob0 /MD
--// Open-BFME5: STLport ios_base::iword, retail 0x0083F0C0, 117 bytes.
--
-+// cl: /O2 /Ob1 /MD
-+// stlport
-+// ios_base auxiliary slots and callback registration, using the vendored types.
-+// BFME1: iword 0x0083F0C0/117B, pword 0x0083F140/117B,
-+// register_callback 0x0083F1C0/132B, callback growth 0x0083EF20/147B.
-+// The callback helper returns a non-POD pair; C++ provides its return storage.
-+// Evidence: targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md.
-+// grow_array is the existing recovery's spelling, not a claimed native name.
-+#define _STLP_USE_STATIC_LIB
-+#define _STLP_NO_EXCEPTIONS
-+#include <ios>
- #include <stdio.h>
--
-+#include <stdlib.h>
- namespace _STL
- {
- 
-@@ -16,67 +24,78 @@ struct GrowPair
- template <class T>
- GrowPair<T> *grow_array(GrowPair<T> *, T *, unsigned int, unsigned int);
- 
--// Separate four-byte fallback cells returned by the two retail wrappers.
-+// Keep the separately owned fallback cells of the two existing wrappers.
- long g_0130BD24 = 0;
- void *g_0130BD28 = 0;
- 
--class ios_base
--{
--public:
--	long &iword(int index);
--	void *&pword(int index);
--
--private:
--	char m_vtable[4];
--	int m_fmtflags;
--	int m_iostate;
--	int m_openmode;
--	int m_seekdir;
--	int m_exception_mask;
--	int m_precision;
--	int m_width;
--	char m_locale[4];
--	void *m_callbacks;
--	unsigned int m_num_callbacks;
--	unsigned int m_callback_index;
--	long *m_iwords;
--	unsigned int m_num_iwords;
--	void **m_pwords;
--	unsigned int m_num_pwords;
--};
--
- long &ios_base::iword(int index)
- {
- 	GrowPair<long> grown;
--	grow_array(&grown, m_iwords, m_num_iwords, index);
-+	grow_array(&grown, _M_iwords, _M_num_iwords, index);
- 	if (grown.first)
- 	{
--		m_iwords = grown.first;
--		m_num_iwords = grown.second;
--		return m_iwords[index];
-+		_M_iwords = grown.first;
-+		_M_num_iwords = grown.second;
-+		return _M_iwords[index];
- 	}
- 
--	m_iostate |= 1;
--	if (m_iostate & m_exception_mask)
--		fputs("ios failure", stderr);
-+	_M_iostate |= 1;
-+	if (_M_iostate & _M_exception_mask)
-+		::fputs("ios failure", stderr);
- 	return g_0130BD24;
+diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
+index 60df2491d6c680d667ad689a1e79e7203aca56e3..3aa769b116b4281c3e59e03c14a769237d948f25 100644
+--- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
++++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
+@@ -181 +181,100 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
  }
- 
- void *&ios_base::pword(int index)
- {
- 	GrowPair<void *> grown;
--	grow_array(&grown, m_pwords, m_num_pwords, index);
-+	grow_array(&grown, _M_pwords, _M_num_pwords, index);
- 	if (grown.first)
- 	{
--		m_pwords = grown.first;
--		m_num_pwords = grown.second;
--		return m_pwords[index];
-+		_M_pwords = grown.first;
-+		_M_num_pwords = grown.second;
-+		return _M_pwords[index];
- 	}
- 
--	m_iostate |= 1;
--	if (m_iostate & m_exception_mask)
--		fputs("ios failure", stderr);
-+	_M_iostate |= 1;
-+	if (_M_iostate & _M_exception_mask)
-+		::fputs("ios failure", stderr);
- 	return g_0130BD28;
- }
- 
-+template<class T> inline const T &stlp_max(const T&a,const T&b) { return a<b?b:a; }
-+template<class T> __declspec(noinline) pair<T *,unsigned> grow_array(T *old_ptr,unsigned old_count,unsigned index) {
 +
-+ if((int)old_count<(int)(index+1)) {
-+  unsigned needed=index+1;
-+  unsigned grown=old_count+old_count;
-+  unsigned count=stlp_max(grown,needed);
-+  unsigned bytes=count*sizeof(T);
-+  T *p=(T *)::realloc(old_ptr,bytes);
-+  if(p) {
-+   T zero=T();
-+   T *end=(T *)(count*sizeof(T)+(unsigned)p);
-+   T *dst=p+old_count;
-+   if(dst!=end)do { *dst=zero; ++dst; } while(dst!=end);
-+   return pair<T *,unsigned>(p,count);
-+  }
-+  return pair<T *,unsigned>(0,0);
-+ }
-+ return pair<T *,unsigned>(old_ptr,old_count);
-+}
-+// ?register_callback@ios_base@_STL@@QAEXP6AXW4event@12@AAV12@H@ZH@Z present-unmatched
-+void ios_base::register_callback(event_callback fn,int index) {
-+ typedef pair<event_callback,int> Callback;
-+ pair<Callback *,unsigned> grown=grow_array(_M_callbacks,_M_num_callbacks,_M_callback_index);
-+ if(grown.first) {
-+  pair<Callback *,unsigned> tmp=grown;
-+  _M_num_callbacks=tmp.second;
-+  _M_callbacks=tmp.first;
-+  Callback cb; cb.first=fn; cb.second=index;
-+  _M_callbacks[_M_callback_index++]=cb;
-+  return;
-+ }
-+ _M_iostate|=1;
-+ if(_M_iostate&_M_exception_mask) ::fputs("ios failure",stderr);
++
++// MSVC 7.1 keeps separate retail false-return tails when their zero-code
++// barrier tags differ. See shape_levers.md and the matched 00653990/003E5950
++// witnesses. This candidate still requires native byte verification.
++extern "C" void _WriteBarrier(void);
++extern "C" void _ReadWriteBarrier(void);
++#pragma intrinsic(_WriteBarrier)
++#pragma intrinsic(_ReadWriteBarrier)
++
++// Retail 0x008C6AD0, 233 bytes: registered value-conversion callback.
++// The original callback name is unknown; keep the address in its name.
++// The +4 flags and +8 Boolean payload follow AptValue_toNumber.cpp and
++// AptBooleanCreate.cpp.  The validity bit follows Rva008C4A30Check.cpp.
++class AptValue
++{
++public:
++	float toNumber();
++	bool isUndefined() const { return ((m_valueBits >> 15) & 1) == 0; }
++	__forceinline bool isType(int type) const
++	{
++		return (m_valueBits & 63) == type && !isUndefined();
++	}
++
++	void *m_vtable;
++	unsigned int m_valueBits;
++	bool m_boolean;
++};
++
++class AptBoolean : public AptValue
++{
++public:
++	static AptBoolean *Create(bool value);
++};
++
++// This is the already named twelve-byte stack prefix used by the adjacent
++// 0x008C6800 callback.  In particular, the count is at VA 0x01338748;
++// the old bank's g_bfmeCount1233 binding used a different image base.
++struct Rva008AE770Stack
++{
++	int m_count;
++	int m_rva0133874C;
++	AptValue **m_rva01338750;
++};
++extern Rva008AE770Stack Rva008AE770TheStack;
++extern const float g_rva01075350;
++
++// The complete recovered predicate takes one stack pointer and returns AL.
++// Its canonical declaration replaces the bank's void-function pointer cast.
++bool __cdecl Rva008C4A30Check(Rva8CD130Value *value);
++
++static __forceinline AptValue *coerceBoolean008C6AD0(AptValue *value)
++{
++	int type = value->m_valueBits & 63;
++	if (type == 5)
++	{
++		bool result = value->m_boolean;
++		return AptBoolean::Create(result);
++	}
++	if (type == 6)
++	{
++		if (value->toNumber() != g_rva01075350)
++			return AptBoolean::Create(true);
++		{ _WriteBarrier(); return AptBoolean::Create(false); }
++	}
++	if (type == 7)
++	{
++		if (value->toNumber() != g_rva01075350)
++			return AptBoolean::Create(true);
++		{ _WriteBarrier(); return AptBoolean::Create(false); }
++	}
++	{ _ReadWriteBarrier(); return AptBoolean::Create(false); }
 +}
 +
- }
-diff --git a/game/stlport/IosBaseCallbackArrayGrow.cpp b/game/stlport/IosBaseCallbackArrayGrow.cpp
-deleted file mode 100644
-index aefb32339cafb2e80f1e94f38d3ae06764619569..0000000000000000000000000000000000000000
---- a/game/stlport/IosBaseCallbackArrayGrow.cpp
-+++ /dev/null
-@@ -1,76 +0,0 @@
--// cl: /O2 /MD
--
--// Open-BFME5: STLport ios_base callback-array grow, retail 0x0083EF20, 147
--// bytes. The live zero-valued Callback temporary is intentional: it preserves
--// the retail register allocation through the callback-pair tail fill.
--
--// Retail calls MSVCR71.dll!realloc through IAT 0x01359474.
--#include <stdlib.h>
--
--namespace _STL
--{
--
--struct Callback
--{
--	typedef void (*event_callback)(int, void *, int);
--	event_callback fn;
--	int index;
--	Callback() : fn(0), index(0) {}
--};
--
--template <class T>
--struct GrowPair
--{
--	T *first;
--	unsigned int second;
--};
--
--template <class T>
--inline const T &stlp_max(const T &a, const T &b)
--{
--	return a < b ? b : a;
--}
--
--template <class T>
--GrowPair<T> *grow_array(GrowPair<T> *out, T *old_ptr, unsigned int old_count, unsigned int index)
--{
--	if ((int)old_count < (int)(index + 1))
--	{
--		unsigned int needed = index + 1;
--		unsigned int grown = old_count + old_count;
--		unsigned int count = stlp_max(grown, needed);
--		unsigned int bytes = count * sizeof(T);
--		T *p = (T *)realloc(old_ptr, bytes);
--		if (p != 0)
--		{
--			Callback zero;
--			T *end = (T *)(count * sizeof(T) + (unsigned int)p);
--			T *dst = p + old_count;
--			if (dst != end)
--			{
--				do
--				{
--					*dst = zero;
--					++dst;
--				}
--				while (dst != end);
--			}
--
--			out->second = count;
--			out->first = p;
--			return out;
--		}
--
--		out->first = 0;
--		out->second = 0;
--		return out;
--	}
--
--	out->second = old_count;
--	out->first = old_ptr;
--	return out;
--}
--
--template GrowPair<Callback> *grow_array(GrowPair<Callback> *, Callback *, unsigned int, unsigned int);
--
--}
-diff --git a/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md b/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md
++AptValue *BooleanCoerce008C6AD0(void *, int count)
++{
++	if (count == 0)
++		return g_bfmeFallbackDB;
++
++	AptValue *value = Rva008AE770TheStack.m_rva01338750[
++		Rva008AE770TheStack.m_count - 1];
++	int type = value->m_valueBits & 63;
++	if (type >= 12 && type <= 19 && !value->isUndefined())
++		return AptBoolean::Create(true);
++	if (type == 27 && !value->isUndefined())
++		return AptBoolean::Create(true);
++	if (value == g_bfmeFallbackDB)
++		{ _WriteBarrier(); return AptBoolean::Create(false); }
++
++	if (!value->isType(6) && !value->isType(7))
++	{
++		if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
++			{ _WriteBarrier(); return AptBoolean::Create(false); }
++		if (value->toNumber() != g_rva01075350)
++			return AptBoolean::Create(true);
++		{ _WriteBarrier(); return AptBoolean::Create(false); }
++	}
++	return coerceBoolean008C6AD0(value);
++}
+diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..84f05b84c9c71cb8dfaec59441ac5e9ea01a79fe
+index 0000000000000000000000000000000000000000..0fe206a64f7a988374c8c55ed219e3646a0a0d74
 --- /dev/null
-+++ b/targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md
-@@ -0,0 +1,87 @@
-+# Callback registration and its returned pair
++++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
+@@ -0,0 +1,125 @@
++# Registered conversion callback at 0x008C6AD0
 +
-+The target is the complete 132-byte function at RVA `0x0083F1C0`, with
-+`ret 8` on both exits and no branch outside its extent. The existing evidence
-+in `0083f1c0-bfme2-callback-retry.md` establishes the callback payload, receiver
-+fields and failure-reporting imports. Its requested reopening condition is
-+now met: Open-BFME-2 at `d8dcd30e0cda47386f50b031c2bbcc8b9910cc02` contains a
-+verified `ios_base::register_callback` in
-+`Code/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp`, at target RVA
-+`0x0001C090`. Its evidence is
-+`reverse/attempt_support/ios-callback-local-count-20261021/readme.md`.
++## Scope and baseline
 +
-+An independent comparison of the two retail images finds the same 48
-+instructions over 132 bytes. Only the grow call, imported `_iob`, literal
-+`ios failure` and imported `fputs` operands differ. The 147-byte grow bodies
-+at BFME1 `0x0083EF20` and BFME2 `0x0001BEC0` likewise have the same 60
-+instructions, differing only in the `realloc` import address. The two existing
-+117-byte BFME1 iword/pword bodies have the same instruction sequences as their
-+BFME2 counterparts, with the expected target-specific bindings.
++The baseline is `3d3b0681294a0de92aae10ea1a753ae22068f091`.
++`ea_evidence.csv` assigns this callback to
++`Libraries/Source/Apt/AptActionInterpreter.cpp`. Its proper local home is
++`game/Libraries/Source/Apt/AptActionInterpreter.cpp`. That whole translation
++unit contains one existing matched body, `rva8CF1B0ProcessRecord` at
++`0x008CF1B0`, 520 bytes. The existing source prefix is unchanged.
 +
-+The source hypothesis uses the actual vendored `ios_base` and
-+`pair<event_callback, int>` definitions. The pair returned by the grow helper
-+is non-POD, so C++ supplies its hidden return-storage argument. This recovers
-+the native call shape without an explicit output-pointer declaration. The
-+donor shows why this distinction matters: the old declaration yields the
-+same helper bytes but chooses the wrong stderr register in its caller.
-+The target callback layout and uses are established independently above;
-+the original helper spelling is not established. `grow_array` remains the
-+existing recovery's spelling, with its return and payload types corrected.
++The new callback keeps the bank's address-qualified name
++`BooleanCoerce008C6AD0(void *, int)`. Neither this descriptive name nor the
++inline helper is presented as an original EA function name. The registration
++in `Rva0089BBF0InitGlobals.cpp` places the address in a built-in callback
++object, without proving a more specific source-level identity.
 +
-+The existing helper identity at `0x0083EF20` is:
++Both the new callback and the existing same-file body are covered by official
++claim lease `fd901b9cef4049468a07d3aad4b4df9e`, claim commit
++`2eaf3e0ac530cd53f2ecf4cf4aa2a18346935f6b`, owned by
++`github:mcmickey93:bfme1:cpp-loop-2` and expiring at 2026-10-25 13:29:43 UTC.
 +
-+```
-+??$grow_array@UCallback@_STL@@@_STL@@YAPAU?$GrowPair@UCallback@_STL@@@0@PAU10@PAUCallback@0@II@Z
-+```
++## Boundary and ABI
 +
-+Its proposed replacement compiled identity is:
++The complete decode begins at `0x008C6AD0`. The last `ret` is at offset
++`+0xE8`; padding begins at `+0xE9`, establishing the 233-byte extent.
++The zero-argument-count path returns at `+0x0D`; the remaining return paths
++end at `+0xAB`, `+0xC6`, `+0xDC` and `+0xE8`. All conditional destinations
++remain inside the body. The function reads the second stack argument as its
++count, leaves arguments on the caller's stack, and returns a pointer in EAX.
++Its first stack argument is unused in these bytes.
 +
-+```
-+??$grow_array@U?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@@_STL@@YA?AU?$pair@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@I@0@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@0@II@Z
-+```
++The value flags occupy offset +4, with the low six type bits and validity
++bit 15. Boolean payload reads use offset +8. The existing matched numeric
++converter and Boolean factory independently witness these fields. The
++canonical numeric predicate also provides a verified C++ validity-bitfield
++view; it is a source-context lead, not proof that this callback matches.
 +
-+BFME1 has no ICF allowance. If native qualification succeeds, replace this
-+one helper owner through normal `add_match --correct-identity`, rather than
-+adding the second identity used by the BFME2 donor. Its old standalone source
-+must then be removed. The two existing fallback data cells retain their
-+names, sizes and source owner. Leave the generated ASM file unchanged, as
-+required for a converted row.
++The three distinct direct callees are already matched:
 +
-+Use BFME1's own vendored headers. Their version macro is `0x460`; the donor's
-+is `0x452`. The relevant pair constructors and callback layout agree, but
-+this is not a substitute for native BFME1 compilation. Ordinary admission
-+must verify all four bodies, the two data rows, imports and relocations.
-+The new recovery can credit only the 132 callback bytes; rehoming the existing
-+147-byte helper and retaining the two 117-byte wrappers add no coverage.
++| RVA | Existing declaration | Call evidence here |
++| --- | --- | --- |
++| `0x008983D0` | `float AptValue::toNumber()` | ECX receiver, no stack argument, result consumed on x87 stack |
++| `0x008996B0` | `AptBoolean *AptBoolean::Create(bool)` | One stack argument, caller removes four bytes, pointer result in EAX |
++| `0x008C4A30` | `bool __cdecl Rva008C4A30Check(Rva8CD130Value *)` | One pointer pushed at +0x7D, caller removes four bytes, tests AL |
 +
-+## Native diagnostic
++The predicate's 873-byte recovery and its independent caller and unwind
++checks are documented in `008c4a30-numeric-predicate.md`. The bank's
++`void d_008c4a30()` cast is replaced by that proven typed declaration.
++No new callee binding is needed.
 +
-+[Windows run 40124446904](https://github.com/McMickey93/Open-BFME-1/actions/runs/40124446904)
-+compiled this source with the repository's original compiler on 2026-10-24.
-+The tested source blob is `e6c1ff2e8fe77ae5a95c7de30b4a451a6054349d`
-+(SHA-256 `c69a607d13edda6294bf4aa05da5285ad2d945eebab0375eace4b3d626f3927a`).
-+All four `tools/probe.py --all --shape` checks report exact instruction bytes
-+modulo relocation slots, at their complete retail sizes:
++## Data bindings
 +
-+| Body | RVA | Bytes | Relocations |
-+| --- | --- | ---: | ---: |
-+| Callback grow helper | `0x0083EF20` | 147 | 1 |
-+| `ios_base::iword` | `0x0083F0C0` | 117 | 5 |
-+| `ios_base::pword` | `0x0083F140` | 117 | 5 |
-+| `ios_base::register_callback` | `0x0083F1C0` | 132 | 4 |
++The bank's `g_bfmeCount1233` pin points at the old `0x00F38748` address.
++The candidate instead reuses `Rva008AE770TheStack`, pinned at VA
++`0x01338748`, with the same twelve-byte prefix as the adjacent matched
++`0x008C6800` callback: count at +0, an unused word at +4, and the value-array
++pointer at +8. The fallback pointer reuses `g_bfmeFallbackDB` at
++`0x013379BC`, whose four-byte storage already has a matched data row.
 +
-+The corresponding `tools/explain_mismatch.py` checks resolve the helper,
-+iword and pword relocations and report `OK: bytes match`. For the callback,
-+the only remaining difference is its REL32 operand at `+0x18`, naming the
-+new helper identity above, which this diagnostic deliberately had not yet
-+admitted. The prior three stderr-register byte differences are absent.
++The numeric comparison reuses the matched data owner `g_rva01075350`.
++Its four bytes at VA `0x01075350` are `00 00 00 00`, and the retail callback
++loads it from memory before `fucompp`. An extern float declaration preserves
++that access; replacing it with a folded literal could change the instruction
++shape. The preferred bank's unbound `BfmeZeroRange` name is not carried over.
 +
-+This result supports the returned-pair ABI correction; it is not an admission
-+or a coverage claim. Ordinary `add_match` must first replace the helper's
-+existing identity, then replace the callback dump row, and both normal commit
-+and push gates must pass. The qualification patch removes the superseded
-+`game/stlport/IosBaseCallbackArrayGrow.cpp` while preserving the tested
-+source bytes. No additional helper identity, symbol pin or generated ASM
-+edit is needed. A retail rel32 caller scan through `tools/delta_sources.py`
-+finds only the callback's call at `0x0083F1D7` targeting `0x0083EF20`, with no
-+incremental-link thunk for that helper.
++## Bounded experiment
++
++The preferred bank remains unchanged. Its three existing verdicts describe
++an important unresolved control-flow constraint: retail keeps four Boolean
++factory call blocks, including two separate false blocks at +0xA0 and
+++0xD1, while sharing the numeric-conversion tail. The previously tried nine
++if/switch/ternary/Boolean-output forms produced a 217-byte merged body or
++260--272-byte alternatives. Those trials are not repeated here.
++
++Four complete-file candidates isolate the new context hypotheses:
++
++1. `00-canonical-control.cpp` preserves the bank's raw-shift predicates and
++   free inline coercion helper, while fixing its typed callee and data bindings.
++2. `01-native-validity.cpp` adds the validity-bitfield representation already
++   used by the matched predicate, keeping the same free inline helper.
++3. `02-native-member-context.cpp` also makes coercion an inline value member,
++   so the value and its typed predicates share a native member context.
++4. `03-split-false-barriers.cpp` starts from corrected control 00 and tags
++   the common false-return paths with `_WriteBarrier()`, while tagging only
++   the coercion default-false path with `_ReadWriteBarrier()`. It is the
++   preferred first native experiment; 00--02 have not yet been compiled here.
++
++The fourth experiment follows the specific tail-cross-jump technique in
++`docs/shape_levers.md`, independently witnessed by the already matched
++`stlport_narrow_string_find_char_alias.cpp` at `0x00653990` (69 bytes) and
++`LinePassableStruct_linePassableCallback.cpp` at `0x003E5950` (203 bytes).
++Those examples retain two identical return tails with distinct barrier
++intrinsics, and direct a third site to the desired common tail by using the
++same intrinsic there. Neither intrinsic emits code in those witnesses.
++
++Here the common false block must be shared by fallback, numeric-predicate
++and equal-number exits; the coercion default false block must stay separate.
++The barriers are placed immediately before the Boolean factory calls.
++Whether the call boundary permits the suffix to merge anyway is an untested
++hypothesis, so the native result will decide; there is no byte-exact claim
++from applying this source pattern. No earlier target attempt recorded this
++barrier family. The true and payload-return paths are unchanged.
++
++They are retained under ignored `build/008c6ad0-canonical/`. None changes
++the existing 520-byte source prefix, adds assembly, changes a shared header,
++or adds a pin. A source spelling is only an experiment until the native
++compiler and the ordinary relocation-aware gate verify it.
++
++## Reference review
++
++The BFME 2 reference remains at verified pointer
++`beed8a16790a6812231ac7b05e3e6893e4cb5d1b`. Official upstream was fetched and
++compared with `3f9923b971cff611ce3eaec2f3be591047b1de55`; the pointer was not
++advanced without donor compilation checks. The Apt source-family review
++and the bounded 10,000-body scan found no eligible exact callback transfer.
++That scan returned zero eligible exact-unique packets and only two eligible
++24-byte compiler funclet near matches. This is a bounded result, not a claim
++that all reference opportunities are exhausted. The available GeneralsMD
++source tree does not provide this Apt source directory.
++
++## Verification status
++
++Native MSVC 7.1 compilation and the complete claimed-file byte gate are
++pending. No exact C++ byte gain is asserted by this evidence alone.

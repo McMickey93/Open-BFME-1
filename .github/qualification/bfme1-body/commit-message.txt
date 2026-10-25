@@ -1,23 +1,12 @@
-Recover ios_base callback registration with returned-pair ABI
+Explore Apt coercion tail separation at 0x008C6AD0
 
-Replace the 132-byte dump at 0x0083F1C0 with the vendored STLport
-ios_base::register_callback implementation. Its grow helper returns
-a non-POD pair, giving the caller the native hidden-result ABI.
+The existing bank has stale data bindings and predates the recovered
+typed numeric predicate. Explore a corrected whole AptActionInterpreter
+translation unit with documented compiler-barrier contexts that can keep
+the two false factory tails separate. The barrier choice is an experiment
+based on landed witnesses; keep the existing 520-byte sibling unchanged.
 
-Correct the existing 147-byte helper identity at 0x0083EF20 through
-add_match and retire its superseded standalone TU. Preserve both
-117-byte iword/pword siblings and their existing fallback data cells.
+This is exploratory input: no admission or new exact C++ bytes are claimed.
 
-Native Windows diagnostic run 40124446904 reproduced all four
-instruction bodies with the original compiler. The relocation-aware
-check left only the callback call to the newly corrected helper
-unresolved before normal admission. Identity evidence records the
-retail comparison and donor d8dcd30e0cda47386f50b031c2bbcc8b9910cc02.
-
-The primary callback adds 132 C++ exact bytes; the helper correction
-and preserved siblings add no additional coverage.
-
-Claim-Lease: 0x0083EF20=37308152e1c94f1a9bd7ce8a72892c7d
-Claim-Lease: 0x0083F0C0=37308152e1c94f1a9bd7ce8a72892c7d
-Claim-Lease: 0x0083F140=37308152e1c94f1a9bd7ce8a72892c7d
-Claim-Lease: 0x0083F1C0=37308152e1c94f1a9bd7ce8a72892c7d
+Claim-Lease: 0x008C6AD0=fd901b9cef4049468a07d3aad4b4df9e
+Claim-Lease: 0x008CF1B0=fd901b9cef4049468a07d3aad4b4df9e

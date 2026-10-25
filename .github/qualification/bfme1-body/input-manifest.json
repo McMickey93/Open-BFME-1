@@ -1,122 +1,77 @@
 {
-  "base": "fb1e8cadc96a5b6d92c4b236e5763607fe6fcdf5",
-  "mode": "qualify",
+  "schema_version": 1,
+  "repository": "McMickey93/Open-BFME-1",
+  "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
+  "base": "3d3b0681294a0de92aae10ea1a753ae22068f091",
+  "base_tree": "be82e5a8f5ce5322f5793f6505d2bcc3f50d880b",
+  "mode": "explore",
   "body": {
-    "rva": "0x0083F1C0",
-    "size": 132,
-    "symbol": "?register_callback@ios_base@_STL@@QAEXP6AXW4event@12@AAV12@H@ZH@Z",
-    "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+    "rva": "0x008C6AD0",
+    "size": 233,
+    "symbol": "?BooleanCoerce008C6AD0@@YAPAVAptValue@@PAXH@Z",
+    "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
     "replace": "rva"
   },
   "claims": [
     {
-      "rva": "0x0083EF20",
-      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
-      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
+      "rva": "0x008C6AD0",
+      "lease": "fd901b9cef4049468a07d3aad4b4df9e",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-2"
     },
     {
-      "rva": "0x0083F0C0",
-      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
-      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
-    },
-    {
-      "rva": "0x0083F140",
-      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
-      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
-    },
-    {
-      "rva": "0x0083F1C0",
-      "lease": "37308152e1c94f1a9bd7ce8a72892c7d",
-      "owner": "github:mcmickey93:bfme1:cpp-loop-1"
+      "rva": "0x008CF1B0",
+      "lease": "fd901b9cef4049468a07d3aad4b4df9e",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-2"
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "STLport returned-pair ABI; complete 147B helper and 132B callback retail extents; native diagnostic run 40124446904; identity evidence targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md",
+  "notes": "Canonical callee and data bindings; documented compiler-barrier contexts for separate false tails; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
   "admissions": [
     {
-      "rva": "0x0083EF20",
-      "size": 147,
-      "symbol": "??$grow_array@U?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@@_STL@@YA?AU?$pair@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@_STL@@I@0@PAU?$pair@P6AXW4event@ios_base@_STL@@AAV23@H@ZH@0@II@Z",
-      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
-      "replace": "identity",
-      "old_symbol": "??$grow_array@UCallback@_STL@@@_STL@@YAPAU?$GrowPair@UCallback@_STL@@@0@PAU10@PAUCallback@0@II@Z",
-      "identity_evidence": "targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md"
-    },
-    {
-      "rva": "0x0083F1C0",
-      "size": 132,
-      "symbol": "?register_callback@ios_base@_STL@@QAEXP6AXW4event@12@AAV12@H@ZH@Z",
-      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "rva": "0x008C6AD0",
+      "size": 233,
+      "symbol": "?BooleanCoerce008C6AD0@@YAPAVAptValue@@PAXH@Z",
+      "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "replace": "rva"
     }
   ],
-  "schema_version": 1,
-  "repository": "McMickey93/Open-BFME-1",
-  "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
-  "base_tree": "ae33dc5f7f371abe491b42bccf7a674207b8058a",
-  "patch_tree": "aa42879e3523fafe568ba9bc7f01cd74f58aa42f",
-  "patch_sha256": "a254b8c3b0286086ee353faf2b9cb04599c095b4825533dd0ceed3b39b3f3914",
-  "message_sha256": "fcb0101540f6a24f97b7ea1246230b076e10f99b0b201c51bdf64e81b312a4c4",
+  "patch_tree": "f78c832490094b80bb4295679907a42552fda61c",
+  "patch_sha256": "15e05f60362c6f799877e61239d00b55239e609218b300778896453deb6e822e",
+  "message_sha256": "de188ac549bdd96a36fa89326f4170118252d19f9647b6607ae17a9980b0c425",
   "files": [
     {
-      "path": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
+      "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "mode": "100644",
-      "base_blob": "ecc9523f5e4000543936f3f69c3f9aa6749949fb",
-      "candidate_blob": "e6c1ff2e8fe77ae5a95c7de30b4a451a6054349d",
-      "sha256": "c69a607d13edda6294bf4aa05da5285ad2d945eebab0375eace4b3d626f3927a"
+      "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
+      "candidate_blob": "3aa769b116b4281c3e59e03c14a769237d948f25",
+      "sha256": "0828d4c89c23f6be828ca68e60954cd222115ba3e8f144df4822e59e517902ce"
     },
     {
-      "path": "game/stlport/IosBaseCallbackArrayGrow.cpp",
-      "mode": "100644",
-      "base_blob": "aefb32339cafb2e80f1e94f38d3ae06764619569",
-      "candidate_blob": null,
-      "sha256": null,
-      "deleted": true
-    },
-    {
-      "path": "targets/game/reverse/identity_evidence/0083f1c0-callback-pair-return.md",
+      "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "84f05b84c9c71cb8dfaec59441ac5e9ea01a79fe",
-      "sha256": "20f0cfc8bd7f151d9c5acf7f4cbf180966c8b1f74425ec253c44b9ceff87f0e1"
+      "candidate_blob": "0fe206a64f7a988374c8c55ed219e3646a0a0d74",
+      "sha256": "1cc8ca14aefad276b02b779d19a5bc5b07fc5c8081895be7225f45192c668b9a"
     }
   ],
   "base_rows": [
     {
-      "name": "??$grow_array@UCallback@_STL@@@_STL@@YAPAU?$GrowPair@UCallback@_STL@@@0@PAU10@PAUCallback@0@II@Z",
+      "name": "?d_008c6ad0@@YAXXZ",
       "export_rva": "",
-      "target_rva": "0x0083EF20",
-      "target_size": "147",
-      "source": "game/stlport/IosBaseCallbackArrayGrow.cpp",
+      "target_rva": "0x008C6AD0",
+      "target_size": "233",
+      "source": "game/gen_asm/d_008c4940.asm",
       "status": "matched",
-      "notes": "STLport callback array growth with live zero Callback temporary"
+      "notes": "gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0"
     },
     {
-      "name": "?d_0083f1c0@@YAXXZ",
+      "name": "?rva8CF1B0ProcessRecord@@YAXPAVRva8CF1B0State@@PAURva8CF1B0Cursor@@@Z",
       "export_rva": "",
-      "target_rva": "0x0083F1C0",
-      "target_size": "132",
-      "source": "game/gen_asm/d_00838560.asm",
+      "target_rva": "0x008CF1B0",
+      "target_size": "520",
+      "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "status": "matched",
-      "notes": "gen-dump;ghidra=FUN_00c3f1c0"
-    },
-    {
-      "name": "?iword@ios_base@_STL@@QAEAAJH@Z",
-      "export_rva": "",
-      "target_rva": "0x0083F0C0",
-      "target_size": "117",
-      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
-      "status": "matched",
-      "notes": "STLport ios_base::iword; exact C++ wrapper over matched grow_array<long>"
-    },
-    {
-      "name": "?pword@ios_base@_STL@@QAEAAPAXH@Z",
-      "export_rva": "",
-      "target_rva": "0x0083F140",
-      "target_size": "117",
-      "source": "game/Libraries/Source/WWVegas/WWLib/stlport_ios_base_iword.cpp",
-      "status": "matched",
-      "notes": "STLport ios_base::pword; exact C++ wrapper over matched grow_array<void*>"
+      "notes": "record parser with aligned three segment dispatch"
     }
   ]
 }
