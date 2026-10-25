@@ -15,13 +15,16 @@
 
 class MultiListNodeClass;
 
-extern ObjectPoolClass<MultiListNodeClass,256> g_pool009DBEB0;
+// Use the lock-bearing retail provider, as multilist.cpp does.
+template<> void ObjectPoolClass<MultiListNodeClass,256>::Free_Object_Memory(MultiListNodeClass *);
+
+// Retired DIR32 reference:
+// ?g_pool009DBEB0@@3V?$ObjectPoolClass@VMultiListNodeClass@@$0BAA@@@A
+// The pool is AutoPoolClass<MultiListNodeClass,256>::Allocator, owned by
+// multilist.cpp and recorded at 0x0134ECD4 in dir32_addresses.csv.
 
 // ?dup_009dbf40@@YAXPAX@Z
 void __cdecl dup_009dbf40(void *memory)
 {
-	if (memory == 0) {
-		return;
-	}
-	g_pool009DBEB0.Free_Object_Memory((MultiListNodeClass *)memory);
+    AutoPoolClass<MultiListNodeClass,256>::operator delete(memory);
 }
