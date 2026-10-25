@@ -49,7 +49,7 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Serve clean C++ recovery candidates from the native project queue
+      - name: Inspect uncapped structural and lift recovery queues
         shell: bash
         working-directory: source
         run: |
@@ -77,31 +77,36 @@ jobs:
           if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
           active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
           result["active_claims"]=active
-          queue=json.loads(run("naked-pool",[sys.executable,"tools/list_naked_candidates.py","game","--json"]))
-          result["queue_stats"]={k:v for k,v in queue.items() if k!="candidates"}
-          pool=queue["candidates"]
-          print("RECOVERY_QUEUE "+json.dumps({"count":len(pool),**result["queue_stats"]}),flush=True)
-          for c in pool: c["bytes"]=bytes.fromhex(c.pop("bytes_hex"))
-          # Every entry comes from the project's boundary/status-aware queue.
-          # Avoid live reservations and work already completed in this session.
-          candidates=[c for c in pool if c.get("rva") and c["rva"] not in active and c["rva"].upper() not in {"0X003D5AE0","0X0092CB30","0X00793260","0X009EF930","0X00472000","0X008A2130","0X008C6AD0","0X00948BD0","0X00925D10"}]
-          result["candidate_count"]=len(candidates)
+          import eligibility,lift_lane,next_work,re_log
+          rows=eligibility.load_rows()
+          counts=eligibility.attempt_counts()
+          latest=eligibility.latest_verdicts()
+          open_rows=eligibility.open_dumps(rows=rows,latest=latest,max_size=None)
+          stats={}
+          for label,test in [("all",lambda n:True),("small",lambda n:n<=512),("large",lambda n:n>512)]:
+              subset=[r for r in open_rows if test(int(r["target_size"]))]
+              stats[label]={"count":len(subset),"bytes":sum(int(r["target_size"]) for r in subset),"untried":sum(not counts.get(eligibility.rva_of(r),0) for r in subset)}
+          result["all_size_statistics"]=stats
+          print("RECOVERY_ALL_SIZE_STATS "+json.dumps(stats),flush=True)
+          run("naked-help",[sys.executable,"tools/list_naked_candidates.py","--help"],True,True)
+          print("RECOVERY_SIZE_CAP list_naked_candidates.MAX_BYTES="+str(naked.MAX_BYTES)+"; no size CLI override. No tool code edited.",flush=True)
+          # The structural CLI performs its own current-coverage, boundary and identity filtering.
+          structural=json.loads(run("structural-pool",[sys.executable,"tools/next_work.py","--tier","structural","--ranked","--json"]))
+          pool=structural["structural"]
+          available=[c for c in pool if (c.get("target_rva") or c.get("candidate_rva")) not in active and int(c["size"])>512]
+          print("RECOVERY_STRUCTURAL_STATS "+json.dumps({"all":len(pool),"large_available":len(available),"large_untried":sum(not c.get("deferred_attempts") for c in available),"meta":structural["structural_meta"]}),flush=True)
           sequence=[]
-          for n in range(min(6,len(candidates))):
-              selected,meta=naked.select_candidate(candidates)
-              candidates.remove(selected)
-              item={k:v for k,v in selected.items() if k!="bytes"}
-              item["bytes_hex"]=selected["bytes"].hex()
-              item["meta"]={k:str(v) if isinstance(v,Path) else v for k,v in meta.items()}
-              sequence.append(item)
-              print("RECOVERY_SEQUENCE "+json.dumps({"order":n,"selected":item}),flush=True)
-              run("brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",selected["rva"]],True,True)
-              run("callees-"+str(n),[sys.executable,"tools/callees.py",selected["rva"],str(selected["size"])],True,True)
-          result["sequence"]=sequence
-          run("lift-summary",[sys.executable,"tools/lift_lane.py","--summary"],True,True)
+          for n in range(min(3,len(available))):
+              c=next_work.weighted_choice(available);available.remove(c)
+              print("RECOVERY_LARGE_SELECTION "+json.dumps({"order":n,"candidate":c}),flush=True)
+              run("large-brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",c.get("target_rva") or c["candidate_rva"]],True,True)
+              sequence.append(c)
+          result["large_sequence"]=sequence
+          # Named lifts have their own positive extent checks; print their served queue.
+          run("lift-queue",[sys.executable,"tools/lift_lane.py","--limit","150"],True,True)
           run("clean-tree",["git","diff","--exit-code"])
           run("progress",[sys.executable,"tools/progress.py","origin/master"],True,True)
-          result["status"]="served-readonly"
+          result["status"]="served-readonly-all-sizes"
           (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
           print("RECOVERY_RESULT "+json.dumps(result),flush=True)
           PY
