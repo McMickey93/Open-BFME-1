@@ -49,90 +49,98 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Measure a bounded current finish-bank sample without edits or claims
+      - name: Inspect preserved two-byte residues and complete prior records
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 finish-measure-current
+          require_python3 two-byte-inspection
           git switch --detach origin/master
           python3 -u - <<'PY'
-          import hashlib,json,os,subprocess,sys,time,traceback
+          import hashlib,io,json,os,subprocess,sys,urllib.request,zipfile
           from pathlib import Path
           root=Path.cwd().resolve()
-          out=root/"build/contributor-cpp-recovery-20261025"
+          build_root=root/"build"
+          out=build_root/"contributor-cpp-recovery-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import claims,eligibility,finish_measure,next_work
-          assert subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root,text=True).strip()=="06b755567bb147dfee3a89f70f7bbcd38410b5b4", "AGENTS changed"
-          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
-          def run(label,args):
-              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-              (out/(label+".log")).write_bytes(cp.stdout)
-              if cp.returncode:
-                  print(cp.stdout.decode("utf-8","replace"),flush=True)
-                  raise RuntimeError(label+" failed")
-              return cp.stdout.decode("utf-8","replace")
-          assert claims.fetch(), "Cannot read shared claims"
-          busy=eligibility.busy_rvas()
-          live=claims.live(claims._read_local())
-          blocked={0x00269C50,0x00271B40,0x0060F3C0,0x000B4780,0x00948BD0,0x00925D10,0x008CF030,0x00078640,0x003D59C0,0x001EDCA0}
-          payload=json.loads(run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"]))
-          pool=payload["finish"]
-          available=[c for c in pool if int(c["target_rva"],16) not in blocked and int(c["target_rva"],16) not in live and c["target_rva"].lower() not in busy]
-          sequence=[]
-          for number in range(min(32,len(available))):
-              c=next_work.finish_choice(available)
-              available=[a for a in available if int(a["target_rva"],16)!=int(c["target_rva"],16)]
-              sequence.append(c)
-          result={"status":"measuring","base":base,"workflow":os.environ["GITHUB_SHA"],"run":os.environ["GITHUB_RUN_ID"],"pool":len(pool),"bounded_draws":len(sequence),"selector":"next_work.finish_choice without replacement","excluded":sorted(f"0x{r:08X}" for r in blocked),"sequence":sequence,"measurements":[]}
-          def save():
-              (out/"finish-batch.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          import build,claims,finish_measure,probe
+          from experiment_store import validated_object_receipt
+          raw=urllib.request.urlopen("https://sdmntprnortheu.oaiusercontent.com/files/00000000-51d4-81f4-abed-2cae6c11e8c7/raw?se=2026-10-25T23%3A12%3A41Z&sp=r&sv=2026-02-06&sr=b&scid=01a174d6-c33a-71b9-9ca9-82750df801e0&skoid=002823aa-689d-47ca-9347-108c20f4f00d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-25T05%3A04%3A17Z&ske=2026-10-26T05%3A04%3A17Z&sks=b&skv=2026-02-06&sig=mpNnno0RBv6XbBN%2BRXOviHSelNMDn%2BHHFrm34uY2Udw%3D",timeout=60).read()
+          assert hashlib.sha256(raw).hexdigest()=="d4698f8804c877541203cee6c3fa8b9100479830e60660cd35fe25e583e5825b"
+          archive=zipfile.ZipFile(io.BytesIO(raw))
+          for name in archive.namelist():
+              target=(build_root/name).resolve()
+              assert target.is_relative_to(build_root) and ".." not in Path(name).parts
+              if name.endswith("/"): target.mkdir(parents=True,exist_ok=True);continue
+              target.parent.mkdir(parents=True,exist_ok=True)
+              target.write_bytes(archive.read(name))
+          prior=json.loads((out/"finish-batch.json").read_text(encoding="utf-8"))
+          assert prior["base"]=="967c7e1cf5bbda24ea52f802caffa7164c1368ff"
           cache=finish_measure.load()
-          save()
-          for number,c in enumerate(sequence):
-              rva=int(c["target_rva"],16)
-              path=root/c["stash"]
-              assert path.is_relative_to(root/"targets/game/reverse/attempts"), "Unexpected bank location"
-              raw=path.read_bytes()
-              before=hashlib.sha256(raw).hexdigest()
-              # Read the banked whole TU unchanged. Keep only a text snapshot in
-              # build/; measure the actual tracked path so its include context stays native.
-              (out/(f"{rva:08x}-whole-stash.cpp.txt")).write_bytes(raw)
-              m={"order":number,"target_rva":c["target_rva"],"stash":c["stash"],"author_score":c["score"],"target_size":c["target_size"],"whole_source_sha256":before,"whole_source_bytes":len(raw),"symbol_header":finish_measure.symbol_of(path)}
-              assert claims.fetch(), "Cannot refresh shared claims"
-              if rva in claims.live(claims._read_local()):
-                  m.update(status="skipped-new-live-claim",qualified=False)
-              else:
-                  try:
-                      cache=finish_measure.ensure([(rva,path)],budget=1,cache=cache)
-                      entry=finish_measure.current(cache,rva,path)
-                      m.update(status="qualified" if entry is not None else "unmeasured-no-current-proof",qualified=entry is not None,entry=entry)
-                  except ValueError as error:
-                      m.update(status="refused",qualified=False,note=str(error))
-              assert hashlib.sha256(path.read_bytes()).hexdigest()==before, "Bank changed while measuring"
-              result["measurements"].append(m)
-              save()
-              print("FINISH_BATCH_ITEM "+json.dumps(m),flush=True)
-              if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1:
-                  print("FINISH_BATCH_RAW_EXACT_LEAD "+json.dumps(m),flush=True)
-          result.update(status="complete",qualified_count=sum(bool(m["qualified"]) for m in result["measurements"]),raw_exact_leads=[m for m in result["measurements"] if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1])
-          run("clean-tree",["git","diff","--exit-code"])
-          print(run("progress",[sys.executable,"tools/progress.py","origin/master"]),flush=True)
-          save()
-          print("FINISH_BATCH_FINAL "+json.dumps({"base":base,"draws":len(sequence),"qualified":result["qualified_count"],"raw_exact_count":len(result["raw_exact_leads"]),"unqualified":sum(not m["qualified"] for m in result["measurements"])}),flush=True)
+          wanted={0x008D1F10,0x008A5250}
+          result={"source_run":40242622843,"source_zip_sha256":hashlib.sha256(raw).hexdigest(),"current_base":subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),"targets":[]}
+          for measurement in prior["measurements"]:
+              rva=int(measurement["target_rva"],16)
+              if rva not in wanted:continue
+              path=root/measurement["stash"]
+              raw_source=path.read_bytes()
+              assert hashlib.sha256(raw_source).hexdigest()==measurement["whole_source_sha256"]
+              entry=finish_measure.current(cache,rva,path)
+              symbol=(measurement["entry"].get("symbol") or finish_measure.symbol_of(path))
+              objects=[]
+              for meta_path in (build_root/"experiments").glob("*/cache.json"):
+                  meta=json.loads(meta_path.read_text())
+                  obj=meta_path.parent/meta["path"]
+                  deps_path=build._deps_sidecar(obj)
+                  if not deps_path.exists():continue
+                  deps=json.loads(deps_path.read_text())
+                  if deps.get("source")!=measurement["whole_source_sha256"]:continue
+                  assert hashlib.sha256(obj.read_bytes()).hexdigest()==meta["object"]
+                  objects.append(obj)
+              assert len(objects)==1, (measurement["stash"],objects)
+              compiled,relocs=build.read_object_symbol_bytes(objects[0],symbol)
+              retail=build.read_target_bytes(rva,measurement["target_size"])
+              R,O,ri,oi,rb,ob,unmapped=probe.diagnostic_streams(retail,bytes(compiled),relocs)
+              diffs=[i for i in range(min(len(rb),len(ob))) if rb[i]!=ob[i]]
+              residue=[]
+              for off in diffs:
+                  a=next((ins for ins in ri if ins.address<=off<ins.address+ins.size),None)
+                  b=next((ins for ins in oi if ins.address<=off<ins.address+ins.size),None)
+                  residue.append({"offset":off,"retail":None if a is None else [a.address,bytes(a.bytes).hex(),a.mnemonic,a.op_str],"object":None if b is None else [b.address,bytes(b.bytes).hex(),b.mnemonic,b.op_str]})
+              item={"rva":measurement["target_rva"],"symbol":symbol,"stash":measurement["stash"],"current_qualified":entry is not None,"canonical_entry":measurement["entry"],"current_entry":entry,"residue":residue,"unmapped":unmapped,"retail_hex":retail.hex(),"object_hex":bytes(compiled).hex(),"source":raw_source.decode("utf-8")}
+              result["targets"].append(item)
+              print("TWO_BYTE_REST "+json.dumps({k:v for k,v in item.items() if k!="source"}),flush=True)
+              records=[]
+              tag=f"{rva:08x}"
+              with (root/"targets/game/reverse/re_attempts.log").open(encoding="utf-8",errors="replace") as log:
+                  for line in log:
+                      if tag in line.lower():records.append(line.rstrip("\r\n"))
+              (out/(tag+"-complete-prior-records.txt")).write_text("\n".join(records)+"\n",encoding="utf-8")
+              print("TWO_BYTE_PRIOR "+json.dumps({"rva":measurement["target_rva"],"records":records}),flush=True)
+              history=root/"targets/game/reverse/attempt_history"/("0x"+tag)
+              if history.is_dir():
+                  metadata=[]
+                  for saved in history.glob("*.json"):
+                      data=json.loads(saved.read_text(encoding="utf-8"))
+                      metadata.append({k:v for k,v in data.items() if k!="source"})
+                  print("TWO_BYTE_ARCHIVES "+json.dumps({"rva":measurement["target_rva"],"archives":metadata}),flush=True)
+          (out/"two-byte-inspection.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          cp=subprocess.run([sys.executable,"tools/brief.py","--rvas","0x008D1F10","0x008A5250"],cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+          (out/"two-byte-brief.log").write_bytes(cp.stdout)
+          print(cp.stdout.decode("utf-8","replace"),flush=True)
+          assert cp.returncode==0
+          assert subprocess.run(["git","diff","--exit-code"],cwd=root).returncode==0
+          cp=subprocess.run([sys.executable,"tools/progress.py","origin/master"],cwd=root)
+          assert cp.returncode==0
           PY
-      - name: Preserve unchanged bank snapshots and qualified native measurements
+      - name: Preserve native residue inspection and prior evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: bfme1-cpp-recovery-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            source/build/contributor-cpp-recovery-20261025/
-            source/build/finish_measured.json
-            source/build/experiments/
-            source/build/experiments.sqlite
+          path: source/build/contributor-cpp-recovery-20261025/
           retention-days: 90
           if-no-files-found: warn
           compression-level: 9
