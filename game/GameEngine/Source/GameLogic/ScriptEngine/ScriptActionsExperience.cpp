@@ -42,7 +42,8 @@ class BfmeInfoBS;
 struct BfmeObjectD120;
 struct BfmeObjectD150;
 extern int __cdecl bfmeApplyBS(BfmeAgentBS *, BfmeInfoBS *);
-extern int __cdecl bfmeRva0037D120AddExperience(BfmeObjectD120 *, int);
+// ?bfmeRva0037D120AddExperience@@YAHPAUBfmeObjectD120@@H@Z: retail 0x0041ACB7 is ?bfmeTeamGiveExperiencePointsVisitor@@YAXPAVObject@@PAX@Z
+extern void __cdecl bfmeTeamGiveExperiencePointsVisitor(Object *, void *);
 extern int __cdecl bfmeRva0037D150Apply(BfmeObjectD150 *, int);
 extern void __cdecl bfmeTeamRefreshExperienceVisitor(Object *, void *);
 
@@ -139,7 +140,7 @@ void ScriptActions::doTeamGiveExperiencePoints(
 	}
 
 	((BfmeInnerIterable *)team)->bfmeVisit(
-		reinterpret_cast<BfmeObjectVisitor>(bfmeRva0037D120AddExperience), (void *)points);
+		reinterpret_cast<BfmeObjectVisitor>(bfmeTeamGiveExperiencePointsVisitor), (void *)points);
 }
 
 // ?doTeamSetExperiencePoints@ScriptActions@@IAEXABVAsciiString@@H@Z

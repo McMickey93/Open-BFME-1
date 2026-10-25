@@ -82,7 +82,7 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 // ?g_vtbl_01111D9C@@3PAPAXA now references its recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111DB0@@3PAPAXA: reference the recorded retail vtable directly.
 // ?g_vtbl_01111DB4@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01111DD8@@3PAPAXA=??_7TailX005EB830@@6B@")
+// Gate debt ?g_vtbl_01111DD8@@3PAPAXA: reference the recorded retail vtable directly.
 // ?g_vtbl_01111DEC@@3PAPAXA: reference the recorded retail vtable directly.
 // ?g_vtbl_01111DF0@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111E14@@3PAPAXA: reference the recorded retail vtable directly.
@@ -95,7 +95,7 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 // Gate debt ?g_vtbl_01111EE0@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111FB0@@3PAPAXA: reference the recorded retail vtable directly.
 // ?g_vtbl_01111FC4@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01111FC8@@3PAPAXA=??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")
+// Gate debt ?g_vtbl_01111FC8@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FCC@@3PAPAXA=??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@")
 // ?g_vtbl_01112034@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01112048@@3PAPAXA: reference the recorded retail vtable directly.
@@ -122,6 +122,7 @@ extern "C" void *__identifier("??_7EmissionVolumeInfo@FXParticleSystem@@6B@")[];
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110F9CC@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@")[];
+extern "C" void *__identifier("??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0110F9E4[];
 // ?g_vtbl_0110F9E8@@3PAPAXA: use the owner recorded at 0x0110F9E8.
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@")[];
@@ -250,7 +251,9 @@ extern "C" void *__identifier("??_7TailX005EB6B0@@6B@")[];
 extern "C" void *__identifier("??_7MidX005EB6B0@@6B@")[];
 // ?g_vtbl_01111DB4@@3PAPAXA: use the owner recorded at 0x01111DB4.
 extern "C" void *__identifier("??_7GenX005EB6B0@@6B@")[];
-extern void *g_vtbl_01111DD8[];
+// ?g_vtbl_01111DD8@@3PAPAXA: use the owner recorded at 0x01111DD8.
+extern "C" void *__identifier("??_7TailX005EB830@@6B@")[];
+#define g_vtbl_01111DD8 __identifier("??_7TailX005EB830@@6B@")
 // ?g_vtbl_01111DEC@@3PAPAXA: use the owner recorded at 0x01111DEC.
 extern "C" void *__identifier("??_7MidX005EB830@@6B@")[];
 // ?g_vtbl_01111DF0@@3PAPAXA: use the owner recorded at 0x01111DF0.
@@ -271,7 +274,9 @@ extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@")[];
 extern "C" void *__identifier("??_7BFMEDistLODClass@@6BRefCountClass@@@")[];
 // ?g_vtbl_01111FC4@@3PAPAXA: use the owner recorded at 0x01111FC4.
 extern "C" void *__identifier("??_7BFMEDistLODClass@@6BPersistClass@@@")[];
-extern void *g_vtbl_01111FC8[];
+// ?g_vtbl_01111FC8@@3PAPAXA: use the owner recorded at 0x01111FC8.
+extern "C" void *__identifier("??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")[];
+#define g_vtbl_01111FC8 __identifier("??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")
 extern void *g_vtbl_01111FCC[];
 // ?g_vtbl_01112034@@3PAPAXA: use the owner recorded at 0x01112034.
 extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot3@@@")[];
@@ -1850,7 +1855,8 @@ extern const char *const RotationTypeNames[];
 extern const char g_01110838[];
 extern const char g_0111085C[];
 extern const char g_01110850[];
-extern const char g_01110820[];
+// ?g_01110820@FXParticleSystem@@3QBDB: retail 0x01110820 is ??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@
+#define g_01110820 __identifier("??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@")
 extern const char g_01110868[];
 extern const char g_01110880[];
 extern const char g_0111088C[];
