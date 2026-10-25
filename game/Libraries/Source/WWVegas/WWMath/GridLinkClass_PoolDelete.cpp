@@ -17,13 +17,12 @@ class GridLinkClass;
 // Keep the retail lock-bearing specialization in ObjectPoolFreeObjectMemory.cpp.
 template<> void ObjectPoolClass<GridLinkClass,256>::Free_Object_Memory(GridLinkClass *);
 
-extern ObjectPoolClass<GridLinkClass,256> g_pool008DDA50;
+// Retired unowned reference:
+// ?g_pool008DDA50@@3V?$ObjectPoolClass@VGridLinkClass@@$0BAA@@@A
+// gridcull.cpp owns AutoPoolClass<GridLinkClass,256>::Allocator at 0x0133D1AC.
 
 // ?dup_008ddeb0@@YAXPAX@Z
 void __cdecl dup_008ddeb0(void *memory)
 {
-	if (memory == 0) {
-		return;
-	}
-	g_pool008DDA50.Free_Object_Memory((GridLinkClass *)memory);
+	AutoPoolClass<GridLinkClass,256>::operator delete(memory);
 }

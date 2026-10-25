@@ -14,7 +14,9 @@ class GridLinkClass;
 // Keep the retail lock-bearing specialization in ObjectPoolFreeObjectMemory.cpp.
 template<> void ObjectPoolClass<GridLinkClass,256>::Free_Object_Memory(GridLinkClass *);
 
-extern ObjectPoolClass<GridLinkClass,256> g_bfmePoolTRB;
+// Retired unowned reference:
+// ?g_bfmePoolTRB@@3V?$ObjectPoolClass@VGridLinkClass@@$0BAA@@@A
+// gridcull.cpp owns AutoPoolClass<GridLinkClass,256>::Allocator at 0x0133D1AC.
 
 class BfmeThingTRB
 {
@@ -23,11 +25,12 @@ public:
 	void bfmeDtorTRB();
 };
 
+// ?bfmeDelTRB@BfmeThingTRB@@QAEPAXE@Z
 void *BfmeThingTRB::bfmeDelTRB(unsigned char flags)
 {
 	bfmeDtorTRB();
-	if ((flags & 1) && this)
-		g_bfmePoolTRB.Free_Object_Memory((GridLinkClass *)this);
+	if (flags & 1)
+		AutoPoolClass<GridLinkClass,256>::operator delete(this);
 	return this;
 }
 
