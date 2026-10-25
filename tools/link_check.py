@@ -119,14 +119,21 @@ def source_bytes(sources=None):
             for source, found in intervals.items()}
 
 
-def write_index(present, facts, blockers, excuses, meta, selection, *, publish=True, aliases=None):
+def write_index(present, facts, blockers, excuses, meta, selection, *, publish=True, aliases=None,
+                referenced=None):
     """Called by link_census.write_status: what a per-file check needs from the
     census, in one pickle. `facts` is link_census.read_facts(present);
     `selection` holds link_census.selection_verdicts' results, holder
     exceptions and ledger owners; `aliases` link_census.alias_blockers'
-    {alias: [(object index, target)]} (read from the objects when None)."""
+    {alias: [(object index, target)]} (read from the objects when None);
+    `referenced` link_census.link_references: `unreferenced` keeps the COMDAT
+    names outside it, so a per-file check applies keep_rule's unreferenced
+    rule the way the census did (an index without the key judges every name
+    as referenced, the rule before 2026-10-25)."""
     index = {"meta": meta, **index_tables(present, facts, selection, aliases), "blockers": blockers,
              "excuses": excuses, "bytes": source_bytes(set(blockers))}
+    if referenced is not None:
+        index["unreferenced"] = {name for name in index["comdat"] if name not in referenced}
     if publish:
         publish_index(index)
     return index
@@ -1606,7 +1613,7 @@ def check_object(obj, index, truth, source=None, judge=None):
         found = [(i, d, v) for i, d, v in comdat.get(name, ()) if i != own]
         found.append((position, digest, verdict))
         found.sort(key=lambda copy: copy[0])
-        loses, rule = link_census.keep_rule(found)
+        loses, rule = link_census.keep_rule(found, name not in index.get("unreferenced", ()))
         if loses[position]:
             losers.append((name, rule, verdict))
     addresses = []

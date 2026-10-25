@@ -723,3 +723,20 @@ def test_unproven_second_copy_does_not_expand_dir32_targets(tmp_path, monkeypatc
     assert t.addresses("grow", L.RetailTruth.DIR32) == {0x1000}
     assert t.verdict(symbol("pointer"), b"\xb8\0\0\0\0",
                      [(1, L.RetailTruth.DIR32, referent("grow"))], "pointer", 5) == "wrong"
+
+
+def test_keep_rule_unreferenced_no_address_copies_never_lose():
+    copies = [("a.obj", "zh_body", None), ("b.obj", "stub", None), ("c.obj", "stub", None)]
+    loses, rule = L.keep_rule(copies, referenced=False)
+    assert rule == "unreferenced"
+    assert loses == {"a.obj": False, "b.obj": False, "c.obj": False}
+    # retail truth still decides a name with an address, referenced or not
+    copies = [("a.obj", "x", "wrong"), ("b.obj", "y", "retail")]
+    assert L.keep_rule(copies, referenced=False) == ({"a.obj": True, "b.obj": False}, "retail")
+
+
+def test_referenced_names_walks_roots_kept_and_links():
+    edges = {"inline_a": frozenset({"inline_b"}), "inline_b": frozenset({"helper"}), "orphan": frozenset({"inline_a"})}
+    found = L.referenced_names({"main_calls"}, edges, kept=("inline_a",), links=[("main_calls", "weak_default")])
+    assert found == {"main_calls", "weak_default", "inline_a", "inline_b", "helper"}
+    assert "orphan" not in found

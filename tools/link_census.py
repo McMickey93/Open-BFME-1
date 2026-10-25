@@ -579,6 +579,9 @@ def classify(log, rows):
 COMDAT = 0x1000  # IMAGE_SCN_LNK_COMDAT
 EXTERNAL = 2      # IMAGE_SYM_CLASS_EXTERNAL
 WEAK_EXTERNAL = 105  # IMAGE_SYM_CLASS_WEAK_EXTERNAL: a vftable slot's ??_E deleting destructor
+SELECT_NODUPLICATES, SELECT_ASSOCIATIVE = 1, 5
+LNK_INFO, LNK_REMOVE = 0x200, 0x800  # .drectve, and sections the linker never places
+DIRECTIVE_ROOT = re.compile(r"/(?:INCLUDE|EXPORT):(\"[^\"]+\"|[^\s,=]+)", re.I)
 
 
 def _coff_symbols(data):
@@ -956,7 +959,7 @@ def comdat_conflicts(objs):
             for name, found in copies.items() if len(found) > 1}
 
 
-def keep_rule(copies):
+def keep_rule(copies, referenced=True):
     """({object: loses?}, rule) for one COMDAT symbol's copies [(object, digest,
     verdict)] in link order.
 
@@ -968,9 +971,21 @@ def keep_rule(copies):
     link.exe keeps the first copy in link order, so a copy that differs from
     that one loses. Majority is never used: it would let the most-copied
     private class decide what retail shipped.
+
+    `unreferenced` (since 2026-10-25, Open-BFME-2's retail-truth-2 rule) when
+    retail truth cannot judge the symbol AND `referenced` is false: nothing the
+    link keeps references the name (link_references), so no copy of it is ever
+    executed and /OPT:REF drops every copy; which one link.exe would pick
+    decides nothing, and no copy loses. MSVC emits a select-any copy of every
+    inline member a unit uses even when it inlined every call (an AsciiString
+    forwarder __forceinline'd still leaves a 5-byte stub), so without this rule
+    a private class view that happens to sit first in link order charged every
+    unit using the shared header.
     """
     verdicts = [verdict for _, _, verdict in copies]
     if all(verdict is None for verdict in verdicts):
+        if not referenced:
+            return {obj: False for obj, _, _ in copies}, "unreferenced"
         kept = copies[0][1]
         return {obj: digest != kept for obj, digest, _ in copies}, "first"
     proven = [digest for _, digest, verdict in copies if verdict == "retail"]
@@ -1350,8 +1365,158 @@ def read_facts(objs, rows):
     return [object_facts(obj, truth) for obj in objs]
 
 
-def comdat_losers(objs, rows=None, stats=None, facts=None):
+def object_references(obj):
+    """(roots, edges) of one object's relocations, by name, for referenced_names.
+
+    `roots`: the names referenced from what a link always keeps: a section that
+    is not a COMDAT, or a NODUPLICATES COMDAT (/Gy gives every non-inline
+    function one; /OPT:REF could drop an unreferenced one, so this
+    over-approximates), plus /INCLUDE: and /EXPORT: directives. `edges`: for
+    each external name a discardable COMDAT (ANY, SAME_SIZE, ...) defines, the
+    names that section references. A section's references include those of the
+    sections it reaches through TU-local symbols (a static, a $LN label, a
+    section symbol) and of its ASSOCIATIVE children (EH tables), which the
+    linker keeps or drops with it; a local section defining an external name
+    references that name. Debug sections (.debug$*) and LNK_REMOVE/LNK_INFO
+    sections reference nothing. An unreadable object raises MissingObject."""
+    import struct
+    try:
+        data = obj.read_bytes()
+        count = struct.unpack_from("<H", data, 2)[0]
+        optional = struct.unpack_from("<H", data, 16)[0]
+        table, nsyms = struct.unpack_from("<II", data, 8)
+        sections = []
+        for index in range(count):
+            header = 20 + optional + index * 40
+            name = data[header:header + 8].rstrip(b"\0")
+            size, pointer, relocs = struct.unpack_from("<III", data, header + 16)
+            nrelocs = struct.unpack_from("<H", data, header + 32)[0]
+            flags = struct.unpack_from("<I", data, header + 36)[0]
+            sections.append((name, size, pointer, relocs, nrelocs, flags))
+        symbols = {symbol["index"]: symbol for symbol in _coff_symbols(data)}
+        selection, parent = {}, {}
+        at = 0
+        while at < nsyms:
+            record = table + 18 * at
+            value, section, _, storage, aux = struct.unpack_from("<IhHBB", data, record + 8)
+            if storage == 3 and aux and value == 0 and 0 < section <= count and section not in selection:
+                selection[section] = data[record + 18 + 14]
+                parent[section] = struct.unpack_from("<H", data, record + 18 + 12)[0]
+            at += 1 + aux
+    except (OSError, ValueError, struct.error, IndexError) as exc:
+        raise MissingObject(f"{obj}: cannot read relocations ({exc})") from exc
+
+    def ignored(number):
+        name, _, _, _, _, flags = sections[number - 1]
+        return bool(flags & (LNK_INFO | LNK_REMOVE)) or name.startswith(b".debug")
+
+    defines = collections.defaultdict(set)
+    for symbol in symbols.values():
+        if symbol["storage"] == EXTERNAL and 0 < symbol["section"] <= count:
+            defines[symbol["section"]].add(symbol["name"])
+    names, local = collections.defaultdict(set), collections.defaultdict(set)
+    for number in range(1, count + 1):
+        if ignored(number):
+            continue
+        _, _, _, relocs, nrelocs, _ = sections[number - 1]
+        for entry in range(relocs, relocs + 10 * nrelocs, 10):
+            target = symbols.get(struct.unpack_from("<I", data, entry + 4)[0])
+            if target is None:
+                raise MissingObject(f"{obj}: a relocation of section {number} names no symbol")
+            if target["storage"] in (EXTERNAL, WEAK_EXTERNAL) or target["section"] <= 0:
+                names[number].add(target["name"])
+            elif target["section"] <= count:
+                local[number].add(target["section"])
+    for child, owner in parent.items():
+        if selection.get(child) == SELECT_ASSOCIATIVE and 0 < owner <= count:
+            local[owner].add(child)
+
+    def reach(start):
+        seen, stack, found = {start}, [start], set()
+        while stack:
+            number = stack.pop()
+            found |= names[number]
+            if number != start:
+                found |= defines[number]
+            for other in local[number] - seen:
+                if not ignored(other):
+                    seen.add(other)
+                    stack.append(other)
+        return found
+
+    roots, edges = set(), {}
+    for number in range(1, count + 1):
+        if ignored(number) or selection.get(number) == SELECT_ASSOCIATIVE:
+            continue
+        if not sections[number - 1][5] & COMDAT or selection.get(number) == SELECT_NODUPLICATES:
+            roots |= reach(number)
+        else:
+            for name in defines[number]:
+                edges.setdefault(name, set()).update(reach(number))
+    for number in range(1, count + 1):
+        name, size, pointer = sections[number - 1][:3]
+        if name == b".drectve" and pointer:
+            text = data[pointer:pointer + size].decode("latin-1")
+            roots.update(found.strip('"') for found in DIRECTIVE_ROOT.findall(text))
+    return roots, {name: frozenset(found) for name, found in edges.items()}
+
+
+def read_references(objs):
+    """object_references for every object, in parallel (BUILD_POOL processes)."""
+    workers = build._pool_size()
+    if workers > 1:
+        with concurrent.futures.ProcessPoolExecutor(workers) as pool:
+            return list(pool.map(object_references, objs, chunksize=64))
+    return [object_references(obj) for obj in objs]
+
+
+def referenced_names(roots, edges, kept=(), links=()):
+    """Every name the link keeps reachable: `roots` and whatever their names'
+    definitions reference, transitively through `edges`. `kept` are names
+    known to be in the image (a ledger row's name, a name with a retail
+    address): their definitions' references count too. `links` are (name,
+    target) pairs a reference to `name` also reaches: a weak external's
+    default and an /alternatename alias's target. A COMDAT name outside the
+    result is referenced by nothing the link keeps."""
+    also = collections.defaultdict(set)
+    for name, target in links:
+        also[name].add(target)
+    found = set(roots) | set(kept)
+    stack = list(found)
+    while stack:
+        name = stack.pop()
+        for target in edges.get(name, frozenset()) | also.get(name, set()):
+            if target not in found:
+                found.add(target)
+                stack.append(target)
+    return found
+
+
+def link_references(present, facts, owners):
+    """The names one census's link keeps reachable: referenced_names from every
+    object's roots, every ledger owner's name and every name with a retail
+    address (any COMDAT copy retail truth can judge), through weak externals
+    and /alternatename aliases. A copy the linker discards still contributes
+    its edges, so a name is never unreferenced because the kept copy happens
+    to call less."""
+    import alias_guard
+    roots, edges = set(), collections.defaultdict(set)
+    for found, more in read_references(present):
+        roots |= found
+        for name, targets in more.items():
+            edges[name] |= targets
+    kept, links = set(owners), []
+    for obj, (copies, _, _, weaks) in zip(present, facts):
+        kept.update(name for name, _, _, verdict in copies if verdict is not None)
+        links.extend(weaks)
+        links.extend(alias_guard.object_aliases(obj))
+    return referenced_names(roots, edges, kept, links)
+
+
+def comdat_losers(objs, rows=None, stats=None, facts=None, referenced=None):
     """{object name: {symbol}} for COMDAT copies that are not retail's body.
+    `referenced` (link_references) exempts no-address names nothing the link
+    keeps references; None applies the first-copy rule to every such name.
 
     keep_rule() decides each symbol: by retail truth where the ledger gives it
     a retail address, else by link order (link.exe keeps the first copy, so an
@@ -1370,7 +1535,7 @@ def comdat_losers(objs, rows=None, stats=None, facts=None):
     losers = collections.defaultdict(set)
     stats = stats if stats is not None else {}
     for name, found in copies.items():
-        loses, rule = keep_rule(found)
+        loses, rule = keep_rule(found, referenced is None or name in referenced)
         stats[f"symbols_{rule}"] = stats.get(f"symbols_{rule}", 0) + 1
         for obj, lost in loses.items():
             if lost:
@@ -2128,7 +2293,8 @@ def write_status(log, rows, present, meta, kept, *, publish=True, facts=None, cu
     facts = read_facts(present, rows) if facts is None else facts
     owners = ledger_owners(rows)
     facts = rejudge_weak_facts(present, facts, rows, kept, owners)
-    losers = comdat_losers(present, rows, stats, facts)
+    referenced = link_references(present, facts, owners)
+    losers = comdat_losers(present, rows, stats, facts, referenced)
     results, exceptions = selection_verdicts(present, facts, owners, kept)
     wrong_selected, unknown_selected = {}, {}
     for obj, fact in zip(present, facts):
@@ -2140,7 +2306,9 @@ def write_status(log, rows, present, meta, kept, *, publish=True, facts=None, cu
           f"{sum(1 for r in results.values() if r == 'ok'):,} proven; {len(exceptions):,} not the first in link order")
     print(f"link_census: COMDAT keeper: {stats.get('symbols_retail', 0):,} symbols judged by retail truth "
           f"({stats.get('losers_retail', 0):,} losing copies), {stats.get('symbols_first', 0):,} with no retail "
-          f"address by link order ({stats.get('losers_first', 0):,} losing copies)")
+          f"address by link order ({stats.get('losers_first', 0):,} losing copies), "
+          f"{stats.get('symbols_unreferenced', 0):,} with no retail address that nothing the link keeps references "
+          f"(no copy loses)")
     aliases, alias_target, alias_unknown, alias_stats = alias_blockers(present, facts, rows)
     print(f"link_census: /alternatename aliases: {alias_stats['ok']:,} ok, {alias_stats['wrong']:,} wrong "
           f"({alias_stats['charged']:,} objects charged alias_target), {alias_stats['unknown']:,} unjudged "
@@ -2192,7 +2360,7 @@ def write_status(log, rows, present, meta, kept, *, publish=True, facts=None, cu
                                                "weak_addresses": dict(getattr(kept, "addresses", {})),
                                                "weak_locations": dict(getattr(kept, "locations", {})),
                                                "weak_ambiguous": set(getattr(kept, "ambiguous", ()))}, publish=False,
-                                  aliases=aliases)
+                                  aliases=aliases, referenced=referenced)
     policy = policy_fingerprint()
 
     def accept():
