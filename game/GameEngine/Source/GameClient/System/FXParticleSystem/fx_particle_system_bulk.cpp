@@ -58,7 +58,6 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01110E08@@3PAPAXA=_DefaultModuleTemplate6Concrete_vtbl4")
 #pragma comment(linker, "/alternatename:?g_vtbl_01110E0C@@3PAPAXA=_DefaultModuleTemplate6Concrete_vtbl0")
 // ?g_vtbl_01110EA4@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01110EB8@@3PAPAXA=??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B?$CategoryModuleInfo@$05@1@@")
 // ?g_vtbl_01110EBC@@3PAPAXA now references its recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01110FC0@@3PAPAXA=_DefaultModuleTemplate3Concrete_vtbl4")
 #pragma comment(linker, "/alternatename:?g_vtbl_01110FC4@@3PAPAXA=_DefaultModuleTemplate3Concrete_vtbl0")
@@ -117,7 +116,8 @@ extern void *g_vtbl_01073758[];
 extern void *g_vtbl_01073760[];
 extern void *g_vtbl_0110F978[];
 extern void *g_vtbl_0110F97C[];
-extern void *g_vtbl_0110F980[];
+// ?g_vtbl_0110F980@@3PAPAXA: use recorded owner ??_7EmissionVolumeInfo@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7EmissionVolumeInfo@FXParticleSystem@@6B@")[];
 // Gate debt ?g_vtbl_0110F9AC@@3PAPAXA: use the owner recorded at 0x0110F9AC.
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110F9CC@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@
@@ -125,7 +125,8 @@ extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B
 extern void *g_vtbl_0110F9E4[];
 // ?g_vtbl_0110F9E8@@3PAPAXA: use the owner recorded at 0x0110F9E8.
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_0110FA14[];
+// ?g_vtbl_0110FA14@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$06@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$06@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0111098C[];
 extern void *g_vtbl_011109CC[];
 extern "C" void *__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@")[];
@@ -173,7 +174,8 @@ extern void *g_vtbl_01110E8C[];
 extern void *g_vtbl_01110E90[];
 // ?g_vtbl_01110EA4@@3PAPAXA: use the owner recorded at 0x01110EA4.
 extern "C" void *__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_01110EB8[];
+// ?g_vtbl_01110EB8@@3PAPAXA: use the owner recorded at 0x01110EB8.
+extern "C" void *__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B?$CategoryModuleInfo@$05@1@@")[];
 extern "C" void *__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@")[];
 extern "C" char DefaultModuleTemplate1Concrete_vtbl8;
 extern "C" char DefaultModuleTemplate1Concrete_vtbl4;
@@ -225,7 +227,8 @@ extern "C" char CylinderEmissionVolumeConcrete_vtbl4;
 extern "C" char CylinderEmissionVolumeConcrete_vtbl0;
 // Former ?g_vtbl_01111240@@3PAPAXA: retail 0x01111240 is recorded vtable ??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6B@.
 extern "C" void *__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_01111254[];
+// Former ?g_vtbl_01111254@@3PAPAXA: retail 0x01111254 is recorded vtable ??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseB@@@.
+extern "C" void *__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseB@@@")[];
 // Former ?g_vtbl_01111258@@3PAPAXA: retail 0x01111258 is recorded vtable ??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseA@@@.
 extern "C" void *__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseA@@@")[];
 extern "C" char RenderObjectDrawConcrete_vtbl8;
@@ -709,7 +712,7 @@ public:
     {
         volatile unsigned int *vtableSlots = (unsigned int *)this;
         vtableSlots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
-        vtableSlots[2] = (unsigned int)g_vtbl_0110F980;
+        vtableSlots[2] = (unsigned int)__identifier("??_7EmissionVolumeInfo@FXParticleSystem@@6B@");
         *((volatile unsigned char *)this + 0x0c) = 0;
         vtableSlots[0] = (unsigned int)g_vtbl_0111117C;
         vtableSlots[1] = (unsigned int)g_vtbl_01111178;
@@ -1250,7 +1253,7 @@ public:
     {
         ((LightningEmissionTemplateCtorShim *)this)->construct();
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseA@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01111254;
+        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseB@@@");
         *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6B@");
     }
 
@@ -1415,7 +1418,7 @@ public:
     {
         ((LightningDrawTemplateCtorShim *)this)->construct();
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@");
-        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01110EB8;
+        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B?$CategoryModuleInfo@$05@1@@");
         *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B@");
     }
 
@@ -1775,7 +1778,7 @@ extern const char g_01113A70[] = "HalfSize";
 extern const char g_01113C94[];
 // Former ?g_0109F2A4@FXParticleSystem@@3QBDB: retail 0x0109F2A4 is "Offset".
 extern const char g_010FA90C[];
-extern const char g_0109C33C[];
+// Former ?g_0109C33C@FXParticleSystem@@3QBDB: retail 0x0109C33C is "Normal".
 extern const char g_01114440[];
 // ?g_01114434@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
 extern const char g_01114434[] = "EventFX";
@@ -1798,7 +1801,7 @@ extern const char g_011142E4[] = "Phase1";
 // ?g_010F19FC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_010F19FC[] = "Amplitude2";
 extern const char g_011142D4[];
-extern const char g_011142CC[];
+// Former ?g_011142CC@FXParticleSystem@@3QBDB: retail 0x011142CC is "Phase2".
 // ?g_011142BC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_011142BC[] = "Amplitude3";
 extern const char g_011142AC[];
@@ -1826,7 +1829,7 @@ extern const char g_011137F8[];
 extern const char g_011137EC[];
 // ?g_011137D0@FXParticleSystem@@3QBDB: 23 retail bytes including the NUL.
 extern const char g_011137D0[] = "SinkOnTerrainCollision";
-extern const char g_010A6938[];
+// Former ?g_010A6938@FXParticleSystem@@3QBDB: retail 0x010A6938 is "SinkRate".
 // Former ?g_01114A90@FXParticleSystem@@3QBDB: retail 0x01114A90 is "StartSizeX".
 // Former ?g_01114A80@FXParticleSystem@@3QBDB: retail 0x01114A80 is "StartSizeY".
 // Former ?g_01114A70@FXParticleSystem@@3QBDB: retail 0x01114A70 is "StartSizeZ".
@@ -3032,7 +3035,7 @@ PointEmissionVolumeModuleTemplate *ConcreteModuleClass<PointEmissionVolumeModule
         (PointEmissionVolumeModuleTemplate *)::operator new(0x10);
     if (result != 0) {
         *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
-        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_0110F980;
+        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)__identifier("??_7EmissionVolumeInfo@FXParticleSystem@@6B@");
         *((volatile unsigned char *)result + 0x0c) = 0;
         *(volatile unsigned int *)result = (unsigned int)g_vtbl_0111117C;
         *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_01111178;
@@ -3307,7 +3310,7 @@ ConcreteModuleTemplate<DefaultModuleTag<7> >::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110FA14;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$06@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3736,7 +3739,7 @@ ConcreteModuleTemplate<ModuleTag<5, LIGHTNING_EMISSION_MODULE_KEY, LIGHTNING_EMI
 {
     ((LightningEmissionTemplateCtorShim *)this)->construct();
     *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseA@@@");
-    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01111254;
+    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6BLEMCT_VtblBaseB@@@");
     *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISSION_MODULE_NAME@2@3QBDBVLightningEmissionModule@2@VLightningEmissionModuleTemplate@2@V?$DefaultParticleModule@$04@2@V?$DefaultParticleModuleTemplate@$04@2@@FXParticleSystem@@@FXParticleSystem@@6B@");
 }
 
@@ -3959,7 +3962,7 @@ ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MO
 {
     ((LightningDrawTemplateCopyCtorShim *)this)->construct(&that);
     *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@");
-    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01110EB8;
+    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B?$CategoryModuleInfo@$05@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B@");
 }
 
@@ -3968,7 +3971,7 @@ ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MO
 {
     ((LightningDrawTemplateCtorShim *)this)->construct();
     *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@");
-    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01110EB8;
+    *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B?$CategoryModuleInfo@$05@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B@");
 }
 
@@ -4282,7 +4285,7 @@ ConcreteModuleTemplate<PointEmissionVolumeModuleTag>::ConcreteModuleTemplate()
 {
 	volatile unsigned int *vtableSlots = (unsigned int *)this;
 	vtableSlots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
-	vtableSlots[2] = (unsigned int)g_vtbl_0110F980;
+	vtableSlots[2] = (unsigned int)__identifier("??_7EmissionVolumeInfo@FXParticleSystem@@6B@");
 	*((volatile unsigned char *)this + 0x0c) = 0;
 	vtableSlots[0] = (unsigned int)g_vtbl_0111117C;
 	vtableSlots[1] = (unsigned int)g_vtbl_01111178;
@@ -9065,7 +9068,7 @@ void CylindricalEmissionVelocityModuleTemplate::writeINI(File &file, unsigned in
 
     U1Pair *normal = (U1Pair *)((unsigned char *)this + 0x18);
     if (normal->m_x != 0.0f || normal->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_0109C33C, normal);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"Normal", normal);
 
     {
         writeStreamText(file,
@@ -9178,7 +9181,7 @@ void LightningEmissionModuleTemplate::writeINI(File &file, unsigned int flags) c
 
     U1Pair *phase2 = (U1Pair *)((unsigned char *)this + 0x64);
     if (phase2->m_x != 0.0f || phase2->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_011142CC, phase2);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"Phase2", phase2);
 
     U1Pair *amplitude3 = (U1Pair *)((unsigned char *)this + 0x70);
     if (amplitude3->m_x != 0.0f || amplitude3->m_y != 0.0f)
@@ -10960,7 +10963,7 @@ void RenderObjectDrawModuleTemplate::writeINI(File &file, unsigned int flags) co
 
     float *sinkRate = (float *)((unsigned char *)this + 0x10);
     if (*sinkRate != 0.0f)
-        u4Next005F5120((INI *)&stream, (void *)flags, ( void *)g_010A6938, sinkRate);
+        u4Next005F5120((INI *)&stream, (void *)flags, ( void *)"SinkRate", sinkRate);
 
     {
         writeStreamText(file,
