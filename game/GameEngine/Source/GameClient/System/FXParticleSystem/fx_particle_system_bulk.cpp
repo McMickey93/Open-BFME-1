@@ -81,20 +81,20 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01111394@@3PAPAXA=_RenderObjectDrawConcrete_vtbl4")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111398@@3PAPAXA=_RenderObjectDrawConcrete_vtbl0")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111D9C@@3PAPAXA=??_7TailX005EB6B0@@6B@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111DB0@@3PAPAXA=??_7MidX005EB6B0@@6B@")
+// Gate debt ?g_vtbl_01111DB0@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111DB4@@3PAPAXA=??_7GenX005EB6B0@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111DD8@@3PAPAXA=??_7TailX005EB830@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111DEC@@3PAPAXA=??_7MidX005EB830@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111DF0@@3PAPAXA=??_7GenX005EB830@@6B@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111E14@@3PAPAXA=??_7TailX005EB930@@6B@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111E28@@3PAPAXA=??_7MidX005EB930@@6B@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111E2C@@3PAPAXA=??_7GenX005EB930@@6B@")
+// Gate debt ?g_vtbl_01111E14@@3PAPAXA: reference the recorded retail vtable directly.
+// Gate debt ?g_vtbl_01111E28@@3PAPAXA: reference the recorded retail vtable directly.
+// Gate debt ?g_vtbl_01111E2C@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E50@@3PAPAXA=??_7TailX005EBA30@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E64@@3PAPAXA=??_7MidX005EBA30@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E68@@3PAPAXA=??_7GenX005EBA30@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111EC8@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot2@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111EDC@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot1@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111EE0@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot0@@@")
+// Gate debt ?g_vtbl_01111EE0@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FB0@@3PAPAXA=??_7BFMEDistLODClass@@6BRefCountClass@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FC4@@3PAPAXA=??_7BFMEDistLODClass@@6BPersistClass@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FC8@@3PAPAXA=??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")
@@ -248,20 +248,20 @@ extern void *g_vtbl_01111438[];
 extern void *g_vtbl_0111144C[];
 extern void *g_vtbl_01111450[];
 extern void *g_vtbl_01111D9C[];
-extern void *g_vtbl_01111DB0[];
+extern "C" void *__identifier("??_7MidX005EB6B0@@6B@")[];
 extern void *g_vtbl_01111DB4[];
 extern void *g_vtbl_01111DD8[];
 extern void *g_vtbl_01111DEC[];
 extern void *g_vtbl_01111DF0[];
-extern void *g_vtbl_01111E14[];
-extern void *g_vtbl_01111E28[];
-extern void *g_vtbl_01111E2C[];
+extern "C" void *__identifier("??_7TailX005EB930@@6B@")[];
+extern "C" void *__identifier("??_7MidX005EB930@@6B@")[];
+extern "C" void *__identifier("??_7GenX005EB930@@6B@")[];
 extern void *g_vtbl_01111E50[];
 extern void *g_vtbl_01111E64[];
 extern void *g_vtbl_01111E68[];
 extern void *g_vtbl_01111EC8[];
 extern void *g_vtbl_01111EDC[];
-extern void *g_vtbl_01111EE0[];
+extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01111FB0[];
 extern void *g_vtbl_01111FC4[];
 extern void *g_vtbl_01111FC8[];
@@ -845,7 +845,7 @@ public:
     {
         ((DefaultModule6CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111DB4;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111DB0;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7MidX005EB6B0@@6B@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111D9C;
     }
 private:
@@ -1385,7 +1385,7 @@ public:
     __forceinline LightningDrawModuleAllocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((LightningDrawModuleCtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111EE0;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111EDC;
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111EC8;
     }
@@ -1433,9 +1433,9 @@ public:
     __forceinline QuadDrawModuleAllocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((QuadDrawModuleCtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111E2C;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111E28;
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111E14;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7GenX005EB930@@6B@");
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7MidX005EB930@@6B@");
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7TailX005EB930@@6B@");
     }
 
 private:
