@@ -1,15 +1,16 @@
-name: Bounded native GameEngine constructor diagnostics
+name: Bank completed native constructor evidence
 on:
   push:
     branches: ['contributor/native-cpp-20261025']
     paths: ['.github/workflows/contributor-ctor-20261025.yml']
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: mcmickey93-bfme1-constructor-diagnostics
   cancel-in-progress: false
 jobs:
-  probe:
+  bank:
     if: github.repository == 'McMickey93/Open-BFME-1'
     runs-on: windows-2022
     timeout-minutes: 35
@@ -23,9 +24,9 @@ jobs:
       PY_PYTHON3: '3.12'
       PYTHONUTF8: '1'
       PYTHONUNBUFFERED: '1'
-      BFME_CLAIM_OWNER: github:McMickey93:bfme1:named-20261025
+      BFME_MODEL: gpt-6
     steps:
-      - name: Check out reviewed official source without credentials
+      - name: Check out the immutable measured official revision
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: Open-BFME/Open-BFME-1
@@ -39,151 +40,227 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: '3.12'
-      - name: Validate ledger and current official reference
+      - name: Prepare the normal evidence commit hooks
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 constructor-diagnostics
+          require_python3 constructor-handoff
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          git switch -c contributor/native-constructor-handoff
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Fence the real upstream claim and run bounded private probes
+          bash tools/setup_hooks.sh
+          git config user.name McMickey93
+          git config user.email 347452154+McMickey93@users.noreply.github.com
+      - name: Verify the completed artifact and bank evidence through normal hooks
         shell: bash
         working-directory: source
+        env:
+          BFME_READ_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 constructor-diagnostics
+          require_python3 constructor-handoff
           python3 -u - <<'PY'
-          import csv, hashlib, json, os, re, shutil, subprocess, sys, time, traceback
-          from pathlib import Path
+          import csv, hashlib, io, json, os, shutil, stat, subprocess, sys, time, traceback, urllib.error, urllib.request, zipfile
+          from pathlib import Path, PurePosixPath
           root=Path.cwd().resolve()
-          out=root/"build"/"contributor-ctor-20261025"
+          out=root/"build"/"constructor-handoff-20261025"
           out.mkdir(parents=True,exist_ok=True)
-          sys.path.insert(0,str(root/"tools"))
-          import claims
-          claim_rva=0x00078640
-          claim_token="6653202a3499b16f62326091f6226391f2be1824"
-          owner="github:McMickey93:bfme1:named-20261025"
-          lease="40c512e26ea6439fa2669a9ee2d12aca"
-          result={"status":"starting","repository":os.environ["GITHUB_REPOSITORY"],"run_id":os.environ["GITHUB_RUN_ID"],"workflow_sha":os.environ["GITHUB_SHA"],"commands":[],"claims":[],"variants":[],"qualification":False,"published":False,"donor":{"repository":"Open-BFME/Open-BFME-2","commit":"9647dd2737c4e67dd0e978ebdc158bf00c60ff07","path":"Code/GameEngine/Source/Common/GameEngineInit.cpp","reviewed_blob":"6234f6e6f3876eb23894005e60b898a013ebec5d","hypothesis":"Constant equal-arm loop condition and ordinary copied-value lifetime; no volatile self-copy without BFME1 retail witness"}}
-          def save():
-              (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
+          result={"status":"starting","base":base,"commands":[],"published":False,"normal_commit_passed":False,"original_run":40236459746,"original_artifact":12615815140,"original_artifact_sha256":"4d7a0bca3f6aa2d0fc75ee43f75855bf90f8819d708e060e9c66f9fc42920c39"}
+          def digest(b): return hashlib.sha256(b).hexdigest()
+          def save(): (out/"handoff-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
           def run(label,args,required=True):
               cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-              raw=cp.stdout
-              (out/(label+".log")).write_bytes(raw)
-              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(raw).hexdigest()})
+              (out/(label+".log")).write_bytes(cp.stdout)
+              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":digest(cp.stdout)})
               save()
               print(">>>",label,"exit",cp.returncode,flush=True)
-              print(raw.decode("utf-8","replace"),flush=True)
+              print(cp.stdout.decode("utf-8","replace"),flush=True)
               if required and cp.returncode: raise RuntimeError(label+" failed")
-              return raw.decode("utf-8","replace")
-          def fence(label):
-              if not claims.fetch(): raise RuntimeError("Cannot fetch actual upstream claims")
-              entry=claims._read_local().get(claim_rva)
-              if entry is None: raise RuntimeError("Actual upstream claim missing")
-              token,info=entry
-              if token!=claim_token or info.get("owner")!=owner or info.get("lease",token)!=lease or info.get("expires",0)<=time.time() or not claims.holds(claim_rva,claim_token):
-                  raise RuntimeError("Claim changed/expired: stop before scratch edit or experiment")
-              result["claims"].append({"at":label,"token":token,"record":info,"checked_at":time.time()})
-              save()
-          def read_tracked(path,expected):
-              blob=subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
-              if blob!=expected: raise RuntimeError("Reviewed input blob changed: "+path)
-              raw=(root/path).read_bytes()
-              result.setdefault("inputs",[]).append({"path":path,"blob":blob,"sha256":hashlib.sha256(raw).hexdigest()})
-              return raw
+              return cp.stdout
+          def blob(path): return subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
           try:
-              result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
-              result["origin_master"]=subprocess.check_output(["git","rev-parse","origin/master"],cwd=root).decode().strip()
-              read_tracked("AGENTS.md","06b755567bb147dfee3a89f70f7bbcd38410b5b4")
-              preferred=read_tracked("targets/game/reverse/attempts/0x00078640.cpp","26d876d725a4a7ff578c352091485f85b7ee72e3").decode("utf-8")
-              hist_path="targets/game/reverse/attempt_history/0x00078640/fd3e1d3856193063ebe2f730b4a18c8175362ebdd57831007240d61691f1d507.json"
-              history=json.loads((root/hist_path).read_text(encoding="utf-8"))
-              latest=history["source"]
-              if hashlib.sha256(latest.encode("utf-8")).hexdigest()!=history["sha256"]: raise RuntimeError("Latest preserved source digest changed")
-              read_tracked("game/GameEngine/Source/Common/BigObfHookWrappers.cpp","636558780b6efa50217650fab9bf31dea4cd7b02")
-              fence("before-context")
-              run("callee-contracts",[sys.executable,"tools/callees.py","0x00078640","502"])
-              run("owner-unclaimed-definitions",[sys.executable,"tools/find_declared_unmatched.py","game/GameEngine/Source/Common/GameEngine.cpp"],False)
-              run("gameengine-vtables",[sys.executable,"tools/vtable_lookup.py","--slots","40","0x01075BC8","0x0111C9A8"],False)
-              selected=[]
-              with (root/"targets/game/reverse/functions.csv").open(newline="",encoding="utf-8") as fh:
-                  for row in csv.DictReader(fh):
-                      try: rva=int(row["target_rva"],16)
-                      except (ValueError,KeyError): continue
-                      if rva==claim_rva or row.get("source") in ("game/GameEngine/Source/Common/GameEngine.cpp","game/GameEngine/Source/Common/BigObfHookWrappers.cpp"):
-                          selected.append(row)
-              (out/"selected-owner-rows.json").write_text(json.dumps(selected,indent=2)+"\n",encoding="utf-8")
-              entries=[]
-              with (root/"targets/game/reverse/re_attempts.log").open(encoding="utf-8",errors="replace") as fh:
-                  for line in fh:
-                      if re.search("0x00078640",line,re.I): entries.append(line)
-              (out/"prior-target-attempts.log").write_text("".join(entries),encoding="utf-8")
-              print("PRIOR TARGET HISTORY\n"+"".join(entries),flush=True)
-              import build, capstone
-              image=Path(build.EXE).read_bytes()
-              sec=build.pe_sections(image)
-              offset=build.rva_to_file_offset(sec,claim_rva)
-              retail=image[offset:offset+502]
-              md=capstone.Cs(capstone.CS_ARCH_X86,capstone.CS_MODE_32)
-              (out/"retail-502-disassembly.txt").write_text("\n".join(f"+{i.address-claim_rva:04X} {i.bytes.hex()} {i.mnemonic} {i.op_str}" for i in md.disasm(retail,claim_rva))+"\n",encoding="utf-8")
-              (out/"retail-502.hex.txt").write_text(retail.hex()+"\n",encoding="ascii")
-              controls=[("00-preferred",preferred,"Original preferred bank: not promoted"),("01-latest-495",latest,"Preserved 495-byte bank: measured again, not promoted")]
-              needle="for (EngineLoopValue00078640 value(0); value != bound; value += step)"
-              if latest.count(needle)!=1: raise RuntimeError("Latest source loop context changed")
-              equal=latest.replace(needle,"for (EngineLoopValue00078640 value(0); (1 ? (value != bound) : (value != bound)); value += step)")
-              class_anchor="public:\r\n __forceinline EngineLoopValue00078640(int kind,int value,int raw)"
-              if class_anchor not in latest: raise RuntimeError("Latest source class context changed")
-              copy=latest.replace(class_anchor,"public:\r\n __forceinline EngineLoopValue00078640(const EngineLoopValue00078640& other) { m_value=other.m_value; }\r\n __forceinline EngineLoopValue00078640(int kind,int value,int raw)")
-              copy=copy.replace(needle,"EngineLoopValue00078640 first(0);\r\n\tfor (EngineLoopValue00078640 value(first); value != bound; value += step)")
-              copy_equal=copy.replace("value(first); value != bound;","value(first); (1 ? (value != bound) : (value != bound));")
-              loopblock=needle+"\r\n\t{ m_childProcesses[(int)value]=0; }"
-              if latest.count(loopblock)!=1: raise RuntimeError("Latest source loop block changed")
-              scope=latest.replace(loopblock,"{\r\n\t\tEngineLoopValue00078640 value(0);\r\n\t\twhile ((1 ? (value != bound) : (value != bound)))\r\n\t\t{\r\n\t\t\tm_childProcesses[(int)value]=0;\r\n\t\t\tvalue += step;\r\n\t\t}\r\n\t}")
-              trials=controls+[("02-equal-arm",equal,"Only equivalent constant equal-arm condition; BFME2 9647dd pivot"),("03-copy-lifetime",copy,"Ordinary first-slot value copy with donor-like copy ctor; no volatile store"),("04-copy-equal-arm",copy_equal,"Combine ordinary copied-value lifetime and equal-arm condition"),("05-while-scope",scope,"Equivalent loop with value scoped before while; same three values and calls")]
-              symbol="??0GameEngine@@QAE@XZ"
-              for label,source,hypothesis in trials:
-                  fence("before-source-"+label)
-                  target=out/(label+".cpp")
-                  target.write_bytes(source.encode("utf-8"))
-                  result["variants"].append({"name":label,"path":target.relative_to(root).as_posix(),"hypothesis":hypothesis,"sha256":hashlib.sha256(target.read_bytes()).hexdigest()})
-                  save()
-                  fence("before-probe-"+label)
-                  text=run("probe-"+label,[sys.executable,"tools/probe.py",str(target),symbol,"0x00078640","--size","502","--all","--shape"],False)
-                  result["variants"][-1]["diagnostic_exact"]="result   EXACT (modulo relocation slots)" in text
-                  result["variants"][-1]["summary"]=[l for l in text.splitlines() if l.startswith(("compile ","size ","diffs ","result ","shape "))]
-                  save()
-                  if result["variants"][-1]["diagnostic_exact"]:
-                      result["status"]="diagnostic-exact-requires-owner-and-vtable-closure"
-                      print("DIAGNOSTIC EXACT ONLY: no admission, source edit, ledger edit or qualification",flush=True)
-                      break
-              fence("after-final-experiment")
-              run("tracked-source-integrity",["git","diff","--exit-code"])
-              result["status"]=result.get("status") if result.get("status")!="starting" else "trials-complete-no-admission"
-          except BaseException as err:
-              result["status"]="failed"
-              result["error"]=str(err)
-              (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
-              raise
-          finally:
-              run("session-progress",[sys.executable,"tools/progress.py","origin/master"],False)
-              run("tracked-tree-final",["git","status","--porcelain"],False)
+              if base!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Wrong measured source pin")
+              if blob("AGENTS.md")!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
+              preferred="targets/game/reverse/attempts/0x00078640.cpp"
+              if blob(preferred)!="26d876d725a4a7ff578c352091485f85b7ee72e3": raise RuntimeError("Preferred bank changed")
+              before={p:blob(p) for p in (preferred,"targets/game/reverse/functions.csv","targets/game/reverse/symbols.csv","targets/game/reverse/data_rows.csv")}
+              run("initial-clean-tree",["git","diff","--exit-code"])
+              class NoRedirect(urllib.request.HTTPRedirectHandler):
+                  def redirect_request(self,req,fp,code,msg,headers,newurl): return None
+              api="https://api.github.com/repos/McMickey93/Open-BFME-1/actions/artifacts/12615815140/zip"
+              headers={"Authorization":"Bearer "+os.environ["BFME_READ_TOKEN"],"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"bfme1-native-evidence-handoff"}
+              request=urllib.request.Request(api,headers=headers)
+              try:
+                  response=urllib.request.build_opener(NoRedirect).open(request,timeout=60)
+              except urllib.error.HTTPError as error:
+                  if error.code not in (301,302,303,307,308): raise
+                  location=error.headers.get("Location","")
+                  if not location.startswith("https://"): raise RuntimeError("Unsafe artifact redirect")
+                  # Never forward the GitHub read credential to the signed blob URL.
+                  response=urllib.request.urlopen(location,timeout=60)
+              with response:
+                  raw=response.read(8*1024*1024+1)
+              if len(raw)>8*1024*1024 or digest(raw)!=result["original_artifact_sha256"]: raise RuntimeError("Artifact archive digest mismatch")
+              (out/"reviewed-original-artifact.zip").write_bytes(raw)
+              imported=out/"original-evidence"
+              imported.mkdir()
+              with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                  if len(archive.infolist())>1000 or sum(i.file_size for i in archive.infolist())>20*1024*1024: raise RuntimeError("Unexpected artifact extent")
+                  for info in archive.infolist():
+                      name=PurePosixPath(info.filename)
+                      if name.is_absolute() or any(p in (".","..") for p in name.parts) or "\\" in info.filename or ":" in info.filename or stat.S_ISLNK(info.external_attr>>16): raise RuntimeError("Unsafe artifact member")
+                  archive.extractall(imported)
+              original=imported/"contributor-ctor-20261025"
+              native=json.loads((original/"result.json").read_text(encoding="utf-8"))
+              if native.get("status")!="trials-complete-no-admission" or native.get("source_sha")!=base or native.get("workflow_sha")!="ecca8d4aed68616415e80279ad4f18fb123d35cd" or native.get("run_id")!="40236459746": raise RuntimeError("Original native result is not the reviewed experiment")
+              expected=["00-preferred","01-latest-495","02-equal-arm","03-copy-lifetime","04-copy-equal-arm","05-while-scope"]
+              variants=native.get("variants",[])
+              if [v["name"] for v in variants]!=expected or any(v.get("diagnostic_exact") for v in variants): raise RuntimeError("Unexpected native variant set")
+              for v in variants:
+                  source=original/(v["name"]+".cpp")
+                  if digest(source.read_bytes())!=v["sha256"]: raise RuntimeError("Native source hash changed")
+              # Artifact is data only: no downloaded code is executed and no body is recompiled.
+              folder=root/"targets/game/reverse/attempt_support/00078640-donor-context-20261025"
+              if folder.exists(): raise RuntimeError("Handoff already exists; review it instead of overwriting")
+              folder.mkdir(parents=True)
+              rows="\n".join("| "+v["name"]+" | "+("241" if v["name"]=="00-preferred" else "495")+" | "+("182" if v["name"]=="00-preferred" else "341")+" | "+v["sha256"]+" |" for v in variants)
+              report="""# 0x00078640: bounded donor-context experiment
+          
+          This is a blocked compiler experiment, not a C++ recovery. No production
+          source, header, function row, data row or preferred bank changed. The complete
+          retail boundary remains 502 bytes: RET at +0x1F5, INT3 at +0x1F6.
+          
+          ## Immutable inputs and provenance
+          
+          Official measured revision: f633d0e97a953289405438821be0c09b28527bbb.
+          Native Windows controller: McMickey93/Open-BFME-1
+          ecca8d4aed68616415e80279ad4f18fb123d35cd,
+          .github/workflows/contributor-ctor-20261025.yml.
+          Completed run: 40236459746, job 121298990228.
+          Artifact: 12615815140; archive SHA256
+          4d7a0bca3f6aa2d0fc75ee43f75855bf90f8819d708e060e9c66f9fc42920c39.
+          The banking run verified that archive before copying this native-result.json.
+          It did not rerun unchanged compiler trials or execute downloaded artifact code.
+          
+          The preferred bank is targets/game/reverse/attempts/0x00078640.cpp
+          (blob 26d876d725a4a7ff578c352091485f85b7ee72e3).
+          The complete 495-byte alternative is the source stored in
+          targets/game/reverse/attempt_history/0x00078640/fd3e1d3856193063ebe2f730b4a18c8175362ebdd57831007240d61691f1d507.json.
+          Its SHA256 is fd3e1d3856193063ebe2f730b4a18c8175362ebdd57831007240d61691f1d507.
+          The immutable controller contains each exact source transformation; the hashes
+          below and native-result.json bind all six measured inputs.
+          
+          BFME 2 donor commit 9647dd2737c4e67dd0e978ebdc158bf00c60ff07 recovered its
+          195-byte GameEngine constructor using a constant equal-arm loop condition
+          and a retail-witnessed first-slot self-copy. Reviewed donor path:
+          Code/GameEngine/Source/Common/GameEngineInit.cpp (current reviewed blob
+          6234f6e6f3876eb23894005e60b898a013ebec5d).
+          That source is a compiler-context lead, not BFME 1 layout or byte evidence.
+          BFME 2's base is 12 bytes and its operators remain out of line; BFME 1's
+          eight-byte base and visible hook-wrapper context were retained. No donor
+          header, address, timing global or volatile self-copy was imported.
+          
+          ## New question and measured result
+          
+          Earlier attempts already tried local sizes, operator-temporary forms, copy
+          rotations, scalar volatility, initializers and flag sweeps. This finite set
+          tested the later donor's equivalent equal-arm condition, ordinary copied
+          first-value lifetime, their combination, and an explicit while-loop scope.
+          Compiler flags and the native visible Obf constructors stayed unchanged.
+          The copy variants copy only the live value word; no padding or volatile
+          store was added. These are controls for temporary-origin/lifetime effects.
+          
+          | Input | Emitted bytes / 502 | Masked positional differences | Source SHA256 |
+          |---|---:|---:|---|
+          """+rows+"""
+          
+          The original preferred bank emits 241 bytes with shape 0.405.
+          The complete alternative and all four new variants emit 495 bytes, with
+          341 masked positional differences and normalized instruction shape 0.973.
+          All four new variants reproduce the complete alternative's instruction and
+          relocation result. These are probe diagnostics, not canonical finish_measure
+          scores and not relocation-aware admission.
+          
+          The remaining differences include frame 0x80 versus retail 0x8C, saved-this
+          home +0x24 versus +0x38, EBX versus EBP for zero, three byte stores using BL
+          instead of immediate zero, and a missing hook-pointer move. Twenty-two
+          relocation sites are shifted by the layout. Earlier 13-byte owner padding
+          already reproduced the frame but not the body; do not repeat that trial.
+          
+          ## Identity and integration prerequisites
+          
+          The matched BfmeThingTGE constructor calls this body through ILT 0x00039C2F.
+          The native SubsystemInterface constructor call and installed GameEngine
+          table 0x01075BC8 support GameEngine::GameEngine. The served
+          bfmeBaseTGE spelling identifies a route, not a second body or proven method.
+          Current home: game/GameEngine/Source/Common/GameEngine.cpp.
+          
+          The current defined-function checker passes for that home (677 matched
+          rows, seven marked unclaimed definitions); the file is not reported frozen.
+          Native vtable_lookup reports 33 slots in both 0x01075BC8 and the derived
+          0x0111C9A8 table. The base has purecall at slots 21, 22 and 24 through 30;
+          the derived table fills those slots. BfmeConv1313.cpp owns the derived
+          132-byte table under its existing data spelling. No matching 33-slot base
+          provider was established for the diagnostic one-slot GameEngine view.
+          A parent-byte match alone would therefore still require native vtable,
+          provider and consumer reconciliation before production admission.
+          
+          Original upstream claim 6653202a3499b16f62326091f6226391f2be1824,
+          lease 40c512e26ea6439fa2669a9ee2d12aca, owner
+          github:McMickey93:bfme1:named-20261025 was fenced before every source/probe.
+          Root released it after measurement through expired marker
+          ba34749547c44039613a9d77f4d1c195a98849b2. This handoff edits evidence only.
+          
+          The original check_csv, final tracked-tree checks and
+          tools/progress.py origin/master passed; C++ exact delta was +0.
+          No linking or fresh census gain is claimed. Reopening needs distinct native
+          source/lifetime, ABI or compiler-context evidence. Do not repeat these four
+          equivalent-source variants unchanged. The original banks remain intact.
+          """
+              (folder/"readme.md").write_text(report,encoding="utf-8",newline="\n")
+              shutil.copyfile(original/"result.json",folder/"native-result.json")
+              evidence="Complete502B RET+0x1F5 INT3+0x1F6 retained. Native preferred241B and complete495B controls; BFME2 donor9647dd equal-arm, ordinary copy lifetime, combined and while scope all remain495B/341 masked differences and shape0.973. No source or bank replaced. Evidence "+folder.relative_to(root).as_posix()+"/readme.md t=15min model=gpt-6 blocker=stack-slot/frame-and-register-allocation"
+              run("record-blocked",[sys.executable,"tools/re_log.py","record","??0GameEngine@@QAE@XZ","0x00078640","502","blocked",evidence])
+              paths=[(folder/"readme.md").relative_to(root).as_posix(),(folder/"native-result.json").relative_to(root).as_posix(),"targets/game/reverse/re_attempts.log"]
+              if any(blob(p)!=b for p,b in before.items()): raise RuntimeError("Production ledger or preferred bank changed")
+              run("check-csv-after-evidence",[sys.executable,"tools/check_csv.py"])
+              run("stage-explicit-evidence",["git","add","--",*paths])
+              message="[BFME 2 donor] Record the native GameEngine constructor context result\n\nPreserve two bank controls and four bounded donor-context compiler trials. Every new variant remains the same 495-byte non-match against the 502-byte retail body. Keep production source, ledgers and the preferred bank unchanged; no C++ exact bytes gained.\n"
+              (out/"message.txt").write_text(message,encoding="utf-8",newline="\n")
+              run("normal-git-commit",["git","commit","--file",str(out/"message.txt")])
+              commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
+              tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],cwd=root).decode().strip()
+              actual=subprocess.check_output(["git","diff","--name-only",base,commit],cwd=root).decode().splitlines()
+              if sorted(actual)!=sorted(paths): raise RuntimeError("Commit scope exceeds evidence")
+              run("clean-final-tree",["git","diff","--exit-code"])
+              run("session-progress",[sys.executable,"tools/progress.py","origin/master"])
+              run("parent-progress",[sys.executable,"tools/progress.py",base])
+              run("export-bundle",["git","bundle","create",str(out/"result.bundle"),base+"..HEAD"])
+              run("verify-bundle",["git","bundle","verify",str(out/"result.bundle")])
+              bundle_sha=digest((out/"result.bundle").read_bytes())
+              manifest={"base":base,"commit":commit,"tree":tree,"paths":paths,"normal_commit_passed":True,"published":False,"bundle_sha256":bundle_sha,"original_run":40236459746,"original_artifact":12615815140,"original_artifact_sha256":result["original_artifact_sha256"],"source_or_ledger_changed":False,"cpp_exact_delta":0}
+              (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+              result.update(status="banked-unpublished",normal_commit_passed=True,manifest=manifest)
               save()
+              print("NATIVE_CTOR_HANDOFF_MANIFEST "+json.dumps(manifest),flush=True)
+          except BaseException as err:
+              result.update(status="failed",error=str(err))
+              (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
+              save()
+              raise
           
           PY
-      - name: Preserve source variants, native objects and receipts
+      - name: Preserve the unpublished normal commit and diagnostics
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: bfme1-ctor-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            source/build/contributor-ctor-20261025/
-            source/build/experiments/
-            source/build/experiments.sqlite
+          name: bfme1-ctor-handoff-${{ github.run_id }}-${{ github.run_attempt }}
+          path: source/build/constructor-handoff-20261025/
           if-no-files-found: warn
           retention-days: 90
           compression-level: 9
