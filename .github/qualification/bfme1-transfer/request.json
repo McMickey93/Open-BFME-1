@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "enabled": false,
-  "qualification_run_id": 0,
-  "qualification_run_attempt": 0,
-  "qualification_head_sha": "",
-  "artifact_id": 0,
-  "artifact_sha256": "",
-  "expected_base": "",
-  "expected_commit": "",
-  "expected_tree": "",
-  "qualification_directory": ""
+  "enabled": true,
+  "qualification_run_id": 40190782271,
+  "qualification_run_attempt": 1,
+  "qualification_head_sha": "f208ece4b02c794c6e2720e040d609c128abef4a",
+  "artifact_id": 12597726406,
+  "artifact_sha256": "90b3f323a271356df5af8a04fba4ff3f9734b2ea72576e34c639f66849461e1a",
+  "expected_base": "3b375d6e2844dbceda9f4e2fd50e88bf77f0703c",
+  "expected_commit": "40578694708ef0982c748539b069d50d1662ddbe",
+  "expected_tree": "37fc185be61a4d28d014d71a0e47363082b9c5b0",
+  "qualification_directory": "qualification-0"
 }
