@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Fence claim and test evidenced early object-mask context
+      - name: Verify native mask provider and measure its caller visibility
         working-directory: source
         shell: bash
         run: |
@@ -82,7 +82,7 @@ jobs:
                       print('TARGET_REPORT '+str(path),flush=True)
                       print(text,flush=True)
           assert [p.as_posix() for p in reports] == ['targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md'], 'New target reports require review'
-          assert subprocess.check_output(['git','hash-object',str(reports[0])],text=True).strip() == 'cb20531adcdfc4a09e9907dba0299b84e3b0a15c', 'Reviewed identity report changed'
+          assert subprocess.check_output(['git','hash-object',str(reports[0])],text=True).strip() == 'cb20531adcdfc4a09e9907dba0299b84e3b0a15c'
           p=subprocess.run([sys.executable,'tools/probe.py','targets/game/reverse/attempts/0x001edca0.cpp','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--all','--shape'],capture_output=True,text=True)
           out=Path('build/contributor_hard_finish_20261025');out.mkdir(parents=True,exist_ok=True)
           (out/'preferred-probe.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
@@ -96,36 +96,49 @@ jobs:
           assert source.count(anchor)==1
           state_expression='(object->m_110.words[6] >> 11) & 1'
           assert source.count(state_expression)==1
-          helpers={
-           'object-mask':('static inline bool testForbidden001EDCA0(const Object *object, const MaskWords001EDCA0 &mask) { return ((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words); }\n','testForbidden001EDCA0(object, mask)'),
-           'mask-object':('static inline bool testForbidden001EDCA0(const MaskWords001EDCA0 &mask, const Object *object) { return ((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words); }\n','testForbidden001EDCA0(mask, object)'),
-           'receiver-words-control':('static inline bool testForbidden001EDCA0(Rva001ED9A0Mask *receiver, const UInt *words) { return receiver->intersects(words); }\n','testForbidden001EDCA0((Rva001ED9A0Mask *)&object->m_110, mask.words)'),
-          }
-          variants={}
-          for name,(helper,replacement) in helpers.items():
-              variants[name]=source.replace(expression,replacement).replace(anchor,helper+'\n'+anchor)
-          state_helper='static inline UInt state001EDCA0(const Object *object) { return (object->m_110.words[6] >> 11) & 1; }\n'
-          variants['object-state']=source.replace(state_expression,'state001EDCA0(object)').replace(anchor,state_helper+'\n'+anchor)
-          variants['object-mask-and-state']=variants['object-mask'].replace(state_expression,'state001EDCA0(object)').replace(anchor,state_helper+'\n'+anchor)
-          variants['mask-object-and-state']=variants['mask-object'].replace(state_expression,'state001EDCA0(object)').replace(anchor,state_helper+'\n'+anchor)
+          
+          # Inspect the existing exact provider before exposing it to the caller.
+          provider=Path('game/GameEngine/Source/Common/Rva001ED9A0MaskIntersection.cpp')
+          assert subprocess.check_output(['git','hash-object',str(provider)],text=True).strip()=='a84c2e5694c2fc123e7b18ea95fd3b4aa502a66b'
+          print('PROVIDER_SOURCE '+provider.read_text(encoding='utf-8'),flush=True)
           import hashlib
+          declaration='class Rva001ED9A0Mask {\npublic:\n    bool intersects(const UInt *);\n};'
+          assert source.count(declaration)==1
+          algorithm='''    MaskWords001EDCA0 result = m_words;
+              for (UInt index = 0; index < 10; ++index) result.words[index] &= mask[index];
+              for (UInt index = 0; index < 10; ++index) {
+                  if (result.words[index] != 0) return true;
+              }
+              return false;'''
+          outline_class='class Rva001ED9A0Mask { public: __declspec(noinline) bool intersects(const UInt *mask); private: MaskWords001EDCA0 m_words; };'
+          outline_definition='bool Rva001ED9A0Mask::intersects(const UInt *mask) {\n'+algorithm+'\n}\n'
+          inline_class='class Rva001ED9A0Mask { public: __declspec(noinline) bool intersects(const UInt *mask) {\n'+algorithm+'\n} private: MaskWords001EDCA0 m_words; };'
+          variants={
+           'visible-mask-outline':source.replace(declaration,outline_class).replace(anchor,outline_definition+'\n'+anchor),
+           'visible-mask-inclass':source.replace(declaration,inline_class),
+          }
+          obj_helper='static inline bool testForbidden001EDCA0(const Object *object, const MaskWords001EDCA0 &mask) { return ((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words); }\n'
+          variants['visible-mask-with-object-helper']=variants['visible-mask-outline'].replace(expression,'testForbidden001EDCA0(object, mask)').replace(anchor,obj_helper+'\n'+anchor)
           summary=[]
-          for name, candidate in variants.items():
+          for name,candidate in variants.items():
               assert claims.holds(rva,token)
               path=out/(name+'.cpp')
               path.write_text(candidate,encoding='utf-8')
               print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
-              p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--shape'],capture_output=True,text=True)
-              log=p.stdout+'\n'+p.stderr
-              (out/(name+'.log')).write_text(log,encoding='utf-8')
-              print(log,flush=True)
-              summary.append({'name':name,'exit':p.returncode,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest()})
-              assert p.returncode==0
-              if 'result   EXACT' in log:
+              item={'name':name,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest()}
+              for suffix,symbol,target in [('provider','?intersects@Rva001ED9A0Mask@@QAE_NPBI@Z','0x001ED9A0'),('caller','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0')]:
+                  p=subprocess.run([sys.executable,'tools/probe.py',str(path),symbol,target,'--shape'],capture_output=True,text=True)
+                  log=p.stdout+'\n'+p.stderr
+                  (out/(name+'-'+suffix+'.log')).write_text(log,encoding='utf-8')
+                  print('TRIAL_SYMBOL '+name+' '+suffix,flush=True);print(log,flush=True)
+                  item[suffix+'_exit']=p.returncode;item[suffix+'_exact']='result   EXACT' in log
+                  assert p.returncode==0
+              summary.append(item)
+              if item['caller_exact']:
                   print('EXACT_CANDIDATE '+name,flush=True)
                   print(candidate,flush=True)
                   break
-          (out/'trials.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
+          (out/'visibility-trials.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
           
           PY
       - name: Measure unchanged baseline
@@ -141,7 +154,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-001edca0-object-context
+          name: bfme1-hard-finish-001edca0-callee-visibility
           path: |
             source/build/contributor_hard_finish_20261025/
             source/build/experiments/
