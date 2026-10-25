@@ -113,6 +113,82 @@ def test_bfme1_body_guard_items(tmp_path):
     assert items[1]["check"] == "dir32" and items[1]["source"].startswith("(git grep")
 
 
+@pytest.mark.parametrize("layout", ["bfme1", "bfme2"])
+@pytest.mark.parametrize("returncode", [0, 1])
+def test_data_owner_pass_test_runs_the_normal_gate(tmp_path, monkeypatch, layout, returncode):
+    rq, rev, src = load(tmp_path, layout, LEDGER, [
+        (("game" if layout == "bfme1" else "Code") + "/Data.cpp",
+         'namespace Keys { extern const char key[] = "Shader3"; }\n')])
+    symbol = "?key@Keys@@3QBDB"
+    source = f"{src}/Data.cpp"
+    (rev / "data_rows.csv").write_text(
+        f"name,source,status\n{symbol},{source},matched\n", newline="\n")
+    if layout == "bfme1":
+        path = rev / "body_guard_baseline.csv"
+        line = f"dir32,0x00401942,{symbol},unowned datum"
+        raw = f"check,target_rva,name,detail\n{line}\n".encode()
+    else:
+        path = rev / "gate_baseline.txt"
+        line = f"dir32 0x00401942 {symbol}"
+        raw = f"{line}\n".encode()
+    path.write_bytes(raw)
+    calls = []
+
+    def run_gate(command, **kwargs):
+        assert command == [sys.executable, str(tmp_path / "tools/build.py"), source]
+        assert line.encode() not in path.read_bytes()
+        calls.append(command)
+        return rq.subprocess.CompletedProcess(command, returncode)
+
+    monkeypatch.setattr(rq.subprocess, "run", run_gate)
+    ok, message = rq.pass_test(line)
+    assert ok == (returncode == 0)
+    assert len(calls) == 1
+    if returncode:
+        assert path.read_bytes() == raw
+        assert "line restored" in message
+    else:
+        assert line.encode() not in path.read_bytes()
+
+
+@pytest.mark.parametrize("layout", ["bfme1", "bfme2"])
+@pytest.mark.parametrize("sources", [
+    ("Missing.cpp",), ("../outside.cpp",), ("Other/Data.cpp",), ("Data.cpp", "Other.cpp")])
+def test_invalid_or_ambiguous_data_owner_does_not_fall_back_to_grep(
+        tmp_path, monkeypatch, layout, sources):
+    rq, rev, src = load(tmp_path, layout, LEDGER)
+    symbol = "?key@Keys@@3QBDB"
+    rows = []
+    for relative in sources:
+        source = relative if relative.startswith("Other/") else f"{src}/{relative}"
+        if relative != "Missing.cpp":
+            path = tmp_path / source
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('extern const char key[] = "Shader3";\n')
+        rows.append(f"{symbol},{source},matched\n")
+    (rev / "data_rows.csv").write_text("name,source,status\n" + "".join(rows), newline="\n")
+
+    def unexpected_grep(*args, **kwargs):
+        pytest.fail("an invalid recorded data owner must not select another source")
+
+    monkeypatch.setattr(rq.subprocess, "run", unexpected_grep)
+    assert rq.locate_source(symbol) is None
+
+
+def test_unmatched_data_owner_retains_literal_source_search(tmp_path, monkeypatch):
+    rq, rev, src = load(tmp_path, "bfme1", LEDGER)
+    symbol = "?key@Keys@@3QBDB"
+    (rev / "data_rows.csv").write_text(
+        f"name,source,status\n{symbol},{src}/Data.cpp,unmatched\n", newline="\n")
+
+    def grep_source(command, **kwargs):
+        assert command == ["git", "grep", "-l", "-F", "--", symbol, f"{src}/"]
+        return rq.subprocess.CompletedProcess(command, 0, stdout=f"{src}/Legacy.cpp\n")
+
+    monkeypatch.setattr(rq.subprocess, "run", grep_source)
+    assert rq.locate_source(symbol) == f"{src}/Legacy.cpp"
+
+
 def test_link_items_serve_placed_unwired_rows_first(tmp_path):
     rq, _, _ = load(tmp_path, "bfme2", LEDGER)
     status = tmp_path / "link_status.csv"

@@ -254,6 +254,16 @@ def shell_quote(text):
 
 
 def locate_source(name):
+    owners = {row["source"] for row in csv.DictReader(io.StringIO(_read(f"{REV}/data_rows.csv")))
+              if row.get("name") == name and row.get("status") == "matched" and row.get("source")}
+    if owners:
+        if len(owners) != 1:
+            return None
+        source = next(iter(owners))
+        if (not source.startswith(SOURCE_PREFIX) or ".." in Path(source).parts
+                or not (ROOT / source).is_file()):
+            return None
+        return source
     got = subprocess.run(["git", "grep", "-l", "-F", "--", name, SOURCE_PREFIX], cwd=ROOT,
                          capture_output=True, text=True)
     files = got.stdout.split()
