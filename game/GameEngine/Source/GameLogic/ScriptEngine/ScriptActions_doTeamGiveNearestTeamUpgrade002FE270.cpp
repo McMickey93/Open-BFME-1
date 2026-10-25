@@ -149,6 +149,8 @@ extern SpecialPowerStore *TheSpecialPowerStore;
 extern void j_00044e18(void);
 extern void j_0001df16(void);
 extern void j_00018449(void);
+// Canonical ILT owner: ?j_00022a70@@YAXXZ, RVA 0x00022A70 (5 bytes),
+// jumps to RVA 0x000C8A30. This address identity makes no ABI claim.
 extern void j_00022a70(void);
 extern void j_0003251f(void);
 extern void j_0000d3b9(void);

@@ -25,7 +25,6 @@ dir32,0x0041E6F0,??1Rva0069CEE0@@QAE@XZ,the name encodes 0x0069CEE0 but retail r
 dir32,0x0041F0FA,?j_0001f0fa@@YAXXZ,"retail 0x0041F0FA is already recorded as _dp007 (+7 more); reference that name, not a new one"
 dir32,0x00421BBB,?j_00021bbb@@YAXXZ,"retail 0x00421BBB is already recorded as ?Rva0078EF00New@@YGPAXPAX@Z; reference that name, not a new one"
 dir32,0x0042254D,??0Map0044B780@@QAE@XZ,"nothing in the ledger owns 0x0042254D. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x00422A70,?j_00022a70@@YAXXZ,"retail 0x00422A70 is already recorded as ?TheBfmeOwner_000CBB80@@3PADA; reference that name, not a new one"
 dir32,0x00422D3B,??1Rva00127AB0Element@@QAE@XZ,"retail 0x00422D3B is already recorded as ??1Gen_uwm_00022d3b@@QAE@XZ (+3 more); reference that name, not a new one"
 dir32,0x00422FA7,??0Rva00478100@@QAE@XZ,the name encodes 0x00478100 but retail reads 0x00422FA7
 dir32,0x00423A1F,??0Rva006ABC60@@QAE@XZ,the name encodes 0x006ABC60 but retail reads 0x00423A1F
