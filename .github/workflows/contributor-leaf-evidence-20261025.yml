@@ -1,10 +1,10 @@
-name: Contributor native leaf evidence and claim-object transport
+name: Contributor native leaf narrowing experiment
 on:
   push:
     branches: ['contributor/native-cpp-20261025']
     paths: ['.github/workflows/contributor-leaf-evidence-20261025.yml']
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: mcmickey93-bfme1-leaf-evidence
   cancel-in-progress: false
@@ -51,38 +51,81 @@ jobs:
           python3 tools/dis_retail.py 0x003D59C0 39
           python3 tools/repair_queue.py dest 0x003D59C0
           python3 tools/find_declared_unmatched.py game/GameEngine/Source/Common/Rva003D5AE0Test.cpp
-      - name: Export unchanged project-generated claim objects to fork-only coordination refs
+      - name: Measure the isolated bitfield return-boundary hypothesis
         working-directory: source
         shell: bash
-        env:
-          CLAIM_TRANSPORT_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 native-claim-object-transport
+          require_python3 native-leaf-experiment
           python3 - <<'PY'
-          import base64, json, os, subprocess, sys
+          import json, os, subprocess, sys
+          from pathlib import Path
           sys.path.insert(0, 'tools')
-          import claims
-          rvas = [0x003D59C0, 0x003D5AE0]
-          assert claims.fetch(), 'Cannot check official claims'
-          live = claims.live(claims._read_local())
-          assert not any(r in live for r in rvas), 'A selected body is held upstream'
-          subprocess.run(['git','config','user.name','McMickey93'], check=True)
-          subprocess.run(['git','config','user.email','347452154+McMickey93@users.noreply.github.com'], check=True)
-          records = []
-          for rva in rvas:
-              token = claims._record(os.environ['BFME_CLAIM_OWNER'], 4, note='Native contributor leaf work; exact object transport to official claim branch pending')
-              body = json.loads(subprocess.check_output(['git','show','-s','--format=%B',token], text=True))
-              records.append({'rva':f'0x{rva:08X}','token':token,'record':body})
-          env = dict(os.environ)
-          count = int(env.get('GIT_CONFIG_COUNT','0'))
-          env['GIT_CONFIG_COUNT'] = str(count+1)
-          env[f'GIT_CONFIG_KEY_{count}'] = 'http.https://github.com/McMickey93/Open-BFME-1.git.extraheader'
-          credential = base64.b64encode(('x-access-token:' + env.pop('CLAIM_TRANSPORT_TOKEN')).encode()).decode()
-          env[f'GIT_CONFIG_VALUE_{count}'] = 'AUTHORIZATION: basic ' + credential
-          command = ['git','-c','core.hooksPath=.githooks','push','--atomic','https://github.com/McMickey93/Open-BFME-1.git']
-          command += [entry['token']+':refs/claims/'+entry['rva'] for entry in records]
-          subprocess.run(command, env=env, check=True)
-          print(json.dumps({'actual_upstream_claims_created':False,'transported_objects':records}, indent=2))
+          import build, claims
+          expected = {0x003D59C0:'d97101703c26e1e3c318fcd7145445a6175fdd72', 0x003D5AE0:'08161d5e7433328c114042219706b3ed4451cc43'}
+          assert claims.fetch(), 'Cannot read actual upstream claims'
+          actual = claims._read_local()
+          for rva, token in expected.items():
+              assert actual[rva][0] == token and actual[rva][1]['owner'] == os.environ['BFME_CLAIM_OWNER']
+              assert claims.holds(rva,token), 'Lost upstream fencing token'
+          out = Path('build/native-leaf-20261025').resolve()
+          out.mkdir(parents=True, exist_ok=True)
+          target = build.read_target_bytes(0x003D59C0,39)
+          symbol = '?rva003D59C0@@YGHHPBURva003D59C0Obj@@HH@Z'
+          layout = (
+          'struct Rva003D59C0Obj {\n'
+          ' char m_pad[0xC];\n'
+          ' unsigned m_low3:3;\n'
+          ' unsigned m_middle:15;\n'
+          ' unsigned m_bit18:1;\n'
+          ' unsigned m_high:13;\n'
+          ' __forceinline unsigned readLow3() const { return m_low3; }\n'
+          ' __forceinline bool readBool18() const { return m_bit18; }\n'
+          ' __forceinline unsigned char readByte18() const { return m_bit18; }\n'
+          '};\n'
+          )
+          returns = {'direct':'return obj->m_bit18;', 'bool':'return obj->readBool18();', 'byte':'return obj->readByte18();'}
+          results = []
+          for inline in ('Ob0','Ob2'):
+              for mode, statement in returns.items():
+                  assert claims.holds(0x003D59C0,expected[0x003D59C0]), 'Lost target claim'
+                  label = inline + '-' + mode
+                  source = out / (label+'.cpp')
+                  obj = out / (label+'.obj')
+                  text = '// cl: /O2 /'+inline+' /DNDEBUG /DWIN32 /D_WINDOWS /MD\n' + layout
+                  text += 'int __stdcall rva003D59C0(int, const Rva003D59C0Obj *obj, int, int) {\n'
+                  text += ' unsigned low = obj->readLow3();\n if (low != 0u && low != 1u) return 1;\n '+statement+'\n}\n'
+                  source.write_text(text,encoding='utf-8',newline='\n')
+                  build.compile_source(source,obj)
+                  body,relocs=build.read_object_symbol_bytes(obj,symbol,require_code=True)
+                  body=bytes(body).rstrip(b'\xcc')
+                  differences=sum(x!=y for x,y in zip(body,target))+abs(len(body)-len(target))
+                  record={'label':label,'source':str(source),'symbol':symbol,'size':len(body),'differences':differences,'relocs':relocs,'diagnostic_exact':body==target and not relocs,'hex':body.hex()}
+                  results.append(record)
+                  print(json.dumps(record),flush=True)
+                  (out/'result.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')
+          for name in ('tools/re_log.py','tools/build.py','.githooks/pre-commit','.githooks/pre-push'):
+              assert subprocess.run(['git','diff','--quiet','HEAD','--',name]).returncode == 0
+          assert subprocess.check_output(['git','status','--porcelain'],text=True).strip()=='', 'Production source or ledger was modified'
+          print(json.dumps({'diagnostic_only':True,'exact_variants':[r['label'] for r in results if r['diagnostic_exact']]}))
+          
           PY
+      - name: Retain private sources, objects and measurement receipts
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-leaf-narrowing-${{ github.run_id }}
+          path: source/build/native-leaf-20261025/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Measure the unchanged production source against actual official master
+        if: always()
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 native-leaf-progress
+          git fetch --no-tags origin refs/heads/master:refs/remotes/origin/master
+          python3 tools/progress.py origin/master
