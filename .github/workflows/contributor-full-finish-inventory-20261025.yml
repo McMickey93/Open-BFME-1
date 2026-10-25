@@ -1,0 +1,146 @@
+name: Contributor BFME1 remaining finish inventory
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-full-finish-inventory-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-full-finish-inventory
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 55
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:finish-inventory-20261025
+    steps:
+      - name: Read the current official tree without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: 967c7e1cf5bbda24ea52f802caffa7164c1368ff
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate the official ledger and read upstream master
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 cpp-recovery
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+      - name: Measure the untried official finish pool without edits or claims
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 finish-measure-current
+          git switch --detach origin/master
+          python3 -u - <<'PY'
+          import hashlib,json,os,subprocess,sys,time,traceback
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          out=root/"build/contributor-full-finish-inventory-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          sys.path.insert(0,str(root/"tools"))
+          import claims,eligibility,finish_measure,next_work,conversion_gate,progress
+          assert subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root,text=True).strip()=="06b755567bb147dfee3a89f70f7bbcd38410b5b4", "AGENTS changed"
+          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
+          def run(label,args):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(cp.stdout)
+              if cp.returncode:
+                  print(cp.stdout.decode("utf-8","replace"),flush=True)
+                  raise RuntimeError(label+" failed")
+              return cp.stdout.decode("utf-8","replace")
+          assert claims.fetch(), "Cannot read shared claims"
+          busy=eligibility.busy_rvas()
+          live=claims.live(claims._read_local())
+          prior_measured={0x00606180,0x00666300,0x0014C8E0,0x006EB500,0x0065CA50,0x00545DE0,0x0019FF20,0x004445C0,0x00376590,0x0053DFC0,0x0072A3D0,0x006FD700,0x0017C250,0x003F7020,0x003492A0,0x00357FC0,0x00795140,0x008CA9D0,0x00693EC0,0x0051E700,0x008D1F10,0x0019C920,0x0067EE40,0x002768A0,0x002C3E00,0x008A5250,0x002157C0,0x00960A30,0x003CAEB0,0x005F8010,0x001CABE0,0x00370DE0}
+          blocked={0x00606180,0x00666300,0x0014C8E0,0x006EB500,0x0065CA50,0x00545DE0,0x0019FF20,0x004445C0,0x00376590,0x0053DFC0,0x0072A3D0,0x006FD700,0x0017C250,0x003F7020,0x003492A0,0x00357FC0,0x00795140,0x008CA9D0,0x00693EC0,0x0051E700,0x008D1F10,0x0019C920,0x0067EE40,0x002768A0,0x002C3E00,0x008A5250,0x002157C0,0x00960A30,0x003CAEB0,0x005F8010,0x001CABE0,0x00370DE0,0x00269C50,0x00271B40,0x0060F3C0,0x000B4780,0x00948BD0,0x00925D10,0x008CF030,0x00078640,0x003D59C0,0x001EDCA0,0x008A2130,0x008C6AD0}
+          payload=json.loads(run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"]))
+          pool=payload["finish"]
+          available=[c for c in pool if int(c["target_rva"],16) not in blocked and int(c["target_rva"],16) not in live and c["target_rva"].lower() not in busy]
+          sequence=[]
+          for number in range(min(150,len(available))):
+              c=next_work.finish_choice(available)
+              available=[a for a in available if int(a["target_rva"],16)!=int(c["target_rva"],16)]
+              sequence.append(c)
+          result={"status":"measuring","base":base,"workflow":os.environ["GITHUB_SHA"],"run":os.environ["GITHUB_RUN_ID"],"pool":len(pool),"prior_measured_run":40242622843,"prior_measured_excluded":sorted(f"0x{r:08X}" for r in prior_measured),"budget":150,"bounded_draws":len(sequence),"selector":"next_work.finish_choice without replacement","excluded":sorted(f"0x{r:08X}" for r in blocked),"sequence":sequence,"measurements":[]}
+          def save():
+              (out/"finish-batch.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          cache=finish_measure.load()
+          save()
+          for number,c in enumerate(sequence):
+              rva=int(c["target_rva"],16)
+              path=root/c["stash"]
+              assert path.is_relative_to(root/"targets/game/reverse/attempts"), "Unexpected bank location"
+              raw=path.read_bytes()
+              before=hashlib.sha256(raw).hexdigest()
+              # Read the banked whole TU unchanged. Keep only a text snapshot in
+              # build/; measure the actual tracked path so its include context stays native.
+              (out/(f"{rva:08x}-whole-stash.cpp.txt")).write_bytes(raw)
+              m={"order":number,"target_rva":c["target_rva"],"stash":c["stash"],"author_score":c["score"],"target_size":c["target_size"],"whole_source_sha256":before,"whole_source_bytes":len(raw),"symbol_header":finish_measure.symbol_of(path)}
+              claims.active.cache_clear()
+              busy_now=eligibility.busy_rvas()
+              assert claims.fetch(), "Cannot refresh shared claims"
+              live_now=claims.live(claims._read_local())
+              if rva in live_now or f"0x{rva:08x}" in busy_now:
+                  m.update(status="skipped-new-live-or-busy",qualified=False)
+              else:
+                  try:
+                      cache=finish_measure.ensure([(rva,path)],budget=1,cache=cache)
+                      entry=finish_measure.current(cache,rva,path)
+                      m.update(status="qualified" if entry is not None else "unmeasured-no-current-proof",qualified=entry is not None,entry=entry)
+                  except ValueError as error:
+                      m.update(status="refused",qualified=False,note=str(error))
+              assert hashlib.sha256(path.read_bytes()).hexdigest()==before, "Bank changed while measuring"
+              source_text=raw.decode("utf-8","replace")
+              lift_lines=[i+1 for i,line in enumerate(source_text.splitlines()) if conversion_gate.is_lift_line(line)]
+              asm_only=progress.asm_only_bodies(source_text)
+              m["real_cpp_check"]={"lift_lines":lift_lines,"asm_only_bodies":asm_only,"passes":not lift_lines and not asm_only,"diagnostic_only":True}
+              result["measurements"].append(m)
+              save()
+              print("FINISH_BATCH_ITEM "+json.dumps(m),flush=True)
+              if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1:
+                  print("FINISH_BATCH_RAW_EXACT_LEAD "+json.dumps({**m,"full_stash":source_text}),flush=True)
+          result.update(status="complete",qualified_count=sum(bool(m["qualified"]) for m in result["measurements"]),raw_exact_leads=[m for m in result["measurements"] if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1])
+          run("clean-tree",["git","diff","--exit-code"])
+          print(run("progress",[sys.executable,"tools/progress.py","origin/master"]),flush=True)
+          save()
+          print("FINISH_BATCH_FINAL "+json.dumps({"base":base,"draws":len(sequence),"qualified":result["qualified_count"],"raw_exact_count":len(result["raw_exact_leads"]),"unqualified":sum(not m["qualified"] for m in result["measurements"])}),flush=True)
+          PY
+      - name: Preserve unchanged bank snapshots and qualified native measurements
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-cpp-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source/build/contributor-full-finish-inventory-20261025/
+            source/build/finish_measured.json
+            source/build/experiments/
+            source/build/experiments.sqlite
+          retention-days: 90
+          if-no-files-found: warn
+          compression-level: 9
