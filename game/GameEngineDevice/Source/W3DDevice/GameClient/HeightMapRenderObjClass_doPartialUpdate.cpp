@@ -14,7 +14,8 @@
 extern "C" __declspec(dllimport) double __cdecl floor(double value);
 extern "C" __declspec(dllimport) double __cdecl ceil(double value);
 
-extern const float g_rva006D1D80Scale;			///< retail [0x0109DF58]
+// Former COFF reference ?g_rva006D1D80Scale@@3MB: retail 0x0109DF58 is
+// __real@3d800000 (0.0625f), checked through the literal operands below.
 
 class WorldHeightMap
 {
@@ -80,19 +81,19 @@ void HeightMapRenderObjClass::doPartialUpdate(const IRegion2D &partialRange,
 	}
 
 	IRegion2D tileRange;
-	float scaledLoX = (float)partialRange.lo.x * g_rva006D1D80Scale;
+	float scaledLoX = (float)partialRange.lo.x * 0.0625f;
 	float floorLoX = (float)floor((double)scaledLoX);
 	tileRange.lo.x = fast_float2long_round(floorLoX);
 
-	float scaledLoY = (float)partialRange.lo.y * g_rva006D1D80Scale;
+	float scaledLoY = (float)partialRange.lo.y * 0.0625f;
 	float floorLoY = (float)floor((double)scaledLoY);
 	tileRange.lo.y = fast_float2long_round(floorLoY);
 
-	float scaledHiX = (float)partialRange.hi.x * g_rva006D1D80Scale;
+	float scaledHiX = (float)partialRange.hi.x * 0.0625f;
 	float ceilHiX = (float)ceil((double)scaledHiX);
 	tileRange.hi.x = fast_float2long_round(ceilHiX);
 
-	float scaledHiY = (float)partialRange.hi.y * g_rva006D1D80Scale;
+	float scaledHiY = (float)partialRange.hi.y * 0.0625f;
 	float ceilHiY = (float)ceil((double)scaledHiY);
 	tileRange.hi.y = fast_float2long_round(ceilHiY);
 

@@ -21,8 +21,8 @@
 //     is LONGER than that: retail's `fdivr m32fp` is ST(0) <- m32fp / ST(0), so
 //     the constant is the numerator and the guard is `length > 150.0f`, which
 //     is the only spelling that emits retail's `test ah, 0x41 / jne`.  150.0f
-//     is a .rdata float with no ledger name (0x0109A028), so it is declared
-//     here under an address-derived name.
+//     reads the readonly float at 0x0109A028, expressed as a literal so
+//     constant-reference verification checks its retail address and value.
 
 // The 0x31c/0x320/0x324 owner fields are read by exactly one body in the image
 // (AIMoveToPositionAndEnterState::onEnter tests 0x31c alone) and written by no
@@ -249,9 +249,9 @@ protected:
 extern AI *TheAI;
 extern Bool Glo012F0239;
 extern void *TheCRCParameterCheck;
-// 0x0109A028, the .rdata float 150.0f this body compares against and divides
-// by.  The ledger names no symbol there, so the name carries the address.
-extern const Real g_bfmeRva0109A028;
+// 0x0109A028 is the readonly float used for the comparison and numerator.
+// Former COFF reference ?g_bfmeRva0109A028@@3MB: retail 0x0109A028 is
+// __real@43160000 (150.0f), checked through the literal operands below.
 // The variadic DEBUG_LOG printer uses the existing ILT 0x0003A17A.
 // Both diagnostic strings below are read straight out of the retail image.
 extern void j_0003a17a();
@@ -314,8 +314,8 @@ StateReturnType AIFollowWaypointPathState::onEnter() {
         const Coord2D &off = m_groupOffset;
         Real x = *(const volatile Real *)&off.x;
         Real length = bfmeSqrt(x * x + off.y * off.y);
-        if (length > g_bfmeRva0109A028) {
-          Real scale = g_bfmeRva0109A028 / length;
+        if (length > 150.0f) {
+          Real scale = 150.0f / length;
           m_groupOffset.x = m_groupOffset.x * scale;
           m_groupOffset.y = m_groupOffset.y * scale;
         }
