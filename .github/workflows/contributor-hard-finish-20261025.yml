@@ -71,7 +71,7 @@ jobs:
               e=current.get(rva)
               assert e and e[0]==token and e[1]['owner']==os.environ['BFME_CLAIM_OWNER'] and e[1]['lease']=='5d82ccfbf2544ed0b704840d11b13543'
               assert claims.holds(rva,token)
-          out=Path('build/contributor_hard_finish_sp_scoped_20261025');out.mkdir(parents=True,exist_ok=True)
+          out=Path('build/contributor_hard_finish_sp_create_default_20261025');out.mkdir(parents=True,exist_ok=True)
           base=Path('targets/game/reverse/attempt_support/0x00269c50-20261013-formB-constref-abi.inc').read_text(encoding='utf-8')
           base='#define _STLP_USE_STATIC_LIB 1\n#define BFME_STLP_NODE_ALLOC 1\n'+base[base.index('#include'):]
           ascii_def=r'''
@@ -181,22 +181,43 @@ jobs:
           aboutbase=aboutbase.replace('class SpecialPowerModule : public',"class ScriptEngine\n{\npublic:\n\tvirtual void slot00(); virtual void slot01(); virtual void slot02(); virtual void slot03();\n\tvirtual void slot04(); virtual void slot05(); virtual void slot06(); virtual void slot07();\n\tvirtual void slot08(); virtual void slot09(); virtual void slot10(); virtual void slot11();\n\tvirtual void slot12(); virtual void slot13(); virtual void slot14(); virtual void slot15();\n\tvirtual void slot16(); virtual void slot17(); virtual void slot18(); virtual void slot19();\n\tvirtual void slot20(); virtual void slot21(); virtual void slot22(); virtual void slot23();\n\tvirtual void slot24(); virtual void slot25(); virtual void slot26(); virtual void slot27();\n\tvirtual void slot28(); virtual void slot29(); virtual void slot30(); virtual void slot31();\n\tvirtual void slot32(); virtual void slot33(); virtual void slot34();\n\tvirtual void notifyOfTriggeredSpecialPower(int playerIndex, const AsciiString &completedPower, ObjectID sourceObj);\n};\n\nclass AudioManager\n{\npublic:\n\tvirtual void slot00(); virtual void slot01(); virtual void slot02(); virtual void slot03();\n\tvirtual void slot04(); virtual void slot05(); virtual void slot06(); virtual void slot07();\n\tvirtual void slot08(); virtual void slot09(); virtual void slot10(); virtual void slot11();\n\tvirtual void slot12(); virtual void slot13(); virtual void slot14(); virtual void slot15();\n\tvirtual void slot16();\n\tvirtual unsigned addAudioEvent(const AudioEventRTS *eventToAdd);\n};\n\nextern ScriptEngine *TheScriptEngine;\nextern AudioManager *TheAudio;\n"+'\nclass SpecialPowerModule : public')
           about_body="__declspec(noinline) void aboutToDoSpecialPower(const Coord3D *location)\n{\n\t// Tell the scripting engine!\n\tTheScriptEngine->notifyOfTriggeredSpecialPower(\n\t\tgetObject()->getControllingPlayer()->getPlayerIndex(),\n\t\tgetSpecialPowerModuleData()->m_specialPowerTemplate->getName(),\n\t\tgetObject()->getID());\n\n\t// get module data\n\tconst SpecialPowerModuleData *modData = getSpecialPowerModuleData();\n\n\t// play our initiate sound if we have one\n\tAudioEventRTS audioEvent = *modData->m_specialPowerTemplate->getInitiateSound();\n\taudioEvent.setObjectID(getObject()->getID());\n\tTheAudio->addAudioEvent(&audioEvent);\n\n\t// play sound at target location if specified\n\tif (location)\n\t{\n\t\tAudioEventRTS soundAtLocation = *modData->m_specialPowerTemplate->getInitiateAtTargetSound();\n\t\tsoundAtLocation.setPosition(location);\n\t\tsoundAtLocation.setPlayerIndex(getObject()->getControllingPlayer()->getPlayerIndex());\n\t\tTheAudio->addAudioEvent(&soundAtLocation);\n\t}\n}\n"
           
-          import eligibility
-          cluster=eligibility.open_dumps()
-          latest=eligibility.latest_verdicts()
-          print('FULL_FILE_OPEN_QUEUE '+json.dumps([{'rva':row['target_rva'],'size':row['target_size'],'name':row['name'],'source':row['source'],'latest':latest.get(int(row['target_rva'],16)),'stash':str(eligibility.stash(int(row['target_rva'],16)))} for row in cluster if row['source']=='game/gen_asm/d_00266ef0.asm']),flush=True)
-          # Keep provider's witnessed depth, then restore documented compiler defaults
-          # before compiling the caller; compare declaration-only and visible controls.
-          restore='\n#pragma inline_recursion(off)\n#pragma inline_depth()\nvoid SpecialPowerModule::finishSpecialPower'
-          for name,src,visible in [('about-restored-context',aboutbase,False),('about-restored-visible',aboutbase.replace('void aboutToDoSpecialPower(const Coord3D *location);',about_body),True)]:
-              assert claims.holds(0x00269C50,token)
-              src=src.replace('\nvoid SpecialPowerModule::finishSpecialPower',restore)
-              private=out/(name+'.cpp')
-              private.write_text('// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n// stlport\n#pragma inline_recursion(on)\n#pragma inline_depth(3)\n'+src,encoding='utf-8',newline='\n')
-              if visible:
-                  good=probe(name+'-provider',private,'?aboutToDoSpecialPower@SpecialPowerModule@@IAEXPBVCoord3D@@@Z','0x00268CB0',379)
-                  print('COMPLETE_PROVIDER_STRICT '+name+' '+str(good),flush=True)
-              probe(name+'-caller',private,'?finishSpecialPower@SpecialPowerModule@@QAEXI@Z','0x00269C50',1073)
+          # Preserve this TU's existing STL node allocator/EH contract while adding only
+          # the complete genuine provider. Check provider independently before caller.
+          createbase=aboutbase
+          createbase=createbase.replace('#include <list>','#include <list>\n#include <bitset>')
+          createbase=createbase.replace('enum ObjectID { INVALID_ID=0 };','class Team;\nenum NameKeyType { NAMEKEY_INVALID=0 };\nclass Module {};\nclass DeletionUpdate : public Module { public: void setLifetimeRange(unsigned int,unsigned int); };\nenum ObjectID { INVALID_ID=0 };')
+          createbase=createbase.replace('private: unsigned char m_prefix[0x24]; int m_playerIndex;','Team *getDefaultTeam() { return m_defaultTeam; } private: unsigned char m_prefix[0x24]; int m_playerIndex; unsigned char m_pad28[0x230-0x28]; Team *m_defaultTeam;')
+          createbase=createbase.replace('Bool isKindOf(KindOfType kind) const;','Bool isKindOf(KindOfType kind) const;\n    void setPosition(const Coord3D *);')
+          createbase=createbase.replace('ObjectID getID() const { return m_id; }','ObjectID getID() const { return m_id; }\n    void setShroudClearingRange(float);\n    void updateShroudNow();\n    Module *findUpdateModule(NameKeyType key) const { return findModule(key); }\n    Module *findModule(NameKeyType) const;')
+          createbase=createbase.replace('AsciiString getName() const;','AsciiString getName() const;\n    unsigned int getViewObjectDuration() const { return getFO()->m_viewObjectDuration; }\n    float getViewObjectRange() const { return getFO()->m_viewObjectRange; }')
+          createbase=createbase.replace('AudioEventRTS m_initiateAtLocationSound;','AudioEventRTS m_initiateAtLocationSound;\n    unsigned char m_pad104[4];\n    unsigned int m_viewObjectDuration;\n    float m_viewObjectRange;')
+          extra=r'''template<unsigned N> class BitFlags {
+              std::bitset<N> m_bits;
+          public: BitFlags() {}
+          };
+          class NameKeyGenerator { public: NameKeyType nameToKey(const char *); };
+          extern NameKeyGenerator *TheNameKeyGenerator;
+          class GlobalData { public: unsigned char m_prefix000[0xc40]; AsciiString m_specialPowerViewObjectName; };
+          extern GlobalData *TheWritableGlobalData;
+          class ThingFactory {
+          public:
+              const ThingTemplate *findTemplate(const AsciiString &);
+              Object *newObject(const ThingTemplate *,Team *,const BitFlags<86> &,unsigned int);
+          };
+          extern ThingFactory *TheThingFactory;
+          '''
+          createbase=createbase.replace('class SpecialPowerModule : public',extra+'\nclass SpecialPowerModule : public')
+          create_body="__declspec(noinline) void createViewObject(const Coord3D *location)\n{\n\tif (location == 0)\n\t\treturn;\n\n\tconst SpecialPowerModuleData *modData = getSpecialPowerModuleData();\n\tconst SpecialPowerTemplate *powerTemplate = modData->m_specialPowerTemplate;\n\tif (powerTemplate == 0)\n\t\treturn;\n\n\tfloat visionRange = powerTemplate->getViewObjectRange();\n\tunsigned int visionDuration = powerTemplate->getViewObjectDuration();\n\n\tif (visionRange == 0 || visionDuration == 0)\n\t\treturn;\n\n\tAsciiString objectName = TheWritableGlobalData->m_specialPowerViewObjectName;\n\tif (objectName.isEmpty())\n\t\treturn;\n\n\tconst ThingTemplate *viewObjectTemplate = TheThingFactory->findTemplate(objectName);\n\tif (viewObjectTemplate == 0)\n\t\treturn;\n\n\tObject *viewObject = TheThingFactory->newObject(viewObjectTemplate,\n\t\tgetObject()->getControllingPlayer()->getDefaultTeam(), BitFlags<86>(), 0);\n\tif (viewObject == 0)\n\t\treturn;\n\n\tviewObject->setPosition(location);\n\tviewObject->setShroudClearingRange(visionRange);\n\tviewObject->updateShroudNow();\n\n\tstatic NameKeyType key_DeletionUpdate = TheNameKeyGenerator->nameToKey(\"DeletionUpdate\");\n\tDeletionUpdate *dup = (DeletionUpdate *)viewObject->findUpdateModule(key_DeletionUpdate);\n\tif (dup)\n\t\tdup->setLifetimeRange(visionDuration, visionDuration);\n}\n"
+          for macro,label in [('', 'caller-eh'),('#define _STLP_NO_EXCEPTIONS 1\n', 'provider-documented-noexceptions')]:
+              for name,src,visible in [('create-native-context',createbase,False),('create-complete-visible',createbase.replace('void createViewObject(const Coord3D *location);',create_body),True)]:
+                  assert claims.holds(0x00269C50,token)
+                  tag=label+'-'+name
+                  private=out/(tag+'.cpp')
+                  private.write_text('// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n// stlport\n'+macro+src,encoding='utf-8',newline='\n')
+                  if visible:
+                      good=probe(tag+'-provider',private,'?createViewObject@SpecialPowerModule@@IAEXPBVCoord3D@@@Z','0x00269130',422)
+                      print('COMPLETE_PROVIDER_STRICT '+tag+' '+str(good),flush=True)
+                  probe(tag+'-caller',private,'?finishSpecialPower@SpecialPowerModule@@QAEXI@Z','0x00269C50',1073)
           
           PY
       - name: Measure unchanged baseline
@@ -212,8 +233,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-specialpower-scoped-visibility
+          name: bfme1-hard-finish-specialpower-create-default
           path: |
-            source/build/contributor_hard_finish_sp_scoped_20261025/
+            source/build/contributor_hard_finish_sp_create_default_20261025/
             source/build/experiments/
           retention-days: 90
