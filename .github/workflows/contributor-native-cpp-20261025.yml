@@ -78,8 +78,8 @@ jobs:
           source .githooks/python3.sh
           require_python3 contributor-reference-selection
           git submodule update --init --depth 1 inputs/reference/open-bfme-2
-          git -C inputs/reference/open-bfme-2 fetch --no-tags origin master
-          git -C inputs/reference/open-bfme-2 checkout --detach 349db6dc10069cc230469ebf3f6dd6d19a17fb82
+          git -C inputs/reference/open-bfme-2 fetch --no-tags --depth 1 origin master
+          git -C inputs/reference/open-bfme-2 checkout --detach FETCH_HEAD
           git -C inputs/reference/open-bfme-2 rev-parse HEAD FETCH_HEAD
           python3 tools/bfme2_sweep.py scan --min-size 128
           python3 tools/bfme2_sweep.py ranked --limit 0 > build/reference-ranked.json
@@ -92,17 +92,6 @@ jobs:
               opened = [entry for entry in data['entries'] if entry['eligible']]
               print(json.dumps({'lane':name, 'total':data['total'], 'eligible':len(opened), 'entries':opened[:12]}, indent=2))
           PY
-      - name: Compile an independent bounded Zero Hour reference sample
-        if: success() || failure()
-        shell: bash
-        working-directory: source
-        run: |
-          set -euo pipefail
-          source .githooks/python3.sh
-          require_python3 contributor-reference-selection
-          python3 tools/zh_sweep.py compile --limit 4
-          python3 tools/zh_sweep.py match
-          python3 tools/zh_sweep.py packets
       - name: Inspect the complete current leaf candidates and prior verdicts
         if: success() || failure()
         shell: bash
