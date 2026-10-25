@@ -19,9 +19,10 @@ extern void *bfmeGo929C();
 // 0x007EC030: deletes the named field from the record.
 int Rva007EC030( char *text, const char *tag );
 
-// 0x007E8B00: replaces or appends one field in the record; still a dump.
-extern void d_007e8b00( void );
-typedef int ( __cdecl *Rva007E8B00Replace )( char *record, int size, char *field );
+// 0x007E8B00: replaces or appends one field in the record. Landed at
+// game/GameEngine/Source/GameNetwork/Rva007E8B00FeslSetField.cpp; the direct
+// call emits the same rel32 retail has here.
+int __cdecl Rva007E8B00( unsigned char *buffer, int size, const char *field );
 
 // Retail VA 0x011293A0 and 0x011294A8 are 256-character hex
 // lookup strings followed by NUL. Their complete literals are indexed below.
@@ -132,7 +133,7 @@ static int Rva007E8D30( const char *name, const char *value, char *record, int s
 
 	*p = 0;
 
-	iResult = ( ( Rva007E8B00Replace )d_007e8b00 )( record, size, item );
+	iResult = Rva007E8B00( ( unsigned char * )record, size, item );
 	( ( Rva007EFFC0Allocator * )bfmeGo929C() )->release( item, 0 );
 	return iResult;
 }

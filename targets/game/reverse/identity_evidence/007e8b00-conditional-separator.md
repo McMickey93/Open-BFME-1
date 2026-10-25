@@ -68,3 +68,23 @@ The scoped byte gate fails this candidate, with raw output in build/fesl-007e8b0
 Reopening requires a new, evidence-based source structure that changes the pValue/iLength interference while preserving the three-stack-argument ABI, unsigned class reads, early guards and predecessor pointer copies. The current experiments establish a remaining register/save-schedule mismatch, not a proof that assembly is necessary. Keep the improved conditional separator reads when testing that next hypothesis. No source recovery, ledger conversion, identity correction or new pin is claimed here.
 
 The preferred bank was re-probed after tools/re_log.py recorded exactly one partial row. It retains the measured body and the strict byte failure in build/fesl-007e8b00/banked-probe.log and build/fesl-007e8b00/banked-byte-gate.log. The final CSV check passes in build/fesl-007e8b00/check_csv-final.log. Both newly retained archive hashes were verified against their complete source bytes; the old archive equals the pristine bank and the new archive equals the preferred bank. The final audit and measured completion time are in build/fesl-007e8b00/final-audit.log and build/fesl-007e8b00/completion-receipt.json. The attempt log changed by exactly one added row. The repository recorder emits CRLF; the whitespace check passes when CR is recognized as part of the line terminator, as recorded in build/fesl-007e8b00/diff-check-crlf.log. No compiler, linker, runtime harness or PDB helper remained in the checkout at the final process check in build/fesl-007e8b00/background-final.log.
+
+## Donor resolution (2026-10-24)
+
+The reopening condition above is met by the BFME 2 FESL clean-room unit
+`Code/GameEngine/Source/GameNetwork/Rva007E8D30FeslSetField.cpp` at donor
+revision `ce1b975697c2f20e514174e3875f8820d1dba612`, whose `Rva007E8B00`
+body is recorded at donor RVA `0x00655B90` (549 bytes). Its linked donor body
+is exact against the BFME 1 target outside the relocation fields, and the donor
+source compiled with `/O2 /G6 /GS /MD` and the BFME 1 data names
+`g_Va011295B0` (class table) and `g_Va012C37EE` (separator) emits the full
+549-byte BFME 1 body with 11 relocation sites and no differences outside them.
+
+The donor's equivalent clear paths and volatile separator read are the
+structure this file asked for: retail's late EBP save and the EBX value
+pointer appear without another register or flag experiment. The landed TU is
+`game/GameEngine/Source/GameNetwork/Rva007E8B00FeslSetField.cpp`; the
+address-derived symbol `?Rva007E8B00@@YAHPAEHPBD@Z` is retained because the
+only caller names the dump through an address-qualified function-pointer view
+and the donor name is likewise address-derived. The 544-byte bank is
+superseded, not amended.
