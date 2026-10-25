@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "enabled": true,
-  "expected_base": "bb30874d1638178f4ff0ec79daa299e5c3d8e109",
-  "expected_tree": "b7be338ee42d3c75ea09881c72b0fab8668b1977",
+  "expected_base": "66f7faefebb2f470a234ca76838cf680527daad8",
+  "expected_tree": "e5c42b6db13f47c49f12d76645316ef016eed71f",
   "previous_bank_blob": "b2e55883bac26f6d6a3d126133589f85296d3618",
   "identity_correction": {
     "registry": {
