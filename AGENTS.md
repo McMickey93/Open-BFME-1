@@ -454,6 +454,8 @@ retain only artifacts needed to resume (diagnostic source as patches or
 
 ## Preserve donor provenance
 
+**Credit BFME 2 donor work.** Prefix commit titles with `[BFME 2 donor]` when BFME 2 source or evidence materially contributes to a recovery or repair.
+
 In evidence records, distinguish facts established from BFME 1 target evidence,
 facts carried from donor source, and structural inferences. Record the basis for
 identity and layout claims separately when their evidence differs. Exact bytes
