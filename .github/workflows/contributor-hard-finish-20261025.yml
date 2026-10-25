@@ -48,7 +48,7 @@ jobs:
           git fetch --depth 128 --no-tags origin refs/heads/master:refs/remotes/origin/master
           git switch --detach origin/master
           python3 tools/check_csv.py
-          git hash-object AGENTS.md
+          test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
       - name: Fence claim and test evidenced early object-mask context
         working-directory: source
         shell: bash
@@ -81,7 +81,8 @@ jobs:
                       reports.append(path)
                       print('TARGET_REPORT '+str(path),flush=True)
                       print(text,flush=True)
-          assert not reports, 'Target reports require review before new experiments'
+          assert [p.as_posix() for p in reports] == ['targets/game/reverse/identity_evidence/pin-candidates-op1-batch4-oracle.md'], 'New target reports require review'
+          assert subprocess.check_output(['git','hash-object',str(reports[0])],text=True).strip() == 'cb20531adcdfc4a09e9907dba0299b84e3b0a15c', 'Reviewed identity report changed'
           p=subprocess.run([sys.executable,'tools/probe.py','targets/game/reverse/attempts/0x001edca0.cpp','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--all','--shape'],capture_output=True,text=True)
           out=Path('build/contributor_hard_finish_20261025');out.mkdir(parents=True,exist_ok=True)
           (out/'preferred-probe.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
