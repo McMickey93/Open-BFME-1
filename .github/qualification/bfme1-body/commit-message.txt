@@ -1,11 +1,12 @@
-Explore explicit Apt coercion control flow at 0x008C6AD0
+Explore Apt coercion helper-entry boundary at 0x008C6AD0
 
-The existing bank has stale data bindings and predates the recovered
-typed numeric predicate. Explore a corrected whole AptActionInterpreter
-translation unit with explicit labels following the retail control-flow
-order. Retain the measured stack-array load fix and distinct post-call
-barriers from the previous experiment. Keep the 520-byte sibling source
-unchanged. The earlier experiment emitted 229 of 233 target bytes.
+Restore the measured inline-helper shape and retain the corrected
+stack-array load order and distinct false-return barrier tags. Pass
+the already cached type to the private force-inlined helper and add
+one compiler-only ReadWriteBarrier at its entry. The matched
+Rva008D20F0ParentWalk demonstrates a cached tag across this barrier.
+The preceding flat-label experiment emitted 237 of 233 target bytes.
+Keep the complete 520-byte sibling source unchanged.
 
 This is exploratory input: no admission or new exact C++ bytes are claimed.
 
