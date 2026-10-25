@@ -4,6 +4,7 @@ if __name__ == "__main__":
     require_game_cli("build.py")
 
 import concurrent.futures
+from contextlib import contextmanager
 import csv
 import functools
 import hashlib
@@ -1736,6 +1737,24 @@ def _reported_fatal(handle, scanned):
     return bool(_COMPILER_FATAL.search(chunk)), size
 
 
+@contextmanager
+def _compiler_output_files():
+    if sys.platform == "win32":
+        # Preserve Windows delete-on-close behavior for inherited handles.
+        with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
+            yield stdout, stderr
+        return
+    # Anonymous TemporaryFile descriptors have no pathname on Linux. Keep
+    # diagnostic outputs named until their handles close so the cycle audit
+    # can identify them; build/ already owns mutable compiler outputs.
+    output_root = ROOT / "build"
+    output_root.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="compiler-output-", dir=output_root) as temporary, \
+            open(Path(temporary) / "stdout", "w+b") as stdout, \
+            open(Path(temporary) / "stderr", "w+b") as stderr:
+        yield stdout, stderr
+
+
 def watch_compiler(command, env, *, merge_output, timeout=None, timeout_note=b""):
     """Run one compiler process; return a CompletedProcess with bytes output.
 
@@ -1748,7 +1767,7 @@ def watch_compiler(command, env, *, merge_output, timeout=None, timeout_note=b""
     tree is killed first.
     """
     watch_fatal = hasattr(os, "pread")  # POSIX hosts, where Wine runs cl.exe
-    with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
+    with _compiler_output_files() as (stdout, stderr):
         process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=stdout,
                                    stderr=subprocess.STDOUT if merge_output else stderr,
                                    start_new_session=True)
