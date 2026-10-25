@@ -83,7 +83,6 @@ dir32,0x00810C90,?mark00410C90@@YAHPAX0@Z,"nothing in the ledger owns 0x00810C90
 dir32,0x00948D90,?bfmeEnumThreadWndProc@@YGHPAXJ@Z,"retail 0x00948D90 is already recorded as ?b_00548d90@@YAXXZ; reference that name, not a new one"
 dir32,0x00951DB0,?d_00551db0@@YAXXZ,"nothing in the ledger owns 0x00951DB0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BEADA0,?rva007EADA0BindCallback@@YAXPAVRva007EA380Owner@@PAX1@Z,the name encodes 0x007EA380 but retail reads 0x00BEADA0
-dir32,0x00BEB820,?Rva007EB820BoundCallback@@YAXXZ,"retail 0x00BEB820 is already recorded as ?Rva007EB820@@YAXXZ; reference that name, not a new one"
 dir32,0x00BEFFE0,?g_00BEFFE0@@YAXXZ,"nothing in the ledger owns 0x00BEFFE0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BEFFF0,?g_00BEFFF0@@YAXXZ,"nothing in the ledger owns 0x00BEFFF0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BF4770,?bfmeCbAZC@Rva007F4770@@SAXHPAVBfmeThingVJL@@@Z,"retail 0x00BF4770 is already recorded as _bfmeCbAZC; reference that name, not a new one"

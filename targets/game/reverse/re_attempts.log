@@ -58139,3 +58139,7 @@ _bfmeVftAptInteger	0x00D36400	0	solved	gate-debt: reference recorded ??_7AptInte
 ?Rva00EF6D10@@3PAXA	0x00EF6D10	0	solved	gate-debt: reference recorded ?defaultModuleTag7SourceAt4@FXParticleSystem@@3PAPAXA in Rva00C6BEA0Initializers.cpp; exact keyed pass-test passes 67/67 bodies and 119 DIR32 refs. t=2 model=gemini-3.8-flash-medium
 _g_0109C030	0x00C9C030	0	blocked	gate-debt: false-reject locate_source: baseline symbol has C-mangled leading underscore _g_0109C030 while source has g_0109C030 t=1 model=gemini-3.8-flash-medium
 ?Rva0134B280Browser@@3V?$_com_ptr_t@V?$_com_IIID@UIFEBrowserEngine2@@$1?_GUID_ee883b17_0778_4b18_a12b_e44c0d298412@@3U__s_GUID@@B@@@@A	0x00F4B280	0	blocked	gate-debt: COM smart pointer type conflicts with autopinned struct Rva00959410Ptr; outside debt scope t=2 model=gemini-3.8-flash-medium
+?Threshold0040E9E0@@3_JA	0x012F1290	0	blocked	gate-debt: needs type/owner reconciliation with Display.cpp duplicate view t=1 model=gemini-3.8-flash-medium
+??_7MilesAudioManager@@6BSubsystemInterface@@@	0x0111C0C0	0	blocked	gate-debt: unrecorded vtable requires data row or secondary vtable proof t=2 model=gemini-3.8-flash-medium
+?g_Key001ABC90_012A77C0@@3VKey001ABC90@@A	0x012A77C0	0	blocked	gate-debt: unrecorded name requires data row or symbol recording decision t=2 model=gemini-3.8-flash-medium
+?nk@?1??getModuleNameKey@BeaconClientUpdate@@UBE?AW4NameKeyType@@XZ@4W43@A	0x012F7020	0	blocked	gate-debt: retail 0x012F7020 recorded as TheBeaconClientUpdatePool from retired claim; needs ledger reconciliation t=2 model=gemini-3.8-flash-medium
