@@ -2046,3 +2046,18 @@ while referencing the rowed tree/shrub providers. Both receiver class views
 must be complete: an incomplete view made VC7.1 emit general member-pointer
 adjustment branches instead of a direct call. Measured with default `/O2`,
 MSVC 13.10.3077; the two provider/consumer pairs pass the normal byte gates.
+
+At RVA `0x005FAE40` (`BfmeConv1269.cpp`, 133 bytes), replacing an external
+readonly `0.5f` operand with a plain literal swaps each pair of x87
+multiplications: retail multiplies by the constant before the vector field,
+while the literal form multiplies by the vector field first (14 differing
+bytes). A function-local `static const volatile float half = 0.5f;` preserves
+the original order and all 133 bytes. The normal gate verifies all three
+references as local readonly loads against retail's `0x0107533C` float;
+no pin or data alias is needed. Splitting the scale into float locals emitted
+137 bytes, and adding `/Op` to the literal form emitted 143 bytes. Measured
+with MSVC 13.10.3077, default `/O2 /GR- /EHsc-`, no headers or TU overrides.
+This is a measured arithmetic scheduling effect: the same volatile form in
+`INIFontDefaultSettings.cpp` reverses compare operands and grows its body;
+plain `0.0f` comparisons preserve that parser's 480 bytes instead. Evidence:
+`targets/game/reverse/attempt_support/20261025-readonly-float-debt.md`.

@@ -40,8 +40,8 @@ extern "C" __declspec( dllimport ) double __cdecl atof( const char *text );
 class FontLibrary;
 extern FontLibrary *TheFontLibrary;
 
-// ?g_rva01075350@@3MB, the shared 0.0f constant at 0x01075350.
-extern const Real g_rva01075350;
+// The two comparisons read the readonly 0.0f at VA 0x01075350,
+// independently verified by data_rows.csv's ?g_rva01075350@@3MB row.
 
 extern int g_target_00472DD0;
 
@@ -171,7 +171,7 @@ void __cdecl parseFontDefaultSettings( INI *ini )
 	if ( token != 0 )
 	{
 		pointSize.value = (Real)atof( token );
-		if ( pointSize.value <= g_rva01075350 )
+		if ( pointSize.value <= 0.0f )
 			throw INIException( 3, "Invalid font point size specified: %f.  Must be greater than or equal to 1", pointSize.value );
 	}
 
@@ -188,7 +188,7 @@ void __cdecl parseFontDefaultSettings( INI *ini )
 		*nameSlot = new Rva00476440;
 	}
 
-	if ( pointSize.value >= g_rva01075350 )
+	if ( pointSize.value >= 0.0f )
 	{
 		int size = (int)pointSize.value;
 		Rva00476440 *table = nameSlot->m_value;

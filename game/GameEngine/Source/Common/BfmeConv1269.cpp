@@ -12,14 +12,11 @@
 // non-const extern float and a const one loads the same address, so the code
 // is byte-identical; only the reference's mangled name changes.
 extern float g_bfmeDefaultBU;
-// Retail 0x0107533C is the 0.5f in game/Libraries/Source/EA/Apt/aptMathRound.cpp
-// as ?g_rva0107533C@@3MB, written there as `extern const float g_rva0107533C`,
-// so the datum really has external linkage: aptMathRound.obj carries it as
-// IMAGE_SYM_CLASS_EXTERNAL (storage 2), not STATIC. This TU's reference
-// therefore resolves at link time. The census still charges it as unresolved
-// because link_census indexes no object under game/Libraries/Source/EA/ -- a
-// census scope gap, not a defect in this declaration.
-extern const float g_rva0107533C;
+// Retail's three FMUL operands at VA 0x0107533C read the readonly float 0.5f,
+// independently verified by data_rows.csv's ?g_rva0107533C@@3MB row.
+// The local readonly constant below lets the gate check its value directly.
+// Volatile retains each multiplication before the following vector load;
+// a plain 0.5f literal moves it after that load under MSVC 7.1.
 
 struct BfmeVec1269
 {
@@ -58,12 +55,13 @@ public:
 void BfmeA1269::bfmeGet1269(BfmeVec1269 *out, int a, int b, int c, int d)
 {
 	BfmeVec1269 t;
+	static const volatile float half = 0.5f;
 
 	bfmeFill1269(&t, a, b, c, d);
 	volatile float *bfmeBase = &((BfmeG1269 *)TheWritableGlobalData)->m_bfmeab4;
-	t.m_bfme00 = (*bfmeBase + g_bfmeDefaultBU) * g_rva0107533C * t.m_bfme00;
-	t.m_bfme04 = (*bfmeBase + g_bfmeDefaultBU) * g_rva0107533C * t.m_bfme04;
-	t.m_bfme08 = (*bfmeBase + g_bfmeDefaultBU) * g_rva0107533C * t.m_bfme08;
+	t.m_bfme00 = (*bfmeBase + g_bfmeDefaultBU) * half * t.m_bfme00;
+	t.m_bfme04 = (*bfmeBase + g_bfmeDefaultBU) * half * t.m_bfme04;
+	t.m_bfme08 = (*bfmeBase + g_bfmeDefaultBU) * half * t.m_bfme08;
 	out->m_bfme00 = t.m_bfme00;
 	out->m_bfme04 = t.m_bfme04;
 	out->m_bfme08 = t.m_bfme08;
