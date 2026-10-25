@@ -1,8 +1,8 @@
 diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-index 60df2491d6c680d667ad689a1e79e7203aca56e3..e0ef1cd6d153f41a4dcd400bc3b772e39708aa34 100644
+index 60df2491d6c680d667ad689a1e79e7203aca56e3..6f590f236f882e4fa62d50b22b5214ed2c5a4b8c 100644
 --- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
 +++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-@@ -181 +181,102 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
+@@ -181 +181,112 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
  }
 +
 +
@@ -55,30 +55,8 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..e0ef1cd6d153f41a4dcd400bc3b772e3
 +// Its canonical declaration replaces the bank's void-function pointer cast.
 +bool __cdecl Rva008C4A30Check(Rva8CD130Value *value);
 +
-+static __forceinline AptValue *coerceBoolean008C6AD0(AptValue *value, int type)
-+{
-+	// Keep the cached type across the compiler-only helper-entry boundary.
-+	_ReadWriteBarrier();
-+	if (type == 5)
-+	{
-+		bool result = value->m_boolean;
-+		return AptBoolean::Create(result);
-+	}
-+	if (type == 6)
-+	{
-+		if (value->toNumber() != g_rva01075350)
-+			return AptBoolean::Create(true);
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
-+	}
-+	if (type == 7)
-+	{
-+		if (value->toNumber() != g_rva01075350)
-+			return AptBoolean::Create(true);
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
-+	}
-+	{ AptValue *result = AptBoolean::Create(false); _ReadWriteBarrier(); return result; }
-+}
-+
++// Keep one shared numeric site in the structured main arm. The later
++// coercion cases jump back to it; distinct tags retain both false suffixes.
 +AptValue *BooleanCoerce008C6AD0(void *, int count)
 +{
 +	if (count == 0)
@@ -89,28 +67,60 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..e0ef1cd6d153f41a4dcd400bc3b772e3
 +	AptValue *value = args[stack.m_count - 1];
 +	int type = value->m_valueBits & 63;
 +	if (type >= 12 && type <= 19 && !value->isUndefined())
-+		return AptBoolean::Create(true);
++		goto common_true;
 +	if (type == 27 && !value->isUndefined())
-+		return AptBoolean::Create(true);
++		goto common_true;
 +	if (value == g_bfmeFallbackDB)
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
++	{
++		AptValue *result = AptBoolean::Create(false);
++		_WriteBarrier();
++		return result;
++	}
 +
 +	if (!value->isType(6) && !value->isType(7))
 +	{
 +		if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
-+			{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
++		{
++			AptValue *result = AptBoolean::Create(false);
++			_WriteBarrier();
++			return result;
++		}
++
++numeric_value:
 +		if (value->toNumber() != g_rva01075350)
-+			return AptBoolean::Create(true);
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
++			goto common_true;
++
++		{
++			AptValue *result = AptBoolean::Create(false);
++			_WriteBarrier();
++			return result;
++		}
 +	}
-+	return coerceBoolean008C6AD0(value, type);
++
++	if (type == 5)
++	{
++		bool result = value->m_boolean;
++		return AptBoolean::Create(result);
++	}
++	if (type == 6)
++		goto numeric_value;
++	if (type == 7)
++		goto numeric_value;
++	{
++		AptValue *result = AptBoolean::Create(false);
++		_ReadWriteBarrier();
++		return result;
++	}
++
++common_true:
++	return AptBoolean::Create(true);
 +}
 diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..ad7cd4d3161450e5574bebe5dcbf69ca24d5c760
+index 0000000000000000000000000000000000000000..fe536844560581b64489be5b2f029d461dbb4ed3
 --- /dev/null
 +++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-@@ -0,0 +1,199 @@
+@@ -0,0 +1,223 @@
 +# Registered conversion callback at 0x008C6AD0
 +
 +## Scope and baseline
@@ -186,7 +196,7 @@ index 0000000000000000000000000000000000000000..ad7cd4d3161450e5574bebe5dcbf69ca
 +if/switch/ternary/Boolean-output forms produced a 217-byte merged body or
 +260--272-byte alternatives. Those trials are not repeated here.
 +
-+Seven complete-file candidates isolate the new context hypotheses:
++Eight complete-file candidates isolate the new context hypotheses:
 +
 +1. `00-canonical-control.cpp` preserves the bank's raw-shift predicates and
 +   free inline coercion helper, while fixing its typed callee and data bindings.
@@ -217,8 +227,16 @@ index 0000000000000000000000000000000000000000..ad7cd4d3161450e5574bebe5dcbf69ca
 +   boundary there preserves the caller's numeric/false fall-through before
 +   the coercion block. Passing the type avoids a flags reload across that
 +   barrier. Both existing after-call false-tail tags and the array-local
-+   load order remain unchanged. This is the next finite native experiment;
-+   the source boundary is a hypothesis, not a guarantee of block placement.
++   load order remain unchanged. Its measured null result is recorded below.
++8. `07-structured-shared-numeric.cpp` puts one explicit numeric label inside
++   the structured negative main guard used in 04. The predicate and common
++   false block stay in that arm; the later coercion type-6/type-7 checks jump
++   back to the one numeric label, with common true last. This combines the
++   structured fall-through from 04 with 05's single shared numeric site,
++   retaining the proven distinct false-tail tags and corrected array load.
++   Fallback and predicate keep 04's actual early factory returns with the
++   matching `_WriteBarrier()` tag, rather than 05's common-false gotos.
++   It is the next finite native experiment, not an asserted exact recovery.
 +
 +The fourth experiment follows the specific tail-cross-jump technique in
 +`docs/shape_levers.md`, independently witnessed by the already matched
@@ -303,10 +321,26 @@ index 0000000000000000000000000000000000000000..ad7cd4d3161450e5574bebe5dcbf69ca
 +relocations. The GitHub artifact digest and all frozen payload inputs were
 +verified before using this raw probe evidence.
 +
-+Experiment 06 tests only the helper-entry boundary after that measured
-+flat-CFG reordering. No external call or write lies between the caller's
-+cached type and the helper on the coercion path, so passing that type
-+preserves the observed low-six-bit value. The barrier is before the type
-+tests, not inside either numeric arm; the shared numeric tail remains
-+eligible to merge. Its native result and the full qualification gate remain
-+pending. No recovered C++ byte gain has been recorded by these experiments.
++Native explore run `40185948942`, from immutable fork payload
++`4070002d1d62a4745296c9af06db8ae2ac6f3509`, compiled experiment 06.
++Its complete raw retail/ours instruction table is identical to experiment
++04's table: 229/233 bytes, 11 relocations, 120 differing non-relocation
++bytes, first difference +0x3C, and eight relocation-site layout differences.
++The cached type and helper-entry barrier did not change this body's output.
++This specific helper-boundary lever is therefore exhausted here. The
++520-byte sibling remains exact modulo relocations.
++
++Experiment 07 addresses the two measured source-structure constraints
++together: 04 kept the structured main arm but let the helper's numeric
++copy win the merge; 05 had one numeric site but its flat positive guards
++made coercion fall through first. The new single numeric label lives inside
++the structured negative arm. Its backward entries bypass only statements,
++not initialized declarations; every local Boolean factory result is declared
++in its own nested return block, and the numeric label is outside those
++scopes. No goto enters a scope past that initialization. Fallback and
++predicate retain the early-return spelling that kept the common false block
++before coercion in 04; only the numeric path itself occupies the shared
++label. The type and receiver are initialized before every possible entry,
++and the helper-entry barrier from 06 is not retained.
++The native result and full qualification gate remain pending. No recovered
++C++ byte gain has been recorded by these experiments.

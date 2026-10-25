@@ -1,12 +1,12 @@
-Explore Apt coercion helper-entry boundary at 0x008C6AD0
+Explore structured shared Apt numeric path at 0x008C6AD0
 
-Restore the measured inline-helper shape and retain the corrected
-stack-array load order and distinct false-return barrier tags. Pass
-the already cached type to the private force-inlined helper and add
-one compiler-only ReadWriteBarrier at its entry. The matched
-Rva008D20F0ParentWalk demonstrates a cached tag across this barrier.
-The preceding flat-label experiment emitted 237 of 233 target bytes.
-Keep the complete 520-byte sibling source unchanged.
+The helper-entry barrier produced the same complete instruction table as
+experiment 04. Keep its measured structured negative guard and early false
+returns, but express the shared numeric conversion at one labelled site
+inside that arm. The later coercion type checks jump back to this site.
+Keep the common true exit last, the distinct false-return tags, the proven
+stack-array load order, and the complete 520-byte sibling source unchanged.
+All initialized factory-result locals remain in their own return scopes.
 
 This is exploratory input: no admission or new exact C++ bytes are claimed.
 

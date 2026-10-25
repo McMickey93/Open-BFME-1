@@ -25,7 +25,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Canonical callee and data bindings; cached type across helper-entry compiler barrier; distinct post-call false tails; proven stack-array local order; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "notes": "Canonical callee and data bindings; one numeric site inside structured negative guard; backward coerce entries; distinct post-call false tails; proven stack-array local order; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
   "admissions": [
     {
       "rva": "0x008C6AD0",
@@ -35,23 +35,23 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "35985f45c3554b33fc5f488ede5f29d9d43006b2",
-  "patch_sha256": "31f49466fec6468e9112e168b6ea477bfde277f44497c7cd6f3a890c731d42d6",
-  "message_sha256": "d9c0eebd0e8db56ca7e51cafd6ef6430f0e9e2cdce2017a7379084e6949ccb5b",
+  "patch_tree": "bc4017393a4f7469fa650b286f713b5d88aa5ce1",
+  "patch_sha256": "c0286cdb124e4db9b14074f7b796cda999289ec9e9a678dcae2f80cd2845719a",
+  "message_sha256": "3bddc9273f844922901c38895fab086f9babface15823ed251568ec0f83bdd10",
   "files": [
     {
       "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "mode": "100644",
       "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
-      "candidate_blob": "e0ef1cd6d153f41a4dcd400bc3b772e39708aa34",
-      "sha256": "a136ef2189ce1dc62377f528c72fae26c877842c67535575c57ad258f7478a67"
+      "candidate_blob": "6f590f236f882e4fa62d50b22b5214ed2c5a4b8c",
+      "sha256": "872ab57f5654deadc23c474e1307b6a73709030d396b5cfd923b3c827539f927"
     },
     {
       "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "ad7cd4d3161450e5574bebe5dcbf69ca24d5c760",
-      "sha256": "155c50819795a5d1ed84aa45e44532a315028ae33bc47af21ce85690235f7010"
+      "candidate_blob": "fe536844560581b64489be5b2f029d461dbb4ed3",
+      "sha256": "a9504d46a15f01bc12664c0853e86843216c28a24fa3285ce4f6f88b0b04d326"
     }
   ],
   "base_rows": [
