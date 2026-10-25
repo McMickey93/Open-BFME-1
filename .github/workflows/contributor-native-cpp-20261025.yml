@@ -48,15 +48,18 @@ jobs:
           require_python3 contributor-selection
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
+          git fetch --no-tags origin refs/heads/master:refs/remotes/origin/master
           git rev-parse HEAD
-      - name: Select an eligible whole-file candidate without claiming or editing it
+      - name: Read the selected candidate and its current prerequisites
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
           require_python3 contributor-selection
-          python3 tools/next_work.py
+          python3 tools/brief.py --rvas 0x00778590
+          python3 tools/callees.py 0x00778590 3986
+          python3 tools/find_declared_unmatched.py game/GameEngineDevice/Source/W3DDevice/GameClient/Draw/W3DModelDraw.cpp
       - name: Inspect ranked C++ reconstruction leads
         if: success() || failure()
         shell: bash
@@ -65,8 +68,23 @@ jobs:
           set -euo pipefail
           source .githooks/python3.sh
           require_python3 contributor-selection
-          python3 tools/next_work.py --ranked --limit 8
-          python3 tools/list_naked_candidates.py game
+          python3 tools/lift_lane.py
+          python3 tools/list_naked_candidates.py game --ranked
+      - name: Inspect current reference transfers
+        if: success() || failure()
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-reference-selection
+          git submodule update --init --depth 1 inputs/reference/open-bfme-2
+          git -C inputs/reference/open-bfme-2 fetch --no-tags origin master
+          git -C inputs/reference/open-bfme-2 rev-parse HEAD FETCH_HEAD
+          python3 tools/bfme2_sweep.py sources --limit 8
+          python3 tools/bfme2_sweep.py scan --limit 800
+          python3 tools/bfme2_sweep.py ranked --limit 12
+          python3 tools/bfme2_sweep.py near --limit 12
       - name: Measure this session against official master
         if: success() || failure()
         shell: bash
