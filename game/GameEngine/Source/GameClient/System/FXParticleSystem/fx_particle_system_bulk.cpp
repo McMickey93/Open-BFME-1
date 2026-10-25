@@ -320,7 +320,8 @@ extern void *g_vtbl_011122C4[];
 extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@")[];
 // ?g_vtbl_011122DC@@3PAPAXA: use the owner recorded at 0x011122DC.
 extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot1@@@")[];
-extern void *g_vtbl_011122E0[];
+// ?g_vtbl_011122E0@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01112304[];
 extern void *g_vtbl_01112318[];
 // ?g_vtbl_0111231C@@3PAPAXA: use the owner recorded at 0x0111231C.
@@ -738,7 +739,7 @@ public:
 
 __forceinline void initializePointEmissionVolumeModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_011122E0;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot1@@@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@");
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_011122C4;
