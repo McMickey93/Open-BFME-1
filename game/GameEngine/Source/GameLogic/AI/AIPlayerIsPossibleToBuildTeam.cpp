@@ -173,19 +173,10 @@ private:
 };
 
 class Team;
-class Gen_001604e0
-{
-public:
-	Int m();
-};
-
 class TeamInQueue
 {
 public:
-	TeamInQueue *getNext()
-	{
-		return (TeamInQueue *)((Gen_001604e0 *)this)->m();
-	}
+	TeamInQueue *dlink_next_TeamBuildQueue() const;
 	char m_prefix[0x1c];
 	Team *m_team;
 };
@@ -224,7 +215,7 @@ private:
 	Player *m_player;
 };
 
-extern const float g_rva0107533C;
+
 
 extern AI *TheAI;
 class ThingFactory;
@@ -290,7 +281,7 @@ Bool AIPlayer::isPossibleToBuildTeam(TeamPrototype *proto,
 				thingCost = 0;
 			cost = (Int)(cost + thingCost *
 				((float)(unitInfo->maxUnits + unitInfo->minUnits()) *
-					g_rva0107533C));
+					0.5f));
 		}
 		++i;
 		++unitInfo;
@@ -346,7 +337,7 @@ Bool AIPlayer::isAGoodIdeaToBuildTeam(TeamPrototype *proto)
 		return false;
 	}
 
-	for (TeamInQueue *team = m_teamBuildQueue; team; team = team->getNext())
+	for (TeamInQueue *team = m_teamBuildQueue; team; team = team->dlink_next_TeamBuildQueue())
 		if (team->m_team->getPrototype() == proto)
 			return false;
 
