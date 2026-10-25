@@ -1,8 +1,8 @@
 diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-index 60df2491d6c680d667ad689a1e79e7203aca56e3..828b7acd020562ee40679ab766e03a5f1364f06f 100644
+index 60df2491d6c680d667ad689a1e79e7203aca56e3..4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9 100644
 --- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
 +++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-@@ -181 +181,115 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
+@@ -181 +181,113 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
  }
 +
 +
@@ -55,8 +55,8 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..828b7acd020562ee40679ab766e03a5f
 +// Its canonical declaration replaces the bank's void-function pointer cast.
 +bool __cdecl Rva008C4A30Check(Rva8CD130Value *value);
 +
-+// Keep one shared numeric site in the structured main arm. The later
-+// coercion cases jump back to it; distinct tags retain both false suffixes.
++// Keep split coercion guards and separately tagged early false returns.
++// The later coercion cases jump back to the single numeric site.
 +AptValue *BooleanCoerce008C6AD0(void *, int count)
 +{
 +	if (count == 0)
@@ -77,310 +77,70 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..828b7acd020562ee40679ab766e03a5f
 +		return result;
 +	}
 +
-+	if (!value->isType(6) && !value->isType(7))
++	if (value->isType(6))
++		goto coerce_value;
++	if (value->isType(7))
++		goto coerce_value;
++	if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
 +	{
-+		if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
-+		{
-+			AptValue *result = AptBoolean::Create(false);
-+			_WriteBarrier();
-+			return result;
-+		}
-+
-+numeric_value:
-+		if (value->toNumber() != g_rva01075350)
-+			goto common_true;
-+
-+		{
-+			AptValue *result = AptBoolean::Create(false);
-+			_WriteBarrier();
-+			return result;
-+		}
++		AptValue *result = AptBoolean::Create(false);
++		_WriteBarrier();
++		return result;
 +	}
 +
-+	else
++numeric_value:
++	if (value->toNumber() != g_rva01075350)
++		goto common_true;
 +	{
-+		if (type == 5)
-+		{
-+			bool result = value->m_boolean;
-+			return AptBoolean::Create(result);
-+		}
-+		if (type == 6)
-+			goto numeric_value;
-+		if (type == 7)
-+			goto numeric_value;
-+		{
-+			AptValue *result = AptBoolean::Create(false);
-+			_ReadWriteBarrier();
-+			return result;
-+		}
++		AptValue *result = AptBoolean::Create(false);
++		_WriteBarrier();
++		return result;
++	}
++
++coerce_value:
++	if (type == 5)
++	{
++		bool result = value->m_boolean;
++		return AptBoolean::Create(result);
++	}
++	if (type == 6)
++		goto numeric_value;
++	if (type == 7)
++		goto numeric_value;
++	{
++		AptValue *result = AptBoolean::Create(false);
++		_ReadWriteBarrier();
++		return result;
 +	}
 +
 +common_true:
 +	return AptBoolean::Create(true);
 +}
 diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-new file mode 100644
-index 0000000000000000000000000000000000000000..300ca2c77e486ac4edf11251548169a4325d05a8
---- /dev/null
+index 08d5ed4f201bd3c7fcdd298f9dc319a9e71f5923..7710643babd47e3a1e90af9b8c754d2ce13b1bce 100644
+--- a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
 +++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-@@ -0,0 +1,260 @@
-+# Registered conversion callback at 0x008C6AD0
+@@ -128 +128,23 @@ Variant 08 was a measured null result. Its material contribution to the
+ investigation still requires the `[BFME 2 donor]` commit-title prefix.
 +
-+## Scope and baseline
++## Prospective native experiment 09: split guards with early false returns
 +
-+The baseline is `3d3b0681294a0de92aae10ea1a753ae22068f091`.
-+`ea_evidence.csv` assigns this callback to
-+`Libraries/Source/Apt/AptActionInterpreter.cpp`. Its proper local home is
-+`game/Libraries/Source/Apt/AptActionInterpreter.cpp`. That whole translation
-+unit contains one existing matched body, `rva8CF1B0ProcessRecord` at
-+`0x008CF1B0`, 520 bytes. The existing source prefix is unchanged.
++The preservation record distinguishes one combination not measured by 03-08:
++keep 07's separately tagged early false returns, but replace the negative
++two-term coercion guard with two positive guard jumps to the coercion block.
++The shared numeric site, all calls and barriers, and the cached type stay
++unchanged. Variant 05 also used split guards, but changed those false returns
++to gotos; it therefore does not measure this isolated combination.
 +
-+The new callback keeps the bank's address-qualified name
-+`BooleanCoerce008C6AD0(void *, int)`. Neither this descriptive name nor the
-+inline helper is presented as an original EA function name. The registration
-+in `Rva0089BBF0InitGlobals.cpp` places the address in a built-in callback
-+object, without proving a more specific source-level identity.
++`docs/shape_levers.md` documents at `0x0068D730` that splitting a conjunction
++into two early-return guards restores an intermediate shared return block's
++placement. That is a source-structure witness for this bounded experiment,
++not proof: these coercion guards jump to a value block rather than returning.
++The older nine if/switch/ternary trials merged the false copies and do not
++establish this combination with distinct post-call barrier tags.
 +
-+Both the new callback and the existing same-file body are covered by official
-+claim lease `fd901b9cef4049468a07d3aad4b4df9e`, claim commit
-+`2eaf3e0ac530cd53f2ecf4cf4aa2a18346935f6b`, owned by
-+`github:mcmickey93:bfme1:cpp-loop-2` and expiring at 2026-10-25 13:29:43 UTC.
-+
-+## Boundary and ABI
-+
-+The complete decode begins at `0x008C6AD0`. The last `ret` is at offset
-+`+0xE8`; padding begins at `+0xE9`, establishing the 233-byte extent.
-+The zero-argument-count path returns at `+0x0D`; the remaining return paths
-+end at `+0xAB`, `+0xC6`, `+0xDC` and `+0xE8`. All conditional destinations
-+remain inside the body. The function reads the second stack argument as its
-+count, leaves arguments on the caller's stack, and returns a pointer in EAX.
-+Its first stack argument is unused in these bytes.
-+
-+The value flags occupy offset +4, with the low six type bits and validity
-+bit 15. Boolean payload reads use offset +8. The existing matched numeric
-+converter and Boolean factory independently witness these fields. The
-+canonical numeric predicate also provides a verified C++ validity-bitfield
-+view; it is a source-context lead, not proof that this callback matches.
-+
-+The three distinct direct callees are already matched:
-+
-+| RVA | Existing declaration | Call evidence here |
-+| --- | --- | --- |
-+| `0x008983D0` | `float AptValue::toNumber()` | ECX receiver, no stack argument, result consumed on x87 stack |
-+| `0x008996B0` | `AptBoolean *AptBoolean::Create(bool)` | One stack argument, caller removes four bytes, pointer result in EAX |
-+| `0x008C4A30` | `bool __cdecl Rva008C4A30Check(Rva8CD130Value *)` | One pointer pushed at +0x7D, caller removes four bytes, tests AL |
-+
-+The predicate's 873-byte recovery and its independent caller and unwind
-+checks are documented in `008c4a30-numeric-predicate.md`. The bank's
-+`void d_008c4a30()` cast is replaced by that proven typed declaration.
-+No new callee binding is needed.
-+
-+## Data bindings
-+
-+The bank's `g_bfmeCount1233` pin points at the old `0x00F38748` address.
-+The candidate instead reuses `Rva008AE770TheStack`, pinned at VA
-+`0x01338748`, with the same twelve-byte prefix as the adjacent matched
-+`0x008C6800` callback: count at +0, an unused word at +4, and the value-array
-+pointer at +8. The fallback pointer reuses `g_bfmeFallbackDB` at
-+`0x013379BC`, whose four-byte storage already has a matched data row.
-+
-+The numeric comparison reuses the matched data owner `g_rva01075350`.
-+Its four bytes at VA `0x01075350` are `00 00 00 00`, and the retail callback
-+loads it from memory before `fucompp`. An extern float declaration preserves
-+that access; replacing it with a folded literal could change the instruction
-+shape. The preferred bank's unbound `BfmeZeroRange` name is not carried over.
-+
-+## Bounded experiment
-+
-+The preferred bank remains unchanged. Its three existing verdicts describe
-+an important unresolved control-flow constraint: retail keeps four Boolean
-+factory call blocks, including two separate false blocks at +0xA0 and
-++0xD1, while sharing the numeric-conversion tail. The previously tried nine
-+if/switch/ternary/Boolean-output forms produced a 217-byte merged body or
-+260--272-byte alternatives. Those trials are not repeated here.
-+
-+Nine complete-file candidates isolate the new context hypotheses:
-+
-+1. `00-canonical-control.cpp` preserves the bank's raw-shift predicates and
-+   free inline coercion helper, while fixing its typed callee and data bindings.
-+2. `01-native-validity.cpp` adds the validity-bitfield representation already
-+   used by the matched predicate, keeping the same free inline helper.
-+3. `02-native-member-context.cpp` also makes coercion an inline value member,
-+   so the value and its typed predicates share a native member context.
-+4. `03-split-false-barriers.cpp` starts from corrected control 00 and tags
-+   the common false-return paths with `_WriteBarrier()`, while tagging only
-+   the coercion default-false path with `_ReadWriteBarrier()`. It is the
-+   first native experiment, with the measured result recorded below;
-+   00--02 have not been compiled here.
-+5. `04-after-call-barriers.cpp` moves those same barrier tags after the
-+   factory calls, keeping each zero-code marker inside its return suffix.
-+   It also loads the stack array into a local before indexing by the count,
-+   following the already matched `Rva008C6800.cpp` callback's statement order.
-+   Its measured result is recorded below.
-+6. `05-flat-cfg-barriers.cpp` keeps 04's corrected stack-array local and
-+   replaces the inline coercion split with explicit labels in the retail
-+   block order: numeric, common false, payload coercion, default false,
-+   common true. The proven distinct false-tail barrier tags remain. Earlier
-+   goto trials lacked effective tail separation; this is the combined
-+   control-flow test after that prerequisite changed, not a repeat of them.
-+   Its measured result is recorded below.
-+7. `06-helper-entry-barrier.cpp` returns to 04's inline helper and passes
-+   the already cached low-six-bit type as an explicit parameter. A single
-+   `_ReadWriteBarrier()` at the helper's entry tests whether an optimization
-+   boundary there preserves the caller's numeric/false fall-through before
-+   the coercion block. Passing the type avoids a flags reload across that
-+   barrier. Both existing after-call false-tail tags and the array-local
-+   load order remain unchanged. Its measured null result is recorded below.
-+8. `07-structured-shared-numeric.cpp` puts one explicit numeric label inside
-+   the structured negative main guard used in 04. The predicate and common
-+   false block stay in that arm; the later coercion type-6/type-7 checks jump
-+   back to the one numeric label, with common true last. This combines the
-+   structured fall-through from 04 with 05's single shared numeric site,
-+   retaining the proven distinct false-tail tags and corrected array load.
-+   Fallback and predicate keep 04's actual early factory returns with the
-+   matching `_WriteBarrier()` tag, rather than 05's common-false gotos.
-+   Its distinct measured layout is recorded below.
-+9. `08-explicit-coerce-else.cpp` makes the complete coercion dispatch the
-+   explicit `else` arm of 07's negative guard. It retains the single numeric
-+   label and both backward entries, the early false returns, distinct tags,
-+   corrected array load, and final true label. This one arm-ownership change
-+   follows the scoped BFME 2 compiler witness described below. It is the next
-+   finite native experiment, not an asserted exact recovery.
-+
-+The fourth experiment follows the specific tail-cross-jump technique in
-+`docs/shape_levers.md`, independently witnessed by the already matched
-+`stlport_narrow_string_find_char_alias.cpp` at `0x00653990` (69 bytes) and
-+`LinePassableStruct_linePassableCallback.cpp` at `0x003E5950` (203 bytes).
-+Those examples retain two identical return tails with distinct barrier
-+intrinsics, and direct a third site to the desired common tail by using the
-+same intrinsic there. Neither intrinsic emits code in those witnesses.
-+
-+Here the common false block must be shared by fallback, numeric-predicate
-+and equal-number exits; the coercion default false block must stay separate.
-+Experiment 03 placed the barriers immediately before the Boolean factory
-+calls. It retained four factory blocks, but moved the shared numeric block
-+and inverted its final branch, as measured below. Experiment 04 puts the
-+barrier after the factory call to test whether the retained return suffixes
-+keep that block at its original location. This is a separate code-layout
-+hypothesis, not a byte-exact claim from applying a source pattern. No earlier target attempt recorded this
-+barrier family. The true and payload-return paths are unchanged.
-+
-+They are retained under ignored `build/008c6ad0-canonical/`. None changes
-+the existing 520-byte source prefix, adds assembly, changes a shared header,
-+or adds a pin. A source spelling is only an experiment until the native
-+compiler and the ordinary relocation-aware gate verify it.
-+
-+## Reference review
-+
-+The BFME 2 reference remains at verified pointer
-+`beed8a16790a6812231ac7b05e3e6893e4cb5d1b`. Official upstream was fetched and
-+compared with `3f9923b971cff611ce3eaec2f3be591047b1de55`; the pointer was not
-+advanced without donor compilation checks. The Apt source-family review
-+and the bounded 10,000-body scan found no eligible exact callback transfer.
-+That scan returned zero eligible exact-unique packets and only two eligible
-+24-byte compiler funclet near matches. This is a bounded result, not a claim
-+that all reference opportunities are exhausted. The available GeneralsMD
-+source tree does not provide this Apt source directory.
-+
-+Experiment 08 additionally uses a precise source-structure lesson from the
-+same BFME 2 revision `beed8a16790a6812231ac7b05e3e6893e4cb5d1b`:
-+`docs/recipes.md:646-652` and the matched
-+`Code/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManager.cpp`
-+`shouldPlayLocally` body at `0x00053BA1` (320 bytes). Its recorded landing is
-+commit `6f35948871`, referenced in
-+`reverse/attempt_support/banked-landings-20261021/readme.md:42`.
-+That witness changed independent early-return dispatches to explicit
-+`if`/`else if`/`else` arms, restoring the EDI save and changing shared-tail
-+placement. It includes counted-info cleanup and register shrink-wrapping
-+that this Apt body does not have; it supports testing explicit arm ownership,
-+not claiming the same byte result or adopting its runtime implementation.
-+Because this donor evidence materially guides experiment 08, an eventual
-+successful recovery commit using it must carry the `[BFME 2 donor]` prefix.
-+
-+## Verification status
-+
-+Native explore run `40183973659`, from immutable fork payload
-+`deab741a9f5acd8f3878fa835feabe453d5d6dfc`, compiled experiment 03 with
-+the original MSVC 7.1. The new body emitted 229 bytes against retail's 233,
-+with 11 relocations and 121 non-relocation byte differences; the first
-+unmasked difference is at +0x1C. Eight relocation sites move with the block
-+layout, so the raw `probe.py --all` disassembly is the comparison evidence,
-+not the relocation-filled mismatch rendering.
-+
-+The differing barriers retained all four Boolean factory call blocks.
-+However, the shared numeric-conversion block moved from retail +0x8A to
-++0xB7, putting the true-return block before the default-false block. This
-+also shortened the second long conditional jump by four bytes. Separately,
-+the direct stack-index expression loaded count into EAX and array into ECX,
-+reversing the retail roles; experiment 04 uses the adjacent callback's
-+explicit array local to test that specific scheduling difference.
-+
-+The whole-file sibling at `0x008CF1B0` compiled exactly modulo relocation
-+slots. Exploration did not run admission or the ordinary complete gate,
-+and it added no C++ bytes. The full qualification gate has not run.
-+
-+Native explore run `40184542285`, from immutable fork payload
-+`23962975c075d98e7b54a13df19d38a105351a3f`, compiled experiment 04.
-+The explicit array local restored the exact initial EAX/ECX roles and the
-+indexed load: raw instructions match retail through +0x39, apart from
-+unfilled relocation slots. The first non-relocation difference is now the
-+branch displacement at +0x3C. The new body still has 229 bytes, 11
-+relocations, eight relocation-site layout differences, and 120 differing
-+non-relocation bytes. Its shared numeric block is at +0xB2, followed by the
-+true-return block and then the remaining type-7 test/default-false path;
-+retail requires the numeric block at +0x8A and the true-return block last.
-+The 520-byte same-file sibling remains exact modulo relocations.
-+
-+Native explore run `40185324109`, from immutable fork payload
-+`99fc4744554cef30253e6d331480be9ab18855e6`, compiled experiment 05 against
-+the accepted upstream advance `24cff7c3a0456ad66d13099bbb11d7c1434a0201`.
-+The new body emitted 237 bytes against retail's 233, with 11 relocations,
-+116 differing non-relocation bytes, and seven relocation-site layout
-+differences. The first unmasked difference remains +0x3C. Despite the source
-+labels, the compiler placed coercion at +0x81, the predicate at +0xB2,
-+numeric conversion at +0xBF, true at +0xD5, and common false at +0xE1.
-+The distant common-false block widened the fallback conditional jump.
-+All four factory blocks remain, but neither the block order nor the byte
-+stream matches retail. The 520-byte sibling is still exact modulo
-+relocations. The GitHub artifact digest and all frozen payload inputs were
-+verified before using this raw probe evidence.
-+
-+Native explore run `40185948942`, from immutable fork payload
-+`4070002d1d62a4745296c9af06db8ae2ac6f3509`, compiled experiment 06.
-+Its complete raw retail/ours instruction table is identical to experiment
-+04's table: 229/233 bytes, 11 relocations, 120 differing non-relocation
-+bytes, first difference +0x3C, and eight relocation-site layout differences.
-+The cached type and helper-entry barrier did not change this body's output.
-+This specific helper-boundary lever is therefore exhausted here. The
-+520-byte sibling remains exact modulo relocations.
-+
-+Experiment 07 addresses the two measured source-structure constraints
-+together: 04 kept the structured main arm but let the helper's numeric
-+copy win the merge; 05 had one numeric site but its flat positive guards
-+made coercion fall through first. The new single numeric label lives inside
-+the structured negative arm. Its backward entries bypass only statements,
-+not initialized declarations; every local Boolean factory result is declared
-+in its own nested return block, and the numeric label is outside those
-+scopes. No goto enters a scope past that initialization. Fallback and
-+predicate retain the early-return spelling that kept the common false block
-+before coercion in 04; only the numeric path itself occupies the shared
-+label. The type and receiver are initialized before every possible entry,
-+and the helper-entry barrier from 06 is not retained.
-+
-+Native explore run `40186548577`, from immutable fork payload
-+`b172365a8ced0dc8dcf69634c0604d632f6861df`, compiled experiment 07.
-+It emitted 229/233 bytes with 11 relocations, 120 differing non-relocation
-+bytes, eight relocation-site layout differences, and first unmasked
-+difference +0x3C. Unlike 04/06, both coercion type checks are now together
-+at +0xAD/+0xB2. The shared numeric block still follows coercion at +0xB7,
-+with true at +0xCD and default false at +0xD9; common false stays at +0x86.
-+Its two structural differences therefore reflect a distinct layout, not an
-+identical-output repeat. The original 520-byte sibling remains exact modulo
-+relocations. The required numeric-before-coercion ordering is still absent.
-+
-+Experiment 08 tests only explicit ownership of the coercion `else` arm after
-+that result. The goto-scope argument above still applies: both backward
-+entries reach the numeric label outside every nested initialized result
-+scope. No new declaration, predicate, call, barrier, data binding or compiler
-+flag is introduced. Its native result and the full qualification gate remain
-+pending. No recovered C++ byte gain has been recorded by these experiments.
++The complete candidate is 8,383 source bytes, Git blob
++`4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9`, SHA256
++`65c44e200bcf7cf6427616ac29ccfdfe0d62c10a9e1c07114dc46bd57c5f0186`.
++Its original 5,349-byte sibling prefix is unchanged. This record precedes
++the native experiment; no exact result or admission is claimed here.

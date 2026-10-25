@@ -1,12 +1,10 @@
-[BFME 2 donor] Explore explicit Apt coercion else arm at 0x008C6AD0
+[BFME 2 donor] Explore split Apt coercion guards with early false returns
 
-The structured shared-numeric experiment still emitted 229 of 233 target
-bytes. Keep that complete body and wrap only the coercion dispatch in an
-explicit else arm. The BFME 2 shouldPlayLocally source-structure witness
-motivates this bounded test; its distinct shrink-wrapping context and exact
-revision are documented in the identity evidence. No runtime implementation
-is transferred. Retain every guard, call, label, barrier and data binding,
-and keep the complete 520-byte sibling source unchanged.
+Keep the complete best07 source and split only its outer coercion guard.
+The prior flat CFG also changed the early false returns to shared gotos;
+this independent combination retains their measured barrier tags and all
+data/callee bindings. BFME1's verified 0068D730 split-guard placement is a
+bounded source-context witness, with its different return shape documented.
 
 This is exploratory input: no admission or new exact C++ bytes are claimed.
 

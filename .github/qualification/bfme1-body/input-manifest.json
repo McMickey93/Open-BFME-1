@@ -2,8 +2,8 @@
   "schema_version": 1,
   "repository": "McMickey93/Open-BFME-1",
   "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
-  "base": "3d3b0681294a0de92aae10ea1a753ae22068f091",
-  "base_tree": "be82e5a8f5ce5322f5793f6505d2bcc3f50d880b",
+  "base": "1f190a83f3c2236db2da4906c46d38c3185a6a42",
+  "base_tree": "ada6b35d3fce7bda4815263da97032d3d2f14b02",
   "mode": "explore",
   "body": {
     "rva": "0x008C6AD0",
@@ -25,7 +25,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Canonical callee and data bindings; explicit coercion else arm; shared numeric site and backward entries; BFME 2 source-structure witness; distinct post-call false tails; proven stack-array local order; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "notes": "Split positive coercion guards and separate tagged early false returns; verified0068D730 placement witness with documented limitations; all canonical bindings and complete matched sibling unchanged; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
   "admissions": [
     {
       "rva": "0x008C6AD0",
@@ -35,23 +35,23 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "e2e4f0d557e6d783884a39efb19ac1c861a68463",
-  "patch_sha256": "b506669e88a4f567d1c477dc67aa2f3c160c2e2305163b2d0e763a7e05890fc1",
-  "message_sha256": "9be2e63d737a54503a8dcf7c1a3578d384eb982da22a8079efe491de6707bd16",
+  "patch_tree": "08c98082ce1da1e54769605a235a826ca7cd4436",
+  "patch_sha256": "d3e3a11154a29853b887cc559d94858a6906edebaa061ecb53cdd10623b8efe9",
+  "message_sha256": "fde273651d9082838ade0f43ce2f813c2d90eb2ea708bc4adb6d977a67373f31",
   "files": [
     {
       "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "mode": "100644",
       "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
-      "candidate_blob": "828b7acd020562ee40679ab766e03a5f1364f06f",
-      "sha256": "d9605337ffa59820fa0d11c557f6c0813022bee0278c5c3e46d3a3f00d5b7d40"
+      "candidate_blob": "4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9",
+      "sha256": "65c44e200bcf7cf6427616ac29ccfdfe0d62c10a9e1c07114dc46bd57c5f0186"
     },
     {
       "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
       "mode": "100644",
-      "base_blob": null,
-      "candidate_blob": "300ca2c77e486ac4edf11251548169a4325d05a8",
-      "sha256": "37d37e749e7d4072117c6e814cc3a78d2a2a98dba68dde1963f2f187aae8777e"
+      "base_blob": "08d5ed4f201bd3c7fcdd298f9dc319a9e71f5923",
+      "candidate_blob": "7710643babd47e3a1e90af9b8c754d2ce13b1bce",
+      "sha256": "3c743bb249229885f2e04f766bbbeb65e61a0e4cdc753130fa42d42ce490e6e5"
     }
   ],
   "base_rows": [
