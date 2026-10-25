@@ -45,7 +45,8 @@ typedef char AsciiStringSizeCheck[(sizeof(AsciiString) == 4) ? 1 : -1];
 struct FieldParse;
 
 class GameFont;
-extern const FieldParse g_010F9830[];
+// Retire ?g_010F9830@@3QBUFieldParse@@B: use the recorded table at VA 0x010F9830.
+extern "C" const FieldParse __identifier("?g_010F9830@@3QBEB")[];
 
 class HeaderTemplate
 {
@@ -69,7 +70,7 @@ public:
 	// The owning table uses BFME's Font/Point/Bold offsets at +8/+C/+10.
 	const FieldParse *getFieldParse( void ) const
 	{
-		return g_010F9830;
+		return __identifier("?g_010F9830@@3QBEB");
 	}
 
 private:

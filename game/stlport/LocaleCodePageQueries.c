@@ -357,6 +357,7 @@ char *Rva0084EF30(LocaleCodePageObject_0084EED0 *object)
 /* Each query owns its static buffer in retail; the 0x104-byte date formats do not share the 9-byte AM/PM ones. */
 extern char *__cdecl Rva0084DE40Tail(char *buffer);
 
+// Retire _locale_buffer_008504C0: VA 0x0130C4E8 records locale_buffer_0084ECA0.
 extern char locale_buffer_0084ECA0[];
 
 char *Rva0084ECA0(LocaleCodePageObject_0084EED0 *object)
@@ -370,6 +371,7 @@ char *Rva0084ECA0(LocaleCodePageObject_0084EED0 *object)
     }
 }
 
+// Retire _locale_buffer_00850560: VA 0x0130C0D8 records locale_buffer_0084ECE0.
 extern char locale_buffer_0084ECE0[];
 
 char *Rva0084ECE0(LocaleCodePageObject_0084EED0 *object)
@@ -383,16 +385,16 @@ char *Rva0084ECE0(LocaleCodePageObject_0084EED0 *object)
     }
 }
 
-extern char locale_buffer_008504C0[];
+extern char locale_buffer_0084ECA0[];
 extern char g_Va0130C3A0[];
 extern char *__cdecl Rva0084ED20Tail(LocaleCodePageObject_0084EED0 *object);
 
 char *Rva008504C0(LocaleCodePageObject_0084EED0 *object)
 {
     LCID locale = object->locale;
-    GetLocaleInfoA(locale, 0x1f, locale_buffer_008504C0, 0x104);
+    GetLocaleInfoA(locale, 0x1f, locale_buffer_0084ECA0, 0x104);
     {
-        char *buffer = locale_buffer_008504C0;
+        char *buffer = locale_buffer_0084ECA0;
         __ConvertFromACP(buffer, 0x50, object->codePage);
         strcpy(g_Va0130C3A0, Rva0084DE40Tail(buffer));
         strcat(g_Va0130C3A0, " ");
@@ -401,15 +403,15 @@ char *Rva008504C0(LocaleCodePageObject_0084EED0 *object)
     }
 }
 
-extern char locale_buffer_00850560[];
+extern char locale_buffer_0084ECE0[];
 extern char g_Va0130C140[];
 
 char *Rva00850560(LocaleCodePageObject_0084EED0 *object)
 {
     LCID locale = object->locale;
-    GetLocaleInfoA(locale, 0x20, locale_buffer_00850560, 0x104);
+    GetLocaleInfoA(locale, 0x20, locale_buffer_0084ECE0, 0x104);
     {
-        char *buffer = locale_buffer_00850560;
+        char *buffer = locale_buffer_0084ECE0;
         __ConvertFromACP(buffer, 0x50, object->codePage);
         strcpy(g_Va0130C140, Rva0084DE40Tail(buffer));
         strcat(g_Va0130C140, " ");

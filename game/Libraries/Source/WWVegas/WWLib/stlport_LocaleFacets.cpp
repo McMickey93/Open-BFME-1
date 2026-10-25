@@ -352,7 +352,8 @@ static char *__TranslateToSystem(const char *lname, char *buf)
 extern "C" {
 
 /* Slot holding the "LC_CTYPE" category name. */
-extern const char *g_Rva012C83A0;
+// Retire _g_Rva012C83A0: VA 0x012C83A0 records this exact C++ pointer symbol.
+extern "C" const char *__identifier("?g_Rva012C83A0@@3PBDB");
 
 typedef struct _OSVERSIONINFOA {
     unsigned long dwOSVersionInfoSize;
@@ -409,7 +410,7 @@ void *_Locale_ctype_create(const char *name)
 
     if (name[0] == 'L' && name[1] == 'C' && name[2] == '_')
     {
-        char *p = strstr(name, g_Rva012C83A0);
+        char *p = strstr(name, __identifier("?g_Rva012C83A0@@3PBDB"));
         if (p != 0)
         {
             char *q = strchr(p, '=');
@@ -901,7 +902,8 @@ extern "C" void *_Locale_collate_create(const char *name)
 }
 
 // INT3-bounded locale category extraction at 0x0084FF70.
-extern const char *g_Rva012C83A0;
+// Retire _g_Rva012C83A0: VA 0x012C83A0 records this exact C++ pointer symbol.
+extern "C" const char *__identifier("?g_Rva012C83A0@@3PBDB");
 #pragma intrinsic(strcpy)
 extern "C" char *Rva0084FF70(const char *name, char *out)
 {
@@ -910,7 +912,7 @@ extern "C" char *Rva0084FF70(const char *name, char *out)
     char cp[6];
     lname[0] = 0;
     if (name[0] == 'L' && name[1] == 'C' && name[2] == '_') {
-        char *p = strstr(name, g_Rva012C83A0);
+        char *p = strstr(name, __identifier("?g_Rva012C83A0@@3PBDB"));
         if (p != 0) {
             char *q = strchr(p, '=');
             if (q != 0) {
