@@ -49,7 +49,11 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Fence the served body and measure its bank with native context
+          bash tools/setup_hooks.sh
+          git config user.name McMickey93
+          git config user.email 347452154+McMickey93@users.noreply.github.com
+          git switch -c contributor/native-short-handoff
+      - name: Test the new donor-supported hash context and bank a failed result
         shell: bash
         working-directory: source
         run: |
@@ -57,20 +61,21 @@ jobs:
           source .githooks/python3.sh
           require_python3 short-finish
           python3 -u - <<'PY'
-          import csv,hashlib,json,os,subprocess,sys,time,traceback
+          import csv,hashlib,json,os,re,subprocess,sys,time,traceback
           from pathlib import Path
           root=Path.cwd().resolve()
           out=root/"build/contributor-short-finish-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import claims
+          import claims,next_work
+          base="f633d0e97a953289405438821be0c09b28527bbb"
           rva=0x008CF030
           token="1dc25e5be19afcfa220c792369560dc978529019"
           owner="github:McMickey93:bfme1:short-finish-20261025"
           lease="af684acfcd55496eb3f86bd92cddbde4"
-          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[],"claims":[]}
+          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[],"claims":[],"control":{"run":40238336486,"artifact":12615995115,"source_sha256":"0b88dc4beaa7f2406905ea59a7a694b00cb111d9d3029935aee9a787a7383e61","ours":365,"retail":380,"diffs":229,"shape":0.952}}
           def save():
-              (out/"context-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+              (out/"trial-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
           def run(label,args,required=True,show=True):
               cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
               (out/(label+".log")).write_bytes(cp.stdout)
@@ -88,49 +93,90 @@ jobs:
               if current!=token or info.get("owner")!=owner or info.get("lease",current)!=lease or info.get("expires",0)<=time.time() or not claims.holds(rva,token): raise RuntimeError("Claim lost before "+label)
               result["claims"].append({"at":label,"token":current,"record":info,"checked_at":time.time()})
               save()
-          def guard(path,expected):
-              value=subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
-              if value!=expected: raise RuntimeError("Reviewed source changed: "+path)
+          def blob(path):
+              return subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
           try:
               result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
-              if result["source_sha"]!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Unexpected official pin")
-              guard("AGENTS.md","06b755567bb147dfee3a89f70f7bbcd38410b5b4")
+              if result["source_sha"]!=base: raise RuntimeError("Unexpected official pin")
+              if blob("AGENTS.md")!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
               stash="targets/game/reverse/attempts/0x008cf030.cpp"
-              guard(stash,"33b39cf6c43cf6716655582bc9bd040ec4872c70")
-              fence("before-context")
-              run("selected-brief",[sys.executable,"tools/brief.py","--rvas","0x008CF030"],True)
-              run("selected-callees",[sys.executable,"tools/callees.py","0x008CF030","380"])
-              run("retail-body",[sys.executable,"tools/dis_retail.py","0x008CF030","396"])
-              rows={}
-              for name in ("functions.csv","symbols.csv"):
-                  p=root/"targets/game/reverse"/name
-                  with p.open(encoding="utf-8-sig",newline="") as f:
-                      reader=csv.DictReader(f)
-                      rows[name]=[row for row in reader if any("008cf030" in str(value).lower() for value in row.values())]
-              result["rows"]=rows
-              print("SHORT_ROWS "+json.dumps(rows),flush=True)
-              history=[]
-              for p in sorted((root/"targets/game/reverse/attempt_history/0x008cf030").glob("*.json")):
-                  h=json.loads(p.read_text(encoding="utf-8"))
-                  history.append({"path":p.relative_to(root).as_posix(),**{k:v for k,v in h.items() if k!="source"}})
-              result["bank_history"]=history
-              print("SHORT_BANK_HISTORY "+json.dumps(history),flush=True)
-              run("narrow-handoff-references",["git","grep","-n","-i","008cf030","--","docs","targets/game/reverse/attempt_support","targets/game/reverse/identity_evidence","targets/game/reverse/re_attempts.log"],False)
-              fence("before-private-control-copy")
-              control=out/"00-banked-control.cpp"
-              control.write_bytes((root/stash).read_bytes())
-              result["control_sha256"]=hashlib.sha256(control.read_bytes()).hexdigest()
-              fence("before-bank-measurement")
-              run("bank-finish-measure",[sys.executable,"tools/finish_measure.py","--one","0x008CF030",str(control)],False)
-              fence("before-private-control-probe")
-              text=run("bank-probe",[sys.executable,"tools/probe.py",str(control),"?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z","0x008CF030","--size","380","--all","--shape"],False)
-              result["diagnostic_exact"]="result   EXACT" in text
-              fence("after-control")
-              run("clean-tree",["git","diff","--exit-code"])
-              run("session-progress",[sys.executable,"tools/progress.py","origin/master"])
-              result["status"]="control-and-native-context-complete"
+              if blob(stash)!="33b39cf6c43cf6716655582bc9bd040ec4872c70": raise RuntimeError("Reviewed bank changed")
+              protected=[stash,"targets/game/reverse/functions.csv","targets/game/reverse/symbols.csv","targets/game/reverse/data_rows.csv"]
+              before={p:blob(p) for p in protected}
+              fence("before-new-private-type-split")
+              source="// ?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z\n// partial score=0.9 date=2026-09-24\n// ?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z\n// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc\n// Native-hash/prototype type separation lead: BFME2 0cbf8db8 and BF1 retail.\n// Retain BF1 tagged +0x0C ownership and the 0x1C-byte allocated object.\n\nstruct BfmeStringData3AF0\n{\n\tunsigned short m_refCount, m_length, m_capacity, m_unknown06;\n};\nstruct BfmeStringPool3AF0\n{\n\tvoid *m_unknown00;\n\tvoid (__cdecl *free)(void *);\n};\nextern BfmeStringData3AF0 g_bfmeDefaultString1284;\nextern BfmeStringPool3AF0 *g_bfmeStringPool1284;\nextern void *(__cdecl *Rva008C5D70Alloc)(unsigned);\n\nclass Rva8CF030String\n{\npublic:\n\tRva8CF030String() : m_data(&g_bfmeDefaultString1284) { ++m_data->m_refCount; }\n\t~Rva8CF030String()\n\t{\n\t\tBfmeStringData3AF0 *old = m_data;\n\t\tif (--old->m_refCount == 0)\n\t\t\tg_bfmeStringPool1284->free(old);\n\t}\n\nprivate:\n\tBfmeStringData3AF0 *m_data;\n};\n\nclass Rva8CF030NativeHash;\nclass Rva8CF030Value\n{\npublic:\n\tvirtual void addRef();\n\tvirtual void release();\n\tvirtual void slot2();\n\tvirtual void slot3();\n\tvirtual void slot4();\n\tvirtual bool tagged();\n\tvirtual Rva8CF030NativeHash *getList();\n\tvirtual void slot7();\n\tvirtual void slot8();\n\tvirtual void slot9();\n\tvirtual void slot10();\n\tvirtual void slot11();\n\tvirtual void slot12();\n\tvirtual void slot13();\n\tvirtual void slot14();\n\tvirtual void slot15();\n\tvirtual void consumeArray(Rva8CF030Value **items, int count);\n\n\tint toInteger() const;\n};\n\nclass Rva8CF030NativeHash\n{\npublic:\n    // Donor separates the non-polymorphic hash from its polymorphic values.\n    // +0x08 is the proto-chain link; this body accesses prototype +0x0C.\n    unsigned m_unknown00[3];\n    unsigned m_nextTagged;\n\n    Rva8CF030Value *next() const\n    {\n        return (Rva8CF030Value *)(m_nextTagged & ~1u);\n    }\n    void setNext(Rva8CF030Value *list)\n    {\n        Rva8CF030Value *old = next();\n        if (list != 0)\n            list->addRef();\n        if (old != 0)\n            old->release();\n        if (list == 0)\n            m_nextTagged = 0;\n        else if (list->tagged() == 1)\n            m_nextTagged = (unsigned)list | 1;\n        else\n            m_nextTagged = (unsigned)list;\n    }\n};\n\nvoid rva897300InitializeRefObject(void *object);\n\nclass Rva8CF030ListNode : public Rva8CF030Value\n{\npublic:\n\tRva8CF030ListNode(Rva8CF030Value *value);\n\tstatic void *operator new(unsigned size)\n\t{\n\t\tvoid *raw = Rva008C5D70Alloc(size + 8);\n\t\tvoid *object = (char *)raw + 8;\n\t\trva897300InitializeRefObject(object);\n\t\treturn object;\n\t}\n\tstatic void operator delete(void *object, unsigned size);\n\tchar m_gap04[0x18];\n};\n\nclass Rva8CF030State\n{\npublic:\n\tvoid popValues(int count);\n\n\tint m_count;\n\tint m_unused;\n\tRva8CF030Value **m_stack;\n};\n\ntypedef char Rva8CF030NodeSize[(sizeof(Rva8CF030ListNode) == 0x1c) ? 1 : -1];\ntypedef char Rva8CF030HashSize[(sizeof(Rva8CF030NativeHash) == 0x10) ? 1 : -1];\n\nvoid rva8CF030BuildArray(Rva8CF030State *state, void *)\n{\n\tRva8CF030String unusedString;\n\tRva8CF030Value *top = state->m_stack[state->m_count - 1];\n\tint index = 0;\n\tint count = state->m_stack[state->m_count - 2]->toInteger();\n\tRva8CF030Value **items = (Rva8CF030Value **)Rva008C5D70Alloc(count * 4);\n\tfor (; index < count; ++index)\n\t{\n\t\tRva8CF030Value *value = state->m_stack[state->m_count - index - 3];\n\t\tRva8CF030Value *list = value->getList()->next();\n\t\tif (list == 0)\n\t\t{\n\t\t\tlist = new Rva8CF030ListNode(value);\n\t\t\tvalue->getList()->setNext(list);\n\t\t}\n\t\titems[index] = list;\n\t}\n\ttop->consumeArray(items, count);\n\tstate->popValues(count + 2);\n}\n"
+              variant=out/"01-split-native-hash.cpp"
+              variant.write_text(source,encoding="utf-8",newline="\n")
+              result["variant_sha256"]=hashlib.sha256(variant.read_bytes()).hexdigest()
+              # Mechanically inventory generic levers; existing history rules these out
+              # for this unchanged residue. Only the new donor type split is compiled.
+              run("eh-context-choices",[sys.executable,"tools/eh_levers.py",str(variant)],False,False)
+              run("family-context-choices",[sys.executable,"tools/shape_family_levers.py",str(variant),"--families","sib,register,bool,test,copy,store,loop,branch,constant,frame"],False,False)
+              fence("before-new-type-split-probe")
+              text=run("new-type-split-probe",[sys.executable,"tools/probe.py",str(variant),"?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z","0x008CF030","--size","380","--all","--shape"],True)
+              m=re.search(r"^size\s+ours=(\d+) retail=(\d+)\s+relocs=(\d+)",text,re.M)
+              d=re.search(r"^diffs\s+(\d+) non-reloc byte\(s\); first at \+(\d+)",text,re.M)
+              shape=re.search(r"^shape\s+([0-9.]+)",text,re.M)
+              if not m: raise RuntimeError("No native emitted body measurement")
+              result["measurement"]={"ours":int(m[1]),"retail":int(m[2]),"relocs":int(m[3]),"diffs":int(d[1]) if d else 0,"first":int(d[2]) if d else 380,"shape":float(shape[1]) if shape else None,"diagnostic_exact":"result   EXACT" in text}
+              fence("after-new-type-split-probe")
+              if result["measurement"]["diagnostic_exact"]:
+                  result["status"]="diagnostic-exact-awaiting-full-native-admission"
+                  save()
+                  print("SHORT_DIAGNOSTIC_EXACT "+json.dumps(result),flush=True)
+              else:
+                  result["status"]="native-measured-nonmatch-before-banking"
+                  save()
+                  folder=root/"targets/game/reverse/attempt_support/008cf030-native-hash-context-20261025"
+                  if folder.exists(): raise RuntimeError("Handoff already exists; do not overwrite")
+                  folder.mkdir(parents=True)
+                  report="# 0x008CF030: native hash/value type separation\n\nThis is a compiler-context experiment, not a C++ recovery. The preferred bank,\nproduction sources, headers, function/data rows and pins stay unchanged.\n\n## Inputs and new evidence\n\nOfficial source pin: f633d0e97a953289405438821be0c09b28527bbb.\nPreferred bank: targets/game/reverse/attempts/0x008cf030.cpp,\nblob 33b39cf6c43cf6716655582bc9bd040ec4872c70,\nSHA256 0b88dc4beaa7f2406905ea59a7a694b00cb111d9d3029935aee9a787a7383e61.\nNative control run 40238336486 (controller f8a95c9e00152afdb595e8a3deefc7b314dc1944),\nartifact 12615995115; ZIP SHA256\nb817d315e562109ddded7398fcf6fdcffbe2a69307ef05bc4a8e00328883cfe7.\nThat run reproduces 365 emitted bytes, 229 masked positional differences and\nshape 0.952 against the complete 380-byte retail body. The old 0.9 header is\nan author estimate; the finish_measure quality formula gives 0.3184.\nRET at +0x17B and following INT3 at +0x17C establish the extent.\n\nAll five archive sources and all eleven existing verdicts were reviewed.\nPrior work includes 1759 source permutations, local order, loop spelling,\ncompiler flags, and a four-byte owning-link member/operator=. Those unchanged\ntrials are not repeated. Generated EH and shape-family choices are retained\nas context; the previously ruled-out generic search is not reopened.\n\nNew donor evidence is BFME2 commit\n0cbf8db8ec46aad7ac71789ed9dd2fd01a74e503 (2026-10-11),\nCode/Libraries/Source/Apt/AptActionInterpreterConstantHandlers.cpp,\ncurrent reviewed blob a8793fcc70bc2615234d569f83256f42860f2a23.\nIts ImplementsOp separates the nonvirtual AptNativeHash owner from virtual\nAptValue prototype values. It is a type/context lead, not a direct donor match:\nBFME2 includes additional assertions/branches and uses a different array/setter\nrepresentation. Its untagged SetPrototype body must not replace BFME1's tag\nhandling.\n\nBFME1 retail independently loads the slot +0x18 accessor result's +0x0C\nprototype field, strips its low tag, addrefs new, releases old, and stores\nnull, pointer|1 or pointer according to the slot +0x14 result.\nThe matched Rva8CCD60ExpandPrototypeValues.cpp (blob\n2784d8a057c208b53ef0a16f0d58afc18bc817c4) distinguishes a nonvirtual hash\nprefix and a virtual value; that sibling accesses the separate proto-chain\nfield +8. These offsets are not interchangeable.\nThe real 28-byte allocated constructor is in\ngame/Libraries/Source/WWVegas/WWLib/Rva89ACB0HolderCtor.cpp.\nThe variant keeps a 4-byte polymorphic value view plus 24 unaccessed bytes,\nand retains sizeof=28 and the eight-byte allocator header. Compile-time size\nchecks prevent the split from silently changing the allocation.\n\nThe old bank conflates hash owner and prototype value in Rva8CF030List.\nThe measured source split replaces only this type relationship: slot six\nreturns an address-qualified nonvirtual 16-byte hash view; its tagged +0x0C\nlink owns virtual values, and the 28-byte allocated object derives from the\nvalue view. All calls, tag/refcount sequencing, lifetimes, flags and loop\nexpressions remain as in the bank. No vtable provider is defined.\n\n## Identity and later admission\n\nCurrent true home is game/Libraries/Source/Apt/AptActionInterpreter.cpp,\nblob 60df2491d6c680d667ad689a1e79e7203aca56e3; its matched next body\n008CF1B0 uses the same stack count+0/capacity+4/pointer+8 prefix.\nThe brief's aligned BFME2 label says CallMethod, while the source structure\nresembles ImplementsOp. Neither authorizes renaming this opaque body.\n\nNative direct callees are 00898300, 00897300, 00899CB0 and 008A0CF0.\nExisting providers and ABI must be reconciled before admission, including the\ncanonical StringDataC empty global g_rva012D5298Empty and allocator-pair\ng_rva01337A30AllocPair. The old bank's names are not new provider evidence.\nNo new name, pin or one-slot table is claimed.\n\n## Native outcome\n\nSee native-result.json and probe.log for exact source hash, compiler command,\ncomplete disassembly, relocations and result. The measured split source is\npreserved as split-native-hash.cpp. This result was committed through normal\nhooks after re_log.py record blocked; no preferred stash was overwritten.\nThe output bundle and manifest preserve that unpublished native commit.\n"
+                  outcome="\nMeasured new variant: "+json.dumps(result["measurement"],sort_keys=True)+".\nSource SHA256: "+result["variant_sha256"]+".\nC++ exact delta remains +0 bytes. Do not repeat this type split unchanged.\n"
+                  (folder/"readme.md").write_text(report+outcome,encoding="utf-8",newline="\n")
+                  (folder/"split-native-hash.cpp").write_bytes(variant.read_bytes())
+                  (folder/"probe.log").write_text(text,encoding="utf-8",newline="\n")
+                  (folder/"native-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+                  evidence="RET+0x17B INT3+0x17C full380B. Currentbank365B229diff shape0.952. New postbank BFME2 donor0cbf8db8 supports separating nonvirtual hash and virtual prototype value; keep tagged field+0x0C refcounts ABI allocation28B. Split measurement "+json.dumps(result["measurement"],separators=(",",":"))+". Prior1759permutations/flags/owninglink not repeated. Handoff "+folder.relative_to(root).as_posix()+"/readme.md t=12min model=gpt-6 blocker=regalloc/native-hash-context"
+                  run("record-blocked",[sys.executable,"tools/re_log.py","record","?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z","0x008CF030","380","blocked",evidence])
+                  if any(blob(p)!=b for p,b in before.items()): raise RuntimeError("Production ledger or preferred bank changed")
+                  run("check-csv-after-evidence",[sys.executable,"tools/check_csv.py"])
+                  paths=[(folder/name).relative_to(root).as_posix() for name in ("readme.md","split-native-hash.cpp","probe.log","native-result.json")]+["targets/game/reverse/re_attempts.log"]
+                  run("stage-explicit-evidence",["git","add","--",*paths])
+                  message="[BFME 2 donor] Bank the bounded Apt native-hash context result\n\nPreserve the target-proven tagged ownership and 28-byte allocation while testing donor-supported hash/value separation. Keep production and the preferred bank unchanged; no new exact C++ bytes.\n\nClaim-Lease: 0x008CF030="+lease+"\n"
+                  (out/"message.txt").write_text(message,encoding="utf-8",newline="\n")
+                  fence("before-normal-evidence-commit")
+                  run("normal-git-commit",["git","commit","--file",str(out/"message.txt")])
+                  commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
+                  tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],cwd=root).decode().strip()
+                  actual=subprocess.check_output(["git","diff","--name-only",base,commit],cwd=root).decode().splitlines()
+                  if sorted(actual)!=sorted(paths): raise RuntimeError("Unexpected evidence commit scope")
+                  run("clean-tree",["git","diff","--exit-code"])
+                  run("session-progress",[sys.executable,"tools/progress.py","origin/master"])
+                  run("export-bundle",["git","bundle","create",str(out/"result.bundle"),base+"..HEAD"])
+                  run("verify-bundle",["git","bundle","verify",str(out/"result.bundle")])
+                  manifest={"base":base,"commit":commit,"tree":tree,"paths":paths,"normal_commit_passed":True,"published":False,"bundle_sha256":hashlib.sha256((out/"result.bundle").read_bytes()).hexdigest(),"source_or_ledger_changed":False,"cpp_exact_delta":0}
+                  (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+                  result.update(status="failed-type-split-banked-unpublished",manifest=manifest)
+                  save()
+                  print("SHORT_HANDOFF_MANIFEST "+json.dumps(manifest),flush=True)
+                  # Continue the assigned short lane from the current eligible tool pool;
+                  # exclude only session-completed work and live reservations.
+                  pooltext=run("next-current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"],True,False)
+                  pool=json.loads(pooltext)["finish"]
+                  if not claims.fetch(): raise RuntimeError("Cannot refresh claims before next served suggestion")
+                  active={f"0x{rv:08X}" for rv,(tk,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
+                  candidates=[c for c in pool if 0<int(c["target_size"])<=512 and c.get("source") and c["target_rva"].upper() not in {"0X00078640","0X003D59C0","0X008CF030"} and c["target_rva"] not in active]
+                  selected=next_work.weighted_choice(candidates) if candidates else None
+                  result["next_selection"]=selected
+                  result["next_pool_counts"]={"tool":len(pool),"bounded_available":len(candidates)}
+                  save()
+                  print("SHORT_NEXT_SELECTED "+json.dumps({"counts":result["next_pool_counts"],"selection":selected}),flush=True)
+                  if selected:
+                      run("next-selected-brief",[sys.executable,"tools/brief.py","--rvas",selected["target_rva"]],False)
+                      run("next-selected-callees",[sys.executable,"tools/callees.py",selected["target_rva"],str(selected["target_size"])],False)
+              run("final-progress",[sys.executable,"tools/progress.py","origin/master"])
               save()
-              print("SHORT_FINAL "+json.dumps(result),flush=True)
+              print("SHORT_FINAL_STATUS "+result["status"],flush=True)
           except BaseException as err:
               result.update(status="failed",error=str(err))
               (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
