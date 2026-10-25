@@ -12,7 +12,7 @@ jobs:
   select:
     if: github.repository == 'McMickey93/Open-BFME-1'
     runs-on: windows-2022
-    timeout-minutes: 25
+    timeout-minutes: 45
     env:
       GIT_CONFIG_COUNT: '2'
       GIT_CONFIG_KEY_0: core.autocrlf
@@ -23,6 +23,7 @@ jobs:
       PY_PYTHON3: '3.12'
       PYTHONUTF8: '1'
       PYTHONUNBUFFERED: '1'
+      BFME_MODEL: gpt-6
       BFME_CLAIM_OWNER: github:McMickey93:bfme1:short-finish-20261025
     steps:
       - name: Read the current official tree without retained credentials
@@ -49,7 +50,11 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Prove the native counted-reference constructor and consumer
+          bash tools/setup_hooks.sh
+          git config user.name McMickey93
+          git config user.email 347452154+McMickey93@users.noreply.github.com
+          git switch -c contributor/native-counted-audio-admission
+      - name: Admit the counted-reference provider and full caller in separate normal commits
         shell: bash
         working-directory: source
         run: |
@@ -60,88 +65,171 @@ jobs:
           import csv,hashlib,json,os,re,subprocess,sys,time,traceback
           from pathlib import Path
           root=Path.cwd().resolve()
-          out=root/"build/short-counted-audio-20261025"
+          out=root/"build/short-counted-audio-admission-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import claims
-          rvas=(0x0060F3C0,0x000B4780)
+          import claims,tu_map
+          base="f633d0e97a953289405438821be0c09b28527bbb"
           token="968cde904cdb7dc7ea22bb31f11f71d9d5b6f67b"
           owner="github:McMickey93:bfme1:short-finish-20261025"
           lease="97c6aa81c262443f9f5cb39b7d65f7e0"
           provider="game/GameEngine/Source/Common/Audio/AudioEventRTSThinExtraCtor.cpp"
-          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[],"claims":[]}
+          home="game/GameEngine/Source/GameClient/LivingWorld/LivingWorldManager.cpp"
+          evidence="targets/game/reverse/identity_evidence/000b4780-counted-livingworld-overload.md"
+          new_name="??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4LivingWorldID@@@Z"
+          body_name="?rva0060f3c0@LivingWorldManager@@QAEXXZ"
+          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[],"claims":[],"commits":[],"published":False,"diagnostic_run":40240794015}
+          def digest(b): return hashlib.sha256(b).hexdigest()
           def save(): (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
           def run(label,args,required=True,show=True):
               cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
               (out/(label+".log")).write_bytes(cp.stdout)
-              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
+              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":digest(cp.stdout)})
               save()
-              print("TYPED_COMMAND",label,"exit",cp.returncode,flush=True)
+              print("ADMISSION_COMMAND",label,"exit",cp.returncode,flush=True)
               if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
               if required and cp.returncode: raise RuntimeError(label+" failed")
               return cp.stdout.decode("utf-8","replace")
+          def git(*args): return subprocess.check_output(["git",*args],cwd=root).decode().strip()
+          def blob(path): return git("hash-object","--",path)
           def fence(label):
               if not claims.fetch(): raise RuntimeError("Cannot read actual upstream claims")
               entries=claims._read_local()
-              for rva in rvas:
-                  entry=entries.get(rva)
-                  if not entry: raise RuntimeError("Missing actual claim")
-                  current,info=entry
-                  if current!=token or info.get("owner")!=owner or info.get("lease",current)!=lease or info.get("expires",0)<=time.time() or not claims.holds(rva,token): raise RuntimeError("Claim lost before "+label)
-                  result["claims"].append({"at":label,"rva":f"0x{rva:08X}","token":current,"record":info})
+              for rv in (0x0060F3C0,0x000B4780):
+                  if rv not in entries: raise RuntimeError("Actual claim missing")
+                  current,info=entries[rv]
+                  if current!=token or info.get("owner")!=owner or info.get("lease",current)!=lease or info.get("expires",0)<=time.time() or not claims.holds(rv,token): raise RuntimeError("Claim lost before "+label)
+                  result["claims"].append({"at":label,"rva":f"0x{rv:08X}","token":current,"record":info})
+              # Four untouched provider bodies share its file: respect other reservations.
+              for rv in (0x000B2D90,0x000B2F00,0x000B4440,0x000B45E0):
+                  entry=entries.get(rv)
+                  if entry and entry[1].get("expires",0)>time.time() and entry[1].get("owner")!=owner:
+                      raise RuntimeError("Foreign claim on another provider-TU body")
               save()
-          def guard(path,expected):
-              got=subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
-              if got!=expected: raise RuntimeError("Reviewed file changed: "+path)
-          def parse(text):
-              m=re.search(r"^size\s+ours=(\d+) retail=(\d+)\s+relocs=(\d+)",text,re.M)
-              d=re.search(r"^diffs\s+(\d+) non-reloc byte\(s\); first at \+(\d+)",text,re.M)
-              return {"ours":int(m[1]),"retail":int(m[2]),"relocs":int(m[3]),"diffs":int(d[1]) if d else 0,"diagnostic_exact":"result   EXACT" in text} if m else {"unavailable":True}
+          def progress(label,want):
+              text=run(label,[sys.executable,"tools/progress.py","origin/master"])
+              m=re.search(r"^\s*C\+\+ exact\s+[\d,]+ bytes.*?delta ([+-][\d,]+) bytes",text,re.M)
+              if not m or int(m[1].replace(",",""))!=want: raise RuntimeError("Unexpected C++ exact delta")
+              return want
+          def normal_commit(label,message,paths,want):
+              run("check-csv-"+label,[sys.executable,"tools/check_csv.py"])
+              run("stage-"+label,["git","add","--",*paths])
+              run("tu-owner-"+label,[sys.executable,"tools/tu_ownership.py","--staged"])
+              fence("before-normal-commit-"+label)
+              mf=out/(label+"-message.txt")
+              mf.write_text(message,encoding="utf-8",newline="\n")
+              before=git("rev-parse","HEAD")
+              run("normal-commit-"+label,["git","commit","--file",str(mf)])
+              commit=git("rev-parse","HEAD")
+              actual=git("diff","--name-only",before,commit).splitlines()
+              if sorted(actual)!=sorted(paths): raise RuntimeError("Unexpected committed paths")
+              item={"label":label,"base":before,"commit":commit,"tree":git("rev-parse","HEAD^{tree}"),"paths":actual,"message":git("show","-s","--format=%B",commit),"cpp_exact_delta_from_origin":want}
+              result["commits"].append(item)
+              progress("progress-"+label,want)
+              save()
+              print("ADMISSION_COMMIT "+json.dumps(item),flush=True)
+              return item
+          def export_commits():
+              export_path=out/"export.jsonl"
+              with export_path.open("w",encoding="utf-8",newline="\n") as handle:
+                  def emit(tag,value):
+                      line=tag+" "+json.dumps(value,ensure_ascii=True)
+                      handle.write(line+"\n")
+                      print(line,flush=True)
+                  for item in result["commits"]:
+                      metas=[]
+                      for path in item["paths"]:
+                          raw=subprocess.check_output(["git","show",item["commit"]+":"+path],cwd=root)
+                          text=raw.decode("utf-8")
+                          count=(len(text)+11999)//12000
+                          meta={"commit":item["commit"],"path":path,"sha256":digest(raw),"gitblob":git("rev-parse",item["commit"]+":"+path),"bytes":len(raw),"chars":len(text),"chunk_count":count}
+                          metas.append(meta)
+                          emit("EXPORT_FILE_META",meta)
+                          for index in range(count):
+                              emit("EXPORT_FILE_CHUNK",{"commit":item["commit"],"path":path,"index":index,"text":text[index*12000:(index+1)*12000]})
+                      emit("EXPORT_JSON",{**item,"filemeta":metas,"claims":{"owner":owner,"lease":lease,"token":token,"rvas":["0x0060F3C0","0x000B4780"]}})
           try:
-              result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
-              if result["source_sha"]!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Unexpected pin")
-              guard("AGENTS.md","06b755567bb147dfee3a89f70f7bbcd38410b5b4")
-              guard(provider,"8f32891345c75dea94d26f777a45c3881a7de327")
-              guard("game/GameEngine/Source/Common/Audio/AudioEventRTSCommonInit.cpp","360b00c43cab14b3cdd31500685fa73fe3b78625")
-              guard("targets/game/reverse/canonical_classes.csv","9276e02f13f68cf9f92bfaf47ffe4c57d54dd2ad")
-              guard("targets/game/reverse/attempt_history/0x0060f3c0/2b3170dba817b184f665e9ace3a7618941e2341012ff2f04eb53ebc11c75b112.json","bf3df1621d304daf5b6c6c1f75160b914f701d1b")
-              fence("before-native-context")
-              selected={0x0060F3C0,0x000B4780,0x000B2610,0x000B4690,0x000B2D90,0x000B2F00,0x000B4440,0x000B45E0}
-              with (root/"targets/game/reverse/functions.csv").open(encoding="utf-8-sig",newline="") as handle:
-                  rows=[row for row in csv.DictReader(handle) if row.get("target_rva") and int(row["target_rva"],16) in selected]
-              result["rows"]=rows
-              print("TYPED_ROWS "+json.dumps(rows),flush=True)
-              for rv in (0x000B4780,0x000B2610,0x000B4690):
-                  row=next(r for r in rows if int(r["target_rva"],16)==rv)
-                  run("callees-"+f"{rv:08x}",[sys.executable,"tools/callees.py",f"0x{rv:08X}",row["target_size"]])
-                  run("retail-"+f"{rv:08x}",[sys.executable,"tools/dis_retail.py",f"0x{rv:08X}",str(int(row["target_size"])+4)],True)
-              run("callers-thin-provider",[sys.executable,"tools/callers_of.py","0x000B4780"])
-              run("callers-counted-helper",[sys.executable,"tools/callers_of.py","0x000B2610"])
-              run("canonical-classes",["git","show","HEAD:targets/game/reverse/canonical_classes.csv"])
-              run("audio-ref-headers",["git","grep","-n","-F","AudioEventInfoRef","--","game/**/*.h"],False)
-              run("provider-baseline-whole-file",["cmd","/d","/c","build.cmd",provider])
-              fence("before-private-sources")
-              p=out/"typed-provider.cpp"
-              c=out/"typed-consumer.cpp"
-              p.write_text("// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n\n// Open-BFME5: thin AudioEventRTS constructors that call outlined initFromName\n// (ILT 0x0004A86D) after the member zeros.\n//   extra       0x000B2D90 101B  (inlined twin 0x000B2CC0)\n//   positional  0x000B2F00 133B  (inlined twin 0x000B2E10)\n//   ObjectID    0x000B4440 141B  (AudioEventInfoRef overload; caller-proven)\n//   DrawableID  0x000B45E0 141B  (inlined twin 0x000B44F0)\n//   LivingWorld 0x000B4780 145B  (AudioEventInfoRef overload; caller-proven)\n\n#include \"ascii_string.h\"\n\n// One-word opaque ABI view. SlowDeathBehavior retains/releases this pointer\n// and the callee helper reads info+8, proving this overload takes an info ref.\nstruct AudioEventInfoRef { void *ptr; };\n\nenum ObjectID\n{\n\tINVALID_ID = 0\n};\n\nenum DrawableID\n{\n\tINVALID_DRAWABLE_ID = 0\n};\n\nenum LivingWorldID\n{\n\tINVALID_LIVING_WORLD_ID = 0\n};\n\nclass CountedPtr\n{\npublic:\n\tCountedPtr() : m_ptr(0) {}\n\t~CountedPtr();\n\n\tvoid *m_ptr;\n};\n\nstruct Coord3D\n{\n\tunsigned int x, y, z;\n};\n\nclass AudioEventRTS\n{\npublic:\n\tAudioEventRTS(const AsciiString &eventName, int extra);\n\tAudioEventRTS(const AsciiString &eventName, const Coord3D *positionOfAudio, int extra);\n\tAudioEventRTS(const AudioEventInfoRef &eventInfo, ObjectID ownerID);\n\tAudioEventRTS(const AsciiString &eventName, DrawableID drawableID);\n\tAudioEventRTS(const AudioEventInfoRef &eventInfo, LivingWorldID ownerID);\n\tvirtual ~AudioEventRTS();\n\tvoid initFromName(const AsciiString &eventName);\n\tvoid resolveOwnerPosition(Coord3D *pos, bool *found);\n\nprivate:\n\tAsciiString m_filenameToLoad;\n\tCountedPtr m_eventInfo;\n\tunsigned int m_playingHandle;\n\tunsigned int m_killThisHandle;\n\tAsciiString m_eventName;\n\tAsciiString m_attackName;\n\tAsciiString m_decayName;\n\tchar m_20[8];\n\tunsigned int m_timeOfDay;\n\tunsigned int m_objectID;\n\tint m_ownerType;\n\tCoord3D m_position;\n\tunsigned char m_flag40;\n\tchar m_41[0x6C - 0x41];\n\tAsciiString m_tail;\n};\n\n// object-symbol=??0AudioEventRTS@@QAE@ABVAsciiString@@H@Z\nAudioEventRTS::AudioEventRTS(const AsciiString &eventName, int extra)\n{\n\tinitFromName(eventName);\n\tm_timeOfDay = static_cast<unsigned int>(extra);\n}\n\n// object-symbol=??0AudioEventRTS@@QAE@ABVAsciiString@@PBUCoord3D@@H@Z\nAudioEventRTS::AudioEventRTS(const AsciiString &eventName, const Coord3D *positionOfAudio, int extra)\n{\n\tinitFromName(eventName);\n\tm_position = *positionOfAudio;\n\tm_ownerType = 0;\n\tm_timeOfDay = static_cast<unsigned int>(extra);\n\tm_flag40 = 1;\n}\n\n// ??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4ObjectID@@@Z\nAudioEventRTS::AudioEventRTS(const AudioEventInfoRef &eventInfo, ObjectID ownerID)\n{\n    // Keep the established helper's source-local spelling and pin. Its argument\n    // is the same one-pointer ref ABI; the helper dereferences it as info+8.\n    initFromName(reinterpret_cast<const AsciiString &>(eventInfo));\n\tm_objectID = ownerID;\n\tm_timeOfDay = 0;\n\tif (ownerID)\n\t\tm_ownerType = 2;\n\telse\n\t\tm_objectID = INVALID_ID;\n\n\tCoord3D pos;\n\tresolveOwnerPosition(&pos, reinterpret_cast<bool *>(\n\t\treinterpret_cast<char *>(&pos) + 0x1C));\n}\n\n// object-symbol=??0AudioEventRTS@@QAE@ABVAsciiString@@W4DrawableID@@@Z\nAudioEventRTS::AudioEventRTS(const AsciiString &eventName, DrawableID drawableID)\n{\n\tinitFromName(eventName);\n\tm_objectID = static_cast<unsigned int>(drawableID);\n\tm_timeOfDay = 0;\n\tif (drawableID)\n\t\tm_ownerType = 1;\n\telse\n\t\tm_objectID = INVALID_ID;\n\n\tCoord3D pos;\n\tresolveOwnerPosition(&pos, reinterpret_cast<bool *>(\n\t\treinterpret_cast<char *>(&pos) + 0x1C));\n}\n\n// ??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4LivingWorldID@@@Z\nAudioEventRTS::AudioEventRTS(const AudioEventInfoRef &eventInfo, LivingWorldID ownerID)\n{\n    // Like the proven ObjectID overload, this helper consumes a counted info ref.\n    initFromName(reinterpret_cast<const AsciiString &>(eventInfo));\n\tm_objectID = static_cast<unsigned int>(ownerID);\n\tm_timeOfDay = 1;\n\tif (ownerID)\n\t\tm_ownerType = 5;\n\telse\n\t\tm_objectID = INVALID_ID;\n\n\tCoord3D pos;\n\tresolveOwnerPosition(&pos, reinterpret_cast<bool *>(\n\t\treinterpret_cast<char *>(&pos) + 0x1C));\n}\n",encoding="utf-8",newline="\n")
-              c.write_text("// ?rva0060f3c0@LivingWorldManager@@QAEXXZ\n// Typed counted-info LivingWorld constructor; retail 0x0060F3C0, 184 bytes.\n// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n#include \"ascii_string.h\"\n\nextern \"C\" __declspec(dllimport) long __stdcall InterlockedDecrement(long volatile *addend);\n\n// Same counted-reference contract used by AudioEventRTSCopyAndLifetime.cpp.\nclass Counted\n{\npublic:\n    virtual ~Counted();\n    void Release_Ref()\n    {\n        if (InterlockedDecrement(&m_refCount) <= 0)\n            delete this;\n    }\n    long m_refCount;\n};\n\nclass CountedPtr\n{\npublic:\n    bool isEmpty() const { return m_ptr == 0; }\n    void clear()\n    {\n        if (m_ptr)\n        {\n            m_ptr->Release_Ref();\n            m_ptr = 0;\n        }\n    }\n    Counted *m_ptr;\n};\n\nenum LivingWorldID { INVALID_LIVING_WORLD_ID = 0 };\n\n// Opaque 112-byte stack record. Its complete cleanup is the existing QAE\n// destructor route at ILT 0x00026F35, rather than the UAE route 0x0002671F.\n// Same existing one-word struct view as AudioEventRTSThinExtraCtor.cpp.\nstruct AudioEventInfoRef { void *ptr; };\n\nclass AudioEventRTS\n{\npublic:\n    AudioEventRTS(const AudioEventInfoRef &infoRef, LivingWorldID owner);\n    ~AudioEventRTS();\nprivate:\n    unsigned char m_storage[0x70];\n};\ntypedef char Rva0060F3C0EventSize[(sizeof(AudioEventRTS) == 0x70) ? 1 : -1];\n\nclass AudioManager\n{\npublic:\n#define SLOT(n) virtual void slot##n();\n    SLOT(00) SLOT(01) SLOT(02) SLOT(03) SLOT(04) SLOT(05) SLOT(06) SLOT(07)\n    SLOT(08) SLOT(09) SLOT(10) SLOT(11) SLOT(12) SLOT(13) SLOT(14) SLOT(15)\n    SLOT(16)\n    virtual unsigned int addAudioEvent(const AudioEventRTS *event);\n#undef SLOT\n};\nextern AudioManager *TheAudio;\n\nstruct Rva0060F3C0LogicSub\n{\n    unsigned char m_padding[0x10];\n    unsigned char m_0010;\n};\nclass LivingWorldLogic\n{\npublic:\n    unsigned char m_padding[0x28];\n    Rva0060F3C0LogicSub *m_0028;\n};\nextern LivingWorldLogic *TheLivingWorldLogic;\n\nclass LivingWorldManager\n{\npublic:\n    void rva0060f3c0();\nprivate:\n    unsigned char m_padding[0x238];\n    CountedPtr m_0238;\n    LivingWorldID m_023C;\n    unsigned char m_padding240[0x54];\n    unsigned char m_0294;\n};\n\nvoid LivingWorldManager::rva0060f3c0()\n{\n    CountedPtr &queued = m_0238;\n    if (m_0238.m_ptr)\n    {\n        AudioEventRTS event(reinterpret_cast<const AudioEventInfoRef &>(queued), m_023C);\n        AudioManager *audio = TheAudio;\n        audio->addAudioEvent(&event);\n        switch (queued.isEmpty())\n        {\n        case false:\n            queued.clear();\n            break;\n        default:\n            break;\n        }\n    }\n    TheLivingWorldLogic->m_0028->m_0010 = 1;\n    m_0294 = 0;\n}\n",encoding="utf-8",newline="\n")
-              result["sources"]={p.name:hashlib.sha256(p.read_bytes()).hexdigest(),c.name:hashlib.sha256(c.read_bytes()).hexdigest()}
-              fence("before-private-provider")
-              provider_probe=run("typed-provider-probe",[sys.executable,"tools/probe.py",str(p),"??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4LivingWorldID@@@Z","0x000B4780","--size","145","--all","--shape"],False)
-              result["provider_measurement"]=parse(provider_probe)
-              fence("before-private-consumer")
-              consumer_probe=run("typed-consumer-probe",[sys.executable,"tools/probe.py",str(c),"?rva0060f3c0@LivingWorldManager@@QAEXXZ","0x0060F3C0","--size","184","--all","--shape"],False)
-              result["consumer_measurement"]=parse(consumer_probe)
-              fence("after-private-probes")
-              run("clean-tree",["git","diff","--exit-code"])
-              run("progress",[sys.executable,"tools/progress.py","origin/master"])
-              result["status"]="native-typed-overload-probes-complete"
+              if git("rev-parse","HEAD")!=base: raise RuntimeError("Unexpected official source pin")
+              guards={"AGENTS.md":"06b755567bb147dfee3a89f70f7bbcd38410b5b4",provider:"8f32891345c75dea94d26f777a45c3881a7de327","game/GameEngine/Source/Common/Audio/AudioEventRTSCommonInit.cpp":"360b00c43cab14b3cdd31500685fa73fe3b78625","targets/game/reverse/canonical_classes.csv":"9276e02f13f68cf9f92bfaf47ffe4c57d54dd2ad","docs/shape_levers.md":"69af4ba1bf859ea6f98b4aa44c48920be3c27cfc"}
+              for path,expected in guards.items():
+                  if blob(path)!=expected: raise RuntimeError("Reviewed input changed: "+path)
+              if (root/home).exists(): raise RuntimeError("Home appeared; read its complete file before editing")
+              if (root/evidence).exists(): raise RuntimeError("Identity note already exists")
+              fence("before-scope")
+              with (root/"targets/game/reverse/functions.csv").open(encoding="utf-8-sig",newline="") as handle: rows=list(csv.DictReader(handle))
+              old=next(r for r in rows if r.get("target_rva") and int(r["target_rva"],16)==0x000B4780)
+              if old["source"]!=provider or old["target_size"]!="145": raise RuntimeError("Provider ledger changed")
+              mapping=tu_map.load(root)
+              ownmap=mapping.get(0x0060F3C0,[])
+              approved=[t for t in ownmap if t["confidence"]=="approved" and t["kind"].startswith("code")]
+              if approved and any(t["tu"].lower()!=home.lower() for t in approved): raise RuntimeError("Approved TU differs from reviewed EA home: "+json.dumps(approved))
+              pooltext=run("current-finish-scope",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"],True,False)
+              pool=json.loads(pooltext)["finish"]
+              queued=[c for c in pool if any(t["tu"].lower()==home.lower() for t in mapping.get(int(c["target_rva"],16),[]))]
+              entries=claims._read_local()
+              foreign=[{"rva":f"0x{rv:08X}","record":info} for rv,(tk,info) in entries.items() if info.get("expires",0)>time.time() and info.get("owner")!=owner and any(t["tu"].lower()==home.lower() for t in mapping.get(rv,[]))]
+              scope={"home":home,"home_existing":False,"tu_map_target":ownmap,"ea_source_evidence":"native brief wb2-run GameEngine/Source/GameClient/LivingWorld/LivingWorldManager.cpp; run40239481518","queued_finish_bodies_for_tu":queued,"foreign_claims":foreign,"provider_all_rows":[r for r in rows if r["source"]==provider],"other_sequence_reviews":{"0039B160":"Current donor/provider/header context already tested by history22; no new lever","006A28D0":"506/502B with unmatched resolver context and frame/zero register prerequisite","002C2430":"418B25diff global mask residue; unchanged1237B naked base and prior donor mask attempt negative"}}
+              result["scope"]=scope
+              (out/"scope-receipt.json").write_text(json.dumps(scope,indent=2)+"\n",encoding="utf-8")
+              print("WHOLE_TU_SCOPE "+json.dumps(scope),flush=True)
+              if foreign: raise RuntimeError("Foreign active TU claims require coordination")
+              run("callee-before-provider-edit",[sys.executable,"tools/callees.py","0x000B4780","145"])
+              run("callee-before-body-edit",[sys.executable,"tools/callees.py","0x0060F3C0","184"])
+              psource="// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n\n// Open-BFME5: thin AudioEventRTS constructors that call outlined initFromName\n// (ILT 0x0004A86D) after the member zeros.\n//   extra       0x000B2D90 101B  (inlined twin 0x000B2CC0)\n//   positional  0x000B2F00 133B  (inlined twin 0x000B2E10)\n//   ObjectID    0x000B4440 141B  (AudioEventInfoRef overload; caller-proven)\n//   DrawableID  0x000B45E0 141B  (inlined twin 0x000B44F0)\n//   LivingWorld 0x000B4780 145B  (AudioEventInfoRef overload; caller-proven)\n\n#include \"ascii_string.h\"\n\n// One-word opaque ABI view. SlowDeathBehavior retains/releases this pointer\n// and the callee helper reads info+8, proving this overload takes an info ref.\nstruct AudioEventInfoRef { void *ptr; };\n\nenum ObjectID\n{\n\tINVALID_ID = 0\n};\n\nenum DrawableID\n{\n\tINVALID_DRAWABLE_ID = 0\n};\n\nenum LivingWorldID\n{\n\tINVALID_LIVING_WORLD_ID = 0\n};\n\nclass CountedPtr\n{\npublic:\n\tCountedPtr() : m_ptr(0) {}\n\t~CountedPtr();\n\n\tvoid *m_ptr;\n};\n\nstruct Coord3D\n{\n\tunsigned int x, y, z;\n};\n\nclass AudioEventRTS\n{\npublic:\n\tAudioEventRTS(const AsciiString &eventName, int extra);\n\tAudioEventRTS(const AsciiString &eventName, const Coord3D *positionOfAudio, int extra);\n\tAudioEventRTS(const AudioEventInfoRef &eventInfo, ObjectID ownerID);\n\tAudioEventRTS(const AsciiString &eventName, DrawableID drawableID);\n\tAudioEventRTS(const AudioEventInfoRef &eventInfo, LivingWorldID ownerID);\n\tvirtual ~AudioEventRTS();\n\tvoid initFromName(const AsciiString &eventName);\n\tvoid resolveOwnerPosition(Coord3D *pos, bool *found);\n\nprivate:\n\tAsciiString m_filenameToLoad;\n\tCountedPtr m_eventInfo;\n\tunsigned int m_playingHandle;\n\tunsigned int m_killThisHandle;\n\tAsciiString m_eventName;\n\tAsciiString m_attackName;\n\tAsciiString m_decayName;\n\tchar m_20[8];\n\tunsigned int m_timeOfDay;\n\tunsigned int m_objectID;\n\tint m_ownerType;\n\tCoord3D m_position;\n\tunsigned char m_flag40;\n\tchar m_41[0x6C - 0x41];\n\tAsciiString m_tail;\n};\n\n// object-symbol=??0AudioEventRTS@@QAE@ABVAsciiString@@H@Z\nAudioEventRTS::AudioEventRTS(const AsciiString &eventName, int extra)\n{\n\tinitFromName(eventName);\n\tm_timeOfDay = static_cast<unsigned int>(extra);\n}\n\n// object-symbol=??0AudioEventRTS@@QAE@ABVAsciiString@@PBUCoord3D@@H@Z\nAudioEventRTS::AudioEventRTS(const AsciiString &eventName, const Coord3D *positionOfAudio, int extra)\n{\n\tinitFromName(eventName);\n\tm_position = *positionOfAudio;\n\tm_ownerType = 0;\n\tm_timeOfDay = static_cast<unsigned int>(extra);\n\tm_flag40 = 1;\n}\n\n// ??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4ObjectID@@@Z\nAudioEventRTS::AudioEventRTS(const AudioEventInfoRef &eventInfo, ObjectID ownerID)\n{\n    // Keep the established helper's source-local spelling and pin. Its argument\n    // is the same one-pointer ref ABI; the helper dereferences it as info+8.\n    initFromName(reinterpret_cast<const AsciiString &>(eventInfo));\n\tm_objectID = ownerID;\n\tm_timeOfDay = 0;\n\tif (ownerID)\n\t\tm_ownerType = 2;\n\telse\n\t\tm_objectID = INVALID_ID;\n\n\tCoord3D pos;\n\tresolveOwnerPosition(&pos, reinterpret_cast<bool *>(\n\t\treinterpret_cast<char *>(&pos) + 0x1C));\n}\n\n// object-symbol=??0AudioEventRTS@@QAE@ABVAsciiString@@W4DrawableID@@@Z\nAudioEventRTS::AudioEventRTS(const AsciiString &eventName, DrawableID drawableID)\n{\n\tinitFromName(eventName);\n\tm_objectID = static_cast<unsigned int>(drawableID);\n\tm_timeOfDay = 0;\n\tif (drawableID)\n\t\tm_ownerType = 1;\n\telse\n\t\tm_objectID = INVALID_ID;\n\n\tCoord3D pos;\n\tresolveOwnerPosition(&pos, reinterpret_cast<bool *>(\n\t\treinterpret_cast<char *>(&pos) + 0x1C));\n}\n\n// ??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4LivingWorldID@@@Z\nAudioEventRTS::AudioEventRTS(const AudioEventInfoRef &eventInfo, LivingWorldID ownerID)\n{\n    // Like the proven ObjectID overload, this helper consumes a counted info ref.\n    initFromName(reinterpret_cast<const AsciiString &>(eventInfo));\n\tm_objectID = static_cast<unsigned int>(ownerID);\n\tm_timeOfDay = 1;\n\tif (ownerID)\n\t\tm_ownerType = 5;\n\telse\n\t\tm_objectID = INVALID_ID;\n\n\tCoord3D pos;\n\tresolveOwnerPosition(&pos, reinterpret_cast<bool *>(\n\t\treinterpret_cast<char *>(&pos) + 0x1C));\n}\n"
+              csource="// ?rva0060f3c0@LivingWorldManager@@QAEXXZ\n// Typed counted-info LivingWorld constructor; retail 0x0060F3C0, 184 bytes.\n// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n#include \"ascii_string.h\"\n\nextern \"C\" __declspec(dllimport) long __stdcall InterlockedDecrement(long volatile *addend);\n\n// Same counted-reference contract used by AudioEventRTSCopyAndLifetime.cpp.\nclass Counted\n{\npublic:\n    virtual ~Counted();\n    void Release_Ref()\n    {\n        if (InterlockedDecrement(&m_refCount) <= 0)\n            delete this;\n    }\n    long m_refCount;\n};\n\nclass CountedPtr\n{\npublic:\n    bool isEmpty() const { return m_ptr == 0; }\n    void clear()\n    {\n        if (m_ptr)\n        {\n            m_ptr->Release_Ref();\n            m_ptr = 0;\n        }\n    }\n    Counted *m_ptr;\n};\n\nenum LivingWorldID { INVALID_LIVING_WORLD_ID = 0 };\n\n// Opaque 112-byte stack record. Its complete cleanup is the existing QAE\n// destructor route at ILT 0x00026F35, rather than the UAE route 0x0002671F.\n// Same existing one-word struct view as AudioEventRTSThinExtraCtor.cpp.\nstruct AudioEventInfoRef { void *ptr; };\n\nclass AudioEventRTS\n{\npublic:\n    AudioEventRTS(const AudioEventInfoRef &infoRef, LivingWorldID owner);\n    ~AudioEventRTS();\nprivate:\n    unsigned char m_storage[0x70];\n};\ntypedef char Rva0060F3C0EventSize[(sizeof(AudioEventRTS) == 0x70) ? 1 : -1];\n\nclass AudioManager\n{\npublic:\n#define SLOT(n) virtual void slot##n();\n    SLOT(00) SLOT(01) SLOT(02) SLOT(03) SLOT(04) SLOT(05) SLOT(06) SLOT(07)\n    SLOT(08) SLOT(09) SLOT(10) SLOT(11) SLOT(12) SLOT(13) SLOT(14) SLOT(15)\n    SLOT(16)\n    virtual unsigned int addAudioEvent(const AudioEventRTS *event);\n#undef SLOT\n};\nextern AudioManager *TheAudio;\n\nstruct Rva0060F3C0LogicSub\n{\n    unsigned char m_padding[0x10];\n    unsigned char m_0010;\n};\nclass LivingWorldLogic\n{\npublic:\n    unsigned char m_padding[0x28];\n    Rva0060F3C0LogicSub *m_0028;\n};\nextern LivingWorldLogic *TheLivingWorldLogic;\n\nclass LivingWorldManager\n{\npublic:\n    void rva0060f3c0();\nprivate:\n    unsigned char m_padding[0x238];\n    CountedPtr m_0238;\n    LivingWorldID m_023C;\n    unsigned char m_padding240[0x54];\n    unsigned char m_0294;\n};\n\nvoid LivingWorldManager::rva0060f3c0()\n{\n    CountedPtr &queued = m_0238;\n    if (m_0238.m_ptr)\n    {\n        AudioEventRTS event(reinterpret_cast<const AudioEventInfoRef &>(queued), m_023C);\n        AudioManager *audio = TheAudio;\n        audio->addAudioEvent(&event);\n        switch (queued.isEmpty())\n        {\n        case false:\n            queued.clear();\n            break;\n        default:\n            break;\n        }\n    }\n    TheLivingWorldLogic->m_0028->m_0010 = 1;\n    m_0294 = 0;\n}\n"
+              if digest(psource.encode())!="7edb978ffd829ad956698037b59f1423b36a2ab8f471800fbdffb135476f487a" or digest(csource.encode())!="0bdf58177ad4b09e03709904dca0a368e9ca8bb215771bae6593bddea33de9c0": raise RuntimeError("Immutable diagnostically exact source changed")
+              note="# Counted-info LivingWorld constructor and caller\n\nAt 0x000B4780 (145 bytes), replace the previous semantic claim\nOLD_NAME\nwith the actual distinct counted-reference overload\n??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4LivingWorldID@@@Z.\n\nThis changes the C++ type/identity of an already byte-matched provider.\nIt adds zero new C++ exact bytes. It does not redirect the string-taking\nconstructor at 0x000B4690 or create a constructor alias.\n\n## Independent retail evidence\n\nThe thin provider calls ILT 0x0004A86D to the matched 100-byte helper\n0x000B2610. After commonInit that helper reads its one-word input; if\nnonnull it extracts an AsciiString from pointee+8 and binds the counted\ninfo reference at event+8. The legacy 192-byte constructor 0x000B4690\ninstead assigns the input AsciiString directly and clears event+8.\nThese are semantically different overloads, not exchangeable inline twins.\n\nThe native LivingWorld caller 0x0060F3C0 passes its receiver+0x238 holder\nby reference and the +0x23C owner word through ILT 0x00009250 to B4780.\nAfter the audio virtual call it reloads that holder, calls the imported\nInterlockedDecrement on pointee+4 and calls deleting slot zero if needed.\nThat independently proves counted ownership, rather than AsciiString storage.\nThe provider stores owner to event+0x2C, timeOfDay=1 to +0x28, and ownerType=5\nto +0x30 for a nonzero owner, then returns with RET8.\n\nExisting independent evidence:\n- 0060f3c0-counted-audio.md: full caller extent/ABI, globals and counted release.\n- 000afa60.md: the one-word AudioEventInfoRef and AudioManager producers.\n- 00200df0-instant-death-complete-bank.md: retained-info ObjectID constructor use.\n- AudioEventRTSThinExtraCtor.cpp already declares the ObjectID overload using\n  exactly the same struct AudioEventInfoRef view.\n\nThe only provider source change is the LivingWorld overload's first argument\nand its cast through the existing helper's source-local AsciiString spelling.\nThe helper, CountedPtr contract, all offsets, remaining four constructors and\nthe existing string-taking LivingWorld constructor are unchanged.\n\nThe registry targets/game/reverse/canonical_classes.csv registers no\nAudioEventInfoRef or AudioEventRTS header. The existing one-word struct view\nis retained in the provider and consumer; no shared header/ABI is invented.\nThe consumer keeps an opaque 112-byte event record and the observed complete\nQAE cleanup route at ILT 0x00026F35. It emits no vtable provider.\n\n## Caller recovery\n\nThe existing strong source alternative\n2b3170dba817b184f665e9ace3a7618941e2341012ff2f04eb53ebc11c75b112\nhad six scratch-register differences with a member-pointer constructor route.\nA direct string-taking constructor call had zero masked differences but the\nnormal byte gate correctly rejected its different B4690 callee.\nCorrecting the provider's genuine first argument makes the direct C++ call\nboth uniquely named and correctly routed to B4780.\n\nThe matched Rva003C2530Owner::prepare uses TheLivingWorldManager and calls\nILT 0x00016DEC to 0060F3C0. The member keeps its address-derived spelling\nLivingWorldManager::rva0060f3c0; no guessed playSound name is promoted.\nRET at +0xB7 and INT3 at +0xB8 establish all 184 bytes.\nTheAudio at 0x012ED668 and TheLivingWorldLogic at 0x012F1028 retain canonical\ndata owners; no new global/pin/alias is introduced.\n\n## Native verification and scope\n\nDiagnostic Windows run 40240794015 at official\nf633d0e97a953289405438821be0c09b28527bbb compiled both complete private\nsources: provider145/145B with7relocs and caller184/184B with9relocs, zero\nnonrelocation differences. The prior provider's five bodies passed build.cmd.\nThose diagnostics are not admission: the normal add_match verification and\nscoped builds at the actual source paths decide acceptance.\n\nThe native admission receipt records actual TU-map approval, the EA wb2\nLivingWorldManager.cpp home, current queued finish siblings and foreign\nreservations before any production edit. No one-function fallback is used.\nThe whole existing provider TU is read and verified, including its four\nunchanged bodies. Root requested separate normal commits for the provider\ncorrection (+0) and the new caller (+184). Linking previews remain separate\nfrom exact C++ progress and are unknown when the current census is unavailable.\n\nCompiler: repository MSVC7.1; provider existing /DNDEBUG /MD /EHsc and WWLib\ninclude; caller /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc and that same established\nAsciiString header. Original banks remain unchanged.\n".replace("OLD_NAME",old["name"])
+              note+="\nNative whole-TU receipt:\n\n"+json.dumps(scope,indent=2)+"\n"
+              fence("before-provider-production-edit")
+              (root/provider).write_text(psource,encoding="utf-8",newline="\n")
+              (root/evidence).write_text(note,encoding="utf-8",newline="\n")
+              run("admit-provider",[sys.executable,"tools/add_match.py",new_name,"0x000B4780","145",provider,"--replace-rva","0x000B4780","--correct-identity",old["name"],"--identity-evidence",evidence,"--model","gpt-6","--notes","counted AudioEventInfoRef LivingWorld overload; native helper extracts info+8 and binds reference; string-taking constructor remains at000B4690"])
+              run("provider-whole-file",["cmd","/d","/c","build.cmd",provider])
+              run("helper-unchanged",["cmd","/d","/c","build.cmd","game/GameEngine/Source/Common/Audio/AudioEventRTSCommonInit.cpp"])
+              run("legacy-string-constructor-unchanged",["cmd","/d","/c","build.cmd","game/GameEngine/Source/Common/Audio/AudioEventRTSCopyAndLifetime.cpp"])
+              run("provider-link-preview",[sys.executable,"tools/link_check.py",provider],False)
+              run("pin-consistency-provider",[sys.executable,"tools/pin_consistency.py","--check"])
+              run("record-provider",[sys.executable,"tools/re_log.py","record",new_name,"0x000B4780","145","matched","Correct counted AudioEventInfoRef LivingWorld overload; native B2610 extracts info+8 and binds; B4690 string overload remains distinct. Whole provider five bodies and helper/legacy sources pass normal gates. +0 newCPP bytes t=12min model=gpt-6"])
+              paths=[provider,evidence,"targets/game/reverse/functions.csv","targets/game/reverse/re_attempts.log"]
+              normal_commit("provider","Correct the counted-info LivingWorld audio constructor overload\n\nRetail000B4780 preserves a counted AudioEventInfoRef through000B2610; the string-taking000B4690 constructor assigns its string directly and clears info. Give the existing145-byte provider its distinct actual input type and retain its ABI. All five provider bodies and the unchanged helper/legacy constructor units pass scoped byte checks. This adds0 C++ bytes.\n\nClaim-Lease: 0x000B4780="+lease+"\n",paths,0)
+              fence("before-body-production-edit")
+              (root/home).parent.mkdir(parents=True,exist_ok=True)
+              (root/home).write_text(csource,encoding="utf-8",newline="\n")
+              run("admit-new-body",[sys.executable,"tools/add_match.py",body_name,"0x0060F3C0","184",home,"--replace-rva","0x0060F3C0","--model","gpt-6","--notes","whole184B RET+0xB7 INT3+0xB8; matched LivingWorldManager caller; actual counted-info constructor000B4780; identity-evidence="+evidence])
+              run("new-body-whole-file",["cmd","/d","/c","build.cmd",home])
+              run("provider-after-consumer",["cmd","/d","/c","build.cmd",provider])
+              run("body-link-preview",[sys.executable,"tools/link_check.py",home],False)
+              run("pin-consistency-body",[sys.executable,"tools/pin_consistency.py","--check"])
+              lever="\n\n## A counted-info overload is not its string-taking constructor twin\n\nLivingWorldManager::rva0060f3c0 (0060F3C0,184B) had six scratch-register\ndifferences when its constructor call used a typed member pointer. A direct\nordinary constructor call matched the masked bytes but the byte gate correctly\nrejected the string-taking provider at000B4690 instead of retail's000B4780.\n\nRetail's000B2610 helper extracts the name from info+8 and binds the counted info\nreference; the000B4690 constructor assigns an AsciiString directly and clears\nthe info reference. Correct the thin provider to its actual distinct\nAudioEventRTS(const AudioEventInfoRef&,LivingWorldID) overload, keeping the\nexisting one-word struct view. The now unique direct C++ call preserves the\nobserved argument ABI and removes the member-pointer scratch allocation.\nBoth the145B provider and184B caller pass the normal byte/relocation gates.\nDo not select the other constructor merely because masking hides its address.\nSee identity_evidence/000b4780-counted-livingworld-overload.md and\n0060f3c0-counted-audio.md for native identity, consumer and layout evidence.\nMSVC7.1; existing /MD /EHsc settings and WWLib AsciiString context.\n"
+              with (root/"docs/shape_levers.md").open("a",encoding="utf-8",newline="\n") as handle: handle.write(lever)
+              identity=root/"targets/game/reverse/identity_evidence/0060f3c0-counted-audio.md"
+              with identity.open("a",encoding="utf-8",newline="\n") as handle:
+                  handle.write("\n## Typed-overload recovery,2026-10-25\n\nThe later native recovery distinguishes the counted-info000B4780 overload from the string-taking000B4690 constructor. Correcting the provider to AudioEventRTS(const AudioEventInfoRef&,LivingWorldID) makes the ordinary direct C++ call both byte-exact and correctly bound, eliminating the previous six register differences without a member-pointer adapter. See000b4780-counted-livingworld-overload.md. Original preferred/alternative banks remain as history; the proper LivingWorldManager.cpp home now holds the verified184-byte body. Normal provider/helper/legacy and caller gates, identity/ownership and relocation checks pass. The linker preview is recorded separately; no census-derived linked-byte gain is claimed.\n")
+              run("record-body",[sys.executable,"tools/re_log.py","record",body_name,"0x0060F3C0","184","matched","Full184B C++ exact through RET+0xB7 INT3+0xB8. Correct counted AudioEventInfoRef constructor provider resolves000B4780 rather than string000B4690; direct native call removes6 scratch differences. Whole home/provider/helper/legacy scopes verified. Evidence "+evidence+" t=18min model=gpt-6"])
+              bodypaths=[home,"docs/shape_levers.md","targets/game/reverse/identity_evidence/0060f3c0-counted-audio.md","targets/game/reverse/functions.csv","targets/game/reverse/re_attempts.log"]
+              normal_commit("body","Recover the complete LivingWorld counted-audio helper in C++\n\nConvert all184 bytes of0060F3C0 at the evidenced LivingWorldManager.cpp home. Call the actual counted-info LivingWorld constructor directly; the distinct typed provider keeps native ownership and fixes the previous six scratch-register differences. Preserve the established global, virtual-call and cleanup routes. Normal add_match, scoped provider/caller byte gates and commit hooks pass; C++ exact progress versus origin/master is+184 bytes. Link previews are reported separately.\n\nClaim-Lease: 0x0060F3C0="+lease+"\n",bodypaths,184)
+              run("final-clean-tree",["git","diff","--exit-code"])
+              progress("final-progress",184)
+              run("export-bundle",["git","bundle","create",str(out/"result.bundle"),base+"..HEAD"])
+              run("verify-bundle",["git","bundle","verify",str(out/"result.bundle")])
+              result.update(status="two-normal-commits-admitted-unpublished",cpp_exact_delta=184,bundle_sha256=digest((out/"result.bundle").read_bytes()))
               save()
-              print("TYPED_FINAL "+json.dumps(result),flush=True)
+              print("ADMISSION_MANIFEST "+json.dumps({k:v for k,v in result.items() if k in ("status","commits","cpp_exact_delta","bundle_sha256","scope")}),flush=True)
+              export_commits()
           except BaseException as err:
               result.update(status="failed",error=str(err))
               (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
               save()
+              # This owned native checkout is ephemeral; preserve only normally committed
+              # changes. Never export an unverified reconstruction or ledger state.
+              tracked=["targets/game/reverse/functions.csv","targets/game/reverse/re_attempts.log",provider,"docs/shape_levers.md","targets/game/reverse/identity_evidence/0060f3c0-counted-audio.md"]
+              run("restore-uncommitted-owned-scope",["git","restore","--source=HEAD","--staged","--worktree","--",*tracked],False)
+              for path in (home,evidence):
+                  if subprocess.run(["git","ls-files","--error-unmatch","--",path],cwd=root,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode and (root/path).is_file(): (root/path).unlink()
+              run("failure-final-progress",[sys.executable,"tools/progress.py","origin/master"],False)
+              if result["commits"]:
+                  run("preserve-normal-commits-bundle",["git","bundle","create",str(out/"result.bundle"),base+"..HEAD"],False)
+                  export_commits()
               raise
           
           PY
@@ -151,7 +239,7 @@ jobs:
         with:
           name: bfme1-short-finish-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            source/build/short-counted-audio-20261025/
+            source/build/short-counted-audio-admission-20261025/
             source/build/experiments/
             source/build/experiments.sqlite
           retention-days: 90
