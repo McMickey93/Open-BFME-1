@@ -2178,34 +2178,7 @@ void AIPlayer::buildAIBaseDefenseStructure(const AsciiString &thingName, Bool fl
 // ------------------------------------------------------------------------------------------------
 /** Repair a bridge or other structure. */
 // ------------------------------------------------------------------------------------------------
-// ?repairStructure@AIPlayer@@UAEXW4ObjectID@@@Z present-unmatched
-void AIPlayer::repairStructure(ObjectID structure)
-{
-	Object *structureObj = TheGameLogic->findObjectByID(structure);
-	if (structureObj==NULL) return;
-	if (structureObj->getBodyModule()==NULL) return;
-	// If the structure is not noticably damaged, don't bother.
-	enum BodyDamageType structureState = structureObj->getBodyModule()->getDamageState(); 
-	if (structureState==BODY_PRISTINE) {
-		return; 
-	}
-	if (structureObj->isKindOf(KINDOF_BRIDGE)) {
-		// Locate the correct post to repair.
-	}
-	Int i;
-	for (i=0; i<m_structuresInQueue; i++) {
-		if (m_structuresToRepair[i] == structureObj->getID()) {
-			DEBUG_LOG(("info - Bridge already queued for repair.\n"));
-			return;
-		}
-	}
-	if (m_structuresInQueue==MAX_STRUCTURES_TO_REPAIR) {
-		DEBUG_LOG(("Structure repair queue is full, ignoring repair request. JBA\n"));
-		return;
-	}
-	m_structuresToRepair[m_structuresInQueue] = structureObj->getID();
-	m_structuresInQueue++;
-}
+// Native repairStructure is owned by AIPlayerRepairStructure.cpp.
 
 // ------------------------------------------------------------------------------------------------
 /** select a skillset for the player. */
