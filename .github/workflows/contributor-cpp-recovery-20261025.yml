@@ -1,0 +1,116 @@
+name: Contributor BFME1 C++ recovery
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-cpp-recovery-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-cpp-recovery
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:cpp-recovery-20261025
+    steps:
+      - name: Read the current official tree without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate the official ledger and read upstream master
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 cpp-recovery
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+      - name: Serve clean C++ recovery candidates from the native project queue
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 cpp-recovery
+          python3 -u - <<'PY'
+          import hashlib,json,os,subprocess,sys,time,traceback
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          out=root/"build/contributor-cpp-recovery-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          sys.path.insert(0,str(root/"tools"))
+          import claims,list_naked_candidates as naked
+          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[]}
+          def run(label,args,required=True,show=False):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(cp.stdout)
+              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
+              print("RECOVERY_COMMAND",label,"exit",cp.returncode,flush=True)
+              if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
+              if required and cp.returncode: raise RuntimeError(label+" failed")
+              return cp.stdout.decode("utf-8","replace")
+          if subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root).decode().strip()!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
+          if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
+          active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
+          result["active_claims"]=active
+          queue=json.loads(run("naked-pool",[sys.executable,"tools/list_naked_candidates.py","game","--json"]))
+          result["queue_stats"]={k:v for k,v in queue.items() if k!="candidates"}
+          pool=queue["candidates"]
+          print("RECOVERY_QUEUE "+json.dumps({"count":len(pool),**result["queue_stats"]}),flush=True)
+          for c in pool: c["bytes"]=bytes.fromhex(c.pop("bytes_hex"))
+          # Every entry comes from the project's boundary/status-aware queue.
+          # Avoid live reservations and work already completed in this session.
+          candidates=[c for c in pool if c.get("rva") and c["rva"] not in active and c["rva"].upper() not in {"0X003D5AE0","0X0092CB30","0X00793260","0X009EF930","0X00472000","0X008A2130","0X008C6AD0","0X00948BD0","0X00925D10"}]
+          result["candidate_count"]=len(candidates)
+          sequence=[]
+          for n in range(min(6,len(candidates))):
+              selected,meta=naked.select_candidate(candidates)
+              candidates.remove(selected)
+              item={k:v for k,v in selected.items() if k!="bytes"}
+              item["bytes_hex"]=selected["bytes"].hex()
+              item["meta"]={k:str(v) if isinstance(v,Path) else v for k,v in meta.items()}
+              sequence.append(item)
+              print("RECOVERY_SEQUENCE "+json.dumps({"order":n,"selected":item}),flush=True)
+              run("brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",selected["rva"]],True,True)
+              run("callees-"+str(n),[sys.executable,"tools/callees.py",selected["rva"],str(selected["size"])],True,True)
+          result["sequence"]=sequence
+          run("lift-summary",[sys.executable,"tools/lift_lane.py","--summary"],True,True)
+          run("clean-tree",["git","diff","--exit-code"])
+          run("progress",[sys.executable,"tools/progress.py","origin/master"],True,True)
+          result["status"]="served-readonly"
+          (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          print("RECOVERY_RESULT "+json.dumps(result),flush=True)
+          PY
+      - name: Preserve selection and narrow native context
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-cpp-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: source/build/contributor-cpp-recovery-20261025/
+          retention-days: 90
+          if-no-files-found: warn
+          compression-level: 9
