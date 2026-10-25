@@ -1,0 +1,88 @@
+name: Contributor native leaf evidence and claim-object transport
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-leaf-evidence-20261025.yml']
+permissions:
+  contents: write
+concurrency:
+  group: mcmickey93-bfme1-leaf-evidence
+  cancel-in-progress: false
+jobs:
+  evidence:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 15
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:leaf-20261025
+    steps:
+      - name: Check out the reviewed official source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: 60145fecd29ec2e21a5cc5796d51c76795296e22
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate the ledger and inspect the complete leaf and sibling
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 native-leaf-evidence
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+          python3 tools/brief.py --rvas 0x003D59C0
+          python3 tools/callees.py 0x003D59C0 39
+          python3 tools/dis_retail.py 0x003D59C0 39
+          python3 tools/repair_queue.py dest 0x003D59C0
+          python3 tools/find_declared_unmatched.py game/GameEngine/Source/Common/Rva003D5AE0Test.cpp
+      - name: Export unchanged project-generated claim objects to fork-only coordination refs
+        working-directory: source
+        shell: bash
+        env:
+          CLAIM_TRANSPORT_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 native-claim-object-transport
+          python3 - <<'PY'
+          import base64, json, os, subprocess, sys
+          sys.path.insert(0, 'tools')
+          import claims
+          rvas = [0x003D59C0, 0x003D5AE0]
+          assert claims.fetch(), 'Cannot check official claims'
+          live = claims.live(claims._read_local())
+          assert not any(r in live for r in rvas), 'A selected body is held upstream'
+          subprocess.run(['git','config','user.name','McMickey93'], check=True)
+          subprocess.run(['git','config','user.email','347452154+McMickey93@users.noreply.github.com'], check=True)
+          records = []
+          for rva in rvas:
+              token = claims._record(os.environ['BFME_CLAIM_OWNER'], 4, note='Native contributor leaf work; exact object transport to official claim branch pending')
+              body = json.loads(subprocess.check_output(['git','show','-s','--format=%B',token], text=True))
+              records.append({'rva':f'0x{rva:08X}','token':token,'record':body})
+          env = dict(os.environ)
+          count = int(env.get('GIT_CONFIG_COUNT','0'))
+          env['GIT_CONFIG_COUNT'] = str(count+1)
+          env[f'GIT_CONFIG_KEY_{count}'] = 'http.https://github.com/McMickey93/Open-BFME-1.git.extraheader'
+          credential = base64.b64encode(('x-access-token:' + env.pop('CLAIM_TRANSPORT_TOKEN')).encode()).decode()
+          env[f'GIT_CONFIG_VALUE_{count}'] = 'AUTHORIZATION: basic ' + credential
+          command = ['git','-c','core.hooksPath=.githooks','push','--atomic','https://github.com/McMickey93/Open-BFME-1.git']
+          command += [entry['token']+':refs/claims/'+entry['rva'] for entry in records]
+          subprocess.run(command, env=env, check=True)
+          print(json.dumps({'actual_upstream_claims_created':False,'transported_objects':records}, indent=2))
+          PY
