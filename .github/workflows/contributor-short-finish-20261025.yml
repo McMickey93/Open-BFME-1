@@ -5,7 +5,6 @@ on:
     paths: ['.github/workflows/contributor-short-finish-20261025.yml']
 permissions:
   contents: read
-  actions: read
 concurrency:
   group: mcmickey93-bfme1-short-hard-finish
   cancel-in-progress: false
@@ -50,13 +49,7 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-          bash tools/setup_hooks.sh
-          git config user.name McMickey93
-          git config user.email 347452154+McMickey93@users.noreply.github.com
-          git switch -c contributor/native-short-handoff
-      - name: Bank the immutable failed type split without recompiling
-        env:
-          BFME_READ_TOKEN: ${{ github.token }}
+      - name: Serve a short sequence from the current finish pool without reserving it
         shell: bash
         working-directory: source
         run: |
@@ -64,131 +57,60 @@ jobs:
           source .githooks/python3.sh
           require_python3 short-finish
           python3 -u - <<'PY'
-          import csv, hashlib, io, json, os, shutil, stat, subprocess, sys, time, traceback, urllib.error, urllib.request, zipfile
-          from pathlib import Path, PurePosixPath
+          import hashlib,json,os,subprocess,sys,time,traceback
+          from pathlib import Path
           root=Path.cwd().resolve()
-          out=root/"build"/"short-handoff-20261025"
+          out=root/"build/contributor-short-finish-20261025"
           out.mkdir(parents=True,exist_ok=True)
-          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
-          result={"status":"starting","base":base,"commands":[],"published":False,"normal_commit_passed":False,"original_run":40238851171,"original_artifact":12615044975,"original_artifact_sha256":"d804dd0ca88a8d09c3eac008ba728cf9b0e2844fc90e4711a6f893122fa189e4"}
-          def digest(b): return hashlib.sha256(b).hexdigest()
-          def save(): (out/"handoff-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-          def run(label,args,required=True,show=True):
-              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-              (out/(label+".log")).write_bytes(cp.stdout)
-              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":digest(cp.stdout)})
-              save()
-              print(">>>",label,"exit",cp.returncode,flush=True)
-              if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
-              if required and cp.returncode: raise RuntimeError(label+" failed")
-              return cp.stdout
-          def blob(path): return subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
           sys.path.insert(0,str(root/"tools"))
           import claims,next_work
-          token="1dc25e5be19afcfa220c792369560dc978529019"
-          owner="github:McMickey93:bfme1:short-finish-20261025"
-          lease="af684acfcd55496eb3f86bd92cddbde4"
-          def fence():
-              if not claims.fetch(): raise RuntimeError("Cannot read actual upstream claim")
-              entry=claims._read_local().get(0x008CF030)
-              if not entry: raise RuntimeError("Claim missing")
-              current,info=entry
-              if current!=token or info.get("owner")!=owner or info.get("lease",current)!=lease or info.get("expires",0)<=time.time() or not claims.holds(0x008CF030,token): raise RuntimeError("Lost actual claim")
+          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[]}
+          def save():
+              (out/"selection-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          def run(label,args,required=True,show=False):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(cp.stdout)
+              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
+              save()
+              print("SHORT_COMMAND",label,"exit",cp.returncode,flush=True)
+              if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
+              if required and cp.returncode: raise RuntimeError(label+" failed")
+              return cp.stdout.decode("utf-8","replace")
           try:
-              if base!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Wrong measured source pin")
-              if blob("AGENTS.md")!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
-              preferred="targets/game/reverse/attempts/0x008cf030.cpp"
-              if blob(preferred)!="33b39cf6c43cf6716655582bc9bd040ec4872c70": raise RuntimeError("Preferred bank changed")
-              before={p:blob(p) for p in (preferred,"targets/game/reverse/functions.csv","targets/game/reverse/symbols.csv","targets/game/reverse/data_rows.csv")}
-              run("initial-clean-tree",["git","diff","--exit-code"])
-              class NoRedirect(urllib.request.HTTPRedirectHandler):
-                  def redirect_request(self,req,fp,code,msg,headers,newurl): return None
-              api="https://api.github.com/repos/McMickey93/Open-BFME-1/actions/artifacts/12615044975/zip"
-              headers={"Authorization":"Bearer "+os.environ["BFME_READ_TOKEN"],"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"bfme1-native-evidence-handoff"}
-              request=urllib.request.Request(api,headers=headers)
-              try:
-                  response=urllib.request.build_opener(NoRedirect).open(request,timeout=60)
-              except urllib.error.HTTPError as error:
-                  if error.code not in (301,302,303,307,308): raise
-                  location=error.headers.get("Location","")
-                  if not location.startswith("https://"): raise RuntimeError("Unsafe artifact redirect")
-                  # Never forward the GitHub read credential to the signed blob URL.
-                  response=urllib.request.urlopen(location,timeout=60)
-              with response:
-                  raw=response.read(8*1024*1024+1)
-              if len(raw)>8*1024*1024 or digest(raw)!=result["original_artifact_sha256"]: raise RuntimeError("Artifact archive digest mismatch")
-              (out/"reviewed-original-artifact.zip").write_bytes(raw)
-              imported=out/"original-evidence"
-              imported.mkdir()
-              with zipfile.ZipFile(io.BytesIO(raw)) as archive:
-                  if len(archive.infolist())>1000 or sum(i.file_size for i in archive.infolist())>20*1024*1024: raise RuntimeError("Unexpected artifact extent")
-                  for info in archive.infolist():
-                      name=PurePosixPath(info.filename)
-                      if name.is_absolute() or any(p in (".","..") for p in name.parts) or "\\" in info.filename or ":" in info.filename or stat.S_ISLNK(info.external_attr>>16): raise RuntimeError("Unsafe artifact member")
-                  archive.extractall(imported)
-              original=imported/"contributor-short-finish-20261025"
-              native=json.loads((original/"trial-result.json").read_text(encoding="utf-8"))
-              if native.get("status")!="failed" or native.get("source_sha")!=base or native.get("workflow_sha")!="52945e8c0d5061575033a0917c090e3f164f0d99" or native.get("run_id")!="40238851171": raise RuntimeError("Wrong immutable native trial")
-              if native.get("error")!="normal-git-commit failed": raise RuntimeError("Original run failed before expected banking boundary")
-              measurement=native["measurement"]
-              if measurement!={"ours":365,"retail":380,"relocs":15,"diffs":229,"first":44,"shape":0.952,"diagnostic_exact":False}: raise RuntimeError("Unexpected reviewed native result")
-              variant=original/"01-split-native-hash.cpp"
-              if digest(variant.read_bytes())!=native["variant_sha256"]: raise RuntimeError("Measured source digest changed")
-              text=(original/"new-type-split-probe.log").read_text(encoding="utf-8")
-              measured_command=next(c for c in native["commands"] if c["label"]=="new-type-split-probe")
-              if measured_command["exit_code"]!=0 or digest((original/"new-type-split-probe.log").read_bytes())!=measured_command["sha256"]: raise RuntimeError("Native probe result changed")
-              # Original measurements are imported strictly as data, without recompiling.
-              fence()
-              folder=root/"targets/game/reverse/attempt_support/008cf030-native-hash-context-20261025"
-              if folder.exists(): raise RuntimeError("Handoff already exists")
-              folder.mkdir(parents=True)
-              report="# 0x008CF030: native hash/value type separation\n\nThis is a compiler-context experiment, not a C++ recovery. The preferred bank,\nproduction sources, headers, function/data rows and pins stay unchanged.\n\n## Inputs and new evidence\n\nOfficial source pin: f633d0e97a953289405438821be0c09b28527bbb.\nPreferred bank: targets/game/reverse/attempts/0x008cf030.cpp,\nblob 33b39cf6c43cf6716655582bc9bd040ec4872c70,\nSHA256 0b88dc4beaa7f2406905ea59a7a694b00cb111d9d3029935aee9a787a7383e61.\nNative control run 40238336486 (controller f8a95c9e00152afdb595e8a3deefc7b314dc1944),\nartifact 12615995115; ZIP SHA256\nb817d315e562109ddded7398fcf6fdcffbe2a69307ef05bc4a8e00328883cfe7.\nThat run reproduces 365 emitted bytes, 229 masked positional differences and\nshape 0.952 against the complete 380-byte retail body. The old 0.9 header is\nan author estimate; the finish_measure quality formula gives 0.3184.\nRET at +0x17B and following INT3 at +0x17C establish the extent.\n\nAll five archive sources and all eleven existing verdicts were reviewed.\nPrior work includes 1759 source permutations, local order, loop spelling,\ncompiler flags, and a four-byte owning-link member/operator=. Those unchanged\ntrials are not repeated. Generated EH and shape-family choices are retained\nas context; the previously ruled-out generic search is not reopened.\n\nNew donor evidence is BFME2 commit\n0cbf8db8ec46aad7ac71789ed9dd2fd01a74e503 (2026-10-11),\nCode/Libraries/Source/Apt/AptActionInterpreterConstantHandlers.cpp,\ncurrent reviewed blob a8793fcc70bc2615234d569f83256f42860f2a23.\nIts ImplementsOp separates the nonvirtual AptNativeHash owner from virtual\nAptValue prototype values. It is a type/context lead, not a direct donor match:\nBFME2 includes additional assertions/branches and uses a different array/setter\nrepresentation. Its untagged SetPrototype body must not replace BFME1's tag\nhandling.\n\nBFME1 retail independently loads the slot +0x18 accessor result's +0x0C\nprototype field, strips its low tag, addrefs new, releases old, and stores\nnull, pointer|1 or pointer according to the slot +0x14 result.\nThe matched Rva8CCD60ExpandPrototypeValues.cpp (blob\n2784d8a057c208b53ef0a16f0d58afc18bc817c4) distinguishes a nonvirtual hash\nprefix and a virtual value; that sibling accesses the separate proto-chain\nfield +8. These offsets are not interchangeable.\nThe real 28-byte allocated constructor is in\ngame/Libraries/Source/WWVegas/WWLib/Rva89ACB0HolderCtor.cpp.\nThe variant keeps a 4-byte polymorphic value view plus 24 unaccessed bytes,\nand retains sizeof=28 and the eight-byte allocator header. Compile-time size\nchecks prevent the split from silently changing the allocation.\n\nThe old bank conflates hash owner and prototype value in Rva8CF030List.\nThe measured source split replaces only this type relationship: slot six\nreturns an address-qualified nonvirtual 16-byte hash view; its tagged +0x0C\nlink owns virtual values, and the 28-byte allocated object derives from the\nvalue view. All calls, tag/refcount sequencing, lifetimes, flags and loop\nexpressions remain as in the bank. No vtable provider is defined.\n\n## Identity and later admission\n\nCurrent true home is game/Libraries/Source/Apt/AptActionInterpreter.cpp,\nblob 60df2491d6c680d667ad689a1e79e7203aca56e3; its matched next body\n008CF1B0 uses the same stack count+0/capacity+4/pointer+8 prefix.\nThe brief's aligned BFME2 label says CallMethod, while the source structure\nresembles ImplementsOp. Neither authorizes renaming this opaque body.\n\nNative direct callees are 00898300, 00897300, 00899CB0 and 008A0CF0.\nExisting providers and ABI must be reconciled before admission, including the\ncanonical StringDataC empty global g_rva012D5298Empty and allocator-pair\ng_rva01337A30AllocPair. The old bank's names are not new provider evidence.\nNo new name, pin or one-slot table is claimed.\n\n## Native outcome\n\nSee native-result.json and probe.log for exact source hash, compiler command,\ncomplete disassembly, relocations and result. The measured split source is\npreserved as split-native-hash.cpp. This result was committed through normal\nhooks after re_log.py record blocked; no preferred stash was overwritten.\nThe output bundle and manifest preserve that unpublished native commit.\n"
-              report=report.replace("split-native-hash.cpp","split-native-hash.cpp.txt")
-              outcome="\nMeasured new variant: "+json.dumps(measurement,sort_keys=True)+".\nSource SHA256: "+native["variant_sha256"]+".\nC++ exact delta remains +0 bytes. Do not repeat this type split unchanged.\n"
-              outcome+="\nThe control finish_measure receipt was unavailable because include-search-directory fingerprints could not be cached. The quality above is arithmetic from the raw native diagnostic, not a qualified cached score or admission.\n"
-              outcome+="\nOriginal trial run 40238851171/controller52945e8c0d5061575033a0917c090e3f164f0d99 completed compilation and probing; its normal commit hook then rejected the archived .cpp extension outside the official source tree. The evidence-only banking follow-up keeps the measured bytes as .cpp.txt, with no compiler rerun and no gate change. Original artifact12615044975 ZIP SHA256 d804dd0ca88a8d09c3eac008ba728cf9b0e2844fc90e4711a6f893122fa189e4 was verified before import.\n"
-              (folder/"readme.md").write_text(report+outcome,encoding="utf-8",newline="\n")
-              (folder/"split-native-hash.cpp.txt").write_bytes(variant.read_bytes())
-              (folder/"probe.log").write_bytes((original/"new-type-split-probe.log").read_bytes())
-              (folder/"native-result.json").write_bytes((original/"trial-result.json").read_bytes())
-              evidence="RET+0x17B INT3+0x17C full380B. Preferred365B229diff shape0.952. New BFME2 donor0cbf8db8 supports nonvirtual hash/virtual prototype separation; preserve BF1 tagged+0x0C ownership and28B allocation. Native split remains365B229diff shape0.952. Prior1759permutations/flags/owninglink not repeated. No source/ledger/bank change. Handoff "+folder.relative_to(root).as_posix()+"/readme.md t=12min model=gpt-6 blocker=regalloc/native-hash-context"
-              run("record-blocked",[sys.executable,"tools/re_log.py","record","?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z","0x008CF030","380","blocked",evidence])
-              if any(blob(p)!=b for p,b in before.items()): raise RuntimeError("Production ledger or preferred bank changed")
-              run("check-csv-after-evidence",[sys.executable,"tools/check_csv.py"])
-              paths=[(folder/name).relative_to(root).as_posix() for name in ("readme.md","split-native-hash.cpp.txt","probe.log","native-result.json")]+["targets/game/reverse/re_attempts.log"]
-              run("stage-explicit-evidence",["git","add","--",*paths])
-              message="[BFME 2 donor] Bank the bounded Apt native-hash context result\n\nPreserve the target-proven tagged ownership and 28-byte allocation while testing donor-supported hash/value separation. Keep production and the preferred bank unchanged; no new exact C++ bytes.\n\nClaim-Lease: 0x008CF030="+lease+"\n"
-              (out/"message.txt").write_text(message,encoding="utf-8",newline="\n")
-              fence()
-              run("normal-git-commit",["git","commit","--file",str(out/"message.txt")])
-              commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
-              tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],cwd=root).decode().strip()
-              actual=subprocess.check_output(["git","diff","--name-only",base,commit],cwd=root).decode().splitlines()
-              if sorted(actual)!=sorted(paths): raise RuntimeError("Unexpected evidence commit scope")
+              result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
+              result["origin_master"]=subprocess.check_output(["git","rev-parse","origin/master"],cwd=root).decode().strip()
+              if result["source_sha"]!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Unexpected official pin")
+              if subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root).decode().strip()!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
+              if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
+              active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
+              result["active_claims"]=active
+              text=run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"])
+              pool=json.loads(text)["finish"]
+              # Selection is from the tool's eligible pool only. This assigned lane is
+              # bounded by target size; completed work and active reservations are fenced.
+              lane=[c for c in pool if 0<int(c["target_size"])<=512 and c.get("source") and c["target_rva"].upper() not in {"0X00078640","0X003D59C0","0X008CF030","0X002D9F90","0X0092CB30"}]
+              held=[c for c in lane if c["target_rva"] in active]
+              candidates=[c for c in lane if c["target_rva"] not in active]
+              result.update(pool_count=len(pool),bounded_count=len(lane),held_count=len(held),candidate_count=len(candidates))
+              sequence=[]
+              remaining=list(candidates)
+              for number in range(min(4,len(remaining))):
+                  selected=next_work.weighted_choice(remaining)
+                  remaining.remove(selected)
+                  sequence.append(selected)
+                  print("SHORT_SEQUENCE_ITEM "+json.dumps({"order":number,"selection":selected}),flush=True)
+                  run("selected-brief-"+str(number),[sys.executable,"tools/brief.py","--rvas",selected["target_rva"]],True,True)
+                  run("selected-callees-"+str(number),[sys.executable,"tools/callees.py",selected["target_rva"],str(selected["target_size"])],True,True)
+                  raw=(root/selected["stash"]).read_bytes()
+                  selected["stash_sha256"]=hashlib.sha256(raw).hexdigest()
+                  selected["stash_blob"]=subprocess.check_output(["git","hash-object",selected["stash"]],cwd=root).decode().strip()
+              result["sequence"]=sequence
+              result["status"]="served-sequence-readonly-before-claims" if sequence else "empty-bounded-tool-pool"
+              print("SHORT_POOL "+json.dumps({"tool":len(pool),"bounded":len(lane),"held":len(held),"available":len(candidates),"suggestions":len(sequence)}),flush=True)
               run("clean-tree",["git","diff","--exit-code"])
-              run("session-progress",[sys.executable,"tools/progress.py","origin/master"])
-              run("export-bundle",["git","bundle","create",str(out/"result.bundle"),base+"..HEAD"])
-              run("verify-bundle",["git","bundle","verify",str(out/"result.bundle")])
-              manifest={"base":base,"commit":commit,"tree":tree,"paths":paths,"normal_commit_passed":True,"published":False,"bundle_sha256":digest((out/"result.bundle").read_bytes()),"original_run":40238851171,"original_artifact":12615044975,"original_artifact_sha256":result["original_artifact_sha256"],"source_or_ledger_changed":False,"cpp_exact_delta":0}
-              (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
-              result.update(status="failed-type-split-banked-unpublished",manifest=manifest,normal_commit_passed=True)
+              run("session-progress",[sys.executable,"tools/progress.py","origin/master"],False,True)
               save()
-              print("SHORT_HANDOFF_MANIFEST "+json.dumps(manifest),flush=True)
-              pooltext=run("next-current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"],True,False).decode("utf-8")
-              pool=json.loads(pooltext)["finish"]
-              if not claims.fetch(): raise RuntimeError("Cannot refresh claims for next suggestion")
-              active={f"0x{rv:08X}" for rv,(tk,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
-              candidates=[c for c in pool if 0<int(c["target_size"])<=512 and c.get("source") and c["target_rva"].upper() not in {"0X00078640","0X003D59C0","0X008CF030","0X0092CB30"} and c["target_rva"] not in active]
-              selected=next_work.weighted_choice(candidates) if candidates else None
-              result["next_selection"]=selected
-              result["next_pool_counts"]={"tool":len(pool),"bounded_available":len(candidates)}
-              save()
-              print("SHORT_NEXT_SELECTED "+json.dumps({"counts":result["next_pool_counts"],"selection":selected}),flush=True)
-              if selected:
-                  run("next-selected-brief",[sys.executable,"tools/brief.py","--rvas",selected["target_rva"]],False)
-                  run("next-selected-callees",[sys.executable,"tools/callees.py",selected["target_rva"],str(selected["target_size"])],False)
-              run("final-progress",[sys.executable,"tools/progress.py","origin/master"])
-              print("SHORT_FINAL_STATUS "+result["status"],flush=True)
+              print("SHORT_FINAL "+json.dumps(result),flush=True)
           except BaseException as err:
               result.update(status="failed",error=str(err))
               (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
@@ -201,10 +123,7 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: bfme1-short-finish-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            source/build/short-handoff-20261025/
-            source/build/experiments/
-            source/build/experiments.sqlite
+          path: source/build/contributor-short-finish-20261025/
           retention-days: 90
           if-no-files-found: warn
           compression-level: 9
