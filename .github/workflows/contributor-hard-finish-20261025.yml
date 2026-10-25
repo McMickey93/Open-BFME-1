@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           git hash-object AGENTS.md
-      - name: Select the unbounded finish tier without source edits
+      - name: Fence claim and reproduce preferred bank with original compiler
         working-directory: source
         shell: bash
         run: |
@@ -61,25 +61,29 @@ jobs:
           from pathlib import Path
           sys.path.insert(0,'tools')
           import claims
-          cmd=[sys.executable,'tools/next_work.py','--tier','finish','--max-attempts','0','--cooldown-days','0','--json']
-          p=subprocess.run(cmd,check=True,capture_output=True,text=True)
-          data=json.loads(p.stdout)
-          print('HARD_FINISH_SELECTION '+json.dumps(data),flush=True)
-          selection=data.get('selection')
-          if selection:
-              rva=selection.get('target_rva') or selection.get('candidate_rva') or selection.get('rva')
-              assert rva
-              subprocess.run([sys.executable,'tools/brief.py','--rvas',rva],check=True)
-              assert claims.fetch()
-              current=claims.live(claims._read_local())
-              assert int(rva,16) not in current, 'Selected target became busy'
-              marker=claims._record(os.environ['BFME_CLAIM_OWNER'],4,note='Pending explicit connector claim for hard-finish source matching')
-              record=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
-              base=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-              print('CLAIM_TRANSPORT '+json.dumps({'rva':rva,'record':record,'base':base,'tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
-          else:
-              p=subprocess.run([sys.executable,'tools/next_work.py','--tier','finish','--max-attempts','0','--cooldown-days','0','--ranked','--json'],check=True,capture_output=True,text=True)
-              print(p.stdout,flush=True)
+          rva=0x001EDCA0
+          token='910b0d6b2329fa9bd666f48eb0947a66564c15ba'
+          assert claims.fetch()
+          entry=claims.live(claims._read_local()).get(rva)
+          assert entry and entry[0]==token and entry[1]['owner']==os.environ['BFME_CLAIM_OWNER']
+          assert claims.holds(rva,token)
+          print('CLAIM_FENCED '+json.dumps(entry),flush=True)
+          subprocess.run([sys.executable,'tools/callees.py','0x001EDCA0','1944'],check=True)
+          subprocess.run([sys.executable,'tools/find_declared_unmatched.py','game/GameEngine/Source/GameLogic/Object/Behavior/AutoAbilityBehaviorModuleDataDestructorThunk.cpp'],check=False)
+          for line in Path('targets/game/reverse/re_attempts.log').read_text(encoding='utf-8',errors='replace').splitlines():
+              if '001edca0' in line.lower():
+                  print('TARGET_HISTORY '+line,flush=True)
+          p=subprocess.run(['rg','-l','-i','--glob','*.md','001edca0','targets/game/reverse/attempt_support','targets/game/reverse/identity_evidence'],capture_output=True,text=True)
+          for name in p.stdout.splitlines():
+              print('TARGET_REPORT '+name,flush=True)
+              text=Path(name).read_text(encoding='utf-8',errors='replace')
+              if len(text)<16000:
+                  print(text,flush=True)
+          p=subprocess.run([sys.executable,'tools/probe.py','targets/game/reverse/attempts/0x001edca0.cpp','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--all','--shape'],capture_output=True,text=True)
+          out=Path('build/contributor_hard_finish_20261025');out.mkdir(parents=True,exist_ok=True)
+          (out/'preferred-probe.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
+          print(p.stdout,flush=True); print(p.stderr,flush=True)
+          assert p.returncode==0
           
           PY
       - name: Measure unchanged baseline
@@ -91,3 +95,12 @@ jobs:
           source .githooks/python3.sh
           require_python3 contributor-hard-finish
           python3 tools/progress.py origin/master
+      - name: Save private compiler evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bfme1-hard-finish-001edca0-baseline
+          path: |
+            source/build/contributor_hard_finish_20261025/
+            source/build/experiments/
+          retention-days: 90
