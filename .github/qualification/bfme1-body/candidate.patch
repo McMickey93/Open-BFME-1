@@ -1,146 +1,488 @@
-diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-index 60df2491d6c680d667ad689a1e79e7203aca56e3..4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9 100644
---- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-+++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-@@ -181 +181,113 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
- }
+diff --git a/game/Libraries/Source/Apt/BfmeFixup008A2580.cpp b/game/Libraries/Source/Apt/BfmeFixup008A2580.cpp
+index dd45a35cb93660747ce3853357a62312bcc443f5..b303fd8e828166f77839d2a59d3c2f81f071058c 100644
+--- a/game/Libraries/Source/Apt/BfmeFixup008A2580.cpp
++++ b/game/Libraries/Source/Apt/BfmeFixup008A2580.cpp
+@@ -1,35 +1,288 @@
+-// Open-BFME: relative-pointer fixup wrapper, retail 0x008A2580.
+-
+-class BfmeFixupChunk2580
+-{
+-public:
+-	char m_pad[0x1c];
+-	int m_rel;
+-};
+-
+-class BfmeFixup2580
+-{
+-public:
+-	void apply(void *a, BfmeFixupChunk2580 *chunk, void *c);
+-
+-	char m_pad[0x30];
+-	int m_flag;
+-};
+-
+-// The matched helper dump exports only this no-argument object symbol. The
+-// typed view keeps this in ECX and the original stack arguments; its spare
+-// EDX slot repeats `a`, which is already live there.
+-void d_008a2130(void);
+-
+-void BfmeFixup2580::apply(void *a, BfmeFixupChunk2580 *chunk, void *c)
+-{
+-	BfmeFixupChunk2580 *p = chunk;
+-	if (p->m_rel != 0)
+-		p->m_rel += (int)p;
+-	m_flag = 0;
+-	typedef void (__fastcall *DumpHelper)(void *, void *,
+-		void *, BfmeFixupChunk2580 *, void *);
+-	reinterpret_cast<DumpHelper>(&d_008a2130)(this, a, a, p, c);
+-	if (p->m_rel != 0)
+-		p->m_rel -= (int)p;
+-}
++// cl: /DNDEBUG /MD /EHsc
++// Open-BFME: loaded-animation pointer fixup, retail 0x008A2130 (1092 B),
++// with its existing relative-pointer wrapper at 0x008A2580 (56 B).
++// BFME 2 donor: AptAnimation.cpp, 006E5050, revision beed8a16790a.
++// These are address-qualified data-format views. BFME 1 offsets and the
++// ten-entry dispatch table are independently checked; donor assertions and
++// case 12 are not part of this body. Native byte verification is pending.
 +
++typedef unsigned int Word;
 +
-+// MSVC 7.1 keeps separate retail false-return tails when their zero-code
-+// barrier tags differ. See shape_levers.md and the matched 00653990/003E5950
-+// witnesses. This candidate still requires native byte verification.
-+extern "C" void _WriteBarrier(void);
-+extern "C" void _ReadWriteBarrier(void);
-+#pragma intrinsic(_WriteBarrier)
-+#pragma intrinsic(_ReadWriteBarrier)
-+
-+// Retail 0x008C6AD0, 233 bytes: registered value-conversion callback.
-+// The original callback name is unknown; keep the address in its name.
-+// The +4 flags and +8 Boolean payload follow AptValue_toNumber.cpp and
-+// AptBooleanCreate.cpp.  The validity bit follows Rva008C4A30Check.cpp.
-+class AptValue
++class BfmeFixupChunk2580
 +{
 +public:
-+	float toNumber();
-+	bool isUndefined() const { return ((m_valueBits >> 15) & 1) == 0; }
-+	__forceinline bool isType(int type) const
-+	{
-+		return (m_valueBits & 63) == type && !isUndefined();
-+	}
-+
-+	void *m_vtable;
-+	unsigned int m_valueBits;
-+	bool m_boolean;
++	char m_pad[0x1c];
++	int m_rel;
 +};
 +
-+class AptBoolean : public AptValue
++// Preserve the canonical callback-cell symbols. Their actual call-site
++// contracts are applied locally; no new callback identity is asserted.
++extern void (*g_bfmeSlot17VB)();
++extern void (*g_bfmeSlot21VB)();
++extern void (*g_bfmeSlot24VB)();
++typedef Word (__cdecl *Rva008A2130Callback2)(void *, int);
++typedef Word (__cdecl *Rva008A2130Callback3)(void *, int, const char *);
++
++struct Rva008D32B0Row;
++class Rva0089C860State;
++class Rva008D32B0
 +{
 +public:
-+	static AptBoolean *Create(bool value);
-+};
-+
-+// This is the already named twelve-byte stack prefix used by the adjacent
-+// 0x008C6800 callback.  In particular, the count is at VA 0x01338748;
-+// the old bank's g_bfmeCount1233 binding used a different image base.
-+struct Rva008AE770Stack
-+{
 +	int m_count;
-+	int m_rva0133874C;
-+	AptValue **m_rva01338750;
++	Rva008D32B0Row *m_rows;
++	Rva0089C860State *m_state;
++	void relocate(unsigned base, int arg2, void *arg3);
 +};
-+extern Rva008AE770Stack Rva008AE770TheStack;
-+extern const float g_rva01075350;
 +
-+// The complete recovered predicate takes one stack pointer and returns AL.
-+// Its canonical declaration replaces the bank's void-function pointer cast.
-+bool __cdecl Rva008C4A30Check(Rva8CD130Value *value);
++// The generated thunk's full target is independently cdecl with four words.
++// Keep the existing linker identity, without adding a routing pin.
++extern "C" void __cdecl __identifier("?j_008cc560@@YAXXZ")(
++	void *, void *, BfmeFixupChunk2580 *, int *);
 +
-+// Keep split coercion guards and separately tagged early false returns.
-+// The later coercion cases jump back to the single numeric site.
-+AptValue *BooleanCoerce008C6AD0(void *, int count)
++class Rva00894D80Accessor
 +{
-+	if (count == 0)
-+		return g_bfmeFallbackDB;
++public:
++	static unsigned increment(unsigned *);
++};
++class Rva00894D90Accessor
++{
++public:
++	static unsigned decrement(unsigned *);
++};
++void bfmeDropA(void *);
 +
-+	Rva008AE770Stack &stack = Rva008AE770TheStack;
-+	AptValue **args = stack.m_rva01338750;
-+	AptValue *value = args[stack.m_count - 1];
-+	int type = value->m_valueBits & 63;
-+	if (type >= 12 && type <= 19 && !value->isUndefined())
-+		goto common_true;
-+	if (type == 27 && !value->isUndefined())
-+		goto common_true;
-+	if (value == g_bfmeFallbackDB)
++class RefHandle008958D0
++{
++public:
++	unsigned *m_value;
++	RefHandle008958D0(const RefHandle008958D0 &other)
++		: m_value(other.m_value)
 +	{
-+		AptValue *result = AptBoolean::Create(false);
-+		_WriteBarrier();
-+		return result;
++		if (m_value)
++			Rva00894D80Accessor::increment(m_value);
 +	}
++	~RefHandle008958D0()
++	{
++		if (m_value && Rva00894D90Accessor::decrement(m_value) == 0)
++			bfmeDropA(m_value);
++	}
++	RefHandle008958D0 &operator=(const RefHandle008958D0 &other)
++	{
++		if (this != &other)
++		{
++			if (m_value && Rva00894D90Accessor::decrement(m_value) == 0)
++				bfmeDropA(m_value);
++			m_value = other.m_value;
++			if (m_value)
++				Rva00894D80Accessor::increment(m_value);
++		}
++		return *this;
++	}
++};
 +
-+	if (value->isType(6))
-+		goto coerce_value;
-+	if (value->isType(7))
-+		goto coerce_value;
-+	if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
++struct BfmeStringPool3AF0;
++extern BfmeStringPool3AF0 *g_rva01337A30AllocPair;
++struct Rva008A2130Release
++{
++	void *m_00;
++	void (__cdecl *free)(void *);
++};
++class BfmeStrVKI
++{
++public:
++	unsigned short *m_data;
++	BfmeStrVKI(const char *text) { bfmeSetVKI(text); }
++	void __declspec(nothrow) bfmeSetVKI(const char *);
++	~BfmeStrVKI()
 +	{
-+		AptValue *result = AptBoolean::Create(false);
-+		_WriteBarrier();
-+		return result;
++		unsigned short *data = m_data;
++		if (--*data == 0)
++			(*(Rva008A2130Release **)&g_rva01337A30AllocPair)->free(data);
 +	}
++};
++class Rva00893030Manager
++{
++public:
++	RefHandle008958D0 rva00895A00(BfmeStrVKI *);
++};
++extern Rva00893030Manager *g_rva00893030Manager;
 +
-+numeric_value:
-+	if (value->toNumber() != g_rva01075350)
-+		goto common_true;
++struct Rva008A2130Export
++{
++	char *m_name;
++	int m_index;
++};
++struct Rva008A2130Import
++{
++	char *m_file;
++	char *m_name;
++	int m_unknown08;
++	RefHandle008958D0 m_handle;
++};
++struct Rva008A2130ActionCondition
++{
++	unsigned m_flags;
++	struct { void *m_stream; } m_actions;
++};
++struct Rva008A2130StaticTextRecord
++{
++	char m_pad00[0x34];
++	void *m_glyphs34;
++};
++struct Rva008A2130Character
++{
++	int m_type;
++	Rva008A2130Character *m_parent;
++	union
 +	{
-+		AptValue *result = AptBoolean::Create(false);
-+		_WriteBarrier();
-+		return result;
-+	}
++		struct { char m_pad08[0x10]; Word m_value18; } m_case1;
++		struct { char m_pad08[0x2c]; char *m_pointer34; char *m_pointer38; } m_case2;
++		struct { char *m_pointer08; int m_unknown0c; void *m_pointer10; } m_case3;
++		struct
++		{
++			char m_pad08[0x1c];
++			void *m_pointer24;
++			void *m_pointer28;
++			int m_unknown2c;
++			void *m_pointer30;
++			int m_count34;
++			Rva008A2130ActionCondition *m_conditions38;
++			void *m_pointer3c;
++		} m_case4;
++		Rva008D32B0 m_case5;
++		struct { Word m_value08; } m_case6;
++		struct { Word m_value08; } m_case7;
++		Rva008D32B0 m_case9;
++		struct
++		{
++			char m_pad08[0x28];
++			int m_count30;
++			Rva008A2130StaticTextRecord *m_records34;
++		} m_case10;
++	};
++};
 +
-+coerce_value:
-+	if (type == 5)
-+	{
-+		bool result = value->m_boolean;
-+		return AptBoolean::Create(result);
-+	}
-+	if (type == 6)
-+		goto numeric_value;
-+	if (type == 7)
-+		goto numeric_value;
-+	{
-+		AptValue *result = AptBoolean::Create(false);
-+		_ReadWriteBarrier();
-+		return result;
-+	}
++class BfmeFixup2580
++{
++public:
++	void helper(void *pBase, BfmeFixupChunk2580 *pConstantFile, void *pLoadContext);
++	void apply(void *a, BfmeFixupChunk2580 *chunk, void *c);
 +
-+common_true:
-+	return AptBoolean::Create(true);
++	char m_pad00[0x0c];
++	int m_characterCount;
++	Rva008A2130Character **m_characters;
++	char m_pad14[0x0c];
++	int m_importCount;
++	Rva008A2130Import *m_imports;
++	int m_exportCount;
++	Rva008A2130Export *m_exports;
++	int m_flag;
++};
++
++// Re-evaluate the original field expression, as the nested retail reloads do.
++// A reference-taking helper evaluates the field address only once.
++#define RVA008A2130_OFFSET(field) if (field) (unsigned &)(field) += (unsigned)pBase
++
++// ?helper@BfmeFixup2580@@QAEXPAXPAVBfmeFixupChunk2580@@0@Z present-unmatched
++void BfmeFixup2580::helper(void *pBase, BfmeFixupChunk2580 *pConstantFile,
++	void *pLoadContext)
++{
++	RVA008A2130_OFFSET(m_characters);
++	RVA008A2130_OFFSET(m_exports);
++	int i;
++	for (i = 0; i < m_exportCount; ++i)
++	{
++		RVA008A2130_OFFSET(m_exports[i].m_name);
++	}
++	for (i = 0; i < m_characterCount; ++i)
++	{
++		RVA008A2130_OFFSET(m_characters[i]);
++		if (m_characters[i])
++		{
++			m_characters[i]->m_parent = m_characters[0];
++			switch (m_characters[i]->m_type)
++			{
++			case 1:
++				m_characters[i]->m_case1.m_value18 =
++					reinterpret_cast<Rva008A2130Callback2>(g_bfmeSlot24VB)(pLoadContext, i);
++				break;
++			case 2:
++				RVA008A2130_OFFSET(m_characters[i]->m_case2.m_pointer34);
++				RVA008A2130_OFFSET(m_characters[i]->m_case2.m_pointer38);
++				break;
++			case 3:
++				RVA008A2130_OFFSET(m_characters[i]->m_case3.m_pointer08);
++				RVA008A2130_OFFSET(m_characters[i]->m_case3.m_pointer10);
++				break;
++			case 4:
++				{
++					RVA008A2130_OFFSET(m_characters[i]->m_case4.m_pointer24);
++					RVA008A2130_OFFSET(m_characters[i]->m_case4.m_pointer28);
++					RVA008A2130_OFFSET(m_characters[i]->m_case4.m_pointer30);
++					RVA008A2130_OFFSET(m_characters[i]->m_case4.m_conditions38);
++					for (int j = 0; j < m_characters[i]->m_case4.m_count34; ++j)
++					{
++						RVA008A2130_OFFSET(m_characters[i]->m_case4.m_conditions38[j].m_actions.m_stream);
++						__identifier("?j_008cc560@@YAXXZ")(
++							m_characters[i]->m_case4.m_conditions38[j].m_actions.m_stream,
++							pBase, pConstantFile, &m_flag);
++					}
++					RVA008A2130_OFFSET(m_characters[i]->m_case4.m_pointer3c);
++				}
++				break;
++			case 5:
++				m_characters[i]->m_case5.relocate((unsigned)pBase, (int)pConstantFile, &m_flag);
++				break;
++			case 6:
++				{
++					const char *name = 0;
++					for (int j = 0; j < m_exportCount; ++j)
++						if (m_exports[j].m_index == i)
++							name = m_exports[j].m_name;
++					m_characters[i]->m_case6.m_value08 =
++						reinterpret_cast<Rva008A2130Callback3>(g_bfmeSlot17VB)(pLoadContext, i, name);
++				}
++				break;
++			case 7:
++				m_characters[i]->m_case7.m_value08 =
++					reinterpret_cast<Rva008A2130Callback2>(g_bfmeSlot21VB)(pLoadContext, i);
++				break;
++			case 8:
++				break;
++			case 9:
++				m_characters[i]->m_case9.relocate((unsigned)pBase, (int)pConstantFile, &m_flag);
++				break;
++			case 10:
++				RVA008A2130_OFFSET(m_characters[i]->m_case10.m_records34);
++				for (int j = 0; j < m_characters[i]->m_case10.m_count30; ++j)
++				{
++					RVA008A2130_OFFSET(m_characters[i]->m_case10.m_records34[j].m_glyphs34);
++				}
++				break;
++			default:
++				break;
++			}
++		}
++	}
++	RVA008A2130_OFFSET(m_imports);
++	for (i = 0; i < m_importCount; ++i)
++	{
++		RVA008A2130_OFFSET(m_imports[i].m_file);
++		RVA008A2130_OFFSET(m_imports[i].m_name);
++		m_imports[i].m_handle = g_rva00893030Manager->rva00895A00(
++			&BfmeStrVKI(m_imports[i].m_file));
++	}
 +}
-diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-index 08d5ed4f201bd3c7fcdd298f9dc319a9e71f5923..7710643babd47e3a1e90af9b8c754d2ce13b1bce 100644
---- a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-+++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-@@ -128 +128,23 @@ Variant 08 was a measured null result. Its material contribution to the
- investigation still requires the `[BFME 2 donor]` commit-title prefix.
 +
-+## Prospective native experiment 09: split guards with early false returns
++#undef RVA008A2130_OFFSET
 +
-+The preservation record distinguishes one combination not measured by 03-08:
-+keep 07's separately tagged early false returns, but replace the negative
-+two-term coercion guard with two positive guard jumps to the coercion block.
-+The shared numeric site, all calls and barriers, and the cached type stay
-+unchanged. Variant 05 also used split guards, but changed those false returns
-+to gotos; it therefore does not measure this isolated combination.
++void BfmeFixup2580::apply(void *a, BfmeFixupChunk2580 *chunk, void *c)
++{
++	BfmeFixupChunk2580 *p = chunk;
++	if (p->m_rel != 0)
++		p->m_rel += (int)p;
++	m_flag = 0;
++	helper(a, p, c);
++	if (p->m_rel != 0)
++		p->m_rel -= (int)p;
++}
+diff --git a/targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md b/targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f91990ec7127b1d593e12c7460d8244e4fedffb
+--- /dev/null
++++ b/targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md
+@@ -0,0 +1,154 @@
++# 0x008A2130: typed loaded-animation fixup candidate
 +
-+`docs/shape_levers.md` documents at `0x0068D730` that splitting a conjunction
-+into two early-return guards restores an intermediate shared return block's
-+placement. That is a source-structure witness for this bounded experiment,
-+not proof: these coercion guards jump to a value block rather than returning.
-+The older nine if/switch/ternary trials merged the false copies and do not
-+establish this combination with distinct post-call barrier tags.
++## Scope and status
 +
-+The complete candidate is 8,383 source bytes, Git blob
-+`4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9`, SHA256
-+`65c44e200bcf7cf6427616ac29ccfdfe0d62c10a9e1c07114dc46bd57c5f0186`.
-+Its original 5,349-byte sibling prefix is unchanged. This record precedes
-+the native experiment; no exact result or admission is claimed here.
++This is the first whole-TU donor-context experiment for the 1,092-byte body at
++`0x008A2130`, alongside its already matched 56-byte wrapper at `0x008A2580`.
++Native compilation and byte verification are pending. No new match, pin,
++ledger row or C++ exact-byte gain is claimed.
++
++Reviewed official base: `1f190a83f3c2236db2da4906c46d38c3185a6a42`.
++The existing whole-file destination is
++`game/Libraries/Source/Apt/BfmeFixup008A2580.cpp`. The EA file evidence associates
++both bodies with `AptAnimation.cpp`, but that canonical source/header does not
++exist in this checkout; the existing wrapper is the concrete source owner.
++A nearest-neighbor suggestion of `BfmeConv1996` is not ownership evidence.
++
++Both bodies are claimed together under
++`github:mcmickey93:bfme1:cpp-loop-3`, lease
++`e8bda153fad7486f8632b608a4b28259`, claim commit
++`97d5073aecf605094b3a53d2b2a0b18a91735c82`, observed in workflow
++`40187954055`. The two-body scope includes rechecking the wrapper after its
++call is changed from a void-symbol/fastcall cast to the actual typed member.
++The wrapper's relative-pointer adjustment, flag clear and inverse adjustment
++are otherwise retained. Its exactness must be measured again.
++
++## Independently established extent and ABI
++
++The executable body is 1,050 bytes (`0x41A`), including the three-byte `ret 12`
++starting at `+0x417`. The earlier 1,047-byte assignment stopped before that
++instruction and is not the body extent. Two alignment bytes `8B FF` occupy
++`+0x41A..+0x41B`. Ten DWORD jump-table entries occupy `+0x41C..+0x443`;
++`INT3` starts at `+0x444`. The full ledger/probe extent is therefore 1,092
++bytes, including the compiler-generated table. All table targets and direct
++branches land on internal instruction boundaries.
++
++The wrapper and helper together prove an ECX receiver and three stack
++arguments: base pointer, constant/chunk pointer, and load context. The helper
++ends in `ret 12`. The existing address-qualified declaration is retained:
++`void BfmeFixup2580::helper(void *, BfmeFixupChunk2580 *, void *)`.
++The wrapper's `BfmeFixupChunk2580::m_rel` remains at `+0x1C` and the owner's
++flag remains at `+0x30`.
++
++## Prior work and the new hypothesis
++
++The original partial body covered only pointer fixups. The complete prior
++pass, logged at `re_attempts.log:54375`, added dispatch, callbacks and owning
++string/handle cleanup. Its best bank emitted 1,056/1,092 bytes, with 785
++non-relocation differences, 29 relocations and measured quality 0.2152;
++the first difference was saved-register/base-load order at `+0x17`.
++The earlier no-Wine deferral did not test another implementation.
++
++The BFME 2 homolog at `0x006E5050` is matched over its full 2,172-byte extent
++in `Code/Libraries/Source/Apt/AptAnimation.cpp`, at verified donor revision
++`beed8a16790a6812231ac7b05e3e6893e4cb5d1b`. It supplies a typed character
++union, import/export/action records, and a macro that repeats its field
++expression in the null check and relocation store. These contexts were not
++tried in the old raw-Word bank.
++
++Two BFME 1 observations independently motivate that transformation:
++
++- Nested fields reload their address chain after the null test, for example
++  `+0xCB -> +0xD2`, `+0x18C -> +0x194` and `+0x2B1 -> +0x2B8`. The old
++  `fixPointer(Word &, Word)` binds the field address once. The repeated-lvalue
++  `RVA008A2130_OFFSET` spelling follows the observed reevaluation.
++- Cases 5 and 9 have distinct call blocks at `+0x205` and `+0x275`, including
++  different argument-register preparation. The old bank merged them into a
++  single `case 5: case 9:` block. The donor keeps them separate, and this
++  candidate does the same using separate union members at the same `+8`.
++
++The candidate follows the donor's typed field/loop context while retaining
++BFME 1's real callees, callback cells and existing owning temporary cleanup.
++Donor assertions and case 12 are omitted: BFME 1's table has exactly ten
++entries covering types 1-10. Original source names for the views are not
++proven, so their names retain the target RVA. This is material donor use and
++requires the `[BFME 2 donor]` commit-title prefix if it lands.
++
++## Field and stride audit
++
++| View | BFME 1 offsets or stride |
++|---|---|
++| Existing owner | character count/table `+0x0C/+0x10`, import count/table `+0x20/+0x24`, export count/table `+0x28/+0x2C`, flag `+0x30` |
++| Character header | type `+0`, parent pointer `+4`, discriminated payload begins `+8` |
++| Case 1 | callback result at `+0x18` |
++| Case 2 | relocated pointers at `+0x34/+0x38` |
++| Case 3 | relocated pointers at `+8/+0x10` |
++| Case 4 | pointers `+0x24/+0x28/+0x30`; condition count `+0x34`, condition table `+0x38`, trailing pointer `+0x3C` |
++| Action condition | stride 8, stream pointer at `+4` |
++| Cases 5/9 | existing `Rva008D32B0` receiver at character `+8`; its canonical 12-byte prefix is reused |
++| Cases 6/7 | callback result at `+8` |
++| Case 10 | count/table `+0x30/+0x34`; record stride `0x38`, glyph pointer at record `+0x34` |
++| Export | stride 8: pointer at `+0`, index at `+4` |
++| Import | stride 16: pointers at `+0/+4`, unmodelled word at `+8`, owning four-byte handle at `+0x0C` |
++
++These are data-format views of accessed fields. They do not assert a complete
++animation class identity or extra runtime ownership. The import's first
++pointer is passed to the existing string setter, supporting its string type;
++other field roles carried from the donor remain structural inferences.
++No canonical AptAnimation/record/RefHandle header exists under `game/` for
++this view. No shared header is edited or replaced.
++
++## Canonical direct callees
++
++`tools/callees.py 0x008A2130 1092` finds seven distinct named targets.
++Their contracts were checked against the full target paths and matched
++providers, rather than accepting the inventory's ABI heuristic alone.
++
++| Target RVA | Existing binding and contract |
++|---|---|
++| `0x00894D80` | `Rva00894D80Accessor::increment(unsigned *)`, cdecl, one pointer, DWORD result |
++| `0x00894D90` | `Rva00894D90Accessor::decrement(unsigned *)`, cdecl, one pointer, DWORD result |
++| `0x00895320` | `bfmeDropA(void *)`, cdecl, one pointer |
++| `0x0089E680` | `BfmeStrVKI::bfmeSetVKI(const char *)`, thiscall, `ret 4`; existing nothrow declaration retained |
++| `0x00895A00` | `Rva00893030Manager::rva00895A00(BfmeStrVKI *)`, thiscall returning owning `RefHandle008958D0`; hidden result pointer plus key, `ret 8` |
++| `0x008D32B0` | `Rva008D32B0::relocate(unsigned, int, void *)`, thiscall, `ret 12`, reached separately by cases 5 and 9 |
++| `0x008CC560 -> 0x008CBDF0` | existing generated thunk identity, full parser target is cdecl with four DWORD arguments and plain `ret`; caller ignores return |
++
++The existing thunk symbol is declared through its generated linker identity
++with the independently established typed signature. No routing pin or guessed
++semantic name is introduced. The counted handle and string cleanup retain the
++prior bank's direct canonical accessors and free-slot use.
++
++## Existing data and indirect-call contracts
++
++The callback-cell symbols remain the existing generic pointer declarations,
++preserving their canonical decorated names and owning TU. Only the local
++call-site views carry the proven argument/result contracts:
++
++| VA / symbol | Observed caller contract |
++|---|---|
++| `0x01337898`, `g_bfmeSlot24VB` | cdecl, context plus index, EAX word stored in character `+0x18` |
++| `0x0133787C`, `g_bfmeSlot17VB` | cdecl, context/index/name pointer, EAX word stored at `+8` |
++| `0x0133788C`, `g_bfmeSlot21VB` | cdecl, context plus index, EAX word stored at `+8` |
++
++The complete installed routes for slots 21/24 reach the same matched hash
++lookup through ILT `0x0003291B -> 0x00786BD0`; slot 21 adds a null-owner guard.
++One existing wrapper's `MemoryPool::freeBlock` label is misleading and is not
++inherited here. Slot 17's installed target is a complete return-zero stub.
++The evidence supports opaque word/pointer returns, not invented callback
++service names or an unrelated wrapper repair.
++
++The existing manager cell remains `g_rva00893030Manager` at VA `0x013377D4`.
++The string release cell remains `g_rva01337A30AllocPair` at VA `0x01337A30`,
++a pointer to the established two-slot allocation/free table; only its `+4`
++free slot is used. All five cells already have canonical matched data rows.
++
++## Verification still required
++
++The candidate is retained at ignored
++`build/008a2130-canonical/00-donor-typed.cpp`, and the original wrapper source
++is saved beside it. The typed body is marked `present-unmatched` until normal
++admission. The first native run must probe the whole 1,092-byte body, including
++its table and alignment, and recheck the existing 56-byte wrapper. No result
++has yet been measured, and no diagnostic object may substitute for the normal
++scoped build and hooks if an exact candidate is found.

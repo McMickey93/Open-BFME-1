@@ -6,72 +6,72 @@
   "base_tree": "ada6b35d3fce7bda4815263da97032d3d2f14b02",
   "mode": "explore",
   "body": {
-    "rva": "0x008C6AD0",
-    "size": 233,
-    "symbol": "?BooleanCoerce008C6AD0@@YAPAVAptValue@@PAXH@Z",
-    "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
+    "rva": "0x008A2130",
+    "size": 1092,
+    "symbol": "?helper@BfmeFixup2580@@QAEXPAXPAVBfmeFixupChunk2580@@0@Z",
+    "source": "game/Libraries/Source/Apt/BfmeFixup008A2580.cpp",
     "replace": "rva"
   },
   "claims": [
     {
-      "rva": "0x008C6AD0",
-      "lease": "fd901b9cef4049468a07d3aad4b4df9e",
-      "owner": "github:mcmickey93:bfme1:cpp-loop-2"
+      "rva": "0x008A2130",
+      "lease": "e8bda153fad7486f8632b608a4b28259",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-3"
     },
     {
-      "rva": "0x008CF1B0",
-      "lease": "fd901b9cef4049468a07d3aad4b4df9e",
-      "owner": "github:mcmickey93:bfme1:cpp-loop-2"
+      "rva": "0x008A2580",
+      "lease": "e8bda153fad7486f8632b608a4b28259",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-3"
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Split positive coercion guards and separate tagged early false returns; verified0068D730 placement witness with documented limitations; all canonical bindings and complete matched sibling unchanged; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "notes": "BFME2 typed-record donor context with independent BFME1 layouts and callee contracts; complete1092-byte table extent and same-TU wrapper must both be probed; evidence=targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md",
   "admissions": [
     {
-      "rva": "0x008C6AD0",
-      "size": 233,
-      "symbol": "?BooleanCoerce008C6AD0@@YAPAVAptValue@@PAXH@Z",
-      "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
+      "rva": "0x008A2130",
+      "size": 1092,
+      "symbol": "?helper@BfmeFixup2580@@QAEXPAXPAVBfmeFixupChunk2580@@0@Z",
+      "source": "game/Libraries/Source/Apt/BfmeFixup008A2580.cpp",
       "replace": "rva"
     }
   ],
-  "patch_tree": "08c98082ce1da1e54769605a235a826ca7cd4436",
-  "patch_sha256": "d3e3a11154a29853b887cc559d94858a6906edebaa061ecb53cdd10623b8efe9",
-  "message_sha256": "fde273651d9082838ade0f43ce2f813c2d90eb2ea708bc4adb6d977a67373f31",
+  "patch_tree": "626ecacdf5589d19885370df7a7c52e72336893f",
+  "patch_sha256": "97f278cbaa7a60af209b531d8ef30f7706ee578fd261c90f0e0ad56ef431d746",
+  "message_sha256": "e677794cfbf097145de16de22aefb0a77d3e3c16a347f231b4f046d86980dff4",
   "files": [
     {
-      "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
+      "path": "game/Libraries/Source/Apt/BfmeFixup008A2580.cpp",
       "mode": "100644",
-      "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
-      "candidate_blob": "4afa886d442f0b112e42fe2ab9d16a37c6bbc7c9",
-      "sha256": "65c44e200bcf7cf6427616ac29ccfdfe0d62c10a9e1c07114dc46bd57c5f0186"
+      "base_blob": "dd45a35cb93660747ce3853357a62312bcc443f5",
+      "candidate_blob": "b303fd8e828166f77839d2a59d3c2f81f071058c",
+      "sha256": "9a64be13dfad564e8e7c55fdda2bc6e4fc1fc7920f919023aee4d997c4005667"
     },
     {
-      "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+      "path": "targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md",
       "mode": "100644",
-      "base_blob": "08d5ed4f201bd3c7fcdd298f9dc319a9e71f5923",
-      "candidate_blob": "7710643babd47e3a1e90af9b8c754d2ce13b1bce",
-      "sha256": "3c743bb249229885f2e04f766bbbeb65e61a0e4cdc753130fa42d42ce490e6e5"
+      "base_blob": null,
+      "candidate_blob": "8f91990ec7127b1d593e12c7460d8244e4fedffb",
+      "sha256": "e89b7fe7295f0195fe6050050c8e51540574a2aea1403bc51b7de2d98c7d3baa"
     }
   ],
   "base_rows": [
     {
-      "name": "?d_008c6ad0@@YAXXZ",
+      "name": "?apply@BfmeFixup2580@@QAEXPAXPAVBfmeFixupChunk2580@@0@Z",
       "export_rva": "",
-      "target_rva": "0x008C6AD0",
-      "target_size": "233",
-      "source": "game/gen_asm/d_008c4940.asm",
+      "target_rva": "0x008A2580",
+      "target_size": "56",
+      "source": "game/Libraries/Source/Apt/BfmeFixup008A2580.cpp",
       "status": "matched",
-      "notes": "gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0"
+      "notes": "gen-dump conversion; relative pointer fixup wrapper"
     },
     {
-      "name": "?rva8CF1B0ProcessRecord@@YAXPAVRva8CF1B0State@@PAURva8CF1B0Cursor@@@Z",
+      "name": "?d_008a2130@@YAXXZ",
       "export_rva": "",
-      "target_rva": "0x008CF1B0",
-      "target_size": "520",
-      "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
+      "target_rva": "0x008A2130",
+      "target_size": "1092",
+      "source": "game/gen_asm/d_0083c710.asm",
       "status": "matched",
-      "notes": "record parser with aligned three segment dispatch"
+      "notes": "gen-dump;switch-carved start=int3-aligned end=switch-table+int3 refs=0"
     }
   ]
 }

@@ -1,12 +1,14 @@
-[BFME 2 donor] Explore split Apt coercion guards with early false returns
+[BFME 2 donor] Explore typed animation record fixups
 
-Keep the complete best07 source and split only its outer coercion guard.
-The prior flat CFG also changed the early false returns to shared gotos;
-this independent combination retains their measured barrier tags and all
-data/callee bindings. BFME1's verified 0068D730 split-guard placement is a
-bounded source-context witness, with its different return shape documented.
+Adapt the donor's typed field and loop context to independently audited
+BFME1 offsets and contracts. Preserve the ten-entry switch and repeated
+field evaluation, with separate case 5 and case 9 calls. Keep the existing
+callback-cell bindings and owning string/handle cleanup.
 
-This is exploratory input: no admission or new exact C++ bytes are claimed.
+The full 1092-byte helper includes its alignment and dispatch table. The
+existing 56-byte wrapper is changed to the proven typed member call and
+must be rechecked in the same whole-TU experiment. Neither body is admitted
+by explore mode, and no new exact C++ bytes are claimed.
 
-Claim-Lease: 0x008C6AD0=fd901b9cef4049468a07d3aad4b4df9e
-Claim-Lease: 0x008CF1B0=fd901b9cef4049468a07d3aad4b4df9e
+Claim-Lease: 0x008A2130=e8bda153fad7486f8632b608a4b28259
+Claim-Lease: 0x008A2580=e8bda153fad7486f8632b608a4b28259
