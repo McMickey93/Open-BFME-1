@@ -951,7 +951,6 @@ dir32,0x01336E50,?TheEmptyAsciiString@@3VAsciiString@@A,"retail 0x01336E50 is al
 dir32,0x01336E54,?emptyString01336E54@@3VUnicodeString@@A,"retail 0x01336E54 is already recorded as ?BFMEEmptyPlayerName@@3VUnicodeString@@B (+8 more); reference that name, not a new one"
 dir32,0x01336E5C,?debug01336E5C@@3PAVShadowDebug007BC270@@A,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x01336E5C,?g_Rva00F36E5C@@3PAXA,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
-dir32,0x01336E79,?g_01336E79@@3_NA,"nothing in the ledger owns 0x01336E79. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x013377D8,?g_bfmeHolderBU@@3PAUState8C4DA0@@A,"retail 0x013377D8 is already recorded as ?Rva008A5380Holder@@3PADA (+18 more); reference that name, not a new one"
 dir32,0x01337810,?g_rva01337810GcRoots@@3PAURva00899560Pool@@A,"retail 0x01337810 is already recorded as ?g_bfme1211@@3PAVBfmeG1211@@A (+18 more); reference that name, not a new one"
 dir32,0x01337820,?g_01337820@@3PAURva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
@@ -977,7 +976,6 @@ dir32,0x01340578,?g_bfmeCaps1340578@@3PAUBfmeVertexMaterialCaps@@A,"retail 0x013
 dir32,0x0134058C,?cleanup0134058C@@3PAVDX8_CleanupHook@@A,"retail 0x0134058C is already recorded as ?s_value@Rva006C5730@@2HA; reference that name, not a new one"
 dir32,0x0134058C,?m_pCleanupHook@DX8Wrapper@@1PAVDX8_CleanupHook@@A,"retail 0x0134058C is already recorded as ?s_value@Rva006C5730@@2HA; reference that name, not a new one"
 dir32,0x013405D0,?D3D8Lib@@3PAXA,"retail 0x013405D0 is already recorded as ?g_013405D0@@3PAXA; reference that name, not a new one"
-dir32,0x013405E0,?g_013405E0@@3KA,"nothing in the ledger owns 0x013405E0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01340600,?Vertex_Shader_Constants@DX8Wrapper@@2PAVVector4@@A,"retail 0x01340600 is already recorded as ?Vertex_Shader_Constants@DX8Wrapper@@0PAVVector4@@A (+1 more); reference that name, not a new one"
 dir32,0x01340C50,?g_bfmeRva01340C50Static@@3VRva00906340@@A,"retail 0x01340C50 is already recorded as ?TheBfmeObject_00C70FD0@@3VGen_00C70FD0Target@@A; reference that name, not a new one"
 dir32,0x01340EC0,?g_bfmeRva01340EC0Static@@3VRva00906340@@A,"retail 0x01340EC0 is already recorded as ?Rva01340EC0Shader@@3IA (+4 more); reference that name, not a new one"
