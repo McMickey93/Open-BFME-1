@@ -52,6 +52,8 @@ extern void **terrainCollisionSourceAt8;
 extern void **terrainCollisionSourceAt4;
 extern void **sphericalEmissionVelocitySourceAt4;
 extern void **pointEmissionVolumeSourceAt4;
+extern void **pointEmissionVolumeSourceAt8;
+extern void **sphereEmissionVolumeSourceAt4;
 extern void **cylinderEmissionVolumeSourceAt4;
 }
 
@@ -258,10 +260,9 @@ extern char Rva00D14020;
 // 0x00C6C1D0: independent INT3-bounded initializer (?Rva00EF6D58@@3PAXA).
 void Rva00C6C1D0() { FXParticleSystem::pointEmissionVolumeSourceAt4 = (void **)&Rva00D14020; }
 
-extern void *Rva00EF6D5C;
 extern char Rva00D14024;
-// 0x00C6C1E0: independent INT3-bounded initializer.
-void Rva00C6C1E0() { Rva00EF6D5C = (void *)&Rva00D14024; }
+// 0x00C6C1E0: independent INT3-bounded initializer (?Rva00EF6D5C@@3PAXA).
+void Rva00C6C1E0() { FXParticleSystem::pointEmissionVolumeSourceAt8 = (void **)&Rva00D14024; }
 
 extern void *Rva00EF6D60;
 extern char Rva00D13DD4;
@@ -289,10 +290,9 @@ extern char Rva00D14100;
 // 0x00C6C230: independent INT3-bounded initializer.
 void Rva00C6C230() { Rva00EF6D70 = (void *)&Rva00D14100; }
 
-extern void *Rva00EF6D74;
 extern char Rva00D14104;
-// 0x00C6C240: independent INT3-bounded initializer.
-void Rva00C6C240() { Rva00EF6D74 = (void *)&Rva00D14104; }
+// 0x00C6C240: independent INT3-bounded initializer (?Rva00EF6D74@@3PAXA).
+void Rva00C6C240() { FXParticleSystem::sphereEmissionVolumeSourceAt4 = (void **)&Rva00D14104; }
 
 extern void *Rva00EF6D78;
 extern char Rva00D13C4C;

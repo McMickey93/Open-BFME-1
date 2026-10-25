@@ -164,7 +164,8 @@ static inline Rva00367E30Logic *TheBfmeGameLogicView() { return (Rva00367E30Logi
 extern Rva006174D0State *g_bfmeStateDF;
 class Rva003BF540;
 extern Rva003BF540 *TheLivingWorldLogic;
-extern BfmeC977 *g_theWindowManager;
+class WindowManager;
+extern WindowManager *g_theWindowManager; // ?g_theWindowManager@@3PAVBfmeC977@@A
 class AptPalantir;
 extern AptPalantir *TheAptPalantir;
 class CRCParameterCheck;
@@ -222,7 +223,7 @@ void BfmeLivingWorldManager::update()
 	}
 
 	if (g_bfmeStateDF->m_field04 == 0
-		&& !g_theWindowManager->bfmeGo977C())
+		&& !((BfmeC977 *)g_theWindowManager)->bfmeGo977C())
 	{
 		TheMouse->slot38(0x28);
 	}

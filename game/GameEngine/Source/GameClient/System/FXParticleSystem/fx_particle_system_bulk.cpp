@@ -126,7 +126,7 @@ extern void *g_vtbl_0110FA14[];
 extern void *g_vtbl_0111098C[];
 extern void *g_vtbl_011109CC[];
 extern "C" void *__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_01110A4C[];
+extern "C" void *__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@")[]; // ?g_vtbl_01110A4C@@3PAPAXA
 extern "C" char DefaultModuleTemplate6Concrete_vtbl8;
 extern "C" char DefaultModuleTemplate6Concrete_vtbl4;
 extern "C" char DefaultModuleTemplate6Concrete_vtbl0;
@@ -965,7 +965,7 @@ public:
         volatile unsigned int *vtableSlots = (unsigned int *)this;
         vtableSlots[1] = (unsigned int)g_vtbl_0110F9AC;
         *((volatile unsigned char *)this + 0x0c) = 0;
-        vtableSlots[2] = (unsigned int)g_vtbl_01110A4C;
+        vtableSlots[2] = (unsigned int)__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@");
         vtableSlots[4] = 0;
         vtableSlots[5] = 0;
         vtableSlots[6] = 0;
@@ -2428,7 +2428,7 @@ CylinderEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, CYLINDER_
     if (result != 0) {
         *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
         *((volatile unsigned char *)result + 0x0c) = 0;
-        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_01110A4C;
+        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 0x14) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 0x18) = 0;
@@ -3655,7 +3655,7 @@ ConcreteModuleTemplate<ModuleTag<5, CYLINDER_EMISSION_VOLUME_MODULE_KEY, CYLINDE
     slots[1] = (unsigned int)g_vtbl_0110F9AC;
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
-    slots[2] = (unsigned int)g_vtbl_01110A4C;
+    slots[2] = (unsigned int)__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@");
     slots[4] = 0;
     slots[5] = 0;
     slots[6] = 0;

@@ -109,8 +109,8 @@ class Display004B1C80 { public:
  virtual void slot00(); virtual void slot04(); virtual void slot08(); virtual void slot0c(); virtual void slot10(); virtual void slot14(); virtual void slot18(); virtual void slot1c(); virtual void slot20(); virtual void slot24(); virtual void slot28(); virtual unsigned width(); virtual unsigned height();
 };
 extern Display004B1C80 *display004B1C80;
-struct Shell004B1C80 { char field00[0x58]; bool field58; };
-extern Shell004B1C80 *shell004B1C80;
+class Shell { public: char field00[0x58]; bool field58; };
+extern Shell *TheShell; // ?shell004B1C80@@3PAUShell004B1C80@@A retired to TheShell
 struct ButtonData004B1C80 { char field00[0x144]; int field144; };
 class AnimateButtons004B1C80 {
 public:
@@ -152,7 +152,7 @@ void AnimateButtons004B1C80::update() {
   field28=(int)(display004B1C80->width()*0.046875f);
   field2c=(int)(display004B1C80->height()*0.0625f);
  }
- if(!shell004B1C80->field58) field38+=now-field34;
+ if(!TheShell->field58) field38+=now-field34;
  field34=now;
  if(count>1) {
   if((float)field38<600.0f) field3c=field38*0.0018333334010094404f;
