@@ -2061,3 +2061,38 @@ This is a measured arithmetic scheduling effect: the same volatile form in
 `INIFontDefaultSettings.cpp` reverses compare operands and grows its body;
 plain `0.0f` comparisons preserve that parser's 480 bytes instead. Evidence:
 `targets/game/reverse/attempt_support/20261025-readonly-float-debt.md`.
+
+## Typed nested-pointer fixups and self-assignment comparison order
+
+At `BfmeFixup2580::helper` (`0x008A2130`, 1,092 bytes including its switch
+table), the earlier complete bank used raw word arrays, a relocation helper
+that bound its field reference once, and a merged `case 5: case 9:`. That
+recorded pass emitted 1,056 bytes with 785 non-relocation differences.
+
+The matched BFME 2 `AptAnimation.cpp` homolog guided a typed character union
+and import/export/action views, the repeated-lvalue macro
+`if (field) (unsigned &)(field) += (unsigned)pBase`, and separate cases 5/9.
+Independent BFME 1 evidence supplies the offsets, canonical calls and nested
+reloads after null tests. With the existing owning string/handle temporaries,
+this combined context emitted all 1,092 bytes on its first native probe,
+leaving one ModRM byte in the assignment self-check. The individual effect
+of each structural change was not isolated.
+
+The remaining instruction was retail `cmp ebp,edi` versus compiled
+`cmp edi,ebp`: EBP held the returned/source handle, EDI the destination.
+Swapping only `if (this != &other)` to `if (&other != this)` in the existing
+inline assignment changed exactly that one raw byte (`FD -> EF` at `+0x36D`),
+with identical relocation lists. Both expressions are side-effect-free
+pointer equality operands. Native qualification verified the complete helper
+and its 56-byte wrapper, including all ten local switch-table targets, then
+passed the normal commit and full pre-push gates. The table's raw disassembly
+warnings were data decoded as instructions, not an additional code tail.
+
+Context: original MSVC 7.1, normal `/O2 /GR-` settings plus
+`/DNDEBUG /MD /EHsc`; no flag change, assembly or added runtime operation.
+Verified source: `game/Libraries/Source/Apt/BfmeFixup008A2580.cpp`, landed in
+`bb30874d1638178f4ff0ec79daa299e5c3d8e109` after native run `40194846615`.
+The independent layouts, donor revision, native inputs and table audit are
+in `targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md`.
+The comparison-order effect was isolated; broader applicability requires
+its own register-lifetime and equality evidence.

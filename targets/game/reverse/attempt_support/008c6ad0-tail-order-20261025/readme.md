@@ -2,31 +2,37 @@
 
 ## Status and next operation
 
-This is preservation of a **non-exact** reconstruction, not a recovery or a
-canonical bank update. Variant 07 emits 229 bytes for the independently bounded
+This is a **non-exact** reconstruction, now recorded as a canonical `partial`
+bank, not a recovery. Variant 07 emits 229 bytes for the independently bounded
 233-byte retail body, with 120 non-relocation byte differences. Its measured
 instruction-shape score is 0.893; that is not a byte-match fraction. Variant 08
 emits the identical instruction table. The later variant 09 exactly repeats
 05's 237-byte instruction table, so 07 remains the best preserved candidate.
 No C++ exact bytes were gained.
 
-The canonical `re_log.py partial --stash` operation is **pending native
-remeasurement**. The tool recompiles both the incoming and retained candidates
-through `finish_measure.measure`; it refuses banking when that compiler is
-unavailable. The local 32-bit compiler cannot run in this environment. Do not
-substitute the supplied shape score for that gate, edit the log by hand, or
-weaken `_measure_stash`. The existing canonical bank and attempt log have been
-left untouched. The unmatched addition was removed from
-`game/Libraries/Source/Apt/AptActionInterpreter.cpp`; its original 5,349-byte
-source and already matched 520-byte sibling remain unchanged.
+Native workflow `40198494710` ran the unmodified
+`tools/re_log.py record ... partial --stash` operation. The tool recompiled
+both the incoming and retained candidates through `finish_measure.measure`
+and selected the incoming whole-TU candidate for the canonical bank, with
+tool-computed score `0.4506`. That score is distinct from the 0.893
+instruction-shape score; the retained candidate's measured score was not
+serialized, so no numerical old-bank comparison is claimed here.
+The resulting partial verdict and bank were published in
+`2d79eef25d02d19b113e31c72d79a1ed46cf8759`. Artifact `12599864879` was checked against SHA256
+`d9c616b3fe65cff99c009a40c9a4f6bf9ca9261de0cf6627572c6bca1825f214`.
+The normal commit and full pre-push gates passed.
 
-The next native banking step should submit `best-whole-tu.cpp.txt` through
-`tools/re_log.py record` for
-`?BooleanCoerce008C6AD0@@YAPAVAptValue@@PAXH@Z`, RVA `0x008C6AD0`, size 233,
-status `partial`, with submitted `--score 0.893`. Let the tool remeasure both
-banks and preserve whichever actually ranks better. Cite this handoff and
-record `model=gpt-6-astra-pro`, `t=60min` for this continuation, and
-`blocker=codegen-order/branch-tail-order`. This operation has not been run.
+The unmatched addition remains absent from
+`game/Libraries/Source/Apt/AptActionInterpreter.cpp`; its original 5,349-byte
+source and already matched 520-byte sibling are unchanged. No unmatched
+body was admitted to `game/`, and no score or attempt-log entry was edited
+by hand.
+
+The next work is an evidence-supported source-context or block-placement
+hypothesis, using the measured record below. Do not repeat the completed
+banking operation or the already ruled-out source variants merely to
+recreate this result. The local 32-bit compiler remains unavailable;
+future measurements still require the original native toolchain.
 
 ## Preserved inputs
 

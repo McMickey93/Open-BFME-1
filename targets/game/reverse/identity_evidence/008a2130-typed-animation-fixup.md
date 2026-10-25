@@ -1,38 +1,37 @@
-# 0x008A2130: typed loaded-animation fixup candidate
+# 0x008A2130: typed loaded-animation fixup
 
 ## Scope and status
 
-This is a whole-TU donor-context reconstruction of the 1,092-byte body at
-`0x008A2130`, alongside its already matched 56-byte wrapper at `0x008A2580`.
-The first measured candidate, 00, emits exactly 1,092 bytes and has one
-non-relocation byte difference: the two registers in the assignment
-self-comparison are exchanged. Its wrapper is exact modulo relocations.
-Candidate 01's only code change is the written order of that pointer
-comparison; its header comment now states the continuing qualification
-requirement instead of a pending status.
-Its normal admission and complete byte/linking gates remain pending; no
-new match, pin, ledger row or C++ exact-byte gain is claimed here.
+The whole-TU donor-context reconstruction has passed native qualification:
+all 1,092 bytes of `0x008A2130`, including its switch table, and the existing
+56-byte wrapper at `0x008A2580` verify through the normal relocation-aware
+byte gates. Unmodified `add_match.py` admitted the C++ body in place of its
+generated assembly row. The exact native-qualified commit
+`bb30874d1638178f4ff0ec79daa299e5c3d8e109` is published on official master.
+Its `tools/progress.py origin/master` receipt measures **+1,092 C++ exact
+bytes**, with the same decrease in ASM-only exact bytes.
 
-Initial reviewed official base: `1f190a83f3c2236db2da4906c46d38c3185a6a42`.
-The first actual native measurement used the explicitly reviewed fresh base
-`3b375d6e2844dbceda9f4e2fd50e88bf77f0703c`, with the source and evidence
-inputs unchanged. The earlier workflow `40189294904` stopped at the normal
-upstream-advance guard before compilation, so it is not a code-generation
-result.
-The existing whole-file destination is
-`game/Libraries/Source/Apt/BfmeFixup008A2580.cpp`. The EA file evidence associates
-both bodies with `AptAnimation.cpp`, but that canonical source/header does not
-exist in this checkout; the existing wrapper is the concrete source owner.
-A nearest-neighbor suggestion of `BfmeConv1996` is not ownership evidence.
+Candidate 00 left one non-relocation byte in an assignment self-comparison.
+Candidate 01 exchanged only that comparison's written operands, plus a
+header comment, and matched completely. The measured compiler effect and
+qualification evidence appear below. Fresh-base qualification retained the
+same source and admitted bytes. This record makes no fresh link-census
+coverage claim.
 
-Both bodies are claimed together under
+The whole-file destination is
+`game/Libraries/Source/Apt/BfmeFixup008A2580.cpp`. EA file evidence associates
+both bodies with `AptAnimation.cpp`, but that canonical source/header does
+not exist in this checkout; the existing wrapper is the concrete source
+owner. A nearest-neighbor suggestion of `BfmeConv1996` is not ownership
+evidence.
+
+Both bodies were claimed for this recovery under
 `github:mcmickey93:bfme1:cpp-loop-3`, lease
 `e8bda153fad7486f8632b608a4b28259`, claim commit
-`97d5073aecf605094b3a53d2b2a0b18a91735c82`, observed in workflow
-`40187954055`. The two-body scope includes rechecking the wrapper after its
-call is changed from a void-symbol/fastcall cast to the actual typed member.
-The wrapper's relative-pointer adjustment, flag clear and inverse adjustment
-are otherwise retained. Its exactness must be measured again.
+`97d5073aecf605094b3a53d2b2a0b18a91735c82`. The whole-TU qualification also
+verified the wrapper after its void-symbol/fastcall cast was replaced by
+the actual typed member call. Its relative-pointer adjustment, flag clear
+and inverse adjustment were retained.
 
 ## Independently established extent and ABI
 
@@ -83,7 +82,7 @@ BFME 1's real callees, callback cells and existing owning temporary cleanup.
 Donor assertions and case 12 are omitted: BFME 1's table has exactly ten
 entries covering types 1-10. Original source names for the views are not
 proven, so their names retain the target RVA. This is material donor use and
-requires the `[BFME 2 donor]` commit-title prefix if it lands.
+is credited by the landed commit's `[BFME 2 donor]` title prefix.
 
 ## Field and stride audit
 
@@ -200,8 +199,8 @@ boundary within the executable `+0x000..+0x419` range:
 
 Retail `INT3` padding begins at `+0x444`. The diagnostic private object and
 the separately built native match object contain identical primary bytes
-and relocation lists; neither is being substituted for a future normal
-verification build. The ignored audit receipt is
+and relocation lists. Normal admission and publication subsequently used
+the ordinary build and byte gates. The ignored audit receipt is
 `build/008a2130-canonical/00-native-table-analysis.json`.
 
 ## Candidate 01: one operand-order correction
@@ -213,18 +212,78 @@ comparison is the inline assignment's self-assignment check. Candidate 00
 spells it `if (this != &other)`, producing destination-first `cmp edi,ebp`.
 Candidate 01's only code change spells that condition as
 `if (&other != this)`, targeting the retail source-first `cmp ebp,edi`.
-Both pointer expressions are free of
-side effects, and exchanging equality operands preserves the condition.
+Both pointer expressions are free of side effects, and exchanging equality
+operands preserves the condition.
 The assignment, reference counts, cleanup, EH lifetimes, ten-case dispatch,
 wrapper, and compiler settings are unchanged. Its header comment is also
 made timeless: native qualification must verify both complete bodies.
-This predicted code-generation effect still requires the actual native result.
+Native 01 confirms that effect: comparing the retained 00 and qualified 01
+objects gives exactly one raw byte change, `FD -> EF` at `+0x36D`, with
+identical relocation lists. The wrapper's raw bytes and relocations are
+unchanged.
 
 Candidate 00 remains preserved in ignored
 `build/008a2130-canonical/00-donor-typed.cpp`, with its original evidence and
 wrapper source beside it. Candidate 01 is retained as
-`build/008a2130-canonical/01-source-first-compare.cpp`. The typed helper stays
-marked `present-unmatched` until normal admission. The next run must probe
-both bodies before `add_match.py`, perform full relocation/table validation,
-and pass the normal scoped build, commit hooks and pre-push gate. No ledger
-or pin is edited by hand, and no diagnostic object replaces those gates.
+`build/008a2130-canonical/01-source-first-compare.cpp`. The normal admission
+tool removed its `present-unmatched` marker; that removal is the only
+source difference between the immutable 01 input and qualified source.
+No ledger or pin was edited by hand.
+
+## Measured native qualification
+
+The isolated 00 -> 01 effect was verified in workflow `40190782271`, job
+`121161143406`, on reviewed official base
+`3b375d6e2844dbceda9f4e2fd50e88bf77f0703c`. Artifact `12597726406` was
+verified against SHA-256
+`90b3f323a271356df5af8a04fba4ff3f9734b2ea72576e34c639f66849461e1a`.
+Its complete immutable inputs, output files and raw commit identity passed
+hash verification.
+
+The frozen source was blob `a979126d294dfb0481667acb411e1746d1425765`,
+SHA-256 `4e5b94c8e90cbabb2209817451b2c3f7030ddc176af34decc4201fab73d8d8de`.
+Normal admission removed only the 78-byte standalone `present-unmatched`
+marker, producing blob `f14613ed3b1c573442cb671b0c666487f6916a8a`, SHA-256
+`dc12d7543f545916d0e3145c48b09a437554ea5818eca99713d22b9a999bea98`.
+These same input and output bytes were retained in the fresh-base reruns.
+
+Both probes were exact. Unmodified `add_match.py` replaced the generated
+`d_008a2130` row with the typed helper, verified the normal build and cleared
+the old bank. The ordinary scoped build, normal commit hook and full
+pre-push gate all passed. The byte gate verified 2/2 functions and all five
+DIR32 data references. Body guard reported zero findings and eleven local
+table entries: the dispatch reference plus ten targets. Full pre-push
+checked three outgoing verification selectors. No callee/data pin or
+baseline exception was added.
+
+The decisive logs are `050-verified-add-match-0x008A2130.log`,
+`051-ordinary-scoped-build.log`, `081-normal-pre-push.log` and
+`083-session-progress.log`. Exact C++ coverage increased from 7,596,632 to
+7,597,724 bytes against that base, converting existing ASM-only coverage
+into real C++ while total exact coverage stayed unchanged.
+
+## Final qualification and publication
+
+Workflow `40194846615` qualified the unchanged input on reviewed official
+base `afb8c1a3d04f38ded951b89e483b72f2f4a3f3bb`, using immutable fork payload
+`98f120fc28aa9f3c369c1cc13a985d000ab3b5d4`. Artifact `12599039336` was
+verified against SHA-256
+`dac2dffca098f4b90d36449a9ca6bf7c6d643138443af9a3b3f38bcb1ce7b835`.
+The input and output file hashes, raw commit identity, normal commit gate
+and full pre-push receipt all passed. Both complete bodies remained exact,
+and the progress receipt again measured **+1,092 C++ exact bytes** against
+that base.
+
+The exact qualified commit was published to official master and confirmed
+by an ordinary fetch, with no code or history rewritten:
+
+| Receipt | Value |
+|---|---|
+| Landed commit | `bb30874d1638178f4ff0ec79daa299e5c3d8e109` |
+| Parent | `afb8c1a3d04f38ded951b89e483b72f2f4a3f3bb` |
+| Tree | `b7be338ee42d3c75ea09881c72b0fab8668b1977` |
+| Admitted source blob | `f14613ed3b1c573442cb671b0c666487f6916a8a` |
+
+The landed source has the same SHA-256 recorded above for the qualified
+01 output. This follow-up changes only the evidence and the concise
+compiler note in `docs/shape_levers.md`.
