@@ -256,8 +256,8 @@ __forceinline long fast_float2long_round( float value )
 #define REAL_TO_INT_FLOOR(x) (fast_float2long_round((Real)floor((double)(x))))
 
 extern const float g_bfmeDirectionWeight1285;
-extern const float g_Rva010977E0;
-extern const float g_rva01075350;
+// ?g_Rva010977E0@@3MB: retail readonly VA 0x010977E0 is 20.0f.
+// Retail readonly VA 0x01075350 is 0.0f (existing matched data row).
 extern float g_Rva01095F98;
 
 class BfmeOverridable
@@ -297,12 +297,12 @@ inline __declspec(noinline) void Pathfinder::getRadiusAndCenter( const Object *o
 	}
 
 	diameter = reinterpret_cast<const float *>(object->m_geometryInfo)[4] * 2.0f;
-	if (diameter > g_bfmeDirectionWeight1285 && diameter < g_Rva010977E0) {
+	if (diameter > g_bfmeDirectionWeight1285 && diameter < 20.0f) {
 		diameter = 20.0f;
 	}
 
 	if ((reinterpret_cast<BfmeOverridable *>(object->m_template) == 0 ? reinterpret_cast<BfmeOverridable *>(object->m_template) :
-		reinterpret_cast<BfmeOverridable *>(object->m_template)->getFinalOverride())->m_level > g_rva01075350) {
+		reinterpret_cast<BfmeOverridable *>(object->m_template)->getFinalOverride())->m_level > 0.0f) {
 		diameter = (reinterpret_cast<BfmeOverridable *>(object->m_template) == 0 ? reinterpret_cast<BfmeOverridable *>(object->m_template) :
 		reinterpret_cast<BfmeOverridable *>(object->m_template)->getFinalOverride())->m_level;
 	}

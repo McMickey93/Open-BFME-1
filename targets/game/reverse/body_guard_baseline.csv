@@ -183,7 +183,6 @@ dir32,0x01097144,??_7PlayerFilter0028AE90@@6B@,"retail 0x01097144 is already rec
 dir32,0x01097144,??_7PlayerFilter002A1780@@6B@,"retail 0x01097144 is already recorded as ??_7Rva0016A9F0FunctorValueWrapper@@6B@; reference that name, not a new one"
 dir32,0x01097144,??_7PlayerFilter0041E9E0@@6B@,"retail 0x01097144 is already recorded as ??_7Rva0016A9F0FunctorValueWrapper@@6B@; reference that name, not a new one"
 dir32,0x01097238,??_7Rva001812B0AIHordeMachine@@6B@,"retail 0x01097238 is already recorded as ??_7Rva0016ABA0TailDtor@@6B@; reference that name, not a new one"
-dir32,0x010977E0,?g_Rva010977E0@@3MB,"retail 0x010977E0 is already recorded as ?g_pathfindDoubleCellSize@@3MB (+1 more); reference that name, not a new one"
 dir32,0x01097C60,??_7AIAttackAimAtTargetState@?A0x66c5bdcd@@6B@,"retail 0x01097C60 is already recorded as ??_7AIAttackAimAtTargetState@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01097DC0,??_7AIAttackFireWeaponState@?A0x249e4e26@@6B@,"retail 0x01097DC0 is already recorded as ??_7AIAttackFireWeaponState@@6B@ (+2 more); reference that name, not a new one"
 dir32,0x01097DC0,??_7AIAttackFireWeaponState@?A0x66c5bdcd@@6B@,"retail 0x01097DC0 is already recorded as ??_7AIAttackFireWeaponState@@6B@ (+2 more); reference that name, not a new one"
