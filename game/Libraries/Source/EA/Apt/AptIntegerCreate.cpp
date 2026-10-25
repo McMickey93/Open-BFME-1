@@ -48,21 +48,15 @@ extern Rva008D2A10 *g_rva008D2A10;
 // Retail RVA 0x008A11EE and 0x008A124E load VA 0x01337810,
 // the verified canonical GC-root pointer owned by Apt.cpp.
 extern Rva00899560Pool *g_rva01337810GcRoots;
-// The two vftables cannot be referenced by their own names here: __identifier
-// ("??_7AptValue@@6B@") is rejected with C2373 while this TU has a
-// polymorphic class of that name in scope, and the only way to drop that class
-// from the scope is to strip its virtual destructor, which changes the codegen
-// and breaks the byte match.  Keep the two redirects.
-extern "C" const void *bfmeVftAptValue[];
-#pragma comment(linker, "/alternatename:_bfmeVftAptValue=??_7AptValue@@6B@")
-extern "C" const void *bfmeVftAptInteger[];
-#pragma comment(linker, "/alternatename:_bfmeVftAptInteger=??_7AptInteger@@6B@")
+// Gate debt _bfmeVftAptInteger: reference recorded ??_7AptInteger@@6B@.
+extern "C" const void *__identifier("??_7AptValue@@6B@")[];
+extern "C" const void *__identifier("??_7AptInteger@@6B@")[];
 extern void *(*Rva008C5D70Alloc)(unsigned int bytes);
 
 class AptValue
 {
 public:
-	virtual ~AptValue();
+	void *m_vtable;
 	unsigned int m_flags;
 };
 
@@ -94,10 +88,10 @@ AptInteger *AptInteger::Create(int value)
 
 	if (object != 0)
 	{
-		*(void **)object = (void *)bfmeVftAptValue;
+		*(void **)object = (void *)__identifier("??_7AptValue@@6B@");
 		object->m_flags = (object->m_flags & 0xf0008007) | 0x40008007;
 		g_rva01337810GcRoots->addPooled((Rva008D2A30Node *)object);
-		*(void **)object = (void *)bfmeVftAptInteger;
+		*(void **)object = (void *)__identifier("??_7AptInteger@@6B@");
 		object->m_value = value;
 		return object;
 	}

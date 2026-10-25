@@ -177,9 +177,10 @@ extern void *Rva00EF6D0C;
 // 0x00C6C0A0: independent INT3-bounded initializer.
 void Rva00C6C0A0() { Rva00EF6D0C = (void *)FXParticleSystem::DefaultModuleName<7>::Read(); }
 
-extern void *Rva00EF6D10;
+// Gate debt ?Rva00EF6D10@@3PAXA: reference recorded ?defaultModuleTag7SourceAt4@FXParticleSystem@@3PAPAXA.
+namespace FXParticleSystem { extern void **defaultModuleTag7SourceAt4; }
 // 0x00C6C0B0: independent INT3-bounded initializer.
-void Rva00C6C0B0() { Rva00EF6D10 = (void *)&Rva00EF6D08; }
+void Rva00C6C0B0() { FXParticleSystem::defaultModuleTag7SourceAt4 = (void **)&Rva00EF6D08; }
 
 // Retire ?Rva00EF6D14@@3PAXA: retail VA 0x012F6D14 records the FX pointer.
 namespace FXParticleSystem { extern void **defaultModuleTag7SourceAt8; }
