@@ -1,0 +1,102 @@
+name: Contributor BFME1 small donor inspection
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-small-donor-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-small-donor
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:cpp-recovery-20261025
+    steps:
+      - name: Read the current official tree without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate the official ledger and read upstream master
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 cpp-recovery
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+      - name: Inspect the previously uncovered small BFME2 donor-body range
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 small-donor
+          git clone --depth=1 --no-checkout https://github.com/Open-BFME/Open-BFME-2.git inputs/reference/open-bfme-2
+          git -C inputs/reference/open-bfme-2 checkout --detach origin/master
+          python3 -u - <<'PY'
+          import collections,hashlib,json,os,subprocess,sys,time
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          out=root/"build/contributor-small-donor-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          sys.path.insert(0,str(root/"tools"))
+          import bfme2_workflow as flow,claims
+          def run(label,args):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(cp.stdout)
+              print("SMALL_DONOR_COMMAND",label,"exit",cp.returncode,flush=True)
+              if cp.returncode: print(cp.stdout.decode("utf-8","replace"),flush=True);raise RuntimeError(label+" failed")
+              return cp.stdout.decode("utf-8","replace")
+          donor=subprocess.check_output(["git","-C",str(flow.DONOR),"rev-parse","HEAD"],cwd=root,text=True).strip()
+          print("SMALL_DONOR_REVISION "+donor,flush=True)
+          print(run("small-scan",[sys.executable,"tools/bfme2_sweep.py","scan","--min-size","8","--max-size","127","--limit","0"]),flush=True)
+          payload=flow.load_binary()
+          current=flow.current_work(payload["records"])
+          eligible=[r for r in current if r["servable"]]
+          result={"donor":donor,"workflow":os.environ["GITHUB_SHA"],"run":os.environ["GITHUB_RUN_ID"],"min_size":8,"max_size":127,"bodies_scanned":payload["bodies_scanned"],"placements":len(current),"buckets":dict(collections.Counter(r["bucket"] for r in current)),"eligible_count":len(eligible),"eligible":eligible}
+          (out/"small-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          print("SMALL_DONOR_RESULT "+json.dumps(result),flush=True)
+          for n,item in enumerate(eligible[:12]):
+              print("SMALL_DONOR_LEAD "+json.dumps(item),flush=True)
+              print(run("brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",f"0x{item['rva']:08X}"]),flush=True)
+          # The donor checkout is inspection-only; do not represent its moved
+          # submodule pointer as a verified contributor update.
+          print(run("game-clean",["git","diff","--exit-code","--","game","targets/game/reverse","tools","AGENTS.md"]),flush=True)
+          print(run("progress",[sys.executable,"tools/progress.py","origin/master"]),flush=True)
+          PY
+      - name: Preserve selection and narrow native context
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-cpp-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source/build/contributor-small-donor-20261025/
+            source/build/bfme2_sweep/binary.json
+          retention-days: 90
+          if-no-files-found: warn
+          compression-level: 9
