@@ -288,24 +288,29 @@ extern void *g_vtbl_011121EC[];
 // ?g_vtbl_01112204@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@")[];
 extern void *g_vtbl_01112218[];
-extern void *g_vtbl_0111221C[];
+// ?g_vtbl_0111221C@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7GenX005ED360@@6B@")[];
 extern void *g_vtbl_01112234[];
-extern void *g_vtbl_01112248[];
+// ?g_vtbl_01112248@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ED4E0@@6BV3Slot1@@@")[];
 extern void *g_vtbl_0111224C[];
 extern void *g_vtbl_01112264[];
-extern void *g_vtbl_01112278[];
+// ?g_vtbl_01112278@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7MidX005ED510@@6B@")[];
 extern void *g_vtbl_0111227C[];
 extern void *g_vtbl_01112294[];
 extern void *g_vtbl_011122A8[];
 extern void *g_vtbl_011122AC[];
 extern void *g_vtbl_011122C4[];
-extern void *g_vtbl_011122D8[];
+// ?g_vtbl_011122D8@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@")[];
 extern void *g_vtbl_011122DC[];
 extern void *g_vtbl_011122E0[];
 extern void *g_vtbl_01112304[];
 extern void *g_vtbl_01112318[];
 extern void *g_vtbl_0111231C[];
-extern void *g_vtbl_01112320[];
+// ?g_vtbl_01112320@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ED980@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01112344[];
 extern void *g_vtbl_01112358[];
 extern void *g_vtbl_0111235C[];
@@ -702,7 +707,7 @@ __forceinline void initializePointEmissionVolumeModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_011122E0;
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_011122DC;
-    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_011122D8;
+    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@");
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_011122C4;
 }
 
@@ -998,7 +1003,7 @@ public:
 __forceinline void initializeCylindricalEmissionVelocityModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_0111227C;
-    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_01112278;
+    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7MidX005ED510@@6B@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112264;
 }
 
@@ -1009,7 +1014,7 @@ public:
 
 __forceinline void initializeSphericalEmissionVelocityModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_0111221C;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7GenX005ED360@@6B@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_01112218;
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@");
 }
@@ -1022,7 +1027,7 @@ public:
 __forceinline void initializeHemisphericalEmissionVelocityModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_0111224C;
-    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_01112248;
+    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7Rva005ED4E0@@6BV3Slot1@@@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112234;
 }
 
@@ -1075,7 +1080,7 @@ public:
 
 __forceinline void initializeLineEmissionVolumeModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_01112320;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005ED980@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_0111231C;
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112318;
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_01112304;
