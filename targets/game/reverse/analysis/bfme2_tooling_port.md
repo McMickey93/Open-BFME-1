@@ -516,3 +516,10 @@ libraries with no same-name test family are listed explicitly:
 - `wb_gold` (C): no same-name family.
 - `wpo_detect` (C): `test_wpo_detect.py`.
 - `yield_model` (B): no same-name family.
+
+## Promotion integration (2026-10-25)
+
+Master independently added `tools/bfme2_sweep.py` with donor workflow commands.
+The port's read-only retail scanner is now `tools/bfme2_retail_sweep.py`, with
+reports in `build/bfme2_retail_sweep/`; `router_shadow.py --donors` consumes
+those reports. Master's sweep entry point and tests remain unchanged.

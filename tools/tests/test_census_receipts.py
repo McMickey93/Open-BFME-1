@@ -19,12 +19,12 @@ import census_receipts as proofs
 
 @pytest.fixture(scope='module')
 def old_receipt_writer():
-    """Run the actual origin/master producer, not a hand-built old schema."""
+    """Run the pre-port producer even after this branch becomes origin/master."""
     root = Path(__file__).resolve().parents[2]
     code = subprocess.check_output(
-        ['git', 'show', 'origin/master:tools/census_receipts.py'], cwd=root)
+        ['git', 'show', 'f5140c1cff6a58e16276fd6de6788186286953d4:tools/census_receipts.py'], cwd=root)
     module = ModuleType('old_census_receipts')
-    exec(compile(code, 'origin/master:tools/census_receipts.py', 'exec'), module.__dict__)
+    exec(compile(code, 'f5140c1cff6a58e16276fd6de6788186286953d4:tools/census_receipts.py', 'exec'), module.__dict__)
     return module
 
 

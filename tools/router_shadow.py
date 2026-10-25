@@ -6,7 +6,7 @@ to inspect all three queues; this is a ranked diagnostic sample, not throughput
 or a production scheduling policy. Raw cycle directories are diagnostic only.
 Trusted local census pickles have the same trust requirement as comdat_families.
 
-  router_shadow.py --bundle RUN --index CENSUS --donors build/bfme2_sweep/match.json --count 20 --check
+  router_shadow.py --bundle RUN --index CENSUS --donors build/bfme2_retail_sweep/match.json --count 20 --check
   router_shadow.py --check                  # check the existing JSONL
 """
 import argparse
@@ -24,7 +24,7 @@ import time
 from types import SimpleNamespace
 from unittest.mock import patch
 
-import bfme2_sweep as sweep
+import bfme2_retail_sweep as sweep
 import claims
 import closure_report as closure
 import comdat_families as comdat
@@ -422,7 +422,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", type=Path)
     parser.add_argument("--index", type=Path, default=link_check.INDEX)
-    parser.add_argument("--donors", type=Path, help="fingerprint-bound bfme2_sweep scan report")
+    parser.add_argument("--donors", type=Path, help="fingerprint-bound bfme2_retail_sweep scan report")
     parser.add_argument("--count", type=int, default=20)
     parser.add_argument("--lanes", type=lambda s: s.split(","), default=["closure", "family", "donor"])
     parser.add_argument("--output", type=Path, default=DEFAULT_LOG)
