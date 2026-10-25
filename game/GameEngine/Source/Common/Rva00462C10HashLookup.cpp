@@ -24,14 +24,10 @@
 extern void j_0002e5a5(void);
 
 // address-derived stand-in for the hashtable instance living at 0x012F19A4.
-// The global itself is defined once, by the TU that owns its dynamic
-// initializer: Rva00C6B390StaticInitializers.cpp declares
-// `Rva00C6B860Init g_rva012F19A4;` (retail 0x00C6B860, the $E stub for this
-// address).  Only the address is used here, so this TU repeats the type name to
-// spell that exact symbol -- same idiom as Gen_00C700A0Target in
-// S3SingletonForwarders.cpp.  It must be a `struct`, not a `class`: MSVC
-// decorates a class type `V...` and a struct type `U...`, and the defining
-// object spells ?g_rva012F19A4@@3URva00C6B860Init@@A.
+// The previous reference spelled ?g_rva012F19A4@@3URva00C6B860Init@@A,
+// following Rva00C6B390StaticInitializers.cpp's local view. Only the address
+// is used here; bind the recorded storage symbol below while preserving this
+// opaque call view. This does not establish a new class or initializer identity.
 struct Rva00C6B860Init
 {
 	void *findRaw(const AsciiString &key)
@@ -46,7 +42,8 @@ struct Rva00C6B860Init
 	}
 };
 
-extern Rva00C6B860Init g_rva012F19A4;
+// Bind the existing recorded storage symbol without changing this opaque view.
+extern "C" Rva00C6B860Init __identifier("?TheBfmeObject_00C700A0@@3VGen_00C700A0Target@@A");
 
 // ?Rva00462C10@@YAPAXPBD@Z -- address-derived TAG, identity unresolved
 void *Rva00462C10(const char *name)
@@ -54,7 +51,7 @@ void *Rva00462C10(const char *name)
 	void *node;
 	{
 		AsciiString key(name);
-		node = g_rva012F19A4.findRaw(key);
+		node = __identifier("?TheBfmeObject_00C700A0@@3VGen_00C700A0Target@@A").findRaw(key);
 	}
 	return node ? reinterpret_cast<char *>(node) + 8 : 0;
 }
