@@ -8,10 +8,12 @@
 // strings, not members of the preceding vtables in the address index.
 // Match the existing declaration in GameEngine/Source/Common/BfmeConv492.cpp.
 extern "C" unsigned char bfmeTextBME[];
-extern "C" const char g_01132DD4[];
+// _g_01132DD4: 3 retail bytes including the NUL.
+extern "C" const char g_01132DD4[] = "0x";
 extern "C" const char g_01134280[];
 extern "C" const char g_011343E4[];
-extern "C" const char g_011343DC[];
+// _g_011343DC: 6 retail bytes including the NUL.
+extern "C" const char g_011343DC[] = " EBX:";
 extern "C" const char g_011343D4[];
 extern "C" const char g_01080294[];
 extern "C" const char g_011343CC[];
@@ -23,10 +25,12 @@ extern "C" const char g_011343A4[];
 extern "C" const char g_0113439C[];
 extern "C" const char g_01134398[];
 extern "C" const char g_01134390[];
-extern "C" const char g_01134388[];
+// _g_01134388: 5 retail bytes including the NUL.
+extern "C" const char g_01134388[] = " SS:";
 extern "C" const char g_01134380[];
 extern "C" const char g_01134378[];
-extern "C" const char g_01134370[];
+// _g_01134370: 5 retail bytes including the NUL.
+extern "C" const char g_01134370[] = " GS:";
 
 // This TU uses the BFME Debug interface as a local ABI view.  The retail
 // exception logger dispatches the unsigned-long writer at +0x28, the string

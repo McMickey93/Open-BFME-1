@@ -1798,7 +1798,8 @@ extern const char g_010A6938[];
 // Former ?g_01114920@FXParticleSystem@@3QBDB: retail 0x01114920 is "AngularRateZ".
 // Former ?g_0111490C@FXParticleSystem@@3QBDB: retail 0x0111490C is "AngularDamping".
 // Former ?g_01114900@FXParticleSystem@@3QBDB: retail 0x01114900 is "Rotation".
-extern const char g_01114504[];
+// ?g_01114504@FXParticleSystem@@3QBDB: 13 retail bytes including the NUL.
+extern const char g_01114504[] = "HeightOffset";
 extern const char g_011144EC[];
 extern const char *const RotationTypeNames[];
 extern const char g_01110838[];
