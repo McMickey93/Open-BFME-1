@@ -193,6 +193,6 @@ AsciiString GameState::rva0010f820MapPathCode(const AsciiString &path) const
             *(const StringBase<char> *)&path);
     }
 
-    prefix.toLower();
+    ((StringBase<char> *)&prefix)->toLower();
     return prefix;
 }
