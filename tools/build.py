@@ -1269,14 +1269,29 @@ def _portable(text):
     return text.replace(str(ROOT), "@ROOT@")
 
 
+def wine_drives(env):
+    """The same drive-letter entries as [a-z]:, without listing device nodes.
+
+    Wine changes non-drive entries in dosdevices during startup. Their names
+    and the directory's generation do not contribute to a compile command.
+    Probe every possible drive explicitly, including dangling mappings.
+    """
+    prefix = Path(env.get("WINEPREFIX") or os.environ.get("WINEPREFIX") or Path.home() / ".wine")
+    drives = []
+    for letter in "abcdefghijklmnopqrstuvwxyz":
+        drive = prefix / "dosdevices" / (letter + ":")
+        if drive.exists() or drive.is_symlink():
+            drives.append(drive)
+    return drives
+
+
 def _cmd_fingerprint(command, env):
     payload = [[_portable(part) for part in command], _portable(env.get("INCLUDE", ""))]
     if os.name != "nt":
         # A drive can be remapped while the command's X:\... spelling stays
         # unchanged. The old host headers then cannot prove the new compile.
-        prefix = Path(env.get("WINEPREFIX") or os.environ.get("WINEPREFIX") or Path.home() / ".wine")
         mappings = []
-        for drive in sorted((prefix / "dosdevices").glob("[a-z]:")):
+        for drive in wine_drives(env):
             try:
                 target = str(drive.resolve(strict=True))
             except (OSError, RuntimeError):

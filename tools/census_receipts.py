@@ -101,8 +101,7 @@ def _normal_cache_current(source, output):
 def signature(command, env):
     mappings = []
     if os.name != "nt":
-        prefix = Path(env.get("WINEPREFIX") or os.environ.get("WINEPREFIX") or Path.home() / ".wine")
-        for drive in sorted((prefix / "dosdevices").glob("[a-z]:")):
+        for drive in build.wine_drives(env):
             mappings.append([drive.name, str(drive.resolve())])
     return {"command": command, "fingerprint": build._cmd_fingerprint(command, env),
             "environment": {"include": env.get("INCLUDE", ""), "drive_mappings": mappings},
