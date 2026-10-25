@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Locate remaining normal residue before any coupled source trials
+      - name: Measure natural member forms after removing unused caller declarations
         working-directory: source
         shell: bash
         run: |
@@ -112,50 +112,29 @@ jobs:
                   candidate=(source[:start]+replacement+source[end:]).replace(anchor,helper+'\n'+anchor)
                   name='normal-member-%s-%s'%('accessor' if accessor else 'row','parens' if parens else 'bare')
                   variants[name]=candidate
-          import build,probe
-          from experiment_store import compile_cached,record_result
-          image=Path(build.EXE).read_bytes();offset=build.rva_to_file_offset(build.pe_sections(image),0x00925D10)
-          retail=image[offset:offset+1634]
-          assert 0x001EDCA0 not in claims.live(claims._read_local()), 'Old AutoAbility claim remains live'
-          print('OLD_CLAIM_RELEASE_CONFIRMED',flush=True)
-          symbol='?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z'
-          regions=[('before-blend',0,0x303),('weighted-vertices',0x303,0x3dc),('weighted-normals',0x3dc,0x4dc),('single-vertices',0x4dc,0x59c),('single-normals',0x59c,0x5e3),('tail',0x5e3,1634)]
-          allresults=[]
-          def measure(name,candidate):
+          clean={}
+          for name,candidate in variants.items():
+              if not name.startswith('normal-member-'): continue
+              in_decl='\t\t\tconst Vector3 *in;\n'; out_decl='\t\t\tVector3 *out;\n'; matrix_decl='\t\t\tconst Matrix3D &m = *pm;\n'
+              assert candidate.count(in_decl)==1 and candidate.count(out_decl)==1 and candidate.count(matrix_decl)==1
+              base=candidate.replace(in_decl,'').replace(out_decl,'')
+              clean[name+'-clean-pointer']=base.replace(matrix_decl,'')
+              call='((const Rva00925D10NormalArray *)pm)->apply(srcN[0], dstN, n)'
+              assert base.count(call)==1
+              clean[name+'-clean-reference']=base.replace(call,'((const Rva00925D10NormalArray &)m).apply(srcN[0], dstN, n)')
+          results=[]
+          for name,candidate in clean.items():
               assert claims.holds(0x00925D10,token)
               path=out/(name+'.cpp');path.write_text(candidate,encoding='utf-8')
-              obj,reused=compile_cached(path)
-              compiled,relocs=build.read_object_symbol_bytes(obj,symbol)
-              compiled=bytes(compiled)
-              R,O,ri,oi,rb,ob,unmapped=probe.diagnostic_streams(retail,compiled,relocs)
-              diffs=[i for i in range(min(len(rb),len(ob))) if rb[i]!=ob[i]]
-              result={'name':name,'size':len(compiled),'diffs':len(diffs),'unmapped':len(unmapped),'regions':{n:sum(a<=i<b for i in diffs) for n,a,b in regions},'offsets':diffs,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest()}
-              record_result(path,symbol,0x00925D10,retail,compiled,relocs)
-              allresults.append(result)
-              (out/(name+'-regions.json')).write_text(json.dumps(result,indent=2),encoding='utf-8')
-              print('REGION_RESULT '+json.dumps(result),flush=True)
-              if len(compiled)==1634 and not diffs and not unmapped:
-                  print('EXACT_CANDIDATE '+name,flush=True);print(candidate,flush=True)
-              return result
-          baseline=measure('preferred-region-control',source)
-          assert baseline['size']==1634 and baseline['diffs']==20 and baseline['unmapped']==0
-          for family in ['normal-member-row-bare','normal-member-row-parens']:
-              result=measure(family+'-region-control',variants[family])
-              if result['size']!=1634 or result['unmapped'] or result['regions']['single-normals']>=20:
-                  print('NO_REGION_IMPROVEMENT_SKIP_WALKER_SEARCH '+family,flush=True);continue
-              first='\t\t\tpo = dstV;\n\t\t\tpb = srcV[1];\n\t\t\tpa = srcV[0];'
-              second='\t\t\tpa = srcN[0];\n\t\t\tpb = srcN[1];\n\t\t\tpo = dstN;'
-              assert variants[family].count(first)==1 and variants[family].count(second)==1
-              import itertools
-              exact=False
-              for i,perm1 in enumerate(itertools.permutations(first.splitlines())):
-                  for j,perm2 in enumerate(itertools.permutations(second.splitlines())):
-                      candidate=variants[family].replace(first,'\n'.join(perm1)).replace(second,'\n'.join(perm2))
-                      r=measure(family+'-walkers-%d-%d'%(i,j),candidate)
-                      if r['size']==1634 and r['diffs']==0 and r['unmapped']==0:exact=True;break
-                  if exact:break
-              if exact:break
-          (out/'normal-regions-and-walkers.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+              print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
+              p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z','0x00925D10','--shape'],capture_output=True,text=True)
+              log=p.stdout+'\n'+p.stderr;(out/(name+'.log')).write_text(log,encoding='utf-8')
+              print(log,flush=True)
+              item={'name':name,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest(),'exit':p.returncode,'exact':'result   EXACT' in log}
+              results.append(item);assert p.returncode==0
+              if item['exact']:
+                  print('EXACT_CANDIDATE '+name,flush=True);print(candidate,flush=True);break
+          (out/'clean-native-member-trials.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
           
           PY
       - name: Measure unchanged baseline
@@ -171,7 +150,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-skin-regions
+          name: bfme1-hard-finish-skin-clean-members
           path: |
             source/build/contributor_hard_finish_skin_20261025/
             source/build/experiments/
