@@ -2,8 +2,8 @@
   "schema_version": 1,
   "repository": "McMickey93/Open-BFME-1",
   "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
-  "base": "1f190a83f3c2236db2da4906c46d38c3185a6a42",
-  "base_tree": "ada6b35d3fce7bda4815263da97032d3d2f14b02",
+  "base": "3b375d6e2844dbceda9f4e2fd50e88bf77f0703c",
+  "base_tree": "a828f43ff3da8d3d2207688960336ff47e8ac2ad",
   "mode": "explore",
   "body": {
     "rva": "0x008A2130",
@@ -35,7 +35,7 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "626ecacdf5589d19885370df7a7c52e72336893f",
+  "patch_tree": "2be1561a863bef9866c79a775c3a23e30bd42855",
   "patch_sha256": "97f278cbaa7a60af209b531d8ef30f7706ee578fd261c90f0e0ad56ef431d746",
   "message_sha256": "e677794cfbf097145de16de22aefb0a77d3e3c16a347f231b4f046d86980dff4",
   "files": [

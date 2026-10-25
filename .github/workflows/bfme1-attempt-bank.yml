@@ -1,0 +1,185 @@
+name: Bank the measured BFME1 Apt coercion attempt
+
+# Fixed 008C6AD0/best07 preservation task. The checked-in request stays disabled
+# until reviewed. This is evidence banking with zero exact-C++ progress.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bfme1-native-attempt-bank-008c6ad0
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.longpaths
+  GIT_CONFIG_VALUE_1: 'true'
+  PY_PYTHON: '3.12'
+  PY_PYTHON3: '3.12'
+  PYTHONUTF8: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  bank:
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/master' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.actor == 'McMickey93'
+    permissions:
+      contents: read
+      actions: read
+    runs-on: windows-2022
+    timeout-minutes: 30
+    outputs:
+      artifact_id: ${{ steps.bundle.outputs.artifact-id }}
+      artifact_digest: ${{ steps.bundle.outputs.artifact-digest }}
+    steps:
+      - name: Read immutable banking controls and reviewed transfer helpers
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: control
+          sparse-checkout: |
+            .github/qualification/bfme1-bank
+            .github/qualification/bfme1-transfer
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+          architecture: x64
+          check-latest: false
+      - name: Validate the fixed reviewed request
+        id: request
+        shell: bash
+        run: python control/.github/qualification/bfme1-bank/bank.py pin
+      - name: Check out the committed preservation base without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: ${{ steps.request.outputs.base }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Measure both banks with re_log and run the complete normal gate
+        shell: bash
+        working-directory: source
+        env:
+          BFME_BANK_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 native-attempt-banking
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_BANK_BASH="$(cygpath -aw "$git_bash")"
+          python3 -u ../control/.github/qualification/bfme1-bank/bank.py bank
+      - name: Retain the exact bank commit and Git bundle
+        id: bundle
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-banked-${{ github.run_id }}-${{ github.run_attempt }}
+          path: banked-attempt/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+          include-hidden-files: false
+      - name: Retain native banking and gate diagnostics
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-bank-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bank-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 9
+
+  transfer:
+    needs: bank
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/master' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.actor == 'McMickey93'
+    # The compiler/measurement/commit/full gate job has no write token. Only
+    # the exact constrained objects reach this separate ordinary fork push.
+    permissions:
+      contents: write
+      actions: read
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - name: Read the same immutable banking controls and helpers
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: control
+          sparse-checkout: |
+            .github/qualification/bfme1-bank
+            .github/qualification/bfme1-transfer
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+          architecture: x64
+          check-latest: false
+      - name: Validate the same reviewed request
+        id: request
+        shell: bash
+        run: python control/.github/qualification/bfme1-bank/bank.py pin
+      - name: Check out the same official base without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: ${{ steps.request.outputs.base }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Transfer the exact bank result to its fixed fresh fork branch
+        shell: bash
+        working-directory: source
+        env:
+          BFME_BANK_TOKEN: ${{ github.token }}
+          BFME_BANK_ARTIFACT_ID: ${{ needs.bank.outputs.artifact_id }}
+          BFME_BANK_ARTIFACT_DIGEST: ${{ needs.bank.outputs.artifact_digest }}
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 native-attempt-bank-transfer
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_BANK_BASH="$(cygpath -aw "$git_bash")"
+          python3 -u ../control/.github/qualification/bfme1-bank/bank.py transfer
+      - name: Retain exact bank transfer receipt
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-bank-transfer-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bank-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 9

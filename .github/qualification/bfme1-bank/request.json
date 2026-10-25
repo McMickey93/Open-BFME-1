@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "enabled": true,
+  "expected_base": "3b375d6e2844dbceda9f4e2fd50e88bf77f0703c",
+  "expected_tree": "a828f43ff3da8d3d2207688960336ff47e8ac2ad",
+  "previous_bank_blob": "b2e55883bac26f6d6a3d126133589f85296d3618",
+  "support_files": [
+    {
+      "path": "targets/game/reverse/attempt_support/008c6ad0-tail-order-20261025/best-whole-tu.cpp.txt",
+      "blob": "6f590f236f882e4fa62d50b22b5214ed2c5a4b8c",
+      "sha256": "872ab57f5654deadc23c474e1307b6a73709030d396b5cfd923b3c827539f927",
+      "size": 8354
+    },
+    {
+      "path": "targets/game/reverse/attempt_support/008c6ad0-tail-order-20261025/readme.md",
+      "blob": "cea37c4685a84645d506b9a23f4d0c489bb89aab",
+      "sha256": "74cee7f5dfa11e4daec43b89281b6b5803381b95baf4eef35cc514ff95428520",
+      "size": 11047
+    }
+  ],
+  "claims": [
+    {
+      "rva": "0x008C6AD0",
+      "lease": "fd901b9cef4049468a07d3aad4b4df9e",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-2"
+    },
+    {
+      "rva": "0x008CF1B0",
+      "lease": "fd901b9cef4049468a07d3aad4b4df9e",
+      "owner": "github:mcmickey93:bfme1:cpp-loop-2"
+    }
+  ],
+  "base_rows": [
+    {
+      "name": "?d_008c6ad0@@YAXXZ",
+      "export_rva": "",
+      "target_rva": "0x008C6AD0",
+      "target_size": "233",
+      "source": "game/gen_asm/d_008c4940.asm",
+      "status": "matched",
+      "notes": "gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0"
+    },
+    {
+      "name": "?rva8CF1B0ProcessRecord@@YAXPAVRva8CF1B0State@@PAURva8CF1B0Cursor@@@Z",
+      "export_rva": "",
+      "target_rva": "0x008CF1B0",
+      "target_size": "520",
+      "source": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
+      "status": "matched",
+      "notes": "record parser with aligned three segment dispatch"
+    }
+  ]
+}
