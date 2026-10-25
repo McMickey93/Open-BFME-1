@@ -34,7 +34,8 @@ extern void j_00019a06();
 extern void j_0001b293();
 extern void j_0001b5e5();
 extern void j_0001c373();
-extern void j_0001f0fa();
+// Gate debt ?j_0001f0fa@@YAXXZ: reference _dp007.
+extern "C" void dp007();
 extern void j_0002347f();
 extern void j_00024915();
 extern void j_00024974();
@@ -65,10 +66,10 @@ void W3DModuleFactory::init(void)
 	// ledgered ILT identities without assigning semantic callback names.
 	// VA00424AFA has no existing symbol anchor and still needs a separate repair.
 	addModuleInternal(reinterpret_cast<const void *>(&j_000063bb),
-		reinterpret_cast<const void *>(&j_0001f0fa), 0, 1,
+		reinterpret_cast<const void *>(&dp007), 0, 1,
 		AsciiString("W3DDefaultDraw"), 0x400);
 	addModuleInternal(reinterpret_cast<const void *>(&j_0000230b),
-		reinterpret_cast<const void *>(&j_0001f0fa), 0, 1,
+		reinterpret_cast<const void *>(&dp007), 0, 1,
 		AsciiString("W3DDebrisDraw"), 0x400);
 	addModuleInternal(reinterpret_cast<const void *>(&j_00019a06),
 		reinterpret_cast<const void *>(&j_00026f5d),
@@ -86,7 +87,7 @@ void W3DModuleFactory::init(void)
 		reinterpret_cast<const void *>(&j_00005ba0), 1,
 		AsciiString("W3DQuadrupedDraw"), 0x400);
 	addModuleInternal(reinterpret_cast<const void *>(&j_0000b67c),
-		reinterpret_cast<const void *>(&j_0001f0fa), 0, 1,
+		reinterpret_cast<const void *>(&dp007), 0, 1,
 		AsciiString("W3DRopeDraw"), 0x400);
 	addModuleInternal(reinterpret_cast<const void *>(&j_00035733),
 		reinterpret_cast<const void *>(&j_00005ee8),

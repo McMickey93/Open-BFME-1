@@ -74,6 +74,9 @@ struct Entry367470 {
         field08=1;
     }
 };
+// Gate debt ?Campaign@@3PAUCampaign367470@@A: reference Glo012F1028.
+class Glo012F1028Type;
+extern Glo012F1028Type *Glo012F1028;
 struct Campaign367470 {
     char field00[0x74];
     int field74;
@@ -83,7 +86,7 @@ struct Campaign367470 {
     int fielda4;
     _STL::bitset<192> fielda8;
 };
-extern Campaign367470 *Campaign;
+#define Campaign ((Campaign367470 *)Glo012F1028)
 class UpgradeCenter;
 extern UpgradeCenter *TheUpgradeCenter;
 class Rva000C9870DwordSlot {

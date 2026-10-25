@@ -237,7 +237,8 @@ extern "C" void *__identifier("??_7ParticleLifeEventModuleTemplate@FXParticleSys
 extern "C" void *__identifier("??_7ParticleLifeEventModuleTemplate@FXParticleSystem@@6BPLEMT_IfaceA@1@@")[];
 // ?g_vtbl_01111424@@3PAPAXA: use the owner recorded at 0x01111424.
 extern "C" void *__identifier("??_7ParticleLifeEventModuleTemplate@FXParticleSystem@@6BPLEMT_Base@1@@")[];
-extern void *g_vtbl_01111438[];
+// Gate debt ?g_vtbl_01111438@@3PAPAXA: use the owner recorded at 0x01111438.
+extern "C" void *__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceB@1@@")[];
 // ?g_vtbl_0111144C@@3PAPAXA: use the owner recorded at 0x0111144C.
 extern "C" void *__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@")[];
 // ?g_vtbl_01111450@@3PAPAXA: use the owner recorded at 0x01111450.
@@ -1648,7 +1649,7 @@ public:
         ((TerrainCollisionTemplateCtorShim *)this)->construct();
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@");
         *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x0c) = (unsigned int)g_vtbl_01111438;
+        *(volatile unsigned int *)((unsigned char *)this + 0x0c) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceB@1@@");
     }
 
 private:
@@ -1768,7 +1769,8 @@ extern const char STREAK_DRAW_MODULE_TEMPLATE_PARSE_TABLE[];
 extern const char TERRAIN_COLLISION_MODULE_TEMPLATE_PARSE_TABLE[];
 extern const void *CATEGORY_MODULE_CLASS_0_VTABLE;
 extern const char g_01113A7C[];
-extern const char g_01113A70[];
+// ?g_01113A70@FXParticleSystem@@3QBDB: twelve retail bytes including the NUL.
+extern const char g_01113A70[] = "HalfSize";
 // Former ?g_0108EE10@FXParticleSystem@@3QBDB: retail 0x0108EE10 is "Radius".
 extern const char g_01113C94[];
 // Former ?g_0109F2A4@FXParticleSystem@@3QBDB: retail 0x0109F2A4 is "Offset".
@@ -4181,7 +4183,7 @@ ConcreteModuleTemplate<ModuleTag<8, TERRAIN_COLLISION_MODULE_KEY, TERRAIN_COLLIS
     ((TerrainCollisionTemplateCopyCtorShim *)this)->construct(&that);
     *(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@");
-    *(volatile unsigned int *)((unsigned char *)this + 12) = (unsigned int)g_vtbl_01111438;
+    *(volatile unsigned int *)((unsigned char *)this + 12) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceB@1@@");
 }
 
 // ??0?$ConcreteModuleTemplate@V?$ModuleTag@$07$E?TERRAIN_COLLISION_MODULE_KEY@FXParticleSystem@@3QBDB$E?TERRAIN_COLLISION_MODULE_NAME@2@3QBDBVTerrainCollisionModule@2@VTerrainCollisionModuleTemplate@2@VParticleTerrainCollisionModule@2@VParticleTerrainCollisionModuleTemplate@2@@FXParticleSystem@@@FXParticleSystem@@QAE@XZ
@@ -4190,7 +4192,7 @@ ConcreteModuleTemplate<ModuleTag<8, TERRAIN_COLLISION_MODULE_KEY, TERRAIN_COLLIS
     ((TerrainCollisionTemplateCtorShim *)this)->construct();
     *(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionModuleTemplate@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceA@1@@");
-    *(volatile unsigned int *)((unsigned char *)this + 12) = (unsigned int)g_vtbl_01111438;
+    *(volatile unsigned int *)((unsigned char *)this + 12) = (unsigned int)__identifier("??_7ParticleTerrainCollisionModuleTemplate@FXParticleSystem@@6BTerrainCollisionTemplateIfaceB@1@@");
 }
 
 // ??1?$ConcreteModuleTemplate@V?$ModuleTag@$07$E?TERRAIN_COLLISION_MODULE_KEY@FXParticleSystem@@3QBDB$E?TERRAIN_COLLISION_MODULE_NAME@2@3QBDBVTerrainCollisionModule@2@VTerrainCollisionModuleTemplate@2@VParticleTerrainCollisionModule@2@VParticleTerrainCollisionModuleTemplate@2@@FXParticleSystem@@@FXParticleSystem@@UAE@XZ

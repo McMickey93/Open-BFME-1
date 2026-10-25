@@ -188,19 +188,21 @@ public:
 	BfmePickNode1284 *bfmePick1284(int group, int slot);
 };
 
-struct BfmeRoute1281
+// Gate debt ?g_bfmeRouteTable1282@@3PAUBfmeRoute1281@@A: reference BfmeRoute1285.
+struct BfmeRoute1285
 {
 	int m_mask;
 	int m_index;
 	int m_code;
 };
+typedef BfmeRoute1285 BfmeRoute1281;
 
 class AptValue;
 
 extern Gen_008A0C30 *g_bfmeHolderBU;
 extern AptValue *g_bfmeFallbackDB;
 extern void *g_bfmeExtra1282;
-extern BfmeRoute1281 g_bfmeRouteTable1282[7];
+extern BfmeRoute1285 g_bfmeRouteTable1282[7];
 extern int g_bfmeRouteKeys1282[1];
 extern void (__cdecl *g_bfmePlay1282)(void *handle, int zero);
 
