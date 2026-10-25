@@ -1780,7 +1780,8 @@ extern const char SPHERICAL_EMISSION_VELOCITY_MODULE_TEMPLATE_PARSE_TABLE[];
 extern const char STREAK_DRAW_MODULE_TEMPLATE_PARSE_TABLE[];
 extern const char TERRAIN_COLLISION_MODULE_TEMPLATE_PARSE_TABLE[];
 extern const void *CATEGORY_MODULE_CLASS_0_VTABLE;
-extern const char g_01113A7C[];
+// ?g_01113A7C@FXParticleSystem@@3QBDB: 9 retail bytes including the NUL.
+extern const char g_01113A7C[] = "IsHollow";
 // ?g_01113A70@FXParticleSystem@@3QBDB: twelve retail bytes including the NUL.
 extern const char g_01113A70[] = "HalfSize";
 // Former ?g_0108EE10@FXParticleSystem@@3QBDB: retail 0x0108EE10 is "Radius".

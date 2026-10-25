@@ -85,15 +85,16 @@ public:
 	void *m_bfmeAi;						///< retail this+0x204, opaque AIUpdateInterface*
 };
 
-class BfmeGameLogicLike
+// ?TheBfmeGameLogic@@3PAVBfmeGameLogicLike@@A: reference recorded ?TheBfmeGameLogic@@3PAVGameLogic@@A
+class GameLogic
 {
 public:
 	char m_bfmeUnreconstructed_000[0x3C];
 	UnsignedInt getFrame() const { return m_bfmeFrame; }
- UnsignedInt m_bfmeFrame;					///< retail this+0x3C
+	UnsignedInt m_bfmeFrame;					///< retail this+0x3C
 };
 
-extern BfmeGameLogicLike *TheBfmeGameLogic;				// 0x012F0898
+extern GameLogic *TheBfmeGameLogic;				// 0x012F0898
 
 class AIUpdateInterface
 {

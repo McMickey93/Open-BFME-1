@@ -116,9 +116,15 @@ public:
 // The remaining secondary bases, each named for the vtable this body stores
 // into it. Only their widths are witnessed, and each width is fixed by where
 // the next vptr store lands.
-template <int N> class __declspec(novtable) Rva010C8F20Base { public: virtual void slot00() = 0; };
-class __declspec(novtable) Rva010C8F10Base { public: virtual void slot00() = 0; private: unsigned int m_unreconstructed_10[3]; };
-class __declspec(novtable) Rva010C8EF0Base { public: virtual void slot00() = 0; private: unsigned char m_unreconstructed_28[0x340 - 0x28]; };
+// Retired gate debts:
+// ??_7SupplyTruckAIUpdate@@6BRva010C8EF0Base@@@
+// ??_7SupplyTruckAIUpdate@@6B?$Rva010C8F20Base@$01@@@
+// ??_7SupplyTruckAIUpdate@@6BRva010C8F10Base@@@
+// ??_7SupplyTruckAIUpdate@@6B?$Rva010C8F20Base@$00@@@
+class __declspec(novtable) ST_Iface1 { public: virtual void slot00() = 0; };
+class __declspec(novtable) ST_Iface2 { public: virtual void slot00() = 0; private: unsigned int m_unreconstructed_10[3]; };
+class __declspec(novtable) ST_Iface3 { public: virtual void slot00() = 0; };
+class __declspec(novtable) ST_Iface4 { public: virtual void slot00() = 0; private: unsigned char m_unreconstructed_28[0x340 - 0x28]; };
 class Rva010C8E90Base { public: virtual ~Rva010C8E90Base(); virtual void slot00(); };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/SupplyTruckAIUpdate.h
@@ -132,8 +138,8 @@ public:
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/SupplyTruckAIUpdate.h
-class SupplyTruckAIUpdate : public AnimalAIUpdateBase, public Rva010C8F20Base<1>,
-	public Rva010C8F10Base, public Rva010C8F20Base<2>, public Rva010C8EF0Base,
+class SupplyTruckAIUpdate : public AnimalAIUpdateBase, public ST_Iface1,
+	public ST_Iface2, public ST_Iface3, public ST_Iface4,
 	public Rva010C8E90Base
 {
 public:
