@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Fence SpecialPower file and reproduce ABI-correct source
+      - name: Measure faithful non-expanding provider visibility
         working-directory: source
         shell: bash
         run: |
@@ -60,7 +60,7 @@ jobs:
           [[ "$git_bash" == *.exe ]] || git_bash="$git_bash.exe"
           export BFME_NATIVE_BASH="$(cygpath -aw "$git_bash")"
           python3 - <<'PY'
-          import json,os,re,subprocess,sys,csv
+          import json,os,re,subprocess,sys
           from pathlib import Path
           sys.path.insert(0,'tools')
           import claims
@@ -68,39 +68,131 @@ jobs:
           assert claims.fetch()
           current=claims.live(claims._read_local())
           for rva in [0x00269C50,0x00271B40]:
-              entry=current.get(rva)
-              assert entry and entry[0]==token and entry[1]['owner']==os.environ['BFME_CLAIM_OWNER'] and entry[1]['lease']=='5d82ccfbf2544ed0b704840d11b13543'
+              e=current.get(rva)
+              assert e and e[0]==token and e[1]['owner']==os.environ['BFME_CLAIM_OWNER'] and e[1]['lease']=='5d82ccfbf2544ed0b704840d11b13543'
               assert claims.holds(rva,token)
-          for old in [0x001EDCA0,0x00925D10,0x00948BD0]: assert old not in current
-          print('CLAIM_CLUSTER_FENCED_OLD_RELEASED',flush=True)
-          out=Path('build/contributor_hard_finish_sp_20261025');out.mkdir(parents=True,exist_ok=True)
-          targets={0x00269C50,0x00271B40,0x0039B6D0}
-          for rva,size in [(0x00269C50,1073),(0x00271B40,249)]:
-              p=subprocess.run([sys.executable,'tools/callees.py',hex(rva),str(size)],capture_output=True,text=True)
-              print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
-              targets.update(int(v,16) for v in re.findall(r'->\s*(0x[0-9a-fA-F]+)',p.stdout))
-              for line in Path('targets/game/reverse/re_attempts.log').read_text(encoding='utf-8',errors='replace').splitlines():
-                  if ('0x%08x'%rva) in line.lower(): print('TARGET_HISTORY '+line,flush=True)
-          for folder in ('targets/game/reverse/attempt_support','targets/game/reverse/identity_evidence'):
-              for path in Path(folder).rglob('*.md'):
-                  text=path.read_text(encoding='utf-8',errors='replace')
-                  if any(('%08x'%rva) in text.lower() for rva in [0x00269C50,0x00271B40]):
-                      print('TARGET_REPORT '+str(path)+' '+subprocess.check_output(['git','hash-object',str(path)],text=True).strip(),flush=True)
-          with open('targets/game/reverse/functions.csv',newline='',encoding='utf-8') as f:
-              for row in csv.DictReader(f):
-                  if row.get('target_rva') and int(row['target_rva'],16) in targets:
-                      print('NARROW_CALLEE_LEDGER '+json.dumps(row),flush=True)
+          out=Path('build/contributor_hard_finish_sp_visibility_20261025');out.mkdir(parents=True,exist_ok=True)
+          base=Path('targets/game/reverse/attempt_support/0x00269c50-20261013-formB-constref-abi.inc').read_text(encoding='utf-8')
+          base=base[base.index('#include'):]
+          ascii_def=r'''
+          template<class T> class StringBase {
+              friend class AsciiString;
+              friend class UnicodeString;
+          public: void set(const StringBase<T>&);
+          private: void releaseBuffer();
+          };
+          class AsciiString {
+          public:
+              AsciiString &operator=(const AsciiString &other) { ((StringBase<char> *)this)->set(*(const StringBase<char> *)&other); return *this; }
+              void set(const char*,int);
+          private: char *m_data;
+          };
+          class Team { public: Player *getControllingPlayer() const; };
+          '''
+          base=base.replace('class AsciiString;',ascii_def)
+          base=base.replace('\nclass BfmeObjectReferenceStore\n', '\nextern const char g_Rva0107301CEmptyString[];\nclass BfmeObjectReferenceStore\n')
+          base=base.replace('void subtract(Int);','void subtract(Int);\nprivate: unsigned char m_pad[0x278]; int m_value;')
+          base=base.replace('Player *getControllingPlayer() const;\n\tvoid setDisabledUntil','Player *getControllingPlayer() const;\n\tvoid setDisabledUntil')
+          base=base.replace('\n};\n\nclass GameLogic\n','\npublic:\n    unsigned char m_nextPad[0x88 - 8];\n    Object *m_nextObject;\n};\n\nclass GameLogic\n')
+          base=base.replace('class GameLogic\n{\npublic:','class GameLogic\n{\npublic:\n    Object *getFirstObject();')
+          start=base.index('class BfmeObjectReferenceStore\n')
+          end=base.index('\nclass BfmeModeGF;',start)
+          store_decl=r'''class BfmeObjectReferenceStore
+          {
+          public:
+              void clearObjectEntries();
+              void updateObjectReference(Object *object, bool adding);
+              void configure(Int mode, const Int &value, const Object *player,
+                  const AsciiString &name, Int trailingValue);
+          private:
+              unsigned char m_pad[0x14];
+              Int m_mode;
+              unsigned char m_pad2[4];
+              AsciiString m_name;
+              Int m_value;
+              unsigned short m_mask;
+          };
+          '''
+          base=base[:start]+store_decl+base[end:]
+          configure_decl='void configure(Int mode, const Int &value, const Object *player,\n        const AsciiString &name, Int trailingValue);'
+          configure_body=r'''__declspec(noinline) void configure(Int mode, const Int &value, const Object *player,
+                  const AsciiString &name, Int trailingValue)
+              {
+                  clearObjectEntries();
+                  m_mode = mode;
+                  *(int *)(m_pad2) = value;
+                  m_name = name;
+                  m_value = trailingValue;
+                  m_mask = (unsigned short)(1 << *(const int *)((const unsigned char *)player + 0x24));
+                  Object *object = TheGameLogic->getFirstObject();
+                  while (object != 0) {
+                      updateObjectReference(object, false);
+                      object = object->m_nextObject;
+                  }
+              }'''
+          clear_body=r'''__declspec(noinline) void clearObjectEntries()
+              {
+                  Object *object = TheGameLogic->getFirstObject();
+                  while (object != 0) {
+                      updateObjectReference(object, true);
+                      object = object->m_nextObject;
+                  }
+                  m_mode=0;
+                  m_name.set(g_Rva0107301CEmptyString,0);
+                  m_value=0;
+                  m_mask=0;
+              }'''
+          subtract_body=r'''__declspec(noinline) void subtract(Int amount)
+              {
+                  m_value -= amount;
+                  if (m_value < 0) m_value=0;
+              }'''
+          player_body=r'''__declspec(noinline) Player *getControllingPlayer() const
+              {
+                  struct BFMEObjectTeamField { unsigned char pad[0x23c]; Team *team; };
+                  const BFMEObjectTeamField *self=reinterpret_cast<const BFMEObjectTeamField *>(this);
+                  return self->team ? self->team->getControllingPlayer() : 0;
+              }'''
           cases=[
-           ('sp-wrong-abi-diagnostic','targets/game/reverse/attempts/0x00269c50.cpp','?finishSpecialPower@SpecialPowerModule@@QAEXI@Z','0x00269C50',1073),
-           ('sp-correct-abi','targets/game/reverse/attempt_support/0x00269c50-20261013-formB-constref-abi.inc','?finishSpecialPower@SpecialPowerModule@@QAEXI@Z','0x00269C50',1073),
-           ('sync-executable-body','targets/game/reverse/attempts/0x00271b40.cpp','?bfmeSyncEGF@BfmeThingEGF@@QAEXXZ','0x00271B40',249)]
-          for name,path,symbol,rva,size in cases:
-              assert claims.holds(int(rva,16),token)
-              private=out/(name+'.cpp');private.write_text(Path(path).read_text(encoding='utf-8'),encoding='utf-8',newline='\n')
+          ('native-layout-control',base,[]),
+          ('configure-visible',base.replace(configure_decl,configure_body),[('?configure@BfmeObjectReferenceStore@@QAEXHABHPBVObject@@ABVAsciiString@@H@Z','0x0039B6D0',105)]),
+          ('configure-clear-visible',base.replace(configure_decl,configure_body).replace('void clearObjectEntries();',clear_body),[('?configure@BfmeObjectReferenceStore@@QAEXHABHPBVObject@@ABVAsciiString@@H@Z','0x0039B6D0',105),('?clearObjectEntries@BfmeObjectReferenceStore@@QAEXXZ','0x0039B660',79)]),
+          ('subtract-visible',base.replace('void subtract(Int);',subtract_body),[('?subtract@Rva000C98C0@@QAEXH@Z','0x000C98C0',33)]),
+          ('controlling-player-visible',base.replace('Player *getControllingPlayer() const;\n\tvoid setDisabledUntil',player_body+'\n\tvoid setDisabledUntil'),[('?getControllingPlayer@Object@@QBEPAVPlayer@@XZ','0x001BE3F0',18)]),
+          ('all-three-visible',base.replace(configure_decl,configure_body).replace('void subtract(Int);',subtract_body).replace('Player *getControllingPlayer() const;\n\tvoid setDisabledUntil',player_body+'\n\tvoid setDisabledUntil'),[('?configure@BfmeObjectReferenceStore@@QAEXHABHPBVObject@@ABVAsciiString@@H@Z','0x0039B6D0',105),('?subtract@Rva000C98C0@@QAEXH@Z','0x000C98C0',33),('?getControllingPlayer@Object@@QBEPAVPlayer@@XZ','0x001BE3F0',18)])]
+          def probe(name,private,symbol,rva,size,provider=False):
               p=subprocess.run([sys.executable,'tools/probe.py',str(private),symbol,rva,'--size',str(size),'--shape'],capture_output=True,text=True)
-              log=p.stdout+'\n'+p.stderr;(out/(name+'.log')).write_text(log,encoding='utf-8')
-              print('TARGET_PROBE '+name,flush=True);print(log,flush=True)
-              assert p.returncode==0
+              log=p.stdout+'\n'+p.stderr
+              (out/(name+'.log')).write_text(log,encoding='utf-8',newline='\n')
+              print('VISIBILITY_PROBE '+name,flush=True);print(log,flush=True)
+              return p.returncode==0 and ('diffs    0 non-reloc' in log or 'diffs    0 ' in log)
+          for name,src,providers in cases:
+              assert claims.holds(0x00269C50,token)
+              private=out/(name+'.cpp');private.write_text('// cl: /DNDEBUG /MD /EHsc\n// stlport\n'+src,encoding='utf-8',newline='\n')
+              good=True
+              for symbol,rva,size in providers:
+                  good=probe(name+'-provider-'+rva,private,symbol,rva,size,True) and good
+              print('PROVIDER_STRICT_RESULT '+name+' '+str(good),flush=True)
+              probe(name+'-caller',private,'?finishSpecialPower@SpecialPowerModule@@QAEXI@Z','0x00269C50',1073)
+          sync=Path('targets/game/reverse/attempts/0x00271b40.cpp').read_text(encoding='utf-8')
+          vdispatch='class VDispatch2 { public:\n'+''.join('virtual void v%d(int,int);\n'%i for i in range(84))+'};\nstruct HolderRva004141A0GuardedVCall { VDispatch2 *m_first; };\n'
+          old='class Rva004141A0GuardedVCall\n{\npublic:\n\tvoid forward(int a0, int a1);\n};'
+          new=vdispatch+r'''class Rva004141A0GuardedVCall
+          {
+          public:
+              __declspec(noinline) void forward(int a0,int a1)
+              {
+                  HolderRva004141A0GuardedVCall *holder=m_holder;
+                  if (holder->m_first != 0) holder->m_first->v24(a0,a1);
+              }
+              char m_lead[0x150];
+              HolderRva004141A0GuardedVCall *m_holder;
+          };'''
+          assert old in sync
+          assert claims.holds(0x00271B40,token)
+          private=out/'sync-terminal-forwarder-visible.cpp';private.write_text(sync.replace(old,new),encoding='utf-8',newline='\n')
+          probe('sync-forwarder-provider',private,'?forward@Rva004141A0GuardedVCall@@QAEXHH@Z','0x004141A0',20)
+          probe('sync-forwarder-caller',private,'?bfmeSyncEGF@BfmeThingEGF@@QAEXXZ','0x00271B40',249)
           
           PY
       - name: Measure unchanged baseline
@@ -116,8 +208,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-specialpower-baselines
+          name: bfme1-hard-finish-specialpower-visibility
           path: |
-            source/build/contributor_hard_finish_sp_20261025/
+            source/build/contributor_hard_finish_sp_visibility_20261025/
             source/build/experiments/
           retention-days: 90
