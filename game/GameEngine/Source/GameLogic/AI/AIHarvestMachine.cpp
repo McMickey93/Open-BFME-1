@@ -53,10 +53,10 @@ protected:
 extern "C" void *bfmeVftAIHarvestApproachSiteState[];
 #define _bfmeVftRva0015FDB0State __identifier("??_7Rva0015FDB0State@@6B@")
 extern "C" void *_bfmeVftRva0015FDB0State[];
-extern "C" void *bfmeVftRva0015FE20State[];
+#define _bfmeVftRva0015FE20State __identifier("??_7Rva0015FE20State@@6B@")
+extern "C" void *_bfmeVftRva0015FE20State[];
 extern "C" void *bfmeVftAIHarvestMachine[];
 #pragma comment(linker, "/alternatename:_bfmeVftAIHarvestApproachSiteState=??_7AIHarvestApproachSiteState@@6B@")
-#pragma comment(linker, "/alternatename:_bfmeVftRva0015FE20State=??_7Rva0015FE20State@@6B@")
 #pragma comment(linker, "/alternatename:_bfmeVftAIHarvestMachine=??_7AIHarvestMachine@@6B@")
 
 class Rva0015FD00State : public AIInternalMoveToState
@@ -99,7 +99,7 @@ private:
 Rva0015FE20State::Rva0015FE20State(void *machine)
 	: Rva000A19E0StateBase(machine, AsciiString("AIHarvestWorkSiteState"))
 {
-	m_vptr = bfmeVftRva0015FE20State;
+	m_vptr = _bfmeVftRva0015FE20State;
 	m_stateField24 = 0;
 }
 
