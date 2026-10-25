@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           git hash-object AGENTS.md
-      - name: Fence claim and reproduce preferred bank with original compiler
+      - name: Fence claim and test evidenced early object-mask context
         working-directory: source
         shell: bash
         run: |
@@ -73,17 +73,58 @@ jobs:
           for line in Path('targets/game/reverse/re_attempts.log').read_text(encoding='utf-8',errors='replace').splitlines():
               if '001edca0' in line.lower():
                   print('TARGET_HISTORY '+line,flush=True)
-          p=subprocess.run(['rg','-l','-i','--glob','*.md','001edca0','targets/game/reverse/attempt_support','targets/game/reverse/identity_evidence'],capture_output=True,text=True)
-          for name in p.stdout.splitlines():
-              print('TARGET_REPORT '+name,flush=True)
-              text=Path(name).read_text(encoding='utf-8',errors='replace')
-              if len(text)<16000:
-                  print(text,flush=True)
+          reports=[]
+          for folder in ('targets/game/reverse/attempt_support','targets/game/reverse/identity_evidence'):
+              for path in Path(folder).rglob('*.md'):
+                  text=path.read_text(encoding='utf-8',errors='replace')
+                  if '001edca0' in text.lower():
+                      reports.append(path)
+                      print('TARGET_REPORT '+str(path),flush=True)
+                      print(text,flush=True)
+          assert not reports, 'Target reports require review before new experiments'
           p=subprocess.run([sys.executable,'tools/probe.py','targets/game/reverse/attempts/0x001edca0.cpp','?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--all','--shape'],capture_output=True,text=True)
           out=Path('build/contributor_hard_finish_20261025');out.mkdir(parents=True,exist_ok=True)
           (out/'preferred-probe.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
           print(p.stdout,flush=True); print(p.stderr,flush=True)
           assert p.returncode==0
+          
+          source=Path('targets/game/reverse/attempts/0x001edca0.cpp').read_text(encoding='utf-8')
+          expression='((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words)'
+          assert source.count(expression)==1
+          anchor='UpdateSleepTime AutoAbilityBehavior::update()'
+          assert source.count(anchor)==1
+          state_expression='(object->m_110.words[6] >> 11) & 1'
+          assert source.count(state_expression)==1
+          helpers={
+           'object-mask':('static inline bool testForbidden001EDCA0(const Object *object, const MaskWords001EDCA0 &mask) { return ((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words); }\n','testForbidden001EDCA0(object, mask)'),
+           'mask-object':('static inline bool testForbidden001EDCA0(const MaskWords001EDCA0 &mask, const Object *object) { return ((Rva001ED9A0Mask *)&object->m_110)->intersects(mask.words); }\n','testForbidden001EDCA0(mask, object)'),
+           'receiver-words-control':('static inline bool testForbidden001EDCA0(Rva001ED9A0Mask *receiver, const UInt *words) { return receiver->intersects(words); }\n','testForbidden001EDCA0((Rva001ED9A0Mask *)&object->m_110, mask.words)'),
+          }
+          variants={}
+          for name,(helper,replacement) in helpers.items():
+              variants[name]=source.replace(expression,replacement).replace(anchor,helper+'\n'+anchor)
+          state_helper='static inline UInt state001EDCA0(const Object *object) { return (object->m_110.words[6] >> 11) & 1; }\n'
+          variants['object-state']=source.replace(state_expression,'state001EDCA0(object)').replace(anchor,state_helper+'\n'+anchor)
+          variants['object-mask-and-state']=variants['object-mask'].replace(state_expression,'state001EDCA0(object)').replace(anchor,state_helper+'\n'+anchor)
+          variants['mask-object-and-state']=variants['mask-object'].replace(state_expression,'state001EDCA0(object)').replace(anchor,state_helper+'\n'+anchor)
+          import hashlib
+          summary=[]
+          for name, candidate in variants.items():
+              assert claims.holds(rva,token)
+              path=out/(name+'.cpp')
+              path.write_text(candidate,encoding='utf-8')
+              print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
+              p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?update@AutoAbilityBehavior@@UAE?AW4UpdateSleepTime@@XZ','0x001EDCA0','--shape'],capture_output=True,text=True)
+              log=p.stdout+'\n'+p.stderr
+              (out/(name+'.log')).write_text(log,encoding='utf-8')
+              print(log,flush=True)
+              summary.append({'name':name,'exit':p.returncode,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest()})
+              assert p.returncode==0
+              if 'result   EXACT' in log:
+                  print('EXACT_CANDIDATE '+name,flush=True)
+                  print(candidate,flush=True)
+                  break
+          (out/'trials.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
           
           PY
       - name: Measure unchanged baseline
@@ -99,7 +140,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-001edca0-baseline
+          name: bfme1-hard-finish-001edca0-object-context
           path: |
             source/build/contributor_hard_finish_20261025/
             source/build/experiments/
