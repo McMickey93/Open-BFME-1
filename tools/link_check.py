@@ -54,6 +54,7 @@ build first (./build.sh), to get a real answer.
   python3 tools/link_check.py next [--no-claim]           # serve + claim the top open queue row
   python3 tools/link_check.py near [--max K] [--shared] [--all]  # files that link once calls use the row names
   python3 tools/link_check.py near --packet game/path/File.cpp   # one near file's repair packet
+  python3 tools/link_check.py fetch-index                        # the daily workflow's index, for --census-only previews
 
 THE QUEUE. The daily census publishes --next's ranking as link_queue.csv (no
 index needed to read it), and `next` serves its best row that is not claimed,
@@ -206,13 +207,39 @@ def require_common_index(index):
                          "python3 tools/link_census.py --build --history")
 
 
+INDEX_WORKFLOW = "link-census.yml"   # .github/workflows: uploads INDEX as the `link-census-index` artifact
+
+
+def fetch_index():
+    """fetch-index: download the last successful daily census's index artifact.
+    Objects are not included: previews on this host need --census-only."""
+    run = subprocess.run(["gh", "run", "list", "--workflow", INDEX_WORKFLOW, "--status", "success",
+                          "--limit", "1", "--json", "databaseId,createdAt"],
+                         cwd=ROOT, capture_output=True, text=True)
+    if run.returncode:
+        raise SystemExit(f"link_check: gh run list failed (gh installed and `gh auth login` done?):\n{run.stderr}")
+    runs = json.loads(run.stdout)
+    if not runs:
+        raise SystemExit(f"link_check: no successful {INDEX_WORKFLOW} run to fetch from")
+    INDEX.parent.mkdir(parents=True, exist_ok=True)
+    download = subprocess.run(["gh", "run", "download", str(runs[0]["databaseId"]), "-n", "link-census-index",
+                               "-D", str(INDEX.parent)], cwd=ROOT, capture_output=True, text=True)
+    if download.returncode or not INDEX.exists():
+        raise SystemExit(f"link_check: artifact download failed (expired after 7 days?):\n{download.stderr}")
+    meta = load_index()["meta"]
+    print(f"link_check: fetched census index {meta.get('date')} at {meta.get('commit')} "
+          f"(workflow run {runs[0]['databaseId']}, {runs[0]['createdAt']}) into {INDEX.relative_to(ROOT).as_posix()}")
+    return 0
+
+
 def load_index():
     if not INDEX.exists():
         common = _git("rev-parse", "--path-format=absolute", "--git-common-dir").strip()
         census = Path(common).parent / "build" / "wt_link" / INDEX.relative_to(ROOT)
         raise SystemExit(
             f"link_check: no census index at {INDEX.relative_to(ROOT).as_posix()} (134 MB, never tracked).\n"
-            f"  copy the daily census's:  mkdir -p build/link_census && cp '{census.as_posix()}' build/link_census/\n"
+            "  fetch the daily workflow's:  python3 tools/link_check.py fetch-index   (then preview with --census-only)\n"
+            f"  or copy a local census's:   mkdir -p build/link_census && cp '{census.as_posix()}' build/link_census/\n"
             "  or build one (~35 min):   python3 tools/link_census.py --build --history\n"
             "  `link_check.py next` needs neither: it reads targets/game/reverse/link_queue.csv")
     with INDEX.open("rb") as handle:
@@ -2326,6 +2353,8 @@ def main(argv=None, hook=False):
         return serve(argv[1:])
     if argv[:1] == ["near"]:
         return near(argv[1:])
+    if argv == ["fetch-index"]:
+        return fetch_index()
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("paths", nargs="*", help="sources (compiled when stale) or objects; or `next [-h]`")
     ap.add_argument("--next", action="store_true", help="rank blocker names by the bytes their fix alone unlocks")
