@@ -52,7 +52,7 @@ def test_stale_sources_spawn_dispatch_agrees_with_serial(tmp_path, monkeypatch):
     for source in sources[:5]:
         source.write_text(f'#include "{source.stem}.h"\n')
         (include / (source.stem + ".h")).write_text("#define VALUE 1\n")
-        outputs[source].write_bytes(b"pure fixture object")
+        outputs[source].write_bytes(coff())
         build._deps_sidecar(outputs[source]).write_text("{}")
     monkeypatch.setattr(build, "compiler_command", fixture_compiler_command)
     monkeypatch.setattr(build, "wine_path", str)

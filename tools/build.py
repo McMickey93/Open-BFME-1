@@ -2970,6 +2970,10 @@ def stale_sources(sources, source_outputs, workers=1):
     pairs = [(source, source_outputs[source]) for source in sources]
     if workers <= 1 or len(pairs) < 200:
         return _stale_chunk(pairs)
+    # A fresh snapshot has no objects to hash. Avoid a process pool (and its
+    # temporary runtime semaphores) when every source must be compiled anyway.
+    if not any(output.exists() for _, output in pairs):
+        return [source for i in range(workers) for source, _ in pairs[i::workers]]
     paths = _warm_stale_paths(pairs)
     with concurrent.futures.ProcessPoolExecutor(
             workers, mp_context=multiprocessing.get_context("spawn"),

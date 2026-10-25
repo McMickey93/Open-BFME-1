@@ -11,6 +11,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import build
+from test_weak_fallback_truth import coff
 
 _INIT = build._stale_paths_init
 
@@ -89,7 +90,7 @@ def fixture_tree(tmp_path, monkeypatch):
 
 def write_receipt(source, output):
     source.parent.mkdir(parents=True, exist_ok=True)
-    output.write_bytes(b'object fixture, never executed')
+    output.write_bytes(coff())
     command, env = build.compiler_command(source, output)
     roots = build.search_inventory(source, command, env)
     assert roots is not None
@@ -151,7 +152,7 @@ def test_preflight_false_never_discovers_tools(tmp_path, monkeypatch, kind):
     source = tmp_path / ('leaf.asm' if kind == 'legacy_asm_include' else 'leaf.cpp')
     source.write_text('include native.inc\n' if kind == 'legacy_asm_include' else 'int x;\n')
     output = source.with_suffix('.obj')
-    if kind != 'missing_object': output.touch()
+    if kind != 'missing_object': output.write_bytes(coff())
     meta = {'version': 2, 'source': 'hash', 'deps': {}}
     if kind == 'type': meta = []
     if kind == 'deps': meta['deps'] = {'bad\0path': 'hash'}
@@ -174,7 +175,7 @@ def test_preflight_false_never_discovers_tools(tmp_path, monkeypatch, kind):
 def test_parent_conversion_failure_is_not_hidden(fixture_tree, monkeypatch):
     root, _ = fixture_tree
     source = root / 'leaf.cpp'; source.write_text('int x;\n')
-    output = source.with_suffix('.obj'); output.touch()
+    output = source.with_suffix('.obj'); output.write_bytes(coff())
     build._deps_sidecar(output).write_text(json.dumps({'version': 2, 'source': 'hash', 'deps': {}}))
     monkeypatch.setattr(build.subprocess, 'check_output', lambda *a, **k: (_ for _ in ()).throw(subprocess.CalledProcessError(1, a[0])))
     with pytest.raises(subprocess.CalledProcessError): build._warm_stale_paths([(source, output)])
@@ -244,7 +245,7 @@ def test_overlay_optout_changed_after_warming_is_stale(fixture_tree):
 def test_legacy_headerfree_actual_command_still_rejects_hidden_include(fixture_tree, hidden):
     root, _ = fixture_tree
     source = root / 'game/legacy.cpp'; source.parent.mkdir(); source.write_text('int x;\n')
-    output = source.with_suffix('.obj'); output.touch()
+    output = source.with_suffix('.obj'); output.write_bytes(coff())
     command, env = build.compiler_command(source, output)
     sidecar = build._deps_sidecar(output)
     sidecar.write_text(json.dumps({'deps': {}, 'source': build._hash_file(str(source)),
