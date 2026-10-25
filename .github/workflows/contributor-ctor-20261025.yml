@@ -1,0 +1,189 @@
+name: Bounded native GameEngine constructor diagnostics
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-ctor-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-constructor-diagnostics
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 35
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:named-20261025
+    steps:
+      - name: Check out reviewed official source without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate ledger and current official reference
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 constructor-diagnostics
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+      - name: Fence the real upstream claim and run bounded private probes
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 constructor-diagnostics
+          python3 -u - <<'PY'
+          import csv, hashlib, json, os, re, shutil, subprocess, sys, time, traceback
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          out=root/"build"/"contributor-ctor-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          sys.path.insert(0,str(root/"tools"))
+          import claims
+          claim_rva=0x00078640
+          claim_token="6653202a3499b16f62326091f6226391f2be1824"
+          owner="github:McMickey93:bfme1:named-20261025"
+          lease="40c512e26ea6439fa2669a9ee2d12aca"
+          result={"status":"starting","repository":os.environ["GITHUB_REPOSITORY"],"run_id":os.environ["GITHUB_RUN_ID"],"workflow_sha":os.environ["GITHUB_SHA"],"commands":[],"claims":[],"variants":[],"qualification":False,"published":False,"donor":{"repository":"Open-BFME/Open-BFME-2","commit":"9647dd2737c4e67dd0e978ebdc158bf00c60ff07","path":"Code/GameEngine/Source/Common/GameEngineInit.cpp","reviewed_blob":"6234f6e6f3876eb23894005e60b898a013ebec5d","hypothesis":"Constant equal-arm loop condition and ordinary copied-value lifetime; no volatile self-copy without BFME1 retail witness"}}
+          def save():
+              (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          def run(label,args,required=True):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              raw=cp.stdout
+              (out/(label+".log")).write_bytes(raw)
+              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(raw).hexdigest()})
+              save()
+              print(">>>",label,"exit",cp.returncode,flush=True)
+              print(raw.decode("utf-8","replace"),flush=True)
+              if required and cp.returncode: raise RuntimeError(label+" failed")
+              return raw.decode("utf-8","replace")
+          def fence(label):
+              if not claims.fetch(): raise RuntimeError("Cannot fetch actual upstream claims")
+              entry=claims._read_local().get(claim_rva)
+              if entry is None: raise RuntimeError("Actual upstream claim missing")
+              token,info=entry
+              if token!=claim_token or info.get("owner")!=owner or info.get("lease",token)!=lease or info.get("expires",0)<=time.time() or not claims.holds(claim_rva,claim_token):
+                  raise RuntimeError("Claim changed/expired: stop before scratch edit or experiment")
+              result["claims"].append({"at":label,"token":token,"record":info,"checked_at":time.time()})
+              save()
+          def read_tracked(path,expected):
+              blob=subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
+              if blob!=expected: raise RuntimeError("Reviewed input blob changed: "+path)
+              raw=(root/path).read_bytes()
+              result.setdefault("inputs",[]).append({"path":path,"blob":blob,"sha256":hashlib.sha256(raw).hexdigest()})
+              return raw
+          try:
+              result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
+              result["origin_master"]=subprocess.check_output(["git","rev-parse","origin/master"],cwd=root).decode().strip()
+              read_tracked("AGENTS.md","06b755567bb147dfee3a89f70f7bbcd38410b5b4")
+              preferred=read_tracked("targets/game/reverse/attempts/0x00078640.cpp","26d876d725a4a7ff578c352091485f85b7ee72e3").decode("utf-8")
+              hist_path="targets/game/reverse/attempt_history/0x00078640/fd3e1d3856193063ebe2f730b4a18c8175362ebdd57831007240d61691f1d507.json"
+              history=json.loads((root/hist_path).read_text(encoding="utf-8"))
+              latest=history["source"]
+              if hashlib.sha256(latest.encode("utf-8")).hexdigest()!=history["sha256"]: raise RuntimeError("Latest preserved source digest changed")
+              read_tracked("game/GameEngine/Source/Common/BigObfHookWrappers.cpp","636558780b6efa50217650fab9bf31dea4cd7b02")
+              fence("before-context")
+              run("callee-contracts",[sys.executable,"tools/callees.py","0x00078640","502"])
+              run("owner-unclaimed-definitions",[sys.executable,"tools/find_declared_unmatched.py","game/GameEngine/Source/Common/GameEngine.cpp"],False)
+              run("gameengine-vtables",[sys.executable,"tools/vtable_lookup.py","--slots","40","0x01075BC8","0x0111C9A8"],False)
+              selected=[]
+              with (root/"targets/game/reverse/functions.csv").open(newline="",encoding="utf-8") as fh:
+                  for row in csv.DictReader(fh):
+                      try: rva=int(row["target_rva"],16)
+                      except (ValueError,KeyError): continue
+                      if rva==claim_rva or row.get("source") in ("game/GameEngine/Source/Common/GameEngine.cpp","game/GameEngine/Source/Common/BigObfHookWrappers.cpp"):
+                          selected.append(row)
+              (out/"selected-owner-rows.json").write_text(json.dumps(selected,indent=2)+"\n",encoding="utf-8")
+              entries=[]
+              with (root/"targets/game/reverse/re_attempts.log").open(encoding="utf-8",errors="replace") as fh:
+                  for line in fh:
+                      if re.search("0x00078640",line,re.I): entries.append(line)
+              (out/"prior-target-attempts.log").write_text("".join(entries),encoding="utf-8")
+              print("PRIOR TARGET HISTORY\n"+"".join(entries),flush=True)
+              import build, capstone
+              image=Path(build.EXE).read_bytes()
+              sec=build.pe_sections(image)
+              offset=build.rva_to_file_offset(sec,claim_rva)
+              retail=image[offset:offset+502]
+              md=capstone.Cs(capstone.CS_ARCH_X86,capstone.CS_MODE_32)
+              (out/"retail-502-disassembly.txt").write_text("\n".join(f"+{i.address-claim_rva:04X} {i.bytes.hex()} {i.mnemonic} {i.op_str}" for i in md.disasm(retail,claim_rva))+"\n",encoding="utf-8")
+              (out/"retail-502.hex.txt").write_text(retail.hex()+"\n",encoding="ascii")
+              controls=[("00-preferred",preferred,"Original preferred bank: not promoted"),("01-latest-495",latest,"Preserved 495-byte bank: measured again, not promoted")]
+              needle="for (EngineLoopValue00078640 value(0); value != bound; value += step)"
+              if latest.count(needle)!=1: raise RuntimeError("Latest source loop context changed")
+              equal=latest.replace(needle,"for (EngineLoopValue00078640 value(0); (1 ? (value != bound) : (value != bound)); value += step)")
+              class_anchor="public:\r\n __forceinline EngineLoopValue00078640(int kind,int value,int raw)"
+              if class_anchor not in latest: raise RuntimeError("Latest source class context changed")
+              copy=latest.replace(class_anchor,"public:\r\n __forceinline EngineLoopValue00078640(const EngineLoopValue00078640& other) { m_value=other.m_value; }\r\n __forceinline EngineLoopValue00078640(int kind,int value,int raw)")
+              copy=copy.replace(needle,"EngineLoopValue00078640 first(0);\r\n\tfor (EngineLoopValue00078640 value(first); value != bound; value += step)")
+              copy_equal=copy.replace("value(first); value != bound;","value(first); (1 ? (value != bound) : (value != bound));")
+              loopblock=needle+"\r\n\t{ m_childProcesses[(int)value]=0; }"
+              if latest.count(loopblock)!=1: raise RuntimeError("Latest source loop block changed")
+              scope=latest.replace(loopblock,"{\r\n\t\tEngineLoopValue00078640 value(0);\r\n\t\twhile ((1 ? (value != bound) : (value != bound)))\r\n\t\t{\r\n\t\t\tm_childProcesses[(int)value]=0;\r\n\t\t\tvalue += step;\r\n\t\t}\r\n\t}")
+              trials=controls+[("02-equal-arm",equal,"Only equivalent constant equal-arm condition; BFME2 9647dd pivot"),("03-copy-lifetime",copy,"Ordinary first-slot value copy with donor-like copy ctor; no volatile store"),("04-copy-equal-arm",copy_equal,"Combine ordinary copied-value lifetime and equal-arm condition"),("05-while-scope",scope,"Equivalent loop with value scoped before while; same three values and calls")]
+              symbol="??0GameEngine@@QAE@XZ"
+              for label,source,hypothesis in trials:
+                  fence("before-source-"+label)
+                  target=out/(label+".cpp")
+                  target.write_bytes(source.encode("utf-8"))
+                  result["variants"].append({"name":label,"path":target.relative_to(root).as_posix(),"hypothesis":hypothesis,"sha256":hashlib.sha256(target.read_bytes()).hexdigest()})
+                  save()
+                  fence("before-probe-"+label)
+                  text=run("probe-"+label,[sys.executable,"tools/probe.py",str(target),symbol,"0x00078640","--size","502","--all","--shape"],False)
+                  result["variants"][-1]["diagnostic_exact"]="result   EXACT (modulo relocation slots)" in text
+                  result["variants"][-1]["summary"]=[l for l in text.splitlines() if l.startswith(("compile ","size ","diffs ","result ","shape "))]
+                  save()
+                  if result["variants"][-1]["diagnostic_exact"]:
+                      result["status"]="diagnostic-exact-requires-owner-and-vtable-closure"
+                      print("DIAGNOSTIC EXACT ONLY: no admission, source edit, ledger edit or qualification",flush=True)
+                      break
+              fence("after-final-experiment")
+              run("tracked-source-integrity",["git","diff","--exit-code"])
+              result["status"]=result.get("status") if result.get("status")!="starting" else "trials-complete-no-admission"
+          except BaseException as err:
+              result["status"]="failed"
+              result["error"]=str(err)
+              (out/"failure.txt").write_text(traceback.format_exc(),encoding="utf-8")
+              raise
+          finally:
+              run("session-progress",[sys.executable,"tools/progress.py","origin/master"],False)
+              run("tracked-tree-final",["git","status","--porcelain"],False)
+              save()
+          
+          PY
+      - name: Preserve source variants, native objects and receipts
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-ctor-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source/build/contributor-ctor-20261025/
+            source/build/experiments/
+            source/build/experiments.sqlite
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 9
