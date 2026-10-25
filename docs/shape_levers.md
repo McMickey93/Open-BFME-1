@@ -2024,3 +2024,13 @@ and preserves the 171-byte constructor. Disabling frame-pointer omission or
 changing `/GS` or `/MD` did not fix the copy. This measures a size/speed
 context effect for this inline SEH body, not a general SEH rule. Witness:
 `game/GameEngine/Source/Common/Rva009F6ADBConstructor.cpp` (2026-10-25).
+
+The 93-byte terrain forwarders `BfmeConv1730.cpp` and `BfmeConv1731.cpp`
+need their visible three-word argument copy/destructor lifetime. Replacing
+that argument with a POD coordinate call emitted 83 bytes and lost a stack
+save plus receiver reload. A union of the native and caller-shaped member
+pointers preserves all eleven argument words and restores both 93-byte bodies
+while referencing the rowed tree/shrub providers. Both receiver class views
+must be complete: an incomplete view made VC7.1 emit general member-pointer
+adjustment branches instead of a direct call. Measured with default `/O2`,
+MSVC 13.10.3077; the two provider/consumer pairs pass the normal byte gates.
