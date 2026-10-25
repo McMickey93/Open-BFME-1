@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Measure natural member forms after removing unused caller declarations
+      - name: Measure canonical declaration and native member argument contexts
         working-directory: source
         shell: bash
         run: |
@@ -122,19 +122,56 @@ jobs:
               call='((const Rva00925D10NormalArray *)pm)->apply(srcN[0], dstN, n)'
               assert base.count(call)==1
               clean[name+'-clean-reference']=base.replace(call,'((const Rva00925D10NormalArray &)m).apply(srcN[0], dstN, n)')
+          best=clean['normal-member-row-bare-clean-pointer']
+          assert hashlib.sha256(best.encode()).hexdigest()=='edd162a38d8c930ab63b95802f646c1aea61817b23e689f1dc9660e7eaf76200'
+          variants={'clean-member-control':(best,'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z')}
+          # Test current bank inputs against the already proven canonical declaration.
+          subprocess.run([sys.executable,'tools/find_declared_unmatched.py','game/Libraries/Source/WWVegas/WW3D2/meshgeometry.cpp'],check=False)
+          cls=re.search(r'class BfmeDst1016\n\{.*?\n\};',best,re.S)
+          assert cls
+          storage=cls.group(0).replace('class BfmeDst1016','struct Rva00925D10Storage').replace('\tvoid bfmeSet1016(int a, int b, int r);\n','')
+          canonical=best[:cls.start()]+storage+best[cls.end():]
+          canonical=canonical.replace('#include "sharebuf.h"','#include "sharebuf.h"\n#include "meshgeometry.h"')
+          canonical=canonical.replace('// cl: /DNDEBUG','// cl: /Igame/Libraries/Source/WWVegas/WW3D2 /Igame/Libraries/Source/WWVegas/WWSaveLoad /DNDEBUG')
+          native_anchor='void MeshGeometryClass::get_deformed_vertices(Vector3 *a, Vector3 *b, const HTreeClass *r)'
+          canonical=canonical.replace(anchor,native_anchor)
+          pos=canonical.index(native_anchor);pre,body=canonical[:pos],canonical[pos:]
+          for local_view in [False,True]:
+              changed=re.sub(r'\bm_(count|vert|norm|links|runs)\b',lambda m: ('layout->' if local_view else '((Rva00925D10Storage *)this)->')+m.group(0),body)
+              if local_view: changed=changed.replace('{\n','{\n    Rva00925D10Storage *layout=(Rva00925D10Storage *)this;\n',1)
+              candidate=pre+changed
+              candidate=candidate.replace('// ?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z','// ?get_deformed_vertices@MeshGeometryClass@@IAEXPAVVector3@@0PBVHTreeClass@@@Z',1)
+              variants['canonical-'+('local-view' if local_view else 'direct-view')]=(candidate,'?get_deformed_vertices@MeshGeometryClass@@IAEXPAVVector3@@0PBVHTreeClass@@@Z')
+          # Member parameter order changes leave all computations and argument values intact.
+          import itertools
+          signature='__forceinline void apply(const Vector3 *in, Vector3 *out, int count) const'
+          assert best.count(signature)==1
+          call='apply(srcN[0], dstN, n)'
+          declarations=['const Vector3 *in','Vector3 *out','int count']
+          arguments=['srcN[0]','dstN','n']
+          for method_const in [True,False]:
+              for i,order in enumerate(itertools.permutations(range(3))):
+                  if method_const and i==0: continue
+                  replacement='__forceinline void apply('+', '.join(declarations[j] for j in order)+')'+(' const' if method_const else '')
+                  candidate=best.replace(signature,replacement).replace(call,'apply('+', '.join(arguments[j] for j in order)+')')
+                  if not method_const: candidate=candidate.replace('((const Rva00925D10NormalArray *)pm)','((Rva00925D10NormalArray *)pm)')
+                  variants['member-order-%s-%d'%('const' if method_const else 'mutable',i)]=(candidate,'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z')
+          variants['member-unsigned-count']=(best.replace(signature,signature.replace('int count','unsigned count')),'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z')
           results=[]
-          for name,candidate in clean.items():
+          for name,(candidate,symbol) in variants.items():
               assert claims.holds(0x00925D10,token)
               path=out/(name+'.cpp');path.write_text(candidate,encoding='utf-8')
               print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
-              p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z','0x00925D10','--shape'],capture_output=True,text=True)
+              p=subprocess.run([sys.executable,'tools/probe.py',str(path),symbol,'0x00925D10','--shape'],capture_output=True,text=True)
               log=p.stdout+'\n'+p.stderr;(out/(name+'.log')).write_text(log,encoding='utf-8')
               print(log,flush=True)
-              item={'name':name,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest(),'exit':p.returncode,'exact':'result   EXACT' in log}
-              results.append(item);assert p.returncode==0
+              item={'name':name,'symbol':symbol,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest(),'exit':p.returncode,'exact':'result   EXACT' in log}
+              results.append(item)
+              if p.returncode:
+                  print('TRIAL_UNAVAILABLE '+name,flush=True);continue
               if item['exact']:
                   print('EXACT_CANDIDATE '+name,flush=True);print(candidate,flush=True);break
-          (out/'clean-native-member-trials.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
+          (out/'canonical-and-member-argument-trials.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
           
           PY
       - name: Measure unchanged baseline
@@ -150,7 +187,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-skin-clean-members
+          name: bfme1-hard-finish-skin-canonical-member
           path: |
             source/build/contributor_hard_finish_skin_20261025/
             source/build/experiments/
