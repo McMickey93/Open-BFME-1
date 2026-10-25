@@ -1,5 +1,8 @@
 // cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /Igame/GameEngine/Source/Common/System /game/GameEngine/Include /game/GameEngine/Include/Precompiled /game/Libraries/Source/WWVegas/WWLib
 // readable body of ?updateFadeLevel@ScreenCrossFadeFilter@@IAE_NXZ: game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShaderManager.cpp
+// Former ??m_fadeDirection@ScreenCrossFadeFilter@@1HA@@3HA: retail 0x01307204 is ?m_fadeDirection@ScreenCrossFadeFilter@@1HA
+// Former ??m_fadeFrames@ScreenCrossFadeFilter@@1HA@@3HA: retail 0x01307208 is ?m_fadeFrames@ScreenCrossFadeFilter@@1HA
+// Former ??m_curFadeFrame@ScreenCrossFadeFilter@@1HA@@3HA: retail 0x0130720C is ?m_curFadeFrame@ScreenCrossFadeFilter@@1HA
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include/W3DDevice/GameClient/W3DShaderManager.h
 class ScreenCrossFadeFilter
