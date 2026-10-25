@@ -1,0 +1,93 @@
+name: Contributor BFME1 hard finish selection
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-hard-finish-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-hard-finish
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:hard-finish-20261025
+      BFME_MODEL: gpt-6
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          fetch-depth: 128
+          persist-credentials: false
+          submodules: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate ledger and current project instructions
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-hard-finish
+          python3 -m pip install -r tools/requirements.txt
+          git fetch --depth 128 --no-tags origin refs/heads/master:refs/remotes/origin/master
+          git switch --detach origin/master
+          python3 tools/check_csv.py
+          git hash-object AGENTS.md
+      - name: Select the unbounded finish tier without source edits
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-hard-finish
+          python3 - <<'PY'
+          import json, os, subprocess, sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          import claims
+          cmd=[sys.executable,'tools/next_work.py','--tier','finish','--max-attempts','0','--cooldown-days','0','--json']
+          p=subprocess.run(cmd,check=True,capture_output=True,text=True)
+          data=json.loads(p.stdout)
+          print('HARD_FINISH_SELECTION '+json.dumps(data),flush=True)
+          selection=data.get('selection')
+          if selection:
+              rva=selection.get('target_rva') or selection.get('candidate_rva') or selection.get('rva')
+              assert rva
+              subprocess.run([sys.executable,'tools/brief.py','--rvas',rva],check=True)
+              assert claims.fetch()
+              current=claims.live(claims._read_local())
+              assert int(rva,16) not in current, 'Selected target became busy'
+              marker=claims._record(os.environ['BFME_CLAIM_OWNER'],4,note='Pending explicit connector claim for hard-finish source matching')
+              record=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
+              base=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+              print('CLAIM_TRANSPORT '+json.dumps({'rva':rva,'record':record,'base':base,'tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
+          else:
+              p=subprocess.run([sys.executable,'tools/next_work.py','--tier','finish','--max-attempts','0','--cooldown-days','0','--ranked','--json'],check=True,capture_output=True,text=True)
+              print(p.stdout,flush=True)
+          
+          PY
+      - name: Measure unchanged baseline
+        if: always()
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-hard-finish
+          python3 tools/progress.py origin/master
