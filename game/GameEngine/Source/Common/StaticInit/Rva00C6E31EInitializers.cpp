@@ -3,20 +3,22 @@
 #include <string.h>
 
 extern "C" int __cdecl atexit(void (__cdecl *callback)());
-void Rva00C715CARelease();
+void rva00C715CAForward();
 void Rva00C715DERelease();
 
 // Four DWORD slots at 0134FB38; cleanup 00C715CA tail-calls 009F6855,
 // which walks the four slots and deletes each non-null Win32 DC.
-struct Rva0134FB38Storage { unsigned long slots[4]; };
-extern Rva0134FB38Storage g_rva0134FB38;
+// Use the same object as Win32DcCache.cpp and Rva00C715CAForwarder.cpp.
+// Retired binding: ?g_rva0134FB38@@3URva0134FB38Storage@@A.
+class DcPool;
+extern DcPool TheDcPool;
 
 // CRT initializer table slot RVA 00EA5518 proves this entry independently
 // of the preceding and following ATL initializers.
 void Rva00C6E31EInitialize()
 {
-    memset(&g_rva0134FB38, 0, sizeof(g_rva0134FB38));
-    atexit(Rva00C715CARelease);
+    memset(&TheDcPool, 0, 4 * sizeof(unsigned long));
+    atexit(rva00C715CAForward);
 }
 
 // The retail constructor at 009F6ADB takes ECX, no stack arguments,
