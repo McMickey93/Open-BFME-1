@@ -361,9 +361,7 @@ dir32,0x0111117C,?g_vtbl_0111117C@@3PAPAXA,"nothing in the ledger owns 0x0111117
 dir32,0x011111E8,?g_vtbl_011111E8@@3PAPAXA,"nothing in the ledger owns 0x011111E8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011111FC,?g_vtbl_011111FC@@3PAPAXA,"nothing in the ledger owns 0x011111FC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01111200,?g_vtbl_01111200@@3PAPAXA,"nothing in the ledger owns 0x01111200. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01111240,?g_vtbl_01111240@@3PAPAXA,retail 0x01111240 is already recorded as ??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISS
 dir32,0x01111254,?g_vtbl_01111254@@3PAPAXA,retail 0x01111254 is already recorded as ??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISS
-dir32,0x01111258,?g_vtbl_01111258@@3PAPAXA,retail 0x01111258 is already recorded as ??_7?$ConcreteModuleTemplate@V?$ModuleTag@$04$E?LIGHTNING_EMISSION_MODULE_KEY@FXParticleSystem@@3QBDB$E?LIGHTNING_EMISS
 dir32,0x0111126C,??_7BfmeHolderCU@@6B@,"retail 0x0111126C is already recorded as ??_7Rva005DD320MultiTailDtor@@6B@ (+13 more); reference that name, not a new one"
 dir32,0x01111348,??_7T1Derived_005DEC00@@6BBfmeHolderCU@@@,"retail 0x01111348 is already recorded as ??_7Rva005ED8B0@@6BV3NodeHead@@@ (+1 more); reference that name, not a new one"
 dir32,0x01111360,??_7T1Derived_005DEC40@@6BBfmeHolderCU@@@,"retail 0x01111360 is already recorded as ??_7Rva005ED310@@6BV3NodeHead@@@ (+1 more); reference that name, not a new one"
@@ -415,7 +413,6 @@ dir32,0x01112218,?g_vtbl_01112218@@3PAPAXA,"retail 0x01112218 is already recorde
 dir32,0x01112234,?g_vtbl_01112234@@3PAPAXA,"retail 0x01112234 is already recorded as ??_7Rva005ED4E0@@6BV3Slot2@@@ (+1 more); reference that name, not a new one"
 dir32,0x0111224C,?g_vtbl_0111224C@@3PAPAXA,"retail 0x0111224C is already recorded as ??_7Rva005ED4E0@@6BV3Slot0@@@ (+1 more); reference that name, not a new one"
 dir32,0x01112264,?g_vtbl_01112264@@3PAPAXA,"retail 0x01112264 is already recorded as ??_7T1Derived_005E6850@@6BT1P2_005E3B90@@@ (+1 more); reference that name, not a new one"
-dir32,0x0111227C,?g_vtbl_0111227C@@3PAPAXA,"retail 0x0111227C is already recorded as ??_7GenX005ED510@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01112294,?g_vtbl_01112294@@3PAPAXA,"retail 0x01112294 is already recorded as ??_7T1Derived_005E6940@@6BT1P2_005E3C90@@@ (+1 more); reference that name, not a new one"
 dir32,0x011122A8,?g_vtbl_011122A8@@3PAPAXA,"retail 0x011122A8 is already recorded as ??_7MidX005ED630@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x011122AC,?g_vtbl_011122AC@@3PAPAXA,"retail 0x011122AC is already recorded as ??_7GenX005ED630@@6B@ (+1 more); reference that name, not a new one"
@@ -489,8 +486,6 @@ dir32,0x011142CC,?g_011142CC@FXParticleSystem@@3QBDB,"nothing in the ledger owns
 dir32,0x011142D4,?g_011142D4@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x011142D4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011142E4,?g_011142E4@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x011142E4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011142EC,?g_011142EC@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x011142EC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01114410,?g_01114410@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x01114410. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01114424,?g_01114424@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x01114424. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01114434,?g_01114434@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x01114434. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01114440,?g_01114440@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x01114440. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011144EC,?g_011144EC@FXParticleSystem@@3QBDB,"nothing in the ledger owns 0x011144EC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -523,7 +518,6 @@ dir32,0x01129810,??_7Rva007E92F0Object@@6BRva007E92F0BaseA@@@,"retail 0x01129810
 dir32,0x01129AF4,??_7Rva007EA6C0VtableReseat@@6B@,"retail 0x01129AF4 is already recorded as ??_7Rva007EA6D0Deleting@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01129D30,??_7Rva007EB850Log@@6B@,"retail 0x01129D30 is already recorded as ?g_bfmeVftTDA@@3PAPAXA (+3 more); reference that name, not a new one"
 dir32,0x0112A590,??_7Rva007EFF30VfptrCtor@@6B@,the name encodes 0x007EFF30 but retail reads 0x0112A590
-dir32,0x0112A5C4,??_7Rva007F0080Owner@@6B@,the name encodes 0x007F0080 but retail reads 0x0112A5C4
 dir32,0x0112A5F8,??_7Rva007F03B0ReseatTailDtor@@6B@,"retail 0x0112A5F8 is already recorded as ??_7Gen007F1BF0@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112AB34,??_7Rva007F1C80ReseatTailDtor@@6B@,"retail 0x0112AB34 is already recorded as ??_7Gen007F2120@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112AC70,??_7Rva007F2200ReseatTailDtor@@6B@,"retail 0x0112AC70 is already recorded as ??_7Gen007F2E30@@6B@ (+1 more); reference that name, not a new one"
@@ -919,5 +913,4 @@ dir32,0x0134FB18,?g_bfmeRva0134FB18Static@@3VRva009F67EDCriticalSection@@A,"reta
 dir32,0x0134FBA0,__dowildcard,"nothing in the ledger owns 0x0134FBA0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0134FBA4,__newmode,"nothing in the ledger owns 0x0134FBA4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0134FBA8,__commode,"nothing in the ledger owns 0x0134FBA8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x0134FBAC,__fmode,"nothing in the ledger owns 0x0134FBAC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x013571F8,__adjust_fdiv,"nothing in the ledger owns 0x013571F8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
