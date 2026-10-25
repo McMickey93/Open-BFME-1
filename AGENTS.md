@@ -264,6 +264,32 @@ Initialize cross-repository references without recursion. Do not initialize a
 nested reference back to BFME 1 or BFME 2. Initialize other required build
 dependencies explicitly.
 
+For a routine update:
+
+1. Record the previous verified pointer and checkout revision; update only a
+   clean checkout to official upstream HEAD. Retain enough history to compare
+   old and new donor inputs at the same BFME 1 revision.
+2. Check changed donor paths, source flags and mapped include directories using
+   the layout rules above. Inspect include traces where headers changed;
+   compilation alone does not prove the intended headers were used. BFME 2 is
+   a donor reference, not BFME 1's build dependency: verify affected donor compile
+   trials and BFME 1 units, and run the full byte gate when shared build inputs
+   change or the normal hooks require it. Compare failures against the previous
+   inputs under the same conditions, repair update regressions and report
+   pre-existing failures separately. Never weaken verification or silently
+   substitute headers.
+3. Refresh donor sweeps and compile trials affected by changed sources, headers,
+   ledgers or settings. Record the donor revision with cached results; discard
+   or regenerate results whose inputs no longer agree. Do not repeat an
+   unchanged broad scan for each transfer.
+4. Include the verified submodule pointer and required repairs in the next
+   commit batch: advancing a local checkout does not update other contributors.
+
+Record the successful check time and verified donor revision in ignored
+`build/bfme2-last-check.txt` only after verification, or when upstream is already
+at the verified pointer. Do not fetch per transfer. If an update is blocked,
+keep the last verified inputs and report the exact blocker and attempted repair;
+do not mark it successful or suspend future freshness checks indefinitely.
 
 **Claim a body first:** `python3 tools/claims.py claim 0xRVA` (if held, take
 another; claims expire after 4 h). After pushing, `claims.py release --landed`
@@ -289,13 +315,16 @@ refused. First run `python3 tools/find_declared_unmatched.py
 
 **Stay with one substantive target.** Before experimenting, read its banked
 source, relevant attempt log entries, handoffs and prior compiler evidence.
-Finish or revert each body before the next. After about 30 minutes without
+Finish or revert each body or homogeneous trivial batch before the next.
+After about 60 minutes without
 meaningful progress, reassess; this is a review point, not an automatic stopping
 time. Continue while testing a new evidence-backed hypothesis; identity,
 layout, dependency and compiler discoveries count as progress. Bank and switch
 when viable hypotheses are exhausted or a concrete prerequisite blocks further
-work. Do not repeat disproven trials or leave a non-matching reconstruction in
-`game/`.
+work. Before declaring a function blocked, reassess independent explanations:
+control flow, variable lifetime, types/layout, callee visibility and compiler
+settings. Exhausting one family of source variations is insufficient. Do not
+repeat disproven trials or leave a non-matching reconstruction in `game/`.
 
 A persistent mismatch may reflect a compiler quirk or unexpected instruction
 ordering. Compare the specific assembly difference, consult
@@ -304,17 +333,53 @@ justified equivalent C++ variants with isolated output paths. Preserve the
 flags, minimal source transformation, generated-code effect, useful failed
 trials and evidence for the next agent; distinguish observations from hypotheses.
 
+**Isolate compiler experiments.** Keep diagnostic sources and objects in unique,
+untracked `build/` paths. Any direct compiler helper call must use an explicit
+private output path, never the shared `build/match/` object or dependency receipt.
+Use the normal build command for verification; a diagnostic object must not be
+reused as a verified cached build.
+
+**Preserve successful compiler discoveries too.** When a recovery establishes a
+reusable compiler-matching technique, add or refine a concise entry in
+`docs/shape_levers.md`: the original assembly mismatch, minimal successful source
+transformation, observed code-generation effect, compiler version/flags and
+relevant translation-unit context. Cite the verified source or tracked evidence
+and supporting commit when available. Distinguish the measured effect from its
+hypothesized cause; do not claim broader applicability without testing it.
+
+**Reconcile classes, not just bodies.** Private per-unit views of one class can
+produce incompatible COMDATs and unresolved members even when individual bodies
+byte-match. Prefer an existing evidenced canonical header over another private
+view. For a shared repair, use `tools/class_contract.py` to establish BFME 1's
+ABI from evidence and `python3 tools/header_adopt_lane.py order` to plan header
+adoption. Reconcile the affected providers and consumers, verify each unit, and
+check linking separately; compiling one caller does not prove the shared repair.
+A BFME 2 header is a lead, not proof of BFME 1 layout.
+
 ## Work the file
 
 Work the other queued bodies `next_work.py` lists in the same file together:
 siblings share layout, offsets and callee pins. A shared header
 edit costs a full gate: edit every dependent body and pay once.
 
+## Batch homogeneous trivial recoveries
+
+Atomic does not mean one function per commit. When bodies use one established
+recovery pattern and form one coherent, reviewable change (tiny getters/setters,
+thunks, wrappers, or reference transfers differing only by verified RVA or
+offset), recover, ledger, verify and commit them as one batch, roughly 5-20
+entries (a guideline, not a quota or hard limit). Similar instruction shapes do
+not establish identity, types, calling convention or layout: verify each member
+against its own evidence. Keep substantive reconstruction, or work needing
+distinct identity, compiler, ABI/layout or reconstruction reasoning, in separate
+commits. Verify the whole batch before committing. If a member fails, determine
+whether that undermines the shared pattern; continue with the remaining members
+only if their evidence and verification still hold, otherwise reassess the batch.
+
 ## Convert, verify, commit, push
 
-1. Make the smallest source and ledger change for one function. Sub-100-byte
-   recoveries following one established pattern may share a commit; verify
-   each function and its identity separately.
+1. Make the smallest source and ledger change for one function or homogeneous
+   trivial batch, following the rule above.
 2. `./build.sh <file-or-symbol>`. Poll any returned process or session ID;
    never launch a duplicate build.
 3. Stage explicit paths only (never `git add .`); check every new ledger source
@@ -333,6 +398,14 @@ edit costs a full gate: edit every dependent body and pay once.
 Never bare `git stash pop` (worktrees share one stash); park work in a patch
 or temp branch.
 
+**Integrate pull requests through local verification.** Never use GitHub's merge
+button to land a PR: it bypasses the local byte gates. Fetch the PR branch,
+cherry-pick the applicable commits onto current `master` (preserving authorship),
+resolve conflicts, verify affected sources with the normal build and hooks, then
+publish through the procedure above. Report the landed SHAs on the PR when
+posting that follow-up is authorized. A prior PR check does not replace local
+verification after integration.
+
 ## Verdicts and near misses
 
 Use MASM or inline asm only for a proven codegen blocker (compiler machinery,
@@ -348,10 +421,18 @@ a `partial` or long `blocked`, and `blocked-on=0x<rva>` for unlanded blockers.
 
 Bank a near miss for the next agent:
 `partial '<what is wrong>' --stash <your .cpp> --score <0..1>`; with no body,
-record `blocked`. After long attempts, commit a handoff (ruled-out hypotheses,
-remaining mismatch) under `targets/game/reverse/attempt_support/` and cite it.
-For 0.9+, run `tools/probe.py` and read
+record `blocked`. For 0.9+, run `tools/probe.py` and read
 `docs/shape_levers.md` first.
+
+**Preserve substantial failed work.** Before retrying any function, read its
+attempt-log entries and linked evidence, regardless of how you selected it.
+For substantive attempts ending `blocked` or `partial`, commit a concise handoff
+under `targets/game/reverse/attempt_support/` and cite its tracked path in the
+`re_log.py` evidence. Include hypotheses tested and ruled out, the exact remaining
+mismatch or prerequisite, the best candidate and useful diagnostic diffs, and
+relevant input revisions/compiler settings. Preserve better existing banks;
+retain only artifacts needed to resume (diagnostic source as patches or
+`.cpp.txt`). A simple blocker needs only a concise log entry.
 
 ## File placement
 
@@ -370,6 +451,14 @@ For 0.9+, run `tools/probe.py` and read
   `rg` or narrow filters.
 - Preserve others' work; revert only your own attempt. No fallback paths:
   they hide mismatches.
+
+## Preserve donor provenance
+
+In evidence records, distinguish facts established from BFME 1 target evidence,
+facts carried from donor source, and structural inferences. Record the basis for
+identity and layout claims separately when their evidence differs. Exact bytes
+alone do not establish a donor name or layout as a BFME 1 fact: preserve the
+uncertainty until independent target evidence resolves it.
 
 ## Names and identity
 

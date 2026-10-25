@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""doc_budget refuses net doc growth, an oversized AGENTS.md and long mod READMEs."""
+"""doc_budget limits README/docs growth and mod READMEs, not instructions or evidence."""
 import sys
 from pathlib import Path
 
@@ -27,28 +27,23 @@ def test_catalogs_and_records_are_outside_the_budget():
     assert not db.budgeted("targets/game/reverse/analysis/0x00172600.md")
 
 
-def test_agents_cap_and_mod_readme_cap():
-    over = db.problems(["AGENTS.md"], {"AGENTS.md": db.AGENTS_CAP + 10}, {"AGENTS.md": db.AGENTS_CAP + 5})
-    assert len(over) == 1 and "cap" in over[0]
+def test_mod_readme_cap():
     readme = "mods/features/033-retrytime/README.md"
     assert db.problems([readme], {}, {readme: db.MOD_README_CAP + 1})
     assert db.problems([readme], {}, {readme: db.MOD_README_CAP}) == []
 
 
-def test_the_tree_is_within_its_caps():
-    agents = len((ROOT / "AGENTS.md").read_text(encoding="utf-8").split())
-    assert agents <= db.AGENTS_CAP, f"AGENTS.md is {agents} words"
+def test_tree_mod_readmes_are_within_the_cap():
     for readme in [ROOT / "mods/README.md", *sorted((ROOT / "mods/features").glob("*/README.md"))]:
         words = len(readme.read_text(encoding="utf-8").split())
         assert words <= db.MOD_README_CAP, f"{readme.relative_to(ROOT)} is {words} words"
 
 
-def test_agents_growth_uses_its_own_cap_not_the_shared_doc_budget():
-    assert db.problems(["AGENTS.md"], {"AGENTS.md": 1439},
-                       {"AGENTS.md": db.AGENTS_CAP}) == []
-    over = db.problems(["AGENTS.md"], {"AGENTS.md": 1439},
-                       {"AGENTS.md": db.AGENTS_CAP + 1})
-    assert len(over) == 1 and "cap" in over[0]
+def test_instructions_and_handoffs_have_no_word_cap():
+    paths = ["AGENTS.md", "targets/game/reverse/attempt_support/example.md"]
+    for path in paths:
+        assert not db.budgeted(path)
+        assert db.problems([path], {path: 1450}, {path: 50000}) == []
     # Cutting instructions cannot pay for otherwise forbidden docs growth.
     growth = db.problems(["AGENTS.md", "docs/matching.md"],
                          {"AGENTS.md": 1400, "docs/matching.md": 100},

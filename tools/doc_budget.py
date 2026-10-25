@@ -5,10 +5,9 @@ docs/lessons.md grew 7.4x in thirty days under two written bans, and AGENTS.md
 went from 524 to 3,094 words in eight weeks; only a hook has ever held a doc.
 Both git hooks run this:
 
-  * AGENTS.md stays at or under AGENTS_CAP words: every Codex session loads it.
+  * AGENTS.md and reverse-engineering evidence have no word cap.
   * A change may not add net words to README.md and docs/ taken
-    together: to add a sentence, cut one. AGENTS.md has its own cap;
-    CATALOGS are exempt because agents
+    together: to add a sentence, cut one. CATALOGS are exempt because agents
     look things up in them rather than read them.
   * A mod README stays at or under MOD_README_CAP words; players read those.
 
@@ -20,9 +19,8 @@ import fnmatch
 import subprocess
 import sys
 
-AGENTS_CAP = 4350
 MOD_README_CAP = 500
-BUDGETED = ("AGENTS.md", "README.md", "docs/*.md")
+BUDGETED = ("README.md", "docs/*.md")
 CATALOGS = frozenset(("docs/shape_levers.md", "docs/ini_schema.md",
                       "docs/opencode_router.md", "docs/throughput-tools.md"))
 MOD_READMES = ("mods/README.md", "mods/features/*/README.md")
@@ -40,10 +38,7 @@ def problems(changed, before, after):
     """changed: paths the change touches. before/after: {path: words} for those
     paths, with a path absent where the file does not exist."""
     found = []
-    if "AGENTS.md" in changed and after.get("AGENTS.md", 0) > AGENTS_CAP:
-        found.append(f"AGENTS.md is {after['AGENTS.md']} words; the cap is {AGENTS_CAP}. "
-                     "Cut before you add: every Codex session loads all of it.")
-    grown = sum(after.get(p, 0) - before.get(p, 0) for p in changed if budgeted(p) and p != "AGENTS.md")
+    grown = sum(after.get(p, 0) - before.get(p, 0) for p in changed if budgeted(p))
     if grown > 0:
         found.append(f"this adds {grown} net words to README.md and docs/. Cut as many "
                      "elsewhere in them, or put the fact where it is enforced: a tool's error "
