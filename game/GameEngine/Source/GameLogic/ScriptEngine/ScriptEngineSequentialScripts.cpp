@@ -1,17 +1,10 @@
-// ?evaluateAndProgressAllSequentialScripts@ScriptEngine@@IAEXXZ
-// partial score=0.86 date=2026-09-28
-// cl: /DNDEBUG /MD /O2 /EHsc /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS
+// cl: /Igame/Libraries/Source/WWVegas/WWLib /DNDEBUG /MD /O2 /EHsc /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS
 // stlport
-// ScriptEngine::evaluateAndProgressAllSequentialScripts, retail 0x00346D60 (1950 B).
-// Banked 2026-09-28 (opus-5.5): probe shape 0.862, 1856/1950 B, 1227 differing bytes
-// (previous stash re-probed today: shape 0.777, 1906 B, 1616 differing).
-// Levers that moved it: cleanupSequentialScript takes the iterator BY REFERENCE (retail
-// keeps `it` in memory at [esp+0x14] and reloads it at the loop top); the update-count
-// guard (--/++ at +0x18) wraps each cleanup call in the caller with `lastIt = end()` before
-// the ++; nested spin test; extern globals; Bfme5CtorA0 as the record type.
-// Open: this/seqScript registers swapped (retail ebp/edi); the 0x107/0x108 tails do not
-// cross-jump (ours loads TheScriptConditions before `push 1`); fw readiness block shape.
-// Link needs a pin for vector<Bfme5CtorA0*>::erase at 0x00339D10 (ILT 0x0003F99F).
+// Native ScriptEngine sequential progression at RVA 0x00346D60 (1950 B).
+// Evidence: targets/game/reverse/identity_evidence/00346d60-sequential-scripts.md.
+// Bfme5CtorA0 is the existing partial record view used by appendSequentialScript;
+// its original EA type name is not established. The erase view names only its
+// independently decoded address and ABI, not an original template identity.
 
 #include <vector>
 
@@ -20,54 +13,13 @@ typedef int Int;
 
 extern const char Rva006A16B0Empty[]; // retail 0x0107388B
 
-template <typename T> class StringBase
+#include "ascii_string.h"
+template<> inline void StringBase<char>::concat(const StringBase<char> &str)
 {
-	friend class AsciiString;
-
-public:
-	void concat(const T *text, int length);
-	void set(const StringBase<T> &that);
-
-private:
-	struct Header
-	{
-		int ref_count;
-		unsigned short length;
-		unsigned short capacity;
-		T data[1];
-	};
-
-	StringBase() : m_data(0) {}
-	StringBase(const T *text);
-	~StringBase() { releaseBuffer(); }
-	void releaseBuffer();
-
-	Header *m_data;
-};
-
-class AsciiString : public StringBase<char>
-{
-public:
-	AsciiString() {}
-	AsciiString(const char *text) : StringBase<char>(text) {}
-	~AsciiString() {}
-
-	AsciiString &operator=(const AsciiString &that)
-	{
-		StringBase<char>::set(that);
-		return *this;
-	}
-
-	void concat(const AsciiString &that)
-	{
-		int length = that.m_data ? that.m_data->length : 0;
-		const char *text = that.m_data ? that.m_data->data : Rva006A16B0Empty;
-		StringBase<char>::concat(text, length);
-	}
-
-	void concat(const char *text, int length) { StringBase<char>::concat(text, length); }
-	void clear() { releaseBuffer(); }
-};
+ int length = str.m_data ? str.m_data->length : 0;
+ const char *text = str.m_data ? str.m_data->data : "";
+ concat(text, length);
+}
 
 extern AsciiString Rva01336E50EmptyString; // retail 0x01336E50
 
@@ -348,6 +300,7 @@ extern GameLogic *TheGameLogic;
 extern AI *TheAI;
 extern ScriptConditionsInterface *TheScriptConditions;
 
+class Rva00339D10Vector { public: Bfme5CtorA0 **rva00339D10(Bfme5CtorA0 **); };
 class ScriptEngine
 {
 public:
@@ -360,7 +313,7 @@ protected:
 
 	void executeActions(ScriptAction *action);
 	void evaluateAndProgressAllSequentialScripts(void);
-	void cleanupSequentialScript(VecSequentialScriptPtrIt &it, Bool cleanDanglers)
+	__forceinline void cleanupSequentialScript(VecSequentialScriptPtrIt &it, Bool cleanDanglers)
 	{
 		Bfme5CtorA0 *seqScript = *it;
 		if (!seqScript)
@@ -376,7 +329,7 @@ protected:
 				delete scriptToDelete;
 			}
 			*it = 0;
-			it = m_sequentialScripts.erase(it);
+			it = reinterpret_cast<Rva00339D10Vector *>(&m_sequentialScripts)->rva00339D10(it);
 		}
 		else
 		{
@@ -400,7 +353,6 @@ protected:
 	Player *m_currentPlayer;
 };
 
-// ?evaluateAndProgressAllSequentialScripts@ScriptEngine@@IAEXXZ
 void ScriptEngine::evaluateAndProgressAllSequentialScripts(void)
 {
 	VecSequentialScriptPtrIt it, lastIt;
@@ -459,7 +411,11 @@ void ScriptEngine::evaluateAndProgressAllSequentialScripts(void)
 		if (ai || aigroup)
 		{
 			Bool ready = true;
-			if (seqScript->m_framesToWait < 1 && seqScript->m_framesToWait != 0)
+			if (seqScript->m_framesToWait > 0)
+			{
+				ready = false;
+			}
+			else if (seqScript->m_framesToWait < 0)
 			{
 				if (ai && (!ai->isIdle() || ai->isBusy338()))
 					ready = false;
@@ -467,7 +423,7 @@ void ScriptEngine::evaluateAndProgressAllSequentialScripts(void)
 					ready = false;
 			}
 
-			if ((ready && seqScript->m_framesToWait < 1) || seqScript->m_framesToWait == 0)
+			if (ready)
 			{
 				Bool displayMessage = true;
 				if (seqScript->m_dontAdvanceInstruction)
@@ -482,14 +438,14 @@ void ScriptEngine::evaluateAndProgressAllSequentialScripts(void)
 
 				AsciiString msg = "Advancing SeqScript '";
 				msg.concat(seqScript->m_nameB);
-				msg.concat("' on ", 5);
+				static_cast<StringBase<char> *>(&msg)->concat("' on ", 5);
 				AsciiString name;
 				if (team)
 					name = team->getName();
 				if (obj)
 					name = obj->getName();
 				msg.concat(name);
-				msg.concat(" -- ", 4);
+				static_cast<StringBase<char> *>(&msg)->concat(" -- ", 4);
 
 				Int instruction = seqScript->m_currentInstruction;
 				ScriptAction *action = seqScript->m_scriptToExecuteSequentially->getAction();
@@ -582,12 +538,13 @@ void ScriptEngine::evaluateAndProgressAllSequentialScripts(void)
 
 						if (aigroup && aigroup->isGroupAiDead())
 						{
-							if (team && m_currentPlayer && team == m_currentPlayer->getDefaultTeam())
-								continue;
-							--m_updateCount;
-							cleanupSequentialScript(it, true);
-							lastIt = m_sequentialScripts.end();
-							++m_updateCount;
+							if (!(team && m_currentPlayer && team == m_currentPlayer->getDefaultTeam()))
+							{
+								--m_updateCount;
+								cleanupSequentialScript(it, true);
+								lastIt = m_sequentialScripts.end();
+								++m_updateCount;
+							}
 							continue;
 						}
 					}

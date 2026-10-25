@@ -2000,3 +2000,17 @@ not in retail. Witness: `RailedTransportDockUpdate::doPushOutDocking`
 0x002CE900, whose `if (docker)` block already had the scope. When a
 float-heavy bank's ZH spelling "costs" stores, diff its block structure
 against the ZH source before tuning statements.
+
+At RVA `0x00346D60`, `ScriptEngine::evaluateAndProgressAllSequentialScripts`
+matched its complete 1950-byte extent only with a combination: an advance flag
+that avoids rereading the wait count after opaque AI calls; forced cleanup
+inlining while retaining the native out-of-line non-null erase; and a negated
+default-team guard around cleanup followed by one shared `continue`. The last
+change lets MSVC share EH cleanup tails rather than duplicate destructors.
+Force-inline alone gave 2016 B; advance flag plus forced cleanup gave 2021 B;
+the combined source gives 1950 B with all four unwind actions matching. Observed
+on MSVC 13.10.3077, /O2 /MD /EHsc, STLport with exceptions disabled, using the
+canonical AsciiString header and a locally visible native concat body. This is
+a measured combination, not a claim that these spellings always improve code.
+Source: `game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineSequentialScripts.cpp`;
+evidence: `targets/game/reverse/attempt_support/00346d60-20261024/README.md`.
