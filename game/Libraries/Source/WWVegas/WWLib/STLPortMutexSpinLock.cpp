@@ -4,8 +4,11 @@
 // translation unit so the compiler emits the out-of-line template member that
 // the retail executable uses.
 
-extern "C" long __cdecl BfmeAtomicSwap(volatile long *lock, long value);
-extern "C" void __cdecl BfmeSpinSleep(int logNanoseconds);
+// Native forwarder preserves InterlockedExchange's EAX result even though
+// its existing declaration discards it. The spin caller observes that result.
+void Rva0082AD60Invoke(void *, int);
+void rva0082BE10Shift(int);
+typedef long (__cdecl *AtomicExchangeResult)(volatile long *, long);
 
 namespace _STL
 {
@@ -22,7 +25,7 @@ struct _STLP_mutex_spin
 template <int Instance>
 void __cdecl _STLP_mutex_spin<Instance>::_M_do_lock(volatile long *__lock)
 {
-    if (BfmeAtomicSwap(__lock, 1))
+    if (reinterpret_cast<AtomicExchangeResult>(Rva0082AD60Invoke)(__lock, 1))
     {
         unsigned __my_spin_max = _STLP_mutex_spin<0>::__max;
         unsigned __my_last_spins = _STLP_mutex_spin<0>::__last;
@@ -38,7 +41,7 @@ void __cdecl _STLP_mutex_spin<Instance>::_M_do_lock(volatile long *__lock)
                 __junk *= __junk;
                 __junk *= __junk;
 			}
-            else if (!BfmeAtomicSwap(__lock, 1))
+            else if (!reinterpret_cast<AtomicExchangeResult>(Rva0082AD60Invoke)(__lock, 1))
             {
                 _STLP_mutex_spin<0>::__last = __i;
                 _STLP_mutex_spin<0>::__max = __high_max;
@@ -52,9 +55,9 @@ void __cdecl _STLP_mutex_spin<Instance>::_M_do_lock(volatile long *__lock)
             int __log_nsec = __i + 6;
             if (__log_nsec > 27)
                 __log_nsec = 27;
-            if (!BfmeAtomicSwap(__lock, 1))
+            if (!reinterpret_cast<AtomicExchangeResult>(Rva0082AD60Invoke)(__lock, 1))
                 break;
-            BfmeSpinSleep(__log_nsec);
+            rva0082BE10Shift(__log_nsec);
         }
     }
 }
