@@ -7,7 +7,7 @@
 // Retail CRT cleanup callbacks. The initializers at 00C6A8F0 and 00C6A910
 // register these exact entry points, and their globals occupy 012ED4EC/F0.
 extern AsciiString g_rva012ED4EC;
-extern AsciiString g_rva012ED4F0;
+extern "C" AsciiString g_bfmeHostVSF;
 
 void Rva00C6FC60Release()
 {
@@ -16,7 +16,7 @@ void Rva00C6FC60Release()
 
 void Rva00C6FC70Release()
 {
-    g_rva012ED4F0.~AsciiString();
+    g_bfmeHostVSF.~AsciiString();
 }
 
 // CRT initializer table slot RVA 00EA5E28 points to 00C6E380.

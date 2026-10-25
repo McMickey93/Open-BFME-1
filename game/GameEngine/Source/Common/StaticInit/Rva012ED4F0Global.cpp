@@ -6,4 +6,7 @@
 // bytes as its compiler-local _$E1; the ledger row names that COFF symbol
 // via object-symbol=_$E1.
 #include "ascii_string.h"
-AsciiString g_rva012ED4F0;
+// ?g_rva012ED4F0@@3VAsciiString@@A: retail 0x012ED4F0 is recorded as _g_bfmeHostVSF
+extern "C" {
+AsciiString g_bfmeHostVSF;
+}
