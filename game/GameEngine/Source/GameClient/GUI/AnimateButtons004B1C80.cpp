@@ -105,10 +105,12 @@ struct Rva004B12F0Map {
  unsigned erase(const Rva004B00D0Element *const &key);
  void clear() { if(field04) { ((BfmeListW*)this)->bfmeEraseFrom((BfmeNodeW*)field00->field04); field00->field08=field00; field00->field04=0; field00->field0c=field00; field04=0; } }
 };
+// Gate debt ?display004B1C80@@3PAVDisplay004B1C80@@A: reference TheDisplay.
+class Display;
+extern Display *TheDisplay;
 class Display004B1C80 { public:
  virtual void slot00(); virtual void slot04(); virtual void slot08(); virtual void slot0c(); virtual void slot10(); virtual void slot14(); virtual void slot18(); virtual void slot1c(); virtual void slot20(); virtual void slot24(); virtual void slot28(); virtual unsigned width(); virtual unsigned height();
 };
-extern Display004B1C80 *display004B1C80;
 class Shell { public: char field00[0x58]; bool field58; };
 extern Shell *TheShell; // ?shell004B1C80@@3PAUShell004B1C80@@A retired to TheShell
 struct ButtonData004B1C80 { char field00[0x144]; int field144; };
@@ -149,8 +151,8 @@ void AnimateButtons004B1C80::update() {
   } else field30=(unsigned)((float)w*0.6666666865348816f);
   field40=6.2831854820251465f/count;
   field34=now; field38=0;
-  field28=(int)(display004B1C80->width()*0.046875f);
-  field2c=(int)(display004B1C80->height()*0.0625f);
+  field28=(int)(((Display004B1C80 *)TheDisplay)->width()*0.046875f);
+  field2c=(int)(((Display004B1C80 *)TheDisplay)->height()*0.0625f);
  }
  if(!TheShell->field58) field38+=now-field34;
  field34=now;

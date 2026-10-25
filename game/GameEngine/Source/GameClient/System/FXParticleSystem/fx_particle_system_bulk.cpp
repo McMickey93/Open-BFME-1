@@ -118,7 +118,8 @@ extern void *g_vtbl_01073760[];
 extern void *g_vtbl_0110F978[];
 extern void *g_vtbl_0110F97C[];
 extern void *g_vtbl_0110F980[];
-extern void *g_vtbl_0110F9AC[];
+// Gate debt ?g_vtbl_0110F9AC@@3PAPAXA: use the owner recorded at 0x0110F9AC.
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110F9CC@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0110F9E4[];
@@ -706,7 +707,7 @@ public:
     __forceinline PointEmissionVolumeTemplateAllocation()
     {
         volatile unsigned int *vtableSlots = (unsigned int *)this;
-        vtableSlots[1] = (unsigned int)g_vtbl_0110F9AC;
+        vtableSlots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         vtableSlots[2] = (unsigned int)g_vtbl_0110F980;
         *((volatile unsigned char *)this + 0x0c) = 0;
         vtableSlots[0] = (unsigned int)g_vtbl_0111117C;
@@ -728,7 +729,7 @@ public:
     __forceinline BoxEmissionVolumeTemplateAllocation()
     {
         volatile unsigned int *vtableSlots = (unsigned int *)this;
-        vtableSlots[1] = (unsigned int)g_vtbl_0110F9AC;
+        vtableSlots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)this + 0x0c) = 0;
         vtableSlots[2] = (unsigned int)g_vtbl_011109CC;
         vtableSlots[4] = 0;
@@ -977,7 +978,7 @@ public:
     __forceinline CylinderEmissionVolumeTemplateAllocation()
     {
         volatile unsigned int *vtableSlots = (unsigned int *)this;
-        vtableSlots[1] = (unsigned int)g_vtbl_0110F9AC;
+        vtableSlots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)this + 0x0c) = 0;
         vtableSlots[2] = (unsigned int)__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@");
         vtableSlots[4] = 0;
@@ -1150,7 +1151,7 @@ class SphereEmissionVolumeTemplateAllocation {
 public:
     __forceinline SphereEmissionVolumeTemplateAllocation()
     {
-        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)this + 0x0c) = 0;
         *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)this + 0x10) = 0;
@@ -1190,7 +1191,7 @@ class LineEmissionVolumeTemplateAllocation {
 public:
     __forceinline LineEmissionVolumeTemplateAllocation()
     {
-        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)this + 0x0c) = 0;
         *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)g_vtbl_0111098C;
         *(volatile unsigned int *)((unsigned char *)this + 0x10) = 0;
@@ -2381,7 +2382,7 @@ BoxEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, BOX_EMISSION_V
     BoxEmissionVolumeModuleTemplate *result =
         (BoxEmissionVolumeModuleTemplate *)::operator new(0x1c);
     if (result != 0) {
-        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)result + 0x0c) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_011109CC;
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
@@ -2440,7 +2441,7 @@ CylinderEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, CYLINDER_
     CylinderEmissionVolumeModuleTemplate *result =
         (CylinderEmissionVolumeModuleTemplate *)::operator new(0x24);
     if (result != 0) {
-        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)result + 0x0c) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
@@ -2545,7 +2546,7 @@ LineEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, LINE_EMISSION
     LineEmissionVolumeModuleTemplate *result =
         (LineEmissionVolumeModuleTemplate *)::operator new(0x28);
     if (result != 0) {
-        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)result + 0x0c) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_0111098C;
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
@@ -2607,7 +2608,7 @@ SphereEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, SPHERE_EMIS
     SphereEmissionVolumeModuleTemplate *result =
         (SphereEmissionVolumeModuleTemplate *)::operator new(0x14);
     if (result != 0) {
-        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)result + 0x0c) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
@@ -3028,7 +3029,7 @@ PointEmissionVolumeModuleTemplate *ConcreteModuleClass<PointEmissionVolumeModule
     PointEmissionVolumeModuleTemplate *result =
         (PointEmissionVolumeModuleTemplate *)::operator new(0x10);
     if (result != 0) {
-        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)g_vtbl_0110F9AC;
+        *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_0110F980;
         *((volatile unsigned char *)result + 0x0c) = 0;
         *(volatile unsigned int *)result = (unsigned int)g_vtbl_0111117C;
@@ -3610,7 +3611,7 @@ ConcreteModuleTemplate<ModuleTag<5, BOX_EMISSION_VOLUME_MODULE_KEY, BOX_EMISSION
 ConcreteModuleTemplate<ModuleTag<5, BOX_EMISSION_VOLUME_MODULE_KEY, BOX_EMISSION_VOLUME_MODULE_NAME, BoxEmissionVolumeModule, BoxEmissionVolumeModuleTemplate, DefaultParticleModule<5>, DefaultParticleModuleTemplate<5> > >::ConcreteModuleTemplate()
 {
     volatile unsigned int *slots = (unsigned int *)this;
-    slots[1] = (unsigned int)g_vtbl_0110F9AC;
+    slots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
     slots[2] = (unsigned int)g_vtbl_011109CC;
@@ -3666,7 +3667,7 @@ ConcreteModuleTemplate<ModuleTag<5, CYLINDER_EMISSION_VOLUME_MODULE_KEY, CYLINDE
 ConcreteModuleTemplate<ModuleTag<5, CYLINDER_EMISSION_VOLUME_MODULE_KEY, CYLINDER_EMISSION_VOLUME_MODULE_NAME, CylinderEmissionVolumeModule, CylinderEmissionVolumeModuleTemplate, DefaultParticleModule<5>, DefaultParticleModuleTemplate<5> > >::ConcreteModuleTemplate()
 {
     volatile unsigned int *slots = (unsigned int *)this;
-    slots[1] = (unsigned int)g_vtbl_0110F9AC;
+    slots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
     slots[2] = (unsigned int)__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@");
@@ -3687,7 +3688,7 @@ ConcreteModuleTemplate<ModuleTag<5, CYLINDER_EMISSION_VOLUME_MODULE_KEY, CYLINDE
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3743,7 +3744,7 @@ ConcreteModuleTemplate<ModuleTag<5, LIGHTNING_EMISSION_MODULE_KEY, LIGHTNING_EMI
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3782,7 +3783,7 @@ ConcreteModuleTemplate<ModuleTag<5, LINE_EMISSION_VOLUME_MODULE_KEY, LINE_EMISSI
 ConcreteModuleTemplate<ModuleTag<5, LINE_EMISSION_VOLUME_MODULE_KEY, LINE_EMISSION_VOLUME_MODULE_NAME, LineEmissionVolumeModule, LineEmissionVolumeModuleTemplate, DefaultParticleModule<5>, DefaultParticleModuleTemplate<5> > >::ConcreteModuleTemplate()
 {
     volatile unsigned int *slots = (unsigned int *)this;
-    slots[1] = (unsigned int)g_vtbl_0110F9AC;
+    slots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
     slots[2] = (unsigned int)g_vtbl_0111098C;
@@ -3804,7 +3805,7 @@ ConcreteModuleTemplate<ModuleTag<5, LINE_EMISSION_VOLUME_MODULE_KEY, LINE_EMISSI
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3852,7 +3853,7 @@ ConcreteModuleTemplate<ModuleTag<5, SPHERE_EMISSION_VOLUME_MODULE_KEY, SPHERE_EM
 ConcreteModuleTemplate<ModuleTag<5, SPHERE_EMISSION_VOLUME_MODULE_KEY, SPHERE_EMISSION_VOLUME_MODULE_NAME, SphereEmissionVolumeModule, SphereEmissionVolumeModuleTemplate, DefaultParticleModule<5>, DefaultParticleModuleTemplate<5> > >::ConcreteModuleTemplate()
 {
     volatile unsigned int *slots = (unsigned int *)this;
-    slots[1] = (unsigned int)g_vtbl_0110F9AC;
+    slots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
     slots[2] = (unsigned int)__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@");
@@ -3869,7 +3870,7 @@ ConcreteModuleTemplate<ModuleTag<5, SPHERE_EMISSION_VOLUME_MODULE_KEY, SPHERE_EM
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -4278,7 +4279,7 @@ ConcreteModuleTemplate<PointEmissionVolumeModuleTag>::ConcreteModuleTemplate(con
 ConcreteModuleTemplate<PointEmissionVolumeModuleTag>::ConcreteModuleTemplate()
 {
 	volatile unsigned int *vtableSlots = (unsigned int *)this;
-	vtableSlots[1] = (unsigned int)g_vtbl_0110F9AC;
+	vtableSlots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
 	vtableSlots[2] = (unsigned int)g_vtbl_0110F980;
 	*((volatile unsigned char *)this + 0x0c) = 0;
 	vtableSlots[0] = (unsigned int)g_vtbl_0111117C;
@@ -4292,7 +4293,7 @@ ConcreteModuleTemplate<PointEmissionVolumeModuleTag>::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -6852,7 +6853,7 @@ BoxEmissionVolumeModuleTemplate::~BoxEmissionVolumeModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -6866,7 +6867,7 @@ CylinderEmissionVolumeModuleTemplate::~CylinderEmissionVolumeModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -7093,7 +7094,7 @@ LightningEmissionModuleTemplate::~LightningEmissionModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -7104,7 +7105,7 @@ LineEmissionVolumeModuleTemplate::~LineEmissionVolumeModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9AC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
