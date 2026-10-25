@@ -6,6 +6,7 @@ short-vtable controls pass. No census, native tool or link is executed.
 import csv
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -32,12 +33,20 @@ def replay():
     inputs["retail"] = lc.build.EXE
     for name, path in inputs.items():
         assert digest(path) == EVIDENCE["inputs"][name]
+    # These sources describe the recorded objects, not today's moving tree.
+    # Keep their original hashes and verify the exact reviewed revision.
     for name, sha in EVIDENCE["sources"].items():
-        assert digest(ROOT / name) == sha
-    with (ROOT / "targets/game/reverse/functions.csv").open(newline="") as f:
-        rows = [r for r in csv.DictReader(f) if r["status"] == "matched"
+        raw = subprocess.check_output(
+            ["git", "show", EVIDENCE["reviewed_commit"] + ":" + name], cwd=ROOT)
+        assert hashlib.sha256(raw).hexdigest() == sha
+    # Select only the recorded rows, streaming the historical ledger.
+    with subprocess.Popen(
+            ["git", "show", EVIDENCE["reviewed_commit"] + ":targets/game/reverse/functions.csv"],
+            cwd=ROOT, stdout=subprocess.PIPE, text=True, encoding="utf-8") as proc:
+        rows = [r for r in csv.DictReader(proc.stdout) if r["status"] == "matched"
                 and int(r["target_rva"], 16) in ROWS
                 and r["name"] == ROWS[int(r["target_rva"], 16)]["name"]]
+        assert proc.wait() == 0
     assert len(rows) == 21
     names, _ = lc.zz_names(RUN)
     objs = RecordedObjects(names)

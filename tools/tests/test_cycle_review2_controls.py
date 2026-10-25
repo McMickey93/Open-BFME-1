@@ -64,7 +64,7 @@ def test_control_graph_cycles_unknown_targets_and_overflow_are_conservative():
 
 
 def test_control_donor_and_placement_remain_non_admitting():
-    import bfme2_sweep as sweep
+    import bfme2_retail_sweep as sweep
     import place_bodies as placement
     import router_shadow as shadow
     record = {"name": "?donor@@YAXXZ", "source": "Code/donor.cpp", "placement": "unique",
