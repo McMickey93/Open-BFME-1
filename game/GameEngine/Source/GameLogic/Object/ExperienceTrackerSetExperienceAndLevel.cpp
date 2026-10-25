@@ -32,16 +32,13 @@ private:
 class ThingTemplate : public Overridable
 {
 public:
-	Bool isTrainable() const
-	{
-		return m_isTrainable;
-	}
 
 private:
 	unsigned char m_unreconstructed_008[0x487 - 0x008];
 	Bool m_isTrainable;
 
 	friend class ThingTemplateRef;
+	friend class ExperienceTracker;
 };
 
 // upstream layout: reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Thing.h
@@ -150,7 +147,7 @@ private:
 // ?isTrainable@ExperienceTracker@@QBE_NXZ
 __forceinline Bool ExperienceTracker::isTrainable() const
 {
-	return m_parent->getTemplate()->isTrainable();
+	return m_parent->getTemplate()->m_isTrainable;
 }
 
 // ?setExperienceAndLevel@ExperienceTracker@@QAEXM_N@Z
@@ -171,7 +168,7 @@ void ExperienceTracker::setExperienceAndLevel(Real experienceIn, Bool provideFee
 	}
 
 	Object *parent = m_parent;
-	if (!parent->getTemplate()->isTrainable())
+	if (!parent->getTemplate()->m_isTrainable)
 		return; //safety
 
 	m_currentExperience = experienceIn;
