@@ -385,36 +385,8 @@ void AITNGuardOuterState::loadPostProcess( void )
 // Body in AITNGuardOuterState_onEnter.cpp (slot 4).
 
 //--------------------------------------------------------------------------------------
-// ?update@AITNGuardOuterState@@ present-unmatched
-StateReturnType AITNGuardOuterState::update( void )
-{
-	Object *owner = getMachineOwner();
-	Object* goalObj = m_attackState->getMachineGoalObject();
-	if (goalObj) 
-	{
-	}	else {
-		Object* nemesis = TheGameLogic->findObjectByID(getGuardMachine()->getNemesisID()) ;
-		if (nemesis) {
-			goalObj = nemesis;
-		}
-		// Check if team auto targets same victim.
-		Object *teamVictim = NULL;
-		if (goalObj == NULL && owner->getTeam()->getPrototype()->getTemplateInfo()->m_attackCommonTarget) 
-		{
-			teamVictim = owner->getTeam()->getTeamTargetObject();
-			if (teamVictim) 
-			{	
-				goalObj = teamVictim;	
-			}
-			m_attackState->getMachine()->setGoalObject(goalObj);
-			return m_attackState->onEnter();
-		}
-	}
-	
-	return m_attackState->update();
-}
+// AITNGuardOuterState::update is owned by AITNGuardOuterState_update_Bfme.cpp.
 
-//--------------------------------------------------------------------------------------
 // ?onExit@AITNGuardOuterState@@ present-unmatched
 void AITNGuardOuterState::onExit( StateExitType status )
 {
