@@ -8729,11 +8729,9 @@ name,va
 ?g_01306DF0@@3PAVGen_01306DF0@@A,0x01306DF0
 ?g_01306F18@@3PAVGen_01306F18@@A,0x01306F18
 ?g_01307178@@3PAVGen_01307178@@A,0x01307178
-?g_AIAttackFireDuringApproachStateVTable@@3HA,0x0109A640
 ?g_AIAttackFollowWaypointPathStateVTable@@3HA,0x0109B220
 ?g_AIAttackMeleeApproachStateVTable@@3HA,0x0109A6C0
 ?g_AIAttackMeleeEngageStateVTable@@3HA,0x01099848
-?g_AIAttackMeleeSquishStateVTable@@3HA,0x0109A738
 ?g_AIBackAwayStateVTable@@3HA,0x0109AE00
 ?g_AICowerStateVTable@@3HA,0x01098408
 ?g_AIEnterStateVTable@@3HA,0x0109ABD0
