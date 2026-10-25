@@ -25,7 +25,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Canonical callee and data bindings; post-call compiler barriers for distinct return suffixes; explicit stack-array local before index; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "notes": "Canonical callee and data bindings; explicit retail-ordered control flow; post-call compiler barriers; proven stack-array local order; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
   "admissions": [
     {
       "rva": "0x008C6AD0",
@@ -35,23 +35,23 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "8afd856b118d51aa0371ab0a21645876a2a5498a",
-  "patch_sha256": "0ac5b5c4ec202c512945fdfb68fc52c8ca16f9cd5c3164c7b57e07f30b2733a8",
-  "message_sha256": "e7887005d746ac66285526c9778fbdfc239c9105eb5abf3e35401374ea64d3d2",
+  "patch_tree": "c6b8fdd54b512014e8998ae46f1e0b00914bf09b",
+  "patch_sha256": "e768d8d92ea39196c3a74a5b93fba6c23d0d39963f464ec7a73865849aa52b1a",
+  "message_sha256": "90bc6727e8cb41d52c711bf689d2c35e7f725037d734ae3d2289886900df76b5",
   "files": [
     {
       "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "mode": "100644",
       "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
-      "candidate_blob": "e02cb1a7fb70ba8ebc0da1890211ad560434eba4",
-      "sha256": "8cd39382857ea88e21a4e842e1bd5d9cecde8ac4c9de97640f844b604071254a"
+      "candidate_blob": "ad7458ae03465a7f13bcd5f21a926a8ee0211cb7",
+      "sha256": "505c2d315db0f2fa570edca7d7ec465143fbed9af7e383ed1c77f8ef3f6ccfb5"
     },
     {
       "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "93ebd6e40750578ce27b91688302826c71fc19fa",
-      "sha256": "aa92b859443a52f0683b35d0f43254987fcdc357ea8d915dd1343b6c067a5d1b"
+      "candidate_blob": "4efc7950a32006bd2778b4680276a61111b94434",
+      "sha256": "dd9dc5bbf3d0806f5a8ad1a362be51e76f85c7db68044492c9c879f77f650cc3"
     }
   ],
   "base_rows": [

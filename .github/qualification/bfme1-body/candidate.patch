@@ -1,8 +1,8 @@
 diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-index 60df2491d6c680d667ad689a1e79e7203aca56e3..e02cb1a7fb70ba8ebc0da1890211ad560434eba4 100644
+index 60df2491d6c680d667ad689a1e79e7203aca56e3..ad7458ae03465a7f13bcd5f21a926a8ee0211cb7 100644
 --- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
 +++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-@@ -181 +181,101 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
+@@ -181 +181,107 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
  }
 +
 +
@@ -55,29 +55,8 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..e02cb1a7fb70ba8ebc0da1890211ad56
 +// Its canonical declaration replaces the bank's void-function pointer cast.
 +bool __cdecl Rva008C4A30Check(Rva8CD130Value *value);
 +
-+static __forceinline AptValue *coerceBoolean008C6AD0(AptValue *value)
-+{
-+	int type = value->m_valueBits & 63;
-+	if (type == 5)
-+	{
-+		bool result = value->m_boolean;
-+		return AptBoolean::Create(result);
-+	}
-+	if (type == 6)
-+	{
-+		if (value->toNumber() != g_rva01075350)
-+			return AptBoolean::Create(true);
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
-+	}
-+	if (type == 7)
-+	{
-+		if (value->toNumber() != g_rva01075350)
-+			return AptBoolean::Create(true);
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
-+	}
-+	{ AptValue *result = AptBoolean::Create(false); _ReadWriteBarrier(); return result; }
-+}
-+
++// Keep the observed numeric, common-false, payload, default-false and true
++// blocks in source order. Distinct barrier tags keep both false suffixes.
 +AptValue *BooleanCoerce008C6AD0(void *, int count)
 +{
 +	if (count == 0)
@@ -88,28 +67,55 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..e02cb1a7fb70ba8ebc0da1890211ad56
 +	AptValue *value = args[stack.m_count - 1];
 +	int type = value->m_valueBits & 63;
 +	if (type >= 12 && type <= 19 && !value->isUndefined())
-+		return AptBoolean::Create(true);
++		goto common_true;
 +	if (type == 27 && !value->isUndefined())
-+		return AptBoolean::Create(true);
++		goto common_true;
 +	if (value == g_bfmeFallbackDB)
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
++		goto common_false;
 +
-+	if (!value->isType(6) && !value->isType(7))
++	if (value->isType(6))
++		goto coerce_value;
++	if (value->isType(7))
++		goto coerce_value;
++	if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
++		goto common_false;
++
++numeric_value:
++	if (value->toNumber() != g_rva01075350)
++		goto common_true;
++
++common_false:
 +	{
-+		if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
-+			{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
-+		if (value->toNumber() != g_rva01075350)
-+			return AptBoolean::Create(true);
-+		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
++		AptValue *result = AptBoolean::Create(false);
++		_WriteBarrier();
++		return result;
 +	}
-+	return coerceBoolean008C6AD0(value);
++
++coerce_value:
++	if (type == 5)
++	{
++		bool result = value->m_boolean;
++		return AptBoolean::Create(result);
++	}
++	if (type == 6)
++		goto numeric_value;
++	if (type == 7)
++		goto numeric_value;
++	{
++		AptValue *result = AptBoolean::Create(false);
++		_ReadWriteBarrier();
++		return result;
++	}
++
++common_true:
++	return AptBoolean::Create(true);
 +}
 diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..93ebd6e40750578ce27b91688302826c71fc19fa
+index 0000000000000000000000000000000000000000..4efc7950a32006bd2778b4680276a61111b94434
 --- /dev/null
 +++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-@@ -0,0 +1,151 @@
+@@ -0,0 +1,174 @@
 +# Registered conversion callback at 0x008C6AD0
 +
 +## Scope and baseline
@@ -185,7 +191,7 @@ index 0000000000000000000000000000000000000000..93ebd6e40750578ce27b91688302826c
 +if/switch/ternary/Boolean-output forms produced a 217-byte merged body or
 +260--272-byte alternatives. Those trials are not repeated here.
 +
-+Five complete-file candidates isolate the new context hypotheses:
++Six complete-file candidates isolate the new context hypotheses:
 +
 +1. `00-canonical-control.cpp` preserves the bank's raw-shift predicates and
 +   free inline coercion helper, while fixing its typed callee and data bindings.
@@ -202,7 +208,14 @@ index 0000000000000000000000000000000000000000..93ebd6e40750578ce27b91688302826c
 +   factory calls, keeping each zero-code marker inside its return suffix.
 +   It also loads the stack array into a local before indexing by the count,
 +   following the already matched `Rva008C6800.cpp` callback's statement order.
-+   This is the next native experiment; it has no measured result yet.
++   Its measured result is recorded below.
++6. `05-flat-cfg-barriers.cpp` keeps 04's corrected stack-array local and
++   replaces the inline coercion split with explicit labels in the retail
++   block order: numeric, common false, payload coercion, default false,
++   common true. The proven distinct false-tail barrier tags remain. Earlier
++   goto trials lacked effective tail separation; this is the combined
++   control-flow test after that prerequisite changed, not a repeat of them.
++   It is the next native experiment, with no result asserted yet.
 +
 +The fourth experiment follows the specific tail-cross-jump technique in
 +`docs/shape_levers.md`, independently witnessed by the already matched
@@ -259,5 +272,21 @@ index 0000000000000000000000000000000000000000..93ebd6e40750578ce27b91688302826c
 +
 +The whole-file sibling at `0x008CF1B0` compiled exactly modulo relocation
 +slots. Exploration did not run admission or the ordinary complete gate,
-+and it added no C++ bytes. Experiment 04 and the full qualification gate
-+remain pending.
++and it added no C++ bytes. The full qualification gate has not run.
++
++Native explore run `40184542285`, from immutable fork payload
++`23962975c075d98e7b54a13df19d38a105351a3f`, compiled experiment 04.
++The explicit array local restored the exact initial EAX/ECX roles and the
++indexed load: raw instructions match retail through +0x39, apart from
++unfilled relocation slots. The first non-relocation difference is now the
++branch displacement at +0x3C. The new body still has 229 bytes, 11
++relocations, eight relocation-site layout differences, and 120 differing
++non-relocation bytes. Its shared numeric block is at +0xB2, followed by the
++true-return block and then the remaining type-7 test/default-false path;
++retail requires the numeric block at +0x8A and the true-return block last.
++The 520-byte same-file sibling remains exact modulo relocations.
++
++Experiment 05 therefore changes only the control-flow representation while
++retaining the observed data-load fix and both distinct false-tail tags.
++Its native result and the full qualification gate remain pending. No
++recovered C++ byte gain has been recorded by these experiments.

@@ -1,11 +1,11 @@
-Explore Apt coercion return-tail context at 0x008C6AD0
+Explore explicit Apt coercion control flow at 0x008C6AD0
 
 The existing bank has stale data bindings and predates the recovered
 typed numeric predicate. Explore a corrected whole AptActionInterpreter
-translation unit with compiler barriers after the false factory calls,
-preserving distinct return suffixes. Load the stack-array local before its
-count as the adjacent matched callback does. Keep the 520-byte sibling
-source unchanged. The earlier experiment emitted 229 of 233 target bytes.
+translation unit with explicit labels following the retail control-flow
+order. Retain the measured stack-array load fix and distinct post-call
+barriers from the previous experiment. Keep the 520-byte sibling source
+unchanged. The earlier experiment emitted 229 of 233 target bytes.
 
 This is exploratory input: no admission or new exact C++ bytes are claimed.
 
