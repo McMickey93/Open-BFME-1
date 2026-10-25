@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "enabled": true,
-  "qualification_run_id": 40190782271,
+  "qualification_run_id": 40192954525,
   "qualification_run_attempt": 1,
-  "qualification_head_sha": "f208ece4b02c794c6e2720e040d609c128abef4a",
-  "artifact_id": 12597726406,
-  "artifact_sha256": "90b3f323a271356df5af8a04fba4ff3f9734b2ea72576e34c639f66849461e1a",
-  "expected_base": "3b375d6e2844dbceda9f4e2fd50e88bf77f0703c",
-  "expected_commit": "40578694708ef0982c748539b069d50d1662ddbe",
-  "expected_tree": "37fc185be61a4d28d014d71a0e47363082b9c5b0",
+  "qualification_head_sha": "7a4c1166f642fc68af69d761bd6932f485476069",
+  "artifact_id": 12599425259,
+  "artifact_sha256": "19058914deca0a61dcaf8f8c130f835853f1f6847a26fbe410a7bf5a2141eba9",
+  "expected_base": "98463eaba5a1161513a1cf20680b9af746c607d3",
+  "expected_commit": "2afc1f8f6ff57462c975b5ee963bdc977b2a5056",
+  "expected_tree": "3c6897e3b9f96c6ef5a7abd5e6e9fd38c697b546",
   "qualification_directory": "qualification-0"
 }
