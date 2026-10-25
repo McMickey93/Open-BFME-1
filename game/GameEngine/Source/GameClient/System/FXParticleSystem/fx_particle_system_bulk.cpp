@@ -90,10 +90,8 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 // Gate debt ?g_vtbl_01111E28@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111E2C@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E50@@3PAPAXA=??_7TailX005EBA30@@6B@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111E64@@3PAPAXA=??_7MidX005EBA30@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E68@@3PAPAXA=??_7GenX005EBA30@@6B@")
 // ?g_vtbl_01111EC8@@3PAPAXA now references its recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01111EDC@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot1@@@")
 // Gate debt ?g_vtbl_01111EE0@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111FB0@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FC4@@3PAPAXA=??_7BFMEDistLODClass@@6BPersistClass@@@")
@@ -101,23 +99,15 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FCC@@3PAPAXA=??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112034@@3PAPAXA=??_7Rva005EC600@@6BV3Slot3@@@")
 // Gate debt ?g_vtbl_01112048@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_0111204C@@3PAPAXA=??_7Rva005EC600@@6BV3Slot1@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_011120B0@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot3@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_011120C4@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot2@@@")
 // Gate debt ?g_vtbl_011120C8@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01112174@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot3@@@")
 // Gate debt ?g_vtbl_0111218C@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01112190@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot0@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_011121A4@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot3@@@")
 // Gate debt ?g_vtbl_011121B8@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_011121C0@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DE4@@3PAPAXA=??_7Rva005EC160@@6BV3Slot2@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DEC@@3PAPAXA=??_7Rva005EC160@@6BV3Slot0@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E00@@3PAPAXA=??_7Rva005EC870@@6BV3Slot3@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E14@@3PAPAXA=??_7Rva005EC870@@6BV3Slot2@@@")
 // Gate debt ?g_vtbl_01112E18@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01112E1C@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E44@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot2@@@")
 
 extern void *g_vtbl_01073744[];
 extern void *g_vtbl_01073758[];
@@ -250,10 +240,12 @@ extern "C" void *__identifier("??_7TailX005EB930@@6B@")[];
 extern "C" void *__identifier("??_7MidX005EB930@@6B@")[];
 extern "C" void *__identifier("??_7GenX005EB930@@6B@")[];
 extern void *g_vtbl_01111E50[];
-extern void *g_vtbl_01111E64[];
+// ?g_vtbl_01111E64@@3PAPAXA: use the owner recorded at 0x01111E64.
+extern "C" void *__identifier("??_7MidX005EBA30@@6B@")[];
 extern void *g_vtbl_01111E68[];
 extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot2@@@")[];
-extern void *g_vtbl_01111EDC[];
+// ?g_vtbl_01111EDC@@3PAPAXA: use the owner recorded at 0x01111EDC.
+extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot1@@@")[];
 extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@")[];
 extern "C" void *__identifier("??_7BFMEDistLODClass@@6BRefCountClass@@@")[];
 extern void *g_vtbl_01111FC4[];
@@ -261,11 +253,14 @@ extern void *g_vtbl_01111FC8[];
 extern void *g_vtbl_01111FCC[];
 extern void *g_vtbl_01112034[];
 extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot2@@@")[];
-extern void *g_vtbl_0111204C[];
+// ?g_vtbl_0111204C@@3PAPAXA: use the owner recorded at 0x0111204C.
+extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot1@@@")[];
 // ?g_vtbl_01112050@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot0@@@")[];
-extern void *g_vtbl_011120B0[];
-extern void *g_vtbl_011120C4[];
+// ?g_vtbl_011120B0@@3PAPAXA: use the owner recorded at 0x011120B0.
+extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot3@@@")[];
+// ?g_vtbl_011120C4@@3PAPAXA: use the owner recorded at 0x011120C4.
+extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot2@@@")[];
 extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot1@@@")[];
 // ?g_vtbl_011120CC@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot0@@@")[];
@@ -273,8 +268,10 @@ extern void *g_vtbl_01112174[];
 // ?g_vtbl_01112188@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005ECCC0@@6BV3Slot2W@@@")[];
 extern "C" void *__identifier("??_7Rva005ECCC0@@6BV3Slot1@@@")[];
-extern void *g_vtbl_01112190[];
-extern void *g_vtbl_011121A4[];
+// ?g_vtbl_01112190@@3PAPAXA: use the owner recorded at 0x01112190.
+extern "C" void *__identifier("??_7Rva005ECCC0@@6BV3Slot0@@@")[];
+// ?g_vtbl_011121A4@@3PAPAXA: use the owner recorded at 0x011121A4.
+extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot3@@@")[];
 extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot2W@@@")[];
 // ?g_vtbl_011121BC@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot1@@@")[];
@@ -335,13 +332,16 @@ extern void *g_vtbl_01112DE4[];
 // ?g_vtbl_01112DE8@@3PAPAXA: use the owner recorded at 0x01112DE8.
 extern "C" void *__identifier("??_7Rva005EC160@@6BV3Slot1@@@")[];
 extern void *g_vtbl_01112DEC[];
-extern void *g_vtbl_01112E00[];
-extern void *g_vtbl_01112E14[];
+// ?g_vtbl_01112E00@@3PAPAXA: use the owner recorded at 0x01112E00.
+extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot3@@@")[];
+// ?g_vtbl_01112E14@@3PAPAXA: use the owner recorded at 0x01112E14.
+extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot2@@@")[];
 extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot1@@@")[];
 extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot0@@@")[];
 // ?g_vtbl_01112E30@@3PAPAXA: use the owner recorded at 0x01112E30.
 extern "C" void *__identifier("??_7Rva005ECF60@@6BV3Slot3@@@")[];
-extern void *g_vtbl_01112E44[];
+// ?g_vtbl_01112E44@@3PAPAXA: use the owner recorded at 0x01112E44.
+extern "C" void *__identifier("??_7Rva005ECF60@@6BV3Slot2@@@")[];
 // ?g_vtbl_01112E48@@3PAPAXA: use the owner recorded at 0x01112E48.
 extern "C" void *__identifier("??_7Rva005ECF60@@6BV3Slot1@@@")[];
 // ?g_vtbl_01112E4C@@3PAPAXA: use the owner recorded at 0x01112E4C.
@@ -596,7 +596,7 @@ public:
         ((RenderObjectUpdateModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot1@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112E44;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot2@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot3@@@");
     }
 
@@ -800,8 +800,8 @@ public:
         ((DefaultModule2CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EC870@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005EC870@@6BV3Slot1@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112E14;
-        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112E00;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005EC870@@6BV3Slot2@@@");
+        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)__identifier("??_7Rva005EC870@@6BV3Slot3@@@");
     }
 
 private:
@@ -829,7 +829,7 @@ public:
     {
         ((DefaultModule3CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EC600@@6BV3Slot0@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_0111204C;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005EC600@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005EC600@@6BV3Slot2@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112034;
     }
@@ -887,8 +887,8 @@ public:
         ((DefaultModule7CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot1@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_011120C4;
-        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_011120B0;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot2@@@");
+        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot3@@@");
     }
 
 private:
@@ -1356,7 +1356,7 @@ public:
     {
         ((ButterflyDrawModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111E68;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111E64;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7MidX005EBA30@@6B@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111E50;
     }
 
@@ -1399,7 +1399,7 @@ public:
     {
         ((LightningDrawModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111EDC;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005EBCC0Object@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005EBCC0Object@@6BV3Slot2@@@");
     }
 
@@ -1557,7 +1557,7 @@ public:
     __forceinline LifeEventModuleAllocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((LifeEventModuleCtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112190;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005ECCC0@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECCC0@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ECCC0@@6BV3Slot2W@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)g_vtbl_01112174;
@@ -1595,7 +1595,7 @@ public:
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_011121C0;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ED0D0@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ED0D0@@6BV3Slot2W@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)g_vtbl_011121A4;
+        *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)__identifier("??_7Rva005ED0D0@@6BV3Slot3@@@");
     }
 
 private:
