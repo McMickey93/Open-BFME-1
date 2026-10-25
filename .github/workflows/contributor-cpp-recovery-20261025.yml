@@ -49,62 +49,112 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Inspect untried small bodies from the authoritative eligibility API
+      - name: Test explicit native MMX intrinsics under unchanged flags
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
           require_python3 cpp-recovery
+          git_bash="$BASH"
+          [[ "$git_bash" == *.exe ]] || git_bash="$git_bash.exe"
+          export BFME_NATIVE_BASH="$(cygpath -aw "$git_bash")"
           python3 -u - <<'PY'
-          import hashlib,json,os,subprocess,sys,time,traceback
+          import hashlib,json,os,shutil,subprocess,sys,time
           from pathlib import Path
           root=Path.cwd().resolve()
           out=root/"build/contributor-cpp-recovery-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import claims,list_naked_candidates as naked
-          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[]}
-          def run(label,args,required=True,show=False):
-              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+          import build,claims,probe
+          from experiment_store import compile_cached,record_result
+          token="db81e7a26bd206fe3f37af4c967d7c889ce605f2"
+          lease="ca878893a9134d48867f670ad6ceb77d"
+          symbol="?rva009C6780BinkMmx@@YAXPBXPAXHHHH0@Z"
+          target=0x009C6780
+          owner="github:McMickey93:bfme1:cpp-recovery-20261025"
+          native_bash=Path(os.environ["BFME_NATIVE_BASH"])
+          os.environ["PATH"]=str(native_bash.parent)+os.pathsep+os.environ["PATH"]
+          def fence():
+              assert claims.fetch(), "Cannot read upstream claims"
+              entry=claims.live(claims._read_local()).get(target)
+              assert entry and entry[0]==token and entry[1]["owner"]==owner and entry[1]["lease"]==lease, "Claim changed"
+              assert claims.holds(target,token), "Claim fence lost"
+              print("MMX_FENCE_OK "+token,flush=True)
+          def run(label,args,required=True,input_text=None):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,input=input_text.encode() if input_text else None)
               (out/(label+".log")).write_bytes(cp.stdout)
-              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
-              print("RECOVERY_COMMAND",label,"exit",cp.returncode,flush=True)
-              if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
+              print("MMX_COMMAND "+label+" "+str(cp.returncode),flush=True)
+              print(cp.stdout.decode("utf-8","replace"),flush=True)
               if required and cp.returncode: raise RuntimeError(label+" failed")
-              return cp.stdout.decode("utf-8","replace")
-          if subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root).decode().strip()!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
-          if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
-          active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
-          result["active_claims"]=active
-          import eligibility,next_work,repair_queue
-          rows=eligibility.load_rows()
-          counts=eligibility.attempt_counts()
-          latest=eligibility.latest_verdicts()
-          pool=eligibility.open_dumps(rows=rows,latest=latest,min_size=8,max_size=512)
-          untried=[r for r in pool if not counts.get(eligibility.rva_of(r),0) and not eligibility.boundary_suspect(eligibility.rva_of(r))]
-          candidates=[]
-          for row in untried:
-              if row["target_rva"] in active: continue
-              c={"function":row["name"],"source":row["source"],"target_rva":row["target_rva"],"size":int(row["target_size"]),"notes":row.get("notes",""),"latest_verdict":latest.get(eligibility.rva_of(row))}
-              candidates.append(c)
-          repair_queue.annotate_dest(candidates)
-          result.update(pool_count=len(pool),untried_count=len(untried),candidate_count=len(candidates),untried=candidates)
-          print("RECOVERY_UNTRIED_POOL "+json.dumps({"pool":len(pool),"untried":len(untried),"available":len(candidates)}),flush=True)
-          for c in candidates: print("RECOVERY_UNTRIED_ROW "+json.dumps(c),flush=True)
-          sequence=[]
-          for n in range(min(5,len(candidates))):
-              c=next_work.weighted_choice(candidates);candidates.remove(c)
-              sequence.append(c)
-              print("RECOVERY_UNTRIED_SELECTION "+json.dumps({"order":n,"candidate":c}),flush=True)
-              run("untried-brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",c["target_rva"]],True,True)
-              run("untried-callees-"+str(n),[sys.executable,"tools/callees.py",c["target_rva"],str(c["size"])],True,True)
-          result["sequence"]=sequence
-          run("clean-tree",["git","diff","--exit-code"])
-          run("progress",[sys.executable,"tools/progress.py","origin/master"],True,True)
-          result["status"]="served-eligibility-untried-small"
+              return cp.returncode
+          assert subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root,text=True).strip()=="06b755567bb147dfee3a89f70f7bbcd38410b5b4"
+          fence()
+          source_key="game/GameEngine/Source/Common/Rva009C6780BinkMmx.cpp"
+          original=(root/source_key).read_text(encoding="utf-8")
+          assert subprocess.check_output(["git","hash-object",source_key],cwd=root,text=True).strip()=="368e826f7c3d757ff7deb8242e906232bc9d6274"
+          run("original-declared",[sys.executable,"tools/find_declared_unmatched.py",source_key])
+          run("original-byte-build",[str(native_bash),"build.sh",source_key])
+          source="// cl: /DNDEBUG /MD /O2\n#include <mmintrin.h>\nextern const unsigned short Rva012D88D0Round[4];\n\nvoid __cdecl rva009C6780BinkMmx(const void *source, void *destination,\n    int sourceStride, int unused, int count, int destinationStride,\n    const void *weights)\n{\n    const __m64 weight0 = *reinterpret_cast<const __m64 *>(weights);\n    const __m64 weight1 = *reinterpret_cast<const __m64 *>(\n        static_cast<const unsigned char *>(weights) + 16);\n    const __m64 zero = _mm_setzero_si64();\n    const unsigned char *input = static_cast<const unsigned char *>(source);\n    unsigned char *output = static_cast<unsigned char *>(destination);\n    do {\n        __m64 first = _mm_mullo_pi16(\n            _mm_unpacklo_pi8(*reinterpret_cast<const __m64 *>(input), zero), weight0);\n        __m64 second = _mm_mullo_pi16(\n            _mm_unpacklo_pi8(*reinterpret_cast<const __m64 *>(input + sourceStride), zero), weight1);\n        __m64 sum = _mm_add_pi16(first, second);\n        sum = _mm_add_pi16(sum, *reinterpret_cast<const __m64 *>(Rva012D88D0Round));\n        sum = _mm_srai_pi16(sum, 7);\n        *reinterpret_cast<int *>(output) = _mm_cvtsi64_si32(_mm_packs_pu16(sum, zero));\n\n        first = _mm_mullo_pi16(\n            _mm_unpacklo_pi8(*reinterpret_cast<const __m64 *>(input + 4), zero), weight0);\n        second = _mm_mullo_pi16(\n            _mm_unpacklo_pi8(*reinterpret_cast<const __m64 *>(input + sourceStride + 4), zero), weight1);\n        sum = _mm_add_pi16(first, second);\n        sum = _mm_add_pi16(sum, *reinterpret_cast<const __m64 *>(Rva012D88D0Round));\n        sum = _mm_srai_pi16(sum, 7);\n        *reinterpret_cast<int *>(output + 4) = _mm_cvtsi64_si32(_mm_packs_pu16(sum, zero));\n        input += sourceStride;\n        output += destinationStride;\n    } while (--count);\n}\n"
+          candidate=out/"intrinsic-direct.cpp"
+          fence()
+          candidate.write_text(source,encoding="utf-8")
+          (out/"intrinsic-direct.cpp.txt").write_text(source,encoding="utf-8")
+          probe_status=run("intrinsic-probe",[sys.executable,"tools/probe.py",str(candidate),symbol,"0x009C6780","--size","125","--all","--shape"],False)
+          result={"status":"compile-error","probe_exit":probe_status,"target":"0x009C6780","extent":125,"symbol":symbol,"source_sha256":hashlib.sha256(source.encode()).hexdigest(),"claim":token,"lease":lease,"source_flags":"/DNDEBUG /MD /O2"}
+          if probe_status==0:
+              obj,reused=compile_cached(candidate)
+              compiled,relocs=build.read_object_symbol_bytes(obj,symbol)
+              compiled=bytes(compiled)
+              image=build.EXE.read_bytes()
+              offset=build.rva_to_file_offset(build.pe_sections(image),target)
+              retail=image[offset:offset+125]
+              R,O,ri,oi,rb,ob,unmapped=probe.diagnostic_streams(retail,compiled,relocs)
+              diffs=[i for i in range(min(len(rb),len(ob))) if rb[i]!=ob[i]]
+              result.update(status="measured",object=str(obj),compiled_size=len(compiled),diff_count=len(diffs),diff_offsets=diffs,unmapped=list(unmapped),relocations=relocs,retail_hex=retail.hex(),compiled_hex=compiled.hex(),normalized_shape=probe.shape_similarity(R,O))
+              record_result(candidate,symbol,target,retail,compiled,relocs)
+          exact=result.get("compiled_size")==125 and not result.get("diff_count",1) and not result.get("unmapped",[1])
+          print("MMX_RESULT "+json.dumps(result),flush=True)
           (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-          print("RECOVERY_RESULT "+json.dumps(result),flush=True)
+          fence()
+          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
+          if exact:
+              # A private diagnostic is never the acceptance receipt.
+              (root/source_key).write_text(source,encoding="utf-8")
+              run("fresh-declared",[sys.executable,"tools/find_declared_unmatched.py",source_key])
+              run("normal-admission",[sys.executable,"tools/add_match.py",symbol,"0x009C6780","125",source_key,"--replace-existing","--model","gpt-6","--notes","Native MMX intrinsics from proven target ABI and body; no inline asm"])
+              run("fresh-byte-build",[str(native_bash),"build.sh",source_key])
+              paths=[source_key,"targets/game/reverse/functions.csv","targets/game/reverse/re_attempts.log"]
+              message="Recover 009C6780 as byte-exact C++ MMX intrinsics\n\nRetain the existing proven seven-argument ABI and shared round-table owner. The native MSVC 7.1 byte and relocation gates verify the complete 125-byte body under unchanged compiler flags.\n\nClaim-Lease: 0x009C6780 "+lease
+          else:
+              evidence=Path("targets/game/reverse/attempt_support/009c6780-intrinsics-20261025")
+              folder=root/evidence
+              folder.mkdir(parents=True,exist_ok=True)
+              shutil.copyfile(out/"intrinsic-direct.cpp.txt",folder/"intrinsic-direct.cpp.txt")
+              shutil.copyfile(out/"result.json",folder/"native-result.json")
+              text="\n".join(["# 009C6780: native MMX intrinsic control","","Target: existing 125-byte Bink MMX two-row filter; address-derived identity and seven-argument ABI retained from the existing owner and verified callers.","Source: "+source_key+" at "+base+".","Compiler: original MSVC 7.1, unchanged /DNDEBUG /MD /O2. Private output and current dependency receipts only.","Native run: https://github.com/McMickey93/Open-BFME-1/actions/runs/"+os.environ["GITHUB_RUN_ID"],"","New hypothesis: explicit operations from the actual mmintrin.h can preserve the packed-word body; the existing note ruled out scalar code, and no earlier intrinsic trial was logged for this row.","The control uses the same coefficient loads, two four-byte output halves, existing round datum, non-saturating word sums, signed shift by seven and unsigned pack. No decoder source was consulted.","","Measured outcome: "+json.dumps(result,sort_keys=True), "","The ordinary current-source byte check passed before the isolated trial. No production or ledger edits were retained. The retained result is not an accepted conversion or a new canonical finish score.","Remaining prerequisite: recover the native compiler/emitter context or a justified intrinsic source producing the complete retail register schedule and encoding; do not lift the assembly or count this as C++ progress.","Claim JSON fields were generated by the unmodified project claims._record; the connector transports the marker with an empty tree and a known parent. Native owner/lease/expiry/holds checks passed before every mutation and probe.",""])
+              (folder/"readme.md").write_text(text,encoding="utf-8")
+              detail="target RET boundary 125B; explicit native MMX intrinsic control "+str(result.get("compiled_size","compile-error"))+"/125B diff="+str(result.get("diff_count","n/a"))+"; original matched ASM byte control passes; no conversion; "+evidence.as_posix()+"/readme.md blocker=mmx-intrinsic-codegen t=12min model=gpt-6"
+              run("normal-relog",[sys.executable,"tools/re_log.py","record",symbol,"0x009C6780","125","blocked",detail])
+              paths=[str(evidence/"readme.md"),str(evidence/"native-result.json"),str(evidence/"intrinsic-direct.cpp.txt"),"targets/game/reverse/re_attempts.log"]
+              message="Record native MMX intrinsic control for 009C6780\n\nPreserve the complete source and native mismatch evidence. Production bytes, ledger coverage and existing assembly remain unchanged."
+          run("diff-check",["git","diff","--check"])
+          run("git-author",["git","config","user.name","McMickey93"])
+          run("git-email",["git","config","user.email","347452154+McMickey93@users.noreply.github.com"])
+          run("stage",["git","add","--",*paths])
+          fence()
+          run("normal-commit",["git","-c","core.hooksPath=.githooks","commit","-m",message])
+          native_commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
+          hook_input="refs/heads/contributor-cpp-recovery "+native_commit+" refs/heads/master "+base+"\n"
+          fence()
+          run("normal-prepush",[str(native_bash),".githooks/pre-push","origin","https://github.com/Open-BFME/Open-BFME-1.git"],input_text=hook_input)
+          run("progress",[sys.executable,"tools/progress.py","origin/master"])
+          bundle=out/"handoff.bundle"
+          run("bundle",["git","bundle","create",str(bundle),"HEAD","^"+base])
+          run("verify-bundle",["git","bundle","verify",str(bundle)])
+          manifest={"base":base,"commit":native_commit,"tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],cwd=root,text=True).strip(),"paths":paths,"exact_cpp":exact,"cpp_gain":125 if exact else 0,"bundle_sha256":hashlib.sha256(bundle.read_bytes()).hexdigest(),"result":result}
+          (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+          print("MMX_HANDOFF "+json.dumps(manifest),flush=True)
           PY
       - name: Preserve selection and narrow native context
         if: always()
