@@ -11,11 +11,11 @@ int d_009acb60(unsigned char *s);
 void bfmeReadWordXF(BfmeCursorXF *out, const unsigned char *data);
 void bfmeInit1186(BfmeBits1186 *s, unsigned char *p);
 void Rva009ABFC0DecodeFrame(unsigned char *s);
-// 0x009A8C50 is still the dump row ?d_009a8c50@@YAXXZ; the calls name that row's
-// symbol through the cdecl signature (the pinned ?Rva009A8C50 has no definition).
-extern void d_009a8c50();
+// 0x009A8C50 is the landed cdecl UpdateUMVBorder body; the calls name it through
+// the two-argument signature retail proves.
+extern "C" void UpdateUMVBorder(void *, unsigned char *);
 #define Rva009A8C50 \
-	(reinterpret_cast<void (__cdecl *)(Rva009A6130Context *, unsigned char *)>(d_009a8c50))
+	(reinterpret_cast<void (__cdecl *)(Rva009A6130Context *, unsigned char *)>(UpdateUMVBorder))
 extern void (__cdecl *g_bfmeToneReady)();
 extern int g_0134C7D8;
 extern "C" int __identifier("?g_0134C7D8@@3HA") = 0;

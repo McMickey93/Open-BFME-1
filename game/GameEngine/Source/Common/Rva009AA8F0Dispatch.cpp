@@ -21,7 +21,7 @@ struct Rva009AA8F0Block
 	unsigned int m_step;
 };
 
-extern void __cdecl d_009a8c50();
+extern "C" void UpdateUMVBorder(void *, unsigned char *);
 struct Rva009AA4F0PostProc;
 struct Rva009AA4F0Planes;
 int __cdecl rva009AA4F0FrameScale(Rva009AA4F0PostProc *pp, unsigned char *frame,
@@ -36,7 +36,7 @@ void __cdecl Rva009AA8F0Dispatch(
 	Rva009AA8F0Context *context, int offset, Rva009AA8F0Block *block)
 {
 	if (context->m_ready != 0)
-		((void (__cdecl *)(Rva009AA8F0Context *, int))d_009a8c50)(context, offset);
+		((void (__cdecl *)(Rva009AA8F0Context *, int))UpdateUMVBorder)(context, offset);
 	if (context->m_mode > 1)
 	{
 		if (context->m_mode != 2)

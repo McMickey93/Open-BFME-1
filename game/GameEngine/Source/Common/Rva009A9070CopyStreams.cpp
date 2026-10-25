@@ -25,7 +25,7 @@ struct Rva009A9070Context
 	unsigned int m_destinationStep1;
 };
 
-	void __cdecl d_009a8c50(void);
+extern "C" void UpdateUMVBorder(void *, unsigned char *);
 
 void __cdecl Rva009A9070CopyStreams(
 	Rva009A9070Context *self,
@@ -73,5 +73,5 @@ void __cdecl Rva009A9070CopyStreams(
 		}
 	}
 
-	((void (__cdecl *)(Rva009A9070Context *, int))d_009a8c50)(self, offset);
+	((void (__cdecl *)(Rva009A9070Context *, int))UpdateUMVBorder)(self, offset);
 }
