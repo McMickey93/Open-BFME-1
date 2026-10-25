@@ -47,7 +47,6 @@ dir32,0x0042FEE6,?j_0002fee6@@YAXXZ,"retail 0x0042FEE6 is already recorded as ?T
 dir32,0x004316B0,??0BoneParticleSystemInfo@@QAE@XZ,"nothing in the ledger owns 0x004316B0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00431C87,?isForcedIntoWantingState@SupplyTruckStateMachine@@SA_NPAVState@@PAX@Z,"nothing in the ledger owns 0x00431C87. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00431EDF,??0Rva006967A0@@QAE@XZ,the name encodes 0x006967A0 but retail reads 0x00431EDF
-dir32,0x004334F6,?j_000334f6@@YAXXZ,"retail 0x004334F6 is already recorded as _AODHordeContainFieldParse (+1 more); reference that name, not a new one"
 dir32,0x0043475C,??0Rva00127AC0Element@@QAE@XZ,"retail 0x0043475C is already recorded as ??0StructureCollapseOCLVector@@QAE@XZ; reference that name, not a new one"
 dir32,0x00434F72,??1ActionTemplate@@QAE@XZ,"nothing in the ledger owns 0x00434F72. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0043572E,?j_0003572e@@YAXXZ,"retail 0x0043572E is already recorded as ?buildFieldParse@RetailCollideModuleDataBase@@SAXAAVMultiIniFieldParse@@@Z (+4 more); reference that name, not a new on"
@@ -581,12 +580,9 @@ dir32,0x012F2578,?theTooltipString@@3VAsciiString@@A,"retail 0x012F2578 is alrea
 dir32,0x012F333C,?TheHeaderTemplateManager@@3PAVGen_0048C5B0@@A,"retail 0x012F333C is already recorded as ?TheHeaderTemplateManager@@3PAVHeaderTemplateManager@@A; reference that name, not a new one"
 dir32,0x012F3930,_g_012F3930,"nothing in the ledger owns 0x012F3930. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3934,_g_012F3934,"nothing in the ledger owns 0x012F3934. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012F3EFC,?textEntryGameDescriptionID@@3W4NameKeyType@@A,"nothing in the ledger owns 0x012F3EFC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3F04,?textEntryLadderPasswordID@@3W4NameKeyType@@A,"nothing in the ledger owns 0x012F3F04. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3F0C,?textEntryGamePasswordID@@3W4NameKeyType@@A,"nothing in the ledger owns 0x012F3F0C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012F3F24,?buttonCancel@@3PAVGameWindow@@A,"nothing in the ledger owns 0x012F3F24. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F3F2C,?textEntryLadderPassword@@3PAVGameWindow@@A,"nothing in the ledger owns 0x012F3F2C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012F3F44,?parentPopupID@PopupJoinGameState@@3W4NameKeyType@@A,"retail 0x012F3F44 is already recorded as ?parentPopupID@PopupJoinGameState@@3HA; reference that name, not a new one"
 dir32,0x012F49B0,?g_loadScreen012F49B0@@3PAVLoadScreen0051BF30@@A,"retail 0x012F49B0 is already recorded as ?g_Va012F49B0@@3HA; reference that name, not a new one"
 dir32,0x012F49D0,?g_rva012F49D0@@3PAXA,"retail 0x012F49D0 is already recorded as ?TheBfmeCampaignManager@@3PAVBfmeDeletable@@A (+5 more); reference that name, not a new one"
 dir32,0x012F4A00,?id@?$num_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@2V0locale@2@A,"retail 0x012F4A00 is already recorded as ?g_bfmeSlot04VA@@3HA (+2 more); reference that name, not a new one"
@@ -694,7 +690,6 @@ dir32,0x01336E2C,??_B?1??getRva008876E0Singleton@@YAPAXXZ@51,the name encodes 0x
 dir32,0x01336E30,?obj@?1??getRva008877A0Singleton@@YAPAXXZ@4VRva008877A0Type@@A,the name encodes 0x008877A0 but retail reads 0x01336E30
 dir32,0x01336E4C,??_B?1??getRva008877A0Singleton@@YAPAXXZ@51,the name encodes 0x008877A0 but retail reads 0x01336E4C
 dir32,0x01336E50,?TheEmptyAsciiString@@3VAsciiString@@A,"retail 0x01336E50 is already recorded as ?BfmeDefeatScreenTable@@3PAEA (+42 more); reference that name, not a new one"
-dir32,0x01336E54,?emptyString01336E54@@3VUnicodeString@@A,"retail 0x01336E54 is already recorded as ?BFMEEmptyPlayerName@@3VUnicodeString@@B (+8 more); reference that name, not a new one"
 dir32,0x01336E5C,?debug01336E5C@@3PAVShadowDebug007BC270@@A,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x01336E5C,?g_Rva00F36E5C@@3PAXA,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x013377D8,?g_bfmeHolderBU@@3PAUState8C4DA0@@A,"retail 0x013377D8 is already recorded as ?Rva008A5380Holder@@3PADA (+18 more); reference that name, not a new one"

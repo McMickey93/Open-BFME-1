@@ -9,8 +9,7 @@
 // Window-manager slots: focus +B0; lookup +DC; modal +EC. GameSpy local name +68.
 // CustomMatchPreferences occupies 20 bytes at caller ESP+10..ESP+23;
 // its constructor/destructor are the named retail bodies behind B0F5/41F6A.
-// emptyString01336E54 names the existing UnicodeString::TheEmptyString singleton
-// by address because the canonical unicode_string.h omits that static member.
+// Retired ?emptyString01336E54@@3VUnicodeString@@A: use UnicodeString::TheEmptyString
 #include "ascii_string.h"
 #include "unicode_string.h"
 inline UnicodeString::UnicodeString() { m_text=0; }
@@ -137,13 +136,13 @@ extern GameWindow* textEntryGameDescription;
 extern "C" GameWindow* __identifier("?textEntryGameDescription@@3PAVGameWindow@@A") = 0;
 extern NameKeyType buttonCancelID;
 extern GameWindow* buttonCancel;
+extern "C" GameWindow* __identifier("?buttonCancel@@3PAVGameWindow@@A") = 0;
 extern NameKeyType textEntryLadderPasswordID;
 extern GameWindow* textEntryLadderPassword;
 extern NameKeyType comboBoxLadderNameID;
 extern GameWindow* comboBoxLadderName;
 extern NameKeyType textEntryGamePasswordID;
 extern GameWindow* textEntryGamePassword;
-extern UnicodeString emptyString01336E54;
 void PopupHostGameInit( WindowLayout *layout, void *userData )
 {
 	parentPopupID = TheNameKeyGenerator->nameToKey(AsciiString("PopupHostGame.wnd:ParentHostPopUp").str());
@@ -157,15 +156,15 @@ void PopupHostGameInit( WindowLayout *layout, void *userData )
 
 	textEntryGameDescriptionID = TheNameKeyGenerator->nameToKey(AsciiString("PopupHostGame.wnd:TextEntryGameDescription").str());
 	textEntryGameDescription = TheWindowManager->winGetWindowFromId(parentPopup, textEntryGameDescriptionID);
-	GadgetTextEntrySetText(textEntryGameDescription, emptyString01336E54);
+	GadgetTextEntrySetText(textEntryGameDescription, UnicodeString::TheEmptyString);
 
 	textEntryLadderPasswordID = TheNameKeyGenerator->nameToKey(AsciiString("PopupHostGame.wnd:TextEntryLadderPassword").str());
 	textEntryLadderPassword = TheWindowManager->winGetWindowFromId(parentPopup, textEntryLadderPasswordID);
-	GadgetTextEntrySetText(textEntryLadderPassword, emptyString01336E54);
+	GadgetTextEntrySetText(textEntryLadderPassword, UnicodeString::TheEmptyString);
 
 	textEntryGamePasswordID = TheNameKeyGenerator->nameToKey(AsciiString("PopupHostGame.wnd:TextEntryGamePassword").str());
 	textEntryGamePassword = TheWindowManager->winGetWindowFromId(parentPopup, textEntryGamePasswordID);
-	GadgetTextEntrySetText(textEntryGamePassword, emptyString01336E54);
+	GadgetTextEntrySetText(textEntryGamePassword, UnicodeString::TheEmptyString);
 
 	buttonCreateGameID = TheNameKeyGenerator->nameToKey(AsciiString("PopupHostGame.wnd:ButtonCreateGame").str());
 	buttonCreateGame = TheWindowManager->winGetWindowFromId(parentPopup, buttonCreateGameID);
@@ -190,3 +189,4 @@ void PopupHostGameInit( WindowLayout *layout, void *userData )
 
 extern "C" NameKeyType __identifier("?parentPopupID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;
 extern "C" NameKeyType __identifier("?checkBoxAllowObserversID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;
+extern "C" NameKeyType __identifier("?textEntryGameDescriptionID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;

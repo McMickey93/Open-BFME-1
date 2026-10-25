@@ -203,7 +203,8 @@ void GadgetStaticTextSetText(GameWindow *window, UnicodeString text);
 
 namespace PopupJoinGameState
 {
-    extern NameKeyType parentPopupID;
+    // ?parentPopupID@PopupJoinGameState@@3W4NameKeyType@@A: reference recorded ?parentPopupID@PopupJoinGameState@@3HA
+    extern int parentPopupID;
     extern NameKeyType textEntryGamePasswordID;
     extern NameKeyType buttonCancelID;
     extern GameWindow *parentPopup;
