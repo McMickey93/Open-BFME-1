@@ -355,3 +355,35 @@ Bool ContestableContain::rva0021BA10(Object *object, Object **target) const
 	*target = (*it).second.m_object;
 	return true;
 }
+
+// Shared containment-interface slot +0x98; the defining class and EA name
+// remain unproven. Keep the receiver and member address-derived.
+// Retail 0x002214F0; see identity_evidence/002214f0-containment-slot.md.
+struct Rva002214F0Source
+{
+	char m_pad[0x74];
+	int m_074;
+};
+
+class Rva002214F0
+{
+public:
+	void method(Rva002214F0Source *a, int b, Rva002214F0Source *c);
+
+private:
+	char m_pad[0x9C];
+	int m_9C;
+	int m_A0;
+	int m_A4;
+};
+
+void Rva002214F0::method(Rva002214F0Source *a, int b, Rva002214F0Source *c)
+{
+	int one = 1;
+	const volatile int *maxp = (b > one) ? &b : &one;
+	int maxv = *maxp;
+	int av = a->m_074;
+	m_A4 = maxv;
+	m_9C = av;
+	m_A0 = c->m_074;
+}

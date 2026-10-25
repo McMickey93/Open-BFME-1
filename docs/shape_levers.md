@@ -2096,3 +2096,19 @@ The independent layouts, donor revision, native inputs and table audit are
 in `targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md`.
 The comparison-order effect was isolated; broader applicability requires
 its own register-lifetime and equality evidence.
+
+## Volatile local clamp read constrains a following load
+
+At RVA `0x002214F0` (62 bytes), the max-by-reference bank had the right
+length but 13 differing bytes: VC7.1 moved the first source-field load
+after the receiver clamp store and rotated scratch registers. Read the
+selected `&argument`/`&one` through `const volatile int *`, materialize that
+value and the first source-field value, then perform the original stores.
+This reproduces all 62 bytes with no relocations under VC7.1 `/O2 /Ob0`
+in isolation and `/O2 /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB` in
+`game/GameEngine/Source/GameLogic/Object/Contain/ContestableContain.cpp`.
+Ordinary locals, const source fields and `/Oa` retained the 13-byte
+residue; source-field volatility alone left 17 differences. The measured
+effect is constrained scheduling in this method; an original volatile
+declaration and broader applicability are unproven. See
+[002214f0-containment-slot.md](../targets/game/reverse/identity_evidence/002214f0-containment-slot.md).
