@@ -49,13 +49,13 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Inspect preserved two-byte residues and complete prior records
+      - name: Inspect preserved four-byte residues and complete prior records
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 two-byte-inspection
+          require_python3 four-byte-inspection
           git switch --detach origin/master
           python3 -u - <<'PY'
           import hashlib,io,json,os,subprocess,sys,urllib.request,zipfile
@@ -67,7 +67,7 @@ jobs:
           sys.path.insert(0,str(root/"tools"))
           import build,claims,finish_measure,probe
           from experiment_store import validated_object_receipt
-          raw=urllib.request.urlopen("https://sdmntprnortheu.oaiusercontent.com/files/00000000-3d50-81f4-8dcc-7641b181b41a/raw?se=2026-10-25T23%3A17%3A05Z&sp=r&sv=2026-02-06&sr=b&scid=01a174d6-c33a-71b9-9ca9-82750df801e0&skoid=002823aa-689d-47ca-9347-108c20f4f00d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-25T05%3A18%3A25Z&ske=2026-10-26T05%3A18%3A25Z&sks=b&skv=2026-02-06&sig=LxoyDtjEODyxGaLtKzr3KsJaIgVE/sYx0zyBsT7RLsc%3D",timeout=60).read()
+          raw=urllib.request.urlopen("https://sdmntprnortheu.oaiusercontent.com/files/00000000-b984-81f4-bdb3-e41980706172/raw?se=2026-10-25T23%3A21%3A45Z&sp=r&sv=2026-02-06&sr=b&scid=01a174d6-c33a-71b9-9ca9-82750df801e0&skoid=002823aa-689d-47ca-9347-108c20f4f00d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-25T02%3A04%3A00Z&ske=2026-10-26T02%3A04%3A00Z&sks=b&skv=2026-02-06&sig=bXXpSjeMf8WVn7AmNumGwZZsyqPrNbY4TLZXACOg9cA%3D",timeout=60).read()
           assert hashlib.sha256(raw).hexdigest()=="d4698f8804c877541203cee6c3fa8b9100479830e60660cd35fe25e583e5825b"
           archive=zipfile.ZipFile(io.BytesIO(raw))
           for name in archive.namelist():
@@ -79,7 +79,7 @@ jobs:
           prior=json.loads((out/"finish-batch.json").read_text(encoding="utf-8"))
           assert prior["base"]=="967c7e1cf5bbda24ea52f802caffa7164c1368ff"
           cache=finish_measure.load()
-          wanted={0x008D1F10,0x008A5250}
+          wanted={0x00376590,0x005F8010}
           result={"source_run":40242622843,"source_zip_sha256":hashlib.sha256(raw).hexdigest(),"current_base":subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),"targets":[]}
           for measurement in prior["measurements"]:
               rva=int(measurement["target_rva"],16)
@@ -111,24 +111,24 @@ jobs:
                   residue.append({"offset":off,"retail":None if a is None else [a.address,bytes(a.bytes).hex(),a.mnemonic,a.op_str],"object":None if b is None else [b.address,bytes(b.bytes).hex(),b.mnemonic,b.op_str]})
               item={"rva":measurement["target_rva"],"symbol":symbol,"stash":measurement["stash"],"current_qualified":entry is not None,"canonical_entry":measurement["entry"],"current_entry":entry,"residue":residue,"unmapped":unmapped,"retail_hex":retail.hex(),"object_hex":bytes(compiled).hex(),"source":raw_source.decode("utf-8")}
               result["targets"].append(item)
-              print("TWO_BYTE_REST "+json.dumps({k:v for k,v in item.items() if k!="source"}),flush=True)
+              print("FOUR_BYTE_REST "+json.dumps({k:v for k,v in item.items() if k!="source"}),flush=True)
               records=[]
               tag=f"{rva:08x}"
               with (root/"targets/game/reverse/re_attempts.log").open(encoding="utf-8",errors="replace") as log:
                   for line in log:
                       if tag in line.lower():records.append(line.rstrip("\r\n"))
               (out/(tag+"-complete-prior-records.txt")).write_text("\n".join(records)+"\n",encoding="utf-8")
-              print("TWO_BYTE_PRIOR "+json.dumps({"rva":measurement["target_rva"],"records":records}),flush=True)
+              print("FOUR_BYTE_PRIOR "+json.dumps({"rva":measurement["target_rva"],"records":records}),flush=True)
               history=root/"targets/game/reverse/attempt_history"/("0x"+tag)
               if history.is_dir():
                   metadata=[]
                   for saved in history.glob("*.json"):
                       data=json.loads(saved.read_text(encoding="utf-8"))
                       metadata.append({k:v for k,v in data.items() if k!="source"})
-                  print("TWO_BYTE_ARCHIVES "+json.dumps({"rva":measurement["target_rva"],"archives":metadata}),flush=True)
-          (out/"two-byte-inspection.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-          cp=subprocess.run([sys.executable,"tools/brief.py","--rvas","0x008D1F10","0x008A5250"],cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-          (out/"two-byte-brief.log").write_bytes(cp.stdout)
+                  print("FOUR_BYTE_ARCHIVES "+json.dumps({"rva":measurement["target_rva"],"archives":metadata}),flush=True)
+          (out/"four-byte-inspection.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          cp=subprocess.run([sys.executable,"tools/brief.py","--rvas","0x00376590","0x005F8010"],cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+          (out/"four-byte-brief.log").write_bytes(cp.stdout)
           print(cp.stdout.decode("utf-8","replace"),flush=True)
           assert cp.returncode==0
           assert subprocess.run(["git","diff","--exit-code"],cwd=root).returncode==0
