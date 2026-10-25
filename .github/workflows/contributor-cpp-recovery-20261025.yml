@@ -49,13 +49,14 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Classify remaining tiny bodies before assuming they are all linker thunks
+      - name: Measure a bounded current finish-bank sample without edits or claims
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 cpp-recovery
+          require_python3 finish-measure-current
+          git switch --detach origin/master
           python3 -u - <<'PY'
           import hashlib,json,os,subprocess,sys,time,traceback
           from pathlib import Path
@@ -63,56 +64,75 @@ jobs:
           out=root/"build/contributor-cpp-recovery-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import claims,list_naked_candidates as naked
-          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[]}
-          def run(label,args,required=True,show=False):
+          import claims,eligibility,finish_measure,next_work
+          assert subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root,text=True).strip()=="06b755567bb147dfee3a89f70f7bbcd38410b5b4", "AGENTS changed"
+          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
+          def run(label,args):
               cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
               (out/(label+".log")).write_bytes(cp.stdout)
-              result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
-              print("RECOVERY_COMMAND",label,"exit",cp.returncode,flush=True)
-              if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
-              if required and cp.returncode: raise RuntimeError(label+" failed")
+              if cp.returncode:
+                  print(cp.stdout.decode("utf-8","replace"),flush=True)
+                  raise RuntimeError(label+" failed")
               return cp.stdout.decode("utf-8","replace")
-          if subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root).decode().strip()!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
-          if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
-          active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
-          result["active_claims"]=active
-          import collections,eligibility,next_work,repair_queue,build
-          rows=eligibility.load_rows()
-          counts=eligibility.attempt_counts()
-          latest=eligibility.latest_verdicts()
-          pool=eligibility.open_dumps(rows=rows,latest=latest,min_size=1,max_size=7)
-          untried=[r for r in pool if not counts.get(eligibility.rva_of(r),0) and not eligibility.boundary_suspect(eligibility.rva_of(r))]
-          candidates=[]
-          for row in untried:
-              if row["target_rva"] in active: continue
-              rva=eligibility.rva_of(row)
-              c={"function":row["name"],"source":row["source"],"target_rva":row["target_rva"],"size":int(row["target_size"]),"notes":row.get("notes",""),"latest_verdict":latest.get(rva),"bytes":build.read_target_bytes(rva,int(row["target_size"])).hex()}
-              candidates.append(c)
-          repair_queue.annotate_dest(candidates)
-          result.update(pool_count=len(pool),untried_count=len(untried),candidate_count=len(candidates),untried=candidates)
-          print("RECOVERY_TINY_POOL "+json.dumps({"pool":len(pool),"untried":len(untried),"available":len(candidates),"sizes":dict(collections.Counter(c["size"] for c in candidates))}),flush=True)
-          for c in candidates: print("RECOVERY_TINY_ROW "+json.dumps(c),flush=True)
+          assert claims.fetch(), "Cannot read shared claims"
+          busy=eligibility.busy_rvas()
+          live=claims.live(claims._read_local())
+          blocked={0x00269C50,0x00271B40,0x0060F3C0,0x000B4780,0x00948BD0,0x00925D10,0x008CF030,0x00078640,0x003D59C0,0x001EDCA0}
+          payload=json.loads(run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"]))
+          pool=payload["finish"]
+          available=[c for c in pool if int(c["target_rva"],16) not in blocked and int(c["target_rva"],16) not in live and c["target_rva"].lower() not in busy]
           sequence=[]
-          for n in range(min(3,len(candidates))):
-              c=next_work.weighted_choice(candidates);candidates.remove(c)
+          for number in range(min(32,len(available))):
+              c=next_work.finish_choice(available)
+              available=[a for a in available if int(a["target_rva"],16)!=int(c["target_rva"],16)]
               sequence.append(c)
-              print("RECOVERY_TINY_SELECTION "+json.dumps({"order":n,"candidate":c}),flush=True)
-              run("tiny-brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",c["target_rva"]],True,True)
-              run("tiny-callees-"+str(n),[sys.executable,"tools/callees.py",c["target_rva"],str(c["size"])],True,True)
-          result["sequence"]=sequence
+          result={"status":"measuring","base":base,"workflow":os.environ["GITHUB_SHA"],"run":os.environ["GITHUB_RUN_ID"],"pool":len(pool),"bounded_draws":len(sequence),"selector":"next_work.finish_choice without replacement","excluded":sorted(f"0x{r:08X}" for r in blocked),"sequence":sequence,"measurements":[]}
+          def save():
+              (out/"finish-batch.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          cache=finish_measure.load()
+          save()
+          for number,c in enumerate(sequence):
+              rva=int(c["target_rva"],16)
+              path=root/c["stash"]
+              assert path.is_relative_to(root/"targets/game/reverse/attempts"), "Unexpected bank location"
+              raw=path.read_bytes()
+              before=hashlib.sha256(raw).hexdigest()
+              # Read the banked whole TU unchanged. Keep only a text snapshot in
+              # build/; measure the actual tracked path so its include context stays native.
+              (out/(f"{rva:08x}-whole-stash.cpp.txt")).write_bytes(raw)
+              m={"order":number,"target_rva":c["target_rva"],"stash":c["stash"],"author_score":c["score"],"target_size":c["target_size"],"whole_source_sha256":before,"whole_source_bytes":len(raw),"symbol_header":finish_measure.symbol_of(path)}
+              assert claims.fetch(), "Cannot refresh shared claims"
+              if rva in claims.live(claims._read_local()):
+                  m.update(status="skipped-new-live-claim",qualified=False)
+              else:
+                  try:
+                      cache=finish_measure.ensure([(rva,path)],budget=1,cache=cache)
+                      entry=finish_measure.current(cache,rva,path)
+                      m.update(status="qualified" if entry is not None else "unmeasured-no-current-proof",qualified=entry is not None,entry=entry)
+                  except ValueError as error:
+                      m.update(status="refused",qualified=False,note=str(error))
+              assert hashlib.sha256(path.read_bytes()).hexdigest()==before, "Bank changed while measuring"
+              result["measurements"].append(m)
+              save()
+              print("FINISH_BATCH_ITEM "+json.dumps(m),flush=True)
+              if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1:
+                  print("FINISH_BATCH_RAW_EXACT_LEAD "+json.dumps(m),flush=True)
+          result.update(status="complete",qualified_count=sum(bool(m["qualified"]) for m in result["measurements"]),raw_exact_leads=[m for m in result["measurements"] if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1])
           run("clean-tree",["git","diff","--exit-code"])
-          run("progress",[sys.executable,"tools/progress.py","origin/master"],True,True)
-          result["status"]="inspected-eligibility-tiny-thunks-before-classification"
-          (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-          print("RECOVERY_RESULT "+json.dumps(result),flush=True)
+          print(run("progress",[sys.executable,"tools/progress.py","origin/master"]),flush=True)
+          save()
+          print("FINISH_BATCH_FINAL "+json.dumps({"base":base,"draws":len(sequence),"qualified":result["qualified_count"],"raw_exact_count":len(result["raw_exact_leads"]),"unqualified":sum(not m["qualified"] for m in result["measurements"])}),flush=True)
           PY
-      - name: Preserve selection and narrow native context
+      - name: Preserve unchanged bank snapshots and qualified native measurements
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: bfme1-cpp-recovery-${{ github.run_id }}-${{ github.run_attempt }}
-          path: source/build/contributor-cpp-recovery-20261025/
+          path: |
+            source/build/contributor-cpp-recovery-20261025/
+            source/build/finish_measured.json
+            source/build/experiments/
+            source/build/experiments.sqlite
           retention-days: 90
           if-no-files-found: warn
           compression-level: 9
