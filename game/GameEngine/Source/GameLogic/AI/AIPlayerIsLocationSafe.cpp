@@ -236,7 +236,9 @@ struct VptrZeroBlock24
 	}
 };
 
-extern const VptrZeroBlock24 KINDOFMASK_NONE;
+// ?KINDOFMASK_NONE@@3UVptrZeroBlock24@@B: retail 0x012ED8B8 is recorded as ?KINDOFMASK_NONE@@3UKindOfMaskType@@B
+struct KindOfMaskType;
+extern const KindOfMaskType KINDOFMASK_NONE;
 
 // The immediates are 1<<14 and 1<<16 in dword 0 of the mask.  The shim's enum
 // has one fewer kind than retail's (see the header), so these numbers -- not
@@ -448,10 +450,10 @@ Bool AIPlayer::isLocationSafe(const Coord3D *pos, const ThingTemplate *tthing)
 					Rva010956E4Filter(true, false).link(
 						PartitionFilterRejectByKindOf(
 							MAKE_KINDOF_MASK(KINDOF_FROM_RETAIL_MASK_16),
-							KINDOFMASK_NONE).link(
+							*(const VptrZeroBlock24 *)&KINDOFMASK_NONE).link(
 								&PartitionFilterRejectByKindOf(
 									MAKE_KINDOF_MASK(KINDOF_FROM_RETAIL_MASK_14),
-									KINDOFMASK_NONE)))))));
+									*(const VptrZeroBlock24 *)&KINDOFMASK_NONE)))))));
 
 	const Bool noEnemyFound = (enemy == 0);
 	return noEnemyFound;

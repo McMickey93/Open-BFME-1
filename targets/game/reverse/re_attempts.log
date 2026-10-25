@@ -58088,3 +58088,6 @@ __RTC_Terminate	0x00DF7F4E	0	blocked	gate-debt: false-reject locate_source: symb
 __matherr	0x00DF7FB0	0	blocked	gate-debt: no source spells __matherr in game/ so pass-test exits 1; stale baseline entry needs manual retirement t=2 model=gemini-3.8-flash-medium
 ??_7Gen_0042B9F0@@6BBfmeDBaseB@Rva003828E0@@@	0x010F3554	0	blocked	gate-debt: requires identity and symbol-pin reconciliation for BfmeDBaseB in Rva003828E0 namespace vs global BfmeDBaseB t=3m model=gemini-3.8-flash-medium
 ??_7GameClient@@6BSubsystemInterface@@@	0x010F37F0	0	blocked	gate-debt: secondary vtable not supported by dir32_record_guard VTABLE_RE; requires data row or verifier secondary vtable proof t=3m model=gemini-3.8-flash-medium
+??1ActionTemplate@@QAE@XZ	0x00034F72	0	blocked	gate-debt: unrecorded dtor symbol needs identity/row placement decision at ILT thunk 0x00034F72 t=5 model=gemini-3.8-flash-medium
+?g_rva00EDBD60DistanceProcs@@3PAP6AMPBX0H@ZA	0x00EDBD60	0	blocked	gate-debt: static data array 0x012DBD60 needs TU data definition or unpermitted g_Va escape hatch t=5 model=gemini-3.8-flash-medium
+??0BoneOCLInfo@@QAE@XZ	0x000402EB	0	blocked	gate-debt: unrecorded ctor symbol at ILT thunk 0x000402EB needs identity/row placement decision t=2 model=gemini-3.8-flash-medium

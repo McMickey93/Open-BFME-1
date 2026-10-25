@@ -96,7 +96,7 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 // Gate debt ?g_vtbl_01111FB0@@3PAPAXA: reference the recorded retail vtable directly.
 // ?g_vtbl_01111FC4@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111FC8@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01111FCC@@3PAPAXA=??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@")
+// Gate debt ?g_vtbl_01111FCC@@3PAPAXA: reference the recorded retail vtable directly.
 // ?g_vtbl_01112034@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01112048@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_011120C8@@3PAPAXA: reference the recorded retail vtable directly.
@@ -123,6 +123,7 @@ extern "C" void *__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B
 // ?g_vtbl_0110F9CC@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@")[];
 extern "C" void *__identifier("??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@")[];
+extern "C" void *__identifier("??_7?$CategoryModuleClass@$04@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0110F9E4[];
 // ?g_vtbl_0110F9E8@@3PAPAXA: use the owner recorded at 0x0110F9E8.
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@")[];
@@ -277,7 +278,9 @@ extern "C" void *__identifier("??_7BFMEDistLODClass@@6BPersistClass@@@")[];
 // ?g_vtbl_01111FC8@@3PAPAXA: use the owner recorded at 0x01111FC8.
 extern "C" void *__identifier("??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")[];
 #define g_vtbl_01111FC8 __identifier("??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")
-extern void *g_vtbl_01111FCC[];
+// ?g_vtbl_01111FCC@@3PAPAXA: use the owner recorded at 0x01111FCC.
+extern "C" void *__identifier("??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@")[];
+#define g_vtbl_01111FCC __identifier("??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@")
 // ?g_vtbl_01112034@@3PAPAXA: use the owner recorded at 0x01112034.
 extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot3@@@")[];
 extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot2@@@")[];
@@ -360,7 +363,8 @@ extern "C" void *__identifier("??_7Rva005EDC80@@6BV3Slot3@@@")[];
 // ?g_vtbl_01112398@@3PAPAXA: use the owner recorded at 0x01112398.
 extern "C" void *__identifier("??_7Rva005EDC80@@6BV3Slot2@@@")[];
 extern void *g_vtbl_0111239C[];
-extern void *g_vtbl_011123A0[];
+// ?g_vtbl_011123A0@@3PAPAXA: use the owner recorded at 0x011123A0.
+extern "C" void *__identifier("??_7Rva005EDC80@@6BV3Slot0@@@")[];
 // ?g_vtbl_011123C4@@3PAPAXA: use the owner recorded at 0x011123C4.
 extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@")[];
 // ?g_vtbl_011123D8@@3PAPAXA: use the owner recorded at 0x011123D8.
@@ -1180,7 +1184,7 @@ public:
 
 __forceinline void initializeSphereEmissionVolumeModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_011123A0;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005EDC80@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_0111239C;
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005EDC80@@6BV3Slot2@@@");
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005EDC80@@6BV3Slot3@@@");
@@ -1859,7 +1863,8 @@ extern const char g_01110850[];
 #define g_01110820 __identifier("??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@")
 extern const char g_01110868[];
 extern const char g_01110880[];
-extern const char g_0111088C[];
+// ?g_0111088C@FXParticleSystem@@3QBDB: retail 0x0111088C is ??_7?$CategoryModuleClass@$04@FXParticleSystem@@6B@
+#define g_0111088C __identifier("??_7?$CategoryModuleClass@$04@FXParticleSystem@@6B@")
 extern const char g_01110874[];
 extern void **defaultModuleTag0SourceAt8;
 extern void **defaultModuleTag0SourceAt4;

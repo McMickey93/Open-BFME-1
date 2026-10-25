@@ -4,6 +4,7 @@
 
 class Rva007EA320Owner;
 class Rva007EA380Owner;
+// ?rva007EAD10BindCallback@@YAXPAVRva007EA320Owner@@PAX1@Z
 void __cdecl rva007EAD10BindCallback(Rva007EA320Owner *owner, void *first, void *second);
 void __cdecl rva007EADA0BindCallback(Rva007EA380Owner *owner, void *first, void *second);
 

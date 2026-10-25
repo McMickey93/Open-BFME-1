@@ -70,6 +70,8 @@ extern void **defaultModuleTag0SourceAt4;
 extern void **defaultModuleTag2SourceAt8;
 extern void **renderObjectUpdateSourceAt4;
 extern void **orthoEmissionVelocitySourceAt4;
+extern void **defaultModuleTag3SourceAt8;
+extern void **hemisphericalEmissionVelocitySourceAt4;
 }
 
 extern char Rva00D139F8;
@@ -150,9 +152,8 @@ void Rva00C6C020() { Rva00EF6CEC = (void *)FXParticleSystem::DefaultModuleName<3
 // 0x00C6C030: independent INT3-bounded initializer (?Rva00EF6CF0@@3PAXA).
 void Rva00C6C030() { FXParticleSystem::defaultModuleTag3SourceAt4 = (void **)&Rva00EF6CE8; }
 
-extern void *Rva00EF6CF4;
-// 0x00C6C040: independent INT3-bounded initializer.
-void Rva00C6C040() { Rva00EF6CF4 = (void *)&Rva00EF6CEC; }
+// Retire ?Rva00EF6CF4@@3PAXA: retail VA 0x012F6CF4 records the FX pointer.
+void Rva00C6C040() { FXParticleSystem::defaultModuleTag3SourceAt8 = (void **)&Rva00EF6CEC; }
 
 extern void *Rva00EF6CF8;
 // 0x00C6C050: independent INT3-bounded initializer.
@@ -233,15 +234,16 @@ extern char Rva00D13D7C;
 // 0x00C6C170: independent INT3-bounded initializer.
 void Rva00C6C170() { Rva00EF6D40 = (void *)&Rva00D13D7C; }
 
-extern void *Rva00EF6D44;
+// Retire ?Rva00EF6D44@@3PAXA: retail VA 0x012F6D44 records the FX pointer.
 extern char Rva00D13D80;
 // 0x00C6C180: independent INT3-bounded initializer.
-void Rva00C6C180() { Rva00EF6D44 = (void *)&Rva00D13D80; }
+void Rva00C6C180() { FXParticleSystem::hemisphericalEmissionVelocitySourceAt4 = (void **)&Rva00D13D80; }
 
-extern void *Rva00EF6D48;
+// Retire ?Rva00EF6D48@@3PAXA: retail VA 0x012F6D48 records the FX pointer.
+namespace FXParticleSystem { extern void **cylindricalEmissionVelocitySourceAt8; }
 extern char Rva00D13B3C;
 // 0x00C6C190: independent INT3-bounded initializer.
-void Rva00C6C190() { Rva00EF6D48 = (void *)&Rva00D13B3C; }
+void Rva00C6C190() { FXParticleSystem::cylindricalEmissionVelocitySourceAt8 = (void **)&Rva00D13B3C; }
 
 // Retire ?Rva00EF6D4C@@3PAXA: retail VA 0x012F6D4C records the FX pointer.
 namespace FXParticleSystem { extern void **cylindricalEmissionVelocitySourceAt4; }

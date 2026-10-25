@@ -59,6 +59,7 @@ private:
 	char m_2AC;
 };
 
+// ?rva007EAC10BeginCallback@@YAXPAVRva007E9FC0Owner@@HPAX@Z
 void __cdecl rva007EAC10BeginCallback(Rva007E9FC0Owner *owner, int count, void *peer);
 
 void Rva007E9FC0Owner::begin(int n, void *peer)
