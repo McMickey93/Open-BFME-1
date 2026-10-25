@@ -45,6 +45,7 @@ union Rva0112E8ACValue
     unsigned int bits;
     float value;
 };
+// Matched data provider: ?g_Va0112E8AC@@3TRva0112E8ACValue@@B.
 extern const Rva0112E8ACValue g_Va0112E8AC = { 0x7FA00000u };
 // Retail VA 0x0112E8B0 is the IEEE binary32 +infinity bits 0x7F800000.
 // VC7.1 cannot spell this float with a literal. Its supported union-punning

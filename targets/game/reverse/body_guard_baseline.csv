@@ -623,7 +623,6 @@ dir32,0x0112C4FC,??_7Rva00802280VtableReseat@@6B@,"retail 0x0112C4FC is already 
 dir32,0x0112C570,??_7Rva00802870VtableReseat@@6B@,"retail 0x0112C570 is already recorded as ??_7Rva00802CA0Base@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112C640,??_7Rva00802E30VtableReseat@@6B@,"retail 0x0112C640 is already recorded as ??_7Rva00802EC0Base@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112C754,??_7Rva008062F0VtableReseat@@6B@,"retail 0x0112C754 is already recorded as ??_7T2EmptyDtor_00806460@@6B@; reference that name, not a new one"
-dir32,0x0112E8AC,?g_Va0112E8AC@@3TRva0112E8ACValue@@B,"retail 0x0112E8AC is already recorded as ?g_bfmeDefaultQA@@3HA; reference that name, not a new one"
 dir32,0x0112E95C,??_7?$money_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@6B@,"??_7?$money_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@6B@ is a function the ledger places elsewhere, not at 0x0112E95C"
 dir32,0x0112E96C,??_7?$money_put@DV?$ostreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@6B@,"nothing in the ledger owns 0x0112E96C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0112E97C,??_7?$num_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@6B@,"??_7?$num_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@6B@ is a function the ledger places elsewhere, not at 0x0112E97C"

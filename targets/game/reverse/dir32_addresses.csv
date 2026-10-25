@@ -9899,7 +9899,6 @@ name,va
 ?g_bfmeDefaultESA@@3VBfmeStrESA@@A,0x01336E50
 ?g_bfmeDefaultESE@@3MA,0x01075334
 ?g_bfmeDefaultFE@@3PAHA,0x012BC0C8
-?g_bfmeDefaultQA@@3HA,0x0112E8AC
 ?g_bfmeDefaultRateCX@@3MA,0x012F8234
 ?g_bfmeDefaultString1284@@3UAptStringBlock@@A,0x012D5298
 ?g_bfmeDefaultString1284@@3UBfmeHdrVKI@@A,0x012D5298
