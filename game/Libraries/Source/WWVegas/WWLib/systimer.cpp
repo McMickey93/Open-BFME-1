@@ -2,6 +2,9 @@
 
 #include "systimer.h"
 
+// Share Get's native initialization flag without emitting its wrong local copy.
+extern bool __identifier("?is_init@?1??Get@SysTimeClass@@QAEKXZ@4_NA");
+
 SysTimeClass SystemTime;
 
 
@@ -32,7 +35,15 @@ bool SysTimeClass::Is_Getting_Late(void)
 	** Even though the timers are all unsigned so we have a max time of 0xffffffff the game casts it to int in various places
 	** so it's safer to assume a signed max value.
 	*/
-	if (Get() > 0x6fffffff) {
+	if (!__identifier("?is_init@?1??Get@SysTimeClass@@QAEKXZ@4_NA")) {
+		Reset();
+		__identifier("?is_init@?1??Get@SysTimeClass@@QAEKXZ@4_NA") = true;
+	}
+	unsigned long now = timeGetTime();
+	unsigned long elapsed;
+	if (now > StartTime) elapsed = now - StartTime;
+	else elapsed = now + WrapAdd;
+	if (elapsed > 0x6fffffff) {
 		return(true);
 	}
 	return(false);
