@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Measure native typed base-offset field and verified normal Render visibility
+      - name: Measure native normal-array member shape and normal RHS parentheses
         working-directory: source
         shell: bash
         run: |
@@ -60,65 +60,72 @@ jobs:
           [[ "$git_bash" == *.exe ]] || git_bash="$git_bash.exe"
           export BFME_NATIVE_BASH="$(cygpath -aw "$git_bash")"
           python3 - <<'PY'
-          import json,os,subprocess,sys
+          import hashlib,json,os,re,subprocess,sys
           from pathlib import Path
           sys.path.insert(0,'tools')
           import claims
           token='06d3feefd48097e4ef5129b93418d632502181df'
           assert claims.fetch()
-          entry=claims.live(claims._read_local()).get(0x00948BD0)
+          entry=claims.live(claims._read_local()).get(0x00925D10)
           assert entry and entry[0]==token and entry[1]['lease']=='a5a918136da04d4e80801a1a798fe459'
-          assert claims.holds(0x00948BD0,token)
-          out=Path('build/contributor_hard_finish_dx8_20261025');out.mkdir(parents=True,exist_ok=True)
-          source=Path('targets/game/reverse/attempts/0x00948bd0.cpp').read_text(encoding='utf-8')
-          rawgetter='int Get_Base_Vertex_Offset() const { return *(const int*)((const char*)this+0x304); }'
-          assert source.count(rawgetter)==1
-          meshend='    Rva00948BD0Field314 *Field314() const { return *(Rva00948BD0Field314*const*)((const char*)this+0x314); }\n\n};'
-          assert source.count(meshend)==1
-          withfield=source.replace(meshend,meshend[:-3]+'    char typed_pad[0x304-sizeof(RefCountClass)];\n    int BaseVertexOffset;\n};\n#include <stddef.h>\ntypedef char CheckBaseSize[(sizeof(RefCountClass)==8)?1:-1];\ntypedef char CheckBaseField[(offsetof(Rva00948BD0Mesh,BaseVertexOffset)==0x304)?1:-1];')
-          variants={
-           'base-getter-nonconst':source.replace(rawgetter,rawgetter.replace('() const','()')),
-           'base-getter-typed-const':withfield.replace(rawgetter,'int Get_Base_Vertex_Offset() const { return BaseVertexOffset; }'),
-           'base-getter-typed-native':withfield.replace(rawgetter,'int Get_Base_Vertex_Offset() { return BaseVertexOffset; }'),
-          }
-          method='    void Render(int);'
-          fields='    MeshModelClass *mmc; DX8TextureCategoryClass *category; unsigned field10; unsigned field14; unsigned field18; unsigned field1c; unsigned field20;'
-          assert source.count(method)==1 and source.count(fields)==1
-          extra=' unsigned min_vertex_index2; unsigned vertex_index_range2; bool strip; unsigned pass;'
-          renderbody='''    __declspec(noinline) void Render(int base) {
-                  DX8Wrapper::Set_Index_Buffer_Index_Offset(base);
-                  if (strip) DX8Wrapper::Draw_Strip(field10,field18-2,field1c,field20);
-                  else DX8Wrapper::Draw_Triangles(field10,field18/3,field1c,field20);
-              }'''
-          visible=source.replace(method,renderbody).replace(fields,fields+extra)
-          variants['unsorted-render-visible-noinline']=visible
-          variants['typed-base-and-visible-noinline']=variants['base-getter-typed-native'].replace(method,renderbody).replace(fields,fields+extra)
-          import hashlib
+          assert claims.holds(0x00925D10,token)
+          out=Path('build/contributor_hard_finish_skin_20261025');out.mkdir(parents=True,exist_ok=True)
+          source=Path('targets/game/reverse/attempts/0x00925d10.cpp').read_text(encoding='utf-8')
+          assert hashlib.sha256(source.encode()).hexdigest()=='f4cc45ef922f15943542b374420e314d1a4425920ca7ac8f83c108c5a5fa04fa'
+          # The 25 October handoff's parens mode touches six po-> blend assignments.
+          # These controls touch only the three previously untested out-> normal RHS.
+          lines=source.splitlines()
+          indexes=[i for i,line in enumerate(lines) if re.match(r'\s*out->[XYZ] = ',line)]
+          assert len(indexes)==3
+          variants={}
+          for mask in range(1,8):
+              changed=lines[:]
+              for bit,i in enumerate(indexes):
+                  if mask & (1<<bit):
+                      left,right=changed[i].split(' = ',1)
+                      changed[i]=left+' = ('+right[:-1]+');'
+              variants['normal-rhs-parens-%d'%mask]='\n'.join(changed)+'\n'
+          start=source.index('\t\t\tin = srcN[0];',source.index('\t\t} else {'))
+          end=source.index('\t\t}\n\t\tlinks += n;',start)
+          anchor='void BfmeDst1016::bfmeSet1016(int a, int b, int r)'
+          assert source.count(anchor)==1
+          for accessor in [False,True]:
+              for parens in [False,True]:
+                  expressions=[]
+                  for row,field in enumerate('XYZ'):
+                      lhs='(*this)[%d]'%row if accessor else 'Row[%d]'%row
+                      rhs='%s.X * in->X + %s.Y * in->Y + %s.Z * in->Z'%(lhs,lhs,lhs)
+                      if parens: rhs='('+rhs+')'
+                      expressions.append('            out->%s = %s;'%(field,rhs))
+                  helper='''struct Rva00925D10NormalArray : public Matrix3D {
+              __forceinline void apply(const Vector3 *in, Vector3 *out, int count) const {
+                  while(count--) {
+          '''+ '\n'.join(expressions)+'''
+                      ++in;
+                      ++out;
+                  }
+              }
+          };
+          typedef char CheckNormalArrayLayout[(sizeof(Rva00925D10NormalArray)==sizeof(Matrix3D))?1:-1];
+          '''
+                  replacement='\t\t\t((const Rva00925D10NormalArray *)pm)->apply(srcN[0], dstN, n);\n'
+                  candidate=(source[:start]+replacement+source[end:]).replace(anchor,helper+'\n'+anchor)
+                  name='normal-member-%s-%s'%('accessor' if accessor else 'row','parens' if parens else 'bare')
+                  variants[name]=candidate
           results=[]
           for name,candidate in variants.items():
-              assert claims.holds(0x00948BD0,token)
+              assert claims.holds(0x00925D10,token)
               path=out/(name+'.cpp');path.write_text(candidate,encoding='utf-8')
               print('TRIAL_BEGIN '+name+' source_sha256='+hashlib.sha256(candidate.encode()).hexdigest(),flush=True)
-              item={'name':name,'sha256':hashlib.sha256(candidate.encode()).hexdigest()}
-              if 'visible-noinline' in name:
-                  p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?Render@DX8PolygonRendererClass@@QAEXH@Z','0x0092CB30','--shape'],capture_output=True,text=True)
-                  log=p.stdout+'\n'+p.stderr
-                  (out/(name+'-provider.log')).write_text(log,encoding='utf-8')
-                  print('PROVIDER_CHECK '+name,flush=True);print(log,flush=True)
-                  item['provider_exact']='result   EXACT' in log
-                  if p.returncode or not item['provider_exact']:
-                      print('PROVIDER_NOT_VERIFIED_SKIP_CALLER',flush=True)
-                      results.append(item);continue
-              p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?Render@DX8TextureCategoryClass@@QAEXXZ','0x00948BD0','--shape'],capture_output=True,text=True)
+              p=subprocess.run([sys.executable,'tools/probe.py',str(path),'?bfmeSet1016@BfmeDst1016@@QAEXHHH@Z','0x00925D10','--shape'],capture_output=True,text=True)
               log=p.stdout+'\n'+p.stderr
               (out/(name+'.log')).write_text(log,encoding='utf-8')
               print(log,flush=True)
-              item['exit']=p.returncode;item['exact']='result   EXACT' in log
-              results.append(item)
-              assert p.returncode==0
+              item={'name':name,'source_sha256':hashlib.sha256(candidate.encode()).hexdigest(),'exit':p.returncode,'exact':'result   EXACT' in log}
+              results.append(item);assert p.returncode==0
               if item['exact']:
                   print('EXACT_CANDIDATE '+name,flush=True);print(candidate,flush=True);break
-          (out/'native-field-visibility-trials.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
+          (out/'normal-member-trials.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
           
           PY
       - name: Measure unchanged baseline
@@ -134,8 +141,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-dx8-native-context
+          name: bfme1-hard-finish-skin-normal-context
           path: |
-            source/build/contributor_hard_finish_dx8_20261025/
+            source/build/contributor_hard_finish_skin_20261025/
             source/build/experiments/
           retention-days: 90
