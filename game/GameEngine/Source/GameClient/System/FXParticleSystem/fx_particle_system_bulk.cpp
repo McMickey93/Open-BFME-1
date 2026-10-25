@@ -1772,19 +1772,19 @@ extern const char g_011137F8[];
 extern const char g_011137EC[];
 extern const char g_011137D0[];
 extern const char g_010A6938[];
-extern const char g_01114A90[];
-extern const char g_01114A80[];
-extern const char g_01114A70[];
-extern const char g_01114A64[];
-extern const char g_01114A58[];
-extern const char g_01114A4C[];
-extern const char g_01114A3C[];
-extern const char g_01114A2C[];
-extern const char g_01114A1C[];
-extern const char g_01114930[];
-extern const char g_01114920[];
-extern const char g_0111490C[];
-extern const char g_01114900[];
+// Former ?g_01114A90@FXParticleSystem@@3QBDB: retail 0x01114A90 is "StartSizeX".
+// Former ?g_01114A80@FXParticleSystem@@3QBDB: retail 0x01114A80 is "StartSizeY".
+// Former ?g_01114A70@FXParticleSystem@@3QBDB: retail 0x01114A70 is "StartSizeZ".
+// Former ?g_01114A64@FXParticleSystem@@3QBDB: retail 0x01114A64 is "SizeRateX".
+// Former ?g_01114A58@FXParticleSystem@@3QBDB: retail 0x01114A58 is "SizeRateY".
+// Former ?g_01114A4C@FXParticleSystem@@3QBDB: retail 0x01114A4C is "SizeRateZ".
+// Former ?g_01114A3C@FXParticleSystem@@3QBDB: retail 0x01114A3C is "SizeDampingX".
+// Former ?g_01114A2C@FXParticleSystem@@3QBDB: retail 0x01114A2C is "SizeDampingY".
+// Former ?g_01114A1C@FXParticleSystem@@3QBDB: retail 0x01114A1C is "SizeDampingZ".
+// Former ?g_01114930@FXParticleSystem@@3QBDB: retail 0x01114930 is "AngleZ".
+// Former ?g_01114920@FXParticleSystem@@3QBDB: retail 0x01114920 is "AngularRateZ".
+// Former ?g_0111490C@FXParticleSystem@@3QBDB: retail 0x0111490C is "AngularDamping".
+// Former ?g_01114900@FXParticleSystem@@3QBDB: retail 0x01114900 is "Rotation".
 extern const char g_01114504[];
 extern const char g_011144EC[];
 extern const char *const RotationTypeNames[];
@@ -10925,55 +10925,55 @@ void RenderObjectUpdateModuleTemplate::writeINI(File &file, unsigned int flags) 
     _STL::basic_ostringstream<char, _STL::char_traits<char>, _STL::allocator<char> > stream(0x10);
     U1Pair *startSizeX = (U1Pair *)((unsigned char *)this + 0x0c);
     if (startSizeX->m_x != 0.0f || startSizeX->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A90, startSizeX);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"StartSizeX", startSizeX);
 
     U1Pair *startSizeY = (U1Pair *)((unsigned char *)this + 0x18);
     if (startSizeY->m_x != 0.0f || startSizeY->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A80, startSizeY);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"StartSizeY", startSizeY);
 
     U1Pair *startSizeZ = (U1Pair *)((unsigned char *)this + 0x24);
     if (startSizeZ->m_x != 0.0f || startSizeZ->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A70, startSizeZ);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"StartSizeZ", startSizeZ);
 
     U1Pair *sizeRateX = (U1Pair *)((unsigned char *)this + 0x30);
     if (sizeRateX->m_x != 0.0f || sizeRateX->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A64, sizeRateX);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"SizeRateX", sizeRateX);
 
     U1Pair *sizeRateY = (U1Pair *)((unsigned char *)this + 0x3c);
     if (sizeRateY->m_x != 0.0f || sizeRateY->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A58, sizeRateY);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"SizeRateY", sizeRateY);
 
     U1Pair *sizeRateZ = (U1Pair *)((unsigned char *)this + 0x48);
     if (sizeRateZ->m_x != 0.0f || sizeRateZ->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A4C, sizeRateZ);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"SizeRateZ", sizeRateZ);
 
     U1Pair *sizeDampingX = (U1Pair *)((unsigned char *)this + 0x54);
     if (sizeDampingX->m_x != 0.0f || sizeDampingX->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A3C, sizeDampingX);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"SizeDampingX", sizeDampingX);
 
     U1Pair *sizeDampingY = (U1Pair *)((unsigned char *)this + 0x60);
     if (sizeDampingY->m_x != 0.0f || sizeDampingY->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A2C, sizeDampingY);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"SizeDampingY", sizeDampingY);
 
     U1Pair *sizeDampingZ = (U1Pair *)((unsigned char *)this + 0x6c);
     if (sizeDampingZ->m_x != 0.0f || sizeDampingZ->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114A1C, sizeDampingZ);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"SizeDampingZ", sizeDampingZ);
 
     U1Pair *angleZ = (U1Pair *)((unsigned char *)this + 0x78);
     if (angleZ->m_x != 0.0f || angleZ->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114930, angleZ);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"AngleZ", angleZ);
 
     U1Pair *angularRateZ = (U1Pair *)((unsigned char *)this + 0x84);
     if (angularRateZ->m_x != 0.0f || angularRateZ->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_01114920, angularRateZ);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"AngularRateZ", angularRateZ);
 
     U1Pair *angularDamping = (U1Pair *)((unsigned char *)this + 0x90);
     if (angularDamping->m_x != 0.0f || angularDamping->m_y != 0.0f)
-        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)g_0111490C, angularDamping);
+        u1Do_005C9030((void *)&stream, (void *)flags, ( void *)"AngularDamping", angularDamping);
 
     unsigned int rotation = *(unsigned int *)((unsigned char *)this + 0x9c);
     if (rotation != 1)
-        u1Call_005C7110((void *)&stream, (void *)flags, ( void *)g_01114900,
+        u1Call_005C7110((void *)&stream, (void *)flags, ( void *)"Rotation",
             (void **)((unsigned char *)&RotationTypeNames + rotation * 4));
 
     {
