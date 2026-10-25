@@ -111,18 +111,13 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_011121A4@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot3@@@")
 // Gate debt ?g_vtbl_011121B8@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_011121C0@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot0@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112DD0@@3PAPAXA=??_7Rva005EC160@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DE4@@3PAPAXA=??_7Rva005EC160@@6BV3Slot2@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112DE8@@3PAPAXA=??_7Rva005EC160@@6BV3Slot1@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DEC@@3PAPAXA=??_7Rva005EC160@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E00@@3PAPAXA=??_7Rva005EC870@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E14@@3PAPAXA=??_7Rva005EC870@@6BV3Slot2@@@")
 // Gate debt ?g_vtbl_01112E18@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01112E1C@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E30@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E44@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot2@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E48@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot1@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E4C@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot0@@@")
 
 extern void *g_vtbl_01073744[];
 extern void *g_vtbl_01073758[];
@@ -325,23 +320,29 @@ extern void *g_vtbl_011123A0[];
 extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@")[];
 extern void *g_vtbl_011123D8[];
 extern void *g_vtbl_011123DC[];
-extern void *g_vtbl_011123E0[];
+// ?g_vtbl_011123E0@@3PAPAXA: use the owner recorded at 0x011123E0.
+extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01112404[4];
 extern void *g_vtbl_01112418[];
 extern void *g_vtbl_0111241C[];
 extern void *g_vtbl_01112420[];
-extern void *g_vtbl_01112DD0[];
+// ?g_vtbl_01112DD0@@3PAPAXA: use the owner recorded at 0x01112DD0.
+extern "C" void *__identifier("??_7Rva005EC160@@6BV3Slot3@@@")[];
 extern void *g_vtbl_01112DE4[];
-extern void *g_vtbl_01112DE8[];
+// ?g_vtbl_01112DE8@@3PAPAXA: use the owner recorded at 0x01112DE8.
+extern "C" void *__identifier("??_7Rva005EC160@@6BV3Slot1@@@")[];
 extern void *g_vtbl_01112DEC[];
 extern void *g_vtbl_01112E00[];
 extern void *g_vtbl_01112E14[];
 extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot1@@@")[];
 extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot0@@@")[];
-extern void *g_vtbl_01112E30[];
+// ?g_vtbl_01112E30@@3PAPAXA: use the owner recorded at 0x01112E30.
+extern "C" void *__identifier("??_7Rva005ECF60@@6BV3Slot3@@@")[];
 extern void *g_vtbl_01112E44[];
-extern void *g_vtbl_01112E48[];
-extern void *g_vtbl_01112E4C[];
+// ?g_vtbl_01112E48@@3PAPAXA: use the owner recorded at 0x01112E48.
+extern "C" void *__identifier("??_7Rva005ECF60@@6BV3Slot1@@@")[];
+// ?g_vtbl_01112E4C@@3PAPAXA: use the owner recorded at 0x01112E4C.
+extern "C" void *__identifier("??_7Rva005ECF60@@6BV3Slot0@@@")[];
 
 
 namespace _STL
@@ -590,10 +591,10 @@ public:
     __forceinline RenderObjectUpdateModuleAllocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((RenderObjectUpdateModuleCtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112E4C;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01112E48;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot0@@@");
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112E44;
-        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112E30;
+        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)__identifier("??_7Rva005ECF60@@6BV3Slot3@@@");
     }
 
 private:
@@ -765,9 +766,9 @@ public:
     {
         ((DefaultModule1CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112DEC;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01112DE8;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005EC160@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112DE4;
-        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112DD0;
+        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)__identifier("??_7Rva005EC160@@6BV3Slot3@@@");
     }
 
 private:
@@ -959,7 +960,7 @@ public:
 
 __forceinline void initializeCylinderEmissionVolumeModule(void *module)
 {
-    *(unsigned int *)module = (unsigned int)g_vtbl_011123E0;
+    *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005EDDE0@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_011123DC;
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_011123D8;
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@");
