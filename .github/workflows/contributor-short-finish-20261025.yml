@@ -49,7 +49,7 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Serve a bounded item from the tools current finish pool
+      - name: Fence the served body and measure its bank with native context
         shell: bash
         working-directory: source
         run: |
@@ -57,17 +57,21 @@ jobs:
           source .githooks/python3.sh
           require_python3 short-finish
           python3 -u - <<'PY'
-          import hashlib,json,os,subprocess,sys,time,traceback
+          import csv,hashlib,json,os,subprocess,sys,time,traceback
           from pathlib import Path
           root=Path.cwd().resolve()
           out=root/"build/contributor-short-finish-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import claims,next_work
-          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[]}
+          import claims
+          rva=0x008CF030
+          token="1dc25e5be19afcfa220c792369560dc978529019"
+          owner="github:McMickey93:bfme1:short-finish-20261025"
+          lease="af684acfcd55496eb3f86bd92cddbde4"
+          result={"status":"starting","workflow_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"commands":[],"claims":[]}
           def save():
-              (out/"selection-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-          def run(label,args,required=True,show=False):
+              (out/"context-result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          def run(label,args,required=True,show=True):
               cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
               (out/(label+".log")).write_bytes(cp.stdout)
               result["commands"].append({"label":label,"argv":list(map(str,args)),"exit_code":cp.returncode,"sha256":hashlib.sha256(cp.stdout).hexdigest()})
@@ -76,40 +80,55 @@ jobs:
               if show: print(cp.stdout.decode("utf-8","replace"),flush=True)
               if required and cp.returncode: raise RuntimeError(label+" failed")
               return cp.stdout.decode("utf-8","replace")
+          def fence(label):
+              if not claims.fetch(): raise RuntimeError("Cannot read actual upstream claims")
+              entry=claims._read_local().get(rva)
+              if not entry: raise RuntimeError("Missing actual claim")
+              current,info=entry
+              if current!=token or info.get("owner")!=owner or info.get("lease",current)!=lease or info.get("expires",0)<=time.time() or not claims.holds(rva,token): raise RuntimeError("Claim lost before "+label)
+              result["claims"].append({"at":label,"token":current,"record":info,"checked_at":time.time()})
+              save()
+          def guard(path,expected):
+              value=subprocess.check_output(["git","hash-object","--",path],cwd=root).decode().strip()
+              if value!=expected: raise RuntimeError("Reviewed source changed: "+path)
           try:
               result["source_sha"]=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root).decode().strip()
-              result["origin_master"]=subprocess.check_output(["git","rev-parse","origin/master"],cwd=root).decode().strip()
               if result["source_sha"]!="f633d0e97a953289405438821be0c09b28527bbb": raise RuntimeError("Unexpected official pin")
-              if subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root).decode().strip()!="06b755567bb147dfee3a89f70f7bbcd38410b5b4": raise RuntimeError("AGENTS changed")
-              if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
-              active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
-              result["active_claims"]=active
-              text=run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"])
-              pool=json.loads(text)["finish"]
-              # Selection is from the tool's eligible pool only. This assigned lane is
-              # bounded by target size; completed work and active reservations are fenced.
-              lane=[c for c in pool if 0<int(c["target_size"])<=512 and c.get("source") and c["target_rva"].upper() not in {"0X00078640","0X003D59C0"}]
-              held=[c for c in lane if c["target_rva"] in active]
-              candidates=[c for c in lane if c["target_rva"] not in active]
-              result.update(pool_count=len(pool),bounded_count=len(lane),held_count=len(held),candidate_count=len(candidates),bounded_pool=lane)
-              print("SHORT_POOL "+json.dumps({"pool":len(pool),"bounded":len(lane),"held":len(held),"available":len(candidates),"items":[{k:c.get(k) for k in ("target_rva","target_size","function","score","latest_verdict","stash")} for c in lane]}),flush=True)
-              if not candidates:
-                  result["status"]="empty-bounded-tool-pool"
-              else:
-                  selected=next_work.weighted_choice(candidates)
-                  result["selection"]=selected
-                  print("SHORT_SELECTED "+json.dumps(selected),flush=True)
-                  rva=selected["target_rva"]
-                  size=str(selected["target_size"])
-                  run("selected-brief",[sys.executable,"tools/brief.py",rva],False,True)
-                  run("selected-callees",[sys.executable,"tools/callees.py",rva,size],False,True)
-                  run("selected-extent",[sys.executable,"tools/row_extent.py",rva],False,True)
-                  stash=root/selected["stash"]
-                  result["stash_sha256"]=hashlib.sha256(stash.read_bytes()).hexdigest()
-                  result["stash_blob"]=subprocess.check_output(["git","hash-object",str(stash)],cwd=root).decode().strip()
-                  result["status"]="served-readonly-before-claim"
+              guard("AGENTS.md","06b755567bb147dfee3a89f70f7bbcd38410b5b4")
+              stash="targets/game/reverse/attempts/0x008cf030.cpp"
+              guard(stash,"33b39cf6c43cf6716655582bc9bd040ec4872c70")
+              fence("before-context")
+              run("selected-brief",[sys.executable,"tools/brief.py","--rvas","0x008CF030"],True)
+              run("selected-callees",[sys.executable,"tools/callees.py","0x008CF030","380"])
+              run("retail-body",[sys.executable,"tools/dis_retail.py","0x008CF030","396"])
+              rows={}
+              for name in ("functions.csv","symbols.csv"):
+                  p=root/"targets/game/reverse"/name
+                  with p.open(encoding="utf-8-sig",newline="") as f:
+                      reader=csv.DictReader(f)
+                      rows[name]=[row for row in reader if any("008cf030" in str(value).lower() for value in row.values())]
+              result["rows"]=rows
+              print("SHORT_ROWS "+json.dumps(rows),flush=True)
+              history=[]
+              for p in sorted((root/"targets/game/reverse/attempt_history/0x008cf030").glob("*.json")):
+                  h=json.loads(p.read_text(encoding="utf-8"))
+                  history.append({"path":p.relative_to(root).as_posix(),**{k:v for k,v in h.items() if k!="source"}})
+              result["bank_history"]=history
+              print("SHORT_BANK_HISTORY "+json.dumps(history),flush=True)
+              run("narrow-handoff-references",["git","grep","-n","-i","008cf030","--","docs","targets/game/reverse/attempt_support","targets/game/reverse/identity_evidence","targets/game/reverse/re_attempts.log"],False)
+              fence("before-private-control-copy")
+              control=out/"00-banked-control.cpp"
+              control.write_bytes((root/stash).read_bytes())
+              result["control_sha256"]=hashlib.sha256(control.read_bytes()).hexdigest()
+              fence("before-bank-measurement")
+              run("bank-finish-measure",[sys.executable,"tools/finish_measure.py","--one","0x008CF030",str(control)],False)
+              fence("before-private-control-probe")
+              text=run("bank-probe",[sys.executable,"tools/probe.py",str(control),"?rva8CF030BuildArray@@YAXPAVRva8CF030State@@PAX@Z","0x008CF030","--size","380","--all","--shape"],False)
+              result["diagnostic_exact"]="result   EXACT" in text
+              fence("after-control")
               run("clean-tree",["git","diff","--exit-code"])
-              run("session-progress",[sys.executable,"tools/progress.py","origin/master"],False,True)
+              run("session-progress",[sys.executable,"tools/progress.py","origin/master"])
+              result["status"]="control-and-native-context-complete"
               save()
               print("SHORT_FINAL "+json.dumps(result),flush=True)
           except BaseException as err:
@@ -124,7 +143,10 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: bfme1-short-finish-${{ github.run_id }}-${{ github.run_attempt }}
-          path: source/build/contributor-short-finish-20261025/
+          path: |
+            source/build/contributor-short-finish-20261025/
+            source/build/experiments/
+            source/build/experiments.sqlite
           retention-days: 90
           if-no-files-found: warn
           compression-level: 9
