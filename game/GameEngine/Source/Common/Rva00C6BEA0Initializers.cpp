@@ -48,6 +48,11 @@ extern void **butterflyDrawSourceAt4;
 extern void **lightningDrawSourceAt8;
 extern void **defaultModuleTag1SourceAt4;
 extern void **defaultModuleTag1SourceAt8;
+extern void **terrainCollisionSourceAt8;
+extern void **terrainCollisionSourceAt4;
+extern void **sphericalEmissionVelocitySourceAt4;
+extern void **pointEmissionVolumeSourceAt4;
+extern void **cylinderEmissionVolumeSourceAt4;
 }
 
 extern char Rva00D139F8;
@@ -190,15 +195,13 @@ extern char Rva00D149E4;
 // 0x00C6C100: independent INT3-bounded initializer.
 void Rva00C6C100() { Rva00EF6D24 = (void *)&Rva00D149E4; }
 
-extern void *Rva00EF6D28;
 extern char Rva00D144B4;
-// 0x00C6C110: independent INT3-bounded initializer.
-void Rva00C6C110() { Rva00EF6D28 = (void *)&Rva00D144B4; }
+// 0x00C6C110: independent INT3-bounded initializer (?Rva00EF6D28@@3PAXA).
+void Rva00C6C110() { FXParticleSystem::terrainCollisionSourceAt8 = (void **)&Rva00D144B4; }
 
-extern void *Rva00EF6D2C;
 extern char Rva00D144B8;
-// 0x00C6C120: independent INT3-bounded initializer.
-void Rva00C6C120() { Rva00EF6D2C = (void *)&Rva00D144B8; }
+// 0x00C6C120: independent INT3-bounded initializer (?Rva00EF6D2C@@3PAXA).
+void Rva00C6C120() { FXParticleSystem::terrainCollisionSourceAt4 = (void **)&Rva00D144B8; }
 
 extern void *Rva00EF6D30;
 extern char Rva00D13EF8;
@@ -215,10 +218,9 @@ extern char Rva00D14088;
 // 0x00C6C150: independent INT3-bounded initializer.
 void Rva00C6C150() { Rva00EF6D38 = (void *)&Rva00D14088; }
 
-extern void *Rva00EF6D3C;
 extern char Rva00D1408C;
-// 0x00C6C160: independent INT3-bounded initializer.
-void Rva00C6C160() { Rva00EF6D3C = (void *)&Rva00D1408C; }
+// 0x00C6C160: independent INT3-bounded initializer (?Rva00EF6D3C@@3PAXA).
+void Rva00C6C160() { FXParticleSystem::sphericalEmissionVelocitySourceAt4 = (void **)&Rva00D1408C; }
 
 extern void *Rva00EF6D40;
 extern char Rva00D13D7C;
@@ -252,10 +254,9 @@ extern char Rva00D13F90;
 // 0x00C6C1C0: independent INT3-bounded initializer.
 void Rva00C6C1C0() { Rva00EF6D54 = (void *)&Rva00D13F90; }
 
-extern void *Rva00EF6D58;
 extern char Rva00D14020;
-// 0x00C6C1D0: independent INT3-bounded initializer.
-void Rva00C6C1D0() { Rva00EF6D58 = (void *)&Rva00D14020; }
+// 0x00C6C1D0: independent INT3-bounded initializer (?Rva00EF6D58@@3PAXA).
+void Rva00C6C1D0() { FXParticleSystem::pointEmissionVolumeSourceAt4 = (void **)&Rva00D14020; }
 
 extern void *Rva00EF6D5C;
 extern char Rva00D14024;
@@ -298,10 +299,9 @@ extern char Rva00D13C4C;
 // 0x00C6C250: independent INT3-bounded initializer.
 void Rva00C6C250() { Rva00EF6D78 = (void *)&Rva00D13C4C; }
 
-extern void *Rva00EF6D7C;
 extern char Rva00D13C50;
-// 0x00C6C260: independent INT3-bounded initializer.
-void Rva00C6C260() { Rva00EF6D7C = (void *)&Rva00D13C50; }
+// 0x00C6C260: independent INT3-bounded initializer (?Rva00EF6D7C@@3PAXA).
+void Rva00C6C260() { FXParticleSystem::cylinderEmissionVolumeSourceAt4 = (void **)&Rva00D13C50; }
 
 // Retire ?Rva00EF6D80@@3PAXA: retail VA 0x012F6D80 records the FX pointer.
 namespace FXParticleSystem { extern void **lightningEmissionSourceAt8; }

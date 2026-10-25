@@ -1744,7 +1744,8 @@ extern const char g_011136D8[];
 extern const char g_011136CC[];
 // ?g_011136C0@FXParticleSystem@@3QBDB: eight retail bytes including the NUL.
 extern const char g_011136C0[] = "OffsetZ";
-extern const char g_011136B0[];
+// ?g_011136B0@FXParticleSystem@@3QBDB: twelve retail bytes including the NUL.
+extern const char g_011136B0[] = "MultiChance";
 extern const char g_011136A0[];
 // ?g_01113E20@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_01113E20[] = "StartPoint";
