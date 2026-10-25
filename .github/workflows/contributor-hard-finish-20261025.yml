@@ -162,7 +162,13 @@ jobs:
           assert hashlib.sha256(candidate.encode()).hexdigest()=='940c67b6dca70271cf52780566f2a96f3bdc4b1fb2315c5ebf7f012290da395f'
           assert claims.holds(0x00948BD0,token) and claims.holds(0x00925D10,token)
           base=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          path=out/'canonical-direct-view.cpp';path.write_text(candidate,encoding='utf-8')
+          path=out/'canonical-direct-view.cpp'
+          import re_log
+          prior_body=re_log._source_body(Path('targets/game/reverse/attempts/0x00925d10.cpp').read_bytes())
+          crlf=prior_body.count(b'\r\n');lf=prior_body.count(b'\n')-crlf
+          newline='\r\n' if crlf>lf else '\n'
+          print('BANK_TERMINATOR_PRESERVATION '+json.dumps({'crlf':crlf,'lf':lf,'chosen':repr(newline)}),flush=True)
+          path.write_text(candidate,encoding='utf-8',newline=newline)
           p=subprocess.run([sys.executable,'tools/probe.py',str(path),symbol,'0x00925D10','--all','--shape'],capture_output=True,text=True)
           log=p.stdout+'\n'+p.stderr;(out/'bank-source-probe.log').write_text(log,encoding='utf-8')
           print(log,flush=True);assert p.returncode==0 and 'diffs    16 ' in p.stdout and 'ours=1634 retail=1634' in p.stdout
