@@ -59,7 +59,7 @@ jobs:
           require_python3 contributor-selection
           python3 tools/brief.py --rvas 0x00778590
           python3 tools/callees.py 0x00778590 3986
-          python3 tools/find_declared_unmatched.py game/GameEngineDevice/Source/W3DDevice/GameClient/Draw/W3DModelDraw.cpp
+          python3 tools/repair_queue.py dest 0x00778590
       - name: Inspect ranked C++ reconstruction leads
         if: success() || failure()
         shell: bash
@@ -68,8 +68,7 @@ jobs:
           set -euo pipefail
           source .githooks/python3.sh
           require_python3 contributor-selection
-          python3 tools/lift_lane.py
-          python3 tools/list_naked_candidates.py game --ranked
+          python3 tools/lift_lane.py --summary
       - name: Inspect current reference transfers
         if: success() || failure()
         shell: bash
@@ -80,11 +79,39 @@ jobs:
           require_python3 contributor-reference-selection
           git submodule update --init --depth 1 inputs/reference/open-bfme-2
           git -C inputs/reference/open-bfme-2 fetch --no-tags origin master
+          git -C inputs/reference/open-bfme-2 checkout --detach 349db6dc10069cc230469ebf3f6dd6d19a17fb82
           git -C inputs/reference/open-bfme-2 rev-parse HEAD FETCH_HEAD
-          python3 tools/bfme2_sweep.py sources --limit 8
-          python3 tools/bfme2_sweep.py scan --limit 800
-          python3 tools/bfme2_sweep.py ranked --limit 12
-          python3 tools/bfme2_sweep.py near --limit 12
+          python3 tools/bfme2_sweep.py scan --min-size 128
+          python3 tools/bfme2_sweep.py ranked --limit 0 > build/reference-ranked.json
+          python3 tools/bfme2_sweep.py near --limit 0 > build/reference-near.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ('ranked', 'near'):
+              data = json.loads(Path('build/reference-' + name + '.json').read_text(encoding='utf-8'))
+              opened = [entry for entry in data['entries'] if entry['eligible']]
+              print(json.dumps({'lane':name, 'total':data['total'], 'eligible':len(opened), 'entries':opened[:12]}, indent=2))
+          PY
+      - name: Compile an independent bounded Zero Hour reference sample
+        if: success() || failure()
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-reference-selection
+          python3 tools/zh_sweep.py compile --limit 4
+          python3 tools/zh_sweep.py match
+          python3 tools/zh_sweep.py packets
+      - name: Inspect the complete current leaf candidates and prior verdicts
+        if: success() || failure()
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-selection
+          python3 tools/brief.py --rvas 0x008B0B00 0x003D59C0 0x008B0CF0
       - name: Measure this session against official master
         if: success() || failure()
         shell: bash
