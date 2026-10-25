@@ -19,6 +19,8 @@ SPEC = importlib.util.spec_from_file_location("native_attempt_bank", HERE / "ban
 bank = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(bank)
 REPOSITORY = HERE.parents[2]
+sys.path.insert(0, str(REPOSITORY / "tools"))
+import name_regression
 
 
 def request():
@@ -49,6 +51,8 @@ class BoundaryTests(unittest.TestCase):
         changes = [lambda r: r.update(enabled=False), lambda r: r.update(destination="refs/heads/master"),
                    lambda r: r["support_files"][0].update(blob="b" * 40),
                    lambda r: r["support_files"].append(r["support_files"][0]),
+                   lambda r: r["identity_correction"]["evidence"].update(path="docs/other.md"),
+                   lambda r: r["identity_correction"].update(reason="arbitrary override"),
                    lambda r: r["claims"][0].update(owner="github:someone:bfme1:test"),
                    lambda r: r["claims"][0].update(lease=42),
                    lambda r: r["base_rows"][0].update(target_rva="0x008C6AD1")]
@@ -291,6 +295,160 @@ class GitResultTests(unittest.TestCase):
         for entry in self.publication["files"]:
             self.assertEqual(self.git("show", self.commit + ":" + entry["path"], cwd=destination),
                              (self.source / entry["path"]).read_bytes())
+
+    def test_diagnostics_preserve_actual_output_before_later_gate_refusal(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            bank.retain_native_outputs(self.runner, self.base, self.paths)
+            with self.assertRaisesRegex(bank.Rejected, "fixture-gate-refusal"):
+                self.runner.run("fixture-gate-refusal", [sys.executable, "-c", "raise SystemExit(7)"], log=True)
+        output = self.runner.evidence / "native-output"
+        self.assertEqual((output / "before-bank.cpp").read_bytes(), self.old)
+        self.assertEqual((output / "after-bank.cpp").read_bytes(), (self.source / bank.BANK).read_bytes())
+        self.assertEqual((output / "appended-verdict.log").read_bytes(), row(self.alternative))
+        for path in (self.old_history, self.alternative):
+            self.assertEqual((output / "history" / Path(path).name).read_bytes(), (self.source / path).read_bytes())
+        manifest = json.loads((output / "manifest.json").read_bytes())
+        self.assertEqual(manifest["base"], self.base)
+        for entry in manifest["files"]:
+            raw = (output / entry["path"]).read_bytes()
+            self.assertEqual((len(raw), bank.t.digest(raw)), (entry["size"], entry["sha256"]))
+        self.assertFalse((self.root / "banked-attempt").exists())
+
+    def test_diagnostics_reject_extra_scope_and_oversized_native_output(self):
+        with self.assertRaisesRegex(bank.Rejected, "scope"):
+            bank.retain_native_outputs(self.runner, self.base, self.paths + ["tools/re_log.py"])
+        self.write(bank.BANK, b"x" * (bank.DIAGNOSTIC_MEMBER_LIMIT + 1))
+        with contextlib.redirect_stdout(io.StringIO()), self.assertRaisesRegex(bank.Rejected, "diagnostic file"):
+            bank.retain_native_outputs(self.runner, self.base, self.paths)
+
+
+class IdentityCorrectionTests(unittest.TestCase):
+    """Use the unmodified canonical name checker on real staged Git snapshots."""
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.root = Path(directory.name)
+        self.source = self.root / "source"
+        self.source.mkdir()
+        self.git("init", "-q")
+        self.git("config", "user.name", "Fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("config", "core.autocrlf", "false")
+        self.registry = b'[\r\n {"prior": "first"},\n {"prior": "second"}\r\n]\r\n'
+        self.old = (b"// fixture symbol\n// partial score=0.833 date=2026-09-26\n"
+                    b"extern int g_bfmeCount1233;\nextern int gOtherCount;\n"
+                    b"int count() { return g_bfmeCount1233 + gOtherCount; }\n")
+        self.after = self.old.replace(b"g_bfmeCount1233", b"Rva008AE770TheStack").replace(
+            b"score=0.833 date=2026-09-26", b"score=0.8952 date=2026-10-25")
+        self.write(bank.BANK, self.old)
+        self.write(bank.CORRECTIONS, self.registry)
+        self.write(bank.IDENTITY_EVIDENCE, b"Pinned independent stack identity evidence.\n")
+        self.git("add", bank.BANK, bank.CORRECTIONS, bank.IDENTITY_EVIDENCE)
+        self.git("commit", "-qm", "identity fixture base")
+        self.base = self.git("rev-parse", "HEAD").decode().strip()
+        self.request = request()
+        self.request.update(expected_base=self.base,
+                            previous_bank_blob=self.git("rev-parse", self.base + ":" + bank.BANK).decode().strip())
+        for key, path in (("registry", bank.CORRECTIONS), ("evidence", bank.IDENTITY_EVIDENCE)):
+            raw = (self.source / path).read_bytes()
+            self.request["identity_correction"][key] = {
+                "path": path, "blob": self.git("rev-parse", self.base + ":" + path).decode().strip(),
+                "size": len(raw), "sha256": bank.t.digest(raw)}
+        self.runner = bank.Runner(self.source)
+        self.write(bank.BANK, self.after)
+        self.git("add", bank.BANK)
+
+    def git(self, *args):
+        result = subprocess.run(["git", *args], cwd=self.source, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr.decode(errors="replace"))
+        return result.stdout
+
+    def write(self, path, raw):
+        destination = self.source / path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(raw)
+
+    def document(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return bank.document_identity_correction(self.runner, self.base, self.request)
+
+    def validate(self, ref=":"):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return bank.validate_identity_correction(self.runner, self.base, ref, self.request)
+
+    def test_fixed_correction_preserves_registry_and_hashes_complete_tool_snapshots(self):
+        before, accepted = name_regression.check(self.source, self.base, ":")
+        self.assertEqual(len(before), 1)
+        self.assertEqual(accepted, 0)
+        result = self.document()
+        entry = result["entry"]
+        self.assertEqual(entry["before_sha256"], bank.t.digest(self.old))
+        self.assertEqual(entry["after_sha256"], bank.t.digest(self.after))
+        self.assertEqual((entry["old_name"], entry["new_name"]), (bank.OLD_NAME, bank.NEW_NAME))
+        actual = (self.source / bank.CORRECTIONS).read_bytes()
+        prefix, suffix = self.registry.rsplit(b"}\r\n]", 1)
+        self.assertTrue(actual.startswith(prefix + b"},\r\n"))
+        self.assertTrue(actual.endswith(b"}\r\n]" + suffix))
+        self.assertEqual(json.loads(actual), json.loads(self.registry) + [entry])
+        self.assertEqual(name_regression.check(self.source, self.base, ":"), ([], 1))
+        self.git("commit", "-qm", "fixture exact snapshot correction")
+        commit = self.git("rev-parse", "HEAD").decode().strip()
+        self.assertEqual(self.validate(commit), result, "Import validation must repeat the same exact snapshot check")
+
+    def test_zero_findings_leaves_the_entire_registry_unchanged(self):
+        self.write(bank.BANK, self.old.replace(b"score=0.833", b"score=0.8952"))
+        self.git("add", bank.BANK)
+        self.assertIsNone(self.document())
+        self.assertIsNone(self.validate())
+        self.assertEqual((self.source / bank.CORRECTIONS).read_bytes(), self.registry)
+
+    def test_other_or_additional_findings_cannot_write_a_correction(self):
+        for changed in (self.after.replace(b"Rva008AE770TheStack", b"Rva00123456Other"),
+                        self.after.replace(b"gOtherCount", b"Rva00123456Other")):
+            with self.subTest(changed=changed):
+                self.write(bank.BANK, changed)
+                self.git("add", bank.BANK)
+                with self.assertRaisesRegex(bank.Rejected, "different or additional"):
+                    self.document()
+                self.assertEqual((self.source / bank.CORRECTIONS).read_bytes(), self.registry)
+
+    def test_changed_header_line_endings_or_registry_delta_reject_on_revalidation(self):
+        self.document()
+        registry = (self.source / bank.CORRECTIONS).read_bytes()
+        for changed in (self.after.replace(b"0.8952", b"0.8953"),
+                        self.after.replace(b"2026-10-25", b"2026-10-26"),
+                        self.after.replace(b"\n", b"\r\n")):
+            with self.subTest(changed=changed[-80:]):
+                self.write(bank.BANK, changed)
+                self.git("add", bank.BANK)
+                with self.assertRaisesRegex(bank.Rejected, "Registry delta"):
+                    self.validate()
+        self.write(bank.BANK, self.after)
+        self.git("add", bank.BANK)
+        mutations = [registry.replace(b'"first"', b'"changed"'),
+                     registry.replace(bank.CORRECTION_REASON.encode(), b"unreviewed reason"),
+                     json.dumps(json.loads(registry)).encode()]
+        for changed in mutations:
+            with self.subTest(changed=changed[:100]):
+                self.write(bank.CORRECTIONS, changed)
+                self.git("add", bank.CORRECTIONS)
+                self.git("commit", "-qm", "fixture invalid imported registry")
+                with self.assertRaisesRegex(bank.Rejected, "Registry delta"):
+                    self.validate("HEAD")
+
+    def test_registry_preimage_and_committed_evidence_are_required(self):
+        original = copy.deepcopy(self.request)
+        for key in ("registry", "evidence"):
+            with self.subTest(key=key):
+                self.request = copy.deepcopy(original)
+                self.request["identity_correction"][key]["sha256"] = "0" * 64
+                with self.assertRaisesRegex(bank.Rejected, "Qualified file"):
+                    self.document()
+        self.request = original
+        self.write(bank.IDENTITY_EVIDENCE, b"changed evidence\n")
+        self.git("add", bank.IDENTITY_EVIDENCE)
+        with self.assertRaisesRegex(bank.Rejected, "evidence changed"):
+            self.document()
 
 
 if __name__ == "__main__":

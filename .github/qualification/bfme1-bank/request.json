@@ -1,9 +1,23 @@
 {
   "schema": 1,
   "enabled": true,
-  "expected_base": "3b375d6e2844dbceda9f4e2fd50e88bf77f0703c",
-  "expected_tree": "a828f43ff3da8d3d2207688960336ff47e8ac2ad",
+  "expected_base": "bb30874d1638178f4ff0ec79daa299e5c3d8e109",
+  "expected_tree": "b7be338ee42d3c75ea09881c72b0fab8668b1977",
   "previous_bank_blob": "b2e55883bac26f6d6a3d126133589f85296d3618",
+  "identity_correction": {
+    "registry": {
+      "path": "targets/game/reverse/name_corrections.json",
+      "blob": "5f12d80065d496eced418d58d99c161140d89f5c",
+      "sha256": "23fd964c2d95a8bc592f2ffdf959008cbaada976ba8d2fbfe3b0c6619578b9b6",
+      "size": 1566298
+    },
+    "evidence": {
+      "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+      "blob": "5d64753d314483483528dfba6b62123700e87843",
+      "sha256": "2b32f4dd6dad0c4716318b2f020fd9da90ce040248488aee0cbc2b73bfb8a178",
+      "size": 7439
+    }
+  },
   "support_files": [
     {
       "path": "targets/game/reverse/attempt_support/008c6ad0-tail-order-20261025/best-whole-tu.cpp.txt",

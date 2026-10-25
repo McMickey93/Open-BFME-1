@@ -21,7 +21,7 @@ import time
 
 
 HELPER = Path(__file__).resolve().parent.parent / "bfme1-transfer" / "transfer.py"
-HELPER_SHA256 = "2d8f7d1bbbb810276594c7ac46d361c915bfe818f251012e3eae6e5e67b29a26"
+HELPER_SHA256 = "db37f63f402f7b6146a044d5511052c7819fb38f24b375d59e8a5f909c42f898"
 if hashlib.sha256(HELPER.read_bytes()).hexdigest() != HELPER_SHA256:
     raise RuntimeError("Reviewed object-transfer helper changed")
 _spec = importlib.util.spec_from_file_location("reviewed_bfme_transfer_helpers", HELPER)
@@ -41,13 +41,25 @@ HISTORY = "targets/game/reverse/attempt_history/0x008c6ad0/"
 SUPPORT = "targets/game/reverse/attempt_support/008c6ad0-tail-order-20261025/"
 BEST = SUPPORT + "best-whole-tu.cpp.txt"
 HANDOFF = SUPPORT + "readme.md"
+CORRECTIONS = "targets/game/reverse/name_corrections.json"
+IDENTITY_EVIDENCE = "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md"
+OLD_NAME, NEW_NAME = "g_bfmeCount1233", "Rva008AE770TheStack"
+CORRECTION_REASON = (
+    "The old bank's g_bfmeCount1233 used a different image base. Retail reads the "
+    "stack count at VA 0x01338748 and its array pointer at VA 0x01338750. "
+    "Rva00C6DCC0StaticInit.cpp independently binds the existing canonical object "
+    "Rva008AE770TheStack at 0x01338748; the matched adjacent Rva008C6800.cpp "
+    "consumer establishes the same count+0 and array+8 prefix. This corrects "
+    "the bank's data binding to that proven owner without inventing an identity."
+)
+DIAGNOSTIC_MEMBER_LIMIT = 256 * 1024
 BEST_BLOB = "6f590f236f882e4fa62d50b22b5214ed2c5a4b8c"
 BEST_SHA256 = "872ab57f5654deadc23c474e1307b6a73709030d396b5cfd923b3c827539f927"
 GAME_SOURCE = "game/Libraries/Source/Apt/AptActionInterpreter.cpp"
 GAME_BLOB = "60df2491d6c680d667ad689a1e79e7203aca56e3"
 CLAIM_RVAS = {RVA, "0x008CF1B0"}
 REQUEST_KEYS = {"schema", "enabled", "expected_base", "expected_tree",
-                "previous_bank_blob", "support_files", "claims", "base_rows"}
+                "previous_bank_blob", "support_files", "identity_correction", "claims", "base_rows"}
 EVIDENCE = (
     "Complete retail extent 0x008C6AD0..0x008C6BB8, ret followed by alignment; "
     "t=60min model=gpt-6-astra-pro blocker=codegen-order/branch-tail-order "
@@ -81,6 +93,16 @@ def read_request(raw=None):
         if entry["path"] == BEST:
             require(entry["blob"] == BEST_BLOB and entry["sha256"] == BEST_SHA256
                     and entry["size"] == 8354, "Input is not the reviewed best07 whole file")
+    identity = data["identity_correction"]
+    require(isinstance(identity, dict) and set(identity) == {"registry", "evidence"},
+            "Fixed identity-correction preimages missing")
+    for key, path, limit in (("registry", CORRECTIONS, 2 * 1024 * 1024),
+                             ("evidence", IDENTITY_EVIDENCE, 65536)):
+        entry = identity[key]
+        require(isinstance(entry, dict) and set(entry) == {"path", "blob", "sha256", "size"}
+                and entry["path"] == path and t.hex_id(entry["blob"]) and t.hex_id(entry["sha256"], 64)
+                and type(entry["size"]) is int and 0 < entry["size"] <= limit,
+                "Invalid fixed identity-correction preimage")
     claims = data["claims"]
     require(isinstance(claims, list) and len(claims) == 2
             and all(isinstance(c, dict) for c in claims)
@@ -182,7 +204,7 @@ def initial_checkout(runner, request):
     runner.assert_master(request["expected_base"], fetch=True)
     require(runner.entry("HEAD", BANK) == request["previous_bank_blob"], "The retained bank preimage changed")
     require(runner.entry("HEAD", GAME_SOURCE) == GAME_BLOB, "Original same-TU source context changed")
-    for entry in request["support_files"]:
+    for entry in request["support_files"] + list(request["identity_correction"].values()):
         require(runner.entry("HEAD", entry["path"]) == entry["blob"], "Committed support input changed")
         t.validate_blob((runner.source / entry["path"]).read_bytes(), entry)
     require(runner.git("publisher-mode", "show", "HEAD:targets/game/reverse/publisher_mode").strip() == b"off",
@@ -235,7 +257,107 @@ def current_claims(runner, request, label):
 
 def allowed_result(path):
     t.safe_path(path)
-    return path in (BANK, LOG) or re.fullmatch(re.escape(HISTORY) + r"[0-9a-f]{64}\.json", path) is not None
+    return path in (BANK, LOG, CORRECTIONS) or re.fullmatch(re.escape(HISTORY) + r"[0-9a-f]{64}\.json", path) is not None
+
+
+def append_correction(raw, entry):
+    """Insert one record; every byte of the existing registry remains in order."""
+    entries = t.json_bytes(raw)
+    require(isinstance(entries, list) and all(isinstance(item, dict) for item in entries)
+            and entry not in entries, "Correction registry is invalid or already contains this snapshot")
+    end = len(raw.rstrip()) - 1
+    require(end >= 0 and raw[end:end + 1] == b"]", "Correction registry closing bracket missing")
+    cut = len(raw[:end].rstrip(b" \t\r\n"))
+    eol = b"\r\n" if b"\r\n" in raw else b"\n"
+    record = json.dumps(entry, indent=1, ensure_ascii=False).encode("utf-8").replace(b"\n", eol + b" ")
+    after = raw[:cut] + (b"," if entries else b"") + eol + b" " + record + raw[cut:]
+    require(t.json_bytes(after) == entries + [entry], "Correction append changed prior registry entries")
+    return after
+
+
+def correction_snapshots(runner, base, ref, request):
+    def read(snapshot, path):
+        spec = ":" + path if snapshot == ":" else snapshot + ":" + path
+        return runner.git("identity-correction-snapshot", "show", spec)
+    registry = read(base, CORRECTIONS)
+    evidence = read(base, IDENTITY_EVIDENCE)
+    t.validate_blob(registry, request["identity_correction"]["registry"])
+    t.validate_blob(evidence, request["identity_correction"]["evidence"])
+    require(evidence == read(ref, IDENTITY_EVIDENCE), "Committed identity evidence changed")
+    before, after = read(base, BANK), read(ref, BANK)
+    require(t.object_id("blob", before) == request["previous_bank_blob"], "Correction bank preimage changed")
+    # The canonical checker hashes complete UTF-8 snapshots, including the
+    # tool-emitted measured score/date header and all original line endings.
+    before.decode("utf-8")
+    after.decode("utf-8")
+    entry = {"old_path": BANK, "new_path": BANK, "old_name": OLD_NAME, "new_name": NEW_NAME,
+             "before_sha256": t.digest(before), "after_sha256": t.digest(after),
+             "evidence": IDENTITY_EVIDENCE, "reason": CORRECTION_REASON}
+    return registry, read(ref, CORRECTIONS), entry
+
+
+def validate_identity_correction(runner, base, ref, request):
+    before, after, entry = correction_snapshots(runner, base, ref, request)
+    nr = importlib.import_module("name_regression")
+    findings, accepted = nr.check(runner.source, base, ref)
+    if after == before:
+        require(not findings and accepted == 0, "Uncorrected bank has an unexpected name finding")
+        return None
+    require(after == append_correction(before, entry), "Registry delta is not the one fixed snapshot correction")
+    require(not findings and accepted == 1, "Canonical naming check did not accept exactly the fixed correction")
+    return {"entry": entry, "registry_before_sha256": t.digest(before), "registry_after_sha256": t.digest(after)}
+
+
+def document_identity_correction(runner, base, request):
+    before, after, entry = correction_snapshots(runner, base, ":", request)
+    require(before == after == (runner.source / CORRECTIONS).read_bytes(), "Registry changed before native result review")
+    nr = importlib.import_module("name_regression")
+    findings, accepted = nr.check(runner.source, base, ":")
+    if not findings:
+        require(accepted == 0, "Unexpected pre-existing correction applies to the native output")
+        return None
+    expected = {key: entry[key] for key in ("old_path", "new_path", "old_name", "new_name", "before_sha256", "after_sha256")}
+    require(accepted == 0 and len(findings) == 1 and vars(findings[0]) == expected,
+            "Native output has a different or additional naming finding")
+    (runner.source / CORRECTIONS).write_bytes(append_correction(before, entry))
+    runner.git("stage-fixed-identity-correction", "add", "--", CORRECTIONS)
+    return validate_identity_correction(runner, base, ":", request)
+
+
+def retain_native_outputs(runner, base, paths):
+    """Preserve actual re_log output before any later naming or commit refusal."""
+    require(1 <= len(paths) <= 4 and LOG in paths and CORRECTIONS not in paths
+            and all(allowed_result(path) for path in paths), "Unexpected native diagnostic scope")
+    output = runner.evidence / "native-output"
+    output.mkdir()
+    records = []
+    def save(name, raw):
+        require(len(raw) <= DIAGNOSTIC_MEMBER_LIMIT, "Native diagnostic exceeds its fixed size bound")
+        destination = output / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(raw)
+        records.append({"path": name, "size": len(raw), "sha256": t.digest(raw)})
+    def current(path):
+        source = runner.source / path
+        require(source.is_file() and not source.is_symlink()
+                and source.resolve().is_relative_to(runner.source)
+                and source.stat().st_size <= DIAGNOSTIC_MEMBER_LIMIT, "Invalid native diagnostic file")
+        return source.read_bytes()
+    save("before-bank.cpp", runner.git("diagnostic-bank-before", "show", base + ":" + BANK))
+    save("after-bank.cpp", current(BANK))
+    for path in paths:
+        if path.startswith(HISTORY):
+            save("history/" + Path(path).name, current(path))
+    before = runner.git("diagnostic-log-before", "show", base + ":" + LOG)
+    after = (runner.source / LOG).read_bytes()
+    validate_append(before, after)
+    save("appended-verdict.log", after[len(before):])
+    result = {"base": base, "native_re_log_passed": True, "files": records,
+              "log_before_sha256": t.digest(before), "log_after_sha256": t.digest(after),
+              "log_before_size": len(before), "log_after_size": len(after)}
+    (output / "manifest.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
+    runner.receipt["native_output"] = result
+    runner.save()
 
 
 def validate_append(before, after):
@@ -280,7 +402,7 @@ def validate_publication(publication, request, ctx):
     for key in ("commit", "tree"):
         require(t.hex_id(publication.get(key)), "Invalid banked Git object")
     files = publication.get("files")
-    require(isinstance(files, list) and 1 <= len(files) <= 4, "Bank result exceeds the one-target file bound")
+    require(isinstance(files, list) and 1 <= len(files) <= 5, "Bank result exceeds the one-target file bound")
     seen = set()
     for entry in files:
         require(isinstance(entry, dict) and set(entry) == {"path", "mode", "blob", "sha256", "size"}
@@ -363,7 +485,7 @@ def bank_command():
 def changed_paths(runner, base):
     paths = set(filter(None, runner.git("working-bank-paths", "diff", "--no-renames", "--name-only", "-z", base).decode().split("\0")))
     paths.update(filter(None, runner.git("untracked-bank-paths", "ls-files", "--others", "--exclude-standard", "-z").decode().split("\0")))
-    require(1 <= len(paths) <= 4 and LOG in paths and all(allowed_result(p) for p in paths),
+    require(1 <= len(paths) <= 5 and LOG in paths and all(allowed_result(p) for p in paths),
             "Native bank changed paths outside its strict result scope")
     require(all((runner.source / p).is_file() and not (runner.source / p).is_symlink() for p in paths),
             "Native bank deleted a file or introduced a link")
@@ -409,9 +531,14 @@ def bank_job(runner, api, request, request_hash, ctx):
     # measures incoming AND retained source before writing either history/log.
     runner.run("unmodified-native-re-log", bank_command(), log=True)
     paths = changed_paths(runner, request["expected_base"])
+    retain_native_outputs(runner, request["expected_base"], paths)
     before = runner.git("before-log-prefix", "show", request["expected_base"] + ":" + LOG)
     validate_append(before, (runner.source / LOG).read_bytes())
     runner.git("stage-only-bank-results", "add", "--", *paths)
+    correction = document_identity_correction(runner, request["expected_base"], request)
+    runner.receipt["name_correction"] = correction
+    runner.save()
+    paths = changed_paths(runner, request["expected_base"])
     runner.git("ordinary-staged-whitespace", "diff", "--cached", "--check")
     runner.git("ordinary-author-name", "config", "user.name", "ChatGPT")
     runner.git("ordinary-author-email", "config", "user.email", "chatgpt@localhost")
@@ -420,7 +547,9 @@ def bank_job(runner, api, request, request_hash, ctx):
                "documented native trials after reassessment. The exact source remains\n"
                "unmatched. Unmodified re_log.py measures both the incoming and retained\n"
                "banks and chooses the preferred body without a manual score override.\n\n"
-               "The bank/history and one appended partial verdict are the only changes.\n"
+               "Preserve bank/history and one appended partial verdict; document the\n"
+               "proven canonical stack binding with an exact snapshot correction when\n"
+               "the measured preferred bank requires it. Identity evidence: " + IDENTITY_EVIDENCE + ".\n"
                "Game source, matching ledgers, pins, headers and controls are unchanged;\n"
                "exact C++ progress is zero. See " + HANDOFF + ".\n\n"
                + "".join("Claim-Lease: %s=%s\n" % (c["rva"], c["lease"]) for c in request["claims"]))
@@ -431,6 +560,8 @@ def bank_job(runner, api, request, request_hash, ctx):
     commit = runner.rev("HEAD")
     require(not runner.git("committed-status", "status", "--porcelain"), "Ordinary commit left uncommitted results")
     result = validate_result_contents(runner, request["expected_base"], commit, request)
+    result["name_correction"] = validate_identity_correction(runner, request["expected_base"], commit, request)
+    require(result["name_correction"] == correction, "Ordinary commit changed the reviewed identity correction")
     runner.assert_master(request["expected_base"], fetch=True)
     refs = "%s %s refs/heads/master %s\n" % (LOCAL_REF, commit, request["expected_base"])
     (runner.evidence / "full-pre-push-stdin.txt").write_text(refs, encoding="utf-8", newline="\n")
@@ -521,6 +652,7 @@ def transfer_job(runner, api, request, request_hash, ctx):
     # cannot include hooks, scripts, game source, headers, pins, or controls.
     prepare_native(runner)
     result = validate_result_contents(runner, publication["base"], publication["commit"], request)
+    result["name_correction"] = validate_identity_correction(runner, publication["base"], publication["commit"], request)
     require(result == receipt.get("bank_result"), "Imported bank selection or measured evidence differs")
     require(zero_progress(publication["base"], publication["commit"]) == publication["progress"], "Imported progress differs")
     current_claims(runner, request, "immediately-before-fork-bank-transfer")
