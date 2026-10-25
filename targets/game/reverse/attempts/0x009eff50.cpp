@@ -1,5 +1,5 @@
 // ?refresh@Q1Receiver0134FAAC@@QAEXXZ
-// partial score=0.9878 date=2026-09-28
+// partial score=0.9956 date=2026-10-25
 // ?refresh@Q1Receiver0134FAAC@@QAEXXZ
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS
 // stlport
@@ -206,6 +206,11 @@ void Q1Receiver0134FAAC::refresh()
 	m009EFD40((Q1ReceiverLocalSet *)&m_set1a4);
 
 	Q1ReceiverPending pending;
+	Q1ReceiverQueue *queues = m_deques78;
+	Q1ReceiverQueue &r0 = m_deques78[0];
+	Q1ReceiverQueue &r2 = m_deques78[2];
+	Q1ReceiverQueue &r1 = m_deques78[1];
+
 	Q1ReceiverLocalSet known = { *(const Q1ReceiverSet *)&m_set190, 0, true };
 	known.m_set.get().insert(m_set1b8.m_tree.begin(), m_set1b8.m_tree.end());
 	known.m_one = true;
@@ -294,10 +299,8 @@ void Q1Receiver0134FAAC::refresh()
 		}
 
 		if (pass == 0)
-			m_field1e0 = m_deques78[0].size() + m_deques78[1].size() +
-				m_deques78[2].size();
+			m_field1e0 = r0.size() + r1.size() + r2.size();
 		else
-			m_field1e4 = m_deques78[0].size() + m_deques78[1].size() +
-				m_deques78[2].size() - m_field1e0;
+			m_field1e4 = queues[0].size() + queues[1].size() + queues[2].size() - m_field1e0;
 	}
 }
