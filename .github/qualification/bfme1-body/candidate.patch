@@ -1,8 +1,8 @@
 diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-index 60df2491d6c680d667ad689a1e79e7203aca56e3..3aa769b116b4281c3e59e03c14a769237d948f25 100644
+index 60df2491d6c680d667ad689a1e79e7203aca56e3..e02cb1a7fb70ba8ebc0da1890211ad560434eba4 100644
 --- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
 +++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-@@ -181 +181,100 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
+@@ -181 +181,101 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
  }
 +
 +
@@ -67,15 +67,15 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..3aa769b116b4281c3e59e03c14a76923
 +	{
 +		if (value->toNumber() != g_rva01075350)
 +			return AptBoolean::Create(true);
-+		{ _WriteBarrier(); return AptBoolean::Create(false); }
++		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
 +	}
 +	if (type == 7)
 +	{
 +		if (value->toNumber() != g_rva01075350)
 +			return AptBoolean::Create(true);
-+		{ _WriteBarrier(); return AptBoolean::Create(false); }
++		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
 +	}
-+	{ _ReadWriteBarrier(); return AptBoolean::Create(false); }
++	{ AptValue *result = AptBoolean::Create(false); _ReadWriteBarrier(); return result; }
 +}
 +
 +AptValue *BooleanCoerce008C6AD0(void *, int count)
@@ -83,32 +83,33 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..3aa769b116b4281c3e59e03c14a76923
 +	if (count == 0)
 +		return g_bfmeFallbackDB;
 +
-+	AptValue *value = Rva008AE770TheStack.m_rva01338750[
-+		Rva008AE770TheStack.m_count - 1];
++	Rva008AE770Stack &stack = Rva008AE770TheStack;
++	AptValue **args = stack.m_rva01338750;
++	AptValue *value = args[stack.m_count - 1];
 +	int type = value->m_valueBits & 63;
 +	if (type >= 12 && type <= 19 && !value->isUndefined())
 +		return AptBoolean::Create(true);
 +	if (type == 27 && !value->isUndefined())
 +		return AptBoolean::Create(true);
 +	if (value == g_bfmeFallbackDB)
-+		{ _WriteBarrier(); return AptBoolean::Create(false); }
++		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
 +
 +	if (!value->isType(6) && !value->isType(7))
 +	{
 +		if (Rva008C4A30Check(reinterpret_cast<Rva8CD130Value *>(value)))
-+			{ _WriteBarrier(); return AptBoolean::Create(false); }
++			{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
 +		if (value->toNumber() != g_rva01075350)
 +			return AptBoolean::Create(true);
-+		{ _WriteBarrier(); return AptBoolean::Create(false); }
++		{ AptValue *result = AptBoolean::Create(false); _WriteBarrier(); return result; }
 +	}
 +	return coerceBoolean008C6AD0(value);
 +}
 diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..0fe206a64f7a988374c8c55ed219e3646a0a0d74
+index 0000000000000000000000000000000000000000..93ebd6e40750578ce27b91688302826c71fc19fa
 --- /dev/null
 +++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-@@ -0,0 +1,125 @@
+@@ -0,0 +1,151 @@
 +# Registered conversion callback at 0x008C6AD0
 +
 +## Scope and baseline
@@ -184,7 +185,7 @@ index 0000000000000000000000000000000000000000..0fe206a64f7a988374c8c55ed219e364
 +if/switch/ternary/Boolean-output forms produced a 217-byte merged body or
 +260--272-byte alternatives. Those trials are not repeated here.
 +
-+Four complete-file candidates isolate the new context hypotheses:
++Five complete-file candidates isolate the new context hypotheses:
 +
 +1. `00-canonical-control.cpp` preserves the bank's raw-shift predicates and
 +   free inline coercion helper, while fixing its typed callee and data bindings.
@@ -195,7 +196,13 @@ index 0000000000000000000000000000000000000000..0fe206a64f7a988374c8c55ed219e364
 +4. `03-split-false-barriers.cpp` starts from corrected control 00 and tags
 +   the common false-return paths with `_WriteBarrier()`, while tagging only
 +   the coercion default-false path with `_ReadWriteBarrier()`. It is the
-+   preferred first native experiment; 00--02 have not yet been compiled here.
++   first native experiment, with the measured result recorded below;
++   00--02 have not been compiled here.
++5. `04-after-call-barriers.cpp` moves those same barrier tags after the
++   factory calls, keeping each zero-code marker inside its return suffix.
++   It also loads the stack array into a local before indexing by the count,
++   following the already matched `Rva008C6800.cpp` callback's statement order.
++   This is the next native experiment; it has no measured result yet.
 +
 +The fourth experiment follows the specific tail-cross-jump technique in
 +`docs/shape_levers.md`, independently witnessed by the already matched
@@ -207,10 +214,12 @@ index 0000000000000000000000000000000000000000..0fe206a64f7a988374c8c55ed219e364
 +
 +Here the common false block must be shared by fallback, numeric-predicate
 +and equal-number exits; the coercion default false block must stay separate.
-+The barriers are placed immediately before the Boolean factory calls.
-+Whether the call boundary permits the suffix to merge anyway is an untested
-+hypothesis, so the native result will decide; there is no byte-exact claim
-+from applying this source pattern. No earlier target attempt recorded this
++Experiment 03 placed the barriers immediately before the Boolean factory
++calls. It retained four factory blocks, but moved the shared numeric block
++and inverted its final branch, as measured below. Experiment 04 puts the
++barrier after the factory call to test whether the retained return suffixes
++keep that block at its original location. This is a separate code-layout
++hypothesis, not a byte-exact claim from applying a source pattern. No earlier target attempt recorded this
 +barrier family. The true and payload-return paths are unchanged.
 +
 +They are retained under ignored `build/008c6ad0-canonical/`. None changes
@@ -232,5 +241,23 @@ index 0000000000000000000000000000000000000000..0fe206a64f7a988374c8c55ed219e364
 +
 +## Verification status
 +
-+Native MSVC 7.1 compilation and the complete claimed-file byte gate are
-+pending. No exact C++ byte gain is asserted by this evidence alone.
++Native explore run `40183973659`, from immutable fork payload
++`deab741a9f5acd8f3878fa835feabe453d5d6dfc`, compiled experiment 03 with
++the original MSVC 7.1. The new body emitted 229 bytes against retail's 233,
++with 11 relocations and 121 non-relocation byte differences; the first
++unmasked difference is at +0x1C. Eight relocation sites move with the block
++layout, so the raw `probe.py --all` disassembly is the comparison evidence,
++not the relocation-filled mismatch rendering.
++
++The differing barriers retained all four Boolean factory call blocks.
++However, the shared numeric-conversion block moved from retail +0x8A to
+++0xB7, putting the true-return block before the default-false block. This
++also shortened the second long conditional jump by four bytes. Separately,
++the direct stack-index expression loaded count into EAX and array into ECX,
++reversing the retail roles; experiment 04 uses the adjacent callback's
++explicit array local to test that specific scheduling difference.
++
++The whole-file sibling at `0x008CF1B0` compiled exactly modulo relocation
++slots. Exploration did not run admission or the ordinary complete gate,
++and it added no C++ bytes. Experiment 04 and the full qualification gate
++remain pending.

@@ -25,7 +25,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Canonical callee and data bindings; documented compiler-barrier contexts for separate false tails; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "notes": "Canonical callee and data bindings; post-call compiler barriers for distinct return suffixes; explicit stack-array local before index; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
   "admissions": [
     {
       "rva": "0x008C6AD0",
@@ -35,23 +35,23 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "f78c832490094b80bb4295679907a42552fda61c",
-  "patch_sha256": "15e05f60362c6f799877e61239d00b55239e609218b300778896453deb6e822e",
-  "message_sha256": "de188ac549bdd96a36fa89326f4170118252d19f9647b6607ae17a9980b0c425",
+  "patch_tree": "8afd856b118d51aa0371ab0a21645876a2a5498a",
+  "patch_sha256": "0ac5b5c4ec202c512945fdfb68fc52c8ca16f9cd5c3164c7b57e07f30b2733a8",
+  "message_sha256": "e7887005d746ac66285526c9778fbdfc239c9105eb5abf3e35401374ea64d3d2",
   "files": [
     {
       "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "mode": "100644",
       "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
-      "candidate_blob": "3aa769b116b4281c3e59e03c14a769237d948f25",
-      "sha256": "0828d4c89c23f6be828ca68e60954cd222115ba3e8f144df4822e59e517902ce"
+      "candidate_blob": "e02cb1a7fb70ba8ebc0da1890211ad560434eba4",
+      "sha256": "8cd39382857ea88e21a4e842e1bd5d9cecde8ac4c9de97640f844b604071254a"
     },
     {
       "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "0fe206a64f7a988374c8c55ed219e3646a0a0d74",
-      "sha256": "1cc8ca14aefad276b02b779d19a5bc5b07fc5c8081895be7225f45192c668b9a"
+      "candidate_blob": "93ebd6e40750578ce27b91688302826c71fc19fa",
+      "sha256": "aa92b859443a52f0683b35d0f43254987fcdc357ea8d915dd1343b6c067a5d1b"
     }
   ],
   "base_rows": [

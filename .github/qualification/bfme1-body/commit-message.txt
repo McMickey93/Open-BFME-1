@@ -1,10 +1,11 @@
-Explore Apt coercion tail separation at 0x008C6AD0
+Explore Apt coercion return-tail context at 0x008C6AD0
 
 The existing bank has stale data bindings and predates the recovered
 typed numeric predicate. Explore a corrected whole AptActionInterpreter
-translation unit with documented compiler-barrier contexts that can keep
-the two false factory tails separate. The barrier choice is an experiment
-based on landed witnesses; keep the existing 520-byte sibling unchanged.
+translation unit with compiler barriers after the false factory calls,
+preserving distinct return suffixes. Load the stack-array local before its
+count as the adjacent matched callback does. Keep the 520-byte sibling
+source unchanged. The earlier experiment emitted 229 of 233 target bytes.
 
 This is exploratory input: no admission or new exact C++ bytes are claimed.
 
