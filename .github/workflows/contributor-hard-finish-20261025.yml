@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Prepare handoff with normal commit and full push hooks
+      - name: Gate handoff with Git Bash and serve next large finish file
         working-directory: source
         shell: bash
         run: |
@@ -93,7 +93,9 @@ jobs:
           (out/'normal-commit.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
           print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
           head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          p=subprocess.run(['bash','.githooks/pre-push','origin','https://github.com/Open-BFME/Open-BFME-1.git'],input='refs/heads/master '+head+' refs/heads/master '+base+'\n',capture_output=True,text=True)
+          git_bash=Path(os.environ['ProgramFiles'])/'Git/bin/bash.exe'
+          assert git_bash.is_file()
+          p=subprocess.run([str(git_bash),'.githooks/pre-push','origin','https://github.com/Open-BFME/Open-BFME-1.git'],input='refs/heads/master '+head+' refs/heads/master '+base+'\n',capture_output=True,text=True)
           (out/'normal-pre-push.log').write_text(p.stdout+'\n'+p.stderr,encoding='utf-8')
           print(p.stdout,flush=True);print(p.stderr,flush=True);assert p.returncode==0
           assert claims.holds(rva,token)
@@ -102,7 +104,28 @@ jobs:
           receipt={'base':base,'native_commit':head,'tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),'paths':files,'message':message,'append':append,'document':doc,'claim_token':token,'claim_lease':entry[1]['lease']}
           print('HARD_FINISH_HANDOFF '+json.dumps(receipt),flush=True)
           (out/'handoff-receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
-          subprocess.run([sys.executable,'tools/next_work.py','--tier','finish','--max-attempts','0','--cooldown-days','0','--json'],check=True)
+          import json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          import claims,eligibility,next_work,build
+          assert claims.fetch(), 'Cannot read shared claims'
+          busy=eligibility.busy_rvas()
+          rows=build.load_all_function_rows()
+          busy_sources={row.get('source') for row in rows if row.get('target_rva','').lower() in busy}
+          candidates=next_work.finish_candidates(min_score=0.9,max_attempts=0,cooldown_days=0)
+          pool=[c for c in candidates if int(c['target_size'])>512 and c['target_rva'].lower() not in busy and c['source'] not in busy_sources]
+          candidate=next_work.finish_choice(pool) if pool else None
+          print('LARGE_HARD_FINISH_SELECTION '+json.dumps({'selection':candidate,'pool':len(pool),'all_finish':len(candidates),'busy':len(busy),'cluster':next_work.cluster_of(candidate,candidates) if candidate else []}),flush=True)
+          if candidate:
+              rva=candidate['target_rva']
+              subprocess.run([sys.executable,'tools/brief.py','--rvas',rva],check=True)
+              assert claims.fetch()
+              assert int(rva,16) not in claims.live(claims._read_local())
+              marker=claims._record(os.environ['BFME_CLAIM_OWNER'],4,note='Pending explicit connector claim for served large hard-finish whole file')
+              record=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
+              base=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+              print('NEXT_CLAIM_TRANSPORT '+json.dumps({'rva':rva,'record':record,'base':base,'tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
+          
           
           PY
       - name: Measure unchanged baseline
