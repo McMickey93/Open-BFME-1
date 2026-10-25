@@ -102,18 +102,14 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01112034@@3PAPAXA=??_7Rva005EC600@@6BV3Slot3@@@")
 // Gate debt ?g_vtbl_01112048@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_0111204C@@3PAPAXA=??_7Rva005EC600@@6BV3Slot1@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112050@@3PAPAXA=??_7Rva005EC600@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011120B0@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011120C4@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot2@@@")
 // Gate debt ?g_vtbl_011120C8@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_011120CC@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112174@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot3@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112188@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot2W@@@")
 // Gate debt ?g_vtbl_0111218C@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01112190@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011121A4@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot3@@@")
 // Gate debt ?g_vtbl_011121B8@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_011121BC@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot1@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011121C0@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DD0@@3PAPAXA=??_7Rva005EC160@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DE4@@3PAPAXA=??_7Rva005EC160@@6BV3Slot2@@@")
@@ -269,23 +265,28 @@ extern void *g_vtbl_01111FCC[];
 extern void *g_vtbl_01112034[];
 extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot2@@@")[];
 extern void *g_vtbl_0111204C[];
-extern void *g_vtbl_01112050[];
+// ?g_vtbl_01112050@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot0@@@")[];
 extern void *g_vtbl_011120B0[];
 extern void *g_vtbl_011120C4[];
 extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot1@@@")[];
-extern void *g_vtbl_011120CC[];
+// ?g_vtbl_011120CC@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01112174[];
-extern void *g_vtbl_01112188[];
+// ?g_vtbl_01112188@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ECCC0@@6BV3Slot2W@@@")[];
 extern "C" void *__identifier("??_7Rva005ECCC0@@6BV3Slot1@@@")[];
 extern void *g_vtbl_01112190[];
 extern void *g_vtbl_011121A4[];
 extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot2W@@@")[];
-extern void *g_vtbl_011121BC[];
+// ?g_vtbl_011121BC@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot1@@@")[];
 extern void *g_vtbl_011121C0[];
 extern void *g_vtbl_011121D4[];
 extern void *g_vtbl_011121E8[];
 extern void *g_vtbl_011121EC[];
-extern void *g_vtbl_01112204[];
+// ?g_vtbl_01112204@@3PAPAXA now references its recorded retail vtable directly.
+extern "C" void *__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@")[];
 extern void *g_vtbl_01112218[];
 extern void *g_vtbl_0111221C[];
 extern void *g_vtbl_01112234[];
@@ -815,7 +816,7 @@ public:
     __forceinline DefaultModule3Allocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((DefaultModule3CtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112050;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EC600@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_0111204C;
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005EC600@@6BV3Slot2@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112034;
@@ -872,7 +873,7 @@ public:
     __forceinline DefaultModule7Allocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((DefaultModule7CtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_011120CC;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_011120C4;
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_011120B0;
@@ -1010,7 +1011,7 @@ __forceinline void initializeSphericalEmissionVelocityModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_0111221C;
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_01112218;
-    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112204;
+    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@");
 }
 
 class HemisphericalEmissionVelocityModuleCtorShim {
@@ -1546,7 +1547,7 @@ public:
         ((LifeEventModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112190;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECCC0@@6BV3Slot1@@@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112188;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ECCC0@@6BV3Slot2W@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)g_vtbl_01112174;
     }
 
@@ -1580,7 +1581,7 @@ public:
     {
         ((TerrainCollisionModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_011121C0;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_011121BC;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ED0D0@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ED0D0@@6BV3Slot2W@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)g_vtbl_011121A4;
     }
