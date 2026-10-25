@@ -2014,3 +2014,13 @@ canonical AsciiString header and a locally visible native concat body. This is
 a measured combination, not a claim that these spellings always improve code.
 Source: `game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineSequentialScripts.cpp`;
 evidence: `targets/game/reverse/attempt_support/00346d60-20261024/README.md`.
+
+For `Rva009F6ADBConstructor.cpp` under MSVC 7.1 `/O1 /GS /MD`, the
+included `CComCriticalSection::Init` was an 80-byte COMDAT using a shared
+SEH prologue; native `0x007E5860` needs the 122-byte expanded prologue.
+`#pragma optimize("t", on)` before `<atlcore.h>`, then
+`#pragma optimize("s", on)` afterward, verifies that copy including relocations
+and preserves the 171-byte constructor. Disabling frame-pointer omission or
+changing `/GS` or `/MD` did not fix the copy. This measures a size/speed
+context effect for this inline SEH body, not a general SEH rule. Witness:
+`game/GameEngine/Source/Common/Rva009F6ADBConstructor.cpp` (2026-10-25).

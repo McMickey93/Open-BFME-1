@@ -1,5 +1,8 @@
 // cl: /O1 /GS /MD /Iinputs/toolchains/vs2003/native/Vc7/atlmfc/include /Iinputs/toolchains/vs2003/native/Vc7/PlatformSDK/Include
+// Init is the speed-optimized retail copy; retain size optimization below.
+#pragma optimize("t", on)
 #include <atlcore.h>
+#pragma optimize("s", on)
 // Native ATL 7.1 declarations; retain the existing matched initializer's
 // address-qualified constructor and its already-matched base constructor.
 // See identity_evidence/009f6adb-atl-constructor.md for all nine bindings.
