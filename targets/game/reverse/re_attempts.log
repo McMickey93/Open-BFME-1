@@ -58093,3 +58093,4 @@ __matherr	0x00DF7FB0	0	blocked	gate-debt: no source spells __matherr in game/ so
 ??0BoneOCLInfo@@QAE@XZ	0x000402EB	0	blocked	gate-debt: unrecorded ctor symbol at ILT thunk 0x000402EB needs identity/row placement decision t=2 model=gemini-3.8-flash-medium
 ?playerTooltip@Rva004CE850LanLobbyMenu@@YAXPAVGameWindow@@PAVWinInstanceData@@I@Z	0x008CE850	0	solved	gate-debt: retire dump d_004ce850 via dir32_record.py retire for matched row playerTooltip; exact pass-test passes t=5 model=gemini-3.8-flash-medium
 ?d_009a9a20@@YAXXZ	0x00DA9A20	0	solved	gate-debt: reference recorded row Rva009A9A20 in Rva009A9AD0Scale2D.cpp; exact pass-test passes t=5 model=gemini-3.8-flash-medium
+?step@Rva006870F0State@@QAEXXZ	0x006870F0	2436	landed	landed-by=add_match source=game/GameEngine/Source/GameNetwork/LANAPIUpdate.cpp extent=0x006870F0..0x00687A74 size=2436B model=claude-opus-5-5 ; notes: model=claude-opus-5-5; host=Dannys-MacBook-Air.local

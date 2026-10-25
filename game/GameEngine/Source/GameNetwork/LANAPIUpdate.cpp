@@ -1,18 +1,19 @@
-// ?step@Rva006870F0State@@QAEXXZ
-// partial score=0.9996 date=2026-10-11
 // cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringbaseunicode /Iinputs/reference/shims/campaignmanagerascii /Igame/Libraries/Source/WWVegas/WWLib
-// GAP SEAT bank, retail RVA 006870F0, proven full extent 2436 bytes.
-// Compile symbol: ?step@Rva006870F0State@@QAEXXZ (the retired lift has no active row).
-// Old extent 2030 cuts mov ecx,esp at 006878DD. Code ends at ret 00687A25;
-// alignment 00687A26, nineteen switch pointers 00687A28..00687A74, then int3.
-// Probe: exactly one non-relocation byte differs, at +0x7A3: SIB operands of
-// lea ecx,[edi+eax+0x88] are reversed. Table relocation bytes are masked.
-// The opaque leave-handler declaration remains unresolved. Other direct calls
-// use canonical declarations or typed routes through recorded ILT symbols.
-// Binding evidence: targets/game/reverse/identity_evidence/006870f0-finishing-ilt.md.
-// Critical levers: packet union with natural double alignment (not declspec
-// align), inline StringBase::str bodies, game lastHeard inline accessor,
-// and host-drop type8 versus player-drop type6. All are witnessed in retail.
+// LAN lobby/game update tick, retail RVA 006870F0, 2436 bytes: code ends at
+// ret 00687A25, alignment 00687A26, nineteen switch pointers 00687A28..00687A74,
+// then int3 (targets/game/reverse/identity_evidence/006870f0-finishing-ilt.md).
+// The body mirrors Zero Hour LANAPI::update; the name stays address-derived
+// until a vtable slot proves it. Mirror types are local because lanapi.cpp
+// carries the Zero Hour layout. Callees bind through canonical declarations or
+// typed routes through recorded ILT symbols. The leave handler at 0068BAC0 is
+// LANAPI::handleRequestGameLeave(LANMessage *, const IPAddr &, bool): the
+// IPAddr spelling fits all 13 sibling handler ILT windows jointly and this name
+// alone fits slot 0001320F.
+// Levers: packet union with natural double alignment (not declspec align),
+// inline StringBase::str bodies, game lastHeard inline accessor, host-drop
+// type8 versus player-drop type6, and a block-scope reference alias for
+// m_currentGame in the host-drop loop, which gives retail's base/index order
+// in lea ecx,[edi+eax+0x88] at +0x7A1 (the BFME2 0x0052F63F SIB recipe).
 #include <wchar.h>
 #include "string_base.h"
 template<> inline const char *StringBase<char>::str() const { return m_data ? m_data->data : ""; }
@@ -71,7 +72,7 @@ public:
  unsigned lastHeard;
 };
 typedef LANGameInfo RvaLANGame;
-class RvaLANGameText {
+class BfmeGameText {
 public:
  virtual void slot00();
  virtual void slot01();
@@ -85,8 +86,11 @@ public:
  virtual void slot09();
  virtual UnicodeString fetch(const char *, bool = false);
 };
-extern RvaLANGameText *TheGameText;
-class LANAPI { friend class Rva006870F0State; protected: void removeGame(LANGameInfo *); };
+typedef BfmeGameText RvaLANGameText;
+extern BfmeGameText *TheGameText;
+struct LANMessage;
+struct IPAddr;
+class LANAPI { friend class Rva006870F0State; protected: void removeGame(LANGameInfo *); void handleRequestGameLeave(LANMessage *, const IPAddr &, bool); };
 void j_00011aa9();
 void j_0004233e();
 void j_00046001();
@@ -285,7 +289,8 @@ public:
    route = { j_00046817 };
   (this->*route.member)(msg, sender);
  }
- void call0068BAC0(RvaLANPacket *, const RvaLANAddress *, bool);
+ // ?call0068BAC0@Rva006870F0State@@QAEXPAURvaLANPacket@@PBURvaLANAddress@@_N@Z absent-from-retail
+
  void removePlayer(RvaLANPlayer *player) {
   if (m_lobbyPlayers == player) m_lobbyPlayers = m_lobbyPlayers->next;
   else {
@@ -321,7 +326,7 @@ void Rva006870F0State::step()
    case 4: RequestLobbyLeave(true); call0068CF00(msg, &sender); break;
    case 5: call0068B4C0(msg, &sender); break;
    case 8: leaveFlag = true;
-   case 6: call0068BAC0(msg, &sender, leaveFlag); break;
+   case 6: reinterpret_cast<LANAPI *>(this)->handleRequestGameLeave(reinterpret_cast<LANMessage *>(msg), reinterpret_cast<const IPAddr &>(sender), leaveFlag); break;
    case 7: call0068AC20(msg, &sender); break;
    case 9: call0068AC80(msg, &sender); break;
    case 10: call0068B540(msg, &sender); break;
@@ -380,22 +385,23 @@ void Rva006870F0State::step()
    msg.type = 8;
    wcsncpy(msg.name, m_currentGame->getPlayerName(0).str(), 12);
    msg.name[12] = 0;
-   call0068BAC0(&msg, &m_currentGame->slots[0].address, false);
+   reinterpret_cast<LANAPI *>(this)->handleRequestGameLeave(reinterpret_cast<LANMessage *>(&msg), reinterpret_cast<const IPAddr &>(m_currentGame->slots[0].address), false);
    UnicodeString text;
    text = TheGameText->fetch("LAN:HostNotResponding");
    OnChat(UnicodeString::TheEmptyString, localAddress(), text, 2);
   } else if (AmIHost()) {
+   RvaLANGame *const &cg = m_currentGame;
    for (int p=1; p<8; ++p) {
-    if ((m_currentGame->slots[p].address.ip || m_currentGame->slots[p].address.port) &&
-      m_currentGame->getLastHeard(p) + 20000 < now) {
+    if ((cg->slots[p].address.ip || cg->slots[p].address.port) &&
+      cg->getLastHeard(p) + 20000 < now) {
      RvaLANPacket msg;
      fillInLANMessage(&msg);
      UnicodeString text;
-     text.format(TheGameText->fetch("LAN:PlayerDropped"),m_currentGame->getPlayerName(p).str());
+     text.format(TheGameText->fetch("LAN:PlayerDropped"),cg->getPlayerName(p).str());
      msg.type = 6;
-     wcsncpy(msg.name,m_currentGame->getPlayerName(p).str(),12);
+     wcsncpy(msg.name,cg->getPlayerName(p).str(),12);
      msg.name[12]=0;
-     call0068BAC0(&msg,&m_currentGame->slots[p].address,false);
+     reinterpret_cast<LANAPI *>(this)->handleRequestGameLeave(reinterpret_cast<LANMessage *>(&msg), reinterpret_cast<const IPAddr &>(cg->slots[p].address), false);
      OnChat(UnicodeString::TheEmptyString,localAddress(),text,2);
     }
    }

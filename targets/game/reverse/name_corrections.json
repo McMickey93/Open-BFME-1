@@ -21151,5 +21151,15 @@
  "after_sha256": "ae4bb38a19139e3c8465529f5f27a064a819969c6685dd93829e260babba3a7b",
  "evidence": "targets/game/reverse/identity_evidence/00c61880-registry-temporary.md",
  "reason": "Correct only the inner conditional temporary to the independently proved handle destructor 0005C640. The public AssetReference result, AssetName input and canonical Find_Asset provider remain intact. Retail FuncInfo E510C4 state 1 proves ownership; the 196-byte parent, 25-byte action and 188-byte provider pass normal gates."
-}
+},
+ {
+   "old_path": "targets/game/reverse/attempts/0x006870f0.cpp",
+   "new_path": "game/GameEngine/Source/GameNetwork/LANAPIUpdate.cpp",
+   "old_name": "RvaLANGameText",
+   "new_name": "BfmeGameText",
+   "before_sha256": "3665907ac1459debfcab8fb454a7e7f7ae72d65f86269b0d284824e3db93a2ba",
+   "after_sha256": "0f7a820da85f2398023becd74fb5868be4e2f50145314c3f415e74cc2f5bcf31",
+   "evidence": "targets/game/reverse/dir32_addresses.csv",
+   "reason": "TheGameText at 0x012F147C is recorded in dir32_addresses.csv as ?TheGameText@@3PAVBfmeGameText@@A; the DIR32 gate refuses the bank's RvaLANGameText spelling, so the local class takes the recorded name and RvaLANGameText stays as a typedef."
+ }
 ]
