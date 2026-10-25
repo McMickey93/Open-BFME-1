@@ -1,0 +1,126 @@
+name: Contributor bounded pages of already gated evidence
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-evidence-pages-20261025.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mcmickey93-bfme1-evidence-pages
+  cancel-in-progress: false
+jobs:
+  page:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        shard: [-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]
+    env:
+      EXPORT_SHARD: ${{ matrix.shard }}
+      PYTHONUTF8: '1'
+    steps:
+      - name: Read only the known official Git prerequisite
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          sparse-checkout: AGENTS.md
+          sparse-checkout-cone-mode: false
+      - name: Read the successful immutable export artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: McMickey93/Open-BFME-1
+          run-id: '40242141644'
+          name: bfme1-four-evidence-export-40242141644
+          path: input-evidence
+          github-token: ${{ github.token }}
+      - name: Read hash-checked Git objects without any gates or compiler rerun
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          python3 -u - <<'PY' > ../page.jsonl
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          archive=root.parent/"input-evidence"
+          def git(*args):
+              return subprocess.check_output(["git",*args],cwd=root)
+          def textgit(*args):
+              return git(*args).decode("utf-8").strip()
+          m=json.loads((archive/"manifest.json").read_text(encoding="utf-8"))
+          expected=["6f56ce2b2015d36123de9a6f579b2729918e3d5f","5e3dddd65d992d524fe6f20e86ea60f30b8658b0","a052df7352f5990e6bb86c324ea2405182e4786c","f044777c4377d17f1a31bafd913a3328ebbdd85a"]
+          base="f633d0e97a953289405438821be0c09b28527bbb"
+          assert m["base"]==base and m["normal_pre_push_passed"] is True and m["published"] is False
+          assert [c["original_native_commit"] for c in m["commits"]]==expected
+          assert all(c["normal_commit_passed"] is True for c in m["commits"])
+          assert textgit("rev-parse","HEAD")==base
+          bundles=list(archive.glob("*.bundle"))
+          assert len(bundles)==1
+          subprocess.run(["git","bundle","verify",str(bundles[0])],cwd=root,check=True,stdout=subprocess.DEVNULL)
+          subprocess.run(["git","fetch","--no-tags",str(bundles[0]),m["tip"]],cwd=root,check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+          logpath="targets/game/reverse/re_attempts.log"
+          allpaths=textgit("diff","--name-only",base,m["tip"]).splitlines()
+          assert all(p==logpath or p.startswith("targets/game/reverse/attempt_support/") for p in allpaths)
+          assert allpaths==m["paths"]
+          shard=int(os.environ["EXPORT_SHARD"])
+          width=450000
+          if shard==-1:
+              output=[]
+              def emit(label,obj):
+                  output.append(label+" "+json.dumps(obj,ensure_ascii=True))
+              for c in m["commits"]:
+                  assert textgit("rev-parse",c["commit"]+"^")==c["base"]
+                  assert textgit("rev-parse",c["commit"]+"^{tree}")==c["tree"]
+                  assert git("show","-s","--format=%B",c["commit"]).decode("utf-8")==c["message"]
+                  patch=git("diff","--unified=0",c["base"],c["commit"],"--",logpath).decode("utf-8")
+                  added=[line[1:] for line in patch.splitlines() if line.startswith("+") and not line.startswith("+++")]
+                  removed=[line for line in patch.splitlines() if line.startswith("-") and not line.startswith("---")]
+                  assert len(added)==1 and len(added[0].split("\t"))==5 and not removed
+                  emit("EXPORT_LOG_APPEND",{"commit_index":c["index"],"content":added[0]+"\n"})
+                  for f in c["files"]:
+                      data=git("show",c["commit"]+":"+f["path"])
+                      assert len(data)==f["bytes"] and hashlib.sha256(data).hexdigest()==f["sha256"]
+                      assert textgit("rev-parse",c["commit"]+":"+f["path"])==f["blob_sha"]
+                      value=data.decode("utf-8")
+                      key=str(c["index"])+":"+f["path"]
+                      emit("EXPORT_FILE_META",dict(f,key=key,commit_index=c["index"],chunks=(len(value)+11999)//12000 if f["path"]!=logpath else None))
+                      if f["path"]!=logpath:
+                          for j,start in enumerate(range(0,len(value),12000)):
+                              emit("EXPORT_FILE_CHUNK",{"key":key,"index":j,"content":value[start:start+12000]})
+                  emit("EXPORT_COMMIT",c)
+              final=git("show",m["tip"]+":"+logpath).decode("utf-8")
+              emit("EXPORT_LOG_LAYOUT",{"path":logpath,"characters":len(final),"width":width,"chunks":(len(final)+width-1)//width,"tip":m["tip"],"final_meta":next(f for f in m["commits"][-1]["files"] if f["path"]==logpath)})
+              emit("EXPORT_MANIFEST",m)
+              assert sum(len(line)+1 for line in output)<500000, "Document metadata needs smaller pages"
+              print("\n".join(output),flush=True)
+          else:
+              assert 0<=shard<68
+              f=next(f for f in m["commits"][-1]["files"] if f["path"]==logpath)
+              data=git("show",m["tip"]+":"+logpath)
+              assert len(data)==f["bytes"] and hashlib.sha256(data).hexdigest()==f["sha256"]
+              value=data.decode("utf-8")
+              count=(len(value)+width-1)//width
+              assert count<=68, "Increase fixed read-only page count"
+              piece=value[shard*width:(shard+1)*width]
+              assert piece or shard>=count
+              print("EXPORT_FINAL_LOG_PAGE "+json.dumps({"path":logpath,"tip":m["tip"],"index":shard,"chunks":count,"start_character":shard*width,"content":piece},ensure_ascii=True),flush=True)
+          
+          PY
+          cat ../page.jsonl
+      - name: Retain this bounded UTF-8 export page
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-evidence-page-${{ matrix.shard }}-${{ github.run_id }}
+          path: page.jsonl
+          retention-days: 90
+          if-no-files-found: warn
