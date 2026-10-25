@@ -1,0 +1,169 @@
+name: Contributor BFME1 finish checkpoint continuation
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-finish-resume-20261025.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mcmickey93-bfme1-finish-resume
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 55
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:finish-inventory-20261025
+    steps:
+      - name: Read the current official tree without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: 967c7e1cf5bbda24ea52f802caffa7164c1368ff
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Restore only the fixed prior read-only measurement artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: bfme1-cpp-recovery-40244317373-1
+          run-id: 40244317373
+          repository: McMickey93/Open-BFME-1
+          github-token: ${{ github.token }}
+          path: resume-input
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate the official ledger and read upstream master
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 cpp-recovery
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+      - name: Measure the untried official finish pool without edits or claims
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 finish-measure-current
+          git switch --detach origin/master
+          python3 -u - <<'PY'
+          import hashlib,json,os,subprocess,sys,shutil
+          from pathlib import Path
+          root=Path.cwd().resolve()
+          resume=root.parent/"resume-input"
+          assert (resume/"finish_measured.json").is_file(), "Pinned artifact cache missing"
+          old=json.loads((resume/"contributor-full-finish-inventory-20261025/finish-batch.json").read_text(encoding="utf-8"))
+          assert str(old["run"])=="40244317373" and old["workflow"]=="8028c73adb6420f1a00045b2212409d3a03ef2f8", "Unexpected artifact provenance"
+          assert old["base"]=="967c7e1cf5bbda24ea52f802caffa7164c1368ff", "Unexpected original base"
+          assert len(old["measurements"])==81, "Unexpected checkpoint boundary"
+          assert len({int(c["target_rva"],16) for c in old["sequence"]})==len(old["sequence"])<=150, "Invalid bounded sequence"
+          build=root/"build"
+          build.mkdir(exist_ok=True)
+          for name in ("finish_measured.json","experiments","experiments.sqlite"):
+              source=resume/name
+              if source.is_dir():
+                  shutil.copytree(source,build/name,dirs_exist_ok=True)
+              elif source.is_file():
+                  shutil.copy2(source,build/name)
+          out=build/"contributor-finish-resume-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          sys.path.insert(0,str(root/"tools"))
+          import claims,eligibility,finish_measure,next_work,conversion_gate,progress
+          assert subprocess.check_output(["git","hash-object","AGENTS.md"],cwd=root,text=True).strip()=="06b755567bb147dfee3a89f70f7bbcd38410b5b4", "AGENTS changed"
+          base=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
+          def run(label,args):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(cp.stdout)
+              if cp.returncode:
+                  print(cp.stdout.decode("utf-8","replace"),flush=True)
+                  raise RuntimeError(label+" failed")
+              return cp.stdout.decode("utf-8","replace")
+          assert claims.fetch(), "Cannot read shared claims"
+          payload=json.loads(run("current-finish-pool",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"]))
+          current={int(c["target_rva"],16):c for c in payload["finish"]}
+          done={int(m["target_rva"],16) for m in old["measurements"]}
+          sequence=[c for c in old["sequence"] if int(c["target_rva"],16) not in done]
+          result={"status":"measuring","base":base,"workflow":os.environ["GITHUB_SHA"],"run":os.environ["GITHUB_RUN_ID"],"prior_run":40244317373,"already_reported":len(done),"original_draws":len(old["sequence"]),"remaining_draws":len(sequence),"measurements":[]}
+          def save():
+              (out/"finish-batch.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
+          cache=finish_measure.load()
+          save()
+          for number,c in enumerate(sequence):
+              rva=int(c["target_rva"],16)
+              path=root/c["stash"]
+              assert path.is_relative_to(root/"targets/game/reverse/attempts"), "Unexpected bank location"
+              raw=path.read_bytes()
+              before=hashlib.sha256(raw).hexdigest()
+              (out/(f"{rva:08x}-whole-stash.cpp.txt")).write_bytes(raw)
+              m={"order":number,"target_rva":c["target_rva"],"stash":c["stash"],"author_score":c["score"],"target_size":c["target_size"],"whole_source_sha256":before,"whole_source_bytes":len(raw),"symbol_header":finish_measure.symbol_of(path)}
+              claims.active.cache_clear()
+              busy_now=eligibility.busy_rvas()
+              assert claims.fetch(), "Cannot refresh shared claims"
+              live_now=claims.live(claims._read_local())
+              if rva not in current or current[rva]["stash"]!=c["stash"] or int(current[rva]["target_size"])!=int(c["target_size"]):
+                  m.update(status="no-longer-current-finish",qualified=False)
+              elif rva in live_now or f"0x{rva:08x}" in busy_now:
+                  m.update(status="skipped-new-live-or-busy",qualified=False)
+              else:
+                  try:
+                      entry=finish_measure.current(cache,rva,path)
+                      key=f"0x{rva:08x}"
+                      if entry is None and key in cache:
+                          m.update(status="prior-cache-no-longer-current-not-repeated",qualified=False)
+                      else:
+                          reused=entry is not None
+                          if entry is None:
+                              cache=finish_measure.ensure([(rva,path)],budget=1,cache=cache)
+                              entry=finish_measure.current(cache,rva,path)
+                          m.update(status="qualified-cached" if reused else "qualified" if entry is not None else "unmeasured-no-current-proof",qualified=entry is not None,entry=entry)
+                  except ValueError as error:
+                      m.update(status="refused",qualified=False,note=str(error))
+              assert hashlib.sha256(path.read_bytes()).hexdigest()==before, "Bank changed while measuring"
+              source_text=raw.decode("utf-8","replace")
+              lift_lines=[i+1 for i,line in enumerate(source_text.splitlines()) if conversion_gate.is_lift_line(line)]
+              asm_only=[{"symbol":a["symbol"],"signature":a["signature"]} for a in progress.asm_only_bodies(source_text)]
+              m["real_cpp_check"]={"lift_lines":lift_lines,"asm_only_bodies":asm_only,"passes":not lift_lines and not asm_only,"diagnostic_only":True}
+              result["measurements"].append(m)
+              save()
+              print("FINISH_RESUME_ITEM "+json.dumps(m),flush=True)
+              if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1:
+                  print("FINISH_RESUME_RAW_EXACT_LEAD "+json.dumps({**m,"full_stash":source_text}),flush=True)
+          result.update(status="complete",qualified_count=sum(bool(m["qualified"]) for m in result["measurements"]),raw_exact_leads=[m for m in result["measurements"] if m.get("qualified") and m["entry"].get("compiles") and m["entry"].get("quality")==1])
+          run("clean-tree",["git","diff","--exit-code"])
+          print(run("progress",[sys.executable,"tools/progress.py","origin/master"]),flush=True)
+          save()
+          print("FINISH_RESUME_FINAL "+json.dumps({"base":base,"draws":len(sequence),"qualified":result["qualified_count"],"raw_exact_count":len(result["raw_exact_leads"]),"unqualified":sum(not m["qualified"] for m in result["measurements"])}),flush=True)
+          PY
+      - name: Preserve unchanged bank snapshots and qualified native measurements
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-finish-resume-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source/build/contributor-finish-resume-20261025/
+            source/build/finish_measured.json
+            source/build/experiments/
+            source/build/experiments.sqlite
+          retention-days: 90
+          if-no-files-found: warn
+          compression-level: 9
