@@ -1,0 +1,78 @@
+name: Contributor native C++ work selection
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-native-cpp-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-cpp-selection
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 30
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:cpp-20261025
+    steps:
+      - name: Check out the immutable official revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: 60145fecd29ec2e21a5cc5796d51c76795296e22
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Install the official requirements and validate the ledger
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-selection
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+          git rev-parse HEAD
+      - name: Select an eligible whole-file candidate without claiming or editing it
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-selection
+          python3 tools/next_work.py
+      - name: Inspect ranked C++ reconstruction leads
+        if: success() || failure()
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-selection
+          python3 tools/next_work.py --ranked --limit 8
+          python3 tools/list_naked_candidates.py game
+      - name: Measure this session against official master
+        if: success() || failure()
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-selection
+          python3 tools/progress.py origin/master
