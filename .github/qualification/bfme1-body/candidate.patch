@@ -1,8 +1,8 @@
 diff --git a/game/Libraries/Source/Apt/AptActionInterpreter.cpp b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-index 60df2491d6c680d667ad689a1e79e7203aca56e3..6f590f236f882e4fa62d50b22b5214ed2c5a4b8c 100644
+index 60df2491d6c680d667ad689a1e79e7203aca56e3..828b7acd020562ee40679ab766e03a5f1364f06f 100644
 --- a/game/Libraries/Source/Apt/AptActionInterpreter.cpp
 +++ b/game/Libraries/Source/Apt/AptActionInterpreter.cpp
-@@ -181 +181,112 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
+@@ -181 +181,115 @@ void rva8CF1B0ProcessRecord(Rva8CF1B0State *state, Rva8CF1B0Cursor *cursor)
  }
 +
 +
@@ -97,19 +97,22 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..6f590f236f882e4fa62d50b22b5214ed
 +		}
 +	}
 +
-+	if (type == 5)
++	else
 +	{
-+		bool result = value->m_boolean;
-+		return AptBoolean::Create(result);
-+	}
-+	if (type == 6)
-+		goto numeric_value;
-+	if (type == 7)
-+		goto numeric_value;
-+	{
-+		AptValue *result = AptBoolean::Create(false);
-+		_ReadWriteBarrier();
-+		return result;
++		if (type == 5)
++		{
++			bool result = value->m_boolean;
++			return AptBoolean::Create(result);
++		}
++		if (type == 6)
++			goto numeric_value;
++		if (type == 7)
++			goto numeric_value;
++		{
++			AptValue *result = AptBoolean::Create(false);
++			_ReadWriteBarrier();
++			return result;
++		}
 +	}
 +
 +common_true:
@@ -117,10 +120,10 @@ index 60df2491d6c680d667ad689a1e79e7203aca56e3..6f590f236f882e4fa62d50b22b5214ed
 +}
 diff --git a/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..fe536844560581b64489be5b2f029d461dbb4ed3
+index 0000000000000000000000000000000000000000..300ca2c77e486ac4edf11251548169a4325d05a8
 --- /dev/null
 +++ b/targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md
-@@ -0,0 +1,223 @@
+@@ -0,0 +1,260 @@
 +# Registered conversion callback at 0x008C6AD0
 +
 +## Scope and baseline
@@ -196,7 +199,7 @@ index 0000000000000000000000000000000000000000..fe536844560581b64489be5b2f029d46
 +if/switch/ternary/Boolean-output forms produced a 217-byte merged body or
 +260--272-byte alternatives. Those trials are not repeated here.
 +
-+Eight complete-file candidates isolate the new context hypotheses:
++Nine complete-file candidates isolate the new context hypotheses:
 +
 +1. `00-canonical-control.cpp` preserves the bank's raw-shift predicates and
 +   free inline coercion helper, while fixing its typed callee and data bindings.
@@ -236,7 +239,13 @@ index 0000000000000000000000000000000000000000..fe536844560581b64489be5b2f029d46
 +   retaining the proven distinct false-tail tags and corrected array load.
 +   Fallback and predicate keep 04's actual early factory returns with the
 +   matching `_WriteBarrier()` tag, rather than 05's common-false gotos.
-+   It is the next finite native experiment, not an asserted exact recovery.
++   Its distinct measured layout is recorded below.
++9. `08-explicit-coerce-else.cpp` makes the complete coercion dispatch the
++   explicit `else` arm of 07's negative guard. It retains the single numeric
++   label and both backward entries, the early false returns, distinct tags,
++   corrected array load, and final true label. This one arm-ownership change
++   follows the scoped BFME 2 compiler witness described below. It is the next
++   finite native experiment, not an asserted exact recovery.
 +
 +The fourth experiment follows the specific tail-cross-jump technique in
 +`docs/shape_levers.md`, independently witnessed by the already matched
@@ -272,6 +281,21 @@ index 0000000000000000000000000000000000000000..fe536844560581b64489be5b2f029d46
 +24-byte compiler funclet near matches. This is a bounded result, not a claim
 +that all reference opportunities are exhausted. The available GeneralsMD
 +source tree does not provide this Apt source directory.
++
++Experiment 08 additionally uses a precise source-structure lesson from the
++same BFME 2 revision `beed8a16790a6812231ac7b05e3e6893e4cb5d1b`:
++`docs/recipes.md:646-652` and the matched
++`Code/GameEngineDevice/Source/MilesAudioDevice/MilesAudioManager.cpp`
++`shouldPlayLocally` body at `0x00053BA1` (320 bytes). Its recorded landing is
++commit `6f35948871`, referenced in
++`reverse/attempt_support/banked-landings-20261021/readme.md:42`.
++That witness changed independent early-return dispatches to explicit
++`if`/`else if`/`else` arms, restoring the EDI save and changing shared-tail
++placement. It includes counted-info cleanup and register shrink-wrapping
++that this Apt body does not have; it supports testing explicit arm ownership,
++not claiming the same byte result or adopting its runtime implementation.
++Because this donor evidence materially guides experiment 08, an eventual
++successful recovery commit using it must carry the `[BFME 2 donor]` prefix.
 +
 +## Verification status
 +
@@ -342,5 +366,21 @@ index 0000000000000000000000000000000000000000..fe536844560581b64489be5b2f029d46
 +before coercion in 04; only the numeric path itself occupies the shared
 +label. The type and receiver are initialized before every possible entry,
 +and the helper-entry barrier from 06 is not retained.
-+The native result and full qualification gate remain pending. No recovered
-+C++ byte gain has been recorded by these experiments.
++
++Native explore run `40186548577`, from immutable fork payload
++`b172365a8ced0dc8dcf69634c0604d632f6861df`, compiled experiment 07.
++It emitted 229/233 bytes with 11 relocations, 120 differing non-relocation
++bytes, eight relocation-site layout differences, and first unmasked
++difference +0x3C. Unlike 04/06, both coercion type checks are now together
++at +0xAD/+0xB2. The shared numeric block still follows coercion at +0xB7,
++with true at +0xCD and default false at +0xD9; common false stays at +0x86.
++Its two structural differences therefore reflect a distinct layout, not an
++identical-output repeat. The original 520-byte sibling remains exact modulo
++relocations. The required numeric-before-coercion ordering is still absent.
++
++Experiment 08 tests only explicit ownership of the coercion `else` arm after
++that result. The goto-scope argument above still applies: both backward
++entries reach the numeric label outside every nested initialized result
++scope. No new declaration, predicate, call, barrier, data binding or compiler
++flag is introduced. Its native result and the full qualification gate remain
++pending. No recovered C++ byte gain has been recorded by these experiments.

@@ -1,12 +1,12 @@
-Explore structured shared Apt numeric path at 0x008C6AD0
+[BFME 2 donor] Explore explicit Apt coercion else arm at 0x008C6AD0
 
-The helper-entry barrier produced the same complete instruction table as
-experiment 04. Keep its measured structured negative guard and early false
-returns, but express the shared numeric conversion at one labelled site
-inside that arm. The later coercion type checks jump back to this site.
-Keep the common true exit last, the distinct false-return tags, the proven
-stack-array load order, and the complete 520-byte sibling source unchanged.
-All initialized factory-result locals remain in their own return scopes.
+The structured shared-numeric experiment still emitted 229 of 233 target
+bytes. Keep that complete body and wrap only the coercion dispatch in an
+explicit else arm. The BFME 2 shouldPlayLocally source-structure witness
+motivates this bounded test; its distinct shrink-wrapping context and exact
+revision are documented in the identity evidence. No runtime implementation
+is transferred. Retain every guard, call, label, barrier and data binding,
+and keep the complete 520-byte sibling source unchanged.
 
 This is exploratory input: no admission or new exact C++ bytes are claimed.
 

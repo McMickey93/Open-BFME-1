@@ -25,7 +25,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "Canonical callee and data bindings; one numeric site inside structured negative guard; backward coerce entries; distinct post-call false tails; proven stack-array local order; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
+  "notes": "Canonical callee and data bindings; explicit coercion else arm; shared numeric site and backward entries; BFME 2 source-structure witness; distinct post-call false tails; proven stack-array local order; complete 233B retail extent; evidence=targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
   "admissions": [
     {
       "rva": "0x008C6AD0",
@@ -35,23 +35,23 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "bc4017393a4f7469fa650b286f713b5d88aa5ce1",
-  "patch_sha256": "c0286cdb124e4db9b14074f7b796cda999289ec9e9a678dcae2f80cd2845719a",
-  "message_sha256": "3bddc9273f844922901c38895fab086f9babface15823ed251568ec0f83bdd10",
+  "patch_tree": "e2e4f0d557e6d783884a39efb19ac1c861a68463",
+  "patch_sha256": "b506669e88a4f567d1c477dc67aa2f3c160c2e2305163b2d0e763a7e05890fc1",
+  "message_sha256": "9be2e63d737a54503a8dcf7c1a3578d384eb982da22a8079efe491de6707bd16",
   "files": [
     {
       "path": "game/Libraries/Source/Apt/AptActionInterpreter.cpp",
       "mode": "100644",
       "base_blob": "60df2491d6c680d667ad689a1e79e7203aca56e3",
-      "candidate_blob": "6f590f236f882e4fa62d50b22b5214ed2c5a4b8c",
-      "sha256": "872ab57f5654deadc23c474e1307b6a73709030d396b5cfd923b3c827539f927"
+      "candidate_blob": "828b7acd020562ee40679ab766e03a5f1364f06f",
+      "sha256": "d9605337ffa59820fa0d11c557f6c0813022bee0278c5c3e46d3a3f00d5b7d40"
     },
     {
       "path": "targets/game/reverse/identity_evidence/008c6ad0-canonical-coercion.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "fe536844560581b64489be5b2f029d461dbb4ed3",
-      "sha256": "a9504d46a15f01bc12664c0853e86843216c28a24fa3285ce4f6f88b0b04d326"
+      "candidate_blob": "300ca2c77e486ac4edf11251548169a4325d05a8",
+      "sha256": "37d37e749e7d4072117c6e814cc3a78d2a2a98dba68dde1963f2f187aae8777e"
     }
   ],
   "base_rows": [
