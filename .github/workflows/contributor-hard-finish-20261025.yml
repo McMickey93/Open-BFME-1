@@ -71,9 +71,9 @@ jobs:
               e=current.get(rva)
               assert e and e[0]==token and e[1]['owner']==os.environ['BFME_CLAIM_OWNER'] and e[1]['lease']=='5d82ccfbf2544ed0b704840d11b13543'
               assert claims.holds(rva,token)
-          out=Path('build/contributor_hard_finish_sp_visibility_20261025');out.mkdir(parents=True,exist_ok=True)
+          out=Path('build/contributor_hard_finish_sp_visibility_fixed_20261025');out.mkdir(parents=True,exist_ok=True)
           base=Path('targets/game/reverse/attempt_support/0x00269c50-20261013-formB-constref-abi.inc').read_text(encoding='utf-8')
-          base=base[base.index('#include'):]
+          base='#define _STLP_USE_STATIC_LIB 1\n#define BFME_STLP_NODE_ALLOC 1\n'+base[base.index('#include'):]
           ascii_def=r'''
           template<class T> class StringBase {
               friend class AsciiString;
@@ -165,7 +165,7 @@ jobs:
               log=p.stdout+'\n'+p.stderr
               (out/(name+'.log')).write_text(log,encoding='utf-8',newline='\n')
               print('VISIBILITY_PROBE '+name,flush=True);print(log,flush=True)
-              return p.returncode==0 and ('diffs    0 non-reloc' in log or 'diffs    0 ' in log)
+              return p.returncode==0 and 'result   EXACT (modulo relocation slots)' in log
           for name,src,providers in cases:
               assert claims.holds(0x00269C50,token)
               private=out/(name+'.cpp');private.write_text('// cl: /DNDEBUG /MD /EHsc\n// stlport\n'+src,encoding='utf-8',newline='\n')
@@ -194,6 +194,27 @@ jobs:
           probe('sync-forwarder-provider',private,'?forward@Rva004141A0GuardedVCall@@QAEXHH@Z','0x004141A0',20)
           probe('sync-forwarder-caller',private,'?bfmeSyncEGF@BfmeThingEGF@@QAEXXZ','0x00271B40',249)
           
+          # Isolated complete aboutToDoSpecialPower visibility: preserve its genuine
+          # AsciiString return/EH, audio-event lifetimes, vslot signatures and unroll depth.
+          native_ascii='#include "ascii_string.h"\n'
+          aboutbase=base.replace(ascii_def,native_ascii)
+          aboutbase=aboutbase.replace('struct Coord3D\n{\n','class Coord3D\n{\npublic:\n')
+          aboutbase=aboutbase.replace('class Player;','enum ObjectID { INVALID_ID=0 };\nclass Player { public: int getPlayerIndex() const { return m_playerIndex; } private: unsigned char m_prefix[0x24]; int m_playerIndex; };')
+          audio_def="class AudioEventRTS\n{\npublic:\n\tAudioEventRTS(const AudioEventRTS &);\n\t~AudioEventRTS();\n\tvoid setObjectID(ObjectID id);\n\t// ILT 0x00001E88 -> 0x000B2210; ilt_oracle confirms the class-tagged\n\t// ?setPosition@AudioEventRTS@@QAEXPBVCoord3D@@@Z the ledger carries as PBU.\n\tvoid setPosition(const Coord3D *pos)\n\t{\n\t\ttypedef void (AudioEventRTS::*Fn)(const Coord3D *);\n\t\tunion {\n\t\t\tvoid (*raw)();\n\t\t\tFn member;\n\t\t} c;\n\t\tc.raw = j_00001e88;\n\t\t(this->*c.member)(pos);\n\t}\n\tvoid setPlayerIndex(int playerIndex);\n\nprivate:\n\tunsigned char m_unreconstructed[0x70];\n};\n"
+          aboutbase=aboutbase.replace('class SpecialPowerTemplate : public Overridable',audio_def+'\nclass SpecialPowerTemplate : public Overridable')
+          aboutbase=aboutbase.replace('const SpecialPowerTemplate *getFO() const','AsciiString getName() const;\n    const AudioEventRTS *getInitiateSound() const { return &((SpecialPowerTemplate *)const_cast<SpecialPowerTemplate *>(this)->friend_getFinalOverride())->m_initiateSound; }\n    const AudioEventRTS *getInitiateAtTargetSound() const { return &((SpecialPowerTemplate *)const_cast<SpecialPowerTemplate *>(this)->friend_getFinalOverride())->m_initiateAtLocationSound; }\n    const SpecialPowerTemplate *getFO() const')
+          aboutbase=aboutbase.replace('Int m_field20;','Int m_field20;\n    AudioEventRTS m_initiateSound;\n    AudioEventRTS m_initiateAtLocationSound;')
+          aboutbase=aboutbase.replace('unsigned char m_nextPad[0x88 - 8];','unsigned char m_idPad[0x74 - 8];\n    ObjectID m_id;\n    unsigned char m_nextPad[0x88 - 0x78];')
+          aboutbase=aboutbase.replace('void setDisabledUntil(DisabledType type, UnsignedInt frame);','ObjectID getID() const { return m_id; }\n    void setDisabledUntil(DisabledType type, UnsignedInt frame);')
+          aboutbase=aboutbase.replace('class SpecialPowerModule : public',"class ScriptEngine\n{\npublic:\n\tvirtual void slot00(); virtual void slot01(); virtual void slot02(); virtual void slot03();\n\tvirtual void slot04(); virtual void slot05(); virtual void slot06(); virtual void slot07();\n\tvirtual void slot08(); virtual void slot09(); virtual void slot10(); virtual void slot11();\n\tvirtual void slot12(); virtual void slot13(); virtual void slot14(); virtual void slot15();\n\tvirtual void slot16(); virtual void slot17(); virtual void slot18(); virtual void slot19();\n\tvirtual void slot20(); virtual void slot21(); virtual void slot22(); virtual void slot23();\n\tvirtual void slot24(); virtual void slot25(); virtual void slot26(); virtual void slot27();\n\tvirtual void slot28(); virtual void slot29(); virtual void slot30(); virtual void slot31();\n\tvirtual void slot32(); virtual void slot33(); virtual void slot34();\n\tvirtual void notifyOfTriggeredSpecialPower(int playerIndex, const AsciiString &completedPower, ObjectID sourceObj);\n};\n\nclass AudioManager\n{\npublic:\n\tvirtual void slot00(); virtual void slot01(); virtual void slot02(); virtual void slot03();\n\tvirtual void slot04(); virtual void slot05(); virtual void slot06(); virtual void slot07();\n\tvirtual void slot08(); virtual void slot09(); virtual void slot10(); virtual void slot11();\n\tvirtual void slot12(); virtual void slot13(); virtual void slot14(); virtual void slot15();\n\tvirtual void slot16();\n\tvirtual unsigned addAudioEvent(const AudioEventRTS *eventToAdd);\n};\n\nextern ScriptEngine *TheScriptEngine;\nextern AudioManager *TheAudio;\n"+'\nclass SpecialPowerModule : public')
+          about_body="__declspec(noinline) void aboutToDoSpecialPower(const Coord3D *location)\n{\n\t// Tell the scripting engine!\n\tTheScriptEngine->notifyOfTriggeredSpecialPower(\n\t\tgetObject()->getControllingPlayer()->getPlayerIndex(),\n\t\tgetSpecialPowerModuleData()->m_specialPowerTemplate->getName(),\n\t\tgetObject()->getID());\n\n\t// get module data\n\tconst SpecialPowerModuleData *modData = getSpecialPowerModuleData();\n\n\t// play our initiate sound if we have one\n\tAudioEventRTS audioEvent = *modData->m_specialPowerTemplate->getInitiateSound();\n\taudioEvent.setObjectID(getObject()->getID());\n\tTheAudio->addAudioEvent(&audioEvent);\n\n\t// play sound at target location if specified\n\tif (location)\n\t{\n\t\tAudioEventRTS soundAtLocation = *modData->m_specialPowerTemplate->getInitiateAtTargetSound();\n\t\tsoundAtLocation.setPosition(location);\n\t\tsoundAtLocation.setPlayerIndex(getObject()->getControllingPlayer()->getPlayerIndex());\n\t\tTheAudio->addAudioEvent(&soundAtLocation);\n\t}\n}\n"
+          for name,src,visible in [('about-native-context',aboutbase,False),('about-complete-visible',aboutbase.replace('void aboutToDoSpecialPower(const Coord3D *location);',about_body),True)]:
+              assert claims.holds(0x00269C50,token)
+              private=out/(name+'.cpp')
+              private.write_text('// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib\n// stlport\n#pragma inline_recursion(on)\n#pragma inline_depth(3)\n'+src,encoding='utf-8',newline='\n')
+              if visible: probe(name+'-provider',private,'?aboutToDoSpecialPower@SpecialPowerModule@@IAEXPBVCoord3D@@@Z','0x00268CB0',379)
+              probe(name+'-caller',private,'?finishSpecialPower@SpecialPowerModule@@QAEXI@Z','0x00269C50',1073)
+          
           PY
       - name: Measure unchanged baseline
         if: always()
@@ -208,8 +229,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-specialpower-visibility
+          name: bfme1-hard-finish-specialpower-visibility-fixed
           path: |
-            source/build/contributor_hard_finish_sp_visibility_20261025/
+            source/build/contributor_hard_finish_sp_visibility_fixed_20261025/
             source/build/experiments/
           retention-days: 90
