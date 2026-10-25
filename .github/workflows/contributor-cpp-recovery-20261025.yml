@@ -67,7 +67,7 @@ jobs:
           sys.path.insert(0,str(root/"tools"))
           import build,claims,finish_measure,probe
           from experiment_store import validated_object_receipt
-          raw=urllib.request.urlopen("https://sdmntprnortheu.oaiusercontent.com/files/00000000-51d4-81f4-abed-2cae6c11e8c7/raw?se=2026-10-25T23%3A12%3A41Z&sp=r&sv=2026-02-06&sr=b&scid=01a174d6-c33a-71b9-9ca9-82750df801e0&skoid=002823aa-689d-47ca-9347-108c20f4f00d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-25T05%3A04%3A17Z&ske=2026-10-26T05%3A04%3A17Z&sks=b&skv=2026-02-06&sig=mpNnno0RBv6XbBN%2BRXOviHSelNMDn%2BHHFrm34uY2Udw%3D",timeout=60).read()
+          raw=urllib.request.urlopen("https://sdmntprnortheu.oaiusercontent.com/files/00000000-3d50-81f4-8dcc-7641b181b41a/raw?se=2026-10-25T23%3A17%3A05Z&sp=r&sv=2026-02-06&sr=b&scid=01a174d6-c33a-71b9-9ca9-82750df801e0&skoid=002823aa-689d-47ca-9347-108c20f4f00d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-25T05%3A18%3A25Z&ske=2026-10-26T05%3A18%3A25Z&sks=b&skv=2026-02-06&sig=LxoyDtjEODyxGaLtKzr3KsJaIgVE/sYx0zyBsT7RLsc%3D",timeout=60).read()
           assert hashlib.sha256(raw).hexdigest()=="d4698f8804c877541203cee6c3fa8b9100479830e60660cd35fe25e583e5825b"
           archive=zipfile.ZipFile(io.BytesIO(raw))
           for name in archive.namelist():
@@ -96,7 +96,7 @@ jobs:
                   deps_path=build._deps_sidecar(obj)
                   if not deps_path.exists():continue
                   deps=json.loads(deps_path.read_text())
-                  if deps.get("source")!=measurement["whole_source_sha256"]:continue
+                  if deps.get("source")!=build._hash_file(str(path)):continue
                   assert hashlib.sha256(obj.read_bytes()).hexdigest()==meta["object"]
                   objects.append(obj)
               assert len(objects)==1, (measurement["stash"],objects)
