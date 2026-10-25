@@ -95,24 +95,24 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01111EC8@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot2@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111EDC@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot1@@@")
 // Gate debt ?g_vtbl_01111EE0@@3PAPAXA: reference the recorded retail vtable directly.
-#pragma comment(linker, "/alternatename:?g_vtbl_01111FB0@@3PAPAXA=??_7BFMEDistLODClass@@6BRefCountClass@@@")
+// Gate debt ?g_vtbl_01111FB0@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FC4@@3PAPAXA=??_7BFMEDistLODClass@@6BPersistClass@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FC8@@3PAPAXA=??_7BFMEDistLODClass@@6BMultiListObjectClass@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111FCC@@3PAPAXA=??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112034@@3PAPAXA=??_7Rva005EC600@@6BV3Slot3@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112048@@3PAPAXA=??_7Rva005EC600@@6BV3Slot2@@@")
+// Gate debt ?g_vtbl_01112048@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_0111204C@@3PAPAXA=??_7Rva005EC600@@6BV3Slot1@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112050@@3PAPAXA=??_7Rva005EC600@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011120B0@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011120C4@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot2@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_011120C8@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot1@@@")
+// Gate debt ?g_vtbl_011120C8@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_011120CC@@3PAPAXA=??_7Rva005ECA20Object@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112174@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112188@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot2W@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_0111218C@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot1@@@")
+// Gate debt ?g_vtbl_0111218C@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01112190@@3PAPAXA=??_7Rva005ECCC0@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011121A4@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot3@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_011121B8@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot2W@@@")
+// Gate debt ?g_vtbl_011121B8@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_011121BC@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot1@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_011121C0@@3PAPAXA=??_7Rva005ED0D0@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DD0@@3PAPAXA=??_7Rva005EC160@@6BV3Slot3@@@")
@@ -121,8 +121,8 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01112DEC@@3PAPAXA=??_7Rva005EC160@@6BV3Slot0@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E00@@3PAPAXA=??_7Rva005EC870@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E14@@3PAPAXA=??_7Rva005EC870@@6BV3Slot2@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E18@@3PAPAXA=??_7Rva005EC870@@6BV3Slot1@@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01112E1C@@3PAPAXA=??_7Rva005EC870@@6BV3Slot0@@@")
+// Gate debt ?g_vtbl_01112E18@@3PAPAXA: reference the recorded retail vtable directly.
+// Gate debt ?g_vtbl_01112E1C@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E30@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot3@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E44@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot2@@@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01112E48@@3PAPAXA=??_7Rva005ECF60@@6BV3Slot1@@@")
@@ -262,24 +262,24 @@ extern void *g_vtbl_01111E68[];
 extern void *g_vtbl_01111EC8[];
 extern void *g_vtbl_01111EDC[];
 extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@")[];
-extern void *g_vtbl_01111FB0[];
+extern "C" void *__identifier("??_7BFMEDistLODClass@@6BRefCountClass@@@")[];
 extern void *g_vtbl_01111FC4[];
 extern void *g_vtbl_01111FC8[];
 extern void *g_vtbl_01111FCC[];
 extern void *g_vtbl_01112034[];
-extern void *g_vtbl_01112048[];
+extern "C" void *__identifier("??_7Rva005EC600@@6BV3Slot2@@@")[];
 extern void *g_vtbl_0111204C[];
 extern void *g_vtbl_01112050[];
 extern void *g_vtbl_011120B0[];
 extern void *g_vtbl_011120C4[];
-extern void *g_vtbl_011120C8[];
+extern "C" void *__identifier("??_7Rva005ECA20Object@@6BV3Slot1@@@")[];
 extern void *g_vtbl_011120CC[];
 extern void *g_vtbl_01112174[];
 extern void *g_vtbl_01112188[];
-extern void *g_vtbl_0111218C[];
+extern "C" void *__identifier("??_7Rva005ECCC0@@6BV3Slot1@@@")[];
 extern void *g_vtbl_01112190[];
 extern void *g_vtbl_011121A4[];
-extern void *g_vtbl_011121B8[];
+extern "C" void *__identifier("??_7Rva005ED0D0@@6BV3Slot2W@@@")[];
 extern void *g_vtbl_011121BC[];
 extern void *g_vtbl_011121C0[];
 extern void *g_vtbl_011121D4[];
@@ -327,8 +327,8 @@ extern void *g_vtbl_01112DE8[];
 extern void *g_vtbl_01112DEC[];
 extern void *g_vtbl_01112E00[];
 extern void *g_vtbl_01112E14[];
-extern void *g_vtbl_01112E18[];
-extern void *g_vtbl_01112E1C[];
+extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot1@@@")[];
+extern "C" void *__identifier("??_7Rva005EC870@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01112E30[];
 extern void *g_vtbl_01112E44[];
 extern void *g_vtbl_01112E48[];
@@ -484,8 +484,8 @@ extern "C" void bfmeINIParseIndexList(INI *, void *, void *, const void *);
 #pragma comment(linker, "/alternatename:_bfmeINIParseIndexList=?parseIndexList@INI@@SAXPAV1@PAX1PBX@Z")
 extern "C" void bfmeINIParseBool(INI *, void *, void *, const void *);
 #pragma comment(linker, "/alternatename:_bfmeINIParseBool=?parseBool@INI@@SAXPAV1@PAX1PBX@Z")
-extern "C" void bfmeINIParseAsciiString(INI *, void *, void *, const void *);
-#pragma comment(linker, "/alternatename:_bfmeINIParseAsciiString=?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")
+extern "C" void __identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")(INI *, void *, void *, const void *);
+// Gate debt _bfmeINIParseAsciiString: use the recorded INI static function directly.
 extern "C" void bfmeINIParseCoord3D(INI *, void *, void *, const void *);
 #pragma comment(linker, "/alternatename:_bfmeINIParseCoord3D=?parseCoord3D@INI@@SAXPAV1@PAX1PBX@Z")
 extern "C" void bfmeINIParseUnsignedInt(INI *, void *, void *, const void *);
@@ -728,7 +728,7 @@ public:
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111FCC;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111FC8;
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111FC4;
-        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01111FB0;
+        *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)__identifier("??_7BFMEDistLODClass@@6BRefCountClass@@@");
     }
 
 private:
@@ -785,8 +785,8 @@ public:
     __forceinline DefaultModule2Allocation(TrackingPtr<ParticleSystem> &sys, const void *source)
     {
         ((DefaultModule2CtorShim *)this)->construct(sys, source);
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112E1C;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01112E18;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EC870@@6BV3Slot0@@@");
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005EC870@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112E14;
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112E00;
     }
@@ -817,7 +817,7 @@ public:
         ((DefaultModule3CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112050;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_0111204C;
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112048;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005EC600@@6BV3Slot2@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_01112034;
     }
 private:
@@ -873,7 +873,7 @@ public:
     {
         ((DefaultModule7CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_011120CC;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_011120C8;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECA20Object@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_011120C4;
         *(volatile unsigned int *)((unsigned char *)this + 0x1c) = (unsigned int)g_vtbl_011120B0;
     }
@@ -1545,7 +1545,7 @@ public:
     {
         ((LifeEventModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01112190;
-        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_0111218C;
+        *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7Rva005ECCC0@@6BV3Slot1@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01112188;
         *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)g_vtbl_01112174;
     }
@@ -1581,7 +1581,7 @@ public:
         ((TerrainCollisionModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_011121C0;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_011121BC;
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_011121B8;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005ED0D0@@6BV3Slot2W@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x20) = (unsigned int)g_vtbl_011121A4;
     }
 
@@ -8814,10 +8814,10 @@ void ParticleSystemTemplate::parse(INI *ini, void *data, void *store, const void
         { "IsOneShot", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x04 },
         { "Shader", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva01110180Names, 0x08 },
         { "Type", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva011101B0Names, 0x0c },
-        { "ParticleName", reinterpret_cast<ParseProc>(bfmeINIParseAsciiString), 0, 0x10 },
-        { "SlaveSystem", reinterpret_cast<ParseProc>(bfmeINIParseAsciiString), 0, 0x68 },
+        { "ParticleName", reinterpret_cast<ParseProc>(__identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")), 0, 0x10 },
+        { "SlaveSystem", reinterpret_cast<ParseProc>(__identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")), 0, 0x68 },
         { "SlavePosOffset", reinterpret_cast<ParseProc>(bfmeINIParseCoord3D), 0, 0x6c },
-        { "PerParticleAttachedSystem", reinterpret_cast<ParseProc>(bfmeINIParseAsciiString), 0, 0x78 },
+        { "PerParticleAttachedSystem", reinterpret_cast<ParseProc>(__identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")), 0, 0x78 },
         { "Lifetime", reinterpret_cast<ParseProc>(j_00036615), 0, 0x14 },
         { "SystemLifetime", reinterpret_cast<ParseProc>(bfmeINIParseUnsignedInt), 0, 0x20 },
         { "SortLevel", reinterpret_cast<ParseProc>(bfmeINIParseUnsignedInt), 0, 0x24 },
