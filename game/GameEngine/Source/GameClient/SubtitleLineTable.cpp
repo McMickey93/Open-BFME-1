@@ -64,7 +64,8 @@ public:
 };
 
 extern VideoPlayerInterface *TheVideoPlayer;
-extern const float BfmeZeroRange;
+// Retired readonly-zero DIR32 spellings: ?BfmeZeroRange@@3MB / ?BfmeZeroRange@@3MA.
+// This body already expresses the retail readonly zero as 0.0f.
 extern const float g_bfmeDefaultBU;
 
 // ?Rva0081D600ParseLineTable@@YAXPAVINI@@PAX1PBX@Z

@@ -20,7 +20,7 @@ struct Rva0079D0F0Vector
 // ?Rva0079D0A0@@YANM@Z
 double __cdecl Rva0079D0A0(float angle)
 {
-	if (angle < g_rva01075350)
+	if (angle < 0.0f)
 		return TWO_PI - fmod(-angle, TWO_PI);
 	return fmod(angle, TWO_PI);
 }
@@ -30,7 +30,7 @@ double __cdecl Rva0079D0F0(void *pair)
 {
 	Rva0079D0F0Vector *vector = (Rva0079D0F0Vector *)pair;
 	float angle = (float)atan2(vector->y, vector->x);
-	if (angle < g_rva01075350)
+	if (angle < 0.0f)
 		return TWO_PI - fmod(-angle, TWO_PI);
 	return fmod(angle, TWO_PI);
 }

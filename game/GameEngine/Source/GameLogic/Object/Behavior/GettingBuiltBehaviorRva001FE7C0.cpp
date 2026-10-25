@@ -80,9 +80,8 @@ public:
 
 extern GlobalData *TheWritableGlobalData;
 
-extern const Real g_rva01075350;
 extern Real g_bfmeDefaultBU;
-#define BfmeZeroRange g_rva01075350		// VA 0x01075350, 0.0f
+// Retail readonly VA 0x01075350 is 0.0f.
 
 class GettingBuiltBehaviorPrimary
 {
@@ -150,7 +149,7 @@ Bool GettingBuiltBehavior::rva001FE7C0()
 		Object *object = getObject();
 		BodyModuleInterface *body = object->getBodyModule();
 		Bool ready;
-		if (data->m_field20 < BfmeZeroRange)
+		if (data->m_field20 < 0.0f)
 		{
 			ObjectID source = 0;
 			ready = !object->bfmeGetRecentDamageSource(&source, TheWritableGlobalData->m_recentDamageSeconds)

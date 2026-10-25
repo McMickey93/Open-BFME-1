@@ -9,7 +9,6 @@ typedef unsigned short UnsignedShort;
 #include "coord3d.h"
 #include "vector3.h"
 
-extern const Real BfmeZeroRange;
 extern const Real g_bfmeScaleBK;
 extern const Real g_bfmeDefaultBU;
 

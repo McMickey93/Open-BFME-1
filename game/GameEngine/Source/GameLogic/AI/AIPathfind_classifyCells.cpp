@@ -9,7 +9,6 @@ typedef int Int;
 typedef float Real;
 typedef bool Bool;
 
-#define BfmeZeroRange 0.0f
 #define g_bfmeDefaultBU 1.0f
 #define g_bfmeDirectionWeight1285 10.0f
 #define g_bfmeScaleBK 0.1f
