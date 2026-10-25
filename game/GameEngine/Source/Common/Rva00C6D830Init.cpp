@@ -6,14 +6,15 @@ public:
     void *m(int unusedAllocator);
 };
 
-extern Gen_0081c9c0 g_bfmeRva0130B19CStatic;
+// ?g_bfmeRva0130B19CStatic@@3VGen_0081c9c0@@A: reference the recorded owner.
+extern "C" Gen_0081c9c0 __identifier("?Rva0130B19CVideoTable@@3V?$vector@UVideo@@V?$allocator@UVideo@@@_STL@@@_STL@@A");
 void bfmeForward_00C70C70();
 extern "C" int __cdecl atexit(void (__cdecl *callback)());
 
 void bfmeRva00C6D830Initialize()
 {
     unsigned char allocator;
-    g_bfmeRva0130B19CStatic.m((int)&allocator);
+    __identifier("?Rva0130B19CVideoTable@@3V?$vector@UVideo@@V?$allocator@UVideo@@@_STL@@@_STL@@A").m((int)&allocator);
     atexit(bfmeForward_00C70C70);
 }
 

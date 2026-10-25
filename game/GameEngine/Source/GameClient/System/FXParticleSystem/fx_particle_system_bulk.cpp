@@ -313,13 +313,16 @@ extern void *g_vtbl_0111231C[];
 extern "C" void *__identifier("??_7Rva005ED980@@6BV3Slot0@@@")[];
 extern void *g_vtbl_01112344[];
 extern void *g_vtbl_01112358[];
-extern void *g_vtbl_0111235C[];
+// ?g_vtbl_0111235C@@3PAPAXA: reference the recorded retail owner.
+extern "C" void *__identifier("??_7Rva005EDB10@@6BV3Slot1@@@")[];
 extern void *g_vtbl_01112360[];
-extern void *g_vtbl_01112384[];
+// ?g_vtbl_01112384@@3PAPAXA: use the owner recorded at 0x01112384.
+extern "C" void *__identifier("??_7Rva005EDC80@@6BV3Slot3@@@")[];
 extern void *g_vtbl_01112398[];
 extern void *g_vtbl_0111239C[];
 extern void *g_vtbl_011123A0[];
-extern void *g_vtbl_011123C4[];
+// ?g_vtbl_011123C4@@3PAPAXA: use the owner recorded at 0x011123C4.
+extern "C" void *__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@")[];
 extern void *g_vtbl_011123D8[];
 extern void *g_vtbl_011123DC[];
 extern void *g_vtbl_011123E0[];
@@ -959,7 +962,7 @@ __forceinline void initializeCylinderEmissionVolumeModule(void *module)
     *(unsigned int *)module = (unsigned int)g_vtbl_011123E0;
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_011123DC;
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_011123D8;
-    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_011123C4;
+    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005EDDE0@@6BV3Slot3@@@");
 }
 
 class OutwardEmissionVelocityTemplateCopyCtorShim {
@@ -1068,7 +1071,7 @@ public:
 __forceinline void initializeBoxEmissionVolumeModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_01112360;
-    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_0111235C;
+    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7Rva005EDB10@@6BV3Slot1@@@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112358;
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_01112344;
 }
@@ -1128,7 +1131,7 @@ __forceinline void initializeSphereEmissionVolumeModule(void *module)
     *(unsigned int *)module = (unsigned int)g_vtbl_011123A0;
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_0111239C;
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112398;
-    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_01112384;
+    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005EDC80@@6BV3Slot3@@@");
 }
 
 class LineEmissionVolumeTemplateCopyCtorShim {
@@ -1734,7 +1737,8 @@ extern const char g_01114424[];
 extern const char g_01114410[];
 extern const char g_011136D8[];
 extern const char g_011136CC[];
-extern const char g_011136C0[];
+// ?g_011136C0@FXParticleSystem@@3QBDB: eight retail bytes including the NUL.
+extern const char g_011136C0[] = "OffsetZ";
 extern const char g_011136B0[];
 extern const char g_011136A0[];
 extern const char g_01113E20[];
