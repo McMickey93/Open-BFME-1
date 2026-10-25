@@ -386,11 +386,17 @@ class IdentityCorrectionTests(unittest.TestCase):
         self.assertEqual(entry["after_sha256"], bank.t.digest(self.after))
         self.assertEqual((entry["old_name"], entry["new_name"]), (bank.OLD_NAME, bank.NEW_NAME))
         actual = (self.source / bank.CORRECTIONS).read_bytes()
-        prefix, suffix = self.registry.rsplit(b"}\r\n]", 1)
-        self.assertTrue(actual.startswith(prefix + b"},\r\n"))
-        self.assertTrue(actual.endswith(b"}\r\n]" + suffix))
+        cut = self.registry.rfind(b"\n", 0, self.registry.rfind(b"]")) + 1
+        prefix, suffix = self.registry[:cut], self.registry[cut:]
+        self.assertTrue(actual.startswith(prefix))
+        self.assertTrue(actual.endswith(suffix))
+        insertion = actual[len(prefix):len(actual) - len(suffix)]
+        self.assertTrue(insertion.startswith(b" ,\n {\n"))
+        self.assertNotIn(b"\r", insertion)
+        self.assertEqual(actual[:len(prefix)] + actual[-len(suffix):], self.registry)
         self.assertEqual(json.loads(actual), json.loads(self.registry) + [entry])
         self.assertEqual(name_regression.check(self.source, self.base, ":"), ([], 1))
+        self.git("diff", "--cached", "--check")
         self.git("commit", "-qm", "fixture exact snapshot correction")
         commit = self.git("rev-parse", "HEAD").decode().strip()
         self.assertEqual(self.validate(commit), result, "Import validation must repeat the same exact snapshot check")

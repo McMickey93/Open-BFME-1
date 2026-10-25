@@ -261,16 +261,20 @@ def allowed_result(path):
 
 
 def append_correction(raw, entry):
-    """Insert one record; every byte of the existing registry remains in order."""
+    """Insert LF-only lines without changing any existing registry byte."""
     entries = t.json_bytes(raw)
     require(isinstance(entries, list) and all(isinstance(item, dict) for item in entries)
             and entry not in entries, "Correction registry is invalid or already contains this snapshot")
     end = len(raw.rstrip()) - 1
     require(end >= 0 and raw[end:end + 1] == b"]", "Correction registry closing bracket missing")
-    cut = len(raw[:end].rstrip(b" \t\r\n"))
-    eol = b"\r\n" if b"\r\n" in raw else b"\n"
-    record = json.dumps(entry, indent=1, ensure_ascii=False).encode("utf-8").replace(b"\n", eol + b" ")
-    after = raw[:cut] + (b"," if entries else b"") + eol + b" " + record + raw[cut:]
+    # Keep the old final record's entire line and the closing-bracket line.
+    # A comma on its own new LF line avoids rewriting the old CRLF `}` line.
+    cut = raw.rfind(b"\n", 0, end) + 1
+    require(cut > 0 and not raw[cut:end].strip(b" \t\r"),
+            "Correction registry closing bracket must remain on its own line")
+    record = json.dumps(entry, indent=1, ensure_ascii=False).encode("utf-8").replace(b"\n", b"\n ")
+    insertion = (b" ,\n" if entries else b"") + b" " + record + b"\n"
+    after = raw[:cut] + insertion + raw[cut:]
     require(t.json_bytes(after) == entries + [entry], "Correction append changed prior registry entries")
     return after
 
