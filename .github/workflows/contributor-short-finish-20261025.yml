@@ -69,6 +69,8 @@ jobs:
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
           import claims,tu_map
+          sys.path.insert(0,str(root/"tools/fleet"))
+          import context_pack
           base="f633d0e97a953289405438821be0c09b28527bbb"
           token="968cde904cdb7dc7ea22bb31f11f71d9d5b6f67b"
           owner="github:McMickey93:bfme1:short-finish-20261025"
@@ -165,10 +167,12 @@ jobs:
               if approved and any(t["tu"].lower()!=home.lower() for t in approved): raise RuntimeError("Approved TU differs from reviewed EA home: "+json.dumps(approved))
               pooltext=run("current-finish-scope",[sys.executable,"tools/next_work.py","--tier","finish","--max-attempts","0","--cooldown-days","0","--ranked","--json"],True,False)
               pool=json.loads(pooltext)["finish"]
-              queued=[c for c in pool if any(t["tu"].lower()==home.lower() for t in mapping.get(int(c["target_rva"],16),[]))]
+              def ea_home(rv):
+                  return any("EA source file" in line and line.replace("\\","/").lower().endswith(home.removeprefix("game/").lower()) for line in context_pack.ea_lines(rv))
+              queued=[c for c in pool if ea_home(int(c["target_rva"],16)) or any(t["tu"].lower()==home.lower() for t in mapping.get(int(c["target_rva"],16),[]))]
               entries=claims._read_local()
-              foreign=[{"rva":f"0x{rv:08X}","record":info} for rv,(tk,info) in entries.items() if info.get("expires",0)>time.time() and info.get("owner")!=owner and any(t["tu"].lower()==home.lower() for t in mapping.get(rv,[]))]
-              scope={"home":home,"home_existing":False,"tu_map_target":ownmap,"ea_source_evidence":"native brief wb2-run GameEngine/Source/GameClient/LivingWorld/LivingWorldManager.cpp; run40239481518","queued_finish_bodies_for_tu":queued,"foreign_claims":foreign,"provider_all_rows":[r for r in rows if r["source"]==provider],"other_sequence_reviews":{"0039B160":"Current donor/provider/header context already tested by history22; no new lever","006A28D0":"506/502B with unmatched resolver context and frame/zero register prerequisite","002C2430":"418B25diff global mask residue; unchanged1237B naked base and prior donor mask attempt negative"}}
+              foreign=[{"rva":f"0x{rv:08X}","record":info} for rv,(tk,info) in entries.items() if info.get("expires",0)>time.time() and info.get("owner")!=owner and (ea_home(rv) or any(t["tu"].lower()==home.lower() for t in mapping.get(rv,[])))]
+              scope={"home":home,"home_existing":False,"tu_map_target":ownmap,"ea_target_lines":context_pack.ea_lines(0x0060F3C0),"ea_source_evidence":"native brief wb2-run GameEngine/Source/GameClient/LivingWorld/LivingWorldManager.cpp; run40239481518","queued_finish_bodies_for_tu":queued,"foreign_claims":foreign,"provider_all_rows":[r for r in rows if r["source"]==provider],"other_sequence_reviews":{"0039B160":"Current donor/provider/header context already tested by history22; no new lever","006A28D0":"506/502B with unmatched resolver context and frame/zero register prerequisite","002C2430":"418B25diff global mask residue; unchanged1237B naked base and prior donor mask attempt negative"}}
               result["scope"]=scope
               (out/"scope-receipt.json").write_text(json.dumps(scope,indent=2)+"\n",encoding="utf-8")
               print("WHOLE_TU_SCOPE "+json.dumps(scope),flush=True)
@@ -189,7 +193,6 @@ jobs:
               run("legacy-string-constructor-unchanged",["cmd","/d","/c","build.cmd","game/GameEngine/Source/Common/Audio/AudioEventRTSCopyAndLifetime.cpp"])
               run("provider-link-preview",[sys.executable,"tools/link_check.py",provider],False)
               run("pin-consistency-provider",[sys.executable,"tools/pin_consistency.py","--check"])
-              run("record-provider",[sys.executable,"tools/re_log.py","record",new_name,"0x000B4780","145","matched","Correct counted AudioEventInfoRef LivingWorld overload; native B2610 extracts info+8 and binds; B4690 string overload remains distinct. Whole provider five bodies and helper/legacy sources pass normal gates. +0 newCPP bytes t=12min model=gpt-6"])
               paths=[provider,evidence,"targets/game/reverse/functions.csv","targets/game/reverse/re_attempts.log"]
               normal_commit("provider","Correct the counted-info LivingWorld audio constructor overload\n\nRetail000B4780 preserves a counted AudioEventInfoRef through000B2610; the string-taking000B4690 constructor assigns its string directly and clears info. Give the existing145-byte provider its distinct actual input type and retain its ABI. All five provider bodies and the unchanged helper/legacy constructor units pass scoped byte checks. This adds0 C++ bytes.\n\nClaim-Lease: 0x000B4780="+lease+"\n",paths,0)
               fence("before-body-production-edit")
@@ -205,7 +208,6 @@ jobs:
               identity=root/"targets/game/reverse/identity_evidence/0060f3c0-counted-audio.md"
               with identity.open("a",encoding="utf-8",newline="\n") as handle:
                   handle.write("\n## Typed-overload recovery,2026-10-25\n\nThe later native recovery distinguishes the counted-info000B4780 overload from the string-taking000B4690 constructor. Correcting the provider to AudioEventRTS(const AudioEventInfoRef&,LivingWorldID) makes the ordinary direct C++ call both byte-exact and correctly bound, eliminating the previous six register differences without a member-pointer adapter. See000b4780-counted-livingworld-overload.md. Original preferred/alternative banks remain as history; the proper LivingWorldManager.cpp home now holds the verified184-byte body. Normal provider/helper/legacy and caller gates, identity/ownership and relocation checks pass. The linker preview is recorded separately; no census-derived linked-byte gain is claimed.\n")
-              run("record-body",[sys.executable,"tools/re_log.py","record",body_name,"0x0060F3C0","184","matched","Full184B C++ exact through RET+0xB7 INT3+0xB8. Correct counted AudioEventInfoRef constructor provider resolves000B4780 rather than string000B4690; direct native call removes6 scratch differences. Whole home/provider/helper/legacy scopes verified. Evidence "+evidence+" t=18min model=gpt-6"])
               bodypaths=[home,"docs/shape_levers.md","targets/game/reverse/identity_evidence/0060f3c0-counted-audio.md","targets/game/reverse/functions.csv","targets/game/reverse/re_attempts.log"]
               normal_commit("body","Recover the complete LivingWorld counted-audio helper in C++\n\nConvert all184 bytes of0060F3C0 at the evidenced LivingWorldManager.cpp home. Call the actual counted-info LivingWorld constructor directly; the distinct typed provider keeps native ownership and fixes the previous six scratch-register differences. Preserve the established global, virtual-call and cleanup routes. Normal add_match, scoped provider/caller byte gates and commit hooks pass; C++ exact progress versus origin/master is+184 bytes. Link previews are reported separately.\n\nClaim-Lease: 0x0060F3C0="+lease+"\n",bodypaths,184)
               run("final-clean-tree",["git","diff","--exit-code"])
