@@ -5,9 +5,12 @@
 // relocations are masked. The comparator callee (0x0002952D) is still a
 // dump; only its thunk address is pinned here.
 
-struct Q4Cmp00753DD0
+// Keep the existing template identity; the native comparator provider is Q4Sort.
+struct Q4Cmp00753DD0 { void *m_state; };
+struct Q4Sort00755050
 {
-	bool operator()(int left, int right) const;
+    void *m_state;
+    bool operator()(int left, int right) const;
 };
 
 namespace _STL
@@ -24,7 +27,7 @@ namespace _STL
 		Distance secondChild = 2 * holeIndex + 2;
 		while (secondChild < length)
 		{
-			if (compare(*(first + secondChild),
+			if ((*reinterpret_cast<const Q4Sort00755050 *>(&compare))(*(first + secondChild),
 				*(first + (secondChild - 1))))
 			{
 				--secondChild;

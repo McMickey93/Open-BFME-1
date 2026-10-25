@@ -5,10 +5,14 @@
 #define _STLP_NO_EXCEPTIONS 1
 #include <algorithm>
 
-struct Q4Cmp00753DD0
-{
-	bool operator()(int left, int right) const;
-};
+struct Q4Cmp00753DD0 { void *m_state; };
+
+// Retail calls the separately rowed heap adjustment; do not instantiate
+// another comparator view while emitting this sort helper.
+namespace _STL {
+template <> void __adjust_heap<int *, int, int, Q4Cmp00753DD0>(
+    int *, int, int, int, Q4Cmp00753DD0);
+}
 
 template void _STL::sort_heap<int *, Q4Cmp00753DD0>(
 	int *, int *, Q4Cmp00753DD0);
