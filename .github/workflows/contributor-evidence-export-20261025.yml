@@ -1,0 +1,216 @@
+name: Contributor four verified evidence commits export
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-evidence-export-20261025.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mcmickey93-bfme1-four-evidence-export
+  cancel-in-progress: false
+jobs:
+  export:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_MODEL: gpt-6
+    steps:
+      - name: Read the official immutable verification base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: f633d0e97a953289405438821be0c09b28527bbb
+          path: source
+          fetch-depth: 128
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Download immutable evidence from run 40235506422
+        uses: actions/download-artifact@v4
+        with:
+          repository: McMickey93/Open-BFME-1
+          run-id: '40235506422'
+          name: bfme1-leaf-handoff-40235506422
+          path: input-evidence/40235506422
+          github-token: ${{ github.token }}
+      - name: Download immutable evidence from run 40237453570
+        uses: actions/download-artifact@v4
+        with:
+          repository: McMickey93/Open-BFME-1
+          run-id: '40237453570'
+          name: bfme1-ctor-handoff-40237453570-1
+          path: input-evidence/40237453570
+          github-token: ${{ github.token }}
+      - name: Download immutable evidence from run 40238115845
+        uses: actions/download-artifact@v4
+        with:
+          repository: McMickey93/Open-BFME-1
+          run-id: '40238115845'
+          name: bfme1-hard-finish-001edca0-gated-handoff
+          path: input-evidence/40238115845
+          github-token: ${{ github.token }}
+      - name: Download immutable evidence from run 40239085197
+        uses: actions/download-artifact@v4
+        with:
+          repository: McMickey93/Open-BFME-1
+          run-id: '40239085197'
+          name: bfme1-short-finish-40239085197-1
+          path: input-evidence/40239085197
+          github-token: ${{ github.token }}
+      - name: Prepare the unchanged normal project hooks
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 evidence-export
+          git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
+          python3 -m pip install -r tools/requirements.txt
+          python3 tools/check_csv.py
+          bash tools/setup_hooks.sh
+          git config user.name McMickey93
+          git config user.email 347452154+McMickey93@users.noreply.github.com
+          git switch -c contributor/native-evidence-export
+          native_bash="$BASH"
+          if [[ "$native_bash" != *.exe ]] && [ -f "${native_bash}.exe" ]; then native_bash="${native_bash}.exe"; fi
+          test -f "$native_bash"
+          printf 'BFME_NATIVE_BASH=%s\n' "$(cygpath -aw "$native_bash")" >> "$GITHUB_ENV"
+      - name: Recreate only the four evidence commits through normal record and commit gates
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 evidence-export
+          python3 -u - <<'PY'
+          import hashlib, json, os, subprocess, sys
+          from pathlib import Path, PurePosixPath
+          
+          root=Path.cwd().resolve()
+          out=root/"build"/"evidence-export-20261025"
+          out.mkdir(parents=True,exist_ok=True)
+          base="f633d0e97a953289405438821be0c09b28527bbb"
+          logpath="targets/game/reverse/re_attempts.log"
+          plan=[{"run":40235506422,"name":"bfme1-leaf-handoff-40235506422","commit":"6f56ce2b2015d36123de9a6f579b2729918e3d5f","tree":"08f1406117ce1737020e1e3d9d2a0dd7bd4b97ab","sha":"745ea71fc6cfc5b5c2121a6e0a65ecbcf5f8affb3541caefcbea5dfbb4fdf3aa","prefix":"targets/game/reverse/attempt_support/003d59c0-bitfield-return-20261025/"},{"run":40237453570,"name":"bfme1-ctor-handoff-40237453570-1","commit":"5e3dddd65d992d524fe6f20e86ea60f30b8658b0","tree":"cc377a92ae1362597ca68896d2c118e8b3ae0681","sha":"6d079f7b9f92b479f401ad160c0ec4c97ce902d3137e6c60ff9d3bcd78f758d5","prefix":"targets/game/reverse/attempt_support/00078640-donor-context-20261025/"},{"run":40238115845,"name":"bfme1-hard-finish-001edca0-gated-handoff","commit":"a052df7352f5990e6bb86c324ea2405182e4786c","tree":"ca5b947db70eb3afaa53d5616e196bab26afa250","sha":None,"prefix":"targets/game/reverse/attempt_support/001edca0-native-object-context-20261025.md"},{"run":40239085197,"name":"bfme1-short-finish-40239085197-1","commit":"f044777c4377d17f1a31bafd913a3328ebbdd85a","tree":"96664029049cfce914a8180314ed4de7265dcc9e","sha":"e485d9bb6aff148bb17f6e4bd770799e474cdf4a4c9d4779babdb9541f20fa01","prefix":"targets/game/reverse/attempt_support/008cf030-native-hash-context-20261025/"}]
+          def digest(data): return hashlib.sha256(data).hexdigest()
+          def capture(*args):
+              return subprocess.check_output(list(args),cwd=root)
+          def gittext(*args):
+              return capture("git",*args).decode("utf-8").strip()
+          def run(label,args,stdin=None):
+              result=subprocess.run(args,cwd=root,input=stdin,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              (out/(label+".log")).write_bytes(result.stdout)
+              print("CHECK "+label+" "+str(result.returncode),flush=True)
+              print(result.stdout.decode("utf-8","replace"),flush=True)
+              result.check_returncode()
+              return result.stdout
+          assert gittext("rev-parse","HEAD")==base
+          assert gittext("rev-parse","origin/master")==base, "Official master advanced; rebase and reverify before export"
+          assert gittext("hash-object","AGENTS.md")=="06b755567bb147dfee3a89f70f7bbcd38410b5b4"
+          assert not gittext("status","--porcelain")
+          manifest={"base":base,"commits":[],"production_or_ledger_changed":False,"cpp_exact_delta":0}
+          bash_path=os.environ["BFME_NATIVE_BASH"]
+          assert Path(bash_path).is_file()
+          os.environ["PATH"]=str(Path(bash_path).parent)+os.pathsep+os.environ["PATH"]
+          
+          for number,item in enumerate(plan,1):
+              artifact=root.parent/"input-evidence"/str(item["run"])
+              bundles=list(artifact.rglob("*.bundle"))
+              assert len(bundles)==1, [str(p) for p in bundles]
+              bundle=bundles[0]
+              actual_digest=digest(bundle.read_bytes())
+              if item["sha"]:
+                  assert actual_digest==item["sha"], (item["run"],actual_digest)
+              run(str(number)+"-bundle-verify",["git","bundle","verify",str(bundle)])
+              run(str(number)+"-bundle-import",["git","fetch","--no-tags",str(bundle),item["commit"]])
+              original=item["commit"]
+              assert gittext("rev-parse",original+"^")==base
+              assert gittext("rev-parse",original+"^{tree}")==item["tree"]
+              paths=gittext("diff-tree","--no-commit-id","--name-only","-r",original).splitlines()
+              assert logpath in paths and len(paths)>=2, paths
+              docs=[p for p in paths if p!=logpath]
+              for path in docs:
+                  assert "\\" not in path and ".." not in PurePosixPath(path).parts, path
+                  assert path.startswith(item["prefix"]) if item["prefix"].endswith("/") else path==item["prefix"], path
+                  assert not path.endswith((".cpp",".c",".asm",".h",".hpp")), path
+                  assert gittext("ls-tree",original,"--",path).startswith("100644 blob "), path
+                  assert not (root/path).exists(), "Do not replace existing evidence: "+path
+                  data=capture("git","show",original+":"+path)
+                  data.decode("utf-8")
+                  (root/path).parent.mkdir(parents=True,exist_ok=True)
+                  (root/path).write_bytes(data)
+              old_log=capture("git","show",original+"^:"+logpath)
+              new_log=capture("git","show",original+":"+logpath)
+              assert new_log.startswith(old_log), "Original verdict log is not append-only"
+              addition=new_log[len(old_log):]
+              lines=addition.decode("utf-8").splitlines()
+              assert len(lines)==1, lines
+              fields=lines[0].split("\t")
+              assert len(fields)==5 and fields[3]=="blocked", fields
+              assert lines[0] not in (root/logpath).read_text(encoding="utf-8").splitlines(), "Verdict already present"
+              current_before=(root/logpath).read_bytes()
+              run(str(number)+"-record-verdict",[sys.executable,"tools/re_log.py","record",*fields])
+              assert (root/logpath).read_bytes()==current_before+addition, "Original tool changed the verdict; inspect before publication"
+              run(str(number)+"-diff-check",["git","diff","--check"])
+              run(str(number)+"-stage",["git","add","--",*paths])
+              staged=gittext("diff","--cached","--name-only").splitlines()
+              assert sorted(staged)==sorted(paths), staged
+              message=capture("git","show","-s","--format=%B",original)
+              message_path=out/("message-"+str(number)+".txt")
+              message_path.write_bytes(message)
+              parent=gittext("rev-parse","HEAD")
+              run(str(number)+"-normal-commit",["git","-c","core.hooksPath=.githooks","commit","--cleanup=verbatim","--file",str(message_path)])
+              commit=gittext("rev-parse","HEAD")
+              actual_paths=gittext("diff-tree","--no-commit-id","--name-only","-r",commit).splitlines()
+              assert sorted(actual_paths)==sorted(paths)
+              assert not gittext("status","--porcelain"), "Unexpected tracked or untracked changes"
+              files=[]
+              for path in paths:
+                  content=capture("git","show",commit+":"+path)
+                  text=content.decode("utf-8")
+                  blob=gittext("rev-parse",commit+":"+path)
+                  files.append({"path":path,"blob_sha":blob,"sha256":digest(content),"bytes":len(content)})
+                  key=str(number)+":"+path
+                  print("EXPORT_FILE_META "+json.dumps({"key":key,"commit_index":number,"path":path,"blob_sha":blob,"sha256":digest(content),"bytes":len(content),"chunks":(len(text)+11999)//12000}),flush=True)
+                  for chunk_index,start in enumerate(range(0,len(text),12000)):
+                      print("EXPORT_FILE_CHUNK "+json.dumps({"key":key,"index":chunk_index,"content":text[start:start+12000]},ensure_ascii=True),flush=True)
+              record={"index":number,"base":parent,"commit":commit,"tree":gittext("rev-parse",commit+"^{tree}"),"message":capture("git","show","-s","--format=%B",commit).decode("utf-8"),"original_native_commit":original,"original_native_tree":item["tree"],"artifact_run":item["run"],"artifact_name":item["name"],"bundle_sha256":actual_digest,"normal_commit_passed":True,"files":files}
+              manifest["commits"].append(record)
+              print("EXPORT_COMMIT "+json.dumps(record),flush=True)
+              (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+          
+          tip=gittext("rev-parse","HEAD")
+          allpaths=gittext("diff","--name-only",base,tip).splitlines()
+          assert all(p==logpath or p.startswith("targets/game/reverse/attempt_support/") for p in allpaths)
+          assert len(manifest["commits"])==4
+          push_input=("refs/heads/contributor/native-evidence-export "+tip+" refs/heads/master "+base+"\n").encode()
+          run("normal-pre-push",[bash_path,".githooks/pre-push","origin","https://github.com/Open-BFME/Open-BFME-1.git"],push_input)
+          run("progress",[sys.executable,"tools/progress.py","origin/master"])
+          manifest.update(tip=tip,normal_pre_push_passed=True,published=False,paths=allpaths)
+          (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+          run("export-bundle",["git","bundle","create",str(out/"evidence-series.bundle"),base+"..HEAD"])
+          print("EXPORT_MANIFEST "+json.dumps(manifest),flush=True)
+          
+          PY
+      - name: Retain the gated commit series and export manifest
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-four-evidence-export-${{ github.run_id }}
+          path: source/build/evidence-export-20261025/
+          retention-days: 90
+          if-no-files-found: warn
+          compression-level: 9
