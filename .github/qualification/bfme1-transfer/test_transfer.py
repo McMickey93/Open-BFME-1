@@ -73,6 +73,7 @@ class SourceFixture(unittest.TestCase):
         self.git("add", self.path)
         self.tree = self.git("write-tree").decode().strip()
         self.blob = self.git("rev-parse", ":" + self.path).decode().strip()
+        self.patch = self.git("diff", "--cached", "--binary", self.base)
         self.claim = {"rva": "0x00001000", "owner": "github:mcmickey93:bfme1:test", "lease": "1" * 32}
         self.message = "Recover fixture body\n\nClaim-Lease: 0x00001000=" + self.claim["lease"] + "\n"
         self.commit_bytes = ("tree %s\nparent %s\nauthor Fixture <fixture@example.invalid> 1700000000 +0000\n"
@@ -86,6 +87,7 @@ class SourceFixture(unittest.TestCase):
         self.body = {"rva": "0x00001000", "source": self.path, "size": 5, "symbol": "?body@@YAHXZ", "replace": "rva"}
         self.data = {"schema_version": 1, "repository": transfer.FORK, "upstream": transfer.UPSTREAM,
                      "mode": "qualify", "base": self.base, "base_tree": base_tree, "patch_tree": self.tree,
+                     "patch_sha256": transfer.digest(self.patch),
                      "body": self.body, "claims": [self.claim], "model": "fixture",
                      "files": [{"path": self.path, "mode": "100644", "base_blob": base_blob,
                                 "candidate_blob": self.blob, "sha256": transfer.digest(self.content)}],
@@ -116,6 +118,138 @@ class SourceFixture(unittest.TestCase):
     def import_candidate(self):
         with contextlib.redirect_stdout(io.StringIO()):
             transfer.import_exact(self.runner, self.publication, self.commit_bytes, lambda _: self.content)
+
+    def set_reviewed_source(self, reviewed, final):
+        """Build independently pinned input/output trees for admission cases."""
+        self.write(self.path, reviewed)
+        self.git("add", self.path)
+        self.patch = self.git("diff", "--cached", "--binary", self.base)
+        self.data.update(patch_tree=self.git("write-tree").decode().strip(), patch_sha256=transfer.digest(self.patch))
+        self.data["files"][0].update(candidate_blob=self.git("rev-parse", ":" + self.path).decode().strip(),
+                                     sha256=transfer.digest(reviewed))
+        self.write(self.path, final)
+        self.git("add", self.path)
+        old_tree, self.tree = self.tree, self.git("write-tree").decode().strip()
+        self.blob = self.git("rev-parse", ":" + self.path).decode().strip()
+        self.commit_bytes = self.commit_bytes.replace(b"tree " + old_tree.encode(), b"tree " + self.tree.encode(), 1)
+        self.commit = transfer.object_id("commit", self.commit_bytes)
+        self.content = final
+        self.request.update(expected_tree=self.tree, expected_commit=self.commit)
+        self.publication.update(tree=self.tree, commit=self.commit)
+        self.publication["progress"]["head"] = self.commit
+        self.publication["files"][0].update(blob=self.blob, sha256=transfer.digest(final), size=len(final))
+        self.git("restore", "--source=HEAD", "--staged", "--worktree", self.path)
+
+    def validate_reviewed(self, data=None, publication=None, patch=None):
+        data = self.data if data is None else data
+        patch = self.patch if patch is None else patch
+        with contextlib.redirect_stdout(io.StringIO()):
+            transfer.validate_manifests(self.request, data, self.publication if publication is None else publication,
+                                       ACTOR, lambda path: transfer.reviewed_source(self.runner, data, patch, path))
+
+    def test_normal_marker_removal_requires_exact_pinned_source_replay(self):
+        final = self.content
+        self.set_reviewed_source(b"// ?body@@YAHXZ present-unmatched\r\n" + final, final)
+        with self.assertRaisesRegex(transfer.Rejected, "immutable reviewed patch"):
+            transfer.validate_manifests(self.request, self.data, self.publication, ACTOR)
+        self.validate_reviewed()
+        self.import_candidate()
+        self.assertEqual(self.git("cat-file", "blob", self.commit + ":" + self.path), final)
+        self.assertEqual(self.git("write-tree").decode().strip(), self.data["base_tree"])
+        self.assertEqual(self.git("status", "--porcelain"), b"")
+
+    def test_marker_proof_rejects_code_other_comment_wrong_name_and_newline_changes(self):
+        marker = b"// ?body@@YAHXZ present-unmatched\r\n"
+        code = b"int body() { return 1; }\r\n"
+        comment = b"// unrelated comment must survive\r\n"
+        cases = [(marker + comment + code, comment + code.replace(b"1", b"2")),
+                 (marker + comment + code, code),
+                 (b"// ?other@@YAHXZ present-unmatched\r\n" + code, code),
+                 (marker + code, code.replace(b"\r\n", b"\n"))]
+        for reviewed, final in cases:
+            with self.subTest(final=final):
+                self.set_reviewed_source(reviewed, final)
+                with self.assertRaisesRegex(transfer.Rejected, "Qualified file content"):
+                    self.validate_reviewed()
+
+    def test_no_marker_still_requires_exact_final_source(self):
+        self.validate_reviewed()
+        self.set_reviewed_source(self.content, self.content + b"// new unreviewed comment\r\n")
+        with self.assertRaisesRegex(transfer.Rejected, "Qualified file content"):
+            self.validate_reviewed()
+
+    def test_reviewed_patch_digest_tree_path_scope_and_blob_are_all_checked(self):
+        cases = [(lambda d: d.update(patch_sha256="f" * 64), "Reviewed patch pin"),
+                 (lambda d: d.update(patch_tree="f" * 40), "Reviewed patch tree"),
+                 (lambda d: d["files"][0].update(candidate_blob="f" * 40), "Reviewed patch mode or blob"),
+                 (lambda d: d["files"][0].update(sha256="f" * 64), "Reviewed input content")]
+        for mutate, message in cases:
+            with self.subTest(message=message):
+                data = copy.deepcopy(self.data)
+                mutate(data)
+                with self.assertRaisesRegex(transfer.Rejected, message):
+                    self.validate_reviewed(data=data)
+        extra = (b"diff --git a/game/Test/extra.cpp b/game/Test/extra.cpp\nnew file mode 100644\n"
+                 b"--- /dev/null\n+++ b/game/Test/extra.cpp\n@@ -0,0 +1 @@\n+int unlisted;\n")
+        patch = self.patch + extra
+        data = {**self.data, "patch_sha256": transfer.digest(patch)}
+        with self.assertRaisesRegex(transfer.Rejected, "Reviewed patch scope"):
+            self.validate_reviewed(data=data, patch=patch)
+
+    def transfer_fixture(self):
+        """Run the write-job validation with real Git/ZIPs, no network or push."""
+        self.import_candidate()
+        self.git("branch", transfer.LOCAL_REF.removeprefix("refs/heads/"), self.commit)
+        bundle = self.root / "fixture.bundle"
+        self.git("bundle", "create", str(bundle), self.base + ".." + transfer.LOCAL_REF)
+        self.git("branch", "-D", transfer.LOCAL_REF.removeprefix("refs/heads/"))
+        context = {**workflow(), "GITHUB_RUN_ID": "99", "GITHUB_SHA": "f" * 40}
+        request_hash = transfer.digest(json.dumps(self.request).encode())
+        receipt = {"schema": 1, "request": self.request, "request_sha256": request_hash,
+                   "workflow": context, "source_artifact_sha256": self.request["artifact_sha256"],
+                   "full_normal_native_pre_push_passed": True, "target_ref": transfer.target_ref(self.request),
+                   "input": self.data, "publication": self.publication, "progress": self.publication["progress"],
+                   "bundle_size": bundle.stat().st_size, "bundle_sha256": transfer.digest(bundle.read_bytes())}
+        archive_path = self.root / "verified.zip"
+        with zipfile.ZipFile(archive_path, "w") as archive:
+            archive.writestr("transfer-receipt.json", json.dumps(receipt))
+            archive.writestr("candidate.bundle", bundle.read_bytes())
+        archive_bytes = archive_path.read_bytes()
+        archive_hash = transfer.digest(archive_bytes)
+        meta = {"id": 123, "name": "bfme1-transfer-99-1", "expired": False,
+                "digest": "sha256:" + archive_hash, "workflow_run": {"id": 99, "head_sha": context["GITHUB_SHA"]},
+                "size_in_bytes": len(archive_bytes)}
+        def pinned_content(path, head):
+            self.assertEqual(head, self.request["qualification_head_sha"])
+            return {".github/qualification/bfme1-body/input-manifest.json": json.dumps(self.data).encode(),
+                    ".github/qualification/bfme1-body/candidate.patch": self.patch}[path]
+        api = types.SimpleNamespace(json=lambda _: meta, content=mock.Mock(side_effect=pinned_content),
+                                    artifact=lambda _id, _sha, path: path.write_bytes(archive_bytes))
+        with mock.patch.dict(os.environ, {"BFME_VERIFIED_ARTIFACT_ID": "123", "BFME_VERIFIED_ARTIFACT_DIGEST": archive_hash}), \
+                mock.patch.object(transfer, "initial_checkout"), mock.patch.object(transfer, "source_provenance"), \
+                mock.patch.object(transfer, "prepare_hooks") as hooks, mock.patch.object(transfer, "current_claims"), \
+                mock.patch.object(self.runner, "assert_master"), \
+                mock.patch.object(transfer, "cpp_progress", return_value=self.publication["progress"]), \
+                mock.patch.object(transfer, "existing_ref", return_value=True), contextlib.redirect_stdout(io.StringIO()):
+            try:
+                transfer.transfer_job(self.runner, api, self.request, request_hash, context)
+            finally:
+                self.assertEqual(api.content.call_count, 2)
+                self.assertFalse(any(c["label"] == "atomic-create-fixed-fork-branch" for c in self.runner.receipt["commands"]))
+                if self.runner.receipt["status"] != "already-present-exact":
+                    hooks.assert_not_called()
+
+    def test_write_job_replays_the_immutable_input_before_accepting_the_bundle(self):
+        final = self.content
+        self.set_reviewed_source(b"// ?body@@YAHXZ present-unmatched\r\n" + final, final)
+        self.transfer_fixture()
+        self.assertEqual(self.runner.receipt["status"], "already-present-exact")
+
+    def test_write_job_rejects_changed_code_even_with_self_consistent_final_hashes(self):
+        reviewed = b"// ?body@@YAHXZ present-unmatched\r\n" + self.content
+        self.set_reviewed_source(reviewed, self.content.replace(b"return 1", b"return 2"))
+        with self.assertRaisesRegex(transfer.Rejected, "Qualified file content"):
+            self.transfer_fixture()
 
     def test_exact_import_preserves_raw_commit_tree_and_crlf_bytes(self):
         transfer.validate_manifests(self.request, self.data, self.publication, ACTOR)
@@ -362,6 +496,34 @@ class BoundaryTests(unittest.TestCase):
             module.coverage = lambda *args: {"cpp": 10}
             with self.assertRaises(transfer.Rejected):
                 transfer.cpp_progress(publication)
+
+
+class AdmissionMarkerTests(unittest.TestCase):
+    def test_exact_marker_preserves_mixed_endings_and_unrelated_bytes(self):
+        admission = {"symbol": "?body@@YAHXZ"}
+        before = b"// other comment\r\n// ?other@@YAHXZ present-unmatched\n\xff\r\n"
+        marker = b"\t// ?body@@YAHXZ present-unmatched \r\n"
+        after = b"int body() { return 1; }\n"
+        self.assertEqual(transfer.admitted_source(before + marker + after, [admission]), before + after)
+        self.assertEqual(transfer.admitted_source(before + after, [admission]), before + after)
+
+    def test_exact_marker_precedes_prefix_and_only_first_exact_is_removed(self):
+        prefix = b"// ?body@@ present-unmatched\r\n"
+        exact = b"// ?body@@YAHXZ present-unmatched\r\n"
+        self.assertEqual(transfer.admitted_source(prefix + exact + exact, [{"symbol": "?body@@YAHXZ"}]), prefix + exact)
+
+    def test_unsupported_prefix_or_trailing_text_is_rejected(self):
+        for raw in (b"// ?body@@ present-unmatched\n",
+                    b"// ?body@@YAHXZ present-unmatched // unrelated text\n"):
+            with self.subTest(raw=raw), self.assertRaises(transfer.Rejected):
+                transfer.admitted_source(raw, [{"symbol": "?body@@YAHXZ"}])
+
+    def test_only_listed_full_symbols_are_removed_in_admission_order(self):
+        first = b"// ?first@@YAHXZ present-unmatched\n"
+        second = b"// ?body@@YAHXZ present-unmatched\r\n"
+        other = b"// ?unclaimed@@YAHXZ present-unmatched\n"
+        self.assertEqual(transfer.admitted_source(first + other + second,
+                         [{"symbol": "?first@@YAHXZ"}, {"symbol": "?body@@YAHXZ"}]), other)
 
 
 class ArchiveTests(unittest.TestCase):

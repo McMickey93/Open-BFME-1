@@ -310,7 +310,39 @@ class Archive:
         self.zip.close()
 
 
-def validate_manifests(request, data, publication, actor):
+def admitted_source(raw, admissions):
+    """Reproduce only reviewed, standalone full-symbol marker removals.
+
+    add_match.py chooses the first exact token before considering prefixes and
+    removes one entire line without normalising the other bytes. Prefix-only
+    and trailing-text forms deliberately require separate review here; this is
+    a strict subset of that tool, not a general comment-stripping operation.
+    """
+    marker = re.compile(r"^\s*//\s*(\S+)\s+present-unmatched\b")
+    for admission in admissions:
+        name = admission["symbol"]
+        lines = raw.splitlines(keepends=True)
+        exact, prefix = [], []
+        for index, line in enumerate(lines):
+            match = marker.match(line.decode("utf-8", errors="replace"))
+            if match:
+                token = match.group(1)
+                if token == name:
+                    exact.append(index)
+                elif name.startswith(token):
+                    prefix.append(index)
+        if exact:
+            victim = exact[0]
+            standalone = rb"[ \t]*//[ \t]*" + re.escape(name.encode("utf-8")) + rb"[ \t]+present-unmatched[ \t]*(?:\r\n|\n|\r)?"
+            require(re.fullmatch(standalone, lines[victim]) is not None,
+                    "Admission marker is not a standalone full-symbol line")
+            raw = b"".join(lines[:victim] + lines[victim + 1:])
+        else:
+            require(not prefix, "Prefix-only admission markers require separate review")
+    return raw
+
+
+def validate_manifests(request, data, publication, actor, read_reviewed_source=None):
     require(data.get("schema_version") == 1 and data.get("repository") == FORK
             and data.get("upstream") == UPSTREAM and data.get("mode") == "qualify", "Artifact is not qualify-mode")
     for name in ("base", "base_tree", "patch_tree"):
@@ -350,6 +382,9 @@ def validate_manifests(request, data, publication, actor):
         require(admission.get("rva") in wanted and admission.get("source") == body["source"]
                 and type(admission.get("size")) is int and 0 < admission["size"] <= 32768,
                 "Admission differs from the claimed translation unit")
+        symbol = admission.get("symbol")
+        require(isinstance(symbol, str) and symbol and symbol[0] in "?_@"
+                and not any(c in symbol for c in "\r\n\0"), "Invalid admitted symbol")
     source_entries = data.get("files", [])
     require(isinstance(source_entries, list) and 1 <= len(source_entries) <= 8, "Invalid source file count")
     source_paths = set()
@@ -388,8 +423,16 @@ def validate_manifests(request, data, publication, actor):
         result = result_sources[source["path"]]
         require(bool(source.get("deleted")) == bool(result.get("deleted")), "Source deletion changed")
         if not source.get("deleted"):
-            require(source["candidate_blob"] == result["blob"] and source["sha256"] == result["sha256"],
-                    "Qualified source changed from the immutable reviewed patch")
+            if source["path"] == body["source"] and read_reviewed_source is not None:
+                reviewed = read_reviewed_source(source["path"])
+                require(object_id("blob", reviewed) == source["candidate_blob"]
+                        and digest(reviewed) == source["sha256"], "Reviewed source proof differs from its input pins")
+                # import_exact/validate_objects still verify every final byte,
+                # blob, tree and raw commit against these derived expectations.
+                validate_blob(admitted_source(reviewed, admissions), result)
+            else:
+                require(source["candidate_blob"] == result["blob"] and source["sha256"] == result["sha256"],
+                        "Qualified source changed from the immutable reviewed patch")
     message = publication.get("message")
     require(isinstance(message, str) and "\0" not in message and len(message.encode()) <= 65536, "Invalid commit message")
     trailers = [line for line in message.splitlines() if line.startswith("Claim-Lease:")]
@@ -538,6 +581,38 @@ def validate_blob(raw, entry):
             and object_id("blob", raw) == entry["blob"], "Qualified file content or Git object differs")
 
 
+def reviewed_source(runner, data, patch, path):
+    """Recover the immutable input from its pinned base/patch in a private index.
+
+    No artifact code is executed and neither the checkout nor its real index is
+    changed. Recheck the complete patch scope, modes and object pins before a
+    source can justify the narrowly allowed normal admission transformation.
+    """
+    require(path == data["body"]["source"] and len(patch) <= 1024 * 1024
+            and digest(patch) == data.get("patch_sha256"), "Reviewed patch pin or source differs")
+    require(runner.rev(data["base"] + "^{tree}") == data["base_tree"], "Reviewed patch base tree differs")
+    with tempfile.TemporaryDirectory(prefix="bfme-reviewed-index-") as directory:
+        env = {**os.environ, "GIT_INDEX_FILE": str(Path(directory) / "index")}
+        runner.git("reviewed-read-base", "read-tree", data["base"], env=env)
+        runner.git("reviewed-check-patch", "apply", "--cached", "--check", "-", stdin=patch, env=env)
+        runner.git("reviewed-apply-patch", "apply", "--cached", "-", stdin=patch, env=env)
+        paths = set(filter(None, runner.git("reviewed-patch-paths", "diff", "--cached", "--no-renames",
+                                            "--name-only", "-z", data["base"], env=env).decode().split("\0")))
+        require(paths == {entry["path"] for entry in data["files"]}, "Reviewed patch scope differs")
+        tree = runner.git("reviewed-patch-tree", "write-tree", env=env).decode().strip()
+        require(tree == data["patch_tree"], "Reviewed patch tree differs")
+        sources = {}
+        for entry in data["files"]:
+            require(runner.entry(data["base"], entry["path"]) == entry["base_blob"], "Reviewed patch preimage differs")
+            expected = None if entry.get("deleted") else entry["candidate_blob"]
+            require(runner.entry(tree, entry["path"]) == expected, "Reviewed patch mode or blob differs")
+            if not entry.get("deleted"):
+                raw = runner.git("reviewed-source-content", "cat-file", "blob", expected)
+                require(object_id("blob", raw) == expected and digest(raw) == entry["sha256"], "Reviewed input content differs")
+                sources[entry["path"]] = raw
+        return sources[path]
+
+
 def import_exact(runner, publication, commit, read_content):
     raw_commit(commit, publication)
     with tempfile.TemporaryDirectory(prefix="bfme-import-") as directory:
@@ -653,7 +728,9 @@ def verify_job(runner, api, request, request_hash, context):
                 ".github/qualification/bfme1-body/" + name, request["qualification_head_sha"]),
                 "Artifact input differs from the immutable qualification head")
         data, publication, result = archive.json("input-manifest.json"), archive.json("publication-manifest.json"), archive.json("result.json")
-        validate_manifests(request, data, publication, context["GITHUB_ACTOR"])
+        patch = archive.read("candidate.patch", 1024 * 1024)
+        validate_manifests(request, data, publication, context["GITHUB_ACTOR"],
+                           lambda name: reviewed_source(runner, data, patch, name))
         require(result.get("status") == "qualified" and result.get("published") is False
                 and result.get("candidate") == publication and result.get("input") == data,
                 "Qualification result does not attest these exact manifests")
@@ -749,7 +826,11 @@ def transfer_job(runner, api, request, request_hash, context):
                 and receipt.get("full_normal_native_pre_push_passed") is True
                 and receipt.get("target_ref") == target_ref(request), "Handoff is not from this exact read-only verification job")
         data, publication = receipt["input"], receipt["publication"]
-        validate_manifests(request, data, publication, context["GITHUB_ACTOR"])
+        pinned_input = api.content(".github/qualification/bfme1-body/input-manifest.json", request["qualification_head_sha"])
+        require(json_bytes(pinned_input) == data, "Handoff input differs from the immutable qualification head")
+        patch = api.content(".github/qualification/bfme1-body/candidate.patch", request["qualification_head_sha"])
+        validate_manifests(request, data, publication, context["GITHUB_ACTOR"],
+                           lambda name: reviewed_source(runner, data, patch, name))
         require(receipt.get("progress") == publication["progress"], "Handoff C++ progress differs")
         validate_base(runner, data, publication)
         bundle = archive.read("candidate.bundle")
