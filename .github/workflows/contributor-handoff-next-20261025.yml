@@ -1,0 +1,134 @@
+name: Contributor measured handoff and next C++ candidate
+on:
+  push:
+    branches: ['contributor/native-cpp-20261025']
+    paths: ['.github/workflows/contributor-handoff-next-20261025.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mcmickey93-bfme1-handoff-next
+  cancel-in-progress: false
+jobs:
+  bank:
+    if: github.repository == 'McMickey93/Open-BFME-1'
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:leaf-20261025
+      BFME_MODEL: gpt-6
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: 60145fecd29ec2e21a5cc5796d51c76795296e22
+          path: source
+          fetch-depth: 128
+          persist-credentials: false
+          submodules: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Validate current official source and enable its ordinary hooks
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-handoff
+          python3 -m pip install -r tools/requirements.txt
+          git fetch --no-tags origin refs/heads/master:refs/remotes/origin/master
+          git switch -c contributor/native-handoff origin/master
+          python3 tools/check_csv.py
+          bash tools/setup_hooks.sh
+          git config user.name McMickey93
+          git config user.email 347452154+McMickey93@users.noreply.github.com
+      - name: Commit only measured evidence with normal hooks and select genuine named work
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-handoff
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess, sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          import build, claims
+          def run(*args, **kwargs):
+              return subprocess.run(list(args),check=True,**kwargs)
+          expected={0x003D59C0:'d97101703c26e1e3c318fcd7145445a6175fdd72',0x003D5AE0:'08161d5e7433328c114042219706b3ed4451cc43'}
+          assert claims.fetch()
+          live=claims._read_local()
+          for rva,token in expected.items():
+              assert claims.holds(rva,token) and live[rva][1]['owner']==os.environ['BFME_CLAIM_OWNER']
+          assert build.read_target_bytes(0x003D59C0,39).hex()=='8b4424088b480c8bc183e007740d83f8017408b801000000c21000c1e9120fb6c183e001c21000'
+          base=subprocess.check_output(['git','rev-parse','origin/master'],text=True).strip()
+          out=Path('build/native-leaf-handoff-20261025').resolve()
+          out.mkdir(parents=True,exist_ok=True)
+          folder=Path('targets/game/reverse/attempt_support/003d59c0-bitfield-return-20261025')
+          assert not folder.exists()
+          folder.mkdir(parents=True)
+          report="# 0x003D59C0: native bitfield return-boundary experiment\n\nThis is a blocked compiler-shape experiment, not a C++ recovery. The original\n39-byte extent and four stack arguments are unchanged. The preferred bank was\nnot replaced, and no reconstruction was added to game/.\n\n## Inputs and scope\n\nOfficial source: 60145fecd29ec2e21a5cc5796d51c76795296e22.\nNative controller: McMickey93/Open-BFME-1 b042e447943fb8a45454323121a615db5c70a74c,\n.github/workflows/contributor-leaf-evidence-20261025.yml.\nCompleted Windows run: 40234574315; artifact 12614676341;\nartifact SHA256: 8d03adb5fd35abc1a761adfbfc502f798d845f3bdffc16d150ad8b7acc1f4033.\n\nThe retail entry at 0x003D59C0 ends with RET 16 at +0x24. The entry ILT and\nthe complete retail instruction stream were inspected before this attempt.\nThe current destination tool identifies\ngame/GameEngine/Source/GameLogic/Pathfinder/pathfinder.cpp from retail-run EA\nsource-file evidence; the existing neighboring predicate's artificial split\nfile is not proof of the original source unit.\n\nMatched PathfinderClassifyMap.cpp independently exposes the type bits 0..2\nand bit 18 in the same cell DWORD. GeneralsMD AIPathfind.h has a getPinched\naccessor, but that is a semantic/source-context lead, not proof of this\ncallback's name. The experiment retains an address-qualified type, opaque\nbit-derived field names and the bank's stdcall ABI.\n\n## New question and controls\n\nEarlier attempts already tried direct shifts, byte casts/helpers, union byte\nviews, control-flow spellings, a C front end and one-byte aggregate copies.\nThis attempt asked whether a true unsigned one-bit field passed through a\nbool-return accessor and then an int consumer preserves the missing narrowing\ninstruction. Direct and unsigned-char accessor returns are the paired controls.\nThe three forms share the same type-field accessor and conjunction.\nOb0 is the bank's setting; Ob2 is independently used by the matched\nRva003D5B00CellPredicate.cpp sibling. This was a bounded paired comparison,\nnot an unconstrained flag search.\n\nThe minimal input family is preserved in trial-template.cpp.txt; results.json\npreserves the six measured instruction streams. The immutable controller\ncontains the exact source-construction algorithm and complete ordinary\ncompiler invocation path. All diagnostic sources, objects and dependency\nreceipts were private build/native-leaf-20261025 paths. None was reused as\na normal build cache.\n\n## Measured outcome\n\n| Inlining | Direct int | bool accessor | byte accessor |\n|---|---:|---:|---:|\n| Ob0 | 43 B, one helper call | 44 B, two helper calls | 44 B, two helper calls |\n| Ob2 | 36 B | 36 B | 36 B |\n\nAll three Ob2 bodies are byte-for-byte identical, with no relocations.\nThey retain the old scratch-register swap and eliminate retail's\nMOVZX EAX,CL before AND 1. There are 11 positional byte differences over\nthe common 36-byte prefix and three missing bytes; results.json's\ndifferences=14 includes the three-byte length penalty. It is not a canonical\nfinish_measure score. No variant is exact and none improves the bank.\n\nThe unmodified check_csv and final tools/progress.py origin/master passed;\nC++ exact delta is +0. No admission, production TU build or linking claim is\nmade from these diagnostic objects. Live upstream claims were checked by\nowner and fencing token before every trial.\n\n## Next work\n\nDo not repeat this exact bitfield-to-bool or bitfield-to-byte return-boundary\nfamily. A new trial needs a distinct compiler-context witness or independent\nlayout/ABI evidence. The callback's semantic name remains unproven.\n"
+          template="// Reproduce each measured input with MODE=direct|bool|byte and INLINE=Ob0|Ob2.\n// cl: /O2 /INLINE /DNDEBUG /DWIN32 /D_WINDOWS /MD\nstruct Rva003D59C0Obj {\n char m_pad[0xC];\n unsigned m_low3:3;\n unsigned m_middle:15;\n unsigned m_bit18:1;\n unsigned m_high:13;\n __forceinline unsigned readLow3() const { return m_low3; }\n __forceinline bool readBool18() const { return m_bit18; }\n __forceinline unsigned char readByte18() const { return m_bit18; }\n};\nint __stdcall rva003D59C0(int, const Rva003D59C0Obj *obj, int, int) {\n unsigned low = obj->readLow3();\n if (low != 0u && low != 1u) return 1;\n // direct: return obj->m_bit18;\n // bool:   return obj->readBool18();\n // byte:   return obj->readByte18();\n}\n"
+          results=json.loads("[{\"label\":\"Ob0-direct\",\"size\":43,\"differences\":42,\"hex\":\"568b74240c8bcee80000000085c0740e83f8017409b8010000005ec210008b460cc1e81283e0015ec21000\"},{\"label\":\"Ob0-bool\",\"size\":44,\"differences\":43,\"hex\":\"568b74240c8bcee80000000085c0740e83f8017409b8010000005ec210008bcee8000000000fb6c05ec21000\"},{\"label\":\"Ob0-byte\",\"size\":44,\"differences\":43,\"hex\":\"568b74240c8bcee80000000085c0740e83f8017409b8010000005ec210008bcee8000000000fb6c05ec21000\"},{\"label\":\"Ob2-direct\",\"size\":36,\"differences\":14,\"hex\":\"8b4424088b400c8bc883e107740d83f9017408b801000000c21000c1e81283e001c21000\"},{\"label\":\"Ob2-bool\",\"size\":36,\"differences\":14,\"hex\":\"8b4424088b400c8bc883e107740d83f9017408b801000000c21000c1e81283e001c21000\"},{\"label\":\"Ob2-byte\",\"size\":36,\"differences\":14,\"hex\":\"8b4424088b400c8bc883e107740d83f9017408b801000000c21000c1e81283e001c21000\"}]")
+          (folder/'readme.md').write_text(report,encoding='utf-8',newline='\n')
+          (folder/'trial-template.cpp.txt').write_text(template,encoding='utf-8',newline='\n')
+          (folder/'results.json.txt').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8',newline='\n')
+          symbol='?rva003D59C0@@YGHHPBURva003D59C0Obj@@HH@Z'
+          evidence='Full39B RET16 and ILT boundary retained. New native true-bitfield to bool or byte return-boundary family gives identical36B Ob2 bodies; Ob0 gives43/44B helper calls. No improvement and preferred bank preserved. Evidence '+folder.as_posix()+'/readme.md t=12min model=gpt-6 blocker=regalloc/ECX-vs-EAX-and-movzx'
+          run(sys.executable,'tools/re_log.py','record',symbol,'0x003D59C0','39','blocked',evidence)
+          paths=[(folder/name).as_posix() for name in ('readme.md','trial-template.cpp.txt','results.json.txt')]+['targets/game/reverse/re_attempts.log']
+          run('git','add','--',*paths)
+          message='Record the native bitfield return-boundary result at 003D59C0\n\nPreserve six finite paired compiler trials without changing the preferred bank or production source. All Ob2 variants remain the same 36-byte non-match; no C++ exact bytes gained.\n\nClaim-Lease: 0x003D59C0=2a9e7c27e2cf4d9abe936fc51cd1cbfe\n'
+          (out/'message.txt').write_text(message,encoding='utf-8',newline='\n')
+          run('git','commit','--file',str(out/'message.txt'))
+          commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          run('git','bundle','create',str(out/'result.bundle'),'origin/master..HEAD')
+          run('git','bundle','verify',str(out/'result.bundle'))
+          manifest={'base':base,'commit':commit,'tree':tree,'paths':paths,'normal_commit_passed':True,'published':False,'bundle_sha256':hashlib.sha256((out/'result.bundle').read_bytes()).hexdigest()}
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
+          print('NATIVE_HANDOFF_MANIFEST '+json.dumps(manifest),flush=True)
+          for rva,token in expected.items():
+              info=live[rva][1]
+              marker=claims._record(os.environ['BFME_CLAIM_OWNER'],-1,note='Released after completed non-exact leaf experiment; production source and bank unchanged',lease=info['lease'],since=info['since'])
+              data=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
+              print('EXPIRED_MARKER_JSON '+json.dumps({'rva':f'0x{rva:08X}','expected_token':token,'record':data}),flush=True)
+          picked=subprocess.run([sys.executable,'tools/next_work.py','--tier','named','--json'],check=True,capture_output=True,text=True)
+          print('NEXT_NAMED '+picked.stdout,flush=True)
+          selection=json.loads(picked.stdout).get('selection')
+          if selection:
+              rva=selection['target_rva']
+              run(sys.executable,'tools/callees.py',rva,str(selection['size']))
+              run(sys.executable,'tools/dis_retail.py',rva,str(selection['size']))
+              marker=claims._record('github:McMickey93:bfme1:named-20261025',4,note='Pending explicit connector acquisition for native C++ recovery')
+              record=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
+              print('NEXT_CLAIM_JSON '+json.dumps({'rva':rva,'record':record,'api_transport_parent':base,'empty_tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
+          
+          PY
+      - name: Preserve the native commit as reviewable Git objects
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bfme1-leaf-handoff-${{ github.run_id }}
+          path: source/build/native-leaf-handoff-20261025/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Measure exact C++ progress
+        if: always()
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 contributor-progress
+          python3 tools/progress.py origin/master
