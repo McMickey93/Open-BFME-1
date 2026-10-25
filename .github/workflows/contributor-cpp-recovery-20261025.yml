@@ -49,91 +49,61 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Inspect preserved four-byte residues and complete prior records
+      - name: Inspect whole assigned source and marker exception evidence
         shell: bash
         working-directory: source
         run: |
           set -euo pipefail
           source .githooks/python3.sh
-          require_python3 four-byte-inspection
+          require_python3 whole-file-inspection
           git switch --detach origin/master
           python3 -u - <<'PY'
-          import hashlib,io,json,os,subprocess,sys,urllib.request,zipfile
+          import csv,hashlib,json,os,subprocess,sys
           from pathlib import Path
           root=Path.cwd().resolve()
-          build_root=root/"build"
-          out=build_root/"contributor-cpp-recovery-20261025"
+          out=root/"build/contributor-cpp-recovery-20261025"
           out.mkdir(parents=True,exist_ok=True)
           sys.path.insert(0,str(root/"tools"))
-          import build,claims,finish_measure,probe
-          from experiment_store import validated_object_receipt
-          raw=urllib.request.urlopen("https://sdmntprnortheu.oaiusercontent.com/files/00000000-b984-81f4-bdb3-e41980706172/raw?se=2026-10-25T23%3A21%3A45Z&sp=r&sv=2026-02-06&sr=b&scid=01a174d6-c33a-71b9-9ca9-82750df801e0&skoid=002823aa-689d-47ca-9347-108c20f4f00d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-25T02%3A04%3A00Z&ske=2026-10-26T02%3A04%3A00Z&sks=b&skv=2026-02-06&sig=bXXpSjeMf8WVn7AmNumGwZZsyqPrNbY4TLZXACOg9cA%3D",timeout=60).read()
-          assert hashlib.sha256(raw).hexdigest()=="d4698f8804c877541203cee6c3fa8b9100479830e60660cd35fe25e583e5825b"
-          archive=zipfile.ZipFile(io.BytesIO(raw))
-          for name in archive.namelist():
-              target=(build_root/name).resolve()
-              assert target.is_relative_to(build_root) and ".." not in Path(name).parts
-              if name.endswith("/"): target.mkdir(parents=True,exist_ok=True);continue
-              target.parent.mkdir(parents=True,exist_ok=True)
-              target.write_bytes(archive.read(name))
-          prior=json.loads((out/"finish-batch.json").read_text(encoding="utf-8"))
-          assert prior["base"]=="967c7e1cf5bbda24ea52f802caffa7164c1368ff"
-          cache=finish_measure.load()
-          wanted={0x00376590,0x005F8010}
-          result={"source_run":40242622843,"source_zip_sha256":hashlib.sha256(raw).hexdigest(),"current_base":subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),"targets":[]}
-          for measurement in prior["measurements"]:
-              rva=int(measurement["target_rva"],16)
-              if rva not in wanted:continue
-              path=root/measurement["stash"]
-              raw_source=path.read_bytes()
-              assert hashlib.sha256(raw_source).hexdigest()==measurement["whole_source_sha256"]
-              entry=finish_measure.current(cache,rva,path)
-              symbol=(measurement["entry"].get("symbol") or finish_measure.symbol_of(path))
-              objects=[]
-              for meta_path in (build_root/"experiments").glob("*/cache.json"):
-                  meta=json.loads(meta_path.read_text())
-                  obj=meta_path.parent/meta["path"]
-                  deps_path=build._deps_sidecar(obj)
-                  if not deps_path.exists():continue
-                  deps=json.loads(deps_path.read_text())
-                  if deps.get("source")!=build._hash_file(str(path)):continue
-                  assert hashlib.sha256(obj.read_bytes()).hexdigest()==meta["object"]
-                  objects.append(obj)
-              assert len(objects)==1, (measurement["stash"],objects)
-              compiled,relocs=build.read_object_symbol_bytes(objects[0],symbol)
-              retail=build.read_target_bytes(rva,measurement["target_size"])
-              R,O,ri,oi,rb,ob,unmapped=probe.diagnostic_streams(retail,bytes(compiled),relocs)
-              diffs=[i for i in range(min(len(rb),len(ob))) if rb[i]!=ob[i]]
-              residue=[]
-              for off in diffs:
-                  a=next((ins for ins in ri if ins.address<=off<ins.address+ins.size),None)
-                  b=next((ins for ins in oi if ins.address<=off<ins.address+ins.size),None)
-                  residue.append({"offset":off,"retail":None if a is None else [a.address,bytes(a.bytes).hex(),a.mnemonic,a.op_str],"object":None if b is None else [b.address,bytes(b.bytes).hex(),b.mnemonic,b.op_str]})
-              item={"rva":measurement["target_rva"],"symbol":symbol,"stash":measurement["stash"],"current_qualified":entry is not None,"canonical_entry":measurement["entry"],"current_entry":entry,"residue":residue,"unmapped":unmapped,"retail_hex":retail.hex(),"object_hex":bytes(compiled).hex(),"source":raw_source.decode("utf-8")}
-              result["targets"].append(item)
-              print("FOUR_BYTE_REST "+json.dumps({k:v for k,v in item.items() if k!="source"}),flush=True)
-              records=[]
+          import build,claims,eligibility,re_log
+          from capstone import Cs,CS_ARCH_X86,CS_MODE_32
+          assert subprocess.check_output(["git","hash-object","AGENTS.md"],text=True).strip()=="06b755567bb147dfee3a89f70f7bbcd38410b5b4"
+          def run(label,args,ok=(0,)):
+              cp=subprocess.run(args,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              text=cp.stdout.decode("utf-8","replace")
+              (out/(label+".log")).write_text(text,encoding="utf-8")
+              print("INSPECT "+label+"\n"+text,flush=True)
+              assert cp.returncode in ok,(label,cp.returncode)
+              return text
+          run("claims",[sys.executable,"tools/claims.py","list"])
+          rows=eligibility.load_rows()
+          opened=eligibility.open_dumps(rows=rows)
+          chosen=[r for r in opened if eligibility.rva_of(r)==0x00269780]
+          assert len(chosen)==1,"Assigned supported donor lead is no longer eligible"
+          source=chosen[0]["source"]
+          whole=[r for r in opened if r["source"]==source]
+          print("WHOLE_FILE "+json.dumps({"base":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),"chosen":chosen[0],"whole_file":whole,"busy":sorted(eligibility.busy_rvas())}),flush=True)
+          run("whole-file-brief",[sys.executable,"tools/brief.py","--dump",source,"--limit","1000","--model","gpt-6"])
+          run("callees-00269780",[sys.executable,"tools/callees.py","0x00269780","976"],ok=(0,3))
+          records={}
+          for line in (root/"targets/game/reverse/re_attempts.log").open(encoding="utf-8",errors="replace"):
+              for tag in ("00077a90","00269780"):
+                  if tag in line.lower():records.setdefault(tag,[]).append(line.rstrip())
+          print("ALL_PRIOR_RECORDS "+json.dumps(records),flush=True)
+          for r in whole:
+              rva=eligibility.rva_of(r)
               tag=f"{rva:08x}"
-              with (root/"targets/game/reverse/re_attempts.log").open(encoding="utf-8",errors="replace") as log:
-                  for line in log:
-                      if tag in line.lower():records.append(line.rstrip("\r\n"))
-              (out/(tag+"-complete-prior-records.txt")).write_text("\n".join(records)+"\n",encoding="utf-8")
-              print("FOUR_BYTE_PRIOR "+json.dumps({"rva":measurement["target_rva"],"records":records}),flush=True)
-              history=root/"targets/game/reverse/attempt_history"/("0x"+tag)
-              if history.is_dir():
-                  metadata=[]
-                  for saved in history.glob("*.json"):
-                      data=json.loads(saved.read_text(encoding="utf-8"))
-                      metadata.append({k:v for k,v in data.items() if k!="source"})
-                  print("FOUR_BYTE_ARCHIVES "+json.dumps({"rva":measurement["target_rva"],"archives":metadata}),flush=True)
-          (out/"four-byte-inspection.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-          cp=subprocess.run([sys.executable,"tools/brief.py","--rvas","0x00376590","0x005F8010"],cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-          (out/"four-byte-brief.log").write_bytes(cp.stdout)
-          print(cp.stdout.decode("utf-8","replace"),flush=True)
-          assert cp.returncode==0
-          assert subprocess.run(["git","diff","--exit-code"],cwd=root).returncode==0
-          cp=subprocess.run([sys.executable,"tools/progress.py","origin/master"],cwd=root)
-          assert cp.returncode==0
+              found=re_log.stash_for(rva)
+              if found:
+                  path=found[0]
+                  text=path.read_text(encoding="utf-8")
+                  print("WHOLE_STASH "+json.dumps({"rva":tag,"path":path.relative_to(root).as_posix(),"score":found[1],"source":text}),flush=True)
+              body=build.read_target_bytes(rva,int(r["target_size"]))
+              asm="\n".join(f"{i.address:08x} {bytes(i.bytes).hex():20} {i.mnemonic:8} {i.op_str}" for i in Cs(CS_ARCH_X86,CS_MODE_32).disasm(body,rva))
+              (out/(tag+"-retail.asm.txt")).write_text(asm,encoding="utf-8")
+              print("RETAIL_ASM "+tag+"\n"+asm,flush=True)
+          run("support-hits",["git","grep","-n","-i","-E","77a90|269780","--","docs/","targets/game/reverse/identity_evidence/","targets/game/reverse/attempt_support/"],ok=(0,1))
+          run("clean",["git","diff","--exit-code"])
+          run("progress",[sys.executable,"tools/progress.py","origin/master"])
           PY
       - name: Preserve native residue inspection and prior evidence
         if: always()
