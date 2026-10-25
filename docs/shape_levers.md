@@ -757,7 +757,13 @@ MSVC commutes the addition before it picks the base, so the source order of
 the two operands never survives to the encoder. Within one body retail stays
 consistent and our build does not. `0x005A0450` and `0x0078D410` each contain
 two leas of the same shape, and in both we match the second and miss the first.
-Bank the body and take another one. Do not spend a session on this byte.
+
+Those four bodies have since landed. A code-neutral IL change can still flip
+the order: on `0x006870F0+0x7a1` (`lea ecx, [edi+eax+0x88]`, 30 spellings
+inert) a block-scope reference alias, `RvaLANGame *const &cg = m_currentGame;`,
+used through the loop that forms the address, gave retail's order at the same
+size. Try an alias of the pointer member at function and block scope before
+banking; BFME 2's `docs/recipes.md` records the same lever at 0x0052F63F.
 
 ## A constructor's store order comes from the initializer list
 
