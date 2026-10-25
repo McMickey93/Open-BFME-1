@@ -59,7 +59,7 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01110E0C@@3PAPAXA=_DefaultModuleTemplate6Concrete_vtbl0")
 #pragma comment(linker, "/alternatename:?g_vtbl_01110EA4@@3PAPAXA=??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01110EB8@@3PAPAXA=??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6B?$CategoryModuleInfo@$05@1@@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01110EBC@@3PAPAXA=??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@")
+// ?g_vtbl_01110EBC@@3PAPAXA now references its recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01110FC0@@3PAPAXA=_DefaultModuleTemplate3Concrete_vtbl4")
 #pragma comment(linker, "/alternatename:?g_vtbl_01110FC4@@3PAPAXA=_DefaultModuleTemplate3Concrete_vtbl0")
 #pragma comment(linker, "/alternatename:?g_vtbl_01110FD8@@3PAPAXA=_DefaultModuleTemplate2Concrete_vtbl8")
@@ -80,7 +80,7 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01111380@@3PAPAXA=_RenderObjectDrawConcrete_vtbl8")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111394@@3PAPAXA=_RenderObjectDrawConcrete_vtbl4")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111398@@3PAPAXA=_RenderObjectDrawConcrete_vtbl0")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111D9C@@3PAPAXA=??_7TailX005EB6B0@@6B@")
+// ?g_vtbl_01111D9C@@3PAPAXA now references its recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111DB0@@3PAPAXA: reference the recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111DB4@@3PAPAXA=??_7GenX005EB6B0@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111DD8@@3PAPAXA=??_7TailX005EB830@@6B@")
@@ -92,7 +92,7 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E50@@3PAPAXA=??_7TailX005EBA30@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E64@@3PAPAXA=??_7MidX005EBA30@@6B@")
 #pragma comment(linker, "/alternatename:?g_vtbl_01111E68@@3PAPAXA=??_7GenX005EBA30@@6B@")
-#pragma comment(linker, "/alternatename:?g_vtbl_01111EC8@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot2@@@")
+// ?g_vtbl_01111EC8@@3PAPAXA now references its recorded retail vtable directly.
 #pragma comment(linker, "/alternatename:?g_vtbl_01111EDC@@3PAPAXA=??_7Rva005EBCC0Object@@6BV3Slot1@@@")
 // Gate debt ?g_vtbl_01111EE0@@3PAPAXA: reference the recorded retail vtable directly.
 // Gate debt ?g_vtbl_01111FB0@@3PAPAXA: reference the recorded retail vtable directly.
@@ -186,7 +186,7 @@ extern void *g_vtbl_01110E8C[];
 extern void *g_vtbl_01110E90[];
 extern void *g_vtbl_01110EA4[];
 extern void *g_vtbl_01110EB8[];
-extern void *g_vtbl_01110EBC[];
+extern "C" void *__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@")[];
 extern "C" char DefaultModuleTemplate1Concrete_vtbl8;
 extern "C" char DefaultModuleTemplate1Concrete_vtbl4;
 extern "C" char DefaultModuleTemplate1Concrete_vtbl0;
@@ -247,7 +247,7 @@ extern void *g_vtbl_01111424[];
 extern void *g_vtbl_01111438[];
 extern void *g_vtbl_0111144C[];
 extern void *g_vtbl_01111450[];
-extern void *g_vtbl_01111D9C[];
+extern "C" void *__identifier("??_7TailX005EB6B0@@6B@")[];
 extern "C" void *__identifier("??_7MidX005EB6B0@@6B@")[];
 extern void *g_vtbl_01111DB4[];
 extern void *g_vtbl_01111DD8[];
@@ -259,7 +259,7 @@ extern "C" void *__identifier("??_7GenX005EB930@@6B@")[];
 extern void *g_vtbl_01111E50[];
 extern void *g_vtbl_01111E64[];
 extern void *g_vtbl_01111E68[];
-extern void *g_vtbl_01111EC8[];
+extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot2@@@")[];
 extern void *g_vtbl_01111EDC[];
 extern "C" void *__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@")[];
 extern "C" void *__identifier("??_7BFMEDistLODClass@@6BRefCountClass@@@")[];
@@ -479,11 +479,11 @@ public:
 };
 
 
-// The shared header's INI view lacks these statics, so they are reached by alias.
-extern "C" void bfmeINIParseIndexList(INI *, void *, void *, const void *);
-#pragma comment(linker, "/alternatename:_bfmeINIParseIndexList=?parseIndexList@INI@@SAXPAV1@PAX1PBX@Z")
-extern "C" void bfmeINIParseBool(INI *, void *, void *, const void *);
-#pragma comment(linker, "/alternatename:_bfmeINIParseBool=?parseBool@INI@@SAXPAV1@PAX1PBX@Z")
+// The shared header's INI view lacks these statics. Reference the recorded
+// parseIndexList symbol directly instead of the old _bfmeINIParseIndexList alias.
+extern "C" void __identifier("?parseIndexList@INI@@SAXPAV1@PAX1PBX@Z")(INI *, void *, void *, const void *);
+// Likewise replace _bfmeINIParseBool with its recorded static parser identity.
+extern "C" void __identifier("?parseBool@INI@@SAXPAV1@PAX1PBX@Z")(INI *, void *, void *, const void *);
 extern "C" void __identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")(INI *, void *, void *, const void *);
 // Gate debt _bfmeINIParseAsciiString: use the recorded INI static function directly.
 extern "C" void bfmeINIParseCoord3D(INI *, void *, void *, const void *);
@@ -846,7 +846,7 @@ public:
         ((DefaultModule6CtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)g_vtbl_01111DB4;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)__identifier("??_7MidX005EB6B0@@6B@");
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111D9C;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7TailX005EB6B0@@6B@");
     }
 private:
     unsigned char m_storage[0x1c];
@@ -1361,7 +1361,7 @@ public:
     __forceinline LightningDrawTemplateAllocation()
     {
         ((LightningDrawTemplateCtorShim *)this)->construct();
-        *(volatile unsigned int *)this = (unsigned int)g_vtbl_01110EBC;
+        *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@");
         *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01110EB8;
         *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)g_vtbl_01110EA4;
     }
@@ -1387,7 +1387,7 @@ public:
         ((LightningDrawModuleCtorShim *)this)->construct(sys, source);
         *(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005EBCC0Object@@6BV3Slot0@@@");
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = (unsigned int)g_vtbl_01111EDC;
-        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)g_vtbl_01111EC8;
+        *(volatile unsigned int *)((unsigned char *)this + 0x18) = (unsigned int)__identifier("??_7Rva005EBCC0Object@@6BV3Slot2@@@");
     }
 
 private:
@@ -3891,7 +3891,7 @@ ButterflyDrawModule *ConcreteModuleTemplate<ModuleTag<6, BUTTERFLY_DRAW_MODULE_K
 ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MODULE_NAME, LightningDrawModule, LightningDrawModuleTemplate, DefaultParticleModule<6>, DefaultParticleModuleTemplate<6> > >::ConcreteModuleTemplate(const ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MODULE_NAME, LightningDrawModule, LightningDrawModuleTemplate, DefaultParticleModule<6>, DefaultParticleModuleTemplate<6> > > &that)
 {
     ((LightningDrawTemplateCopyCtorShim *)this)->construct(&that);
-    *(volatile unsigned int *)this = (unsigned int)g_vtbl_01110EBC;
+    *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01110EB8;
     *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)g_vtbl_01110EA4;
 }
@@ -3900,7 +3900,7 @@ ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MO
 ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MODULE_NAME, LightningDrawModule, LightningDrawModuleTemplate, DefaultParticleModule<6>, DefaultParticleModuleTemplate<6> > >::ConcreteModuleTemplate()
 {
     ((LightningDrawTemplateCtorShim *)this)->construct();
-    *(volatile unsigned int *)this = (unsigned int)g_vtbl_01110EBC;
+    *(volatile unsigned int *)this = (unsigned int)__identifier("??_7?$DefaultParticleModuleTemplate@$05@FXParticleSystem@@6BModuleTemplate@1@@");
     *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)g_vtbl_01110EB8;
     *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)g_vtbl_01110EA4;
 }
@@ -8810,10 +8810,10 @@ void ParticleSystemTemplate::parse(INI *ini, void *data, void *store, const void
     // reached through its retail ILT at 0x00436615 -> 0x004B8F60;
     // the other parser routes are their named INI bodies.
     Field fields[] = {
-        { "Priority", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva01110208Names, 0x7c },
-        { "IsOneShot", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x04 },
-        { "Shader", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva01110180Names, 0x08 },
-        { "Type", reinterpret_cast<ParseProc>(bfmeINIParseIndexList), (const void *)&::g_rva011101B0Names, 0x0c },
+        { "Priority", __identifier("?parseIndexList@INI@@SAXPAV1@PAX1PBX@Z"), (const void *)&::g_rva01110208Names, 0x7c },
+        { "IsOneShot", __identifier("?parseBool@INI@@SAXPAV1@PAX1PBX@Z"), 0, 0x04 },
+        { "Shader", __identifier("?parseIndexList@INI@@SAXPAV1@PAX1PBX@Z"), (const void *)&::g_rva01110180Names, 0x08 },
+        { "Type", __identifier("?parseIndexList@INI@@SAXPAV1@PAX1PBX@Z"), (const void *)&::g_rva011101B0Names, 0x0c },
         { "ParticleName", reinterpret_cast<ParseProc>(__identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")), 0, 0x10 },
         { "SlaveSystem", reinterpret_cast<ParseProc>(__identifier("?parseAsciiString@INI@@SAXPAV1@PAX1PBX@Z")), 0, 0x68 },
         { "SlavePosOffset", reinterpret_cast<ParseProc>(bfmeINIParseCoord3D), 0, 0x6c },
@@ -8826,10 +8826,10 @@ void ParticleSystemTemplate::parse(INI *ini, void *data, void *store, const void
         { "BurstDelay", reinterpret_cast<ParseProc>(j_00036615), 0, 0x44 },
         { "BurstCount", reinterpret_cast<ParseProc>(j_00036615), 0, 0x50 },
         { "InitialDelay", reinterpret_cast<ParseProc>(j_00036615), 0, 0x5c },
-        { "IsGroundAligned", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x80 },
-        { "IsEmitAboveGroundOnly", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x81 },
-        { "IsParticleUpTowardsEmitter", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x82 },
-        { "UseMaximumHeight", reinterpret_cast<ParseProc>(bfmeINIParseBool), 0, 0x83 },
+        { "IsGroundAligned", __identifier("?parseBool@INI@@SAXPAV1@PAX1PBX@Z"), 0, 0x80 },
+        { "IsEmitAboveGroundOnly", __identifier("?parseBool@INI@@SAXPAV1@PAX1PBX@Z"), 0, 0x81 },
+        { "IsParticleUpTowardsEmitter", __identifier("?parseBool@INI@@SAXPAV1@PAX1PBX@Z"), 0, 0x82 },
+        { "UseMaximumHeight", __identifier("?parseBool@INI@@SAXPAV1@PAX1PBX@Z"), 0, 0x83 },
         { 0, 0, 0, 0 }
     };
 
