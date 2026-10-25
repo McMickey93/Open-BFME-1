@@ -1,6 +1,7 @@
 // cl: /O2 /MD /Iinputs/reference/shims/sweep
 #include <windows.h>
 
+// Matched data provider: ?g_bfmeRva012D6DE0CriticalSection@@3U_RTL_CRITICAL_SECTION@@A.
 CRITICAL_SECTION g_bfmeRva012D6DE0CriticalSection;
 // Retail .data VA 0x012D6DF8 (initialised 1): armed flag the atexit shutdown
 // 0x00C71040 clears and the device-reset path 0x0090F050 reads.

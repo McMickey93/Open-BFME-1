@@ -14,6 +14,7 @@ class GenString
 extern void CreateButtonFlash(const GenString *value);
 extern void ShowButtonFlash(const GenString *value);
 
+// Matched data provider: ?g_Va012F3638@@3HA.
 int g_Va012F3638;
 
 class Gen_ctor_004b02a0Base
