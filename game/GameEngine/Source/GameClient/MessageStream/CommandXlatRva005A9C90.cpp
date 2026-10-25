@@ -32,7 +32,6 @@ class InGameUI {
 public:
   unsigned char m_pad000[0x12b1];
   Bool m_forceAttackMode; ///< +0x12B1
-  Bool isInForceAttackMode() const { return m_forceAttackMode; }
 };
 extern InGameUI *TheInGameUI;
 
@@ -110,7 +109,7 @@ private:
 // ?rva005A9C90@CommandTranslator@@AAEXPBVGameMessage@@@Z
 // Open BFME 2: Code/GameEngine/Source/GameClient/MessageStream/CommandXlatTargetProbe.cpp.
 void CommandTranslator::rva005A9C90(const GameMessage *msg) {
-  if (TheInGameUI->isInForceAttackMode()) return;
+  if (TheInGameUI->m_forceAttackMode) return;
   const IRegion2D &r = msg->getArgument(0)->pixelRegion;
   if (r.height() != 0 || r.width() != 0) return;
   Drawable *draw = TheTacticalView->pickDrawable(&r.lo, false, 4);
