@@ -4,7 +4,7 @@
   "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
   "base": "3b375d6e2844dbceda9f4e2fd50e88bf77f0703c",
   "base_tree": "a828f43ff3da8d3d2207688960336ff47e8ac2ad",
-  "mode": "explore",
+  "mode": "qualify",
   "body": {
     "rva": "0x008A2130",
     "size": 1092,
@@ -25,7 +25,7 @@
     }
   ],
   "model": "gpt-6-astra-pro",
-  "notes": "BFME2 typed-record donor context with independent BFME1 layouts and callee contracts; complete1092-byte table extent and same-TU wrapper must both be probed; evidence=targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md",
+  "notes": "Loaded-animation pointer fixups; BFME2 donor with audited BFME1 fields and callees; canonical callbacks and owning cleanup; complete ten-entry table and same-TU wrapper; evidence=targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md",
   "admissions": [
     {
       "rva": "0x008A2130",
@@ -35,23 +35,23 @@
       "replace": "rva"
     }
   ],
-  "patch_tree": "2be1561a863bef9866c79a775c3a23e30bd42855",
-  "patch_sha256": "97f278cbaa7a60af209b531d8ef30f7706ee578fd261c90f0e0ad56ef431d746",
-  "message_sha256": "e677794cfbf097145de16de22aefb0a77d3e3c16a347f231b4f046d86980dff4",
+  "patch_tree": "f4adf864f8060f9208074894ab12f1b74e95cf4d",
+  "patch_sha256": "2c737acd72a1ed59ceed9e1de331e2df436c62e4077a59f20a8c680c8ea8845e",
+  "message_sha256": "9f80f6ac126410802c2ec5486b71f98460ca047e1fed86d6c18b4568d5e11db5",
   "files": [
     {
       "path": "game/Libraries/Source/Apt/BfmeFixup008A2580.cpp",
       "mode": "100644",
       "base_blob": "dd45a35cb93660747ce3853357a62312bcc443f5",
-      "candidate_blob": "b303fd8e828166f77839d2a59d3c2f81f071058c",
-      "sha256": "9a64be13dfad564e8e7c55fdda2bc6e4fc1fc7920f919023aee4d997c4005667"
+      "candidate_blob": "a979126d294dfb0481667acb411e1746d1425765",
+      "sha256": "4e5b94c8e90cbabb2209817451b2c3f7030ddc176af34decc4201fab73d8d8de"
     },
     {
       "path": "targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md",
       "mode": "100644",
       "base_blob": null,
-      "candidate_blob": "8f91990ec7127b1d593e12c7460d8244e4fedffb",
-      "sha256": "e89b7fe7295f0195fe6050050c8e51540574a2aea1403bc51b7de2d98c7d3baa"
+      "candidate_blob": "2d45b1bb6176066649eb80c1570cf6d0def89718",
+      "sha256": "b8c696f371ef17cc832270e332e7b306632368a246ecf71a8c5a06673aca46e2"
     }
   ],
   "base_rows": [

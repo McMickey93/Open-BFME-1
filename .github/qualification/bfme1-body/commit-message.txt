@@ -1,14 +1,19 @@
-[BFME 2 donor] Explore typed animation record fixups
+[BFME 2 donor] Reconstruct loaded-animation pointer fixups
 
-Adapt the donor's typed field and loop context to independently audited
-BFME1 offsets and contracts. Preserve the ten-entry switch and repeated
-field evaluation, with separate case 5 and case 9 calls. Keep the existing
-callback-cell bindings and owning string/handle cleanup.
+Rebuild the complete 1092-byte Apt animation helper in typed C++ using the
+BFME2 donor's record and loop context, independently audited BFME1 layouts,
+canonical calls, callback cells and owning-handle/string cleanup. Preserve
+all ten jump-table entries and the existing 56-byte wrapper.
 
-The full 1092-byte helper includes its alignment and dispatch table. The
-existing 56-byte wrapper is changed to the proven typed member call and
-must be rechecked in the same whole-TU experiment. Neither body is admitted
-by explore mode, and no new exact C++ bytes are claimed.
+The first native whole-TU run reproduced every nonrelocation byte except the
+operand order of the assignment self-comparison. Match its observed source
+and destination order while retaining the same behavior. All local dispatch
+targets, full return/alignment extent, and wrapper call were independently
+checked against the retained object and retail image.
+
+Admission requires the unmodified add_match, scoped build, normal commit
+hooks and complete pre-push gate. No matching ledger, pin or guard is edited
+by hand. See targets/game/reverse/identity_evidence/008a2130-typed-animation-fixup.md.
 
 Claim-Lease: 0x008A2130=e8bda153fad7486f8632b608a4b28259
 Claim-Lease: 0x008A2580=e8bda153fad7486f8632b608a4b28259
