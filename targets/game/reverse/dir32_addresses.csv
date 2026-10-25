@@ -9805,8 +9805,6 @@ name,va
 ?g_bfmeCRCSkipTaint@@3_NA,0x012ED4E0
 ?g_bfmeCVIW@@3PAXA,0x0130A624
 ?g_bfmeCaps1340578@@3PAVBfmeSnowDeviceCaps@@A,0x01340578
-?g_bfmeCarry790B0@@3HA,0x012D4CBC
-?g_bfmeCarryJC@@3HA,0x012D4CBC
 ?g_bfmeCfgUKD@@3PAUBfmeCfgUKD@@A,0x012ED524
 ?g_bfmeCh1035@@3DA,0x0134ECC8
 ?g_bfmeChatColor@@3HA,0x012B73F8
@@ -10673,8 +10671,6 @@ name,va
 ?g_bfmeSecondEG@@3HA,0x012B87B0
 ?g_bfmeSecondUA@@3VBfmeTableUA@@A,0x01085DE0
 ?g_bfmeSecondaryEnabled1282@@3EA,0x0133781D
-?g_bfmeSeed790B0@@3HA,0x012D4CB8
-?g_bfmeSeedJC@@3HA,0x012D4CB8
 ?g_bfmeShaderFlagEBB@@3DA,0x0134CB4C
 ?g_bfmeShaderManager@@3UBfmeShaderManagerStatics@@A,0x012F9D00
 ?g_bfmeShadowPoolA@@3UBfmeShadowPoolFM@@A,0x01306F40

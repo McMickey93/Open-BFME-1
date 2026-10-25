@@ -1,5 +1,6 @@
 // Retail VA 0x012D4CB8 / 0x012D4CBC: all three generator bodies load/store these
 // dwords; .data contains 0d 00 00 00 75 00 00 00. No standalone EA global name is established.
+// Matched data providers: ?g_rva012D4CB8@@3HA and ?g_rva012D4CBC@@3HA.
 int g_rva012D4CB8 = 13;
 int g_rva012D4CBC = 117;
 
