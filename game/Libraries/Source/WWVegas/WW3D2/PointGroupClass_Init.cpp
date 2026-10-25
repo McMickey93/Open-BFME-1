@@ -2,7 +2,8 @@
 #define BFME_DYNAMIC_IB_UINT_CTOR_ABI
 #define Matrix4x4 Matrix4
 void Rva00917280Init(void);
-#define private private: friend void Rva00917280Init(void); private
+// ?_TriVertexLocationOrientationTable@PointGroupClass@@0PAY02VVector3@@A: recorded as public ?_TriVertexLocationOrientationTable@PointGroupClass@@2PAY02VVector3@@A
+#define private public
 
 #include "pointgr.h"
 #undef private

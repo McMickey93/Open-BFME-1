@@ -157,7 +157,8 @@ extern "C" char bfmeInfoDFI[];		// 0x0112B554 (aliases bfmeInfoDFJ)
 extern void *g_Va0112C7C0;			// route slot handed to Rva007F93E0
 extern const char g_Va010F91BC[];
 extern const char g_Va01102DE0[];
-extern const char g_0112B568[];
+// ?g_0112B568@@3QBDB: retail 0x0112B568 matches recorded owner ?g_0112B568@@3PADA
+extern char g_0112B568[];
 extern const char g_Va0112B590[];
 extern const char g_Va0112C878[];
 extern const char g_Va0112C7D8[];

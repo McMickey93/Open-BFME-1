@@ -153,6 +153,8 @@ struct Rva00292900AI
 // The filter is a BFME linked node, not the ZH array of filter pointers.
 // Its lifetime ends before the terrain fallback. Both table symbols already
 // exist in this TU through the native filter declarations.
+extern int g_target_00292520;
+
 struct Rva00292900Filter
 {
 	const void *slot_00;
@@ -160,7 +162,8 @@ struct Rva00292900Filter
 
 	Rva00292900Filter() : slot_04(0)
 	{
-		slot_00 = __identifier("??_7PartitionFilterFlammable@@6B@");
+		// ??_7PartitionFilterFlammable@@6B@: recorded as ?g_target_00292520@@3HA
+		slot_00 = (const void *)&g_target_00292520;
 	}
 	~Rva00292900Filter()
 	{

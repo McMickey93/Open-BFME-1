@@ -119,7 +119,8 @@ extern void *g_vtbl_0110F978[];
 extern void *g_vtbl_0110F97C[];
 extern void *g_vtbl_0110F980[];
 extern void *g_vtbl_0110F9AC[];
-extern void *g_vtbl_0110F9CC[];
+// ?g_vtbl_0110F9CC@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_0110F9E4[];
 extern void *g_vtbl_0110F9E8[];
 extern void *g_vtbl_0110FA14[];
@@ -335,7 +336,8 @@ extern "C" void *__identifier("??_7Rva005EDB10@@6BV3Slot1@@@")[];
 extern "C" void *__identifier("??_7Rva005EDB10@@6BV3Slot0@@@")[];
 // ?g_vtbl_01112384@@3PAPAXA: use the owner recorded at 0x01112384.
 extern "C" void *__identifier("??_7Rva005EDC80@@6BV3Slot3@@@")[];
-extern void *g_vtbl_01112398[];
+// ?g_vtbl_01112398@@3PAPAXA: use the owner recorded at 0x01112398.
+extern "C" void *__identifier("??_7Rva005EDC80@@6BV3Slot2@@@")[];
 extern void *g_vtbl_0111239C[];
 extern void *g_vtbl_011123A0[];
 // ?g_vtbl_011123C4@@3PAPAXA: use the owner recorded at 0x011123C4.
@@ -1158,7 +1160,7 @@ __forceinline void initializeSphereEmissionVolumeModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)g_vtbl_011123A0;
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_0111239C;
-    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112398;
+    *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7Rva005EDC80@@6BV3Slot2@@@");
     *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005EDC80@@6BV3Slot3@@@");
 }
 
@@ -3383,7 +3385,7 @@ ConcreteModuleTemplate<ModuleTag<4, CYLINDRICAL_EMISSION_VELOCITY_MODULE_KEY, CY
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9CC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3490,7 +3492,7 @@ ConcreteModuleTemplate<ModuleTag<4, OUTWARD_EMISSION_VELOCITY_MODULE_KEY, OUTWAR
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9CC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3549,7 +3551,7 @@ ConcreteModuleTemplate<ModuleTag<4, SPHERICAL_EMISSION_VELOCITY_MODULE_KEY, SPHE
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9CC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -4219,7 +4221,7 @@ ConcreteModuleTemplate<OrthoEmissionVelocityModuleTag>::~ConcreteModuleTemplate(
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9CC;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 

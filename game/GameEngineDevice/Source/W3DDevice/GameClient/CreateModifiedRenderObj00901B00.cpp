@@ -72,7 +72,8 @@ inline void munge00901B00(char *out,const char *name,float scale,int color,const
 }
 extern bool Render_Obj_Exists(const char *);
 extern void Add_Prototype(void *);
-extern bool g_012D6DA8;
+// ?g_012D6DA8@@3_NA: retail 0x012D6DA8 recorded as ?g_flag12D6DA8@@3_NA
+extern bool g_flag12D6DA8;
 inline float abs00901B00(float x) { *(unsigned *)&x &= 0x7fffffff; return x; }
 BfmeThingVGK *CreateModifiedRenderObj00901B00(const char *name,float scale,int color,const char *a,const char *b,const char *c,int extra)
 {
@@ -82,7 +83,7 @@ BfmeThingVGK *CreateModifiedRenderObj00901B00(const char *name,float scale,int c
  _strlwr(lowered);
  Gen008FF1B0 prototype((void *)&Rva009EBCE0_GetPrototype(lowered));
  if (!prototype.m_object) return 0;
- if (!g_012D6DA8) color=0;
+ if (!g_flag12D6DA8) color=0;
  bool scaled=abs00901B00(scale-1.0f)>0.01f;
  bool colored=(color & 0xffffff)!=0;
  BfmeThingVGK *result;
