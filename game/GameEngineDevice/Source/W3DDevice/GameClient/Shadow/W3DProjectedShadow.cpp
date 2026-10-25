@@ -123,7 +123,7 @@ int nShadowDecalStartBatchVertex=0;
 int nShadowDecalIndicesInBuf=0;	//model vetices in vertex buffer
 int nShadowDecalStartBatchIndex=0;
 int	nShadowDecalPolysInBatch=0;
-int	nShadowDecalVertsInBatch=0;
+int	nShadowDecalVertsInBatch=0;	// ?nShadowDecalVertsInBatch@@3HA
 int SHADOW_DECAL_VERTEX_SIZE=32768;
 int SHADOW_DECAL_INDEX_SIZE=65536;
 

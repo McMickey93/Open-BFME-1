@@ -38,30 +38,36 @@ extern char Rva00D139F4;
 // 0x00C6BEF0: independent INT3-bounded initializer.
 void Rva00C6BEF0() { Rva00EF6CA0 = (void *)&Rva00D139F4; }
 
-extern void *Rva00EF6CA4;
+namespace FXParticleSystem {
+extern void **streakDrawSourceAt4;
+extern void **quadDrawSourceAt8;
+extern void **quadDrawSourceAt4;
+extern void **butterflyDrawSourceAt8;
+extern void **butterflyDrawSourceAt4;
+extern void **lightningDrawSourceAt8;
+extern void **defaultModuleTag1SourceAt4;
+extern void **defaultModuleTag1SourceAt8;
+}
+
 extern char Rva00D139F8;
-// 0x00C6BF00: independent INT3-bounded initializer.
-void Rva00C6BF00() { Rva00EF6CA4 = (void *)&Rva00D139F8; }
+// 0x00C6BF00: independent INT3-bounded initializer (?Rva00EF6CA4@@3PAXA).
+void Rva00C6BF00() { FXParticleSystem::streakDrawSourceAt4 = (void **)&Rva00D139F8; }
 
-extern void *Rva00EF6CA8;
 extern char Rva00D1375C;
-// 0x00C6BF10: independent INT3-bounded initializer.
-void Rva00C6BF10() { Rva00EF6CA8 = (void *)&Rva00D1375C; }
+// 0x00C6BF10: independent INT3-bounded initializer (?Rva00EF6CA8@@3PAXA).
+void Rva00C6BF10() { FXParticleSystem::quadDrawSourceAt8 = (void **)&Rva00D1375C; }
 
-extern void *Rva00EF6CAC;
 extern char Rva00D13760;
-// 0x00C6BF20: independent INT3-bounded initializer.
-void Rva00C6BF20() { Rva00EF6CAC = (void *)&Rva00D13760; }
+// 0x00C6BF20: independent INT3-bounded initializer (?Rva00EF6CAC@@3PAXA).
+void Rva00C6BF20() { FXParticleSystem::quadDrawSourceAt4 = (void **)&Rva00D13760; }
 
-extern void *Rva00EF6CB0;
 extern char Rva00D13540;
-// 0x00C6BF30: independent INT3-bounded initializer.
-void Rva00C6BF30() { Rva00EF6CB0 = (void *)&Rva00D13540; }
+// 0x00C6BF30: independent INT3-bounded initializer (?Rva00EF6CB0@@3PAXA).
+void Rva00C6BF30() { FXParticleSystem::butterflyDrawSourceAt8 = (void **)&Rva00D13540; }
 
-extern void *Rva00EF6CB4;
 extern char Rva00D13544;
-// 0x00C6BF40: independent INT3-bounded initializer.
-void Rva00C6BF40() { Rva00EF6CB4 = (void *)&Rva00D13544; }
+// 0x00C6BF40: independent INT3-bounded initializer (?Rva00EF6CB4@@3PAXA).
+void Rva00C6BF40() { FXParticleSystem::butterflyDrawSourceAt4 = (void **)&Rva00D13544; }
 
 extern void *Rva00EF6CB8;
 extern char Rva00D13798;
@@ -73,10 +79,9 @@ extern char Rva00D1379C;
 // 0x00C6BF60: independent INT3-bounded initializer.
 void Rva00C6BF60() { Rva00EF6CBC = (void *)&Rva00D1379C; }
 
-extern void *Rva00EF6CC0;
 extern char Rva00D13670;
-// 0x00C6BF70: independent INT3-bounded initializer.
-void Rva00C6BF70() { Rva00EF6CC0 = (void *)&Rva00D13670; }
+// 0x00C6BF70: independent INT3-bounded initializer (?Rva00EF6CC0@@3PAXA).
+void Rva00C6BF70() { FXParticleSystem::lightningDrawSourceAt8 = (void **)&Rva00D13670; }
 
 extern void *Rva00EF6CC4;
 extern char Rva00D13674;
@@ -91,13 +96,11 @@ extern void *Rva00EF6CCC;
 // 0x00C6BFA0: independent INT3-bounded initializer.
 void Rva00C6BFA0() { Rva00EF6CCC = (void *)FXParticleSystem::DefaultModuleName<1>::Read(); }
 
-extern void *Rva00EF6CD0;
-// 0x00C6BFB0: independent INT3-bounded initializer.
-void Rva00C6BFB0() { Rva00EF6CD0 = (void *)&Rva00EF6CC8; }
+// 0x00C6BFB0: independent INT3-bounded initializer (?Rva00EF6CD0@@3PAXA).
+void Rva00C6BFB0() { FXParticleSystem::defaultModuleTag1SourceAt4 = (void **)&Rva00EF6CC8; }
 
-extern void *Rva00EF6CD4;
-// 0x00C6BFC0: independent INT3-bounded initializer.
-void Rva00C6BFC0() { Rva00EF6CD4 = (void *)&Rva00EF6CCC; }
+// 0x00C6BFC0: independent INT3-bounded initializer (?Rva00EF6CD4@@3PAXA).
+void Rva00C6BFC0() { FXParticleSystem::defaultModuleTag1SourceAt8 = (void **)&Rva00EF6CCC; }
 
 extern void *Rva00EF6CD8;
 // 0x00C6BFD0: independent INT3-bounded initializer.
