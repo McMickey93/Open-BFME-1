@@ -49,7 +49,7 @@ jobs:
           git fetch --no-tags --depth=128 origin refs/heads/master:refs/remotes/origin/master
           python3 -m pip install -r tools/requirements.txt
           python3 tools/check_csv.py
-      - name: Inspect uncapped structural and lift recovery queues
+      - name: Inspect untried small bodies from the authoritative eligibility API
         shell: bash
         working-directory: source
         run: |
@@ -77,36 +77,32 @@ jobs:
           if not claims.fetch(): raise RuntimeError("Cannot read upstream claims")
           active={f"0x{rva:08X}":{"token":token,**info} for rva,(token,info) in claims._read_local().items() if info.get("expires",0)>time.time()}
           result["active_claims"]=active
-          import eligibility,lift_lane,next_work,re_log
+          import eligibility,next_work,repair_queue
           rows=eligibility.load_rows()
           counts=eligibility.attempt_counts()
           latest=eligibility.latest_verdicts()
-          open_rows=eligibility.open_dumps(rows=rows,latest=latest,max_size=None)
-          stats={}
-          for label,test in [("all",lambda n:True),("small",lambda n:n<=512),("large",lambda n:n>512)]:
-              subset=[r for r in open_rows if test(int(r["target_size"]))]
-              stats[label]={"count":len(subset),"bytes":sum(int(r["target_size"]) for r in subset),"untried":sum(not counts.get(eligibility.rva_of(r),0) for r in subset)}
-          result["all_size_statistics"]=stats
-          print("RECOVERY_ALL_SIZE_STATS "+json.dumps(stats),flush=True)
-          run("naked-help",[sys.executable,"tools/list_naked_candidates.py","--help"],True,True)
-          print("RECOVERY_SIZE_CAP list_naked_candidates.MAX_BYTES="+str(naked.MAX_BYTES)+"; no size CLI override. No tool code edited.",flush=True)
-          # The structural CLI performs its own current-coverage, boundary and identity filtering.
-          structural=json.loads(run("structural-pool",[sys.executable,"tools/next_work.py","--tier","structural","--ranked","--json"]))
-          pool=structural["structural"]
-          available=[c for c in pool if (c.get("target_rva") or c.get("candidate_rva")) not in active and int(c["size"])>512]
-          print("RECOVERY_STRUCTURAL_STATS "+json.dumps({"all":len(pool),"large_available":len(available),"large_untried":sum(not c.get("deferred_attempts") for c in available),"meta":structural["structural_meta"]}),flush=True)
+          pool=eligibility.open_dumps(rows=rows,latest=latest,min_size=8,max_size=512)
+          untried=[r for r in pool if not counts.get(eligibility.rva_of(r),0) and not eligibility.boundary_suspect(eligibility.rva_of(r))]
+          candidates=[]
+          for row in untried:
+              if row["target_rva"] in active: continue
+              c={"function":row["name"],"source":row["source"],"target_rva":row["target_rva"],"size":int(row["target_size"]),"notes":row.get("notes",""),"latest_verdict":latest.get(eligibility.rva_of(row))}
+              candidates.append(c)
+          repair_queue.annotate_dest(candidates)
+          result.update(pool_count=len(pool),untried_count=len(untried),candidate_count=len(candidates),untried=candidates)
+          print("RECOVERY_UNTRIED_POOL "+json.dumps({"pool":len(pool),"untried":len(untried),"available":len(candidates)}),flush=True)
+          for c in candidates: print("RECOVERY_UNTRIED_ROW "+json.dumps(c),flush=True)
           sequence=[]
-          for n in range(min(3,len(available))):
-              c=next_work.weighted_choice(available);available.remove(c)
-              print("RECOVERY_LARGE_SELECTION "+json.dumps({"order":n,"candidate":c}),flush=True)
-              run("large-brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",c.get("target_rva") or c["candidate_rva"]],True,True)
+          for n in range(min(5,len(candidates))):
+              c=next_work.weighted_choice(candidates);candidates.remove(c)
               sequence.append(c)
-          result["large_sequence"]=sequence
-          # Named lifts have their own positive extent checks; print their served queue.
-          run("lift-queue",[sys.executable,"tools/lift_lane.py","--limit","150"],True,True)
+              print("RECOVERY_UNTRIED_SELECTION "+json.dumps({"order":n,"candidate":c}),flush=True)
+              run("untried-brief-"+str(n),[sys.executable,"tools/brief.py","--rvas",c["target_rva"]],True,True)
+              run("untried-callees-"+str(n),[sys.executable,"tools/callees.py",c["target_rva"],str(c["size"])],True,True)
+          result["sequence"]=sequence
           run("clean-tree",["git","diff","--exit-code"])
           run("progress",[sys.executable,"tools/progress.py","origin/master"],True,True)
-          result["status"]="served-readonly-all-sizes"
+          result["status"]="served-eligibility-untried-small"
           (out/"result.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
           print("RECOVERY_RESULT "+json.dumps(result),flush=True)
           PY
