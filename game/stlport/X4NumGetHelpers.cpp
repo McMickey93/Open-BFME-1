@@ -23,6 +23,7 @@ const unsigned char __digit_val_table[128] =
   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 };
 
+// Matched data owner: ?__narrow_atoms@_STL@@3QBDB at VA 0x0112F430.
 const char __narrow_atoms[5] = {'+', '-', '0', 'x', 'X'};
 
 bool _STLP_CALL __valid_grouping(const char *first1, const char *last1,

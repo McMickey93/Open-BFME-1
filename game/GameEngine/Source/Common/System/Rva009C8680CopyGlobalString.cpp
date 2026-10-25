@@ -8,6 +8,7 @@
 extern "C" char *__cdecl strcpy(char *, const char *);
 #pragma intrinsic(strcpy)
 
+// Matched data owner: ?g_0134C948@@3PADA at VA 0x0134C948.
 char g_0134C948[256];
 
 void __cdecl Rva009C8680CopyGlobalString(const char *source)

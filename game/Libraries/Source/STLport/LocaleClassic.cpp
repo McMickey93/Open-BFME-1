@@ -21,6 +21,7 @@ public:
 	char m_bfmeStorage[0x18];
 };
 }
+// Matched data owner: ?g_classic0130B2A0@@3V_Locale_impl@_STL@@A at VA 0x0130B2A0.
 _STL::_Locale_impl g_classic0130B2A0;
 
 // 0x012C7464

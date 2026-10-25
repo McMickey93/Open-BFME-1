@@ -20,6 +20,7 @@ extern "C" void __identifier("?call@Rva007EFF60@@QAEXPAX0@Z")();
 extern "C" void __identifier("?bfmeGo929B@BfmeThing929B@@QAEXPAX0@Z")();
 extern "C" void __identifier("?value@Rva007EFFA0Zero@@QBEHXZ")();
 extern "C" void __identifier("?value@Rva007EFFB0Zero@@QBEHXZ")();
+// Matched data owner: ?g_0112A5C4@@3PAPAXA at VA 0x0112A5C4.
 void *g_0112A5C4[] = {
     reinterpret_cast<void *>(&__identifier("?dup_007eff40@@YAXXZ")),
     reinterpret_cast<void *>(&__identifier("?dup_007eff50@@YAXXZ")),

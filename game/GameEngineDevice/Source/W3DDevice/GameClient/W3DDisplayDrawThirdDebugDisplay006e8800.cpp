@@ -121,6 +121,7 @@ class Rva00367E30Logic : public GameLogic
 
 extern GameLogic *TheGameLogic;
 
+// Matched data owner: ?g_012F8054@@3HA at VA 0x012F8054.
 int g_012F8054;
 extern unsigned char g_012F81A9;
 
