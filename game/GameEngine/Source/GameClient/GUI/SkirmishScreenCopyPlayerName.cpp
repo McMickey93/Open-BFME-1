@@ -31,16 +31,16 @@ public:
 	}
 };
 
-class BfmeGameSlot
+class GameSlot
 {
 public:
 	UnicodeString getName() const;
 };
 
-class BfmeGameInfo
+class GameInfo
 {
 public:
-	BfmeGameSlot *getSlot(int index);
+	GameSlot *getSlot(int index);
 };
 
 class SkirmishGameInfo;
@@ -56,5 +56,5 @@ public:
 void BfmeAptScreenSkirmish::getPlayerName(UnicodeString &dest)
 {
 	if(TheSkirmishGameInfo)
-		dest.set(reinterpret_cast<BfmeGameInfo *>(TheSkirmishGameInfo)->getSlot(0)->getName());
+		dest.set(reinterpret_cast<GameInfo *>(TheSkirmishGameInfo)->getSlot(0)->getName());
 }
