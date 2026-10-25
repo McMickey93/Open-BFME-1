@@ -57,7 +57,7 @@ struct Rva009A3AD0Endpoint
 	Rva009A3AD0Endpoint *m_next;	// +0x04
 	class Rva009A45A0CollisionData *m_node;	// +0x08
 	unsigned int m_isMax : 1;	// +0x0c
-	Real m_value;	// +0x10
+	Real value;	// +0x10
 
 	bool isMin() const { return !m_isMax; }
 };
@@ -252,17 +252,13 @@ public:
 // Ported from Open-BFME-2's matched copy (0x00759600), which is byte-identical
 // and was itself finished from this repo's banked draft.
 //
-// 0x009A2750 has no converted body yet. The repo's banked attempt (and
-// Open-BFME-2's, at its 0x007586F0 twin) stops at 0.990: every spelling that
-// places the second queue's lea where retail puts it also permutes the
-// callee-saved colouring of the whole body. The retail bytes are already in
-// the link as the gen-dump row ?d_009a2750@@YAXXZ (0x009A2750, 460 B,
-// game/gen_asm/d_0099d0c0.asm), and thiscall void(void) and cdecl void(void)
-// share the same machine interface here (this in ecx, plain ret, no stack
-// arguments). Bind the ledger name to that body rather than invent a second
-// definition: alias_guard compares both pins at 0x009A2750 and sees one body.
-// This links UpdateSort; it is not conversion progress for the sort itself.
-#pragma comment(linker, "/alternatename:?rva009A2750@CollisionManagerImpl@@QAEXXZ=?d_009a2750@@YAXXZ")
+// 0x009A2750 is the bottom-up merge sort of the three axis endpoint lists;
+// UpdateSort calls it after the reinsertion pass. The body is ported from
+// Open-BFME-2's matched twin at 0x007586F0 (collisionmanager_impl.cpp) and
+// compiles to the full 460-byte BFME1 body with no relocations. The two
+// left-run count reads go through the volatile accessor because that is what
+// reproduces VC7.1's register cost; it is a codegen choice, not evidence that
+// the original field was declared volatile.
 
 class CollisionManagerImpl
 {
@@ -290,8 +286,8 @@ public:
 		Rva009A3AD0Endpoint *cur = *head;
 		Rva009A3AD0Endpoint *prev = 0;
 		Rva009A45A0CollisionData *open = 0;
-		Real value = axis->m_max.m_value;
-		while (cur != 0 && !(cur->m_value > value))
+		Real value = axis->m_max.value;
+		while (cur != 0 && !(cur->value > value))
 		{
 			if (cur->isMin())
 			{
@@ -333,10 +329,10 @@ public:
 				*closed->m_openPrev = closed->m_openNext;
 				closed->m_openPrev = 0;
 			}
-			value = axis->m_min.m_value;
+			value = axis->m_min.value;
 			do
 			{
-				if (!(cur->m_value < value))
+				if (!(cur->value < value))
 					break;
 				if (cur->isMin())
 					addOverlap(cur->m_node, node);
@@ -439,13 +435,13 @@ void CollisionManagerImpl::UpdateSort()
 			Rva009A3AD0Endpoint *cur = (*head)->m_next;
 			while (cur != 0)
 			{
-				if (cur->m_prev->m_value <= cur->m_value)
+				if (cur->m_prev->value <= cur->value)
 				{
 					cur = cur->m_next;
 					continue;
 				}
 				Rva009A3AD0Endpoint *pos = cur;
-				while (pos->m_prev != 0 && pos->m_prev->m_value > cur->m_value)
+				while (pos->m_prev != 0 && pos->m_prev->value > cur->value)
 				{
 					Rva009A3AD0Endpoint *before = pos->m_prev;
 					if (before->m_isMax && cur->isMin())
@@ -510,5 +506,108 @@ void CollisionManagerImpl::UpdateSort()
 				cur->m_node->m_openPrev = 0;
 			}
 		}
+	}
+}
+
+// Bottom-up merge sort of one axis's endpoint list. The BFME 1 body at
+// 0x009A2750 (460 bytes) and the BFME 2 twin at 0x007586F0 are identical; the
+// donor's UpdateSort caller and WorldBuilder's 0x01802EC0 copy establish the
+// purpose and layout, while the original method name stays unknown. The two
+// left-run count reads use the volatile-qualified accessor to reproduce VC7.1
+// register costs; this is a codegen choice, not evidence that the field was
+// declared volatile.
+struct SortList
+{
+	Rva009A3AD0Endpoint *head;
+	Rva009A3AD0Endpoint *tail;
+	unsigned int count;
+	unsigned int getCount() const volatile { return count; }
+};
+typedef Rva009A3AD0Endpoint Endpoint;
+
+
+void CollisionManagerImpl::rva009A2750()
+{
+	for (unsigned int k = 0; k < m_axisCount; k++)
+	{
+		SortList lists[4];
+		lists[1].count = 0;
+		lists[0].count = 0;
+		lists[0].head = 0;
+		int i = 0;
+		Endpoint *cur = m_axisHeads[k];
+		while (cur)
+		{
+			Endpoint *next = cur->m_next;
+			cur->m_next = lists[i].head;
+			lists[i].head = cur;
+			lists[i].count++;
+			i ^= 1;
+			cur = next;
+		}
+		int src = 0;
+		unsigned int runLen = 1;
+		while (lists[src + 1].count != 0)
+		{
+			SortList *A = &lists[src];
+			SortList *B = &lists[src + 1];
+
+			int out = src ^ 2;
+			lists[out + 1].count = 0;
+			lists[out].count = 0;
+			while (A->getCount() != 0)
+			{
+				unsigned int b = runLen;
+				unsigned int a = runLen;
+				SortList *o = &lists[out];
+				for (;;)
+				{
+					SortList *from;
+					if (a != 0 && A->getCount() != 0)
+					{
+						if (b != 0 && B->count != 0 && A->head->value > B->head->value)
+						{
+							from = B;
+							b--;
+						}
+						else
+						{
+							from = A;
+							a--;
+						}
+					}
+					else if (b != 0 && B->count != 0)
+					{
+						from = B;
+						b--;
+					}
+					else
+						break;
+					from->count--;
+					Endpoint *e = from->head;
+					from->head = e->m_next;
+					if (o->count == 0)
+					{
+						o->head = e;
+						o->tail = e;
+					}
+					else
+					{
+						o->tail->m_next = e;
+						o->tail = e;
+					}
+					o->count++;
+				}
+				out ^= 1;
+			}
+			runLen <<= 1;
+			src ^= 2;
+		}
+		if (lists[src].count > 1)
+			lists[src].tail->m_next = 0;
+		m_axisHeads[k] = lists[src].head;
+		m_axisHeads[k]->m_prev = 0;
+		for (Endpoint *p = m_axisHeads[k]; p->m_next != 0; p = p->m_next)
+			p->m_next->m_prev = p;
 	}
 }
