@@ -1,0 +1,180 @@
+name: Transfer an already qualified BFME1 commit
+
+# The checked-in request is disabled until a particular successful qualify run
+# and its exact artifact, commit, tree and actual qualified base are reviewed.
+# This workflow never writes the official repository, master, or a claim.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bfme1-qualified-object-transfer
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.longpaths
+  GIT_CONFIG_VALUE_1: 'true'
+  PY_PYTHON: '3.12'
+  PY_PYTHON3: '3.12'
+  PYTHONUTF8: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  verify:
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/master' &&
+      github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      actions: read
+    runs-on: windows-2022
+    timeout-minutes: 30
+    outputs:
+      artifact_id: ${{ steps.bundle.outputs.artifact-id }}
+      artifact_digest: ${{ steps.bundle.outputs.artifact-digest }}
+    steps:
+      - name: Read the immutable transfer request and implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: control
+          sparse-checkout: .github/qualification/bfme1-transfer
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+          architecture: x64
+          check-latest: false
+      - name: Validate the reviewed request
+        id: request
+        shell: bash
+        run: python control/.github/qualification/bfme1-transfer/transfer.py pin
+      - name: Check out the actual qualified official base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: ${{ steps.request.outputs.base }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Verify the exact artifact and repeat the complete normal push gate
+        shell: bash
+        working-directory: source
+        env:
+          BFME_TRANSFER_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 qualified-object-verification
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_TRANSFER_BASH="$(cygpath -aw "$git_bash")"
+          python3 -u ../control/.github/qualification/bfme1-transfer/transfer.py verify
+      - name: Retain the verified Git object bundle
+        id: bundle
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-transfer-${{ github.run_id }}-${{ github.run_attempt }}
+          path: verified-transfer/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+          include-hidden-files: false
+      - name: Retain verification diagnostics
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-transfer-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: transfer-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 9
+
+  transfer:
+    needs: verify
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/master' &&
+      github.event_name == 'workflow_dispatch'
+    # The full native verification above has no write token. This separate job
+    # only imports and transfers the same objects; it never runs artifact code.
+    permissions:
+      contents: write
+      actions: read
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - name: Read the same immutable transfer implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: control
+          sparse-checkout: .github/qualification/bfme1-transfer
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+          architecture: x64
+          check-latest: false
+      - name: Validate the same reviewed request
+        id: request
+        shell: bash
+        run: python control/.github/qualification/bfme1-transfer/transfer.py pin
+      - name: Check out the qualified official base without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: ${{ steps.request.outputs.base }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+          lfs: false
+      - name: Transfer exact objects to the fixed fresh fork branch
+        shell: bash
+        working-directory: source
+        env:
+          BFME_TRANSFER_TOKEN: ${{ github.token }}
+          BFME_VERIFIED_ARTIFACT_ID: ${{ needs.verify.outputs.artifact_id }}
+          BFME_VERIFIED_ARTIFACT_DIGEST: ${{ needs.verify.outputs.artifact_digest }}
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 qualified-object-transfer
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_TRANSFER_BASH="$(cygpath -aw "$git_bash")"
+          python3 -u ../control/.github/qualification/bfme1-transfer/transfer.py transfer
+      - name: Retain the exact transfer receipt
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bfme1-transfer-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: transfer-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 9
