@@ -566,8 +566,9 @@ def make_import_libs(entries, outdir):
 def zz_objects(objs, placed, ordered_names, zzdir):
     """Private copies with every unplaced code section renamed .text$zz, so unplaced
     code lands after retail's last group instead of inside it. Every link input
-    is a short name in zzdir (o00000.obj: such a copy, else a hard link to the
-    object): link.exe 7.1 cannot open a path past MAX_PATH, and object names run
+    is a private short-named copy in zzdir (o00000.obj): creating a hard link
+    changes the already-consumed source object's inode generation.
+    link.exe 7.1 cannot open a path past MAX_PATH, and object names run
     to 150 characters. zzdir/names.json maps the names back (read_map)."""
     zzdir.mkdir(parents=True, exist_ok=True)
     placed_secs = {(u["obj"], u["sec"]) for u in placed}
@@ -593,16 +594,9 @@ def zz_objects(objs, placed, ordered_names, zzdir):
         names[q.name] = Path(p).name.lower()
         if hit:
             modified.append(q.name)
-            if not q.exists() or q.read_bytes() != d:
-                q.unlink(missing_ok=True)          # never write through a hard link to the object
-                q.write_bytes(bytes(d))
-        elif not (q.exists() and os.path.samefile(p, q)):
-            q.unlink(missing_ok=True)
-            try:
-                os.link(p, q)
-            except OSError:
-                import shutil
-                shutil.copyfile(p, q)
+        if not q.exists() or os.path.samefile(p, q) or q.read_bytes() != d:
+            q.unlink(missing_ok=True)              # retire old hard links without writing through them
+            q.write_bytes(bytes(d))
         out.append(q)
     (zzdir / "names.json").write_text(json.dumps({"names": names, "modified": modified}))
     return out, renamed
