@@ -58317,3 +58317,4 @@ __commode	0x0134FBA8	0	blocked	gate-debt: false-reject locate_source: __commode 
 ??_7AIGuardRetaliateMachine@@6B@	0x01096420	0	blocked	gate-debt: vtable rename requires renaming Rva0015E730TailDtor in VptrTailJumpDestructors.cpp; class rename outside debt scope t=3 model=gemini-3.8-flash-medium
 ?TheLivingWorldLogic@@3PAVLivingWorldLogic@@A	0x012F1028	0	blocked	gate-debt: address 0x012F1028 recorded as Glo012F1028Type across 34 referencing TUs; outside debt scope t=2 model=gemini-3.8-flash-medium
 ?TheNullChr@?1??str@?$StringBase@D@@QBEPBDXZ@4DB	0x0107388B	0	blocked	gate-debt: source is shared header string_base.h with 28+ references; full gate outside debt scope t=2 model=gemini-3.8-flash-medium
+?Callback00CB5760@@3PADA	0x00CB5760	0	blocked	gate-debt: replacing Callback00CB5760 with Rva008B5760Get shifts EH funclet labels ($L415->$L417) failing matched rows ?dup_00C58D9F/?dup_00C58DAE t=5 model=gemini-3.8-flash-medium

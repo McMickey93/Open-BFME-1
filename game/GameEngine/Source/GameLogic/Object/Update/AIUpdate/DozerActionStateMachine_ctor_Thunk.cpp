@@ -38,6 +38,7 @@ private:
 	unsigned char m_fields[ 0x20 ];
 };
 
+// retired debt: ??_7DozerActionPickActionPosState@?A0x8fc50225@@6B@ replaced with ??_7DozerActionPickActionPosState@@6B@
 // Retail vftable 0x010C6D28 is ??_7DozerActionPickActionPosState@@6B@, so the
 // class keeps that name outside an anonymous namespace (whose decorated name
 // changes with the source path).  The ctor stays inline (retail inlines it);

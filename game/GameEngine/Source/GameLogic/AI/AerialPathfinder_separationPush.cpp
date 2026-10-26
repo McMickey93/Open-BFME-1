@@ -317,6 +317,7 @@ private:
 	UnsignedInt m_base;
 };
 
+// retired debt: ??_7PartitionFilterWouldCollide@?A0x47eb9fc7@@6B@ replaced with ??_7PartitionFilterWouldCollide@@6B@
 // Retail vftable 0x010860A0 is recorded as ??_7PartitionFilterWouldCollide@@6B@;
 // the class keeps that name outside an anonymous namespace, whose decorated
 // name changes with the source path.

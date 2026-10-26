@@ -250,7 +250,8 @@ struct VptrZeroMixedBlock12
 	UnsignedInt m_dword_08;
 };
 
-extern const unsigned char g_FilterVtable001AEA80[];
+// retired debt: ?g_FilterVtable001AEA80@@3QBEB replaced with ??_7PartitionFilter@@6B@
+extern "C" const unsigned char __identifier("??_7PartitionFilter@@6B@")[];
 
 class Rva001AEA80FilterBase
 {
@@ -267,7 +268,7 @@ public:
 
 	~Rva000FBCB0VptrZeroMixedObject()
 	{
-		m_vptr = (UnsignedInt)g_FilterVtable001AEA80;
+		m_vptr = (UnsignedInt)__identifier("??_7PartitionFilter@@6B@");
 	}
 
 	operator Int()
