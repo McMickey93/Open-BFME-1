@@ -49,7 +49,7 @@ jobs:
           git switch --detach origin/master
           python3 tools/check_csv.py
           test "$(git hash-object AGENTS.md)" = 06b755567bb147dfee3a89f70f7bbcd38410b5b4
-      - name: Measure donor virtual dispatch and native bitset in the two remaining claimed siblings
+      - name: Inspect current project eligibility and canonical override-provider route before a new claim
         working-directory: source
         shell: bash
         run: |
@@ -60,56 +60,30 @@ jobs:
           [[ "$git_bash" == *.exe ]] || git_bash="$git_bash.exe"
           export BFME_NATIVE_BASH="$(cygpath -aw "$git_bash")"
           python3 - <<'PY'
-          import json,os,subprocess,sys,hashlib
+          import json,os,sys,subprocess
           from pathlib import Path
           sys.path.insert(0,'tools')
-          import claims,eligibility
+          import claims,eligibility,build
+          from capstone import Cs,CS_ARCH_X86,CS_MODE_32
           assert claims.fetch()
-          token='b81982267351c45f3333f537efa1bd24e07df137'
-          lease='11d6d6226c514291b815b782623862df'
-          for rva in [0x00267B10,0x0026EED0]:
-              assert claims.holds(rva,token)
-              e=claims.live(claims._read_local())[rva]
-              assert e[1]['owner']==os.environ['BFME_CLAIM_OWNER'] and e[1]['lease']==lease
-          assert subprocess.check_output(['git','hash-object','targets/game/reverse/attempts/0x00267b10.cpp'],text=True).strip()=='7c5d02f83c04d240cbb1ffdbd3177cf4336b7c15'
-          assert subprocess.check_output(['git','hash-object','targets/game/reverse/attempts/0x0026eed0.cpp'],text=True).strip()=='178bb7f9136a599d6f93c18dc3510472663e1041'
+          rva=0x00267B10
+          rows=[r for r in eligibility.open_dumps() if int(r['target_rva'],16)==rva]
+          assert len(rows)==1
+          row=rows[0];assert row['source']=='game/gen_asm/d_00266ef0.asm'
+          live=claims.live(claims._read_local());assert rva not in live,live.get(rva)
+          print('CURRENT_WHOLEFILE '+json.dumps([r for r in eligibility.open_dumps() if r['source']==row['source']]),flush=True)
+          subprocess.run([sys.executable,'tools/brief.py','--rvas','0x00267B10'],check=True)
+          subprocess.run([sys.executable,'tools/callees.py','0x00267B10','390'],check=True)
+          subprocess.run([sys.executable,'tools/callees.py','0x00087A80','26'],check=True)
+          cs=Cs(CS_ARCH_X86,CS_MODE_32)
+          for addr,size in [(0x00087A80,26),(0x000022BB,5)]:
+              body=bytes(build.read_target_bytes(addr,size))
+              print('OVER_PROVIDER_RETAIL '+hex(addr)+' '+body.hex()+' '+json.dumps([f'{i.address:08X} {i.mnemonic} {i.op_str}' for i in cs.disasm(body,addr)]),flush=True)
           base=subprocess.check_output(['git','rev-parse','origin/master'],text=True).strip()
-          out=Path('build/contributor_hard_finish_remaining_bank_20261025');out.mkdir(parents=True,exist_ok=True)
-          home=Path("targets/game/reverse/attempt_support/20261025-specialpower-remaining-native-contexts");assert not home.exists();home.mkdir(parents=True)
-          note="# Remaining SpecialPower shard bodies: native donor and x87 contexts, 2026-10-25\n\nThis completes investigation of the other two currently open bodies in the\nserved generated file `game/gen_asm/d_00266ef0.asm`. The original finish pair\n00269C50/00271B40 and their native provider checks are retained separately in\nnative gated commit d207937aa0012cb4da9c879e5558076eb435ae07\n(run 40244811145, artifact 12618048035).\nAll four open siblings have now been inspected. No body is recovered here.\n\nBase: Open-BFME/Open-BFME-1 967c7e1cf5bbda24ea52f802caffa7164c1368ff.\nAGENTS.md blob: 06b755567bb147dfee3a89f70f7bbcd38410b5b4.\nOriginal native MSVC 7.1 and the normal project probe/compiler paths were used.\n\n## 00267B10: donor source, physical receiver and compiler context\n\nThe existing unsigned-byte, RET4, 390-byte opaque contract was retained.\nThe matched Rva00267D00 caller provides that address-qualified helper role;\nneither raw byte similarity nor the donor establishes its original method name.\nThe prior complete 374-byte bank and its eight verdicts were read first.\n\nBFME 2 a1ee5c1f3940cc75463d96770a86325174a9cd86 retains unchanged donor blob\n0611471cc2d61bc9e00f42b47fdc93bce42fe532 at\nCode/GameEngine/Source/GameLogic/Object/Update/SpecialDisguiseUpdateTriggerAbilityEffect.cpp.\nThe 004B04B2 visual-swap body supplies structural comparison: virtual\ndrawable/client/UI dispatch, condition storage and two newDrawable expressions.\nBFME 1 independently supplies the 40-byte condition block at Object+110,\n267/203 bit indices, slots10/127/24/56, drawable+3AC/+3B8 and receiver+EC.\nNo BFME 2 offset, nominal original name or global owner is imported.\n\nNew private controls replace the old explicit PMF-vtable representation with\nordinary virtual methods, use STLport bitset<320>, and give the physical\nreceiver its fields. A separate control preserves the donor's two newDrawable\nexpressions rather than selecting one void pointer before a merged call.\nBoth still emit 374/390 bytes, 19 relocations, 281 nonrelocation differences\nand 18 relocation-layout drifts. An actual polymorphic receiver view is neutral.\nThe independently witnessed BFME 2 /O1 /G7 /arch:SSE context, retaining the\nBFME 1 DNDEBUG/MD/EHsc and STL defines, emits 382 bytes with 285 differences\nand is worse. Its presence in BFME 2 is not evidence of BFME 1 retail flags.\n\nThe early allocator still keeps this in EBX and the first drawable on the\nstack; retail keeps this in ESI, drawable in EBX and later spills this before\nthe 40-byte copy. Later factory branch sharing differs as well. The donor,\nreceiver and compiler controls do not solve this. The existing preferred bank\nis preserved. Current global and provider declarations still need independent\ncanonical reconciliation before any future production admission.\n\n## 0026EED0: genuine coordinate and projection lifetimes\n\nThe previous 295/289-byte bank, all prior verdicts, canonical-layout and\nnative-normalization trials were read. The ZH source is the tracked\nGeneralsMD/Code/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp,\nblob b1d318aa25017a8e68b50cdf291467148a6415df at the BFME 1 base above.\nIts calculateMaxBlockedSpeed uses Coord3D directions, contiguous Coord2D\ndisplacement, one reassigned dotProduct and a speedFactor alias. BFME's\nindependently decoded height-wrapper call remains in place of ZH physics.\n\nRestoring the shared dotProduct/speedFactor source form alone gives 295 bytes\nand 140 raw differences; a nested tail block is neutral. A genuine Coord3D\nourDir view with only its used x/y initialized restores the retail 20-byte\nframe, but displacement.y still reuses the dead argument slot. Combining this\nview with the actual contiguous Coord2D displacement reproduces every\nnonrelocation byte through +80 (first mismatch +80), including all frame and\nnormalization displacements. The result remains 295 bytes, 133 raw differences\nand nine relocations, with five relocation-layout drifts after the divergence.\n\nAt +80 retail consumes the two live other-direction values with\nfmul [esp+C]; fxch st1; fmul [esp+8]; faddp. The compiler instead reloads both\ndisplacement fields, duplicates the source values and later discards them:\nthe first projection costs six extra bytes and shifts the remaining body.\nCommuting product operands and exposing native inline normalize are neutral\nin the now-correct frame context. Ending the projection's local scope before\nthe guard is also neutral. Destructive component-product controls, with and\nwithout that scope, worsen the frame to28 bytes and leave208 differences.\nNo dummy padding, new runtime barrier or assembly is used.\n\nThe compact resumed source is retained as float-prefix.cpp.txt. Its original\nopaque bank signature remains diagnostic: the existing AI caller proves the\nThing-pointer/receiver ILT route, not an original public/const spelling.\nA masked probe is not a full call, DIR32, identity or linking verification.\nThe normal re_log partial-stash operation measures both incoming and kept\nsources with the canonical compiler and preserves the better bank.\n\n## Immutable native artifacts\n\nAll native diagnostic sources, complete probe output, objects and receipts\nare retained for90 days:\n\n- Run40245842117, artifact12617774546,\n  ZIP SHA256 f498308827eb0264eb86a3bcac5e305b877132056d3cf1ae7360aaee852dd9d9:\n  true virtual dispatch, bitset and initial donor projection controls.\n- Run40246131802, artifact12618303712,\n  ZIP SHA256 86f4299723c78e1b29cdbeb39cd3099e03ef4e5f38006badb9d5aa145ea4f7ef:\n  combined coordinate context and first+80 divergence.\n- Run40246369387, artifact12618164465,\n  ZIP SHA256 40164443c9a985dcaa7e8e00a7fa0b97fbaf5f2dcfe631344d731883fa4b428e:\n  projection scope, destructive controls, polymorphic owner and donor flags.\n\nThe first workflow40245673557 lacked the required STLport marker and tried\nan unavailable rg binary. It is a setup failure, not a body verdict; corrected\nruns above use the declared STLport context and git grep fallback.\n\nNo production source, matched row, header or pin changes. New C++ exact +0.\nReopening 00267B10 needs supported register/call structure or canonical-provider\nevidence beyond the ruled-out contexts. Reopening0026EED0 needs a source or\ncompiler explanation for consuming its live x87 operands without the six-byte\nduplicate/discard sequence. No fixed-register assembly exception is inferred.\n"
-          (home/'README.md').write_text(note,encoding='utf-8',newline='\n')
-          code="// ?blockedSpeed@Rva0026EED0AIUpdate@@QBEMPAVObject@@@Z\n// partial score=0.72 date=2026-09-26\n// cl: /DNDEBUG /MD /EHsc\n// This is the AI collision-speed calculation analogous to the Zero Hour\n// blocked-speed formula, with BFME's locomotor-height term replacing the\n// upstream physics-velocity walk.\ntypedef float Real;\nextern const Real BfmeZeroRange;\nextern Real g_bfmeDefaultBU;\nextern \"C\" double __cdecl sqrt(double value);\n#pragma intrinsic(sqrt)\n\nstruct Coord3D { Real x, y, z; };\nstruct Rva0026EED0Direction2D { Real x, y; };\nclass Thing\n{\npublic:\n\tconst Coord3D *getUnitDirectionVector2D() const;\n\tchar m_pad00[0x38];\n\tCoord3D m_position;\n\tchar m_pad44[0x31c - 0x44];\n\tint m_formation;\n};\nclass Object : public Thing\n{\npublic:\n\tReal bfmeGetNonnegativePreferredLocomotorHeight() const;\n};\nclass Rva0026EED0AIUpdate\n{\npublic:\n\tReal blockedSpeed(Object *other) const;\n\tchar m_pad00[8];\n\tObject *m_object;\n\tchar m_pad0c[0x170 - 0x0c];\n\tReal m_curMaxBlockedSpeed;\n};\nReal Rva0026EED0AIUpdate::blockedSpeed(Object *other) const\n{\n\tconst Coord3D *direction = m_object->getUnitDirectionVector2D();\n\tCoord3D ourDir;\n\tourDir.x = direction->x; ourDir.y = direction->y;\n\tconst Coord3D *otherDirection = other->getUnitDirectionVector2D();\n\tRva0026EED0Direction2D otherDir = { otherDirection->x, otherDirection->y };\n\tRva0026EED0Direction2D vectorToOther;\n\tvectorToOther.x = other->m_position.x - m_object->m_position.x;\n\tvectorToOther.y = other->m_position.y - m_object->m_position.y;\n\tReal length = (Real)sqrt(vectorToOther.x * vectorToOther.x + vectorToOther.y * vectorToOther.y);\n\tif (length != BfmeZeroRange)\n\t{\n\t\tReal reciprocal = g_bfmeDefaultBU / length;\n\t\tvectorToOther.x *= reciprocal;\n\t\tvectorToOther.y *= reciprocal;\n\t}\n\tReal dotProduct = vectorToOther.x * otherDir.x + vectorToOther.y * otherDir.y;\n\tif (dotProduct < BfmeZeroRange)\n\t\treturn BfmeZeroRange;\n\tReal speedFactor = dotProduct;\n\tReal awaySpeed = other->bfmeGetNonnegativePreferredLocomotorHeight() * speedFactor;\n\tdotProduct = vectorToOther.x * ourDir.x + vectorToOther.y * ourDir.y;\n\tif (dotProduct <= BfmeZeroRange)\n\t\treturn m_curMaxBlockedSpeed;\n\tReal maxSpeed = awaySpeed / dotProduct;\n\tif (other->m_formation != 0 && m_object->m_formation == other->m_formation)\n\t\tmaxSpeed *= 0.55f;\n\tif (maxSpeed > m_curMaxBlockedSpeed)\n\t\treturn m_curMaxBlockedSpeed;\n\treturn maxSpeed;\n}\n"
-          (home/'float-prefix.cpp.txt').write_text(code,encoding='utf-8',newline='\n')
-          candidate=out/'float-prefix.cpp';candidate.write_text(code,encoding='utf-8',newline='\n')
-          old=Path('targets/game/reverse/re_attempts.log').read_bytes()
-          ev='Read8priorverdicts. BF2donor0611471 unchangedat a1ee5c1f. Native genuinevirtualslots,bitset320,physicalreceiver,twofactorynewexpressions andpolymorphicowner all374/390B281diff18drifts; witnessedBF2O1G7SSE382B285diffworse. Earlythis/drawallocator andfactorybranchsharing remain. NoASM,pins,nominalrenamesorproductionchanges. handoff=targets/game/reverse/attempt_support/20261025-specialpower-remaining-native-contexts/README.md blocker=regalloc/owner-draw-live-range t=20min model=gpt-6'
-          subprocess.run([sys.executable,'tools/re_log.py','record','?m00267B10@Rva00267B10@@QAEXE@Z','0x00267B10','390','blocked',ev],check=True)
-          ev='OriginalMSVC7.1 genuineZH shared-dot/speedFactor lifetime plusCoord3DourDirandcontiguousCoord2D displacement restores20Bframe andallbytes through+80. Complete295/289B133rawdiff9reloc5drifts; compilerduplicates2live x87directionvalues then discards instead ofconsumingthem (extra6B). Commute/normalize/projectionscope neutral; destructivecontrols28Bframe208diff. No dummyvariable,ASMorpins. Opaquesignaturediagnosticonly. handoff=targets/game/reverse/attempt_support/20261025-specialpower-remaining-native-contexts/README.md blocker=float/x87-live-operand-consumption t=25min model=gpt-6'
-          subprocess.run([sys.executable,'tools/re_log.py','record','?blockedSpeed@Rva0026EED0AIUpdate@@QBEMPAVObject@@@Z','0x0026EED0','289','partial',ev,'--stash',str(candidate),'--score','0.72'],check=True)
-          new=Path('targets/game/reverse/re_attempts.log').read_bytes();assert new.startswith(old)
-          print('NEW_CANONICAL_BANK '+Path('targets/game/reverse/attempts/0x0026eed0.cpp').read_text(encoding='utf-8').splitlines()[1],flush=True)
-          subprocess.run([sys.executable,'tools/check_csv.py'],check=True)
-          subprocess.run(['git','config','user.name','McMickey93'],check=True)
-          subprocess.run(['git','config','user.email','347452154+McMickey93@users.noreply.github.com'],check=True)
-          subprocess.run(['git','config','core.hooksPath','.githooks'],check=True)
-          paths=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
-          untracked=subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',str(home),'targets/game/reverse/attempt_history/0x0026eed0'],text=True).splitlines()
-          paths=sorted(set(paths+untracked));assert all(p.startswith(('targets/game/reverse/attempts/0x0026eed0.cpp','targets/game/reverse/attempt_history/0x0026eed0/',"targets/game/reverse/attempt_support/20261025-specialpower-remaining-native-contexts/",'targets/game/reverse/re_attempts.log')) for p in paths)
-          subprocess.run(['git','add','--',*paths],check=True)
-          message='[BFME 2 donor] Bank remaining whole-file native contexts and measured AI projection prefix\n\nPreserve the existing visual-swap bank and canonical measured float candidate. Neither body is byte-exact. No new C++ exact bytes or production source changes.\n\n'+claims.trailer(0x00267B10,lease)+'\n'+claims.trailer(0x0026EED0,lease)
-          (out/'commit-message.txt').write_text(message,encoding='utf-8',newline='\n')
-          git_bash=Path(os.environ['BFME_NATIVE_BASH']);assert git_bash.is_file();os.environ['PATH']=str(git_bash.parent)+os.pathsep+os.environ['PATH']
-          r=subprocess.run(['git','commit','-F',str(out/'commit-message.txt')],capture_output=True,text=True);(out/'normal-commit.log').write_text(r.stdout+'\n'+r.stderr,encoding='utf-8');print(r.stdout+'\n'+r.stderr,flush=True);assert r.returncode==0
-          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          r=subprocess.run([str(git_bash),'.githooks/pre-push','origin','https://github.com/Open-BFME/Open-BFME-1.git'],input='refs/heads/master '+head+' refs/heads/master '+base+'\n',capture_output=True,text=True);(out/'normal-pre-push.log').write_text(r.stdout+'\n'+r.stderr,encoding='utf-8');print(r.stdout+'\n'+r.stderr,flush=True);assert r.returncode==0
-          subprocess.run([sys.executable,'tools/progress.py','origin/master'],check=True)
-          assert all(claims.holds(rva,token) for rva in [0x00267B10,0x0026EED0])
-          subprocess.run(['git','bundle','create',str(out/'bank-handoff.bundle'),base+'..HEAD'],check=True)
-          receipt={'base':base,'native_commit':head,'tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),'paths':paths,'append':new[len(old):].decode('utf-8'),'message':message,'claim_token':token,'claim_lease':lease,'files':[{'path':p,'sha':subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip(),'sha256':hashlib.sha256(Path(p).read_bytes()).hexdigest()} for p in paths]}
-          (out/'bank-handoff-receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8');print('REMAINING_WHOLEFILE_BANK '+json.dumps(receipt),flush=True)
-          marker=claims._record(os.environ['BFME_CLAIM_OWNER'],-1,note='released: all four queued SpecialPower shard bodies inspected; remaining native contexts regularly banked')
+          expected=claims._branch_sha(rva)
+          marker=claims._record(os.environ['BFME_CLAIM_OWNER'],4,note='New untried canonical Overridable getFinalOverride visibility after full-file evidence bank75533e550; only00267B10 reopened, other three siblings already banked')
           record=json.loads(subprocess.check_output(['git','show','-s','--format=%B',marker],text=True))
-          print('REMAINING_CLAIM_RELEASE_TRANSPORT '+json.dumps({'rvas':['0x00267B10','0x0026EED0'],'expected':token,'record':record,'base':base,'tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
+          print('OVER_VISIBILITY_CLAIM_TRANSPORT '+json.dumps({'rvas':['0x00267B10'],'expected':expected,'record':record,'base':base,'tree':'4b825dc642cb6eb9a060e54bf8d69288fbee4904'}),flush=True)
           
           PY
       - name: Measure unchanged baseline
@@ -125,7 +99,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: bfme1-hard-finish-remaining-wholefile-bank-20261025
+          name: bfme1-hard-finish-overridable-claim-20261026
           path: |
             source/build/contributor_hard_finish_remaining_bank_20261025/
             source/build/experiments/
