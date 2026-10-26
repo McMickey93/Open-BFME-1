@@ -27,7 +27,12 @@ class Module {};
 class Object
 {
 public:
+	// Retail's Object::findModule (0x001BEE60) is protected, so the mangled
+	// call name carries that access; only the friend may call it here.
+protected:
 	Module *findModule(NameKeyType key) const;
+	friend class ScriptActions;
+public:
 	const AsciiString &getCommandSetString(void) const;
 };
 

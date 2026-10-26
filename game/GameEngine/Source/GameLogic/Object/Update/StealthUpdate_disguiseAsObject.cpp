@@ -75,7 +75,12 @@ public:
 	virtual Drawable *getDrawable();
 
 	Player *getControllingPlayer() const;
+	// Retail's Object::findModule (0x001BEE60) is protected, so the mangled
+	// call name carries that access; only the friend may call it here.
+protected:
 	Module *findModule(NameKeyType key) const;
+	friend class StealthUpdate;
+public:
 
 	const ThingTemplate *getTemplate() const
 	{
