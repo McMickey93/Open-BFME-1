@@ -59,10 +59,15 @@ public:
 
 extern GameLogic *TheGameLogic;
 
+class Gen_00410BA0
+{
+public:
+	int isDrawableEffectivelyHidden(void) const;
+};
+
 class Drawable
 {
 public:
-	Bool isDrawableEffectivelyHidden() const;
 	Object *getObject() const { return m_object; }
 	const Vector3 *getColor09C() const { return &m_color09c; }
 
@@ -207,7 +212,7 @@ void RTS3DScene::rva00713780(RenderInfoClass &rinfo, RenderObjClass *robj,
 {
 	Drawable *draw = NULL;
 	DrawableInfo *drawInfo = NULL;
-	Bool drawableHidden = FALSE;
+	unsigned char drawableHidden = FALSE;
 	Object *obj = NULL;
 	ObjectShroudStatus ss = OBJECTSHROUD_INVALID;
 	Bool doExtraMaterialPop = FALSE;
@@ -241,7 +246,7 @@ void RTS3DScene::rva00713780(RenderInfoClass &rinfo, RenderObjClass *robj,
 		}
 	}
 
-	if (draw && (drawableHidden = draw->isDrawableEffectivelyHidden()) != TRUE)
+	if (draw && (drawableHidden = static_cast<unsigned char>(reinterpret_cast<const Gen_00410BA0 *>(draw)->isDrawableEffectivelyHidden())) != TRUE)
 	{
 		obj = draw->getObject();
 		if (obj)

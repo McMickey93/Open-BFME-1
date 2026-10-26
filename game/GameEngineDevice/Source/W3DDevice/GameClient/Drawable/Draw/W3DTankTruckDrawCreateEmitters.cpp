@@ -13,10 +13,15 @@ private:
 class Object;
 class ParticleSystemTemplate;
 
+class Gen_00410BA0
+{
+public:
+	int isDrawableEffectivelyHidden(void) const;
+};
+
 class Drawable
 {
 public:
-	Bool isDrawableEffectivelyHidden() const;
 	Object *getObject() const
 	{
 		return m_object;
@@ -137,7 +142,7 @@ protected:
 
 void W3DTankTruckDraw::createEmitters(void)
 {
-	if (getDrawable()->isDrawableEffectivelyHidden())
+	if (static_cast<unsigned char>(reinterpret_cast<const Gen_00410BA0 *>(getDrawable())->isDrawableEffectivelyHidden()))
 		return;
 	if (getW3DTankTruckDrawModuleData())
 	{
