@@ -2119,6 +2119,17 @@ effect is constrained scheduling in this method; an original volatile
 declaration and broader applicability are unproven. See
 [002214f0-containment-slot.md](../targets/game/reverse/identity_evidence/002214f0-containment-slot.md).
 
+## Preserve a witnessed byte return when adopting an int owner
+
+At `GameClientRva00431A60Frustum.cpp` (357 B), casting the canonical int
+visibility result to unsigned char preserves all but `mov ECX,EAX` versus
+retail `mov CL,AL`. A complete-class member-pointer bool-return view of the
+same canonical designator restores that byte under the existing VC7.1
+`/DNDEBUG /MD /EHsc` context. The provider independently returns only 0/1;
+this is a witnessed x86 return-ABI adapter, not a general int-to-bool rule.
+The two other consumers need only low-byte casts. See
+`identity_evidence/00410ba0-three-visibility-consumers-20261026.md`.
+
 ## Identical parent bytes can hide a wrong temporary destructor
 
 In `game/Libraries/Source/assetmanager/RegistryPrototypeLookup.cpp`, two
