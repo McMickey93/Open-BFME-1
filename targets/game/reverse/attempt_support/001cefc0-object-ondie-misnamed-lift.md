@@ -101,3 +101,14 @@ pathfinder accessor, notify via locals, 10-word flags. Note that sibling
 0x001C7CF0 in the same Object family DOES share its constant
 (`mov eax,0x1000000; test eax,ecx; or ecx,eax`), so whatever stops it in
 onDie is local to this body.
+
+Rebank (same session): the setStatus mask is now a named
+`BitFlags<86> status; status.set(70);` over `_STL::bitset` `_Unchecked_set`,
+the spelling of matched Object::rva001CE530 (0x001CE530). It reproduces
+retail's `xor eax,eax / two zero stores / push 1 / lea edx / or eax,0x40`
+schedule (residue 3 gone). 0x001CE530 also tests [esi+0x94] and ORs the same
+constant through `_Unchecked_set` without sharing it, but using
+`_Unchecked_set/_Unchecked_reset` for the model-condition flags made the
+flag tests reuse the loaded word (0.958). Two this-load orders are left:
+tryEvent (retail loads TheRadar before `lea eax,[esi+0x38]`) and the killer
+findObjectByID (retail pushes the ID before loading TheGameLogic).
