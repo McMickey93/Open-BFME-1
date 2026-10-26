@@ -17,7 +17,7 @@ public:
 struct Rva007EB810Diag;
 
 extern void * const g_bfmeVftTDA[6];
-extern void Rva007EB820(void);
+extern void Rva007EB820PrintMessage(void *context, const char *message);
 extern Rva007EB810Diag *g_Va0130A5A0;
 
 void Rva007EBAA0(void)
@@ -31,7 +31,7 @@ void Rva007EBAA0(void)
 		*((int *)p + 3) = 0;
 		*((int *)p + 4) = 0;
 		*(int *)p = (int)g_bfmeVftTDA;
-		*((int *)p + 1) = (int)&Rva007EB820;
+		*((int *)p + 1) = (int)&Rva007EB820PrintMessage;
 		g_Va0130A5A0 = (Rva007EB810Diag *)p;
 	}
 	else
