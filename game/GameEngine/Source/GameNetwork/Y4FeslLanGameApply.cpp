@@ -107,6 +107,7 @@ class Rva00803620Sink
 {
 public:
 	void apply( int tid, char *name, int port, int maxPlayers, char *ugid );
+	char *rva00808C50();
 
 	char m_pad00[ 0x08 ];
 	Rva00808CB0Browser *m_browser;
@@ -118,6 +119,15 @@ public:
 	char m_pad5c[ 0x110 ];
 	int m_tid;
 };
+
+// 0x00808C50 (11 B, unreferenced, padded both sides): the browser address
+// text apply() passes on, as a tail jump to the +0x30 field getter.  The
+// +8 -> +0xC -> get() chain is the one apply() walks; the class is inferred
+// from that shared layout and the adjacent address.
+char *Rva00803620Sink::rva00808C50()
+{
+	return m_browser->m_address->get();
+}
 
 void Rva00803620Sink::apply( int tid, char *name, int port,
 	int maxPlayers, char *ugid )
