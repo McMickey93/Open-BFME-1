@@ -5865,40 +5865,8 @@ void ScriptActions::doTeamUseCommandButtonAbility( const AsciiString& team, cons
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?doTeamUseCommandButtonAbilityOnNamed@ScriptActions@@IAEXABVAsciiString@@00@Z present-unmatched
-void ScriptActions::doTeamUseCommandButtonAbilityOnNamed( const AsciiString& team, const AsciiString& ability, const AsciiString& target )
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( team );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// triggered the condition.  jba. :)
-	if( !theTeam ) 
-	{
-		return;
-	}
-
-	Object *theObj = TheScriptEngine->getUnitNamed( target );
-	if( !theObj )
-	{
-		return;
-	}
-
-	const CommandButton *commandButton = TheControlBar->findCommandButton( ability );
-	if( !commandButton )
-	{
-		return;
-	}
-
-
-	AIGroup* theGroup = TheAI->createGroup();
-	if( !theGroup ) 
-	{
-		return;
-	}
-
-	theTeam->getTeamAsAIGroup( theGroup );
-	
-	theGroup->groupDoCommandButtonAtObject( commandButton, theObj, CMD_FROM_SCRIPT );
-}
+// doTeamUseCommandButtonAbilityOnNamed@ScriptActions@@IAEXABVAsciiString@@00@Z
+// Body in ScriptActions_d_002f4ab0.cpp (exact 141B retail).
 
 //-------------------------------------------------------------------------------------------------
 // ?doTeamUseCommandButtonAbilityAtWaypoint@ScriptActions@@IAEXABVAsciiString@@00@Z
