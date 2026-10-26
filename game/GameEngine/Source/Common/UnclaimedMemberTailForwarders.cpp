@@ -151,3 +151,12 @@ NameKeyType Rva009EDE30Forward::forward( const char *name ) { return m_target->n
 // add ecx,disp32 / jmp
 class Rva0094F940Forward { public: void forward(); char m_lead[ 0xE0 ]; SegLineRendererClass m_target; };
 void Rva0094F940Forward::forward() { m_target.Reset_Line(); }
+
+// 0x0026EDA0, the same split (17 unowned bytes before a gap thunk at +0x11):
+// replace the first argument by the dword at its +0x74 in place, then tail-jump
+// on the embedded member at +0x204 into the matched bfmeRemoveAll (0x002E0990,
+// through its ILT stub) with the second argument passed through.
+class Gen_002E0990 { public: void bfmeRemoveAll( void *item, int count ); };
+struct Rva0026EDA0Arg { char m_lead[ 0x74 ]; void *m_item; };
+class Rva0026EDA0Forward { public: void forward( Rva0026EDA0Arg *arg, int count ); char m_lead[ 0x204 ]; Gen_002E0990 m_target; };
+void Rva0026EDA0Forward::forward( Rva0026EDA0Arg *arg, int count ) { m_target.bfmeRemoveAll( arg->m_item, count ); }
