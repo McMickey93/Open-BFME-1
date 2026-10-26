@@ -3,12 +3,12 @@ struct Rva009AAFE0Context;
 struct Rva009AB760Context;
 struct Rva009AB7F0Context;
 void Rva009B6A30LoadTables(unsigned char*);
-// Direct cdecl bindings to the existing address-owned bodies. Retail passes
-// context and a flag byte to both; 009B65F0 leaves the flag unused. Both return
-// with plain RET, and this caller owns the stack cleanup.
-extern "C" void __cdecl __identifier("?d_009b65f0@@YAXXZ")(unsigned char*,unsigned char);
+// Direct cdecl calls to the matched bodies at 009B65F0 and 009AB530. Retail
+// passes context and a flag byte to both; 009B65F0 leaves the flag unused.
+// Both return with plain RET, and this caller owns the stack cleanup.
+void Rva009B65F0Update(unsigned char*,unsigned char);
 void Rva009AAFE0BuildTable(Rva009AAFE0Context*,const unsigned char*);
-extern "C" void __cdecl __identifier("?d_009ab530@@YAXXZ")(unsigned char*,bool);
+void Rva009AB530BuildProbabilityTables(unsigned char*,bool);
 struct Rva009AB320Tables;
 void Rva009AB320BuildTables(Rva009AB320Tables*);
 int bfmeGoUSC(void*,int);
@@ -25,7 +25,7 @@ void Rva009ABFC0DecodeFrame(unsigned char* s)
     unsigned rows=U(0x22c),columns=U(0x230);
     if(s[0x1ac]) {
         Rva009B6A30LoadTables(s);
-        __identifier("?d_009b65f0@@YAXXZ")(s,s[0x1ac]);
+        Rva009B65F0Update(s,s[0x1ac]);
         U(0x39c)=0;
     } else {
         memcpy(s+0x72c,g_Rva01143758,80);
@@ -39,7 +39,7 @@ void Rva009ABFC0DecodeFrame(unsigned char* s)
         if(U(0x1dc)==1) memcpy(s+0x63c,g_Rva01142B60,64); else memcpy(s+0x63c,g_Rva01142B20,64);
         Rva009AAFE0BuildTable((Rva009AAFE0Context*)s,s+0x63c);
     }
-    __identifier("?d_009ab530@@YAXXZ")(s,*(bool*)(s+0x1ac));
+    Rva009AB530BuildProbabilityTables(s,*(bool*)(s+0x1ac));
     unsigned char* p=s+0x57c;
     int n=16;
     do {
