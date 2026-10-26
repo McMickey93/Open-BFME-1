@@ -39,7 +39,7 @@ public:
 
 extern AptValue *g_bfmeFallbackDB;
 unsigned int AptGetSwfVersion();
-void __cdecl d_008a4cd0(void);
+AptValue *__cdecl Rva008A4EA0MakeFloat(float);	// retail 0x008A4CD0 (AptFloatCreate.cpp)
 
 // ?_FunctionRva008C6E20@AptActionInterpreter@@SAXPAV1@PAULocalContextT@1@@Z
 void AptActionInterpreter::_FunctionRva008C6E20(
@@ -59,7 +59,7 @@ void AptActionInterpreter::_FunctionRva008C6E20(
 		float topValue = top->toNumber();
 		float underValue = under->toNumber();
 
-		result = ((AptValue *(__cdecl *)(float))d_008a4cd0)(underValue + topValue);
+		result = ((AptValue *(__cdecl *)(float))Rva008A4EA0MakeFloat)(underValue + topValue);
 	}
 
 	for (int index = 1; index <= 2; ++index)
