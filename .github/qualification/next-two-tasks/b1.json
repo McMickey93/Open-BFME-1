@@ -10,36 +10,27 @@
   "claims": [
     {
       "ref": "claims/0x00431A60",
-      "message": "{\"created\": 1793028983, \"expires\": 1793043383, \"host\": \"f945b2686850\", \"lease\": \"5ab7149b118942ee941707f466f2be3b\", \"nonce\": \"5ab7149b118942ee941707f466f2be3b\", \"note\": \"Use the existing 00410BA0 owner in the three served visibility consumers\", \"owner\": \"github:McMickey93:bfme1:drawable-hidden-20261026\", \"run\": \"\", \"since\": 1793028983}\n\n",
-      "rva": "0x00431A60",
-      "token": "61c3d177ac2f66405980d4e172c3955b2b23053a",
-      "lease": "5ab7149b118942ee941707f466f2be3b"
+      "rva": "0x00431A60"
     },
     {
       "ref": "claims/0x0077FE70",
-      "message": "{\"created\": 1793028983, \"expires\": 1793043383, \"host\": \"f945b2686850\", \"lease\": \"de6c08ea84644d7b8197e8b79ac86691\", \"nonce\": \"de6c08ea84644d7b8197e8b79ac86691\", \"note\": \"Use the existing 00410BA0 owner in the three served visibility consumers\", \"owner\": \"github:McMickey93:bfme1:drawable-hidden-20261026\", \"run\": \"\", \"since\": 1793028983}\n\n",
-      "rva": "0x0077FE70",
-      "token": "5dc7656f8f07a82ae6f8b89d97045aa8ba8b9a62",
-      "lease": "de6c08ea84644d7b8197e8b79ac86691"
+      "rva": "0x0077FE70"
     },
     {
       "ref": "claims/0x00713780",
-      "message": "{\"created\": 1793028983, \"expires\": 1793043383, \"host\": \"f945b2686850\", \"lease\": \"22d47efee51945c18358c69a7399e509\", \"nonce\": \"22d47efee51945c18358c69a7399e509\", \"note\": \"Use the existing 00410BA0 owner in the three served visibility consumers\", \"owner\": \"github:McMickey93:bfme1:drawable-hidden-20261026\", \"run\": \"\", \"since\": 1793028983}\n\n",
-      "rva": "0x00713780",
-      "token": "ee1c6372b3a6d39a9d9ccd132665bf9eac0b4680",
-      "lease": "22d47efee51945c18358c69a7399e509"
+      "rva": "0x00713780"
     }
   ],
-  "owner": "github:McMickey93:bfme1:drawable-hidden-20261026",
   "before": {
     "game/GameEngine/Source/GameClient/GameClientRva00431A60Frustum.cpp": "5d0d4ca5488c5385ecd1669086b461e93c3d2797d7406f4fb7454692a22fbe0c",
     "game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTankTruckDrawCreateEmitters.cpp": "f4e2bc0dc17eba094fd69f6009660e6f593957f38e309adbb705ce942dfd5d50",
     "game/GameEngineDevice/Source/W3DDevice/GameClient/RTS3DSceneRva00713780.cpp": "19630dff3887602981b99307eb420b9c556408bda7f1098e21cb5fb50e9288ac"
   },
   "after": {
-    "game/GameEngine/Source/GameClient/GameClientRva00431A60Frustum.cpp": "c0d508c0d2b9e6bb8f87f21dd580f3b799506edc7d3670de1512e83f01043e02",
+    "game/GameEngine/Source/GameClient/GameClientRva00431A60Frustum.cpp": "a00a4fc1a4dd9996d0d8e9aa88c0f8a50e0e3c455d673177ac7ee112a9446299",
     "game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTankTruckDrawCreateEmitters.cpp": "6f20b9f6e76a5b035abbb11fe141cd9fbf0b46afc3d3418e57ebdfaca76387fd",
     "game/GameEngineDevice/Source/W3DDevice/GameClient/RTS3DSceneRva00713780.cpp": "842afe0e01b9173f4768f63d73bf97ab1a1c519186bf02c54220df33e436ace6"
   },
-  "registers": []
+  "registers": [],
+  "task_tag": "drawable-hidden-20261026"
 }

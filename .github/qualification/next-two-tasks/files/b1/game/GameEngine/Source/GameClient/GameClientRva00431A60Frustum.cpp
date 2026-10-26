@@ -109,6 +109,10 @@ public:
 
 typedef void (*GameClientFuncPtr)(Drawable *draw, void *userData);
 
+// The witnessed call consumes AL; the existing owner returns only 0 or 1.
+// Keep its canonical symbol while retaining this caller's byte-return ABI.
+typedef bool (Gen_00410BA0::*HiddenResult)() const;
+
 class GameClient
 {
 public:
@@ -149,7 +153,7 @@ void GameClient::rva00431A60(FrustumClass *frustum, float radius, GameClientFunc
 			if (plane >= 1 && plane <= 4 && frustum->Planes[plane].In_Front(sphere))
 				continue;
 
-			visible = !static_cast<unsigned char>(reinterpret_cast<const Gen_00410BA0 *>(draw)->isDrawableEffectivelyHidden());
+			visible = !(reinterpret_cast<const Gen_00410BA0 *>(draw)->*reinterpret_cast<HiddenResult>(&Gen_00410BA0::isDrawableEffectivelyHidden))();
 			for (int i = 1; i <= 4; i++)
 			{
 				if (plane == i)

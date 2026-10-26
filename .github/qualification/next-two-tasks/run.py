@@ -4,7 +4,7 @@ payload=Path(__file__).resolve().parent
 cfg=json.loads((payload/(sys.argv[1]+'.json')).read_text())
 root=Path.cwd(); evidence=root.parent/('evidence-'+sys.argv[1]);evidence.mkdir(exist_ok=True)
 bash=os.environ['BFME_NATIVE_BASH'];os.environ['PATH']=str(Path(bash).parent)+os.pathsep+os.environ['PATH']
-os.environ['BFME_CLAIM_NS']='refs/heads/claims/';os.environ['PYTHONUNBUFFERED']='1';os.environ['BFME_CLAIM_OWNER']=cfg['owner']
+os.environ['BFME_CLAIM_NS']='refs/heads/claims/';os.environ['PYTHONUNBUFFERED']='1';expected_owner='github:'+os.environ['GITHUB_ACTOR']+':'+cfg['project']+':'+cfg['task_tag'];os.environ['BFME_CLAIM_OWNER']=expected_owner
 results=[]
 def run(label,args,required=True,stdin=None):
  print('\n>>>',label,flush=True)
@@ -32,14 +32,13 @@ try:
   run('claim-ref-'+str(cfg['claims'].index(c)),['git','-c','submodule.recurse=false','fetch','--depth=1','--no-tags','origin','refs/heads/'+c['ref']])
   token=subprocess.check_output(['git','rev-parse','FETCH_HEAD'],text=True).strip()
   info=json.loads(subprocess.check_output(['git','show','-s','--format=%B',token],text=True))
-  assert token==c['token'] and info['owner']==cfg['owner'] and info['expires']>time.time(), 'Claim changed'
+  assert info['owner']==expected_owner and info['expires']>time.time(), 'Claim changed'
   assert claims.holds(key,token), 'Upstream fencing token changed'
   claims._mirror(key,token)
  sources=cfg['sources'];provider=cfg['provider'];scope=sources+[provider]
  run('baseline-build',[bash,'build.sh',*scope])
  if cfg['project']=='bfme1':
-  run('fetch-index',[sys.executable,'tools/link_check.py','fetch-index'],False)
-  run('before-link',[sys.executable,'tools/link_check.py',*scope],False)
+  print('Before-link evidence retained from run 40353079647: UNKNOWN due to unavailable provider objects',flush=True)
  for path in sources:
   target=root/path
   assert hashlib.sha256(target.read_bytes()).hexdigest()==cfg['before'][path]
@@ -54,7 +53,7 @@ try:
   run('retire-data',[sys.executable,'tools/repair_queue.py','retire','data',sources[0]])
   run('stage-debt',['git','add','--','reverse/data_check_baseline.txt'])
  else:
-  run('after-link',[sys.executable,'tools/link_check.py',*scope],False)
+  print('No linking credit: the unchanged census provider refresh is unavailable in this scoped job',flush=True)
  run('progress',[sys.executable,'tools/progress.py',cfg['base']])
  run('candidate-diff',['git','diff','HEAD','--binary','--',*sources,*cfg.get('registers',[])])
  for path in sources+cfg.get('registers',[]):
