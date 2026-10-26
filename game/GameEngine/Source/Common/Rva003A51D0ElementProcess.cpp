@@ -22,15 +22,16 @@ class LivingWorldLogic;
 extern LivingWorldLogic *TheLivingWorldLogic;
 
 // Retail ILT00020509 ->003A44A0 reads one byte-valued stack argument and
-// returns RET4; ILT00049355 ->003A50F0 uses the receiver and RET0. Retain
-// the existing thiscall contracts while naming the opaque matched bodies.
-extern "C" void __cdecl __identifier("?d_003a44a0@@YAXXZ")();
+// returns RET4 (matched as Gen003BDE80Element::rva003A44A0(bool), called by
+// that name); ILT00049355 ->003A50F0 uses the receiver and RET0 and is still
+// a dump, reached through its dump name.
 extern "C" void __cdecl __identifier("?d_003a50f0@@YAXXZ")();
 
 class Gen003BDE80Element
 {
 public:
 	void process();
+	void rva003A44A0(bool);
 
 	char m_prefix1C[0x1c];
 	unsigned char m_byte1C;
@@ -62,11 +63,5 @@ void Gen003BDE80Element::process()
 		m_byte1F = 0;
 	}
 
-	union
-	{
-		void (__cdecl *symbol)();
-		void (Gen003BDE80Element::*member)(bool);
-	} step;
-	step.symbol = &__identifier("?d_003a44a0@@YAXXZ");
-	(this->*step.member)(was || m_byte1C);
+	rva003A44A0(was || m_byte1C);
 }
