@@ -1874,7 +1874,8 @@ extern const char g_011137D0[] = "SinkOnTerrainCollision";
 // Former ?g_01114900@FXParticleSystem@@3QBDB: retail 0x01114900 is "Rotation".
 // ?g_01114504@FXParticleSystem@@3QBDB: 13 retail bytes including the NUL.
 extern const char g_01114504[] = "HeightOffset";
-extern const char g_011144EC[];
+// ?g_011144EC@FXParticleSystem@@3QBDB: 18 retail bytes including the NUL.
+extern const char g_011144EC[] = "OrientFXToTerrain";
 extern const char *const RotationTypeNames[];
 // ?g_01110838@FXParticleSystem@@3QBDB: retail 0x01110838 is ??_7?$CategoryModuleClass@$00@FXParticleSystem@@6B@
 #define g_01110838 __identifier("??_7?$CategoryModuleClass@$00@FXParticleSystem@@6B@")
