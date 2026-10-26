@@ -1,0 +1,27 @@
+{
+  "project": "bfme2",
+  "base": "13cfa404dfe65a062e2e5effe030ff826b905adc",
+  "sources": [
+    "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp"
+  ],
+  "provider": "Code/GameEngine/Source/Common/ThingIsAnyKindOf.cpp",
+  "claims": [
+    {
+      "ref": "claims/file/1935313e622efc8a",
+      "message": "{\"created\": 1793028983, \"expires\": 1793043383, \"host\": \"f945b2686850\", \"lease\": \"f53a04193c374c97a52b0bf289017717\", \"nonce\": \"f53a04193c374c97a52b0bf289017717\", \"note\": \"Use canonical KINDOFMASK_NONE owner and retire duplicate/wrong-name debt\", \"owner\": \"github:McMickey93:bfme2:kindofmask-20261026\", \"run\": \"\", \"scope\": \"Code/GameEngine/Source/Common/Rva00507823Ctor.cpp\", \"since\": 1793028983}\n\n",
+      "source": "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp",
+      "token": "dcbc11a146090754ca1f0d058fd04cf1827b607c",
+      "lease": "f53a04193c374c97a52b0bf289017717"
+    }
+  ],
+  "owner": "github:McMickey93:bfme2:kindofmask-20261026",
+  "before": {
+    "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp": "fede0cfd7e0372cc2b9727a0e31d586a53af13ca78736aced562d2caa462aa12"
+  },
+  "after": {
+    "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp": "6e19ca51f632d6a9d857ff214fa3e601cb2e001253354ee76a762b82b84e18bd"
+  },
+  "registers": [
+    "reverse/data_check_baseline.txt"
+  ]
+}

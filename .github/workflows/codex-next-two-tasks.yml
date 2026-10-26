@@ -1,0 +1,80 @@
+name: Bounded native BFME contributor tasks
+on:
+  push:
+    branches: [codex/20261026-native-next-tasks]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: codex-next-two-tasks
+  cancel-in-progress: false
+jobs:
+  experiment:
+    if: github.repository == 'McMickey93/Open-BFME-1' && github.event.repository.fork == true
+    runs-on: windows-2022
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - key: b1
+            repository: Open-BFME/Open-BFME-1
+            pin: 179d0eb2814d08eaccab76f5c4f78bb7c4ad1467
+          - key: b2
+            repository: Open-BFME/Open-BFME-2
+            pin: 13cfa404dfe65a062e2e5effe030ff826b905adc
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      GIT_CONFIG_KEY_1: core.longpaths
+      GIT_CONFIG_VALUE_1: 'true'
+      PY_PYTHON: '3.12'
+      PY_PYTHON3: '3.12'
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: qualification
+          sparse-checkout: .github/qualification/next-two-tasks
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+          architecture: x64
+          check-latest: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ matrix.repository }}
+          ref: ${{ matrix.pin }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+      - name: Verify original bytes and the scoped source repair
+        shell: bash
+        working-directory: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source .githooks/python3.sh
+          require_python3 native-task
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_NATIVE_BASH="$(cygpath -aw "$git_bash")"
+          python3 -u ../qualification/.github/qualification/next-two-tasks/run.py ${{ matrix.key }}
+      - name: Preserve scoped verification evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: native-next-${{ matrix.key }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-${{ matrix.key }}/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 9
