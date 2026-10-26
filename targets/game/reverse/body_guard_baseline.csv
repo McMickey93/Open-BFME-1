@@ -447,7 +447,6 @@ dir32,0x0112E9E8,??_7?$money_put@GV?$ostreambuf_iterator@GV?$char_traits@G@_STL@
 dir32,0x0112E9F8,??_7?$num_get@GV?$istreambuf_iterator@GV?$char_traits@G@_STL@@@_STL@@@_STL@@6B@,"??_7?$num_get@GV?$istreambuf_iterator@GV?$char_traits@G@_STL@@@_STL@@@_STL@@6B@ is a function the ledger places elsewhere, not at 0x0112E9F8"
 dir32,0x0112EA2C,??_7?$num_put@GV?$ostreambuf_iterator@GV?$char_traits@G@_STL@@@_STL@@@_STL@@6B@,"??_7?$num_put@GV?$ostreambuf_iterator@GV?$char_traits@G@_STL@@@_STL@@@_STL@@6B@ is a function the ledger places elsewhere, not at 0x0112EA2C"
 dir32,0x0112EB34,??_7_Locale_impl@_STL@@6B@,"retail 0x0112EB34 is already recorded as _bfmeVft1030B; reference that name, not a new one"
-dir32,0x0112F27C,??_7stdio_istreambuf@_SgI@@6B@,"??_7stdio_istreambuf@_SgI@@6B@ is a function the ledger places elsewhere, not at 0x0112F27C"
 dir32,0x0112F2B8,??_7stdio_ostreambuf@_SgI@@6B@,"??_7stdio_ostreambuf@_SgI@@6B@ is a function the ledger places elsewhere, not at 0x0112F2B8"
 dir32,0x01134280,_g_01134280,"nothing in the ledger owns 0x01134280. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01134378,_g_01134378,"nothing in the ledger owns 0x01134378. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
