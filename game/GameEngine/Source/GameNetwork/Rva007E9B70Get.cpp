@@ -6,6 +6,7 @@
 // read, vslots 2/3/4 the begin/stamp/end triple used by the 0x007EA5E0
 // dispatch pass.  Name stays address-derived: the original class is not
 // recoverable from the callers.
+// retired debt: ?g_Va0130A580@@3PADA replaced with ?g_bfme912B@@3VGen_007f0300@@A
 
 struct Rva007E9B70Obj
 {
@@ -14,9 +15,10 @@ struct Rva007E9B70Obj
 	virtual int v2();
 };
 
-char g_Va0130A580[4];
+class Gen_007f0300;
+extern Gen_007f0300 g_bfme912B;
 
 Rva007E9B70Obj *Rva007E9B70Get()
 {
-	return (Rva007E9B70Obj *)g_Va0130A580;
+	return (Rva007E9B70Obj *)&g_bfme912B;
 }

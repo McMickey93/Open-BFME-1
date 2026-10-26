@@ -601,7 +601,6 @@ dir32,0x01309C18,?g_rva01309C18Object@@3VRva007E4960@@A,"retail 0x01309C18 is al
 dir32,0x0130A450,?g_rva0130A450@@3VRva00C6C7B0Init@@A,"retail 0x0130A450 is already recorded as ?TheBfmeObject_00C70BE0@@3VGen_00C70BE0Target@@A; reference that name, not a new one"
 dir32,0x0130A451,?g_rva0130A451@@3VRva00C6C790Init@@A,"retail 0x0130A451 is already recorded as ?TheBfmeObject_00C70BD0@@3VGen_00C70BD0Target@@A; reference that name, not a new one"
 dir32,0x0130A45C,?g_rva0130A45CObject@@3VCAtlWinModule@ATL@@A,"retail 0x0130A45C is already recorded as ?TheBfmeObject_00C70C00@@3VGen_00C70C00Target@@A; reference that name, not a new one"
-dir32,0x0130A580,?g_Va0130A580@@3PADA,"retail 0x0130A580 is already recorded as ?g_bfme912B@@3VGen_007f0300@@A; reference that name, not a new one"
 dir32,0x0130B260,?g_classic0130B260@@3VBfmeF1124@@A,"nothing in the ledger owns 0x0130B260. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0130B270,?g_classic0130B270@@3V?$numpunct@D@_STL@@A,"nothing in the ledger owns 0x0130B270. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0130B280,?g_classic0130B280@@3V?$ctype@G@_STL@@A,"nothing in the ledger owns 0x0130B280. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
