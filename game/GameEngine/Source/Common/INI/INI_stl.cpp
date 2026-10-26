@@ -1234,12 +1234,7 @@ void INI::initFromINIMulti( void *what, const MultiIniFieldParse& parseTableList
 // INI::getNextToken: retail body matched in ini.cpp (0x00850970).
 
 //-------------------------------------------------------------------------------------------------
-/*static*/ const char* INI::getNextTokenOrNull(const char* seps)
-{
-	if (!seps) seps = getSeps();
-	const char *token = ::strtok(NULL, seps);
-	return token;
-}
+// INI::getNextTokenOrNull: retail body matched in ini.cpp (0x008509C0).
 
 //-------------------------------------------------------------------------------------------------
 /*static*/ ScienceType INI::scanScience(const char* token)
