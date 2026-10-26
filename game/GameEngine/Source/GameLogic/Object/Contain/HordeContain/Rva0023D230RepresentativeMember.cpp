@@ -83,7 +83,9 @@ public:
 	BfmeObjectPtrHash m_objectHash;
 };
 
-extern BfmeGameLogic *TheGameLogic;
+// Retail spells this global `GameLogic *TheGameLogic` (?TheGameLogic@@3PAVGameLogic@@A).
+class GameLogic;
+extern GameLogic *TheGameLogic;
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/ContainModule.h
 class Rva00237070ContainOwner
@@ -144,7 +146,7 @@ Object *BfmeHordeContainOwner::rva0023D230(KindOfType kind)
 		UnsignedInt key = entry->m_key;
 		if (key != 0)
 		{
-			Object *object = TheGameLogic->findObjectByID(key);
+			Object *object = ((BfmeGameLogic *)TheGameLogic)->findObjectByID(key);
 			if (object != 0 && !object->isKindOf(kind))
 				return object;
 		}
@@ -152,6 +154,6 @@ Object *BfmeHordeContainOwner::rva0023D230(KindOfType kind)
 
 	BfmeMemberIndexNode *first = m_memberIndex->m_next;
 	if (first != m_memberIndex && first->m_key != 0)
-		return TheGameLogic->findObjectByID(first->m_key);
+		return ((BfmeGameLogic *)TheGameLogic)->findObjectByID(first->m_key);
 	return 0;
 }
