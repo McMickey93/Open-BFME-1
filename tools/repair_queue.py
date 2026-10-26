@@ -283,12 +283,14 @@ def pass_test(line, build_cmd=None):
             return False, f"no source spells {item['function']}; nothing left to verify"
     path = ROOT / item["baseline"]
     raw = path.read_bytes()
-    eol = b"\r\n" if b"\r\n" in raw else b"\n"
-    kept = [l for l in raw.split(eol) if l.decode("utf-8", "replace").strip() != line.strip()]
+    # Mixed CRLF/LF baselines must lose the selected exemption before the
+    # checker runs. Preserve every remaining byte, including its terminator.
+    kept = b"".join(l for l in raw.splitlines(keepends=True)
+                    if l.decode("utf-8", "replace").strip() != line.strip())
     cmd = build_cmd or [sys.executable, str(ROOT / "tools" / "build.py"), source]
     verified = False
     try:
-        path.write_bytes(eol.join(kept))
+        path.write_bytes(kept)
         verified = subprocess.run(cmd, cwd=ROOT).returncode == 0
     finally:
         # A missing executable or an interrupted build has verified nothing.

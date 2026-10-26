@@ -292,3 +292,41 @@ def test_boot_smoke_crashes_feed_the_repair_queue(tmp_path):
     assert "boot_smoke.py --game-dir SANDBOX --overlay rva:0x00003000" in items[0]["pass_test"]
     rq.BOOT_QUEUE = str(tmp_path / "missing.json")
     assert rq.boot_items() == []
+
+
+@pytest.mark.parametrize("layout", ["bfme1", "bfme2"])
+@pytest.mark.parametrize("target_eol", [b"\n", b"\r\n"])
+@pytest.mark.parametrize("last_eol", [b"\n", b"\r\n", b""])
+@pytest.mark.parametrize("returncode", [0, 1])
+def test_pass_test_removes_only_target_with_mixed_line_endings(
+        tmp_path, monkeypatch, layout, target_eol, last_eol, returncode):
+    rq, rev, src = load(tmp_path, layout, LEDGER)
+    if layout == "bfme1":
+        path = rev / "body_guard_baseline.csv"
+        header = b"check,target_rva,name,detail\r\n"
+        line = "tail,0x00001000,?a@Loco@@QAEXXZ,tail mismatch"
+        other = b"strnul,0x00002000,?c@Body@@QAEXXZ,literal mismatch"
+    else:
+        path = rev / "gate_baseline.txt"
+        header = b"# gate debt\r\n"
+        line = "tail 0x00001000 ?a@Loco@@QAEXXZ"
+        other = b"strnul 0x00002000 ?c@Body@@QAEXXZ"
+    raw = header + line.encode() + target_eol + other + last_eol
+    expected = header + other + last_eol
+    path.write_bytes(raw)
+    calls = []
+
+    def run_gate(command, **kwargs):
+        # The normal checker must see the exemption removed, while all other
+        # bytes (including a missing final newline) retain their original form.
+        assert command == [sys.executable, str(tmp_path / "tools/build.py"),
+                           f"{src}/GameEngine/Loco.cpp"]
+        assert path.read_bytes() == expected
+        calls.append(command)
+        return rq.subprocess.CompletedProcess(command, returncode)
+
+    monkeypatch.setattr(rq.subprocess, "run", run_gate)
+    ok, _ = rq.pass_test(line)
+    assert len(calls) == 1
+    assert ok == (returncode == 0)
+    assert path.read_bytes() == (expected if ok else raw)
