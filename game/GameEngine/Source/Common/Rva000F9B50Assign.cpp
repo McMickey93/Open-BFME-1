@@ -16,8 +16,15 @@ struct Rva000F9B50Pod
 	int f;
 };
 
-class Rva000F9B50
+// The 0x60-byte element of the vector whose erase overloads 0x000FAF90 and
+// 0x000FA9A0 assign through this body (their __copy helper ILT 0x00046A6F ->
+// 0x000FA0E0 calls ILT 0x0001802F -> here) and whose destructor is
+// ??1BfmeVecElem_000FAFF0@@QAE@XZ (0x000D1690). One placeholder name for the
+// one class, struct-keyed like its destructor and erase rows; see
+// targets/game/reverse/identity_evidence/000f9b50-bfmevecelem-assign.md.
+struct BfmeVecElem_000FAFF0
 {
+private:
 	Rva0036CA00Str m_00;
 	int m_04;
 	int m_08;
@@ -39,10 +46,10 @@ class Rva000F9B50
 	Rva0036CA00Str m_5C;
 
 public:
-	Rva000F9B50 &operator=(const Rva000F9B50 &other);
+	BfmeVecElem_000FAFF0 &operator=(const BfmeVecElem_000FAFF0 &other);
 };
 
-Rva000F9B50 &Rva000F9B50::operator=(const Rva000F9B50 &other)
+BfmeVecElem_000FAFF0 &BfmeVecElem_000FAFF0::operator=(const BfmeVecElem_000FAFF0 &other)
 {
 	m_00.set(other.m_00);
 	m_04 = other.m_04;
