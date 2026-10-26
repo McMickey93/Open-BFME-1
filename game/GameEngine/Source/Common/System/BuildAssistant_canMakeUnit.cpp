@@ -27,9 +27,11 @@ class ProductionUpdateInterface {
 public:
     virtual CanMakeType slot00() = 0;
 };
-class BfmeBuildIndexSetter {
+// ILT 0x000237D1 reaches 0x000F9570, defined only as
+// ?bfmeGo980A@BfmeA980@@QAEPAXH@Z (BfmeConv980.cpp); its real name is unproven.
+class BfmeA980 {
 public:
-    int set(int);
+    void *bfmeGo980A(int);
 };
 struct Rva000C7CD0Obj;
 class Rva000C7CD0 {
@@ -92,7 +94,7 @@ CanMakeType BuildAssistant::canMakeUnit(Object *builder, const ThingTemplate *wh
         union { void (*raw)(); const ThingTemplate *(Resolve000FE3C0::*member)(int); } resolver;
         resolver.raw = j_00002135;
         unsigned int available = player->getMoney()->countMoney();
-        if ((unsigned)((BfmeBuildIndexSetter *)records)->set(buildIndex) > available)
+        if ((unsigned)((BfmeA980 *)records)->bfmeGo980A(buildIndex) > available)
             return CANMAKE_NO_MONEY;
         if (!((Rva000C7CD0 *)((char *)player + 0x30))->ok((Rva000C7CD0Obj *)(((Resolve000FE3C0 *)records)->*resolver.member)(buildIndex), 1))
             return CanMake000FE3C0Capacity;
