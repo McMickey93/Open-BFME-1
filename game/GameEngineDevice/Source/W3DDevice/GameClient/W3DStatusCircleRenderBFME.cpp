@@ -127,12 +127,14 @@ extern GameEngine *TheGameEngine;
 // Retail's singleton (0x012F076C), defined in ScriptEngine.cpp. Spelled with
 // the real pointee type so the mangled name matches the definition.
 extern ScriptEngine *TheScriptEngine;
-extern bool __identifier("?m_needUpdate@W3DStatusCircle@@1_NA");
+// retired debt: ??m_needUpdate@W3DStatusCircle@@1_NA@@3_NA replaced with ?m_needUpdate@W3DStatusCircle@@1_NA
+extern "C" bool __identifier("?m_needUpdate@W3DStatusCircle@@1_NA");
 extern float g_worldMatrix[16];
 extern unsigned char g_rva007A2330Flag;
 extern float g_bfmeDefaultBU;
 extern const float g_bfmeScaleB3;
-extern const Real g_rva01075350;
+extern const Real BfmeBoundaryZero3D;
+#define g_rva01075350 BfmeBoundaryZero3D
 
 void j_00008d5f();
 void j_0003d5a0();

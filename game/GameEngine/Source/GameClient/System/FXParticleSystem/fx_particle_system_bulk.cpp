@@ -135,7 +135,9 @@ extern "C" void *__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$06@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0111098C@@3PAPAXA: use recorded owner ??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_011109CC[];
+// ?g_vtbl_011109CC@@3PAPAXA: use recorded owner ??_7BoxEmissionVolumeInfo@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7BoxEmissionVolumeInfo@FXParticleSystem@@6B@")[];
+#define g_vtbl_011109CC __identifier("??_7BoxEmissionVolumeInfo@FXParticleSystem@@6B@")
 extern "C" void *__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@")[];
 extern "C" void *__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@")[]; // ?g_vtbl_01110A4C@@3PAPAXA
 extern "C" char DefaultModuleTemplate6Concrete_vtbl8;

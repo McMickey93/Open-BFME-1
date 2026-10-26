@@ -356,7 +356,8 @@ static W3DFilterInterface *W3DFilters[10];
 static W3DShaderInterface *W3DShaders[W3DShaderManager::ST_MAX];
 static Int W3DShadersPassCount[W3DShaderManager::ST_MAX];	//number of passes for each of the above shaders
 struct ShaderComResource;
-extern ShaderComResource *__identifier("?m_resource012F9D14@W3DShaderManager@@1PAUShaderComResource@@A"); // BFME shader resource cleared by shutdown.
+// retired debt: ??m_resource012F9D14@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A replaced with ?m_resource012F9D14@W3DShaderManager@@1PAUShaderComResource@@A
+extern "C" ShaderComResource *__identifier("?m_resource012F9D14@W3DShaderManager@@1PAUShaderComResource@@A"); // BFME shader resource cleared by shutdown.
 extern ShaderComResource *__identifier("?m_resource012F9D18@W3DShaderManager@@1PAUShaderComResource@@A"); // BFME shader resource cleared by shutdown.
 extern VertexBufferClass *ShaderQuadBuffer; // BFME vertex buffer cleared by shutdown.
 extern int ShaderQuadIndex; // BFME quad-ring cursor.
@@ -3096,7 +3097,8 @@ public:
 
 extern void j_0000cf8b();
 
-extern ShaderComResource *__identifier("?m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A");
+// retired debt: ??m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A replaced with ?m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A
+extern "C" ShaderComResource *__identifier("?m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A");
 
 class BfmeVertexShaderLoader
 {

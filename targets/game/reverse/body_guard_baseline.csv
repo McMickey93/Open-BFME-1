@@ -255,7 +255,6 @@ dir32,0x011106F4,?g_011106F4@@3QBDB,"retail 0x011106F4 is already recorded as ??
 dir32,0x01110850,?g_01110850@FXParticleSystem@@3QBDB,"retail 0x01110850 is already recorded as ??_7?$CategoryModuleClass@$02@FXParticleSystem@@6B@; reference that name, not a new one"
 dir32,0x01110868,?g_01110868@FXParticleSystem@@3QBDB,"retail 0x01110868 is already recorded as ??_7?$CategoryModuleClass@$06@FXParticleSystem@@6B@; reference that name, not a new one"
 dir32,0x01110880,?g_01110880@FXParticleSystem@@3QBDB,"retail 0x01110880 is already recorded as ??_7?$CategoryModuleClass@$03@FXParticleSystem@@6B@; reference that name, not a new one"
-dir32,0x011109CC,?g_vtbl_011109CC@@3PAPAXA,"retail 0x011109CC is already recorded as ??_7BoxEmissionVolumeInfo@FXParticleSystem@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01110E78,?g_vtbl_01110E78@@3PAPAXA,"nothing in the ledger owns 0x01110E78. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01110E90,?g_vtbl_01110E90@@3PAPAXA,"nothing in the ledger owns 0x01110E90. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0111105C,?g_vtbl_0111105C@@3PAPAXA,"nothing in the ledger owns 0x0111105C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -525,10 +524,7 @@ dir32,0x012F8060,?m_3DInterfaceScene@Gen006EF850@@2PAVRTS3DInterfaceScene@@A,"re
 dir32,0x012F878C,?g_rva012F878CObject@@3VCriticalSectionClass@@A,"retail 0x012F878C is already recorded as ?TheBfmeObject_00C709A0@@3VGen_00C709A0Target@@A; reference that name, not a new one"
 dir32,0x012F8798,?g_w3dMouseCursorTextures@@3PAY0BF@VBfmeHandleCX@@A,"retail 0x012F8798 is already recorded as ?g_w3dMouseCursorTextures@@3PAY0BF@PAVTextureClass@@A (+1 more); reference that name, not a new one"
 dir32,0x012F9D08,?m_renderTexture@W3DShaderManager@@2PAUIDirect3DTexture8@@A,"retail 0x012F9D08 is already recorded as ?m_renderTexture@W3DShaderManager@@1PAUIDirect3DTexture8@@A (+2 more); reference that name, not a new one"
-dir32,0x012F9D14,??m_resource012F9D14@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A,"retail 0x012F9D14 is already recorded as ?m_resource012F9D14@W3DShaderManager@@1PAUShaderComResource@@A (+1 more); reference that name, not a new one"
 dir32,0x012F9D18,??m_resource012F9D18@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A,"retail 0x012F9D18 is already recorded as ?m_resource012F9D18@W3DShaderManager@@1PAUShaderComResource@@A (+1 more); reference that name, not a new one"
-dir32,0x012F9D24,??m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A,"retail 0x012F9D24 is already recorded as ?HighlightFVF@@3IA (+1 more); reference that name, not a new one"
-dir32,0x012F9D8C,??m_needUpdate@W3DStatusCircle@@1_NA@@3_NA,"retail 0x012F9D8C is already recorded as ?g_w3dStatusCircleNeedUpdate@@3_NA (+1 more); reference that name, not a new one"
 dir32,0x01306978,?g_rva01306978Object@@3VRvaList@@A,"retail 0x01306978 is already recorded as ?TheBfmeObject_00C70AB0@@3VGen_00C70AB0Target@@A (+2 more); reference that name, not a new one"
 dir32,0x01306E04,?shadowDecalVertexBufferD3D@@3PAUShadowDecalBuffer007B14A0@@A,"nothing in the ledger owns 0x01306E04. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306E08,?shadowDecalIndexBufferD3D@@3PAUShadowDecalBuffer007B14A0@@A,"nothing in the ledger owns 0x01306E08. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -589,7 +585,6 @@ dir32,0x01336E5C,?g_Rva00F36E5C@@3PAXA,"retail 0x01336E5C is already recorded as
 dir32,0x013377D8,?g_bfmeHolderBU@@3PAUState8C4DA0@@A,"retail 0x013377D8 is already recorded as ?Rva008A5380Holder@@3PADA (+18 more); reference that name, not a new one"
 dir32,0x01337820,?g_01337820@@3PAURva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
 dir32,0x01337820,?g_01337820@@3PAVRva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
-dir32,0x013378E0,?g_bfmeEntriesDU@@3PAVRva008972B0Source@@A,"retail 0x013378E0 is already recorded as ?g_bfmeEntriesDU@@3PAVBfmeTripleDU@@A; reference that name, not a new one"
 dir32,0x01337A30,?g_bfmeStringPool1284@@3PAP6AXPAX@ZA,"retail 0x01337A30 is already recorded as ?Rva00892ED0ReleaseTable@@3PAP6AXPAX@ZA (+29 more); reference that name, not a new one"
 dir32,0x01337A30,?g_bfmeStringPool1284@@3PAUPool8C4DA0@@A,"retail 0x01337A30 is already recorded as ?Rva00892ED0ReleaseTable@@3PAP6AXPAX@ZA (+29 more); reference that name, not a new one"
 dir32,0x01337A30,?g_pool01337A30@@3PAUStringPool008B3AA0@@A,"retail 0x01337A30 is already recorded as ?Rva00892ED0ReleaseTable@@3PAP6AXPAX@ZA (+29 more); reference that name, not a new one"

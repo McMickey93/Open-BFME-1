@@ -58547,3 +58547,11 @@ _g_bfmeEmptyUnicode	0x0107388C	0	blocked	gate-debt: no source literally spells _
 _g_bfmeBufferEQH	0x00EF4CB8	0	blocked	gate-debt: no source spells _g_bfmeBufferEQH; nothing left to verify t=2 model=gemini-3.8-flash-medium
 ??_7Rva000CBAF0@@6B@	0x01083D34	0	blocked	gate-debt: changing Rva000CBAF0 to non-virtual alters Player ctor unwind state table t=5 model=gemini-3.8-flash-medium
 ??_7Rva000CBA50@@6B@	0x01083CFC	0	blocked	gate-debt: changing Rva000CBA50 to non-virtual alters Player ctor unwind state table t=5 model=gemini-3.8-flash-medium
+__RTC_Terminate	0x00DF7F4E	0	blocked	gate-debt: false-reject locate_source: no source or matched data row owns CRT symbol __RTC_Terminate t=1 model=gemini-3.8-flash-medium
+??_7Rva007F2200ReseatTailDtor@@6B@	0x0112AC70	0	blocked	gate-debt: vptr tail jump destructor class requires identity/symbol rename; outside debt scope t=2 model=gemini-3.8-flash-medium
+?g_vtbl_011110A0@@3PAPAXA	0x011110A0	0	blocked	gate-debt: unrecorded datum requires data row identity decision; g_Va forbidden t=2 model=gemini-3.8-flash-medium
+??_7Rva001812B0AIHordeMachine@@6B@	0x01097238	0	blocked	gate-debt: class rename affects matched constructor signature and has unresolved identity decision t=2 model=gemini-3.8-flash-medium
+??_7Rva000CBA50@@6B@	0x00C83CFC	0	blocked	gate-debt: changing Rva000CBA50 to non-virtual alters Player ctor unwind state table t=5 model=gemini-3.8-flash-medium
+?TheNullChr@?1??str@?$StringBase@D@@QBEPBDXZ@4DB	0x00C7388B	0	blocked	gate-debt: source is shared header string_base.h; full gate outside debt scope t=2 model=gemini-3.8-flash-medium
+??_7TerrainCollisionParticleBase@FXParticleSystem@@6B?$CategoryModuleInfo@$07@1@@	0x00D1323C	0	blocked	gate-debt: requires class hierarchy/layout change of TerrainCollisionParticleBase; outside debt scope t=2 model=gemini-3.8-flash-medium
+?g_bfmeEntriesDU@@3PAVRva008972B0Source@@A	0x013378E0	0	blocked	gate-debt: false-reject locate_source: baseline symbol not spelled literally in source t=2 model=gemini-3.8-flash-medium

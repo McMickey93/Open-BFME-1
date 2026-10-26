@@ -77,10 +77,19 @@ public:
 	void *(__cdecl *getItem)(void *data, int index);	// +0x08
 };
 
+class BfmeTripleDU
+{
+public:
+	int m_bfmeFirst;
+	int m_bfmeSecond;
+	int m_bfmeThird;
+};
+
 void __cdecl bfmeWalk972B0(Rva008972B0Source *source);		// retail 0x008972B0
 
 extern int g_bfmeCountDU;					// retail 0x013379A4
-extern Rva008972B0Source g_bfmeEntriesDU[];			// retail 0x013378E0
+// retired debt: ?g_bfmeEntriesDU@@3PAVRva008972B0Source@@A replaced with ?g_bfmeEntriesDU@@3PAVBfmeTripleDU@@A
+extern BfmeTripleDU g_bfmeEntriesDU[];			// retail 0x013378E0
 
 // Same callback storage and variadic call view as TraceRva008C7D30.cpp.
 extern "C" void (__cdecl *g_bfmeCallback1226)(const void *, const void *);
@@ -122,7 +131,7 @@ void __cdecl rva00897360(bool skipItems)
 		}
 
 		for (int index = 0; index < g_bfmeCountDU; ++index)
-			bfmeWalk972B0(&g_bfmeEntriesDU[index]);
+			bfmeWalk972B0((Rva008972B0Source *)&g_bfmeEntriesDU[index]);
 	}
 
 	item = g_bfmeHeadDX;

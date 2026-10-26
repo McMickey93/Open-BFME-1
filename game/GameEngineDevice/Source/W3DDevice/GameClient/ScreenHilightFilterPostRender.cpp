@@ -27,7 +27,8 @@ class GlobalData;extern GlobalData *TheWritableGlobalData;
 struct Settings{char p[0xdbd];bool active;};
 static inline Settings *highlightSettings(){return (Settings *)TheWritableGlobalData;}
 struct ShaderComResource;
-extern ShaderComResource *__identifier("?m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A");
+// retired debt: ??m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A replaced with ?m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A
+extern "C" ShaderComResource *__identifier("?m_resource012F9D24@W3DShaderManager@@1PAUShaderComResource@@A");
 extern unsigned number_of_DX8_calls,HighlightColorIndex;
 struct Color{float x,y,z,w;};extern Color HighlightColors[];
 extern Color HighlightPixelConstants[];
