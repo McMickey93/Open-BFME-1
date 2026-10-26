@@ -7,7 +7,7 @@
 #include "robjlist.h"
 // Grant the address-derived free body access to the canonical WW3D globals.
 // Preload dependencies so the friend declaration applies only to ww3d.h.
-#define private private: friend void Rva008FDE90StartMovieCapture(const char *, float, int, bool); private
+#define private private: friend void Rva008FDE90StartMovieCapture(const char *, float, int, bool); friend bool Rva008FDF80ToggleMovieCapture(const char *, float, int, bool); private
 #include "ww3d.h"
 #undef private
 
@@ -21,7 +21,6 @@ struct Rva008FDE90Rect
     long bottom;
 };
 extern "C" __declspec(dllimport) int __stdcall GetWindowRect(void *, Rva008FDE90Rect *);
-extern const float g_rva01075350;
 
 class BfmeThingTXA
 {
@@ -56,7 +55,7 @@ void Rva008FDE90StartMovieCapture(const char *filename_base, float frame_rate,
     int height = bounds.bottom - bounds.top;
     int width = bounds.right - bounds.left;
     int depth = 24;
-    if (frame_rate == g_rva01075350)
+    if (frame_rate == 0.0f)
     {
         frame_rate = 1.0f;
         WW3D::PauseRecord = true;
@@ -69,3 +68,21 @@ void Rva008FDE90StartMovieCapture(const char *filename_base, float frame_rate,
         frame_rate, buffer_count, compressed);
 }
 
+// Retail 0x008FDF80 (76 B): the BFME form of WW3D::Toggle_Movie_Capture
+// (ZH ww3d.cpp), with Stop_Movie_Capture inlined, the capture-start call
+// above taking BFME's four arguments, and a bool result: false after
+// stopping, true after starting. No caller or ILT reaches it.
+// ?Rva008FDF80ToggleMovieCapture@@YA_NPBDMH_N@Z
+bool Rva008FDF80ToggleMovieCapture(const char *filename_base, float frame_rate,
+    int buffer_count, bool compressed)
+{
+    if (WW3D::IsCapturing)
+    {
+        WW3D::IsCapturing = false;
+        delete (BfmeThingTXA *)WW3D::Movie;
+        WW3D::Movie = 0;
+        return false;
+    }
+    Rva008FDE90StartMovieCapture(filename_base, frame_rate, buffer_count, compressed);
+    return true;
+}
