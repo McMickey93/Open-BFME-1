@@ -10,6 +10,7 @@ public:
 class ScriptPoolObject
 {
 public:
+	void deleteInstance(int);
 };
 
 struct ScriptGroupWrapper
@@ -53,5 +54,63 @@ void BfmeScriptOwnedWrappers::clear()
 		if (script->m_value != 0)
 			(script->m_value->*dropScript.member)(1);
 		operator delete(script);
+	}
+}
+
+// Retail 0x003525E0 (200 B, ret 4 at +0xC5 then int3 padding to 0x003526E0):
+// the copy constructor reached through ILT 0x00024C12, called by the matched
+// Rva003529B0/Rva00354BC0 copies and the ScriptList copy constructor. Each held
+// wrapper is deep-copied through new and its pinned ILT constructor (0x0003910D,
+// 0x0003CFDD); the catch(...) funclet sits inside the body at +0x86 and frees the
+// first copy through ScriptPoolObject::deleteInstance (ILT 0x00022039) before
+// rethrowing. Same +0/+4 layout as BfmeScriptOwnedWrappers above.
+class BfmeItemCU
+{
+public:
+	BfmeItemCU(void *other);
+	~BfmeItemCU()
+	{
+		if (m_value != 0)
+			m_value->deleteInstance(1);
+	}
+
+private:
+	ScriptPoolObject *m_value;
+	int m_unused04;
+	int m_unused08;
+};
+
+class BfmeItemCV
+{
+public:
+	BfmeItemCV(void *other);
+
+private:
+	int m_unused00;
+	int m_unused04;
+	int m_unused08;
+};
+
+class Rva003525E0Pair
+{
+public:
+	Rva003525E0Pair(const Rva003525E0Pair &other);
+
+private:
+	BfmeItemCU *m_a;
+	BfmeItemCV *m_b;
+};
+
+Rva003525E0Pair::Rva003525E0Pair(const Rva003525E0Pair &other)
+{
+	m_a = other.m_a ? new BfmeItemCU(other.m_a) : 0;
+	try
+	{
+		m_b = other.m_b ? new BfmeItemCV(other.m_b) : 0;
+	}
+	catch (...)
+	{
+		delete m_a;
+		throw;
 	}
 }
