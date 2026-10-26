@@ -33,6 +33,7 @@ public:
 	void setEmpty() { m_data.set("", 0); }
 	int compare(const AsciiString &str) const;
 	StringBase<char> m_data;
+	static const AsciiString TheEmptyString;
 };
 
 inline bool operator==(const AsciiString &left, const AsciiString &right)
@@ -49,7 +50,7 @@ public:
 	static UnicodeString TheEmptyString;
 };
 
-extern AsciiString TheEmptyAsciiString;
+// Retire ?TheEmptyAsciiString@@3VAsciiString@@A: use AsciiString::TheEmptyString
 
 namespace rts
 {
@@ -493,8 +494,8 @@ void Player::init(const PlayerTemplate *pt)
 	{
 		m_playerDisplayName = UnicodeString::TheEmptyString;
 		m_0c.reset();
-		m_playerName = TheEmptyAsciiString;
-		m_playerNameKey = TheNameKeyGenerator->nameToKey(TheEmptyAsciiString.str());
+		m_playerName = AsciiString::TheEmptyString;
+		m_playerNameKey = TheNameKeyGenerator->nameToKey(AsciiString::TheEmptyString.str());
 		m_side.setEmpty();
 		m_money.m_playerIndex = m_playerIndex;
 		UnsignedInt neutral = g_neutralColor000DA610;

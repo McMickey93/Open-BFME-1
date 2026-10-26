@@ -112,6 +112,7 @@ class Rva007F7980Browser;
 class BfmeDictESI;
 class BfmeHostESI;
 class BfmeThingVJK;
+class BfmeHostBT;
 // ?Rva007F6FA0BrowserRegionReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z
 void Rva007F6FA0BrowserRegionReply( Rva007E8810Message *msg, Rva007F7980Browser *browser );
 void Rva007F6FB0BrowserLobbyReply( Rva007E8810Message *msg, Rva007F7980Browser *browser );
@@ -121,12 +122,13 @@ void Rva007F6FF0( Rva007E8810Message *message, Rva007F7980Browser *browser );
 void Rva007F7000( void *message, Rva007F7980Browser *browser );
 void Rva007F7010( BfmeDictESI *message, BfmeHostESI *browser );
 void Rva007F7020( int message, BfmeThingVJK *browser );
+// Retire ?g_00BF83F0@@YAXXZ: use ?Rva007F83F0Callback@@YAXPAVRva007E8810Message@@PAVBfmeHostBT@@@Z
+void Rva007F83F0Callback( Rva007E8810Message *message, BfmeHostBT *owner );
 
-// Unlanded cdecl callbacks at retail 0x007F7970, 0x007F83E0 and 0x007F83F0,
+// Unlanded cdecl callbacks at retail 0x007F7970 and 0x007F83E0,
 // named after their image addresses.
 void g_00BF7970();
 void g_00BF83E0();
-void g_00BF83F0();
 
 class Gen007F0130
 {
@@ -179,7 +181,7 @@ void BfmeThingDGD::rva007F8400( unsigned char arg34, int arg35, void *forwarded 
 	m_14->v4( &bfmeRva0130AB00TagSlot, (void *)g_00BF7970, this );
 	m_14->v4( &bfmeRva0130AB24TagSlot, (void *)Rva007F7010, this );
 	m_14->v4( &bfmeRva0130AA88TagSlot, (void *)Rva007F7020, this );
-	m_14->v4( &bfmeRva0130AA7CTagSlot, (void *)g_00BF83F0, this );
+	m_14->v4( &bfmeRva0130AA7CTagSlot, (void *)Rva007F83F0Callback, this );
 
 	if( byte35 != 0 )
 	{

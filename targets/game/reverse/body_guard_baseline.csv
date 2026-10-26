@@ -88,7 +88,6 @@ dir32,0x00BF6FB0,?Rva007F6FB0BrowserLobbyReply@@YAXPAVRva007E8810Message@@PAVRva
 dir32,0x00BF6FC0,?Rva007F6FC0BrowserGameReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FC0
 dir32,0x00BF7970,?g_00BF7970@@YAXXZ,"nothing in the ledger owns 0x00BF7970. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BF83E0,?g_00BF83E0@@YAXXZ,"nothing in the ledger owns 0x00BF83E0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x00BF83F0,?g_00BF83F0@@YAXXZ,"nothing in the ledger owns 0x00BF83F0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00C52AC0,_bfmeINIParseUnsignedInt,"nothing in the ledger owns 0x00C52AC0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00C53380,_bfmeINIParseCoord3D,"nothing in the ledger owns 0x00C53380. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00C5FCD0,_piChangeNickCallback,"retail 0x00C5FCD0 is already recorded as _piChangeNickCallbackA; reference that name, not a new one"
@@ -446,7 +445,6 @@ dir32,0x011343A4,_g_011343A4,"nothing in the ledger owns 0x011343A4. Give the da
 dir32,0x011343B4,_g_011343B4,"nothing in the ledger owns 0x011343B4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011343D4,_g_011343D4,"nothing in the ledger owns 0x011343D4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011343E4,_g_011343E4,"nothing in the ledger owns 0x011343E4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01135D68,_bfmeVftAptValue,"retail 0x01135D68 is already recorded as ??_7AptValue@@6B@ (+22 more); reference that name, not a new one"
 dir32,0x01136058,??_7Rva008B2DF0Middle@@6B@,"retail 0x01136058 is already recorded as ??_7Gen_uwm_00899380@@6B@ (+14 more); reference that name, not a new one"
 dir32,0x01137808,??_7Rva008DCC70Link@@6B@,the name encodes 0x008DCC70 but retail reads 0x01137808
 dir32,0x0113BD28,?BfmeDynamicFVFTable@@3QBIB,"retail 0x0113BD28 is already recorded as ?BfmeDynamicFVFTable@@3PAIA (+1 more); reference that name, not a new one"
@@ -606,8 +604,6 @@ dir32,0x012F9D8C,??m_needUpdate@W3DStatusCircle@@1_NA@@3_NA,"retail 0x012F9D8C i
 dir32,0x01306978,?g_rva01306978Object@@3VRvaList@@A,"retail 0x01306978 is already recorded as ?TheBfmeObject_00C70AB0@@3VGen_00C70AB0Target@@A (+2 more); reference that name, not a new one"
 dir32,0x01306E04,?shadowDecalVertexBufferD3D@@3PAUShadowDecalBuffer007B14A0@@A,"nothing in the ledger owns 0x01306E04. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306E08,?shadowDecalIndexBufferD3D@@3PAUShadowDecalBuffer007B14A0@@A,"nothing in the ledger owns 0x01306E08. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01306E18,?nShadowDecalStartBatchIndex@@3HA,"nothing in the ledger owns 0x01306E18. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01306E1C,?nShadowDecalPolysInBatch@@3HA,"nothing in the ledger owns 0x01306E1C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306EEC,?TheW3DShadowManager@@3PAUW3DShadowManager@@A,"retail 0x01306EEC is already recorded as ?R2Ptr01306EEC@@3PAVGen0003AC38@@A (+10 more); reference that name, not a new one"
 dir32,0x01306EEC,?g_01306EEC@@3PAUState006E2540@@A,"retail 0x01306EEC is already recorded as ?R2Ptr01306EEC@@3PAVGen0003AC38@@A (+10 more); reference that name, not a new one"
 dir32,0x01306F34,?lastActiveVertexBuffer@@3PAUShadowBuffer007BC270@@A,"nothing in the ledger owns 0x01306F34. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -664,7 +660,6 @@ dir32,0x01336E10,?obj@?1??getRva008876E0Singleton@@YAPAXXZ@4VRva008876E0Type@@A,
 dir32,0x01336E2C,??_B?1??getRva008876E0Singleton@@YAPAXXZ@51,the name encodes 0x008876E0 but retail reads 0x01336E2C
 dir32,0x01336E30,?obj@?1??getRva008877A0Singleton@@YAPAXXZ@4VRva008877A0Type@@A,the name encodes 0x008877A0 but retail reads 0x01336E30
 dir32,0x01336E4C,??_B?1??getRva008877A0Singleton@@YAPAXXZ@51,the name encodes 0x008877A0 but retail reads 0x01336E4C
-dir32,0x01336E50,?TheEmptyAsciiString@@3VAsciiString@@A,"retail 0x01336E50 is already recorded as ?BfmeDefeatScreenTable@@3PAEA (+42 more); reference that name, not a new one"
 dir32,0x01336E5C,?debug01336E5C@@3PAVShadowDebug007BC270@@A,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x01336E5C,?g_Rva00F36E5C@@3PAXA,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x013377D8,?g_bfmeHolderBU@@3PAUState8C4DA0@@A,"retail 0x013377D8 is already recorded as ?Rva008A5380Holder@@3PADA (+18 more); reference that name, not a new one"

@@ -58266,3 +58266,10 @@ __7PartitionFilterRelationship@@6B@	0x01085DC0	0	blocked	gate-debt: no source sp
 ?_EnableTriangleDraw@SortingRendererClass@@0_NA	0x012D71A4	0	blocked	gate-debt: private static member (access digit 0) not admitted by data_rows grammar t=2 model=gemini-3.8-flash-medium
 ??_7RegroupingState@@6B@	0x010C9390	0	blocked	gate-debt: renaming descriptive class RegroupingState to placeholder Rva002C6170State is rejected by name_regression hook t=3 model=gemini-3.8-flash-medium
 ??_7DockingState@@6B@	0x010C93F8	0	blocked	gate-debt: renaming descriptive class DockingState to placeholder Rva002C61F0State is rejected by name_regression hook t=3 model=gemini-3.8-flash-medium
+??_7Gen_00378650@@6BSubsystemInterface@@@	0x010EA230	0	blocked	gate-debt: requires class hierarchy/ABI change from SubsystemInterface to BfmeBaseP impacting EH funclet t=2 model=gemini-3.8-flash-medium
+??_7ScriptEngine@@6BSubsystemInterface@@@	0x010E7A30	0	blocked	gate-debt: compiler-generated vtable unowned in ledger and not admittable to data_rows t=2 model=gemini-3.8-flash-medium
+?isForcedIntoWantingState@SupplyTruckStateMachine@@SA_NPAVState@@PAX@Z	0x00431C87	0	blocked	gate-debt: no source spells ?isForcedIntoWantingState@SupplyTruckStateMachine@@SA_NPAVState@@PAX@Z; nothing left to verify t=2 model=gemini-3.8-flash-medium
+??_7AnimationSoundClientBehavior@@6BDrawableModule@@@	0x011155A0	0	blocked	gate-debt: constructor calls pinned ??0DrawableModule, changing base to placeholder ASCB_MiddleBase creates unresolved callee t=2 model=gemini-3.8-flash-medium
+??_7InGameUI@@6BSubsystemInterface@@@	0x010F5B38	0	blocked	gate-debt: compiler-generated vtable unowned in ledger and not admittable to data_rows t=2 model=gemini-3.8-flash-medium
+?g_rva012F2570@@3URva00C6B900Init@@A	0x00EF2570	0	blocked	gate-debt: owning initializer definition vs recorded Gen_00C700B0Target owner; requires type reconciliation t=1 model=gemini-3.8-flash-medium
+??_7ActiveBody@@6BBodyModuleInterface@@@	0x010A7718	0	blocked	gate-debt: no source spells ??_7ActiveBody@@6BBodyModuleInterface@@@; nothing left to verify t=2 model=gemini-3.8-flash-medium
