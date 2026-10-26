@@ -13,6 +13,10 @@ struct BfmeThingQO
 
 void bfmeLogQO(BfmeThingQO *, int, const char *, ...);
 
+// RepeatChar's inline ctor is emitted as a COMDAT here too; retail's only copy
+// (0x00889270, debug_debug.cpp) omits the frame pointer, so the class is
+// compiled without this TU's /Oy-.
+#pragma optimize("y", on)
 class Debug
 {
 public:
@@ -74,6 +78,7 @@ private:
 public:
     Debug &CheckBegin(const char *, int, const char *);
 };
+#pragma optimize("", on)
 
 // Canonical four-byte pointer cell at retail VA 0x01336E5C.
 extern void *g_Rva00F36E5C;
