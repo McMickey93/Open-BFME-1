@@ -77,8 +77,8 @@ int *Team::bfmeFieldB(void) const
 	return &thing->m_bfmeFieldB;
 }
 
-extern unsigned int g_Rva00EEF418;
-#define g_bfmeDirtyBG g_Rva00EEF418					// retail 0x012EF418
+extern int TheBfmeDrawableDirtyFlags;
+#define g_bfmeDirtyBG TheBfmeDrawableDirtyFlags					// retail 0x012EF418
 
 class Gen_0018F210
 {

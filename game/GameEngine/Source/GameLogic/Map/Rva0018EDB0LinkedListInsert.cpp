@@ -12,7 +12,7 @@ struct Rva0018EDB0Table
 };
 
 extern int *g_rva0018EC80;		// retail 0x012ACB50, defined in Rva0018EC80Get.cpp
-extern unsigned int g_Rva00EEF418;
+extern int TheBfmeDrawableDirtyFlags;
 
 void rva0018EDB0Insert(Rva0018EDB0Node *node)
 {
@@ -25,5 +25,5 @@ void rva0018EDB0Insert(Rva0018EDB0Node *node)
 	}
 	node->m_next = ((Rva0018EDB0Table*)g_rva0018EC80)->m_head;
 	((Rva0018EDB0Table*)g_rva0018EC80)->m_head = node;
-	g_Rva00EEF418 |= 1;
+	TheBfmeDrawableDirtyFlags |= 1;
 }

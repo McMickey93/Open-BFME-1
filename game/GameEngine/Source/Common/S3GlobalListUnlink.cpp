@@ -20,13 +20,13 @@ public:
 	BfmeLinkNode *m_bfmeNext;					// +0x04
 };
 
-extern unsigned int g_Rva00EEF418;					// 0x012EF418
+extern int TheBfmeDrawableDirtyFlags;					// 0x012EF418
 BfmeLinkNode *g_Rva00EEF41C;					// 0x012EF41C, list head; identity unproven
 
 // ?Gen_0018edf0@@YAXPAVBfmeLinkNode@@@Z
 void Gen_0018edf0(BfmeLinkNode *node)
 {
-	g_Rva00EEF418 |= 1;
+	TheBfmeDrawableDirtyFlags |= 1;
 
 	BfmeLinkNode **link = &g_Rva00EEF41C;
 

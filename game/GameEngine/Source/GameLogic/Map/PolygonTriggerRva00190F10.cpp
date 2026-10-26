@@ -70,8 +70,8 @@ struct BfmeVector3BG
 	int z;
 };
 
-extern unsigned int g_Rva00EEF418;
-#define g_bfmeDirtyBG g_Rva00EEF418
+extern int TheBfmeDrawableDirtyFlags;
+#define g_bfmeDirtyBG TheBfmeDrawableDirtyFlags
 
 // upstream layout: Code/GameEngine/Source/Common/Bfme5IndexedVector3Setter.cpp
 // and Code/GameEngine/Source/Common/Bfme5SmallAccessors.cpp (bfmeSetA, +0x32)

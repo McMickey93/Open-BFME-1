@@ -26,7 +26,7 @@ public:
 struct BfmePolygonTriggerTable { PolygonTrigger *head; };
 extern int *g_rva0018EC80;  // retail 0x012ACB50, defined in Rva0018EC80Get.cpp
 extern int g_bfmeBFAE;
-extern unsigned int g_Rva00EEF418;
+extern int TheBfmeDrawableDirtyFlags;
 class BfmeLinkNode;
 extern BfmeLinkNode *g_Rva00EEF41C;
 // Retail dispatch cells contain the deleting destructor and parse callback.
@@ -58,5 +58,5 @@ Rva00190E10PolygonParser::Rva00190E10PolygonParser(
     ((BfmePolygonTriggerTable*)g_rva0018EC80)->head = 0;
     g_bfmeBFAE = 1;
     delete old;
-    g_Rva00EEF418 |= 1;
+    TheBfmeDrawableDirtyFlags |= 1;
 }
