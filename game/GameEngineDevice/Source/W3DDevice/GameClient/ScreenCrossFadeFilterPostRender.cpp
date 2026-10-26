@@ -99,11 +99,8 @@ public:
 class BfmeHandleCX;
 extern BfmeHandleCX g_bfmeCurrentCZ;
 
-class ScreenCrossFadeFilterUpdateFadeLevelShim
-{
-public:
-	static Real m_curFadeValue;
-};
+// retail 0x01307200; its one definition is ?g_Va01307200@@3MA (data_rows)
+extern Real g_Va01307200;
 
 // Retail reaches W3DShaderManager::endRenderToTexture (0x00717420) through
 // the ILT at 0x0003FAC6 (?j_0003fac6@@YAXXZ); the call names that thunk.
@@ -180,7 +177,7 @@ Bool ScreenCrossFadeFilter::postRender(FilterModes mode, Coord2D &scrollDelta,
 		BfmeDevice *device = DX8Wrapper::_Get_D3D_Device8();
 		device->vt->SetTexture(device, 1,
 			reinterpret_cast<TextureBaseClass &>(g_bfmeCurrentCZ).Peek_D3D_Base_Texture());
-		radius = (1.0f - ScreenCrossFadeFilterUpdateFadeLevelShim::m_curFadeValue) * 2.0f;
+		radius = (1.0f - g_Va01307200) * 2.0f;
 		if (radius <= 0)
 			radius = 0.01f;
 		radius = 0.5f / radius;

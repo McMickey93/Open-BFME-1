@@ -1634,12 +1634,8 @@ Int MaskTextureShader::init(void)
 // BFME View slots witnessed by this body; reuse the canonical View type.
 template<class T> __forceinline T &maskRetailMethod(View *view, unsigned slot)
 { return *(T *)&(*(void ***)view)[slot]; }
-class ScreenCrossFadeFilterUpdateFadeLevelShim
-{
-	static Real m_curFadeValue;
-public:
-	__forceinline static Real valueRva01307200() { return m_curFadeValue; }
-};
+// retail 0x01307200; its one definition is ?g_Va01307200@@3MA (data_rows)
+extern Real g_Va01307200;
 typedef void (View::*MaskOriginFn)(Int *, Int *);
 typedef Int (View::*MaskDimensionFn)();
 typedef Bool (View::*MaskScreenToTerrainFn)(const ICoord2D *, Coord3D *, Bool);
@@ -1650,7 +1646,7 @@ __forceinline D3DXMATRIX bfmeFlatMultiply(const D3DXMATRIX &a, const D3DXMATRIX 
 }
 Int MaskTextureShader::set(Int pass)
 {
-	Real fadeLevel=ScreenCrossFadeFilterUpdateFadeLevelShim::valueRva01307200();
+	Real fadeLevel=g_Va01307200;
 
 	//Use the current fade level to scale the mask texture
 	Real radius = (1.0f-fadeLevel)*2.0f;
