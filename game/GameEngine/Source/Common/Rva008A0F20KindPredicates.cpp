@@ -58,6 +58,8 @@ public:
 	Bool isKind12(bool allowClear) const;
 	Bool isKind0E(bool allowClear) const;
 	Bool isKind0D(bool allowClear) const;
+	Bool isKind0CTo13(bool allowClear) const;
+	Bool isKind0DOr12(bool allowClear) const;
 };
 
 #define RVA_KIND_PREDICATE( NAME, KIND )                                  \
@@ -90,3 +92,18 @@ RVA_KIND_PREDICATE( isKind16, 0x16 )
 RVA_KIND_PREDICATE_ALLOW( isKind12, 0x12 )
 RVA_KIND_PREDICATE_ALLOW( isKind0E, 0x0e )
 RVA_KIND_PREDICATE_ALLOW( isKind0D, 0x0d )
+
+// 0x008919F0 (49 B): the same rule over the kind range 0x0C..0x13, compared
+// as a signed dword (`cmp eax,0x0c / jl`, `cmp eax,0x13 / jg`).
+Bool Rva008A0F20Header::isKind0CTo13(bool allowClear) const
+{
+	Int kind = m_bits04 & 0x3f;
+	return kind >= 0x0c && kind <= 0x13
+			&& ( allowClear || !( (UnsignedByte)~( m_bits04 >> 15 ) & 1 ) );
+}
+
+// 0x008AD0B0 (67 B): isKind0D and isKind12 above, inlined in that order.
+Bool Rva008A0F20Header::isKind0DOr12(bool allowClear) const
+{
+	return isKind0D( allowClear ) || isKind12( allowClear );
+}
