@@ -60,3 +60,11 @@ void Rva00889320DebugForward2(int first, int second)
 {
 	reinterpret_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot84(first, second);
 }
+
+// 0x008892D0 (11 B, unreferenced, after int3 padding): the no-argument member
+// of this family: slot 0x58 of the same singleton, reached by a tail jump.
+// ?Rva008892D0DebugForward0@@YAXXZ
+void Rva008892D0DebugForward0()
+{
+	reinterpret_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot58();
+}
