@@ -31,3 +31,27 @@ void Rva009F2BA0::init()
 		((void **)q)[6] = &m_1C;
 	m_00->m_F0 = (Rva009F2BA0Node *)this;
 }
+
+// 0x009F2BD0: unreferenced, after int3 padding: hands the second word to the
+// matched PartitionManagerImpl::bfmeDropYQ (0x009F5170) on the manager in the
+// first. Address-derived names.
+class BfmeThingYQ;
+class PartitionManagerImpl
+{
+public:
+	void bfmeDropYQ(BfmeThingYQ *thing);
+};
+
+class Rva009F2BD0Link
+{
+	PartitionManagerImpl *m_manager;
+	BfmeThingYQ *m_thing;
+
+public:
+	void run();
+};
+
+void Rva009F2BD0Link::run()
+{
+	m_manager->bfmeDropYQ(m_thing);
+}

@@ -31,3 +31,27 @@ void Rva009A2350::init()
 		((void **)q)[4] = &m_14;
 	m_owner->m_08 = (Rva009A2350Node *)this;
 }
+
+// 0x009A2380: unreferenced, after int3 padding: hands the second word to the
+// matched collision-manager apply (0x009A36F0) on the object in the first.
+// Address-derived names.
+class Rva009A36F0Param;
+class Rva009A36F0Owner
+{
+public:
+	void apply(Rva009A36F0Param *param);
+};
+
+class Rva009A2380Link
+{
+	Rva009A36F0Owner *m_owner;
+	Rva009A36F0Param *m_param;
+
+public:
+	void run();
+};
+
+void Rva009A2380Link::run()
+{
+	m_owner->apply(m_param);
+}
