@@ -111,6 +111,37 @@ uint32 ChunkLoadClass::Read(void *buffer, uint32 byte_count)
 }
 
 
+// The four typed reads directly after Read (retail 0x009E1650..0x009E1680), in
+// the reference's order. Each passes sizeof the POINTER, the reference's own
+// bug, which is why every one of them pushes 4.
+uint32 ChunkLoadClass::Read(IOVector2Struct * v)
+{
+	assert(v != NULL);
+	return Read(v,sizeof(v));
+}
+
+
+uint32 ChunkLoadClass::Read(IOVector3Struct * v)
+{
+	assert(v != NULL);
+	return Read(v,sizeof(v));
+}
+
+
+uint32 ChunkLoadClass::Read(IOVector4Struct * v)
+{
+	assert(v != NULL);
+	return Read(v,sizeof(v));
+}
+
+
+uint32 ChunkLoadClass::Read(IOQuaternionStruct * q)
+{
+	assert(q != NULL);
+	return Read(q,sizeof(q));
+}
+
+
 // Read's twin, skipping instead of copying. The bounds checks are the same; the
 // difference is how the skip is proven to have happened, since neither Seek
 // interface reports a byte count -- both branches take a position before and
