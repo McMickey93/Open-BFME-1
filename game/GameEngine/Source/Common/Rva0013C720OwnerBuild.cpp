@@ -1,8 +1,10 @@
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/ini
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/ini /Igame/Libraries/Source/WWVegas/WWLib
 // Retail 0x0013B990, 321 bytes: the sole caller 0x0013C720 fills a 0x48-byte record per
 // module-info row and condition entry; ecx is that caller's this, and ret 0x14 gives five args.
 
 #include "Common/AsciiString.h"
+#include "wwstring.h"
+#include "vector.h"
 
 // Name table whose first entry is "UNSPECIFIED", indexed by the signed byte at source +0x496.
 extern const char *const ThingClassNames012AC510[];
@@ -60,6 +62,7 @@ class Rva0013C720Owner
 public:
 	bool build(Rva0013A820 *out, const Rva0013B2F0StringTable *moduleInfo,
 		const Rva0013B990Template *source, const Gen_007622C0 *entry, int index);
+	bool rva0013BE40(Rva0013A820 *out, int index);
 };
 
 bool Rva0013C720Owner::build(Rva0013A820 *out, const Rva0013B2F0StringTable *moduleInfo,
@@ -75,6 +78,25 @@ bool Rva0013C720Owner::build(Rva0013A820 *out, const Rva0013B2F0StringTable *mod
 	{
 		out->reset();
 		return false;
+	}
+	return true;
+}
+
+// Retail 0x0013BE40, 152 bytes through RET 8. The same caller 0x0013C720 reaches it
+// through ILT 0x00038EF1 with the ecx and record pointer it gives build(), plus that
+// call's index. Neither argument is read: the body builds an empty
+// DynamicVectorClass<StringClass> (ILT 0x000187AF to the matched base ctor, vtable
+// 0x01091078) and an empty string, then destroys both. Retail's unwind map has three
+// states, the third with no cleanup action: a destructible local in code the
+// optimizer dropped. A loop over the still-empty list reproduces it, and its extra
+// state store is why retail keeps zero in ebx. What that loop did is not recoverable.
+bool Rva0013C720Owner::rva0013BE40(Rva0013A820 *out, int index)
+{
+	DynamicVectorClass<StringClass> list;
+	AsciiString tmp;
+	for (int i = 0; i < list.Count(); ++i)
+	{
+		AsciiString item;
 	}
 	return true;
 }
