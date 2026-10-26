@@ -181,6 +181,11 @@ __imp__ceil
 # correct. It only became visible when parseAngularVelocityReal was repointed off
 # its 5-byte ILT thunk (which carried no relocations) onto its real body.
 __real@3c8efa35
+# __real@3eb33333 is 0.35f, kept twice as well: SlowDeathBehavior_beginSlowDeath.cpp's TU
+# reads it at 0x010A6568 (between that pool's -99999.9f and 0.65f) and ActiveBody_attemptDamage.cpp's
+# at 0x010A7C18 (after its 1.01f, before the "DelayedDeath..." string). Both references come
+# from byte-matched rows; surfaced by the first daily full-gate run (2026-10-25).
+__real@3eb33333
 # These four symbols are duplicate COMDAT/template or CRT artifacts exposed by
 # the source-backed DX8 texture-category render-task body; their retail refs
 # intentionally resolve to distinct TU-local bases.

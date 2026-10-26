@@ -128,7 +128,8 @@ void Rva0062EA60StartOnline()
 // Retail 0x0062E6B0, the "yes" callback passed to both patch message boxes
 // above (DIR32 at 0x0062EBD4). BFME does not download the patch here as Zero
 // Hour does: it asks the engine to quit (the same GameEngine slot 0x34 call
-// the download menu's successQuitCallback makes) and leaves through _exit.
+// the download menu's successQuitCallback makes) and leaves through exit():
+// the IAT slot at 0x0135939C is __imp__exit (dir32_addresses.csv), not _exit's.
 struct BfmeStartOnlineEngineView
 {
     virtual void slot00(); virtual void slot04(); virtual void slot08();
@@ -140,10 +141,10 @@ struct BfmeStartOnlineEngineView
 };
 class GameEngine;
 extern GameEngine *TheGameEngine;
-extern "C" __declspec(dllimport) __declspec(noreturn) void __cdecl _exit(int code);
+extern "C" __declspec(dllimport) __declspec(noreturn) void __cdecl exit(int code);
 
 void patchBeforeOnlineCallback()
 {
     reinterpret_cast<BfmeStartOnlineEngineView *>(TheGameEngine)->setQuitting(1);
-    _exit(123456789);
+    exit(123456789);
 }
