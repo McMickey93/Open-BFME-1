@@ -57,3 +57,42 @@ void Rva00958760Ptr::addRef(void)
 	if (m_ptr != 0)
 		m_ptr->AddRef();
 }
+
+// Retail 0x00958770 and 0x00958950 (unreferenced, after int3 padding): the
+// smart-pointer families' interface-id leaves, `mov eax,offset; ret` with
+// the address of the IFEBrowserEngine2 GUID constant at 0x0113DF00 (the
+// __GUID_<uuid> spelling WebBrowserComWrappers.cpp references). Retail
+// 0x00958940 is the second family's release leaf, the same shape as
+// 0x00958760. Address-derived names.
+struct _GUID { unsigned char bytes[16]; };
+extern "C" const _GUID __GUID_ee883b17_0778_4b18_a12b_e44c0d298412;
+
+class Rva00958770Iid
+{
+public:
+	static const _GUID &get(void);
+};
+
+const _GUID &Rva00958770Iid::get(void)
+{
+	return __GUID_ee883b17_0778_4b18_a12b_e44c0d298412;
+}
+
+class Rva00958940Ptr
+{
+public:
+	void release(void);
+	static const _GUID &iid(void);
+	Rva00958760Unknown *m_ptr;
+};
+
+void Rva00958940Ptr::release(void)
+{
+	if (m_ptr != 0)
+		m_ptr->Release();
+}
+
+const _GUID &Rva00958940Ptr::iid(void)
+{
+	return __GUID_ee883b17_0778_4b18_a12b_e44c0d298412;
+}
