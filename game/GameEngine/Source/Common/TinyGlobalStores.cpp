@@ -74,3 +74,16 @@ void Rva00891C40::store( BfmeStringPool3AF0 *value )
 {
 	g_rva01337A30AllocPair = value;
 }
+
+// 0x00891C50: the matching reset, directly after it: clears the same global.
+// Unreferenced in retail.
+class Rva00891C50
+{
+public:
+	static void clear( void );
+};
+
+void Rva00891C50::clear( void )
+{
+	g_rva01337A30AllocPair = 0;
+}

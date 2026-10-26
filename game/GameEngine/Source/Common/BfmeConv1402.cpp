@@ -162,3 +162,20 @@ void rva008922C0Register(Rva008922C0Object *object, int unused)
 	object->touch44();
 	g_bfmeMap1024->m_bfmeTab.bfmeAdd1024((int)&name, (int)object);
 }
+
+// Retail 0x00891C60: unreferenced thiscall void body after int3 padding (no
+// this in eax, so not a constructor): the string is pointed at the shared
+// empty EA string block, whose 16-bit reference count it bumps.
+// Address-derived name; identity unproven.
+class Rva00891C60String
+{
+public:
+	void setEmpty();
+	BfmeHdrVKI *m_data;
+};
+
+void Rva00891C60String::setEmpty()
+{
+	m_data = (BfmeHdrVKI *)&g_rva012D5298Empty;
+	++((BfmeHdrVKI *)&g_rva012D5298Empty)->m_bfme00;
+}
