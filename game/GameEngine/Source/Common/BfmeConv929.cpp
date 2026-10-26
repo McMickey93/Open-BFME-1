@@ -105,3 +105,20 @@ unsigned short BfmeThing929G::bfmeGo929G()
 		bfmeInit929G();
 	return m_bfmeP->m_bfmeW;
 }
+
+// Retail 0x008921C0: unreferenced, after int3 padding. When the singleton
+// at 0x013377D8 exists, walk its +0x122C member through the matched
+// bfmeWalk1236 (0x008BD670, BfmeConv1236.cpp), tail-called. Address-derived
+// name.
+class BfmeWalk1236
+{
+public:
+	void bfmeWalk1236();
+};
+
+void rva008921C0Walk()
+{
+	BfmePickWorld1284 *world = g_bfmeHolderBU;
+	if (world)
+		reinterpret_cast<BfmeWalk1236 *>(world->m_bfmePad + 0x122c)->bfmeWalk1236();
+}
