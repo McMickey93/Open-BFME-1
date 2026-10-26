@@ -38651,7 +38651,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00c355e9@@YAXXZ,,0x00C355E9,23,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@010355e9
 ?d_00c35663@@YAXXZ,,0x00C35663,34,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01035663
 ?d_00c37efb@@YAXXZ,,0x00C37EFB,24,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@01037efb
-?d_00c386d8@@YAXXZ,,0x00C386D8,22,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@010386d8
 ?d_00c3d83b@@YAXXZ,,0x00C3D83B,23,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103d83b
 ?d_00c3dc08@@YAXXZ,,0x00C3DC08,11,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103dc08
 ?d_00c3e7d7@@YAXXZ,,0x00C3E7D7,24,game/gen_asm/d_00c33460.asm,matched,gen-dump;ghidra=Unwind@0103e7d7
@@ -173169,3 +173168,4 @@ _PlaneAddNoise_C,,0x009A5F50,475,game/Libraries/Source/VP6/PlaneAddNoiseC.cpp,ma
 ?_M_upper_bound@?$_Rb_tree@URva00692570Key@@U1@U?$_Identity@URva00692570Key@@@_STL@@U?$less@URva00692570Key@@@3@V?$allocator@URva00692570Key@@@3@@_STL@@ABEPAU?$_Rb_tree_node@URva00692570Key@@@2@ABURva00692570Key@@@Z,,0x00692780,180,game/GameEngine/Source/GameNetwork/Rva00692570KeyBounds.cpp,matched,STLport _M_upper_bound walk over the Rva00692570Less 12-byte key; inline compare via getLength/str (TheNullChr); ret + INT3 extent;model=claude-opus-5-5;host=app
 ?rva003DB900@Pathfinder@@QAEIPAVPathfindCell@@0@Z,,0x003DB900,201,game/GameEngine/Source/GameLogic/AI/PathfinderRva003DB900.cpp,matched,octile path-cost leaf over the +0x2470C point vector; name from matched Pathfinder callers via ILT 0x3A828 pin; ret8 + INT3 extent;model=claude-opus-5-5;host=app
 ?rva00402390@@YA_NPBVPathfindCell@@0@Z,,0x00402390,90,game/GameEngine/Source/GameLogic/AI/PathfindCellFlagsCompatible00402390.cpp,matched,cell flag-bit agreement after bfmeLayersCompatible; bitfield view at +0xC; address-derived name; ret + INT3 extent;model=claude-opus-5-5;host=app
+?Rva00C386D8Cleanup@@YAXXZ,,0x00C386D8,22,game/GameEngine/Source/GameClient/Input/Mouse.cpp,matched,gen-funclet;object-symbol=$L50679;parent=??0Mouse@@QAE@XZ;retail parent5A5AE0 -> handlerC38726 -> FuncInfoE27BDC state1;model=claude-opus-5-5;host=app
