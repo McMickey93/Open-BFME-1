@@ -58545,3 +58545,5 @@ _g_bfmeEmptyUnicode	0x0107388C	0	blocked	gate-debt: no source literally spells _
 ?g_vtbl_01111200@@3PAPAXA	0x00D11200	0	blocked	gate-debt: compiler-generated vtable unowned in ledger and not admittable to data_rows without extent/identity evidence t=2 model=gemini-3.8-flash-medium
 ?g_rva012F878CObject@@3VCriticalSectionClass@@A	0x00EF878C	0	blocked	gate-debt: retail ctor calls CriticalSectionClass, not Gen_00C709A0Target; pin addition needed t=2 model=gemini-3.8-flash-medium
 _g_bfmeBufferEQH	0x00EF4CB8	0	blocked	gate-debt: no source spells _g_bfmeBufferEQH; nothing left to verify t=2 model=gemini-3.8-flash-medium
+??_7Rva000CBAF0@@6B@	0x01083D34	0	blocked	gate-debt: changing Rva000CBAF0 to non-virtual alters Player ctor unwind state table t=5 model=gemini-3.8-flash-medium
+??_7Rva000CBA50@@6B@	0x01083CFC	0	blocked	gate-debt: changing Rva000CBA50 to non-virtual alters Player ctor unwind state table t=5 model=gemini-3.8-flash-medium

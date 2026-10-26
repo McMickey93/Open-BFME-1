@@ -100,6 +100,7 @@ struct TextureStatisticsStructWide
 	char m_pad[0x20];
 };
 
+// retired debt: ??1ENUM_VALUE@EnumParameterClass@@QAE@XZ replaced with ??1_ENUM_VALUE@EnumParameterClass@@QAE@XZ
 class EnumParameterClass
 {
 public:
@@ -243,7 +244,7 @@ public:
 
 	DynamicVectorClassWide<TextureStatisticsStructWide> m_sentenceData;
 	DynamicVectorClass<PendingSurfaceStruct> m_pendingSurfaces;
-	DynamicVectorClass<EnumParameterClass::ENUM_VALUE> m_renderers;
+	DynamicVectorClass<EnumParameterClass::_ENUM_VALUE> m_renderers;
 	FontCharsClass *m_font;						// +0x4C
 	float m_baseLocation[2];					// +0x50
 	float m_location[2];						// +0x58

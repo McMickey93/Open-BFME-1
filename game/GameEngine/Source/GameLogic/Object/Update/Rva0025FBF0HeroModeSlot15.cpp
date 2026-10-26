@@ -9,15 +9,15 @@
 
 #include "ascii_string.h"
 
+extern const char Rva006A16B0Empty[];
+
+// retired debt: ?TheNullChr@?1??str@Rva0025FBF0LayoutString@@QBEPBDXZ@4DB replaced with ?Rva006A16B0Empty@@3PADA
 class Rva0025FBF0LayoutString
 {
 public:
     const char *str() const
     {
-        // AsciiString::TheNullChr: the null byte a retail StringBase<char>
-        // hands back for an unset string, as in the other BFME StringBase views.
-        static const char TheNullChr = 0;
-        return m_data ? (const char *)m_data + 8 : &TheNullChr;
+        return m_data ? (const char *)m_data + 8 : Rva006A16B0Empty;
     }
 
     void *m_data;

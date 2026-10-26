@@ -1879,7 +1879,8 @@ extern const char g_011144EC[] = "OrientFXToTerrain";
 extern const char *const RotationTypeNames[];
 // ?g_01110838@FXParticleSystem@@3QBDB: retail 0x01110838 is ??_7?$CategoryModuleClass@$00@FXParticleSystem@@6B@
 #define g_01110838 __identifier("??_7?$CategoryModuleClass@$00@FXParticleSystem@@6B@")
-extern const char g_0111085C[];
+// retired debt: ?g_0111085C@FXParticleSystem@@3QBDB replaced with ??_7?$CategoryModuleClass@$01@FXParticleSystem@@6B@
+#define g_0111085C __identifier("??_7?$CategoryModuleClass@$01@FXParticleSystem@@6B@")
 extern const char g_01110850[];
 // ?g_01110820@FXParticleSystem@@3QBDB: retail 0x01110820 is ??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@
 #define g_01110820 __identifier("??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@")
@@ -1887,7 +1888,7 @@ extern const char g_01110868[];
 extern const char g_01110880[];
 // ?g_0111088C@FXParticleSystem@@3QBDB: retail 0x0111088C is ??_7?$CategoryModuleClass@$04@FXParticleSystem@@6B@
 #define g_0111088C __identifier("??_7?$CategoryModuleClass@$04@FXParticleSystem@@6B@")
-// ?g_01110874@FXParticleSystem@@3QBDB: retail 0x01110874 is ??_7?$CategoryModuleClass@$07@FXParticleSystem@@6B@
+// retired debt: ?g_01110874@FXParticleSystem@@3QBDB replaced with ??_7?$CategoryModuleClass@$07@FXParticleSystem@@6B@
 #define g_01110874 __identifier("??_7?$CategoryModuleClass@$07@FXParticleSystem@@6B@")
 extern void **defaultModuleTag0SourceAt8;
 extern void **defaultModuleTag0SourceAt4;
