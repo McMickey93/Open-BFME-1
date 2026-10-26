@@ -26,3 +26,34 @@ int Rva00958730Box::check(void *arg)
 	_com_issue_error((long)0x80004003);
 	return m_ptr == 0;
 }
+
+// Retail 0x00958760 and 0x00958780, the same smart-pointer family's release
+// and add-ref leaves (unreferenced, after int3 padding): when the held
+// interface is non-null, call its IUnknown Release (slot 2) or AddRef
+// (slot 1); the pointer itself is left in place. Address-derived names.
+struct Rva00958760Unknown
+{
+	virtual long __stdcall QueryInterface(const void *iid, void **out) = 0;
+	virtual unsigned long __stdcall AddRef(void) = 0;
+	virtual unsigned long __stdcall Release(void) = 0;
+};
+
+class Rva00958760Ptr
+{
+public:
+	void release(void);
+	void addRef(void);
+	Rva00958760Unknown *m_ptr;
+};
+
+void Rva00958760Ptr::release(void)
+{
+	if (m_ptr != 0)
+		m_ptr->Release();
+}
+
+void Rva00958760Ptr::addRef(void)
+{
+	if (m_ptr != 0)
+		m_ptr->AddRef();
+}
