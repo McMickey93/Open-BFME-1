@@ -488,7 +488,6 @@ dir32,0x012A7968,?TheKey_multiplayerStartIndex@@3VStaticNameKey@@B,"nothing in t
 dir32,0x012A7978,?TheKey_multiplayerIsLocal@@3VStaticNameKey@@B,"retail 0x012A7978 is already recorded as ?TheKey_multiplayerIsLocal@@3VStaticNameKey@@A; reference that name, not a new one"
 dir32,0x012AA068,?g_bfmeRva012AA068@@3PAPBDA,"retail 0x012AA068 is already recorded as ?TheKindOfBitNames@@3PAPBDA (+4 more); reference that name, not a new one"
 dir32,0x012ACC34,?g_rva001AF610RingSpacing@@3MA,the name encodes 0x001AF610 but retail reads 0x012ACC34
-dir32,0x012B3DC0,?TheShellHookNames@@3PAPADA,"retail 0x012B3DC0 is already recorded as ?TheShellHookNames@@3PAPBDA; reference that name, not a new one"
 dir32,0x012B4180,?Names00377AF0@@3QBQBDB,"nothing in the ledger owns 0x012B4180. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012B4FC8,?g_lighting012B4FC8@@3URva00748860Triple@@A,"retail 0x012B4FC8 is already recorded as ?HighlightColors@@3PAUColor@@A (+2 more); reference that name, not a new one"
 dir32,0x012B5140,?bfmeRva012B5140FirstCopy@@3URvaTriple@@A,"?bfmeRva012B5140FirstCopy@@3URvaTriple@@A is a function the ledger places elsewhere, not at 0x012B5140"
@@ -629,8 +628,6 @@ dir32,0x012F9D8C,??m_needUpdate@W3DStatusCircle@@1_NA@@3_NA,"retail 0x012F9D8C i
 dir32,0x01306978,?g_rva01306978Object@@3VRvaList@@A,"retail 0x01306978 is already recorded as ?TheBfmeObject_00C70AB0@@3VGen_00C70AB0Target@@A (+2 more); reference that name, not a new one"
 dir32,0x01306E04,?shadowDecalVertexBufferD3D@@3PAUShadowDecalBuffer007B14A0@@A,"nothing in the ledger owns 0x01306E04. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306E08,?shadowDecalIndexBufferD3D@@3PAUShadowDecalBuffer007B14A0@@A,"nothing in the ledger owns 0x01306E08. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01306E0C,?nShadowDecalVertsInBuf@@3HA,"nothing in the ledger owns 0x01306E0C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x01306E10,?nShadowDecalStartBatchVertex@@3HA,"nothing in the ledger owns 0x01306E10. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306E18,?nShadowDecalStartBatchIndex@@3HA,"nothing in the ledger owns 0x01306E18. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306E1C,?nShadowDecalPolysInBatch@@3HA,"nothing in the ledger owns 0x01306E1C. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01306EEC,?TheW3DShadowManager@@3PAUW3DShadowManager@@A,"retail 0x01306EEC is already recorded as ?R2Ptr01306EEC@@3PAVGen0003AC38@@A (+10 more); reference that name, not a new one"

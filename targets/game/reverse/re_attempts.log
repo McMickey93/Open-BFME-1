@@ -58155,3 +58155,8 @@ _g_0109C030	0x00C9C030	0	blocked	gate-debt: false-reject locate_source: baseline
 ?emptyString01336E54@@3VUnicodeString@@A	0x01336E54	0	solved	gate-debt: reference recorded UnicodeString::TheEmptyString in PopupHostGameInit.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
 ?j_000334f6@@YAXXZ	0x004334F6	0	solved	gate-debt: reference recorded _HorseHordeContainFieldParse in HorseHordeContainFriendNewModuleDataThunk.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
 ?g_vtbl_01111FCC@@3PAPAXA	0x01111FCC	0	solved	gate-debt: reference recorded ??_7BFMEDistLODClass@@6BCompositeRenderObjClassPrimary@@@ in fx_particle_system_bulk.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
+?TheShellHookNames@@3PAPADA	0x012B3DC0	0	solved	gate-debt: reference recorded ?TheShellHookNames@@3PAPBDA in AptMainMenuExitGame.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
+?nShadowDecalVertsInBuf@@3HA	0x01306E0C	0	solved	gate-debt: add data match for 4B int in W3DProjectedShadow.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
+?nShadowDecalStartBatchVertex@@3HA	0x01306E10	0	solved	gate-debt: add data match for 4B int in W3DProjectedShadow.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
+?Rva00EF6CF4@@3PAXA	0x012F6CF4	0	solved	gate-debt: reference recorded ?defaultModuleTag3SourceAt8@FXParticleSystem@@3PAPAXA in Rva00C6BEA0Initializers.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
+?Rva00EF6D44@@3PAXA	0x012F6D44	0	solved	gate-debt: reference recorded ?hemisphericalEmissionVelocitySourceAt4@FXParticleSystem@@3PAPAXA in Rva00C6BEA0Initializers.cpp; keyed pass-test passes t=1 model=gemini-3.8-flash-medium

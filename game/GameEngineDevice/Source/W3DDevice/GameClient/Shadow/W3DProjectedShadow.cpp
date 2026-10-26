@@ -118,8 +118,8 @@ struct SHADOW_DECAL_VERTEX	//vertex structure passed to D3D
 
 LPDIRECT3DVERTEXBUFFER8 shadowDecalVertexBufferD3D=NULL;		///<D3D vertex buffer
 LPDIRECT3DINDEXBUFFER8	shadowDecalIndexBufferD3D=NULL;	///<D3D index buffer
-int nShadowDecalVertsInBuf=0;	//model vetices in vertex buffer
-int nShadowDecalStartBatchVertex=0;
+int nShadowDecalVertsInBuf=0;	// ?nShadowDecalVertsInBuf@@3HA model vetices in vertex buffer
+int nShadowDecalStartBatchVertex=0;	// ?nShadowDecalStartBatchVertex@@3HA
 int nShadowDecalIndicesInBuf=0;	// ?nShadowDecalIndicesInBuf@@3HA
 int nShadowDecalStartBatchIndex=0;
 int	nShadowDecalPolysInBatch=0;
