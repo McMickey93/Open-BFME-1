@@ -96,3 +96,105 @@ HRESULT BfmeShaderLoader::LoadAndCreateD3DShader( const char *filename, DWORD *s
 
 	return 0;
 }
+
+// Retail 0x00718B70 (ILT 0x00016CB6): the text-source sibling of the loader
+// above. It reads the file into a zero-terminated heap buffer, assembles it
+// with D3DXAssembleShader (retail 0x00A03887, the D3DX9 seven-argument form)
+// and creates the pixel shader through the same device slot, retrying the
+// assembly up to ten times while it fails with an error buffer. Its catch
+// block is the separately rowed 0x00718D05. Address-derived names; identity
+// unproven.
+struct ID3DXBuffer
+{
+	virtual long __stdcall QueryInterface(const void *, void **) = 0;
+	virtual unsigned long __stdcall AddRef(void) = 0;
+	virtual unsigned long __stdcall Release(void) = 0;
+	virtual void * __stdcall GetBufferPointer(void) = 0;
+	virtual unsigned long __stdcall GetBufferSize(void) = 0;
+};
+
+extern "C" long __stdcall D3DXAssembleShader(const char *, unsigned int, const void *, void *, DWORD,
+	ID3DXBuffer **, ID3DXBuffer **);
+
+class Rva00718B70ShaderLoader
+{
+public:
+	static HRESULT LoadAndCreateD3DShader( const char *filename, DWORD *shader );
+};
+
+HRESULT Rva00718B70ShaderLoader::LoadAndCreateD3DShader( const char *filename, DWORD *shader )
+{
+	try
+	{
+		for ( Int retry = 0; retry < 10; )
+		{
+			ID3DXBuffer *compiled = NULL;
+			ID3DXBuffer *errors = NULL;
+
+			File *file = TheFileSystem->openFile( filename, File::READ | File::BINARY );
+			if ( file == NULL )
+			{
+				OutputDebugString( "Could not find file \n" );
+				return (HRESULT)0x80004005L;
+			}
+
+			FileInfo fileInfo;
+			TheFileSystem->getFileInfo( AsciiString( filename ), &fileInfo );
+			DWORD fileSize = fileInfo.sizeLow;
+
+			char *source = (char *)HeapAlloc( GetProcessHeap(), HEAP_ZERO_MEMORY, fileSize + 8 );
+			if ( source == NULL )
+			{
+				OutputDebugString( "Failed to allocate memory to load shader\n " );
+				return (HRESULT)0x80004005L;
+			}
+
+			((Rva00718A10Dispatch *)file)->slot0C( source, fileSize );
+			source[fileSize] = 0;
+			((Rva00718A10Dispatch *)file)->slot08();
+
+			HRESULT hr = D3DXAssembleShader( source, fileSize, NULL, NULL, 0, &compiled, &errors );
+			HeapFree( GetProcessHeap(), 0, source );
+
+			if ( hr < 0 )
+			{
+				if ( compiled != NULL )
+				{
+					compiled->Release();
+					compiled = NULL;
+				}
+				if ( errors == NULL )
+					return (HRESULT)0x80004005L;
+				errors->GetBufferPointer();
+				errors->Release();
+				if ( retry >= 9 )
+					return (HRESULT)0x80004005L;
+				++retry;
+				continue;
+			}
+
+			IDirect3DDevice8 *device = DX8Wrapper::_Get_D3D_Device8();
+			HRESULT result = (*(BfmeCreatePixelShader **)device)[106]( device,
+				(const DWORD *)compiled->GetBufferPointer(), shader );
+			if ( compiled != NULL )
+			{
+				compiled->Release();
+				compiled = NULL;
+			}
+
+			if ( result < 0 )
+			{
+				OutputDebugString( "Failed to create shader\n " );
+				return (HRESULT)0x80004005L;
+			}
+			return 0;
+		}
+	}
+	catch ( ... )
+	{
+		OutputDebugString( "Error opening file \n" );
+		return (HRESULT)0x80004005L;
+	}
+
+	return 0;
+}
