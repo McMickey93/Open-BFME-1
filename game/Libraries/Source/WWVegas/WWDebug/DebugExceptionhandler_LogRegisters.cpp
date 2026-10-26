@@ -11,7 +11,8 @@ extern "C" unsigned char bfmeTextBME[];
 // _g_01132DD4: 3 retail bytes including the NUL.
 extern "C" const char g_01132DD4[] = "0x";
 extern "C" const char g_01134280[];
-extern "C" const char g_011343E4[];
+// _g_011343E4: 5 retail bytes including the NUL.
+extern "C" const char g_011343E4[] = "EAX:";
 // _g_011343DC: 6 retail bytes including the NUL.
 extern "C" const char g_011343DC[] = " EBX:";
 extern "C" const char g_011343D4[];
@@ -33,7 +34,8 @@ extern "C" const char g_01134390[];
 extern "C" const char g_01134388[] = " SS:";
 // _g_01134380: 5 retail bytes including the NUL.
 extern "C" const char g_01134380[] = "\nES:";
-extern "C" const char g_01134378[];
+// _g_01134378: 5 retail bytes including the NUL.
+extern "C" const char g_01134378[] = " FS:";
 // _g_01134370: 5 retail bytes including the NUL.
 extern "C" const char g_01134370[] = " GS:";
 
