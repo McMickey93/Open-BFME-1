@@ -87,3 +87,39 @@ void Rva00891C50::clear( void )
 {
 	g_rva01337A30AllocPair = 0;
 }
+
+// 0x008FD620 stores into, and 0x008FD630 / 0x008FE160 read, the same global
+// as Rva008FE150 above (0x012D6DC0), so they go through its static instead of
+// defining another. All three are unreferenced in retail.
+class Rva008FD620
+{
+public:
+	static void store( int value );
+};
+
+void Rva008FD620::store( int value )
+{
+	Rva008FE150::s_value = value;
+}
+
+class Rva008FD630
+{
+public:
+	static int get( void );
+};
+
+int Rva008FD630::get( void )
+{
+	return Rva008FE150::s_value;
+}
+
+class Rva008FE160
+{
+public:
+	static int get( void );
+};
+
+int Rva008FE160::get( void )
+{
+	return Rva008FE150::s_value;
+}
