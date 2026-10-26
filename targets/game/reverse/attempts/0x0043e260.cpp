@@ -1,5 +1,5 @@
 // ?d_0043e260@@YAXXZ
-// partial score=0.3399209486 date=2026-09-28
+// partial score=0.3399 date=2026-09-28
 struct Point0043E260 { int x,y; };
 // ?d_0043e260@@YAXXZ
 // partial score=0.221344 date=2026-09-25
