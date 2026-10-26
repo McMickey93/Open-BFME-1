@@ -113,3 +113,52 @@ Rva8CD130String &Rva8CD130String::rva0089EA60Append(const char *text)
     memcpy((char *)m_data + sizeof(BfmeStringData3AF0) + oldSize, text, len + 1);
     return *this;
 }
+
+// Retail 0x008922C0: unreferenced cdecl body after int3 padding. It builds an
+// EA string from the object's slot 0x40 text in the dead second-argument
+// home, runs slot 0x44, and enters string and object into the table at
+// g_bfmeMap1024+8 (BfmeConv1024.cpp's view; 0x0089D890). Address-derived
+// names; identity unproven.
+class Rva008922C0Object
+{
+public:
+	virtual void spare00(void) = 0;
+	virtual void spare01(void) = 0;
+	virtual void spare02(void) = 0;
+	virtual void spare03(void) = 0;
+	virtual void spare04(void) = 0;
+	virtual void spare05(void) = 0;
+	virtual void spare06(void) = 0;
+	virtual void spare07(void) = 0;
+	virtual void spare08(void) = 0;
+	virtual void spare09(void) = 0;
+	virtual void spare10(void) = 0;
+	virtual void spare11(void) = 0;
+	virtual void spare12(void) = 0;
+	virtual void spare13(void) = 0;
+	virtual void spare14(void) = 0;
+	virtual void spare15(void) = 0;
+	virtual const char *text40(void) = 0;
+	virtual void touch44(void) = 0;
+};
+
+class BfmeTab1024
+{
+public:
+	void bfmeAdd1024(int k, int v);
+};
+
+struct BfmeMap1024
+{
+	char m_bfmePad[8];
+	BfmeTab1024 m_bfmeTab;
+};
+
+extern BfmeMap1024 *g_bfmeMap1024;
+
+void rva008922C0Register(Rva008922C0Object *object, int unused)
+{
+	Rva8CD130String name(object->text40());
+	object->touch44();
+	g_bfmeMap1024->m_bfmeTab.bfmeAdd1024((int)&name, (int)object);
+}
