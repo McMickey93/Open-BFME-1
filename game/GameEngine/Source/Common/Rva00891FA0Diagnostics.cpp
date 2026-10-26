@@ -35,3 +35,13 @@ void Rva00892150SetReady(int ready)
     g_rva00891FA0Ready = ready;
     g_rva00891FA0Value = 0;
 }
+
+// 0x008921A0 (10 bytes), unreferenced: stores its argument into the dword at
+// VA 0x013377D0 (zero-filled .data tail, no other reference). Neither the
+// cell nor the setter has a recovered identity.
+int g_Va013377D0;
+
+void Rva008921A0Store(int value)
+{
+    g_Va013377D0 = value;
+}
