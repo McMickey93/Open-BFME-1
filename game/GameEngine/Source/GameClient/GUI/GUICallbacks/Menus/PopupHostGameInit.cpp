@@ -139,6 +139,7 @@ extern GameWindow* buttonCancel;
 extern "C" GameWindow* __identifier("?buttonCancel@@3PAVGameWindow@@A") = 0;
 extern NameKeyType textEntryLadderPasswordID;
 extern GameWindow* textEntryLadderPassword;
+extern "C" GameWindow* __identifier("?textEntryLadderPassword@@3PAVGameWindow@@A") = 0;
 extern NameKeyType comboBoxLadderNameID;
 extern GameWindow* comboBoxLadderName;
 extern NameKeyType textEntryGamePasswordID;
@@ -190,3 +191,4 @@ void PopupHostGameInit( WindowLayout *layout, void *userData )
 extern "C" NameKeyType __identifier("?parentPopupID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;
 extern "C" NameKeyType __identifier("?checkBoxAllowObserversID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;
 extern "C" NameKeyType __identifier("?textEntryGameDescriptionID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;
+extern "C" NameKeyType __identifier("?textEntryGamePasswordID@@3W4NameKeyType@@A") = NAMEKEY_INVALID;

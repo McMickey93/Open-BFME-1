@@ -1,4 +1,5 @@
 // cl: /DNDEBUG /MD /EHsc
+// Retire ??_7PorcupineFormationBodyModule@@6BObjectModule@@@: use ??_7PorcupineFormationBodyModule@@6BBehaviorModule@@@
 
 class Thing;
 class ModuleData;
@@ -6,27 +7,20 @@ class DamageInfo;
 class BodyModuleInterface;
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/BehaviorModule.h
-class BehaviorModuleInterface
+class BehaviorModule
 {
 public:
-	virtual BodyModuleInterface *getBody() = 0;
-};
-
-// upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Module.h
-class ObjectModule
-{
-public:
-	virtual ~ObjectModule();
+	virtual void behaviorModuleAnchor();
 
 private:
 	unsigned char m_data[8];
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/BehaviorModule.h
-class BehaviorModule : public ObjectModule, public BehaviorModuleInterface
+class BehaviorModuleInterface
 {
 public:
-	virtual BodyModuleInterface *getBody();
+	virtual BodyModuleInterface *getBody() = 0;
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/BodyModule.h
@@ -37,7 +31,9 @@ public:
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/ActiveBody.h
-class ActiveBody : public BehaviorModule, public BodyModuleInterface
+class ActiveBody : public BehaviorModule,
+	public BehaviorModuleInterface,
+	public BodyModuleInterface
 {
 public:
 	ActiveBody( Thing *thing, const ModuleData *moduleData );
