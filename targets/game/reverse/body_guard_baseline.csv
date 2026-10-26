@@ -430,7 +430,6 @@ dir32,0x012D5298,?g_bfmeDefaultString1284@@3URva008CAAE0StringBlock@@A,"retail 0
 dir32,0x012D5298,?g_default012D5298@@3UStringBlock008A73E0@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
 dir32,0x012D5298,?g_default012D5298@@3UStringBlock008B3AA0@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
 dir32,0x012D5298,?g_default012D5298@@3UStringBlock008B3C40@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
-dir32,0x012D5298,?g_rva012D5298Empty@@3VStringDataC@EAStringC@@A,"retail 0x012D5298 is already recorded as ?Rva012D5298Empty@@3URva00893410Block@@A (+30 more); reference that name, not a new one"
 dir32,0x012D6E18,?Rva00ED6E18@@3VShaderClass@@A,"retail 0x012D6E18 is already recorded as ?_PresetMultiplicativeShader@ShaderClass@@2V1@A; reference that name, not a new one"
 dir32,0x012D71A4,?_EnableTriangleDraw@SortingRendererClass@@0_NA,"nothing in the ledger owns 0x012D71A4. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012D9930,?CRC32_Table@@3PAKA,"nothing in the ledger owns 0x012D9930. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -580,7 +579,6 @@ dir32,0x01336E2C,??_B?1??getRva008876E0Singleton@@YAPAXXZ@51,the name encodes 0x
 dir32,0x01336E30,?obj@?1??getRva008877A0Singleton@@YAPAXXZ@4VRva008877A0Type@@A,the name encodes 0x008877A0 but retail reads 0x01336E30
 dir32,0x01336E4C,??_B?1??getRva008877A0Singleton@@YAPAXXZ@51,the name encodes 0x008877A0 but retail reads 0x01336E4C
 dir32,0x01336E5C,?debug01336E5C@@3PAVShadowDebug007BC270@@A,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
-dir32,0x01336E5C,?g_Rva00F36E5C@@3PAXA,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x013377D8,?g_bfmeHolderBU@@3PAUState8C4DA0@@A,"retail 0x013377D8 is already recorded as ?Rva008A5380Holder@@3PADA (+18 more); reference that name, not a new one"
 dir32,0x01337820,?g_01337820@@3PAURva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
 dir32,0x01337820,?g_01337820@@3PAVRva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
@@ -588,7 +586,6 @@ dir32,0x01337A30,?g_bfmeStringPool1284@@3PAP6AXPAX@ZA,"retail 0x01337A30 is alre
 dir32,0x01337A30,?g_bfmeStringPool1284@@3PAUPool8C4DA0@@A,"retail 0x01337A30 is already recorded as ?Rva00892ED0ReleaseTable@@3PAP6AXPAX@ZA (+29 more); reference that name, not a new one"
 dir32,0x01337A30,?g_pool01337A30@@3PAUStringPool008B3AA0@@A,"retail 0x01337A30 is already recorded as ?Rva00892ED0ReleaseTable@@3PAP6AXPAX@ZA (+29 more); reference that name, not a new one"
 dir32,0x01337A30,?g_rva01337A30AllocPair@@3PAUBfmeStringPool3AF0@@A,"retail 0x01337A30 is already recorded as ?Rva00892ED0ReleaseTable@@3PAP6AXPAX@ZA (+29 more); reference that name, not a new one"
-dir32,0x01338478,?g_rva01338478NodeHead@@3PAURva008C3B60Node@@A,"retail 0x01338478 is already recorded as ?Rva008C3B60Head@@3PAURva008C3B60Node@@A (+8 more); reference that name, not a new one"
 dir32,0x013384C0,?key013384C0@@3HA,"nothing in the ledger owns 0x013384C0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x013384C8,?key013384C8@@3HA,"nothing in the ledger owns 0x013384C8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01338524,?g_01338524@@3URva008A9A70Str@@A,the name encodes 0x008A9A70 but retail reads 0x01338524
