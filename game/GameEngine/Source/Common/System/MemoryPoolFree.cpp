@@ -69,3 +69,13 @@ void MemoryPool::_Free(void *ptr, AllocType type)
     LeaveCriticalSection(g_Va0130E9D8);
 }
 
+
+// 0x00882F90: unreferenced cdecl setter after int3 padding that stores its
+// three arguments into the delayed-free ring's slot count and the size
+// bounds _Free reads above. Address-derived name.
+void Rva00882F90SetDelayedFree(unsigned int count, unsigned int low, unsigned int high)
+{
+    g_rva0130EA04 = count;
+    g_Va0130EA08 = low;
+    g_Va012D4D0C = high;
+}
