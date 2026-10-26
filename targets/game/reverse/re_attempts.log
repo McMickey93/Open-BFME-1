@@ -58475,3 +58475,8 @@ _piCalculatePing	0x00872EA0	3	landed	landed-by=add_match source=game/GameEngine/
 _piAuthenticateCDKeyCallback	0x00C60020	0	blocked	gate-debt: false-reject dir32: see targets/game/reverse/attempt_support/peer-callback-owner-retirement.md t=2 model=gemini-3.8-flash-medium
 ??_7T1Derived_005DEC40@@6BBfmeHolderCU@@@	0x01111360	0	blocked	gate-debt: no source literally spells ??_7T1Derived_005DEC40@@6BBfmeHolderCU@@@; ICF twin with ??_7Rva005ED310@@6BV3NodeHead@@@ at 0x01111360 t=2 model=gemini-3.8-flash-medium
 ??0BfmeGdElem36@@QAE@XZ	0x00436E7B	0	blocked	gate-debt: no source literally spells ??0BfmeGdElem36@@QAE@XZ; unowned ILT thunk 0x00436E7B reaches 0x00083440 t=2 model=gemini-3.8-flash-medium
+??0Rva009F68E3@@QAE@ABV0@@Z	0x009F68E3	13	landed	verified exact via ./build.sh BfmeConv790.cpp; packed /O1 body between matched neighbours t=8min model=claude-opus-5-5
+?Rva009F68F0Second@@YAHHH@Z	0x009F68F0	5	landed	verified exact via ./build.sh BfmeConv790.cpp; packed /O1 body between matched neighbours t=8min model=claude-opus-5-5
+?enter@Rva009F68F5Section@@QAEHXZ	0x009F68F5	10	landed	verified exact via ./build.sh BfmeConv790.cpp; packed /O1 body between matched neighbours t=8min model=claude-opus-5-5
+?leave@Rva009F68F5Section@@QAEHXZ	0x009F68FF	10	landed	verified exact via ./build.sh BfmeConv790.cpp; packed /O1 body between matched neighbours t=8min model=claude-opus-5-5
+??0BfmeThingDWD@@QAE@AAUBfmeCsDWD@@_N@Z	0x009F6971	41	landed	verified exact via ./build.sh BfmeConv790.cpp; packed /O1 body between matched neighbours t=8min model=claude-opus-5-5
