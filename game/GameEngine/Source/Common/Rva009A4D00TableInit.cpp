@@ -3,7 +3,7 @@
 // 16-bit table is halved (rounding toward zero) and offset by 2 into an int
 // array, then an opaque helper and bfmeRun_009A75E0 run in tail position.
 
-extern void d_009a8430();
+int Get_RDTSC_CPU_Speed();	// matched body; formerly reached as d_009a8430
 void __cdecl Rva009A5AA0InstallFilter(void *, void *, void *, int);
 void bfmeRun_009A75E0(void);
 
@@ -65,7 +65,7 @@ void Rva009A8550Init(void)
 
 void Rva009A4D00Init(void)
 {
-	*g_013571E0 = reinterpret_cast<Fn009A8430>(d_009a8430)();
+	*g_013571E0 = reinterpret_cast<Fn009A8430>(Get_RDTSC_CPU_Speed)();
 	Rva009A8550Init();
 
 	int *dst = g_Va0134C6D8;

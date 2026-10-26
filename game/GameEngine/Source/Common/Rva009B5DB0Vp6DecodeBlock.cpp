@@ -4,11 +4,11 @@
 struct Rva009B4800State;
 extern int Rva009B4800DecodeBool(Rva009B4800State *, int);
 
-extern void d_009b58f0(void);
+void Rva009B58F0(unsigned char *, int, unsigned int, int);	// matched body; formerly reached as d_009b58f0
 
 typedef void (__cdecl *Rva009B58F0Fn)(unsigned char *, int, unsigned int, int);
 
-extern void d_009b5420(void);
+void Rva009B5420(void *, unsigned int, unsigned int, unsigned char, int *);	// matched body; formerly reached as d_009b5420
 typedef void (__cdecl *Rva009B5420Vp6FindPredictorFn)(void *, int, int, int, int *);
 
 extern int Rva009B50F0DecodeToken(unsigned char *, int, int);
@@ -45,7 +45,7 @@ void Rva009B5AF0Vp6DecodeBlock(unsigned char *ctx, int row, int column)
 {
 	Rva009B5AF0State *state = (Rva009B5AF0State *)ctx;
 	int scratch; // predictor context, later a decoded motion vector
-	((Rva009B5420Vp6FindPredictorFn)d_009b5420)(state, row, column, 1, &scratch);
+	((Rva009B5420Vp6FindPredictorFn)Rva009B5420)(state, row, column, 1, &scratch);
 
 	int mode = Rva009B50F0DecodeToken((unsigned char *)state, state->lastMode, scratch);
 	state->lastMode = mode;
@@ -111,12 +111,12 @@ void Rva009B5AF0Vp6DecodeBlock(unsigned char *ctx, int row, int column)
 		y = state->candidateMv1.y;
 		break;
 	case 8:
-		((Rva009B5420Vp6FindPredictorFn)d_009b5420)(state, row, column, 2, &scratch);
+		((Rva009B5420Vp6FindPredictorFn)Rva009B5420)(state, row, column, 2, &scratch);
 		x = state->goldenCandidateMv0.x;
 		y = state->goldenCandidateMv0.y;
 		break;
 	case 9:
-		((Rva009B5420Vp6FindPredictorFn)d_009b5420)(state, row, column, 2, &scratch);
+		((Rva009B5420Vp6FindPredictorFn)Rva009B5420)(state, row, column, 2, &scratch);
 		x = state->goldenCandidateMv1.x;
 		y = state->goldenCandidateMv1.y;
 		break;
@@ -126,7 +126,7 @@ void Rva009B5AF0Vp6DecodeBlock(unsigned char *ctx, int row, int column)
 		y = ((short *)&scratch)[1];
 		break;
 	case 6:
-		((Rva009B5420Vp6FindPredictorFn)d_009b5420)(state, row, column, 2, &scratch);
+		((Rva009B5420Vp6FindPredictorFn)Rva009B5420)(state, row, column, 2, &scratch);
 		Rva009B5200DecodeMotionVector(state, (short *)&scratch, 6);
 		x = ((short *)&scratch)[0];
 		y = ((short *)&scratch)[1];
@@ -194,26 +194,26 @@ void Rva009B5DB0Vp6DecodeBlock(unsigned char *ctx, int outer, unsigned int colum
 	*(int *)(ctx + 0x68) = col16;
 	*(int *)(ctx + 0xbc) = *(int *)(ctx + 0x10c) + col32;
 	*(unsigned char **)(ctx + 0xc0) = ctx + 0xcc;
-	((Rva009B58F0Fn)d_009b58f0)(ctx, outer, column, 0);
+	((Rva009B58F0Fn)Rva009B58F0)(ctx, outer, column, 0);
 
 	*(int *)(ctx + 0x70) += 8;
 	*(int *)(ctx + 0xbc) = *(int *)(ctx + 0x10c) + 0x10 + col32;
 	*(unsigned char **)(ctx + 0xc0) = ctx + 0xcc;
 	*(int *)(ctx + 0x68) += 8;
-	((Rva009B58F0Fn)d_009b58f0)(ctx, outer, column, 1);
+	((Rva009B58F0Fn)Rva009B58F0)(ctx, outer, column, 1);
 
 	*(int *)(ctx + 0x70) = *(int *)(ctx + 0x1b8) * stride + rowOffset;
 	*(int *)(ctx + 0xbc) = *(int *)(ctx + 0x10c) + col32;
 	*(unsigned char **)(ctx + 0xc0) = ctx + 0xdc;
 	*(int *)(ctx + 0x68) -= 8;
 	*(int *)(ctx + 0x64) += stride;
-	((Rva009B58F0Fn)d_009b58f0)(ctx, outer, column, 2);
+	((Rva009B58F0Fn)Rva009B58F0)(ctx, outer, column, 2);
 
 	*(int *)(ctx + 0x70) += 8;
 	*(int *)(ctx + 0xbc) = *(int *)(ctx + 0x10c) + 0x10 + col32;
 	*(unsigned char **)(ctx + 0xc0) = ctx + 0xdc;
 	*(int *)(ctx + 0x68) += 8;
-	((Rva009B58F0Fn)d_009b58f0)(ctx, outer, column, 3);
+	((Rva009B58F0Fn)Rva009B58F0)(ctx, outer, column, 3);
 
 	int height = *(int *)(ctx + 0x1bc);
 	int row8 = outer * 8;
@@ -229,7 +229,7 @@ void Rva009B5DB0Vp6DecodeBlock(unsigned char *ctx, int outer, unsigned int colum
 	*(unsigned char **)(ctx + 0xc0) = ctx + 0xec;
 	*(unsigned char **)(ctx + 0xc4) = ctx + 0x12c;
 	*(int *)(ctx + 0x78) = 1;
-	((Rva009B58F0Fn)d_009b58f0)(ctx, outer, column, 4);
+	((Rva009B58F0Fn)Rva009B58F0)(ctx, outer, column, 4);
 
 	*(int *)(ctx + 0xbc) = *(int *)(ctx + 0x114) + col16;
 	*(unsigned char **)(ctx + 0xc0) = ctx + 0xfc;
@@ -237,5 +237,5 @@ void Rva009B5DB0Vp6DecodeBlock(unsigned char *ctx, int outer, unsigned int colum
 		+ *(int *)(ctx + 0x224) + *(int *)(ctx + 0x68);
 	*(unsigned char **)(ctx + 0xc4) = ctx + 0x134;
 	*(int *)(ctx + 0x78) = 2;
-	((Rva009B58F0Fn)d_009b58f0)(ctx, outer, column, 5);
+	((Rva009B58F0Fn)Rva009B58F0)(ctx, outer, column, 5);
 }

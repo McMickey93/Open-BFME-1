@@ -11,7 +11,7 @@ int g_012D7818[8][2] = {
 	{ 128, 0 }, { 112, 16 }, { 96, 32 }, { 80, 48 }, { 64, 64 }, { 48, 80 }, { 32, 96 }, { 16, 112 }
 };
 
-extern void __cdecl d_009a75f0(void);
+void __cdecl Rva009A75F0(const unsigned char *, unsigned short *, unsigned int, unsigned int, unsigned int, unsigned int, const int *);	// matched body; formerly reached as d_009a75f0
 extern void __cdecl bfmeGo7820(void *, void *, void *, void *, void *);
 extern void __cdecl Rva009A79D0Vp6Filter(
 	const unsigned char *, unsigned short *, int, const int *, const int *);
@@ -66,14 +66,14 @@ void __cdecl Rva009A7B00Vp6Filter(
 	if (diff == 1)
 	{
 		if (useBicubic)
-			((Rva009A7B00FourTapFilter)&d_009a75f0)(source1, destination, sourcePitch, 1, 8, 8, g_012D7798[modeX]);
+			((Rva009A7B00FourTapFilter)&Rva009A75F0)(source1, destination, sourcePitch, 1, 8, 8, g_012D7798[modeX]);
 		else
 			Rva009A7B00TwoTapFilter(source1, destination, sourcePitch, 1, 8, 8, g_012D7818[modeX]);
 	}
 	else if (diff == (int)sourcePitch)
 	{
 		if (useBicubic)
-			((Rva009A7B00FourTapFilter)&d_009a75f0)(source1, destination, sourcePitch, sourcePitch, 8, 8, g_012D7798[modeY]);
+			((Rva009A7B00FourTapFilter)&Rva009A75F0)(source1, destination, sourcePitch, sourcePitch, 8, 8, g_012D7798[modeY]);
 		else
 			Rva009A7B00TwoTapFilter(source1, destination, sourcePitch, sourcePitch, 8, 8, g_012D7818[modeY]);
 	}

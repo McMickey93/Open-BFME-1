@@ -42,9 +42,9 @@ extern int g_bfmeTableJX;
 #define g_01356B64 (((Rva009B58F0Callback *)&g_bfmeTableJX)[1])
 #define g_01356B84 (((Rva009B58F0Callback *)&g_bfmeTableJX)[9])
 #define g_01356C5C (((Rva009B58F0Callback *)&g_bfmeTableJX)[63])
-extern void d_009b4a10();
+unsigned char Rva009B4A10(unsigned char *, short *, int);	// matched body; formerly reached as d_009b4a10
 typedef unsigned char (__cdecl *Rva009B4A10Fn)(void *, short *, int);
-#define VP6_ReadHuffTokens(p,a,b) ((Rva009B4A10Fn)d_009b4a10)(p,(short *)(a),b)
+#define VP6_ReadHuffTokens(p,a,b) ((Rva009B4A10Fn)Rva009B4A10)(p,(short *)(a),b)
 extern void d_009ab9d0();
 typedef unsigned char (__cdecl *Rva009AB9D0Fn)(void *, short *, int, void *, void *);
 #define VP6_ReadTokens(p,a,b,c,d) ((Rva009AB9D0Fn)d_009ab9d0)(p,(short *)(a),b,c,d)
