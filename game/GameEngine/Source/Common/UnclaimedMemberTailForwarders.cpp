@@ -160,3 +160,26 @@ class Gen_002E0990 { public: void bfmeRemoveAll( void *item, int count ); };
 struct Rva0026EDA0Arg { char m_lead[ 0x74 ]; void *m_item; };
 class Rva0026EDA0Forward { public: void forward( Rva0026EDA0Arg *arg, int count ); char m_lead[ 0x204 ]; Gen_002E0990 m_target; };
 void Rva0026EDA0Forward::forward( Rva0026EDA0Arg *arg, int count ) { m_target.bfmeRemoveAll( arg->m_item, count ); }
+
+// 0x000E9FD0, the same split (6 unowned bytes before a gap thunk at +6):
+// `add ecx,0xC8` and a tail jump through ILT stub 0x00019BCD into the matched
+// BitFlags<181>::testSetAndClear (0x000E9910) on an embedded flag set, both
+// reference arguments passed through.
+template <int NUMBITS> class BitFlags
+{
+public:
+	bool testSetAndClear( const BitFlags &mustBeSet, const BitFlags &mustBeClear ) const;
+private:
+	unsigned m_bits[ ( NUMBITS + 31 ) / 32 ];
+};
+class Rva000E9FD0Forward
+{
+public:
+	bool forward( const BitFlags< 181 > &mustBeSet, const BitFlags< 181 > &mustBeClear ) const;
+	char m_lead[ 0xC8 ];
+	BitFlags< 181 > m_flags;
+};
+bool Rva000E9FD0Forward::forward( const BitFlags< 181 > &mustBeSet, const BitFlags< 181 > &mustBeClear ) const
+{
+	return m_flags.testSetAndClear( mustBeSet, mustBeClear );
+}
