@@ -47,6 +47,7 @@ public:
 	Int m_unreconstructed_00;
 	UnsignedInt m_bits04;
 
+	UnsignedByte isBit15Clear(void) const;
 	Bool isKind13(void) const;
 	Bool isKind0C(void) const;
 	Bool isKind0F(void) const;
@@ -106,4 +107,18 @@ Bool Rva008A0F20Header::isKind0CTo13(bool allowClear) const
 Bool Rva008A0F20Header::isKind0DOr12(bool allowClear) const
 {
 	return isKind0D( allowClear ) || isKind12( allowClear );
+}
+
+// 0x008919E0: unreferenced 11-byte const leaf after int3 padding that returns
+// the same byte-wide complement of bit 15 the predicates above test
+// (mov eax,[ecx+4] / shr eax,0xF / not al / and al,1 / ret). Address-derived
+// name.
+UnsignedByte Rva008A0F20Header::isBit15Clear(void) const
+{
+	// Spelled as byte statements: a single expression widens the mask to
+	// `and eax,1`, retail keeps `and al,1`.
+	UnsignedByte flag = (UnsignedByte)( m_bits04 >> 15 );
+	flag = ~flag;
+	flag &= 1;
+	return flag;
 }

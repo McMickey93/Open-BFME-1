@@ -122,3 +122,17 @@ void rva008921C0Walk()
 	if (world)
 		reinterpret_cast<BfmeWalk1236 *>(world->m_bfmePad + 0x122c)->bfmeWalk1236();
 }
+
+// Retail 0x00891E50: unreferenced, after int3 padding: tail-calls the
+// matched AptInput bfmeAdvance1285 (0x008BB570) on the same singleton
+// itself. Address-derived name.
+class BfmeBroadcast1285
+{
+public:
+	void bfmeAdvance1285();
+};
+
+void rva00891E50Advance()
+{
+	reinterpret_cast<BfmeBroadcast1285 *>(g_bfmeHolderBU)->bfmeAdvance1285();
+}
