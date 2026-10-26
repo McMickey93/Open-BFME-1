@@ -58487,3 +58487,8 @@ _piAuthenticateCDKeyCallback	0x00C60020	0	blocked	gate-debt: false-reject dir32:
 ___ImageBase	0x00400000	0	blocked	gate-debt: source not found by literal symbol and no data row for image base t=2min model=gemini-3.8-flash-medium
 ?g_vtbl_0110F978@@3PAPAXA	0x0110F978	0	blocked	gate-debt: source not found by literal symbol (mangled vs unmangled) and absent in data_rows.csv t=3min model=gemini-3.8-flash-medium
 ?g_vtbl_0110F978@@3PAPAXA	0x0110F978	0	void	retract premature blocked; pass-test succeeded model=gemini-3.8-flash-medium
+??0BoneParticleSystemInfo@@QAE@XZ	0x004316B0	0	blocked	gate-debt: compiler-generated constructor not spelled in source; pass-test fails closed t=1 model=gemini-3.8-flash-medium
+?g_bfmeDefaultString1284@@3URva008CAAE0StringBlock@@A	0x012D5298	0	blocked	gate-debt: absent owner in data_rows.csv and no source spells literal symbol; pass-test fails closed t=2 model=gemini-3.8-flash-medium
+??1Rva00127AC0Element@@QAE@XZ	0x00417477	0	blocked	false-reject name_lane: renaming placeholder class to authentic recorded symbol refused by pre-commit hook t=2 model=gemini-3.8-flash-medium
+??1Rva00127AB0Element@@QAE@XZ	0x00422D3B	0	blocked	false-reject name_lane: renaming placeholder class to authentic recorded symbol refused by pre-commit hook t=2 model=gemini-3.8-flash-medium
+??0Rva00127AC0Element@@QAE@XZ	0x0043475C	0	blocked	false-reject name_lane: renaming placeholder class to authentic recorded symbol refused by pre-commit hook t=2 model=gemini-3.8-flash-medium

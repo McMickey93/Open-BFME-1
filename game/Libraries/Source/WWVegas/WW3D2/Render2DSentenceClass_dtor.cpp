@@ -106,13 +106,15 @@ public:
 	// Renderer element. The 0x0113CE24 vector vtable names
 	// VectorClass<ENUM_VALUE>, and retail destroys the 8-byte elements
 	// through ILT 0x000470F5 (the pinned ??1_ENUM_VALUE dtor).
-	struct ENUM_VALUE
+	// retired debt: ??_7?$VectorClass@UENUM_VALUE@EnumParameterClass@@@@6B@ -> ??_7?$VectorClass@U_ENUM_VALUE@EnumParameterClass@@@@6B@
+	struct _ENUM_VALUE
 	{
-		~ENUM_VALUE();						// retail ILT 0x000470F5
+		~_ENUM_VALUE();						// retail ILT 0x000470F5
 
 		void *m_name;
 		int m_value;
 	};
+	typedef _ENUM_VALUE ENUM_VALUE;
 };
 
 template<class T>

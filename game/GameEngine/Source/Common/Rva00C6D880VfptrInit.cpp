@@ -8,7 +8,9 @@ public:
     virtual void slot();
 };
 
-extern Rva00848AB0 g_bfmeRva0130BCACStatic;
+// retired debt: ?g_bfmeRva0130BCACStatic@@3VRva00848AB0@@A -> ?TheBfmeObject_00C70C80@@3VGen_00C70C80Target@@A
+extern "C" Rva00848AB0 __identifier("?TheBfmeObject_00C70C80@@3VGen_00C70C80Target@@A");
+#define g_bfmeRva0130BCACStatic __identifier("?TheBfmeObject_00C70C80@@3VGen_00C70C80Target@@A")
 void bfmeForward_00C70C80();
 extern "C" int __cdecl atexit(void (__cdecl *callback)());
 

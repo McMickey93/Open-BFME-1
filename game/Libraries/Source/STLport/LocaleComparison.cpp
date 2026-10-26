@@ -34,7 +34,9 @@ __declspec(noinline) string locale::name() const
 }
 
 // C6D8B0 constructs this string from "*" and registers C70CC0 to destroy it.
-extern string Rva0130BCB4;
+// retired debt: ?Rva0130BCB4@_STL@@3V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@1@A -> ?TheBfmeObject_00C70CC0@@3VGen_00C70CC0Target@@A
+extern "C" string __identifier("?TheBfmeObject_00C70CC0@@3VGen_00C70CC0Target@@A");
+#define Rva0130BCB4 __identifier("?TheBfmeObject_00C70CC0@@3VGen_00C70CC0Target@@A")
 
 template <>
 __declspec(noinline) bool operator!=(const string &a, const string &b)

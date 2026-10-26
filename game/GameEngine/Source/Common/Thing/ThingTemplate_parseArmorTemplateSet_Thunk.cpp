@@ -14,7 +14,8 @@ public:
 	void initFromINI(void *, const FieldParse *);
 };
 
-extern const FieldParse g_armorTemplateSetFieldParse[];
+// retired debt: ?g_armorTemplateSetFieldParse@@3QBUFieldParse@@B -> ?g_armorTemplateSetFieldParse@@3QBEB
+extern "C" const FieldParse __identifier("?g_armorTemplateSetFieldParse@@3QBEB")[];
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/ArmorSet.h
 class ArmorTemplateSet
@@ -24,7 +25,7 @@ public:
 
 	void parseArmorTemplateSet(INI *ini)
 	{
-		ini->initFromINI(this, g_armorTemplateSetFieldParse);
+		ini->initFromINI(this, __identifier("?g_armorTemplateSetFieldParse@@3QBEB"));
 	}
 
 private:
