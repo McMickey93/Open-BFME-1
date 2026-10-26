@@ -1,4 +1,4 @@
-// cl: /Igame/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWMath /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /Igame/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWMath /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Retail 0x00233F30 (154 bytes, ret 8).  Three callers (one is 0x002350C0)
 // pass ECX, a hidden result address and a direction, and use the returned
 // EAX.  The body takes the direction's length (scaled by the settings float
