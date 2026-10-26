@@ -19,6 +19,11 @@ public:
 	virtual void bfmeSpare009GN(void) = 0;
 	virtual unsigned char bfmeAskGN(void) = 0;
 	virtual void bfmeFixGN(void) = 0;
+	virtual void bfmeSpare012GN(void) = 0;
+	virtual void bfmeSpare013GN(void) = 0;
+	virtual void bfmeSpare014GN(void) = 0;
+	virtual void bfmeSpare015GN(void) = 0;
+	virtual bool bfmeSlot016GN(void) = 0;
 
 	unsigned char m_bfmeHead[0x10];		// 0x04
 	BfmeOtherGN *m_bfmeOther;		// 0x14
@@ -26,14 +31,42 @@ public:
 
 struct BfmeOtherGN
 {
-	unsigned char m_bfmeHead[0x28];		// 0x00
+	unsigned char m_bfmeHead[0x24];		// 0x00
+	int m_bfmeState;			// 0x24
 	int m_bfmeValue;			// 0x28
 };
 
 class BfmeThingGN
 {
 public:
-	int bfmeAskGN(void);
+	__declspec(noinline) int bfmeAskGN(void);
+	bool rva0090E2E0(void);
+
+	bool bfmeIdleGN(void)
+	{
+		if (m_bfmeItem == 0)
+			return true;
+
+		return m_bfmeItem->bfmeSlot016GN();
+	}
+
+	int bfmeStateGN(void)
+	{
+		BfmeItemGN *item = m_bfmeItem;
+
+		if (item == 0)
+			return 0;
+
+		if (item->bfmeAskGN() == 0)
+			item->bfmeFixGN();
+
+		BfmeOtherGN *other = item->m_bfmeOther;
+
+		if (other != 0)
+			return other->m_bfmeState;
+
+		return 1;
+	}
 
 private:
 	BfmeItemGN *m_bfmeItem;			// 0x0
@@ -56,6 +89,17 @@ int BfmeThingGN::bfmeAskGN(void)
 
 	return 1;
 }
+
+// 0x0090E2E0: unreferenced; a slot-0x40 yes short-circuits, otherwise the
+// item is fixed up as above and the answer must be exactly 1.
+bool BfmeThingGN::rva0090E2E0(void)
+{
+	if (bfmeIdleGN())
+		return true;
+
+	return bfmeStateGN() == 1 && bfmeAskGN() == 1;
+}
+
 
 class BfmeTargetGT
 {
