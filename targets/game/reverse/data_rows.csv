@@ -1785,3 +1785,4 @@ _g_011343E4,0x011343E4,va,5,.rdata,game/Libraries/Source/WWVegas/WWDebug/DebugEx
 ?g_011144EC@FXParticleSystem@@3QBDB,0x011144EC,va,18,.rdata,game/GameEngine/Source/GameClient/System/FXParticleSystem/fx_particle_system_bulk.cpp,matched,targets/game/reverse/identity_evidence/011144ec-g_011144EC.md,gemini-3.8-flash-medium
 ?TheBfmeDrawableDirtyFlags@@3HA,0x012EF418,va,4,.data,game/GameEngine/Source/Common/SmallGaps/Rva0018EEF0ScaleTriples.cpp,matched,targets/game/reverse/identity_evidence/012ef418-dword-view.md,gemini-3.8-flash-medium
 ?g_Va013377D0@@3HA,0x013377D0,va,4,.data,game/GameEngine/Source/Common/Rva00891FA0Diagnostics.cpp,matched,targets/game/reverse/identity_evidence/013377d0-g_Va013377D0.md,claude-opus-5-5
+?g_bfmeDockingDesyncLog@@3_NA,0x012B290C,va,1,.data,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate/WorkerAIUpdateNewTaskBfme.cpp,matched,targets/game/reverse/identity_evidence/012b290c-g_bfmeDockingDesyncLog.md,claude-opus-5-5

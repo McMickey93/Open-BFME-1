@@ -29,7 +29,7 @@ class Object {public:
  void setBuilder(const Object*);
 };
 class CRCParameterCheck;extern CRCParameterCheck*TheCRCParameterCheck;
-extern bool g_bfmeDockingDesyncLog;
+bool g_bfmeDockingDesyncLog = true;	// retail .data 0x012B290C holds 1
 bool g_bfmeDockingTraceActive = false;
 extern "C" void bfmeRetailCritterDesyncLog(CRCParameterCheck*,const char*,...);
 class GameLogic {public:char pad[0x3c];unsigned frame;};extern GameLogic*TheGameLogic;
