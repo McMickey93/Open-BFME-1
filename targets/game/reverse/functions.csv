@@ -37263,7 +37263,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0021ac30@@YAXXZ,,0x0021AC30,178,game/gen_asm/d_00218670.asm,matched,gen-dump;ghidra=FUN_0061ac30
 ?d_0021ada0@@YAXXZ,,0x0021ADA0,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getSixtyFourth@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
 ?d_0021ce60@@YAXXZ,,0x0021CE60,214,game/gen_asm/d_00218670.asm,matched,gen-dump;ghidra=FUN_0061ce60
-?d_0021d360@@YAXXZ,,0x0021D360,245,game/gen_asm/d_00218670.asm,matched,gen-dump;ghidra=FUN_0061d360
 ?d_002206d0@@YAXXZ,,0x002206D0,14,game/GameEngine/Source/Common/VirtualSlot5CallThunk.cpp,matched,object-symbol=?invokeEmbedded@VirtualSlot25EmbeddedArgumentsThunk@@QAEXXZ;Open-BFME5 clean C++ virtual slot twenty-five embedded arguments
 ?d_00220840@@YAXXZ,,0x00220840,60,game/GameEngine/Source/Common/Rva220840DispatchThunk.cpp,matched,object-symbol=?invoke@Rva220840DispatchThunk@@QAE_NII@Z;Open-BFME5 clean C++ virtual dispatch wrapper
 ?d_00221360@@YAXXZ,,0x00221360,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getSixtyFifth@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
@@ -173390,3 +173389,4 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 ?Rva008921A0Store@@YAXH@Z,,0x008921A0,10,game/GameEngine/Source/Common/Rva00891FA0Diagnostics.cpp,matched,unowned 16-aligned gap body; stores its argument at VA 0x013377D0; identity not recovered;model=claude-opus-5-5;host=app
 ?_set_com_error_handler@@YGXP6GXJPAUIErrorInfo@@@Z@Z,,0x00AFD530,12,inputs/vendor/comsupp/comsupp.lib,matched,vendored=msvc71-comsupp;member=Release\comsupp.obj;model=claude-opus-5-5;host=app
 ?CheckError@_com_util@@YAXJ@Z,,0x00AFD6B0,15,inputs/vendor/comsupp/comsupp.lib,matched,vendored=msvc71-comsupp;member=Release\comutil.obj;model=claude-opus-5-5;host=app
+?onRemoving@ContestableContain@@UAEXPAVObject@@@Z,,0x0021D360,245,game/GameEngine/Source/GameLogic/Object/Contain/ContestableContain_onRemoving.cpp,matched,ContestableContain secondary vtable 0x010AB140 slot +0x48 (ILT 0x0004593A) = GarrisonContain vtable 0x010AB598 slot +0x48 onRemoving; calls GarrisonContain::onRemoving first;model=claude-opus-5-5;host=app
