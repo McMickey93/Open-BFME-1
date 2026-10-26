@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHs-c- /D_STLP_USE_STATIC_LIB /Igame/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
+// cl: /DNDEBUG /MD /EHs-c- /D_STLP_USE_STATIC_LIB /Igame/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
 // stlport
 // The callback appends resolved upgrade pointers to the decoded vector.
 #define _STLP_NO_EXCEPTIONS 1

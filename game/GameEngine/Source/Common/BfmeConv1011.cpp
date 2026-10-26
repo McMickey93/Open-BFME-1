@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /Iinputs/reference/CnC_Generals_Zero_Hour/Generals/Code/Libraries/Include
+// cl: /DNDEBUG /MD /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/Generals/Code/Libraries/Include
 
 // Open-BFME5 conversions.
 #include "Lib/BaseType.h"

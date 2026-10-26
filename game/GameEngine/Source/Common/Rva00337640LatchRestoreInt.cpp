@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
 // ?dup_00337640 (31 B), ?dup_00337670 (15 B), ?dup_003377a0 (39 B): retail keeps
 // the constructor, destructor and scalar deleting destructor of LatchRestore<int>
 // at these addresses. Which BFME TU emitted them is unknown (the rows keep their

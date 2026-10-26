@@ -1,4 +1,4 @@
-// cl: /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 
 // The call at +0x0019 goes through the ILT entry at 0x00003B52, which is
 // Object::getProductionUpdateInterface()'s thunk; the body it reaches is
