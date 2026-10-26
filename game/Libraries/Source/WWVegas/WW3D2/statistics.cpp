@@ -33,6 +33,7 @@ namespace Debug_Statistics
 	void Record_Sorting_Polys_And_Vertices(int pcount, int vcount);
 	class ShaderClass;
 	void Record_DX8_Polys_And_Vertices(int pcount, int vcount, const ::ShaderClass &shader);
+	int Get_DX8_Skin_Polygons();
 	int dx8_polygons;
 	int dx8_vertices;
 	int dx8_renders;
@@ -132,4 +133,12 @@ void Debug_Statistics::Record_DX8_Polys_And_Vertices(int pcount, int vcount, con
 	dx8_polygons += pcount;
 	dx8_vertices += vcount;
 	dx8_renders++;
+}
+
+// 0x00937240: unclaimed 6-byte getter among the snapshot getters at
+// 0x00937220-0x00937260; Zero Hour's statistics.cpp returns
+// last_frame_dx8_skin_polygons from this getter alone.
+int Debug_Statistics::Get_DX8_Skin_Polygons()
+{
+	return last_frame_dx8_skin_polygons;
 }
