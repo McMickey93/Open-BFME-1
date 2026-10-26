@@ -68,3 +68,20 @@ void Rva008892D0DebugForward0()
 {
 	reinterpret_cast<BfmeAwakenDebug *>(g_Rva00F36E5C)->slot58();
 }
+
+// 0x008892E0 / 0x008892F0, directly before the forwarders: raise the debug
+// flag byte g_01336E79 (Rva00F36E5C.cpp, the flag DebugFinishAssert reads),
+// and read-then-clear it. Unreferenced; names keep the address.
+extern bool g_01336E79;
+
+void Rva008892E0RaiseFlag()
+{
+	g_01336E79 = true;
+}
+
+bool Rva008892F0TakeFlag()
+{
+	bool raised = g_01336E79;
+	g_01336E79 = false;
+	return raised;
+}
