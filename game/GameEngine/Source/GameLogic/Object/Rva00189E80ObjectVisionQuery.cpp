@@ -1,3 +1,4 @@
+// was __7PartitionFilterRelationship@@6B@ __7PartitionFilterSameMapStatus@@6B@
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/debug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main
 
 // 0x00189E80 is a real partition-query body, but no named BFME caller or
@@ -17,9 +18,9 @@ extern const void *g_010956C4[];
 // The three filter tables retail stamps are the vftables of the real BFME
 // filter classes, named directly through __identifier (MSVC's way of
 // spelling a mangled symbol) instead of a linker alias stand-in.
-extern "C" void *__identifier("_7PartitionFilterSameMapStatus@@6B@")[];
+extern "C" void *__identifier("??_7PartitionFilterSameMapStatus@@6B@")[];
 extern "C" void *__identifier("_7Rva0025ED50RootFilter@@6B@")[];
-extern "C" void *__identifier("_7PartitionFilterRelationship@@6B@")[];
+extern "C" void *__identifier("??_7PartitionFilterRelationship@@6B@")[];
 
 struct Coord3D
 {
@@ -62,7 +63,7 @@ public:
 	__forceinline explicit Rva00189E80SameMapFilter(const Object *object)
 		: PartitionFilter()
 	{
-		m_vptr = (unsigned int)__identifier("_7PartitionFilterSameMapStatus@@6B@");
+		m_vptr = (unsigned int)__identifier("??_7PartitionFilterSameMapStatus@@6B@");
 		m_object = object;
 	}
 
@@ -108,7 +109,7 @@ public:
 	__forceinline PartitionFilterRelationship(const Object *object, int flags, Bool state)
 		: PartitionFilter()
 	{
-		m_vptr = (unsigned int)__identifier("_7PartitionFilterRelationship@@6B@");
+		m_vptr = (unsigned int)__identifier("??_7PartitionFilterRelationship@@6B@");
 		m_object = object;
 		m_flags = flags;
 		m_state = state;

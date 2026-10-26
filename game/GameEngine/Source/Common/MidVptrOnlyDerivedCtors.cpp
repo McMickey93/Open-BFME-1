@@ -1,3 +1,4 @@
+// was ??_7Rva00789650@?A0xf8b512bf@@6B@
 // cl: /DNDEBUG -Igame/GameEngine/Source/Common -Igame/Libraries/Source/WWVegas/WWLib
 // 26 identical 18-byte __thiscall constructors:
 //

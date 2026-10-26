@@ -83,7 +83,6 @@ dir32,0x00BEFFF0,?g_00BEFFF0@@YAXXZ,"nothing in the ledger owns 0x00BEFFF0. Give
 dir32,0x00BF4770,?bfmeCbAZC@Rva007F4770@@SAXHPAVBfmeThingVJL@@@Z,"retail 0x00BF4770 is already recorded as _bfmeCbAZC; reference that name, not a new one"
 dir32,0x00BF5A70,?Rva007F5A70Callback@@YAXPAVRva007E8810Message@@PAVRva007F5920Owner@@@Z,"retail 0x00BF5A70 is already recorded as ?BfmeGameBrowserVJPCallback@@YGXXZ; reference that name, not a new one"
 dir32,0x00BF5DF0,?Rva007F5DF0Callback@@YAXPAVRva007E8810Message@@PAVRva007F5D10GameBrowser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF5DF0
-dir32,0x00BF6870,?rva007F6870GameLobbyCallback@@YAXPAVRva007E8810Message@@PAVRva007F65E0Owner@@@Z,"retail 0x00BF6870 is already recorded as ?bfmeCbVJM@@YGXXZ; reference that name, not a new one"
 dir32,0x00BF6FB0,?Rva007F6FB0BrowserLobbyReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FB0
 dir32,0x00BF6FC0,?Rva007F6FC0BrowserGameReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FC0
 dir32,0x00BF7970,?g_00BF7970@@YAXXZ,"nothing in the ledger owns 0x00BF7970. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -127,8 +126,6 @@ dir32,0x01083D34,??_7Rva000CBAF0@@6B@,"retail 0x01083D34 is already recorded as 
 dir32,0x01083E50,??_7Gen_000D1730@?A0x832bc2b1@@6B@,"retail 0x01083E50 is already recorded as ??_7DisplayString@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01084168,_bfmeVftPlayerListSnapshot,"retail 0x01084168 is already recorded as ??_7PlayerList@@6BSnapshot@@@; reference that name, not a new one"
 dir32,0x0108417C,_bfmeVftPlayerListSubsystemInterface,"retail 0x0108417C is already recorded as ??_7PlayerList@@6BSubsystemInterface@@@; reference that name, not a new one"
-dir32,0x01085DC0,__7PartitionFilterRelationship@@6B@,"retail 0x01085DC0 is already recorded as ??_7PartitionFilterRelationship@@6B@ (+2 more); reference that name, not a new one"
-dir32,0x01085DD0,__7PartitionFilterSameMapStatus@@6B@,"retail 0x01085DD0 is already recorded as ??_7AggregatePrototypeClass@@6B@ (+7 more); reference that name, not a new one"
 dir32,0x010860B0,??_7Rva000FBDC0Filter@@6B@,"retail 0x010860B0 is already recorded as ?g_target_000FBDC0@@3HA; reference that name, not a new one"
 dir32,0x010860C4,??_7Rva000FC2E0Filter@@6B@,"retail 0x010860C4 is already recorded as ??_7DecalMeshClass@@6B@; reference that name, not a new one"
 dir32,0x01089644,??_7Rva001129B0@@6BSubsystemInterface@@@,"retail 0x01089644 is already recorded as ??_7BfmeOwnCE@@6BSubsystemInterface@@@ (+1 more); reference that name, not a new one"
@@ -304,7 +301,6 @@ dir32,0x0111117C,?g_vtbl_0111117C@@3PAPAXA,"nothing in the ledger owns 0x0111117
 dir32,0x011111E8,?g_vtbl_011111E8@@3PAPAXA,"nothing in the ledger owns 0x011111E8. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011111FC,?g_vtbl_011111FC@@3PAPAXA,"nothing in the ledger owns 0x011111FC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01111200,?g_vtbl_01111200@@3PAPAXA,"nothing in the ledger owns 0x01111200. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x0111126C,??_7BfmeHolderCU@@6B@,"retail 0x0111126C is already recorded as ??_7Rva005DD320MultiTailDtor@@6B@ (+13 more); reference that name, not a new one"
 dir32,0x01111348,??_7T1Derived_005DEC00@@6BBfmeHolderCU@@@,"retail 0x01111348 is already recorded as ??_7Rva005ED8B0@@6BV3NodeHead@@@ (+1 more); reference that name, not a new one"
 dir32,0x01111360,??_7T1Derived_005DEC40@@6BBfmeHolderCU@@@,"retail 0x01111360 is already recorded as ??_7Rva005ED310@@6BV3NodeHead@@@ (+1 more); reference that name, not a new one"
 dir32,0x01111824,?g_01111824@@3QBDB,"retail 0x01111824 is already recorded as ??_7?$DefaultParticleModule@$04@FXParticleSystem@@6BParticleModuleSnapshotSlice@1@@ (+3 more); reference that name, not"
@@ -358,7 +354,6 @@ dir32,0x0111EDD0,??_7Gen006EF850@@6B@,"retail 0x0111EDD0 is already recorded as 
 dir32,0x011217A0,??_7Rva00745B10Owner@@6BView@@@,"retail 0x011217A0 is already recorded as ??_7Rva00745B10Owner@@6BRva0045C1B0Base@@@; reference that name, not a new one"
 dir32,0x01121AE8,??_7GDIFileStream@@6B@,"retail 0x01121AE8 is already recorded as ??_7Gen_00749740@@6B@; reference that name, not a new one"
 dir32,0x011229A0,??_7LaserDrawInterface@@6B@,"retail 0x011229A0 is already recorded as ??_7Rva00756C70@@6B@; reference that name, not a new one"
-dir32,0x01126C28,??_7Rva00789650@?A0xf8b512bf@@6B@,"retail 0x01126C28 is already recorded as ??_7Rva00789650@@6B@; reference that name, not a new one"
 dir32,0x01126CCC,??_7Rva00789900Init@@6B@,"retail 0x01126CCC is already recorded as ?g_Rva00789900Table@@3PAPAXA; reference that name, not a new one"
 dir32,0x01126D84,??_7Rva0078CFB0SentenceHolderBase@@6B@,"retail 0x01126D84 is already recorded as ??_7Gen0078D1C0Base@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01126DA0,??_7Rva0078CFB0SentenceHolder@@6B@,"retail 0x01126DA0 is already recorded as ??_7Gen0078D1C0@@6B@ (+1 more); reference that name, not a new one"
