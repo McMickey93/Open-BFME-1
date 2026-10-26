@@ -16,18 +16,22 @@ extern "C" const char g_011343E4[];
 extern "C" const char g_011343DC[] = " EBX:";
 extern "C" const char g_011343D4[];
 extern "C" const char g_01080294[];
-extern "C" const char g_011343CC[];
-extern "C" const char g_011343C4[];
+// _g_011343CC: 5 retail bytes including the NUL.
+extern "C" const char g_011343CC[] = "EDX:";
+// _g_011343C4: 6 retail bytes including the NUL.
+extern "C" const char g_011343C4[] = " ESI:";
 extern "C" const char g_011343BC[] = " EDI:";
 extern "C" const char g_011343B4[];
-extern "C" const char g_011343AC[];
+// _g_011343AC: 6 retail bytes including the NUL.
+extern "C" const char g_011343AC[] = " ESP:";
 extern "C" const char g_011343A4[];
 extern "C" const char g_0113439C[];
 extern "C" const char g_01134398[];
 extern "C" const char g_01134390[];
 // _g_01134388: 5 retail bytes including the NUL.
 extern "C" const char g_01134388[] = " SS:";
-extern "C" const char g_01134380[];
+// _g_01134380: 5 retail bytes including the NUL.
+extern "C" const char g_01134380[] = "\nES:";
 extern "C" const char g_01134378[];
 // _g_01134370: 5 retail bytes including the NUL.
 extern "C" const char g_01134370[] = " GS:";
