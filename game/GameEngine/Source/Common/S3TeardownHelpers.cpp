@@ -81,7 +81,7 @@ private:
 	BfmeRefBlock *m_bfmeBlock;
 };
 
-extern void (*TheBfmeBufferFree)(void *buffer, int bytes);	// 0x01337830
+extern void (__cdecl *TheBfmeFree)(void *buffer, unsigned int bytes);	// data_rows 0x01337830	// 0x01337830
 extern void *(__cdecl *Rva008C5D70Alloc)(unsigned int bytes);	// 0x01337828
 
 class Gen_008A0D60
@@ -156,19 +156,19 @@ Gen_008A0D60::Gen_008A0D60(int count)
 void Gen_008A0D60::bfmeFreeBuffer(void)
 {
 	if (m_bfmeBuffer)
-		TheBfmeBufferFree(m_bfmeBuffer, m_bfmeCount * 4);
+		TheBfmeFree(m_bfmeBuffer, m_bfmeCount * 4);
 }
 
 // ?bfmeFreeBuffer@Gen_008C5B30@@QAEXXZ
 void Gen_008C5B30::bfmeFreeBuffer(void)
 {
 	if (m_bfmeBuffer)
-		TheBfmeBufferFree(m_bfmeBuffer, m_bfmeCount * 4);
+		TheBfmeFree(m_bfmeBuffer, m_bfmeCount * 4);
 }
 
 // ?bfmeFreeBuffer@Gen_008C5C00@@QAEXXZ
 void Gen_008C5C00::bfmeFreeBuffer(void)
 {
 	if (m_bfmeBuffer)
-		TheBfmeBufferFree(m_bfmeBuffer, m_bfmeCount * 4);
+		TheBfmeFree(m_bfmeBuffer, m_bfmeCount * 4);
 }

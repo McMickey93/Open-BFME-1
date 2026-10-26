@@ -7729,7 +7729,7 @@ struct Rva002FC570AsciiStringData
 	unsigned short m_06;
 };
 
-extern char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];	// retail 0x0107388B (data_rows)
 
 
 // Keep the button subobject address live until after the second lookup.  The
@@ -7747,13 +7747,13 @@ static __forceinline Int bfmeCompareCommandButton(const CommandButton *button,
 	_ReadWriteBarrier();
 	const char *requestedText = requestedData
 		? (const char *)(requestedData + 1)
-		: Rva006A16B0Empty;
+		: g_bfmeEmptyAscii;
 	const Rva002FC570AsciiStringData *buttonData =
 		*(const Rva002FC570AsciiStringData * const *)buttonName;
 	Int buttonLength = buttonData ? buttonData->m_04 : 0;
 	_ReadWriteBarrier();
 	const char *buttonText = buttonData ? (const char *)(buttonData + 1)
-		: Rva006A16B0Empty;
+		: g_bfmeEmptyAscii;
 	Int commonLength = buttonLength < requestedLength
 		? buttonLength : requestedLength;
 	Int result = memcmp(buttonText, requestedText, commonLength);

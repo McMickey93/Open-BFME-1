@@ -10,12 +10,16 @@ unsigned char __stdcall bfmeHasPrefix8C5680(const char *text)
 }
 
 // Retail VA 0x01337858: the two-string callback cell the stripped command goes to.
-extern void (__cdecl *rva01337858Callback)(const char *, const char *);
+// retail 0x01337858; its one definition is ?g_bfmeSlot10VB@@3P6AXXZA (data_rows),
+// a void() slot this caller invokes with two strings.
+typedef void (__cdecl *BfmeProcVB)();
+extern BfmeProcVB g_bfmeSlot10VB;
+typedef void (__cdecl *Rva01337858Callback)(const char *, const char *);
 
 // Retail 0x008C56C0 (46 B, unreferenced): skip the prefix length and hand the
 // rest of the command and its argument to the callback cell; always 1.
 int __stdcall bfmeStripPrefixForward8C56C0(const char *command, const char *args)
 {
-	rva01337858Callback(command + strlen(rva012D5A08Prefix), args);
+	((Rva01337858Callback)g_bfmeSlot10VB)(command + strlen(rva012D5A08Prefix), args);
 	return 1;
 }

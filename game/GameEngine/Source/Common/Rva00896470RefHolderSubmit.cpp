@@ -10,14 +10,14 @@
 // Identity stays address-derived: no owning class name survives, and only the
 // 0x00896540 / 0x008965B0 dump callers reach this body.
 
-extern void (*TheBfmeBufferFree)(void *p, int bytes);
+extern void (__cdecl *TheBfmeFree)(void *p, unsigned int bytes);	// data_rows 0x01337830
 
 class BfmeDropObjectA
 {
 public:
 	~BfmeDropObjectA(void);
 
-	void operator delete(void *p, unsigned int bytes) { TheBfmeBufferFree(p, bytes); }
+	void operator delete(void *p, unsigned int bytes) { TheBfmeFree(p, bytes); }
 
 private:
 	char m_bfmePad[0x18];

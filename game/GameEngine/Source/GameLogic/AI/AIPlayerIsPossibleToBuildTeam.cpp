@@ -7,7 +7,7 @@
 // count at +0x184. The build-idea override also reads the name at +0x14 and
 // maximum instance count at +0x1C4.
 
-extern char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];	// retail 0x0107388B (data_rows)
 
 template <typename T>
 class StringBase
@@ -39,7 +39,7 @@ public:
     void format(AsciiString fmt, ...);
     const char *str() const
     {
-        return m_data != 0 ? m_data->m_text : Rva006A16B0Empty;
+        return m_data != 0 ? m_data->m_text : g_bfmeEmptyAscii;
     }
 };
 

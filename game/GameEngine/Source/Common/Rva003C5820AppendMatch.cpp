@@ -8,7 +8,7 @@
 #include <vector>
 #undef _M_insert_overflow
 
-extern char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];	// retail 0x0107388B (data_rows)
 
 // Refcounted string data: length word at +4, text at +8.
 struct Rva003C5270Blob
@@ -44,9 +44,9 @@ public:
 	int compare( const Rva003C5820Item &that ) const
 	{
 		int thatLength = that.m_blob ? that.m_blob->m_len : 0;
-		const char *thatText = that.m_blob ? that.m_blob->m_data : Rva006A16B0Empty;
+		const char *thatText = that.m_blob ? that.m_blob->m_data : g_bfmeEmptyAscii;
 		int thisLength = m_blob ? m_blob->m_len : 0;
-		const char *thisText = m_blob ? m_blob->m_data : Rva006A16B0Empty;
+		const char *thisText = m_blob ? m_blob->m_data : g_bfmeEmptyAscii;
 		int length = thisLength < thatLength ? thisLength : thatLength;
 		int difference = memcmp( thisText, thatText, length );
 		if( difference != 0 )

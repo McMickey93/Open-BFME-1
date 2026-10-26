@@ -5,14 +5,14 @@
 // only name the 0x0089 forwarder family gives it comes from the landed
 // ?bfmeRva00896470@@YAXVBfmeRefHolder@@@Z body it calls.
 
-extern void (*TheBfmeBufferFree)(void *p, int bytes);
+extern void (__cdecl *TheBfmeFree)(void *p, unsigned int bytes);	// data_rows 0x01337830
 
 class BfmeDropObjectA
 {
 public:
 	~BfmeDropObjectA(void);
 
-	void operator delete(void *p, unsigned int bytes) { TheBfmeBufferFree(p, bytes); }
+	void operator delete(void *p, unsigned int bytes) { TheBfmeFree(p, bytes); }
 
 private:
 	char m_bfmePad[0x18];

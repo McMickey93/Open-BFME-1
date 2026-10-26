@@ -9,7 +9,7 @@
 // StringBase<char>::releaseBuffer (0x00887940), not the ??1AsciiString stub.
 inline AsciiString::~AsciiString() { ((StringBase<char> *)this)->releaseBuffer(); }
 
-extern char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];	// retail 0x0107388B (data_rows)
 
 class UnicodeString
 {
@@ -49,7 +49,7 @@ public:
 	int compare( const char *text, int length ) const
 	{
 		int valueLength = m_data != 0 ? m_data->m_length : 0;
-		const char *valueText = m_data != 0 ? reinterpret_cast<const char *>( m_data ) + 8 : Rva006A16B0Empty;
+		const char *valueText = m_data != 0 ? reinterpret_cast<const char *>( m_data ) + 8 : g_bfmeEmptyAscii;
 		int result = memcmp( valueText, text, valueLength < length ? valueLength : length );
 		if( result == 0 )
 			result = valueLength - length;
