@@ -2158,3 +2158,26 @@ copy-constructor view's `Coord3D lifted(ground); lifted.z += 2.0;` too; a
 POD `lifted = ground` copy did not): the compound assignment's x87 store is
 scheduled later. Measured on that body only; source
 `game/GameEngine/Source/GameClient/System/FXParticleSystem/PointEmissionDraw.cpp`.
+
+## Spell a loop element's call receiver `begin() + i` to stop its address CSE (2026-10-26)
+
+Mismatch: 0x0061B960 (163 B, `/MD /EHsc /D_STLP_NO_EXCEPTIONS`, TU-local
+vector whose `operator[]` returned `_M_start[n]`) compares
+`v[i].m_key == value->m_key` and then calls a predicate on the element.
+With both uses spelled `v[i]` VC7.1 forms the element pointer once
+(`add ecx,ebx`) before the compare, loads `value->m_key` into a register and
+swaps the index and byte-offset registers (EBX/EDI): 109 bytes and 6 bytes of
+size. Retail compares `cmp ecx,[ebp+8]` straight off `[edi+eax+8]` and forms
+`lea ecx,[edi+eax]` only for the call. Keeping the compare as `v[i].m_key`
+but passing the receiver as `v.begin() + i` (with `operator[]` defined as
+`*(begin() + n)`) left only the push_back tail; the same rewrite of the call
+site or of the compare alone gave the same 9-byte remainder. Measured
+effect: the two spellings are separate expressions for VC7.1, so no
+element-pointer CSE forms. It is inert where the STLport header already
+spells `operator[]` as `*(begin() + n)` (0x0035C400, 32 trials), so it
+only applies to TU-local `_M_start[n]` views. Source
+`game/GameEngine/Source/GameLogic/LivingWorld/Rva003BAA70OwnerAppend.cpp`
+(commit 9a5318abbf). The remaining push_back difference there was a
+value-initialised `__false_type()` temporary (`mov byte [arg home],0`):
+pass an uninitialised `__false_type tag;` local instead, as
+`Rva000FB3F0Insert.cpp` already does.
