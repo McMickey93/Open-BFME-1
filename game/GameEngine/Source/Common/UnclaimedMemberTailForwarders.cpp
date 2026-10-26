@@ -72,3 +72,24 @@ void Rva008231B0Forward( Rva00826840Owner *target ) { target->resetTables(); }
 void Rva0094C640Forward( Gen_0094BFB0 *target ) { target->bfmeForward(); }
 void Rva00852290Forward( Rva00851340 *target ) { target->invoke(); }
 void Rva008FF900Forward( BfmeThingCFB *target ) { target->bfmeGoCFB(); }
+
+// Two more embedded-member forwarders, both `add ecx,0x1C / jmp`, unreferenced
+// after int3 padding.  0x009221F0 assigns a C string to a StringClass at +0x1C
+// through StringClass::operator=(const char *) (0x007AF330, reached through
+// its ILT stub); 0x0087EF90 destroys an AsciiString at +0x1C, whose inline
+// destructor is the tail call into the matched releaseBuffer (0x00887940).
+class StringClass { public: const StringClass &operator=( const char *text ); };
+class BFMERetailAsciiString
+{
+public:
+	~BFMERetailAsciiString() { releaseBuffer(); }
+private:
+	void releaseBuffer();
+	char *m_text;
+};
+
+class Rva009221F0Named { public: void setName( const char *name ); char m_lead[ 0x1C ]; StringClass m_name; };
+void Rva009221F0Named::setName( const char *name ) { m_name = name; }
+
+class Rva0087EF90Named { public: ~Rva0087EF90Named(); char m_lead[ 0x1C ]; BFMERetailAsciiString m_name; };
+Rva0087EF90Named::~Rva0087EF90Named() {}
