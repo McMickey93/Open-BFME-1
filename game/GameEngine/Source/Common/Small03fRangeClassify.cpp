@@ -19,3 +19,14 @@ int Rva0093C2D0Owner::classify(unsigned short v)
 		return 0;
 	return 1;
 }
+
+// Retail 0x0093C300 (unreferenced, after int3 padding, directly after the
+// classifier): `fld dword ptr [0x01075334] / ret`, returning the 1.0f the
+// recorded .rdata float g_bfmeDefaultBU holds. A literal 1.0f would emit
+// fld1, so the load is of the datum. Address-derived name.
+extern float g_bfmeDefaultBU;
+
+float Rva0093C300GetOne()
+{
+	return g_bfmeDefaultBU;
+}
