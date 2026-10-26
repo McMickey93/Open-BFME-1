@@ -51,10 +51,10 @@ public:
 
 // Retail ILTs 0x00012E3B and 0x00008337 reach these existing matched
 // address-derived views at 0x00410BA0 and 0x00411DD0.
-class Gen_00410BA0
+class Drawable
 {
 public:
-	int isDrawableEffectivelyHidden(void) const;
+	bool isDrawableEffectivelyHidden(void) const;
 };
 
 class Gen_00411DD0
@@ -145,7 +145,7 @@ void BfmeRva49250Base::bfmeApplyObject(BfmeRva49250Object *object, void *)
 				(BfmeRva491F0Object *)object);
 			BfmeRva49250AI *ai = object->getAI();
 			// Retail consumes AL; the matched provider returns only 0 or 1.
-			if (ai != 0 && (char)((Gen_00410BA0 *)ai)->isDrawableEffectivelyHidden() == 1)
+			if (ai != 0 && (char)((Drawable *)ai)->isDrawableEffectivelyHidden() == 1)
 				((Gen_00411DD0 *)ai)->bfmeSet(false);
 		}
 

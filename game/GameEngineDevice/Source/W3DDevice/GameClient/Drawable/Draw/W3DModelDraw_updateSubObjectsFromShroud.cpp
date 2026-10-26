@@ -23,13 +23,12 @@ typedef bool Bool;
 
 enum ParticleSystemID { INVALID_PARTICLE_SYSTEM_ID = 0 };
 
-class Drawable;
 
 // Existing complete retail getter at RVA00410BA0, via ILT00012E3B.
-class Gen_00410BA0
+class Drawable
 {
 public:
-	int isDrawableEffectivelyHidden(void) const;
+	bool isDrawableEffectivelyHidden(void) const;
 };
 
 class ParticleSystem
@@ -93,7 +92,7 @@ private:
 void W3DModelDraw::updateSubObjectsFromShroud()
 {
 	Bool hidden = static_cast<unsigned char>(
-		reinterpret_cast<Gen_00410BA0 *>(m_drawable)->isDrawableEffectivelyHidden()) ||
+		m_drawable->isDrawableEffectivelyHidden()) ||
 		m_fullyObscuredByShroud;
 
 	for (_STL::list<ParticleSystemID>::iterator it = m_particleSystemIDs.begin();

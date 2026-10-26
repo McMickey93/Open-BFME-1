@@ -10,10 +10,10 @@
 struct Rva0024BE00Coord { float x; float y; float z; Rva0024BE00Coord() {} Rva0024BE00Coord(const Rva0024BE00Coord &v) { x=v.x;y=v.y;z=v.z; } void sub(const Rva0024BE00Coord *v) { x-=v->x;y-=v->y;z-=v->z; } float lengthSqr() const { return x*x+y*y+z*z; } };
 inline float sqr(float x) { return x*x; }
 
-class Gen_00410BA0
+class Drawable
 {
 public:
-	int isDrawableEffectivelyHidden(void) const;
+	bool isDrawableEffectivelyHidden(void) const;
 };
 
 class Rva0024BE00Contain;
@@ -25,7 +25,7 @@ public:
 	RVASLOT(0) RVASLOT(1) RVASLOT(2) RVASLOT(3) RVASLOT(4) RVASLOT(5)
 	RVASLOT(6) RVASLOT(7) RVASLOT(8) RVASLOT(9)
 #undef RVASLOT
-	virtual Gen_00410BA0 *getKind(void);
+	virtual Drawable *getKind(void);
 
 	char m_pad[0x34];
 	Rva0024BE00Coord m_position;

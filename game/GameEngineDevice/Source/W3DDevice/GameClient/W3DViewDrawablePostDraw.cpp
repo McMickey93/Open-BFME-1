@@ -23,6 +23,7 @@ class Drawable
 public:
     void drawIconUI();
     const Coord3D *getPosition() const;
+    bool isDrawableEffectivelyHidden() const;
 };
 
 struct ICoord2D
@@ -78,12 +79,6 @@ public:
 
 extern TerrainLogic *TheTerrainLogic;
 extern Display *TheDisplay;
-
-class Gen_00410BA0
-{
-public:
-    int isDrawableEffectivelyHidden() const;
-};
 
 struct BFMEDrawableAIChain
 {
@@ -185,7 +180,7 @@ static void drawTerrainNormal(Drawable *draw)
 void drawablePostDraw(Drawable *draw, void *userData)
 {
     Real pitch = reinterpret_cast<Rva0073AED0View *>(TheTacticalView)->getPitch();
-    if (static_cast<unsigned char>(reinterpret_cast<Gen_00410BA0 *>(draw)->isDrawableEffectivelyHidden()) || pitch < 0.0f)
+    if (draw->isDrawableEffectivelyHidden() || pitch < 0.0f)
         return;
     Object *obj = reinterpret_cast<BFMEDrawableAIChain *>(draw)->m_object;
     int localPlayerIndex = ThePlayerList ? reinterpret_cast<Rva0073AED0PlayerList *>(ThePlayerList)->m_local->m_playerIndex : 0;

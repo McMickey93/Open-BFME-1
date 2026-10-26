@@ -23,10 +23,10 @@ public:
 	void dispatch(Object *object, bool value);
 };
 
-class Gen_00410BA0
+class Drawable
 {
 public:
-	int isDrawableEffectivelyHidden(void) const;
+	bool isDrawableEffectivelyHidden(void) const;
 };
 
 class Gen_00411DD0
@@ -95,6 +95,6 @@ void Rva0024BA00::cleanup(BfmeRvaBA00Object *object)
 	}
 
 	BfmeRvaBA00AI *ai = object->getAI();
-	if (ai && (unsigned char)((Gen_00410BA0 *)ai)->isDrawableEffectivelyHidden() == 1)
+	if (ai && (unsigned char)((Drawable *)ai)->isDrawableEffectivelyHidden() == 1)
 		((Gen_00411DD0 *)ai)->bfmeSet(false);
 }

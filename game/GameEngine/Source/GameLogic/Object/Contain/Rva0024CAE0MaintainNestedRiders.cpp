@@ -12,10 +12,10 @@ class BfmeXCQE;
 
 // Retail ILT 0x12E3B reaches 0x410BA0, an int-returning thiscall query.
 // This caller consumes AL; retain that byte truncation at the call site.
-class Gen_00410BA0
+class Drawable
 {
 public:
-	int isDrawableEffectivelyHidden(void) const;
+	bool isDrawableEffectivelyHidden(void) const;
 };
 
 // ILT 0x8337 reaches 0x411DD0: byte boolean argument, ret 4, no result.
@@ -146,7 +146,7 @@ void Rva0024CAE0Owner::maintainNestedRiders(void)
 		{
 			Object *object = *nestedIt;
 			BfmeXCQE *state = object->getState();
-			if (state == 0 || (char)((Gen_00410BA0 *)state)->isDrawableEffectivelyHidden())
+			if (state == 0 || (char)((Drawable *)state)->isDrawableEffectivelyHidden())
 			{
 				result->removeNested(object);
 				m_notifier.notifyRemoved(object, 0);

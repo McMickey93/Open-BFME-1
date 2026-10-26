@@ -5,7 +5,7 @@
 // stlport
 #include <list>
 
-class Gen_00410BA0 { public: int isDrawableEffectivelyHidden(void) const; };
+class Drawable { public: bool isDrawableEffectivelyHidden(void) const; };
 class Rva0024C940Contain;
 
 class Object
@@ -14,7 +14,7 @@ public:
 #define S(n) virtual void slot##n();
 	S(0) S(1) S(2) S(3) S(4) S(5) S(6) S(7) S(8) S(9)
 #undef S
-	virtual Gen_00410BA0 *getState(void);
+	virtual Drawable *getState(void);
 	char m_pad[0x1fc - 4];
 	Rva0024C940Contain *m_contain;
 };
@@ -77,7 +77,7 @@ void Rva0024C940Owner::processNestedRiders(void)
 		if (nested.empty())
 			continue;
 		Object *object = *nested.begin();
-		Gen_00410BA0 *state = object->getState();
+		Drawable *state = object->getState();
 		if (state != 0 && !(unsigned char)state->isDrawableEffectivelyHidden())
 			handleNested(result, object);
 	}

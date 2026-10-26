@@ -48,10 +48,13 @@ BfmeTripleCU Gen_004108D0::bfmeGetTriple(void) const
 	return m_bfmeTriple;
 }
 
-class Gen_00410BA0
+// Drawable::isDrawableEffectivelyHidden, retail ILT 0x00012E3B (ilt_oracle
+// CONFIRMED); ZH GameClient/Drawable.h defines it inline over the adjacent
+// m_hidden / m_hiddenByStealth flags.
+class Drawable
 {
 public:
-	int isDrawableEffectivelyHidden(void) const;
+	bool isDrawableEffectivelyHidden(void) const;
 
 private:
 	char m_bfmeHead[0x3AD];					// +0x000
@@ -59,13 +62,10 @@ private:
 	bool m_hiddenByStealth;					// +0x3AE
 };
 
-// ?isDrawableEffectivelyHidden@Gen_00410BA0@@QBEHXZ
-int Gen_00410BA0::isDrawableEffectivelyHidden(void) const
+// ?isDrawableEffectivelyHidden@Drawable@@QBE_NXZ
+bool Drawable::isDrawableEffectivelyHidden(void) const
 {
-	if (!m_hidden && !m_hiddenByStealth)
-		return 0;
-
-	return 1;
+	return m_hidden || m_hiddenByStealth;
 }
 
 class BfmeBlockCU
