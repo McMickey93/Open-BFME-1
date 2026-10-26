@@ -5,7 +5,7 @@
 // GC-root pool, whose addPooled clears the pooled bit when it is full.
 // The failure path living inside the pool method is what places the
 // success block after the failure block.
-struct Rva00899560Value { virtual ~Rva00899560Value(); unsigned int m_flags; Rva00899560Value(int type); };
+struct Rva00899560Value { virtual ~Rva00899560Value(); unsigned int m_flags; Rva00899560Value(int type); Rva00899560Value(int type, int unused); };
 struct Rva00899560Pool {
 	int m_capacity; int m_count; Rva00899560Value** m_items;
 	bool add(Rva00899560Value* v) { if (m_count < m_capacity) { m_items[m_count] = v; m_count++; return true; } return false; }
@@ -24,4 +24,13 @@ Rva00899560Value::Rva00899560Value(int type)
 	} else {
 		m_flags = flags & 0xBFFFFFFF;
 	}
+}
+
+// ??0Rva00899560Value@@QAE@HH@Z
+// 0x008928D0 (38 B, unreferenced): the two-argument form, ret 8 with the second
+// argument never read. Same type packing, but the mask also clears the pooled
+// bit (0xB000803F) and nothing is handed to the GC-root pool.
+Rva00899560Value::Rva00899560Value(int type, int unused)
+{
+	m_flags = (((m_flags & ~0x3f) | type) & 0xB000803F) | 0x8000;
 }
