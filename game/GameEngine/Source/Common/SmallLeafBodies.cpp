@@ -59,6 +59,8 @@ extern unsigned char g_Va012F4126;
 extern unsigned char g_guiFxLoaded;
 extern volatile bool reOpenPlayerInfoFlag;
 extern unsigned char g_Va0130E9F8;
+// 0x0130E9F9, the memory pool's neighbouring flag byte (memorypool_allocator.cpp).
+extern unsigned char g_rva0130E9F9;
 extern char g_rva00061DE0;
 extern unsigned char g_Va0134CB4D;
 
@@ -120,6 +122,17 @@ void Rva00882F20SetFlag( void )
 void Rva00882F30SetFlag( void )
 {
 	g_Va0130E9F8 = 0x00;
+}
+
+// 0x00882F50 / 0x00882F60: the same set/clear pair for the next flag byte.
+void Rva00882F50SetFlag( void )
+{
+	g_rva0130E9F9 = 0x01;
+}
+
+void Rva00882F60SetFlag( void )
+{
+	g_rva0130E9F9 = 0x00;
 }
 
 void Rva009C8730SetFlag( void )

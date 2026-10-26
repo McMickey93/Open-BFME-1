@@ -79,3 +79,10 @@ void Rva00882F90SetDelayedFree(unsigned int count, unsigned int low, unsigned in
     g_Va0130EA08 = low;
     g_Va012D4D0C = high;
 }
+
+// 0x008830A0: unreferenced getter after int3 padding for the running byte
+// total g_Va0130E9F4 that _Allocate maintains. Address-derived name.
+unsigned int Rva008830A0GetTotal()
+{
+    return g_Va0130E9F4;
+}
