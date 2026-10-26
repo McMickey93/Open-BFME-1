@@ -1,4 +1,4 @@
-// cl: /O2 /Ob1 /DNDEBUG /MD /EHsc- /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /O2 /Ob1 /DNDEBUG /MD /EHsc- /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Retail 0x0037F0F0, the ExperienceLevelSystem lookup reached through ILT 0x00027953; ExperienceLevelMin001B20D0.cpp
 // holds the direct caller (void *, int, int *). Each list node's value at +8 may redirect through
 // its +4 Overridable chain; the selected record's level key is at +0xCC and its experience result at +0x10.
