@@ -105,7 +105,14 @@ class Gen_00257D10
 private:
     void bfmeAccept(BfmeSeedTarget *target);
 };
-extern "C" void __cdecl __identifier("?d_0022c2a0@@YAXXZ")();
+// 0x0022C2A0 landed as ?method@Rva0022C2A0@@QAEXPAVXfer@@@Z (thiscall, one
+// pointer, RET 4); the seed hand-off calls it by that name.
+class Xfer;
+class Rva0022C2A0
+{
+public:
+    void method(Xfer *xfer);
+};
 extern "C" void __cdecl __identifier("?d_002298b0@@YAXXZ")();
 extern void j_00011cbb();
 
@@ -1008,12 +1015,7 @@ void Gen_0022A170::bfmeSeed(BfmeSeedTarget *target)
 	pair.m_bfmeSecond = 1;
 
 	target->bfmeSeed(&pair);
-	union
-    {
-        void (*raw)();
-        void (Gen_0022A170::*member)(BfmeSeedTarget *);
-    } handoff = { __identifier("?d_0022c2a0@@YAXXZ") };
-    (this->*handoff.member)(target);
+	reinterpret_cast<Rva0022C2A0 *>(this)->method(reinterpret_cast<Xfer *>(target));
 	target->bfmeTakeAt78(&m_bfmeItem0);
 	target->bfmeTakeAt74(&m_bfmeItem1);
 }
