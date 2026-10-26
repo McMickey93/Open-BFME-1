@@ -104,7 +104,6 @@ dir32,0x00CB5760,?Callback00CB5760@@3PADA,"nothing in the ledger owns 0x00CB5760
 dir32,0x00CB5770,?Callback00CB5770@@3PADA,"nothing in the ledger owns 0x00CB5770. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00DA91D0,?Rva009A91D0@@YAXPBXHPAX@Z,"retail 0x00DA91D0 is already recorded as ?Rva009A91D0@@YAXXZ; reference that name, not a new one"
 dir32,0x00DA92D0,?Rva009A92D0@@YAPAEPAEHI@Z,"retail 0x00DA92D0 is already recorded as ?Rva009A92D0@@YAXXZ; reference that name, not a new one"
-dir32,0x00DA9980,?d_009a9980@@YAXXZ,"retail 0x00DA9980 is already recorded as ?Rva009A9980@@YAXPBEHIIPAEHII@Z; reference that name, not a new one"
 dir32,0x00DF7F4E,__RTC_Terminate,"nothing in the ledger owns 0x00DF7F4E. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00DF7FB0,__matherr,"nothing in the ledger owns 0x00DF7FB0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01070EC0,?obj@?1??getRva008877A0Singleton@@YAPAXXZ@$AVRva008877A0Type@@A,the name encodes 0x008877A0 but retail reads 0x01070EC0
@@ -553,7 +552,6 @@ dir32,0x012F19B8,?g_rva012F19B8@@3URva00C6B880Init@@A,"retail 0x012F19B8 is alre
 dir32,0x012F19CC,?g_rva012F19CC@@3URva00C6B8A0Init@@A,"retail 0x012F19CC is already recorded as ?TheBfmeObject_00C70080@@3VGen_00C70080Target@@A; reference that name, not a new one"
 dir32,0x012F19CC,?g_rva012F19CCMap@@3V?$map@VAsciiString@@W4Rva00461630Mapped@@U?$less@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@W4Rva00461630Mapped@@@_STL@@@4@@_STL@@A,"retail 0x012F19CC is already recorded as ?TheBfmeObject_00C70080@@3VGen_00C70080Target@@A; reference that name, not a new one"
 dir32,0x012F19E8,?g_rva012F19E8WindowManager@@3PAVBfmeLevelAN@@A,"retail 0x012F19E8 is already recorded as ?R2Ptr012F19E8@@3PAVGen000290D2@@A (+66 more); reference that name, not a new one"
-dir32,0x012F19E8,?g_rva012F19E8WindowManager@@3PAVWindowManager@@A,"retail 0x012F19E8 is already recorded as ?R2Ptr012F19E8@@3PAVGen000290D2@@A (+66 more); reference that name, not a new one"
 dir32,0x012F2564,?tooltipFunc@@3P6AXPAVGameWindow@@PAVWinInstanceData@@I@ZA,"nothing in the ledger owns 0x012F2564. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F2570,?g_rva012F2570@@3URva00C6B900Init@@A,"retail 0x012F2570 is already recorded as ?TheBfmeObject_00C700B0@@3VGen_00C700B0Target@@A; reference that name, not a new one"
 dir32,0x012F2578,?g_rva012F2578@@3URva00C6B900Init@@A,"retail 0x012F2578 is already recorded as ?TheBfmeObject_00C700D0@@3VGen_00C700D0Target@@A; reference that name, not a new one"
@@ -585,7 +583,6 @@ dir32,0x012F7048,?g_rva012F7048LivingWorld@@3PAVRva006092D0State@@A,"retail 0x01
 dir32,0x012F7078,?g_bfmeBoxYP@@3URegion2D@@A,"retail 0x012F7078 is already recorded as ?Rva012F7078Region@@3URegion2D@@A (+2 more); reference that name, not a new one"
 dir32,0x012F7090,?Glo012F7090@@3PAVGlo012F7090Type@@A,"nothing in the ledger owns 0x012F7090. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F716C,?mustDownloadPatch@@3_NA,"retail 0x012F716C is already recorded as ?g_rva012F716C@@3EA (+1 more); reference that name, not a new one"
-dir32,0x012F716D,?cantConnectBeforeOnline@@3_NA,"retail 0x012F716D is already recorded as ?bfmeCantConnectBeforeOnline@@3EA (+2 more); reference that name, not a new one"
 dir32,0x012F717A,?s_asyncDNSLookupInProgress@@3_NA,"retail 0x012F717A is already recorded as ?bfmeAsyncDNSLookupInProgress@@3EA (+1 more); reference that name, not a new one"
 dir32,0x012F7728,?g_012F7728@@3IA,"nothing in the ledger owns 0x012F7728. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F77A8,?cursorResources@@3PAY07PAXA,"retail 0x012F77A8 is already recorded as _g_bfmeSITable (+1 more); reference that name, not a new one"
