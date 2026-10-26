@@ -57,3 +57,20 @@ int Rva006E7040::s_value;
 int Rva00782DF0::s_value;
 int Rva00782E00::s_value;
 int Rva00782E10::s_value;
+
+// 0x00891C40: the same shape over a global another unit defines (Apt.cpp's
+// data row at 0x01337A30), so it stores through that extern instead of a
+// class-owned static. Unreferenced in retail.
+struct BfmeStringPool3AF0;
+extern BfmeStringPool3AF0 *g_rva01337A30AllocPair;
+
+class Rva00891C40
+{
+public:
+	static void store( BfmeStringPool3AF0 *value );
+};
+
+void Rva00891C40::store( BfmeStringPool3AF0 *value )
+{
+	g_rva01337A30AllocPair = value;
+}
