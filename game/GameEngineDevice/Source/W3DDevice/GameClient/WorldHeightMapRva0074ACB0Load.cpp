@@ -59,7 +59,9 @@ typedef Bool (*ChunkParserCallback)(DataChunkInput &, DataChunkInfo *, void *);
 // The declaration carries no C++ name: __identifier spells the retail symbol
 // exactly, so the stores below reference the defining name.
 extern "C" int __identifier("??_7BfmeParserBindingBaseVE@@6B@")[];
-extern int g_0109BFD4[];
+// ?g_0109BFD4@@3PAHA: retail 0x0109BFD4 is ??_7BfmeParserBindingVE@@6B@
+extern "C" int __identifier("??_7BfmeParserBindingVE@@6B@")[];
+#define g_0109BFD4 __identifier("??_7BfmeParserBindingVE@@6B@")
 void j_0001579e();
 void j_0004a755();
 void j_00043c93();

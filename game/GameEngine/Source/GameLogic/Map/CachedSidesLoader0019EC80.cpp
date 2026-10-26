@@ -119,7 +119,9 @@ static __forceinline Callback0019EC80 callbackAt0019EC80(unsigned address) {
 typedef bool (*CallbackBase0019EC80)(DataChunkInput&,DataChunkInfo*,void*);
 extern "C" int _bfmeVftVE[];
 extern "C" int _bfmeVftXB[];
-extern int g_0109BFD4[];
+// ?g_0109BFD4@@3PAHA: retail 0x0109BFD4 is ??_7BfmeParserBindingVE@@6B@
+extern "C" int __identifier("??_7BfmeParserBindingVE@@6B@")[];
+#define g_0109BFD4 __identifier("??_7BfmeParserBindingVE@@6B@")
 void j_0001579e();
 void j_0004a755();
 void j_000283a3();

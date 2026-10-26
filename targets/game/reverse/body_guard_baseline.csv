@@ -155,7 +155,6 @@ dir32,0x01097DC0,??_7AIAttackFireWeaponState@?A0x249e4e26@@6B@,"retail 0x01097DC
 dir32,0x01097DC0,??_7AIAttackFireWeaponState@?A0x66c5bdcd@@6B@,"retail 0x01097DC0 is already recorded as ??_7AIAttackFireWeaponState@@6B@ (+2 more); reference that name, not a new one"
 dir32,0x0109A2F0,??_7BfmeStateBC@@6B@,"retail 0x0109A2F0 is already recorded as ??_7AIMoveAndTightenState@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0109B828,??_7TurretStateMachine@@6B@,"retail 0x0109B828 is already recorded as ??_7Rva0018C2D0TailDtor@@6B@; reference that name, not a new one"
-dir32,0x0109BFD4,?g_0109BFD4@@3PAHA,"retail 0x0109BFD4 is already recorded as ??_7BfmeParserBindingVE@@6B@; reference that name, not a new one"
 dir32,0x0109C030,_g_0109C030,"nothing in the ledger owns 0x0109C030. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0109D860,?TheFieldParse@?1??getFieldParse@LocomotorTemplate@@QBEPBUFieldParse@@XZ@4QBU3@B,"retail 0x0109D860 is already recorded as ?g_0109D860@@3PADA; reference that name, not a new one"
 dir32,0x0109DEF0,??_7Locomotor@@6B@,"retail 0x0109DEF0 is already recorded as _bfmeVftTH; reference that name, not a new one"
@@ -271,7 +270,6 @@ dir32,0x011106F4,?g_011106F4@@3QBDB,"retail 0x011106F4 is already recorded as ??
 dir32,0x01110850,?g_01110850@FXParticleSystem@@3QBDB,"retail 0x01110850 is already recorded as ??_7?$CategoryModuleClass@$02@FXParticleSystem@@6B@; reference that name, not a new one"
 dir32,0x0111085C,?g_0111085C@FXParticleSystem@@3QBDB,"retail 0x0111085C is already recorded as ??_7?$CategoryModuleClass@$01@FXParticleSystem@@6B@; reference that name, not a new one"
 dir32,0x01110868,?g_01110868@FXParticleSystem@@3QBDB,"retail 0x01110868 is already recorded as ??_7?$CategoryModuleClass@$06@FXParticleSystem@@6B@; reference that name, not a new one"
-dir32,0x01110874,?g_01110874@FXParticleSystem@@3QBDB,"retail 0x01110874 is already recorded as ??_7?$CategoryModuleClass@$07@FXParticleSystem@@6B@; reference that name, not a new one"
 dir32,0x01110880,?g_01110880@FXParticleSystem@@3QBDB,"retail 0x01110880 is already recorded as ??_7?$CategoryModuleClass@$03@FXParticleSystem@@6B@; reference that name, not a new one"
 dir32,0x011109CC,?g_vtbl_011109CC@@3PAPAXA,"retail 0x011109CC is already recorded as ??_7BoxEmissionVolumeInfo@FXParticleSystem@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x01110E78,?g_vtbl_01110E78@@3PAPAXA,"nothing in the ledger owns 0x01110E78. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -617,7 +615,6 @@ dir32,0x01336E4C,??_B?1??getRva008877A0Singleton@@YAPAXXZ@51,the name encodes 0x
 dir32,0x01336E5C,?debug01336E5C@@3PAVShadowDebug007BC270@@A,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x01336E5C,?g_Rva00F36E5C@@3PAXA,"retail 0x01336E5C is already recorded as ?DebugGlobal00409E20@@3PAVDebugView00409E20@@A (+14 more); reference that name, not a new one"
 dir32,0x013377D8,?g_bfmeHolderBU@@3PAUState8C4DA0@@A,"retail 0x013377D8 is already recorded as ?Rva008A5380Holder@@3PADA (+18 more); reference that name, not a new one"
-dir32,0x01337810,?g_rva01337810GcRoots@@3PAURva00899560Pool@@A,"retail 0x01337810 is already recorded as ?g_bfme1211@@3PAVBfmeG1211@@A (+18 more); reference that name, not a new one"
 dir32,0x01337820,?g_01337820@@3PAURva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
 dir32,0x01337820,?g_01337820@@3PAVRva008B38F0Global@@A,the name encodes 0x008B38F0 but retail reads 0x01337820
 dir32,0x013378E0,?g_bfmeEntriesDU@@3PAVRva008972B0Source@@A,"retail 0x013378E0 is already recorded as ?g_bfmeEntriesDU@@3PAVBfmeTripleDU@@A; reference that name, not a new one"
