@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 // BoneFXUpdateModuleData default constructor at 0x00288340 (225 B), ported
 // from Zero Hour's BoneFXUpdate.cpp. Upstream layout:
 // inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Module/BoneFXUpdate.h
@@ -38,8 +38,32 @@ struct BaseBoneListInfo
 	Bool onlyOnce;
 };
 
-struct BoneFXListInfo : public BaseBoneListInfo
+// Retail 0x00288280 proves this element has no base: its 16-byte ctor only
+// zeroes boneName and gameClientDelay, so the layout is flat (0x24 bytes,
+// onlyOnce at +0x1c, pointer at +0x20) and the remaining members are trivial.
+struct BfmeAsciiStringData;
+#include "ascii_string.h"
+struct GameClientRandomVariable
 {
+	GameClientRandomVariable() : m_type(0), m_low(0.0f), m_high(0.0f) {}
+	int m_type;
+	float m_low;
+	float m_high;
+};
+struct GameLogicRandomVariable
+{
+	int m_type;
+	float m_low;
+	float m_high;
+};
+struct BoneFXListInfo
+{
+	BoneFXListInfo();
+	~BoneFXListInfo();
+	AsciiString boneName;
+	GameClientRandomVariable gameClientDelay;
+	GameLogicRandomVariable gameLogicDelay;
+	Bool onlyOnce;
 	const FXList *fx;
 };
 
@@ -96,3 +120,8 @@ BoneFXUpdateModuleData::BoneFXUpdateModuleData()
 	m_damageOCLTypes = 0xffffffff;
 	m_damageParticleTypes = 0xffffffff;
 }
+
+// Retail 0x00288280 (16 B), reached through ILT 0x1E15: member-wise default
+// construction over the flat view above. Kept at end of file so earlier $L
+// funclet labels do not renumber.
+BoneFXListInfo::BoneFXListInfo() {}
