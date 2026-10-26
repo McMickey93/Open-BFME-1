@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /I../../../inputs/vendor/stlport
+// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB
 // stlport
 
 #include "../../../Libraries/Source/WWVegas/WWLib/string_base.h"

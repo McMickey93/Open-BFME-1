@@ -15,6 +15,7 @@ from test_bfme2_port_r1_regressions import checkout, git, synthetic_snapshot_che
 @pytest.mark.parametrize('late_change', [False, True])
 def test_workspace_listing_survives_finalization(checkout, tmp_path, monkeypatch, late_change):
     root, _ = synthetic_snapshot_checkout(checkout)
+    (root / 'game/f.cpp').write_text('// stlport\n// inert source\n')
     policy = tmp_path / 'external-runtime'
     policy.mkdir()
     driver = root / 'tools/link_cycle.py'
@@ -25,9 +26,10 @@ def test_workspace_listing_survives_finalization(checkout, tmp_path, monkeypatch
         '    import build\n'
         '    assert build._case_resolve(str(ROOT / "game/f.cpp").swapcase()) == str(ROOT / "game/f.cpp")\n'
         '    assert build._case_resolve(str(ROOT).swapcase()) == str(ROOT)\n'
+        '    assert ROOT.parent / "include" in build._include_search_roots(ROOT / "game/f.cpp", ["cl", "-I" + str(ROOT)], {})\n'
         f'    list(Path({str(policy)!r}).iterdir())\n'
         '    receipt["synthetic_execution"] = '))
-    git(root, 'add', 'tools/link_cycle.py')
+    git(root, 'add', 'tools/link_cycle.py', 'game/f.cpp')
     git(root, '-c', 'core.hooksPath=.githooks', '-c', 'user.name=fixture',
         '-c', 'user.email=fixture@example.invalid', 'commit', '-qm', 'Observe workspace')
     git(root, 'update-ref', 'refs/remotes/origin/master', git(root, 'rev-parse', 'HEAD'))

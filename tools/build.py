@@ -917,16 +917,19 @@ def _case_resolve(path):
         if not pure.anchor:
             return None
         current, parts = pure.anchor.upper(), pure.parts[1:]
-    # ROOT already has the checkout's real spelling. Start there for reported
-    # paths inside it: walking its ancestors would bind unrelated host and
-    # temporary launcher directory listings into the runtime audit.
+    # ROOT and its ancestors already have their real spelling. Start at the
+    # closest known ancestor, including for STLport's sibling ../include
+    # search roots, without listing unrelated host/launcher directories.
     reported = path.replace("\\", "/") if os.name == "nt" else path
-    known = str(ROOT).replace("\\", "/") if os.name == "nt" else str(ROOT)
-    prefix = known.rstrip("/") + "/"
-    if reported.lower() == known.rstrip("/").lower():
-        current, parts = str(ROOT), []
-    elif reported.lower().startswith(prefix.lower()):
-        current, parts = str(ROOT), reported[len(prefix):].split("/")
+    for ancestor in (ROOT, *ROOT.parents):
+        known = str(ancestor).replace("\\", "/") if os.name == "nt" else str(ancestor)
+        prefix = known.rstrip("/") + "/"
+        if reported.lower() == known.rstrip("/").lower():
+            current, parts = str(ancestor), []
+            break
+        if reported.lower().startswith(prefix.lower()):
+            current, parts = str(ancestor), reported[len(prefix):].split("/")
+            break
     for part in parts:
         if not part:
             continue
