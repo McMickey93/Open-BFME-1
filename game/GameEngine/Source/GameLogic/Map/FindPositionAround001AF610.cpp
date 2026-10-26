@@ -1,3 +1,4 @@
+// was ?g_rva001AF610RingSpacing@@3MA
 // cl: /DNDEBUG /MD /EHsc
 // findPositionAround, retail RVA 0x001AF610 (1139 bytes), free cdecl.
 // Identity: the ILT 0x00026C4C pin (?findPositionAround@@YA_NPBUCoord3D@@
@@ -86,7 +87,7 @@ extern CRCParameterCheck *TheCRCParameterCheck;
 extern bool g_bfmeDockingTraceActive;
 extern "C" void bfmeRetailCritterDesyncLog( CRCParameterCheck *, const char *, ... );
 
-Real g_rva001AF610RingSpacing = 5.0f;
+Real g_rva00EACC34RingSpacing = 5.0f;
 
 Real GetGameLogicRandomValueReal( Real lo, Real hi, char *file, Int line );
 Bool Rva001AEA80TryPosition( const Coord3D *center, Real dist, Real angle,
@@ -137,13 +138,13 @@ Bool findPositionAround( const Coord3D *center,
 	if (DOCKING_TRACE)
 		bfmeRetailCritterDesyncLog( TheCRCParameterCheck, "    startAngle=%g", startAngle );
 
-	for (Real dist = options->minRadius; dist <= options->maxRadius; dist += g_rva001AF610RingSpacing)
+	for (Real dist = options->minRadius; dist <= options->maxRadius; dist += g_rva00EACC34RingSpacing)
 	{
 		Real angleSpacing;
 		if (dist == options->minRadius)
 			angleSpacing = TWO_PI;
 		else
-			angleSpacing = (g_rva001AF610RingSpacing / (dist + 1.0f)) * (TWO_PI / 6.0f);
+			angleSpacing = (g_rva00EACC34RingSpacing / (dist + 1.0f)) * (TWO_PI / 6.0f);
 
 		if (DOCKING_TRACE)
 			bfmeRetailCritterDesyncLog( TheCRCParameterCheck, "    angleSpacing=%g", angleSpacing );
