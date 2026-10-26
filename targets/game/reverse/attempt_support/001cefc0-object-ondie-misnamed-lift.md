@@ -78,3 +78,26 @@ Residue (all register allocation / scheduling):
    local, a forceinline member loop (worse), a while loop (worse).
 3. The setStatus temp's third word is stored before the pushes (retail
    after `push 1`).
+
+Diagnostic (same session): changing only the +0x94 test's constant (to
+0x40000000, wrong on purpose) makes the size exact (1493) and moves the
+bit-87 clear temp to EBP as in retail; the bit-61 test/or pair then CSEs
+locally (`mov ecx,0x20000000; test ecx,eax; ... or edi,ecx`), where retail
+keeps `test [esi+0x114],imm` and `or edi,imm`. So two things block: the
+shared constant across the status test and the flag edit, and the test/or
+pair itself. Set spellings tried without effect: `(w & ~m) | m`,
+`set(i, val=1)`, `1u << i`, `unsigned long` mask; 64-bit flag words (worse,
+0.943). The die-loop register residue is probably a consequence of the same
+allocation.
+Further inert spellings for the bit-61 pair (with the +0x94 constant dummied
+to isolate it): explicit `ModelConditionFlags &` local, a static forceinline
+setBit(ModelConditionFlags *, int), raw `m_bits[1] & / |= 0x20000000`, a
+word pointer, a `ModelConditionFlags *f` used for the notify push, and a
+ZH-style mask temporary (`mask.set(61); m_bits[1] |= mask.m_bits[1]`; the
+temp is eliminated but the constant is still shared). For +0x94:
+signed/unsigned casts, a Bool accessor (gives shr/test al,1), bitfield.
+Other inert toggles: draw declared then assigned, Player* if-form (worse),
+pathfinder accessor, notify via locals, 10-word flags. Note that sibling
+0x001C7CF0 in the same Object family DOES share its constant
+(`mov eax,0x1000000; test eax,ecx; or ecx,eax`), so whatever stops it in
+onDie is local to this body.
