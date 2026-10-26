@@ -27,7 +27,7 @@ public:
 	virtual Real maximum();
 };
 
-extern void d_0073a9b0( void );
+float getHeightAroundPos(float x, float y);	// matched 0x0073A9B0; formerly reached as d_0073a9b0
 extern void j_00046fa1( void );
 
 class W3DView
@@ -83,7 +83,7 @@ void W3DView::setZoomToDefault()
 		return;
 
 	typedef Real ( *TerrainHeight )( Real, Real );
-	Real terrainHeight = ( ( TerrainHeight )d_0073a9b0 )( m_pos.x, m_pos.y );
+	Real terrainHeight = ( ( TerrainHeight )getHeightAroundPos )( m_pos.x, m_pos.y );
 	if( m_heightField.m_ready )
 	{
 		typedef Real ( Rva0045A000::*Sample )( Real, Real );

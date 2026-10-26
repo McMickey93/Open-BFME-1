@@ -10,7 +10,7 @@ typedef bool Bool;
 extern Int TheW3DFrameLengthInMsec;
 #define TheAnimationMsPerStep (TheW3DFrameLengthInMsec)
 
-extern void d_0073a9b0(void);
+float getHeightAroundPos(float x, float y);	// matched 0x0073A9B0; formerly reached as d_0073a9b0
 typedef Real (*TerrainHeight)(Real, Real);
 
 class CameraLimit
@@ -94,7 +94,7 @@ void W3DView::cameraModFinalZoom(Real finalZoom, Real easeIn, Real easeOut)
 
 	if (m_doingRotateCamera)
 	{
-		terrainHeightMax = ((TerrainHeight)d_0073a9b0)(m_pos.x, m_pos.y);
+		terrainHeightMax = ((TerrainHeight)getHeightAroundPos)(m_pos.x, m_pos.y);
 		maxHeight = terrainHeightMax + m_cameraLimits.getMaximum();
 		maxZoom = maxHeight / m_cameraOffsetZ;
 
@@ -109,7 +109,7 @@ void W3DView::cameraModFinalZoom(Real finalZoom, Real easeIn, Real easeOut)
 			WaypointXY waypoint;
 			waypoint.x = position->x;
 			waypoint.y = position->y;
-			terrainHeightMax = ((TerrainHeight)d_0073a9b0)(waypoint.x, waypoint.y);
+			terrainHeightMax = ((TerrainHeight)getHeightAroundPos)(waypoint.x, waypoint.y);
 			maxHeight = terrainHeightMax + m_cameraLimits.getMaximum();
 			maxZoom = maxHeight / m_cameraOffsetZ;
 			time = *(Int *)((char *)this + 0x284) - *(Int *)((char *)this + 0x288);
