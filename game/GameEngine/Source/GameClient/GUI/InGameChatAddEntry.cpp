@@ -26,7 +26,8 @@ class GameWindow;
 
 int GadgetListBoxAddEntryText( GameWindow *listBox, UnicodeString text, int color,
 	int row, int column, bool overwrite );
-void bfmeCall926A( void *listBox, void *row, void *data, int unused );
+// Retail calls ILT 0x00049F30 -> GadgetListBoxSetItemData (0x004B84A0).
+void GadgetListBoxSetItemData( GameWindow *listBox, void *data, int row, int column );
 
 class AptInGameChat
 {
@@ -47,7 +48,7 @@ bool AptInGameChat::addEntry( UnicodeString text, int color )
 	{
 		int row = GadgetListBoxAddEntryText(
 			m_listBox, text, color, -1, -1, true );
-		bfmeCall926A( m_listBox, (void *)-1, (void *)row, 0 );
+		GadgetListBoxSetItemData( m_listBox, (void *)-1, row, 0 );
 		return true;
 	}
 	return false;

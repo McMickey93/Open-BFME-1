@@ -19,7 +19,9 @@ public:
 	void bfmeUse926B(BfmeNodeLC *o);
 };
 
-void bfmeCall926A(void *p, void *b, void *a, int f);
+// Retail calls ILT 0x00049F30 -> GadgetListBoxSetItemData (0x004B84A0).
+class GameWindow;
+void GadgetListBoxSetItemData(GameWindow *listBox, void *data, int row, int column);
 
 class BfmeThing926A
 {
@@ -33,7 +35,7 @@ void BfmeThing926A::bfmeGo926A(void *a, void *b)
 	BfmeKeyLC *k = m_bfmeKey;
 	if (k) {
 		BfmeNodeLC *o = k->bfmeFindLC();
-		bfmeCall926A(o->m_bfmeP, b, a, 0);
+		GadgetListBoxSetItemData((GameWindow *)o->m_bfmeP, b, (int)a, 0);
 	}
 }
 
