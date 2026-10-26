@@ -1258,11 +1258,19 @@ struct BfmeFontCharsBuffer
 		BufferPosition = 0;
 		Buffer = new uint16[buffer_size];
 	}
+	~BfmeFontCharsBuffer ();
 
 	uint16 *		Buffer;
 	int				BufferMax;
 	int				BufferPosition;
 };
+
+// 0x0093D030, directly after the constructor 0x0093D000: releases the pixel
+// buffer with operator delete[] (0x00881EF0). Unreferenced in retail.
+BfmeFontCharsBuffer::~BfmeFontCharsBuffer ()
+{
+	delete [] Buffer;
+}
 
 void
 FontCharsClass::Update_Current_Buffer (int char_width)
