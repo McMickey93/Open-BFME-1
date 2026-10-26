@@ -32,5 +32,15 @@
     "game/GameEngineDevice/Source/W3DDevice/GameClient/RTS3DSceneRva00713780.cpp": "842afe0e01b9173f4768f63d73bf97ab1a1c519186bf02c54220df33e436ace6"
   },
   "registers": [],
-  "task_tag": "drawable-hidden-20261026"
+  "task_tag": "drawable-hidden-20261026",
+  "donor_revision": "13cfa404dfe65a062e2e5effe030ff826b905adc",
+  "review_tree": "b2e31b63706e463bc31ab224a73ca24db6d52b9e",
+  "review_paths": [
+    "docs/shape_levers.md",
+    "game/GameEngine/Source/GameClient/GameClientRva00431A60Frustum.cpp",
+    "game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTankTruckDrawCreateEmitters.cpp",
+    "game/GameEngineDevice/Source/W3DDevice/GameClient/RTS3DSceneRva00713780.cpp",
+    "inputs/reference/open-bfme-2",
+    "targets/game/reverse/identity_evidence/00410ba0-three-visibility-consumers-20261026.md"
+  ]
 }
