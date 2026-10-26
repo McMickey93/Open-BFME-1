@@ -21161,5 +21161,15 @@
    "after_sha256": "0f7a820da85f2398023becd74fb5868be4e2f50145314c3f415e74cc2f5bcf31",
    "evidence": "targets/game/reverse/dir32_addresses.csv",
    "reason": "TheGameText at 0x012F147C is recorded in dir32_addresses.csv as ?TheGameText@@3PAVBfmeGameText@@A; the DIR32 gate refuses the bank's RvaLANGameText spelling, so the local class takes the recorded name and RvaLANGameText stays as a typedef."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x0021ac30.cpp",
+   "new_path": "game/GameEngine/Source/GameLogic/Object/Contain/Rva0021AC30ContestableContainOverride.cpp",
+   "old_name": "Owner",
+   "new_name": "Rva0021AC30ContestableContain",
+   "before_sha256": "6e5bcf8f69267fac499d8a1265cef857ee82c0cfd3340223aa7e8bee9cd9d1ef",
+   "after_sha256": "30e87b5702a741d32c2af526f8fd6527674f8eac4bb65090512ef85abffa4e7f",
+   "evidence": "targets/game/reverse/identity_evidence/0021ac30-contestable-contain-slot48.md",
+   "reason": "The bank's Owner was a generic placeholder; the matched ContestableContain ctor/dtor install vtable 0x010AB3C0 whose slot +0x48 is this body, overriding the OpenContain slot body 0x00228050 that it calls, so the owner becomes the address-derived ContestableContain view."
  }
 ]
