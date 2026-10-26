@@ -40,3 +40,10 @@ void WW3D::Set_NPatches_Gap_Filling_Mode( NPatchesGapFillingModeEnum mode )
 		TheDX8MeshRenderer->Invalidate( false );
 	}
 }
+
+// 0x0094DE10: `mov eax,[0x012D6D88] / ret`, reading the NPatchesGapFillingMode
+// global this unit defines. Unreferenced in retail; address-derived name.
+unsigned Rva0094DE10GetNPatchesGapFillingMode()
+{
+	return NPatchesGapFillingMode;
+}

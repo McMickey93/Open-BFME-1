@@ -52,3 +52,11 @@ void WW3D::Enable_Sorting(bool enabled)
 	IsSortingEnabled = enabled;
 	TheDX8MeshRenderer->Invalidate(false);
 }
+
+// 0x00910EE0: `mov eax,[0x012D6D8C] / ret` among the shader.cpp accessors,
+// reading the NPatchesLevel global this unit defines. Unreferenced in retail;
+// address-derived name.
+unsigned Rva00910EE0GetNPatchesLevel()
+{
+	return ::NPatchesLevel;
+}

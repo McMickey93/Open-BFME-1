@@ -123,3 +123,44 @@ int Rva008FE160::get( void )
 {
 	return Rva008FE150::s_value;
 }
+
+// 0x00937150 / 0x009A58D0 read the globals Rva00937140 (0x01346E4C) and
+// Rva009A58C0 (0x0134C7DC) above store, the getter directly after each setter:
+// `mov eax,[...] / ret`. Both are unreferenced in retail.
+class Rva00937150
+{
+public:
+	static int get( void );
+};
+
+int Rva00937150::get( void )
+{
+	return Rva00937140::s_value;
+}
+
+class Rva009A58D0
+{
+public:
+	static int get( void );
+};
+
+int Rva009A58D0::get( void )
+{
+	return Rva009A58C0::s_value;
+}
+
+// 0x00882F70: `mov al,[0x0130E9F9] / ret`, directly before Rva00882F80, reads
+// the byte the memory-pool allocator owns (data_rows.csv ?g_rva0130E9F9@@3EA).
+// Unreferenced in retail.
+extern unsigned char g_rva0130E9F9;
+
+class Rva00882F70
+{
+public:
+	static unsigned char get( void );
+};
+
+unsigned char Rva00882F70::get( void )
+{
+	return g_rva0130E9F9;
+}
