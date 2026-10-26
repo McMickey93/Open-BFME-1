@@ -2182,3 +2182,23 @@ only applies to TU-local `_M_start[n]` views. Source
 value-initialised `__false_type()` temporary (`mov byte [arg home],0`):
 pass an uninitialised `__false_type tag;` local instead, as
 `Rva000FB3F0Insert.cpp` already does.
+
+## Iterator kept in a register and in the dead argument home (2026-10-26)
+
+Mismatch: 0x0021D360 ContestableContain::onRemoving (245 B, `/O2 /DNDEBUG
+/MD /EHsc /D_STLP_USE_STATIC_LIB`, STLport map) looks up a map iterator in
+one of two `find` calls, walks the map using it, then passes its address to
+a helper. Retail copies each `find` temporary into ESI in its own branch,
+stores ESI once into the object argument's home (`mov [esp+1c],esi`), uses
+ESI in the loop and pushes `lea edx,[esp+1c]` at the end, in an 8-byte
+frame. `iterator found = c ? find(a) : find(b);` constructs in place and
+keeps the iterator in memory (156 diffs, 249 B); a temporary copy at the
+call (`f(iterator(found))`) fixes the register use but adds a frame slot
+(10 diffs, 12-byte frame). Exact: declare `iterator found;`, assign it in an
+if/else from the two finds, and pass it by value to a `__forceinline` tail
+whose first statement copies the parameter (`iterator found(passed);`),
+uses the copy throughout and passes `&passed`. Measured effect: the inlined
+by-value parameter takes the dead argument home, the copy gets the
+register, and the default constructor's zero store dies. Source
+`game/GameEngine/Source/GameLogic/Object/Contain/ContestableContain_onRemoving.cpp`
+(commit c3f4ba7828).
