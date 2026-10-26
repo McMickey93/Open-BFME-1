@@ -64,7 +64,11 @@ private:
 	bool _M_delete;
 };
 
-inline const ctype<char>::mask *ctype<char>::classic_table()
+// ?classic_table@?$ctype@D@_STL@@KAPBIXZ
+// Retail keeps an out-of-line copy at 0x008406A0 (mov eax,0x0112EC4C; ret:
+// &_S_classic_table[1]) while the constructor below inlines it, so the
+// library defined it outside the class and /O2 auto-inlined the call.
+const ctype<char>::mask *ctype<char>::classic_table()
 {
 	return &__identifier("?_S_classic_table@?$ctype@D@_STL@@0QBW4mask@ctype_base@2@B")[1];
 }
