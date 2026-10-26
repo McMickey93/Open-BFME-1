@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Retail RVA 0x0015A2D0, 150 bytes; address-derived identity.
 // AIGroup::prepFollow calls this TU-private helper with start=ECX, end=EAX,
 // point=EDX. The explicitly absent-from-retail caller below retains the same

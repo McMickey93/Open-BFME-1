@@ -1,4 +1,4 @@
-// cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD /D_STLP_USE_STATIC_LIB /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWLib
+// cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWLib
 // stlport
 // Retail returns at +0x289 and begins INT3 padding at +0x28A.
 // The matched MilesAudioManager caller at 0x006B86D0 calls this zero-argument member through ILT 0x00044661.

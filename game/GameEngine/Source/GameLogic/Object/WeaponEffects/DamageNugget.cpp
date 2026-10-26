@@ -1,4 +1,4 @@
-// cl: /O2 /Ob2 /DNDEBUG /DWIN32 /MD /EHs-c- /Igame/GameEngine/Source/GameLogic/Object /Igame/GameEngine/Source/Common/Thing /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /O2 /Ob2 /DNDEBUG /DWIN32 /MD /EHs-c- /Igame/GameEngine/Source/GameLogic/Object /Igame/GameEngine/Source/Common/Thing /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // stlport
 #include "Lib/BaseType.h"
 #include <list>

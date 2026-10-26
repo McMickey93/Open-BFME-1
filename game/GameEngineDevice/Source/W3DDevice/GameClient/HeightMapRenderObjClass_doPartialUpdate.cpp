@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Retail RVA 0x006D1D80, 416 bytes. HeightMapRenderObjClass vtable
 // 0x0111DC88 slot 137 routes through 0x0002E087; the landed constructor
 // at 0x006D1C80 installs that table. Preserves the banked method identity.

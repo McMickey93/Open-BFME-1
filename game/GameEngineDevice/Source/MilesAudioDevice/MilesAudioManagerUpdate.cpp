@@ -1,4 +1,4 @@
-// cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
+// cl: /O2 /EHsc /DNDEBUG /DWIN32 /D_WINDOWS /MD /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
 //
 // Retail 0x006B9C90, 588 bytes.  Miles audio vtable 0x0111C0C0 slot 5 (+0x14)
 // routes through ILT 0x0002BD32 to this body; after BFME's extra

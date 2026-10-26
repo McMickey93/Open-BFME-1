@@ -1,4 +1,4 @@
-// cl: /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
+// cl: /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /DNDEBUG /DWIN32 /MD /D_STLP_USE_STATIC_LIB
 // stlport
 // Retail 0x003DC190, 716 bytes. The matched GameLogic::update call through
 // ILT 0x000313A9 and the Zero Hour processPathfindQueue body establish identity.

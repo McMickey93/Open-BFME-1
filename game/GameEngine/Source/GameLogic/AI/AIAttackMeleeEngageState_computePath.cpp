@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // ?computePath@AIAttackMeleeEngageState@@MAE_NXZ
 // RVA 00177A90, 952 bytes. Vtable 0x01099848 slot 17 routes through ILT
 // 0x0002E5CD to this body; AIStateMachine.h declares virtual Bool computePath.

@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Retail 0x003D9F00 (969 bytes) and 0x003DA3C0 (1017 bytes).
 // The diagnostic at VA 0x010EE570 names IterateCircular1; address tokens
 // distinguish its two callback specializations without inventing their names.

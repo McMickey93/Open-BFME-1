@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Retail RVA 0x00170680, 545 bytes. Opaque owner: the diagnostic names the
 // fire-during-approach state, but no original class/virtual signature is claimed.
 // Layout/ABI evidence: docs/analysis/0x003e8e10.md sections 1b-1d and this

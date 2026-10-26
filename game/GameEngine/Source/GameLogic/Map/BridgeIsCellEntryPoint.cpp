@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // Bridge::isCellEntryPoint, retail 0x001A2950 (510 bytes, ret 8).
 // Zero Hour's TerrainLogic.cpp body; BFME adds an out parameter that receives
 // the z of the entry line's first corner (fromLeft.z or toLeft.z).

@@ -1,4 +1,4 @@
-// cl: /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug
+// cl: /DNDEBUG /MD /Igame/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug
 #include "shader.h"
 // ScreenZoomFilter vtable 0x011289D4 slot 5 -> 0x0040C7E3 -> 0x007D1F00.
 // Slot 0 identifies matched ScreenZoomFilter::init at 0x007D2390.
