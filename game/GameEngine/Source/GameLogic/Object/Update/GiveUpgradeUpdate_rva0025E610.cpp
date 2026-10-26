@@ -8,7 +8,7 @@
 // direct RVA-labelled member declarations.  They preserve thiscall ECX and
 // the observed argument/result ABI without routing through raw function
 // pointers or asserting an ICF alias.
-// cl: /O2 /DNDEBUG /DWIN32 /MD /EHs-c- /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /O2 /DNDEBUG /DWIN32 /MD /EHs-c- /D_STLP_USE_STATIC_LIB /D_STLP_NO_EXCEPTIONS /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // stlport
 
 #include "Lib/BaseType.h"

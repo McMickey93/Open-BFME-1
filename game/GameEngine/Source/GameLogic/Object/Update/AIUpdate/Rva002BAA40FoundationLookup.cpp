@@ -1,5 +1,5 @@
 // ?slot14@Rva002BAA40@@UAEXXZ
-// cl: /DNDEBUG /MD /EHsc /Igame/GameEngine/Source /Igame/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/GameEngine/Source /Igame/Libraries/Include /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
 // stlport
 #include <bitset>
 

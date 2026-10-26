@@ -1,5 +1,5 @@
 // stlport
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /Igame/GameEngine/Source/Common/System /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /Igame/GameEngine/Source/Common/System /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // DynamicAudioEventInfo::xferNoName and its native override forwarders.
 // The vendor header supplies real method declarations only; BFME's AudioEventInfo
 // base is 0x98 bytes, so its different ZH data layout must not be dereferenced.

@@ -3,7 +3,7 @@
 // Exact 1066 instruction bytes; strict dependencies documented in astra_T/REPORT.md.
 // Thing::isKindOf below independently reproduces its existing 64-byte retail body.
 // The native Override.h wrapper and visible noinline read-only kind query are essential.
-// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
+// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include
 // stlport
 #include <set>
 #include <list>
