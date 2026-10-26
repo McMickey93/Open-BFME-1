@@ -1,5 +1,5 @@
 // ?d_00516850@@YAXXZ
-// partial score=0.43 date=2026-09-21
+// partial score=0.3975 date=2026-09-21
 // ?bfmeGo1078A@BfmeQ1078@@QAE_NHPAPAVGameInfo@@@Z [retail body 0x00516850]
 // Address-derived: same BfmeQ layout family as BfmeConv1072.cpp/BfmeConv1073.cpp
 // (fields m_bfme250 @0x250 and m_bfme3d4 @0x3d4 match those siblings exactly).
