@@ -92,7 +92,10 @@ public:
 	ParticleSystemID m_systemID;				// +0xAC
 };
 
-ParticleSystem *emptyParticleSystem( void );
+// The null-system accessor (ILT 0x00001B18 -> 0x005CFF50) is defined only as
+// ?bfmeNullSystemZA@@YAPAVParticleSystemZA@@XZ; its real name is unproven.
+class ParticleSystemZA;
+ParticleSystemZA *bfmeNullSystemZA();
 
 // Intrusive handle: each handle links itself into its system's handle list.
 class ParticleSystemHandle
@@ -126,7 +129,7 @@ public:
 	ParticleSystem *operator->() const
 	{
 		if (!m_system)
-			return emptyParticleSystem();
+			return (ParticleSystem *)bfmeNullSystemZA();
 		return m_system;
 	}
 

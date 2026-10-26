@@ -27,7 +27,10 @@ typedef unsigned int DrawableID;
 typedef unsigned int ObjectID;
 
 class ParticleSystem;
-ParticleSystem *emptyParticleSystem();
+// The null-system accessor (ILT 0x00001B18 -> 0x005CFF50) is defined only as
+// ?bfmeNullSystemZA@@YAPAVParticleSystemZA@@XZ; its real name is unproven.
+class ParticleSystemZA;
+ParticleSystemZA *bfmeNullSystemZA();
 
 class ParticleSystemHandle
 {
@@ -39,7 +42,7 @@ public:
 	ParticleSystem *operator->() const
 	{
 		if (m_system == 0)
-			return emptyParticleSystem();
+			return (ParticleSystem *)bfmeNullSystemZA();
 		return m_system;
 	}
 	void release();

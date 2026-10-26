@@ -27,7 +27,10 @@ class Particle;
 class ParticleInfo;
 class Xfer;
 enum ParticlePriorityType;
-ParticleSystem *emptyParticleSystem();
+// The null-system accessor (ILT 0x00001B18 -> 0x005CFF50) is defined only as
+// ?bfmeNullSystemZA@@YAPAVParticleSystemZA@@XZ; its real name is unproven.
+class ParticleSystemZA;
+ParticleSystemZA *bfmeNullSystemZA();
 
 class ParticleSystemHandle {
 public:
@@ -37,7 +40,7 @@ public:
     ~ParticleSystemHandle() throw();
     ParticleSystemHandle &operator=(const ParticleSystemHandle &that) throw();
     operator bool() const { return m_system != 0; }
-    ParticleSystem *operator->() const { return m_system ? m_system : emptyParticleSystem(); }
+    ParticleSystem *operator->() const { return m_system ? m_system : (ParticleSystem *)bfmeNullSystemZA(); }
     ParticleSystem *m_system;
     ParticleSystemHandle *m_previous;
     ParticleSystemHandle *m_next;

@@ -36,7 +36,10 @@ public:
 	unsigned char m_flag1A6;
 };
 
-ParticleSystem *emptyParticleSystem();
+// The null-system accessor (ILT 0x00001B18 -> 0x005CFF50) is defined only as
+// ?bfmeNullSystemZA@@YAPAVParticleSystemZA@@XZ; its real name is unproven.
+class ParticleSystemZA;
+ParticleSystemZA *bfmeNullSystemZA();
 
 class ParticleSystemTemplate;
 
@@ -123,7 +126,7 @@ void BfmeHostCW::rva0033C120(const char *name)
 			ParticleSystem *system = handle.m_system;
 
 			if (system == 0)
-				system = emptyParticleSystem();
+				system = (ParticleSystem *)bfmeNullSystemZA();
 
 			system->setPosition(&pos);
 		}

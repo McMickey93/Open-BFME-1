@@ -10,7 +10,10 @@ public:
 	void destroy(void);
 };
 
-ParticleSystem *emptyParticleSystem(void);
+// The null-system accessor (ILT 0x00001B18 -> 0x005CFF50) is defined only as
+// ?bfmeNullSystemZA@@YAPAVParticleSystemZA@@XZ; its real name is unproven.
+class ParticleSystemZA;
+ParticleSystemZA *bfmeNullSystemZA();
 
 class ParticleSystemFieldClearShim
 {
@@ -39,7 +42,7 @@ private:
 		ParticleSystem *operator->(void) const
 		{
 			if (!m_system)
-				return emptyParticleSystem();
+				return (ParticleSystem *)bfmeNullSystemZA();
 			return m_system;
 		}
 	};

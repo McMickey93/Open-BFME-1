@@ -36,7 +36,10 @@ public:
 	void destroy(void);
 };
 
-ParticleSystem *emptyParticleSystem(void);
+// The null-system accessor (ILT 0x00001B18 -> 0x005CFF50) is defined only as
+// ?bfmeNullSystemZA@@YAPAVParticleSystemZA@@XZ; its real name is unproven.
+class ParticleSystemZA;
+ParticleSystemZA *bfmeNullSystemZA();
 
 // The tracked handle's storage and its field-clear helper. The class name is
 // load-bearing: clear() is pinned under it.
@@ -61,7 +64,7 @@ public:
 	ParticleSystem *operator->(void) const
 	{
 		if (!m_system)
-			return emptyParticleSystem();
+			return (ParticleSystem *)bfmeNullSystemZA();
 		return m_system;
 	}
 };
