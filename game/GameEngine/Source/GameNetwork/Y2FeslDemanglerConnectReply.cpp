@@ -76,3 +76,23 @@ void Rva00800780Owner::onConnectReply( Rva007E8810Message *msg )
 	m_sink->notify( 0, &addr, m_d0 );
 	((Gen_007e86c0 *)&addr)->m();
 }
+
+// Retail 0x00800830 (unreferenced, after int3 padding, directly after the
+// connect reply above): forward one message through the pinned FESL notify
+// triple at 0x007F93E0 with the "->D" route and the dword at this+0x10, the
+// call shape Y4FeslEcnlNotify.cpp ends with ("->L" there). Address-derived names.
+void *Rva007F93E0( void *message, void *route, void *owner );
+
+class Rva00800830Owner
+{
+public:
+	void send( void *message );
+
+	char m_gap00[ 0x10 ];
+	void *m_field10;
+};
+
+void Rva00800830Owner::send( void *message )
+{
+	Rva007F93E0( message, "->D", m_field10 );
+}
