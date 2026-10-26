@@ -3267,15 +3267,8 @@ Bool W3DShaderManager::filterPreRender(FilterTypes filter, Bool &skipRender, Cus
  */
 //=============================================================================
 // byte-exact reconstruction: game/GameEngine/Source/Common/W3DShaderManagerFilterPostRender.cpp
-// ?filterPostRender@W3DShaderManager@@SA_NW4FilterTypes@@W4FilterModes@@AAUCoord2D@@AA_N@Z present-unmatched
-Bool W3DShaderManager::filterPostRender(FilterTypes filter, enum FilterModes mode, Coord2D &scrollDelta, Bool &doExtraRender)
-{
-	if (W3DFilters[filter])
-		return W3DFilters[filter]->postRender(mode, scrollDelta,doExtraRender);
-
-	m_currentFilter = FT_NULL_FILTER;
-	return FALSE;
-}
+// W3DShaderManager::filterPostRender: retail body matched in
+// W3DShaderManagerFilterPostRender.cpp (0x00716A50, 54 B).
 
 // W3DShaderManager::filterPostRender =======================================================
 /** Call to view filter shaders after rendering is complete.
