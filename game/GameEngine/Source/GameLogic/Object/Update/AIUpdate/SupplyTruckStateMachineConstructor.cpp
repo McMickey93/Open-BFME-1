@@ -38,12 +38,15 @@ public:
     static bool ownerIdle(State *, void *);
     static bool ownerDocking(State *, void *);
     // BFME-only condition: owner AI state equals 0x2f. Semantic name unproved.
+    // Retail takes it through ILT slot 0x32DD, so the table below names the
+    // thunk ?j_000032dd (reaching ?bfmeGoBVD at 0x002C5BE0) instead.
     static bool condition002C5BE0(State *, void *);
     static bool isForcedIntoBusyState(State *, void *);
     static bool isForcedIntoWantingState(State *, void *);
     static bool ownerNotDockingOrIdle(State *, void *);
     static bool ownerAvailableForSupplying(State *, void *);
 };
+extern void j_000032dd();
 class SupplyTruckBusyState : public State {
 public:
     SupplyTruckBusyState(StateMachine *m) : State(m, AsciiString("SupplyTruckBusyState")) {}
@@ -80,27 +83,27 @@ SupplyTruckStateMachine::SupplyTruckStateMachine(Object *owner)
     static const StateConditionInfo busyConditions[] = {
         StateConditionInfo(ownerIdle, 0, 0),
         StateConditionInfo(ownerDocking, 4, 0),
-        StateConditionInfo(condition002C5BE0, 5, 0),
+        StateConditionInfo((StateTransFuncPtr)j_000032dd, 5, 0),
         StateConditionInfo(0, 0, 0)
     };
     static const StateConditionInfo idleConditions[] = {
         StateConditionInfo(isForcedIntoBusyState, 1, 0),
         StateConditionInfo(isForcedIntoWantingState, 2, 0),
         StateConditionInfo(ownerDocking, 4, 0),
-        StateConditionInfo(condition002C5BE0, 5, 0),
+        StateConditionInfo((StateTransFuncPtr)j_000032dd, 5, 0),
         StateConditionInfo(ownerNotDockingOrIdle, 1, 0),
         StateConditionInfo(0, 0, 0)
     };
     static const StateConditionInfo wantingConditions[] = {
         StateConditionInfo(ownerDocking, 4, 0),
-        StateConditionInfo(condition002C5BE0, 5, 0),
+        StateConditionInfo((StateTransFuncPtr)j_000032dd, 5, 0),
         StateConditionInfo(ownerNotDockingOrIdle, 1, 0),
         StateConditionInfo(0, 0, 0)
     };
     static const StateConditionInfo regroupingConditions[] = {
         StateConditionInfo(ownerIdle, 0, 0),
         StateConditionInfo(ownerDocking, 4, 0),
-        StateConditionInfo(condition002C5BE0, 5, 0),
+        StateConditionInfo((StateTransFuncPtr)j_000032dd, 5, 0),
         StateConditionInfo(0, 0, 0)
     };
     static const StateConditionInfo dockingConditions[] = {
