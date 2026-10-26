@@ -125,3 +125,133 @@ bool Rva009F2E80False() { return false; }
 void Rva009F4BE0Noop() {}
 void Rva009F4C90Noop() {}
 void Rva009F5430Noop() {}
+
+// Call-free __thiscall and __cdecl leaves from the same kind of gaps. Fields
+// are spelled only where the bytes touch them; leads stand for the rest.
+
+// 0x0084A490 / 0x0084A4B0 / 0x0084A4D0: `lea eax,[ecx+N] / ret`
+class Rva0084A490
+{
+public:
+	char *address();
+	char m_lead[ 0x8 ];
+	char m_8;
+};
+
+char *Rva0084A490::address() { return &m_8; }
+
+class Rva0084A4B0
+{
+public:
+	char *address();
+	char m_lead[ 0x4 ];
+	char m_4;
+};
+
+char *Rva0084A4B0::address() { return &m_4; }
+
+class Rva0084A4D0
+{
+public:
+	char *address();
+	char m_lead[ 0xC ];
+	char m_C;
+};
+
+char *Rva0084A4D0::address() { return &m_C; }
+
+// 0x0084A710: `xor ax,ax / ret`
+unsigned short Rva0084A710Zero() { return 0; }
+
+// 0x00AFE6B0: `mov eax,[ecx+4] / ret`
+class Rva00AFE6B0
+{
+public:
+	int get() const;
+	int m_0;
+	int m_4;
+};
+
+int Rva00AFE6B0::get() const { return m_4; }
+
+// 0x0083E950: `mov ax,[ecx+0x54] / ret`
+class Rva0083E950
+{
+public:
+	unsigned short get() const;
+	char m_lead[ 0x54 ];
+	unsigned short m_54;
+};
+
+unsigned short Rva0083E950::get() const { return m_54; }
+
+// 0x00845310 / 0x00845450: `mov eax,ecx / ret 4`, returning the receiver
+class Rva00845310
+{
+public:
+	Rva00845310 &self( int );
+};
+
+Rva00845310 &Rva00845310::self( int ) { return *this; }
+
+class Rva00845450
+{
+public:
+	Rva00845450 &self( int );
+};
+
+Rva00845450 &Rva00845450::self( int ) { return *this; }
+
+// 0x00825410 / 0x00825420: cdecl, the low 16 bits of the argument
+int Rva00825410Low16( int value ) { return value & 0xFFFF; }
+int Rva00825420Low16( int value ) { return value & 0xFFFF; }
+
+// 0x00845460: true when the byte at +4 is clear
+class Rva00845460
+{
+public:
+	bool isClear() const;
+	int m_0;
+	bool m_4;
+};
+
+bool Rva00845460::isClear() const { return !m_4; }
+
+// 0x008483E0 / 0x00848400: copies the dword at +0 into a hidden return object
+// and pops it with one ignored argument (`ret 8`)
+class Rva008483E0
+{
+public:
+	Rva008483E0( const Rva008483E0 &other ) : m_0( other.m_0 ) {}
+	Rva008483E0 copy( int );
+	int m_0;
+};
+
+Rva008483E0 Rva008483E0::copy( int ) { return *this; }
+
+class Rva00848400
+{
+public:
+	Rva00848400( const Rva00848400 &other ) : m_0( other.m_0 ) {}
+	Rva00848400 copy( int );
+	int m_0;
+};
+
+Rva00848400 Rva00848400::copy( int ) { return *this; }
+
+// 0x00845700 / 0x00845710: cdecl, the dword at +0x58 of the sub-object the
+// argument's offset table (its first dword) places at entry 1
+struct Rva00845700Object
+{
+	int *m_offsets;
+};
+
+void *Rva00845700Load( Rva00845700Object *object )
+{
+	return *(void **)( (char *)object + object->m_offsets[ 1 ] + 0x58 );
+}
+
+void *Rva00845710Load( Rva00845700Object *object )
+{
+	return *(void **)( (char *)object + object->m_offsets[ 1 ] + 0x58 );
+}
