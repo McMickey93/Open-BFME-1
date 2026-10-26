@@ -27,8 +27,8 @@ struct LightingCoord00747FF0 { float x, y, z; };
 // impersonates GameClient/Color.h (where Color is `typedef Int Color`, so the
 // real header would mangle ?HighlightColors@@3PAH@@A, not PAUColor). Its
 // sibling at this address is ?Value012B4FC8@@3ULightingCoord00747FF0@@A.
-struct Rva00748860Triple { float x, y, z; };
-extern Rva00748860Triple g_lighting012B4FC8;
+// was ?g_lighting012B4FC8@@3URva00748860Triple@@A; reference recorded Value012B4FC8
+extern LightingCoord00747FF0 Value012B4FC8;
 extern LightingCoord00747FF0 Value012B4FD8;
 extern LightingCoord00747FF0 Value012B4FE8;
 // 0x012ED5C8: left as the stand-in. The census proposes
@@ -99,7 +99,7 @@ void WriteGlobalLighting00748860(DataChunkOutput *output)
     float multiplier = lightingData->field_0dbc ? 2.0f : 1.0f;
     output->writeReal(multiplier);
     output->writeInt(lightingData->field_0dbd != 0);
-    x = g_lighting012B4FC8.x; y = g_lighting012B4FC8.y; z = g_lighting012B4FC8.z;
+    x = Value012B4FC8.x; y = Value012B4FC8.y; z = Value012B4FC8.z;
       output->writeReal(x);
       output->writeReal(y);
       output->writeReal(z);

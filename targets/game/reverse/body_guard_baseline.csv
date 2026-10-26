@@ -74,7 +74,6 @@ dir32,0x00447DB1,??0Rva00127AB0Element@@QAE@XZ,"retail 0x00447DB1 is already rec
 dir32,0x004488EC,??_F?$list@U?$pair@VAsciiString@@W4ObjectID@@@_STL@@V?$allocator@U?$pair@VAsciiString@@W4ObjectID@@@_STL@@@2@@_STL@@QAEXXZ,"nothing in the ledger owns 0x004488EC. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00448D42,??1ThingRef@@QAE@XZ,"retail 0x00448D42 is already recorded as ??1Rva0039B450Element@@QAE@XZ (+1 more); reference that name, not a new one"
 dir32,0x00448DD3,??1?$list@PAVDrawable@@V?$allocator@PAVDrawable@@@_STL@@@_STL@@QAE@XZ,"nothing in the ledger owns 0x00448DD3. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x0044A4E4,??0Rva004029F0@@QAE@XZ,"retail 0x0044A4E4 is already recorded as ??0PathfindZoneBlock@@QAE@XZ; reference that name, not a new one"
 dir32,0x00810C90,?mark00410C90@@YAHPAX0@Z,"nothing in the ledger owns 0x00810C90. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00948D90,?bfmeEnumThreadWndProc@@YGHPAXJ@Z,"retail 0x00948D90 is already recorded as ?b_00548d90@@YAXXZ; reference that name, not a new one"
 dir32,0x00951DB0,?d_00551db0@@YAXXZ,"nothing in the ledger owns 0x00951DB0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -435,7 +434,6 @@ dir32,0x012A7978,?TheKey_multiplayerIsLocal@@3VStaticNameKey@@B,"retail 0x012A79
 dir32,0x012AA068,?g_bfmeRva012AA068@@3PAPBDA,"retail 0x012AA068 is already recorded as ?TheKindOfBitNames@@3PAPBDA (+4 more); reference that name, not a new one"
 dir32,0x012ACC34,?g_rva001AF610RingSpacing@@3MA,the name encodes 0x001AF610 but retail reads 0x012ACC34
 dir32,0x012B4180,?Names00377AF0@@3QBQBDB,"nothing in the ledger owns 0x012B4180. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012B4FC8,?g_lighting012B4FC8@@3URva00748860Triple@@A,"retail 0x012B4FC8 is already recorded as ?HighlightColors@@3PAUColor@@A (+2 more); reference that name, not a new one"
 dir32,0x012B5140,?bfmeRva012B5140FirstCopy@@3URvaTriple@@A,"?bfmeRva012B5140FirstCopy@@3URvaTriple@@A is a function the ledger places elsewhere, not at 0x012B5140"
 dir32,0x012B5198,?bfmeRva012B5198FirstCopy@@3URvaTriple@@A,"?bfmeRva012B5198FirstCopy@@3URvaTriple@@A is a function the ledger places elsewhere, not at 0x012B5198"
 dir32,0x012B5AB0,?gameWindowFieldList@@3PAUGameWindowParse@@A,"nothing in the ledger owns 0x012B5AB0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -545,7 +543,6 @@ dir32,0x012F7048,?g_bfmeStateDF@@3PAURva006174D0State@@A,"retail 0x012F7048 is a
 dir32,0x012F7048,?g_rva012F7048LivingWorld@@3PAVRva006092D0State@@A,"retail 0x012F7048 is already recorded as ?Glo012F7048@@3PAVGlo012F7048CampaignGateMode@@A (+16 more); reference that name, not a new one"
 dir32,0x012F7078,?g_bfmeBoxYP@@3URegion2D@@A,"retail 0x012F7078 is already recorded as ?Rva012F7078Region@@3URegion2D@@A (+2 more); reference that name, not a new one"
 dir32,0x012F7090,?Glo012F7090@@3PAVGlo012F7090Type@@A,"nothing in the ledger owns 0x012F7090. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x012F7728,?g_012F7728@@3IA,"nothing in the ledger owns 0x012F7728. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F77A8,?cursorResources@@3PAY07PAXA,"retail 0x012F77A8 is already recorded as _g_bfmeSITable (+1 more); reference that name, not a new one"
 dir32,0x012F7FE0,?TheTerrainRenderObject@@3PAVRva0074B480TerrainAbi@@A,"retail 0x012F7FE0 is already recorded as ?TheBfmeGlobal_012f7fe0@@3PAVBfmeGlobal_012f7fe0@@A (+14 more); reference that name, not a new one"
 dir32,0x012F7FE0,?g_012F7FE0@@3PAVDisplay006E2540@@A,"retail 0x012F7FE0 is already recorded as ?TheBfmeGlobal_012f7fe0@@3PAVBfmeGlobal_012f7fe0@@A (+14 more); reference that name, not a new one"
