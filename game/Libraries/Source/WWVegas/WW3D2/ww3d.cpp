@@ -1803,7 +1803,6 @@ int	WW3D::Get_Texture_Reduction( void )
  * HISTORY:                                                                                    *
  *   11/25/99    TSS : Created.                                                                 *
  *=============================================================================================*/
-// ?Get_Texture_Min_Dimension@WW3D@@ present-unmatched
 int	WW3D::Get_Texture_Min_Dimension( void )
 {
 	return _TextureMinDim;
@@ -1817,7 +1816,6 @@ void WW3D::Enable_Large_Texture_Extra_Reduction(bool onoff)
 	}
 }
 
-// ?Is_Large_Texture_Extra_Reduction_Enabled@WW3D@@ present-unmatched
 bool WW3D::Is_Large_Texture_Extra_Reduction_Enabled(void)
 {
 	return _LargeTextureExtraReductionEnabled;
