@@ -1,5 +1,5 @@
 // ?method@Rva00235150@@QAEXPBVCoord3D@@0HH@Z
-// partial score=0.3645 date=2026-10-03
+// partial score=0.4582 date=2026-10-26
 // cl: /O2 /Ob2 /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWMath
 // stlport
 // Retail 00235150..0023527B, secondary interface; opaque name preserves address.
@@ -37,8 +37,8 @@ public:
 };
 void Rva00235150::method(const Coord3D *a,const Coord3D *b,int cost,int layer) {
  Rva00235150Prefix *prefix=(Rva00235150Prefix*)((char*)this-0xe0);
- Object *owner=prefix->owner;
  int requestedLayer=layer;
+ Object *owner=prefix->owner;
  for(std::list<Object*>::iterator it=prefix->members.begin();it!=prefix->members.end();++it) {
   Object *member=*it;
   if(member) {

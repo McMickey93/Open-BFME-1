@@ -1,5 +1,5 @@
 // ?method@Rva00201D70@@QAEHXZ
-// partial score=0.159 date=2026-10-13
+// partial score=0.6113 date=2026-10-26
 // ?method@Rva00201D70@@QAEHXZ
 // cl: /O2 /DNDEBUG /MD /EHsc
 class BfmeInnerCPB { public: void bfmeOneCPB(int,int); };
@@ -31,18 +31,19 @@ struct Rva00201D70ObjectBytes {
  char pad200[4]; char *m_204; char pad208[0x13c]; unsigned char m_344;
 };
 struct Rva00201D70Data { char pad00[8]; unsigned int m_08; };
-class Rva00201D70 { public: int method(); char pad00[16]; unsigned char m_10; char pad11[3]; float m_14; };
+class Rva00201D70 { public: int method(); Rva00201D70ObjectBytes *getObject() const { return *(Rva00201D70ObjectBytes **)((char*)this-8); } char pad00[16]; unsigned char m_10; char pad11[3]; float m_14; };
 int Rva00201D70::method() {
  Rva00201D70Data *data=*(Rva00201D70Data **)((char*)this-12);
- Rva00201D70ObjectBytes *object=*(Rva00201D70ObjectBytes **)((char*)this-8);
- if(object->m_128 & 0x1000) {
+ if(getObject()->m_128 & 0x1000) {
   if(!m_10) {
-   if(!(object->m_94 & 0x20) && object->m_204) {
-    ((BfmeInnerCPB *)(object->m_204+0x20))->bfmeOneCPB(0,2);
-    ((BfmeSubCPB *)object)->bfmeTwoCPB(0);
+   Rva00201D70ObjectBytes *self=getObject();
+   if(!(self->m_94 & 0x20) && self->m_204) {
+    ((BfmeInnerCPB *)(self->m_204+0x20))->bfmeOneCPB(0,2);
+    ((BfmeSubCPB *)self)->bfmeTwoCPB(0);
    }
    m_10=1;
   }
+  Rva00201D70ObjectBytes *object=getObject();
   unsigned int count=data->m_08; if(!count) count=1;
   m_14 -= 1.0f/count;
   if(m_14 < 0.0f) {
@@ -55,7 +56,8 @@ int Rva00201D70::method() {
    if(out) out->m_b0=m_14;
   }
  }
- object=*(Rva00201D70ObjectBytes **)((char*)this-8);
+ Rva00201D70ObjectBytes *object=getObject();
  if(object->m_344&1) return 0x3fffffff;
- return object && (object->m_128&0x1000) ? 1:5;
+ if(object && (object->m_128&0x1000)) return 1;
+ return 5;
 }
