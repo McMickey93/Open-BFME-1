@@ -69,3 +69,18 @@ RefCountedHandle Rva00975050Owner::getHandle() const
 	volatile int guard = 0;
 	return RefCountedHandle( m_target );
 }
+
+// 0x0095C7D0: a fourth byte-identical copy, alone in an int3-padded gap after
+// the SegLineRenderer texture setter; unreferenced in retail.
+class Rva0095C7D0Owner
+{
+public:
+	RefCountedTarget *m_target;
+	RefCountedHandle getHandle() const;
+};
+
+RefCountedHandle Rva0095C7D0Owner::getHandle() const
+{
+	volatile int guard = 0;
+	return RefCountedHandle( m_target );
+}
