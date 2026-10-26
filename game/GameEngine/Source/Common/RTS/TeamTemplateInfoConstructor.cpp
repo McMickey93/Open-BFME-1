@@ -2,7 +2,7 @@
 // Identity: native TeamPrototype constructor 0x000F3E40 calls this body.
 // BFME adds teamEventsList at +0x70 and has 32 generic script hooks.
 // See targets/game/reverse/identity_evidence/000EFEB0-team-template-constructor.md.
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 #include "ascii_string.h"
 #include "basetype.h"
 enum NameKeyType { NAMEKEY_INVALID=0 };

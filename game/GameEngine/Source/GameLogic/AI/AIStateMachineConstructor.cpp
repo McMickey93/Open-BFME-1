@@ -6,7 +6,7 @@
 // The local classes are constructor/layout views, not replacement vtable definitions.
 // Proof: targets/game/reverse/identity_evidence/00185A20-ai-state-machine-constructor.md
 // stlport
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 #include "ascii_string.h"
 #include "basetype.h"
 class Object;

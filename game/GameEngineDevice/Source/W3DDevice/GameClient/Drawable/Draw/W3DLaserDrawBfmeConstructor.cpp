@@ -1,6 +1,6 @@
 // Factory 0x006BF150 calls new W3DLaserDraw. The module table pairs that factory with the name W3DLaserDraw.
 // BFME changes the field offsets from the reference class in W3DLaserDraw.cpp, so this constructor defines its layout here.
-// cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas /Igame/Libraries/Source/WWVegas/WWDebug
+// cl: /DNDEBUG /DWIN32 /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas /Igame/Libraries/Source/WWVegas/WWDebug
 // stlport
 
 #define __PLACEMENT_VEC_NEW_INLINE

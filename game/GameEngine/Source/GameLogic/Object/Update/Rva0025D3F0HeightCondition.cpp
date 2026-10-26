@@ -7,7 +7,7 @@
 // raw word expressions merge those loads and produce289B. Separate ground and
 // height locals preserve retail's x87 subtraction and cleanup sequence.
 // Shipped model-condition name table VA12A6918 index233 is SPECIAL_WEAPON_ONE.
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 #include "Lib/BaseType.h"
 // stlport
 #define _STLP_NO_EXCEPTIONS 1

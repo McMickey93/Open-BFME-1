@@ -11,7 +11,7 @@
 // game/GameEngine/Source/GameLogic/ScriptEngine/ScriptEngineExecuteActions.cpp.
 // The string ABI is the repository's canonical ascii_string.h; 0x00887B60 is
 // StringBase<char>'s copy body, not GameSpyGroupRoom.
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common
 
 #include "ascii_string.h"
 

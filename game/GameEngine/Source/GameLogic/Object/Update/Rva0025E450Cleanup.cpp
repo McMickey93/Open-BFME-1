@@ -3,7 +3,7 @@
 // Original method identity remains unknown. The three called methods have
 // existing typed pins; the final jump uses the primary SpecialAbilityUpdate
 // receiver, and the AI command interface is at owner->AIUpdate + 0x20.
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 #include "Common/GameType.h"
 #include "Common/GameCommon.h"
 

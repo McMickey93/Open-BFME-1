@@ -1,7 +1,7 @@
 // ??0SkirmishBattleHonors@@QAE@VUnicodeString@@@Z
 // Retail 0x0009E130, 534 bytes; identity is proven by vtable 0x01080460,
 // matched dtor 0x0009C1E0, and the callers recorded in the live brief.
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_NO_EXCEPTIONS /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWLib
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /D_STLP_NO_EXCEPTIONS /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Igame/Libraries/Source/WWVegas/WWLib
 
 #define _STLP_NO_EXCEPTIONS 1
 

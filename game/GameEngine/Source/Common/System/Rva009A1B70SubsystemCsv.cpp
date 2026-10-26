@@ -1,6 +1,6 @@
 // ?d_009a1b70@@YAXXZ
 // Retail 0x009A1B70: 246 bytes; resumed the banked implementation.
-// cl: /DNDEBUG /MD /EHsc /Igame/GameEngine/Source/Common/System /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Igame/GameEngine/Source/Common/System /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // stlport
 // GameEngine::init loads TheSubsystemList (retail 0x0134C6C8) into ECX before
 // calling 0x009A1B70. The body walks its pair-vector and formats one CSV name

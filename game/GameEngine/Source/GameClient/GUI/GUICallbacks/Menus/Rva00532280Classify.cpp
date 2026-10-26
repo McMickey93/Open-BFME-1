@@ -2,7 +2,7 @@
 // Native selection helper visibility preserves the retail loop-entry reload.
 // See targets/game/reverse/identity_evidence/00532280-selection-visibility.md.
 // stlport
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/asciistring_copyctor_outofline /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Igame/Libraries/Source/WWVegas/WWLib
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/asciistring_copyctor_outofline /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Igame/Libraries/Source/WWVegas/WWLib
 // The matched wrappers at 0x005329C0 and 0x005329E0 call ILT 0x00047807.
 // That thunk routes to this 460-byte body at 0x00532280. Both wrappers
 // declare the target as Rva005329Classify::classify(Rva005329C0Obj *, int).

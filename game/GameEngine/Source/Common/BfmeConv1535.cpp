@@ -1,5 +1,5 @@
 // Open-BFME5 conversions.
-// cl: /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 
 #include "../../../../inputs/reference/shims/bfmeobject/GameLogic/Object.h"
 

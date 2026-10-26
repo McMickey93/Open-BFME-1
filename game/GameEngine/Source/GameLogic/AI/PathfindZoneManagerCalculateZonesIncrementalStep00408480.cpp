@@ -1,5 +1,5 @@
 // ?bfmeCalcZonesIncrementalStep00408480@PathfindZoneManager@@QAEXPAPAVPathfindCell@@ABUIRegion2D@@HH@Z
-// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 
 // Open-BFME: carved body at retail 0x00408480 (292 B), one slice of the
 // BFME incremental zone rebuild. The named scheduler

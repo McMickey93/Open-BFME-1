@@ -1,7 +1,7 @@
 // ScriptEngine::evaluateConditions at retail RVA 0x00346380.
 // The BFME body follows the Zero Hour condition-list evaluator with BFME layouts.
 // Its three arguments, vtable slot 23, latch fields, and helper calls are witnessed.
-// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common
+// cl: /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common
 
 #include "ascii_string.h"
 #include "LatchRestore.h"
