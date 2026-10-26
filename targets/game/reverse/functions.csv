@@ -37648,7 +37648,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_003d7d10@@YAXXZ,,0x003D7D10,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getHundredth@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
 ?d_003dae40@@YAXXZ,,0x003DAE40,633,game/gen_asm/d_003d51a0.asm,matched,gen-dump;ghidra=FUN_007dae40
 ?d_003db640@@YAXXZ,,0x003DB640,226,game/gen_asm/d_003d51a0.asm,matched,gen-dump;ghidra=FUN_007db640
-?d_003db900@@YAXXZ,,0x003DB900,201,game/gen_asm/d_003d51a0.asm,matched,gen-dump;ghidra=FUN_007db900
 ?d_003dc780@@YAXXZ,,0x003DC780,105,game/gen_asm/d_00337280.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_003dce70@@YAXXZ,,0x003DCE70,1776,game/gen_asm/d_003d51a0.asm,matched,gen-dump;ghidra=FUN_007dce70
 ?d_003de940@@YAXXZ,,0x003DE940,284,game/gen_asm/d_003d5070.asm,matched,gen-dump;bounds=high
@@ -173169,3 +173168,4 @@ _PlaneAddNoise_C,,0x009A5F50,475,game/Libraries/Source/VP6/PlaneAddNoiseC.cpp,ma
 ?rva00528370@SkirmishScreenState@@QAEXABVAsciiString@@@Z,,0x00528370,296,game/GameEngine/Source/GameClient/GUI/SkirmishScreenStateRva00528370.cpp,matched,map list selection by case-insensitive name; name from matched caller bfmeFlush11 ILT pin 0x430A9; ret4 + INT3 extent;model=claude-opus-5-5;host=app
 ?_M_lower_bound@?$_Rb_tree@URva00692570Key@@U1@U?$_Identity@URva00692570Key@@@_STL@@U?$less@URva00692570Key@@@3@V?$allocator@URva00692570Key@@@3@@_STL@@ABEPAU?$_Rb_tree_node@URva00692570Key@@@2@ABURva00692570Key@@@Z,,0x00692690,180,game/GameEngine/Source/GameNetwork/Rva00692570KeyBounds.cpp,matched,STLport _M_lower_bound walk over the Rva00692570Less 12-byte key; inline compare via getLength/str (TheNullChr); ret + INT3 extent;model=claude-opus-5-5;host=app
 ?_M_upper_bound@?$_Rb_tree@URva00692570Key@@U1@U?$_Identity@URva00692570Key@@@_STL@@U?$less@URva00692570Key@@@3@V?$allocator@URva00692570Key@@@3@@_STL@@ABEPAU?$_Rb_tree_node@URva00692570Key@@@2@ABURva00692570Key@@@Z,,0x00692780,180,game/GameEngine/Source/GameNetwork/Rva00692570KeyBounds.cpp,matched,STLport _M_upper_bound walk over the Rva00692570Less 12-byte key; inline compare via getLength/str (TheNullChr); ret + INT3 extent;model=claude-opus-5-5;host=app
+?rva003DB900@Pathfinder@@QAEIPAVPathfindCell@@0@Z,,0x003DB900,201,game/GameEngine/Source/GameLogic/AI/PathfinderRva003DB900.cpp,matched,octile path-cost leaf over the +0x2470C point vector; name from matched Pathfinder callers via ILT 0x3A828 pin; ret8 + INT3 extent;model=claude-opus-5-5;host=app
