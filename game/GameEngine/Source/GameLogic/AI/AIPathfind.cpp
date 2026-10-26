@@ -3074,7 +3074,8 @@ extern "C" void _ReadWriteBarrier(void);
 // thunk retail's caller pushes; the helper's own name is unspellable, so it is
 // declared as an __identifier and reached through a local __stdcall view.
 extern "C" void __cdecl __identifier("??_M@YGXPAXIHP6EX0@Z@Z")();
-extern void j_00036ab1(void);
+// retired debt: ?j_00036ab1@@YAXXZ replaced with ??1PathfindCell@@QAE@XZ
+extern "C" void __cdecl __identifier("??1PathfindCell@@QAE@XZ")(void);
 typedef void (__stdcall *ArrayDtorIteratorPathfind)(void *base, UnsignedInt size, Int count, void (*dtor)());
 
 class BfmeChildZM
@@ -3314,7 +3315,7 @@ void Pathfinder::reset( void )
 		UnsignedByte *arrayBase = reinterpret_cast<UnsignedByte *>(cells) - 4;
 		((ArrayDtorIteratorPathfind)__identifier("??_M@YGXPAXIHP6EX0@Z@Z"))(
 			cells, 0x10, *reinterpret_cast<Int *>(arrayBase),
-			reinterpret_cast<void (*)()>(j_00036ab1));
+			reinterpret_cast<void (*)()>(__identifier("??1PathfindCell@@QAE@XZ")));
 		::operator delete[](arrayBase);
 	}
 	void *mapStorage = *reinterpret_cast<void **>(base + 0x10);

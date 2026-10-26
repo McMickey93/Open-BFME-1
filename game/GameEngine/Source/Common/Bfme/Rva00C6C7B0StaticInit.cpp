@@ -1,3 +1,4 @@
+// retired debt: ?g_rva0130A450@@3VRva00C6C7B0Init@@A replaced with ?TheBfmeObject_00C70BE0@@3VGen_00C70BE0Target@@A
 // cl: /O2 /MD
 class BfmeThing936G
 {
@@ -19,14 +20,14 @@ public:
 extern "C" int __cdecl atexit(void (__cdecl *callback)());
 void bfmeForward_00C70BE0(void);
 
-class Rva00C6C7B0Init : public BfmeThing936G
+class Gen_00C70BE0Target : public BfmeThing936G
 {
 public:
-	Rva00C6C7B0Init()
+	Gen_00C70BE0Target()
 	{
 		bfmeGo936G();
 		atexit(bfmeForward_00C70BE0);
 	}
 };
 
-Rva00C6C7B0Init g_rva0130A450;
+Gen_00C70BE0Target TheBfmeObject_00C70BE0;
