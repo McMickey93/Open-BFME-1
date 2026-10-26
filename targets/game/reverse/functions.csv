@@ -173336,3 +173336,4 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 ?leave@Rva009F68F5Section@@QAEHXZ,,0x009F68FF,10,game/GameEngine/Source/Common/BfmeConv790.cpp,matched,packed /O1 body in the BfmeThingDWD run; address-derived name;model=claude-opus-5-5;host=app
 ??0BfmeThingDWD@@QAE@AAUBfmeCsDWD@@_N@Z,,0x009F6971,41,game/GameEngine/Source/Common/BfmeConv790.cpp,matched,packed /O1 body in the BfmeThingDWD run; address-derived name;model=claude-opus-5-5;host=app
 ?raise@Rva00892350@@SAXXZ,,0x00892350,8,game/GameEngine/Source/Common/TinyGlobalStores.cpp,matched,unreferenced global setter after int3 pad; address-derived name;model=claude-opus-5-5;host=app
+?InitMemArray@@YAXXZ,,0x008791A0,11,game/Libraries/Source/Benchmark/AllocateMemory.cpp,matched,nbench sysspec.c InitMemArray: mov [mem_array_ents] 0; directly before the matched mem-array add/remove helpers 0x008791B0/0x008791E0;model=claude-opus-5-5;host=app

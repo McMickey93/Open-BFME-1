@@ -56,3 +56,14 @@ void *AllocateMemory(unsigned long nbytes, int *errorcode)
 		*errorcode = 2;
 	return returnval;
 }
+
+/*
+** InitMemArray (nbench sysspec.c): empties the allocation table. Retail
+** 0x008791A0, directly before the table's add (0x008791B0) and remove
+** (0x008791E0) helpers.
+*/
+void InitMemArray(void)
+{
+	mem_array_ents = 0;
+	return;
+}
