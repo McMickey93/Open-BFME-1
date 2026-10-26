@@ -17,9 +17,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - key: b1
-            repository: Open-BFME/Open-BFME-1
-            pin: 179d0eb2814d08eaccab76f5c4f78bb7c4ad1467
           - key: b2
             repository: Open-BFME/Open-BFME-2
             pin: 13cfa404dfe65a062e2e5effe030ff826b905adc
@@ -63,8 +60,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          source .githooks/python3.sh
-          require_python3 native-task
+          if [ -f .githooks/python3.sh ]; then
+            source .githooks/python3.sh
+            require_python3 native-task
+          else
+            mkdir -p .git/python3-shim
+            printf '%s\n' '#!/bin/sh' "exec \"$(command -v python)\" \"\$@\"" > .git/python3-shim/python3
+            chmod +x .git/python3-shim/python3
+            export PATH="$PWD/.git/python3-shim:$PATH"
+            python3 -c 'import sys; assert sys.platform == "win32"'
+          fi
           git_bash="$BASH"
           [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
           export BFME_NATIVE_BASH="$(cygpath -aw "$git_bash")"
