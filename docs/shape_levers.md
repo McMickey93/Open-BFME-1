@@ -2145,3 +2145,16 @@ This preserves both parents and emits their correct state-1 cleanups at
 `00C61840` and `00C61880`; their outer cleanups remain separate work. See
 the corresponding `00c61840-registry-temporary.md` and
 `00c61880-registry-temporary.md` evidence in that directory.
+
+## Compound assignment delays an x87 store past a push (2026-10-26)
+
+Mismatch: 0x005FA450 (83 B, `/O2 /Ob2 /GX-`) builds a ground point
+`{x,y,z}` and a lifted point `{x,y,z+2.0}`. With `lifted.z = (float)(z + 2.0)`
+VC7.1 emits `fstp [esp+8]` before `push 0`; retail emits `push 0`, the first
+ground store, then `fstp [esp+0xc]` (9 bytes). Store orders, a double
+temporary and argument spellings were inert. Writing `lifted.z = z;
+lifted.z += 2.0;` matched exactly with the canonical POD Coord3D (a
+copy-constructor view's `Coord3D lifted(ground); lifted.z += 2.0;` too; a
+POD `lifted = ground` copy did not): the compound assignment's x87 store is
+scheduled later. Measured on that body only; source
+`game/GameEngine/Source/GameClient/System/FXParticleSystem/PointEmissionDraw.cpp`.
