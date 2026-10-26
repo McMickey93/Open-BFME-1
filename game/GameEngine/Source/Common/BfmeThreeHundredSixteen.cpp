@@ -1,9 +1,14 @@
 // ILT00020B80 reaches the separate thunk function002D9B70, which jumps
 // through ILT0004049E to the one-byte RET body001EF410. Keep the thunk's
 // ledger identity and the caller's ECX/no-argument contract. The conditional
-// tail jump reaches001F96E0, independently measured thiscall/RET0.
+// tail jump reaches001F96E0, independently measured thiscall/RET0 and since
+// matched as DynamicPortalBehaviour::createWaypoints, called by that name.
 extern "C" void __cdecl __identifier("?j_002d9b70@@YAXXZ")();
-extern "C" void __cdecl __identifier("?d_001f96e0@@YAXXZ")();
+class DynamicPortalBehaviour
+{
+public:
+	void createWaypoints();
+};
 
 struct BfmeOwnerRK
 {
@@ -35,12 +40,6 @@ void BfmeThingRK::bfmeGoRK()
 		return;
 	if (m_bfmeOwner->m_bfmeForce || m_bfmeWant)
 	{
-		union
-		{
-			void (__cdecl *symbol)();
-			void (BfmeThingRK::*member)();
-		} second;
-		second.symbol = &__identifier("?d_001f96e0@@YAXXZ");
-		(this->*second.member)();
+		reinterpret_cast<DynamicPortalBehaviour *>(this)->createWaypoints();
 	}
 }
