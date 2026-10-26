@@ -81,14 +81,12 @@ dir32,0x0044A4E4,??0Rva004029F0@@QAE@XZ,"retail 0x0044A4E4 is already recorded a
 dir32,0x00810C90,?mark00410C90@@YAHPAX0@Z,"nothing in the ledger owns 0x00810C90. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00948D90,?bfmeEnumThreadWndProc@@YGHPAXJ@Z,"retail 0x00948D90 is already recorded as ?b_00548d90@@YAXXZ; reference that name, not a new one"
 dir32,0x00951DB0,?d_00551db0@@YAXXZ,"nothing in the ledger owns 0x00951DB0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x00BEADA0,?rva007EADA0BindCallback@@YAXPAVRva007EA380Owner@@PAX1@Z,the name encodes 0x007EA380 but retail reads 0x00BEADA0
 dir32,0x00BEFFE0,?g_00BEFFE0@@YAXXZ,"nothing in the ledger owns 0x00BEFFE0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BEFFF0,?g_00BEFFF0@@YAXXZ,"nothing in the ledger owns 0x00BEFFF0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BF4770,?bfmeCbAZC@Rva007F4770@@SAXHPAVBfmeThingVJL@@@Z,"retail 0x00BF4770 is already recorded as _bfmeCbAZC; reference that name, not a new one"
 dir32,0x00BF5A70,?Rva007F5A70Callback@@YAXPAVRva007E8810Message@@PAVRva007F5920Owner@@@Z,"retail 0x00BF5A70 is already recorded as ?BfmeGameBrowserVJPCallback@@YGXXZ; reference that name, not a new one"
 dir32,0x00BF5DF0,?Rva007F5DF0Callback@@YAXPAVRva007E8810Message@@PAVRva007F5D10GameBrowser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF5DF0
 dir32,0x00BF6870,?rva007F6870GameLobbyCallback@@YAXPAVRva007E8810Message@@PAVRva007F65E0Owner@@@Z,"retail 0x00BF6870 is already recorded as ?bfmeCbVJM@@YGXXZ; reference that name, not a new one"
-dir32,0x00BF6FA0,?Rva007F6FA0BrowserRegionReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FA0
 dir32,0x00BF6FB0,?Rva007F6FB0BrowserLobbyReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FB0
 dir32,0x00BF6FC0,?Rva007F6FC0BrowserGameReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FC0
 dir32,0x00BF7970,?g_00BF7970@@YAXXZ,"nothing in the ledger owns 0x00BF7970. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
@@ -587,7 +585,6 @@ dir32,0x012F4B88,?key012F4B88@@3VAsciiString@@A,"?key012F4B88@@3VAsciiString@@A 
 dir32,0x012F4C5C,?Rva00EF4C5C@@3PAVRva005A49E0RangeTest@@A,"retail 0x012F4C5C is already recorded as ?Mouse0040F780@@3PAVMouse@@A (+12 more); reference that name, not a new one"
 dir32,0x012F4C84,?Rva00EF4C84@@3PAVRva005B5440@@A,"retail 0x012F4C84 is already recorded as ?g_bfmeSingletonVVD@@3PAVBfmeOwnVVD@@A (+1 more); reference that name, not a new one"
 dir32,0x012F4CB8,_g_bfmeBufferEQH,"retail 0x012F4CB8 is already recorded as ?g_bfmeBufferEQH@@3PAEA; reference that name, not a new one"
-dir32,0x012F6CC4,?Rva00EF6CC4@@3PAXA,"retail 0x012F6CC4 is already recorded as ?lightningDrawSourceAt4@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
 dir32,0x012F6D34,?Rva00EF6D34@@3PAXA,"retail 0x012F6D34 is already recorded as ?orthoEmissionVelocitySourceAt8@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
 dir32,0x012F6D40,?Rva00EF6D40@@3PAXA,"retail 0x012F6D40 is already recorded as ?hemisphericalEmissionVelocitySourceAt8@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
 dir32,0x012F6D54,?Rva00EF6D54@@3PAXA,"retail 0x012F6D54 is already recorded as ?outwardEmissionVelocitySourceAt4@FXParticleSystem@@3PAPAXA; reference that name, not a new one"

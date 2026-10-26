@@ -112,6 +112,7 @@ class Rva007F7980Browser;
 class BfmeDictESI;
 class BfmeHostESI;
 class BfmeThingVJK;
+// ?Rva007F6FA0BrowserRegionReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z
 void Rva007F6FA0BrowserRegionReply( Rva007E8810Message *msg, Rva007F7980Browser *browser );
 void Rva007F6FB0BrowserLobbyReply( Rva007E8810Message *msg, Rva007F7980Browser *browser );
 void Rva007F6FC0BrowserGameReply( Rva007E8810Message *msg, Rva007F7980Browser *browser );

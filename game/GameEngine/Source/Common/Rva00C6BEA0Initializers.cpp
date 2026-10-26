@@ -108,10 +108,11 @@ extern char Rva00D13670;
 // 0x00C6BF70: independent INT3-bounded initializer (?Rva00EF6CC0@@3PAXA).
 void Rva00C6BF70() { FXParticleSystem::lightningDrawSourceAt8 = (void **)&Rva00D13670; }
 
-extern void *Rva00EF6CC4;
+// Retire ?Rva00EF6CC4@@3PAXA: retail VA 0x012F6CC4 records the FX pointer.
+namespace FXParticleSystem { extern void **lightningDrawSourceAt4; }
 extern char Rva00D13674;
 // 0x00C6BF80: independent INT3-bounded initializer.
-void Rva00C6BF80() { Rva00EF6CC4 = (void *)&Rva00D13674; }
+void Rva00C6BF80() { FXParticleSystem::lightningDrawSourceAt4 = (void **)&Rva00D13674; }
 
 extern void *Rva00EF6CC8;
 // 0x00C6BF90: independent INT3-bounded initializer.
