@@ -58753,3 +58753,35 @@ _bfmeINIParseCoord3D	0x00C53380	0	blocked	gate-debt: absent owner in data_rows.c
 ___ImageBase	0x00400000	0	blocked	gate-debt: pass-test failed with no source spells symbol (unowned PE image base absent from data_rows.csv and game/ source) t=2 model=gemini-3.8-flash-medium
 ??_7SupplyTruckStateMachine@@6B@	0x010C9280	0	blocked	gate-debt: pass-test failed with no source spells symbol (unowned vtable symbol absent from data_rows.csv) t=2 model=gemini-3.8-flash-medium
 ?g_Key001ABC90_012A77D0@@3VKey001ABC90@@A	0x012A77D0	0	blocked	gate-debt: pass-test failed with no source spells symbol (unowned key datum absent from data_rows.csv) t=2 model=gemini-3.8-flash-medium
+?Rva00891680Alloc@@YAPAXI@Z	0x00891680	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008916A0Free@@YAXPAX@Z	0x008916A0	6	landed	unreferenced 6 B gap body: jmp through the Free allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008916B0Alloc@@YAPAXI@Z	0x008916B0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008916C0SizedFree@@YAXPAXI@Z	0x008916C0	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008916F0Alloc@@YAPAXI@Z	0x008916F0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00891740Alloc@@YAPAXI@Z	0x00891740	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008917E0Alloc@@YAPAXI@Z	0x008917E0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00891A70Alloc@@YAPAXI@Z	0x00891A70	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008925D0Free@@YAXPAX@Z	0x008925D0	6	landed	unreferenced 6 B gap body: jmp through the Free allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008925E0Free@@YAXPAX@Z	0x008925E0	6	landed	unreferenced 6 B gap body: jmp through the Free allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008926A0SizedFree@@YAXPAXI@Z	0x008926A0	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008926B0Alloc@@YAPAXI@Z	0x008926B0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894C40Alloc@@YAPAXI@Z	0x00894C40	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894C60Alloc@@YAPAXI@Z	0x00894C60	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894CF0Alloc@@YAPAXI@Z	0x00894CF0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894D00SizedFree@@YAXPAXI@Z	0x00894D00	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894D40Alloc@@YAPAXI@Z	0x00894D40	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894F20Alloc@@YAPAXI@Z	0x00894F20	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00894F30Alloc@@YAPAXI@Z	0x00894F30	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva00897490Alloc@@YAPAXI@Z	0x00897490	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008974A0SizedFree@@YAXPAXI@Z	0x008974A0	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008976C0Alloc@@YAPAXI@Z	0x008976C0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008979A0Alloc@@YAPAXI@Z	0x008979A0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008A0590SizedFree@@YAXPAXI@Z	0x008A0590	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008A05A0Alloc@@YAPAXI@Z	0x008A05A0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008A3100Alloc@@YAPAXI@Z	0x008A3100	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008A3110SizedFree@@YAXPAXI@Z	0x008A3110	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008AB8A0Alloc@@YAPAXI@Z	0x008AB8A0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008BD030Alloc@@YAPAXI@Z	0x008BD030	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008BD0D0Alloc@@YAPAXI@Z	0x008BD0D0	6	landed	unreferenced 6 B gap body: jmp through the Alloc allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008BD0E0SizedFree@@YAXPAXI@Z	0x008BD0E0	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
+?Rva008C3E00SizedFree@@YAXPAXI@Z	0x008C3E00	6	landed	unreferenced 6 B gap body: jmp through the SizedFree allocator hook cell then int3 pad; batch UnclaimedAptHookTails.cpp; t=15min model=claude-opus-5-5
