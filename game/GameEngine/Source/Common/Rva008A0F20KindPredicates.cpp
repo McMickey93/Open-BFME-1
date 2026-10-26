@@ -55,6 +55,9 @@ public:
 	Bool isKind10(void) const;
 	Bool isKind15(void) const;
 	Bool isKind16(void) const;
+	Bool isKind12(bool allowClear) const;
+	Bool isKind0E(bool allowClear) const;
+	Bool isKind0D(bool allowClear) const;
 };
 
 #define RVA_KIND_PREDICATE( NAME, KIND )                                  \
@@ -72,3 +75,18 @@ RVA_KIND_PREDICATE( isKind0A, 0x0a )
 RVA_KIND_PREDICATE( isKind10, 0x10 )
 RVA_KIND_PREDICATE( isKind15, 0x15 )
 RVA_KIND_PREDICATE( isKind16, 0x16 )
+
+// Three more unreferenced 43-byte rows (0x00892790, 0x00899290, 0x008A0EF0)
+// take one bool stack argument (ret 4) that, when set, skips the bit-15 test:
+// `mov cl,[esp+4] / test cl,cl / jne pass` sits between the kind compare and
+// the `not al / test al,1` pair above.
+#define RVA_KIND_PREDICATE_ALLOW( NAME, KIND )                            \
+	Bool Rva008A0F20Header::NAME(bool allowClear) const                    \
+	{                                                                     \
+		return ( m_bits04 & 0x3f ) == KIND                                \
+				&& ( allowClear || !( (UnsignedByte)~( m_bits04 >> 15 ) & 1 ) ); \
+	}
+
+RVA_KIND_PREDICATE_ALLOW( isKind12, 0x12 )
+RVA_KIND_PREDICATE_ALLOW( isKind0E, 0x0e )
+RVA_KIND_PREDICATE_ALLOW( isKind0D, 0x0d )
