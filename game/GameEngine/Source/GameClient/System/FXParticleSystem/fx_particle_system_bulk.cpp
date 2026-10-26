@@ -1874,7 +1874,8 @@ extern const char g_011137D0[] = "SinkOnTerrainCollision";
 extern const char g_01114504[] = "HeightOffset";
 extern const char g_011144EC[];
 extern const char *const RotationTypeNames[];
-extern const char g_01110838[];
+// ?g_01110838@FXParticleSystem@@3QBDB: retail 0x01110838 is ??_7?$CategoryModuleClass@$00@FXParticleSystem@@6B@
+#define g_01110838 __identifier("??_7?$CategoryModuleClass@$00@FXParticleSystem@@6B@")
 extern const char g_0111085C[];
 extern const char g_01110850[];
 // ?g_01110820@FXParticleSystem@@3QBDB: retail 0x01110820 is ??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@

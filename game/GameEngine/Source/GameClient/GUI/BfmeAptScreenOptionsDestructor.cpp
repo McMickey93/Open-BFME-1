@@ -58,7 +58,8 @@ public:
 
 // retired debt: ?g_0110912C@@3QBDB replaced with ??_7BfmeAptScreenOptions@@6BBfmeAptScreenBase@@@
 extern "C" const char __identifier("??_7BfmeAptScreenOptions@@6BBfmeAptScreenBase@@@")[];
-extern const char g_01109128[];
+// retired debt: ?g_01109128@@3QBDB replaced with ??_7BfmeAptScreenOptions@@6BS4Owner@@@
+extern "C" const char __identifier("??_7BfmeAptScreenOptions@@6BS4Owner@@@")[];
 class BfmeAptScreenOptions;
 extern BfmeAptScreenOptions *g_obj12F4AD4;
 class BfmeAptScreenQuitMenu;
@@ -93,7 +94,7 @@ private:
 BfmeAptScreenOptions::~BfmeAptScreenOptions()
 {
 	*(const void ***)( (char *)this ) = (const void **)__identifier("??_7BfmeAptScreenOptions@@6BBfmeAptScreenBase@@@");
-	*(const void ***)( (char *)this + 0x218 ) = (const void **)g_01109128;
+	*(const void ***)( (char *)this + 0x218 ) = (const void **)__identifier("??_7BfmeAptScreenOptions@@6BS4Owner@@@");
 
 	if( reinterpret_cast<void * &>(g_obj12F4AD4) == this )
 	{

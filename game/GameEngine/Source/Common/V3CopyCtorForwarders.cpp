@@ -155,14 +155,17 @@ extern "C" void *bfmeVftCUAb[];
 // retired debt: ?g_0110F9AC@@3QBDB replaced with ??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@
 extern "C" const char __identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@")[];
 extern const char g_011106F4[];
-extern const char g_0111182C[], g_01111828[], g_01111824[];
+// retired debt: ?g_01111828@@3QBDB replaced with ??_7?$DefaultParticleModule@$04@FXParticleSystem@@6BParticleModuleCategorySlice@1@@
+extern "C" const char __identifier("??_7?$DefaultParticleModule@$04@FXParticleSystem@@6BParticleModuleCategorySlice@1@@")[];
+extern const char g_0111182C[], g_01111824[];
 // Gate debt ?g_011132E8@@3QBDB: reference ??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleSnapshotSlice@1@@.
 extern "C" void *__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleSnapshotSlice@1@@")[];
 // retired debt: ?g_011132EC@@3QBDB replaced with ??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleCategorySlice@1@@
 extern "C" const char __identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleCategorySlice@1@@")[];
 // Retire ?g_011132D4@@3QBDB: use ??_7LightningEmissionModule@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7LightningEmissionModule@FXParticleSystem@@6B@")[];
-extern const char g_011132F0[];
+// retired debt: ?g_011132F0@@3QBDB replaced with ??_7LightningEmissionModule@FXParticleSystem@@6BT1A1_005DD290@@@
+extern "C" const char __identifier("??_7LightningEmissionModule@FXParticleSystem@@6BT1A1_005DD290@@@")[];
 extern const char g_Va01112420[], g_Va0111241C[], g_Va01112418[], g_Va01112404[];
 
 struct GenNode_006fa270
@@ -243,7 +246,7 @@ Rva005EDFA0Middle::Rva005EDFA0Middle(
 	  Rva005EDFA0ThirdBase( other )
 {
 	Rva005EDFA0FirstBase::m_vftable = (void *)g_0111182C;
-	Rva005EDFA0SecondBase::m_vftable = (void *)g_01111828;
+	Rva005EDFA0SecondBase::m_vftable = (void *)__identifier("??_7?$DefaultParticleModule@$04@FXParticleSystem@@6BParticleModuleCategorySlice@1@@");
 	Rva005EDFA0ThirdBase::m_vftable = (void *)g_01111824;
 }
 
@@ -259,7 +262,7 @@ Rva005EDFA0FirstBase::Rva005EDFA0FirstBase(
 Rva005EDFA0::Rva005EDFA0( const Rva005EDFA0 &other )
 	: Rva005EDFA0Middle( other ), FXParticleSystem::LightningEmissionInfo( other )
 {
-	Rva005EDFA0FirstBase::m_vftable = (void *)g_011132F0;
+	Rva005EDFA0FirstBase::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BT1A1_005DD290@@@");
 	Rva005EDFA0SecondBase::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleCategorySlice@1@@");
 	Rva005EDFA0ThirdBase::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleSnapshotSlice@1@@");
 	FXParticleSystem::LightningEmissionInfo::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6B@");

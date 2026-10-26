@@ -146,7 +146,9 @@ private:
 
 // g_ names stand for vftables whose ??_7 names cannot be declared.
 extern const char g_01105690[];
-extern const char g_01105A78[], g_01105A74[], g_01105A28[];
+// retired debt: ?g_01105A78@@3QBDB replaced with ??_7BfmeAptScreenLanLobby@@6BBfmeAptScreenBase@@@
+extern "C" const char __identifier("??_7BfmeAptScreenLanLobby@@6BBfmeAptScreenBase@@@")[];
+extern const char g_01105A74[], g_01105A28[];
 
 class BfmeAptScreenSecondary
 {
@@ -191,7 +193,7 @@ private:
 // ??1BfmeAptScreenLanLobby@@UAE@XZ
 BfmeAptScreenLanLobby::~BfmeAptScreenLanLobby()
 {
-	*(const void ***)this = (const void **)g_01105A78;
+	*(const void ***)this = (const void **)__identifier("??_7BfmeAptScreenLanLobby@@6BBfmeAptScreenBase@@@");
 	*(const void ***)((char *)this + 0x218) = (const void **)g_01105A74;
 	*(const void ***)((char *)this + 0x258) = (const void **)g_01105A28;
 

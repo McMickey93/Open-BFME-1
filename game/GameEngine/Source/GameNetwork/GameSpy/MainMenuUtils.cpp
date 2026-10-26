@@ -71,7 +71,8 @@
 static Bool checkingForPatchBeforeGameSpy = FALSE;
 Int checksLeftBeforeOnline = 0;
 Int timeThroughOnline = 0; // used to avoid having old callbacks cause problems
-Bool mustDownloadPatch = FALSE;
+// ?mustDownloadPatch@@3_NA
+unsigned char mustDownloadPatch = FALSE;
 // ?cantConnectBeforeOnline@@3_NA
 unsigned char cantConnectBeforeOnline = FALSE;
 std::list<QueuedDownload> queuedDownloads;
@@ -82,7 +83,8 @@ GameWindow *onlineCancelWindow = NULL;
 
 static Bool s_asyncDNSThreadDone = TRUE;
 static Bool s_asyncDNSThreadSucceeded = FALSE;
-Bool s_asyncDNSLookupInProgress = FALSE;
+// ?s_asyncDNSLookupInProgress@@3_NA
+unsigned char s_asyncDNSLookupInProgress = FALSE;
 static HANDLE s_asyncDNSThreadHandle = NULL;
 
 struct Rva012F49B4Thing
