@@ -8,13 +8,9 @@
   "claims": [
     {
       "ref": "claims/file/1935313e622efc8a",
-      "message": "{\"created\": 1793028983, \"expires\": 1793043383, \"host\": \"f945b2686850\", \"lease\": \"f53a04193c374c97a52b0bf289017717\", \"nonce\": \"f53a04193c374c97a52b0bf289017717\", \"note\": \"Use canonical KINDOFMASK_NONE owner and retire duplicate/wrong-name debt\", \"owner\": \"github:McMickey93:bfme2:kindofmask-20261026\", \"run\": \"\", \"scope\": \"Code/GameEngine/Source/Common/Rva00507823Ctor.cpp\", \"since\": 1793028983}\n\n",
-      "source": "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp",
-      "token": "dcbc11a146090754ca1f0d058fd04cf1827b607c",
-      "lease": "f53a04193c374c97a52b0bf289017717"
+      "source": "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp"
     }
   ],
-  "owner": "github:McMickey93:bfme2:kindofmask-20261026",
   "before": {
     "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp": "fede0cfd7e0372cc2b9727a0e31d586a53af13ca78736aced562d2caa462aa12"
   },
@@ -23,5 +19,14 @@
   },
   "registers": [
     "reverse/data_check_baseline.txt"
-  ]
+  ],
+  "commit": "6c9288da355cfd105a5ec189c9215b46cad4ac0a",
+  "repository": "Open-BFME-2",
+  "branch_task": "kindofmask-storage",
+  "final_paths": [
+    "Code/GameEngine/Source/Common/Rva00507823Ctor.cpp",
+    "reverse/data_check_baseline.txt",
+    "reverse/attempt_support/kindofmask-ctor-20261026/readme.md"
+  ],
+  "task_tag": "kindofmask-20261026"
 }
