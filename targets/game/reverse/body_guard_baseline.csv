@@ -120,7 +120,6 @@ dir32,0x0107C7DC,??_7MapObjectBase@@6B@,"retail 0x0107C7DC is already recorded a
 dir32,0x0107C7DC,?RvaData0107C7DC@@3PAIA,"retail 0x0107C7DC is already recorded as ??_7Rva00087320@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0107C7E0,??_7MapObject@@6B@,"nothing in the ledger owns 0x0107C7E0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x0107F984,??_7NameKeyGenerator@@6B@,"retail 0x0107F984 is already recorded as ??_7Rva0008FE00Owner@@6B@; reference that name, not a new one"
-dir32,0x01080294,_g_01080294,"nothing in the ledger owns 0x01080294. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01080FC0,?g_rva01080FC0@@3QBDB,"retail 0x01080FC0 is already recorded as ?g_aptPalantirBrightJewel@@3PADA (+5 more); reference that name, not a new one"
 dir32,0x01081238,?g_rva01081238@@3QBDB,"retail 0x01081238 is already recorded as ?g_aptPalantirNormalJewel@@3PADA (+5 more); reference that name, not a new one"
 dir32,0x01083B5C,?g_FilterVtable001AEA80@@3QBEB,"retail 0x01083B5C is already recorded as ??_7BfmeBaseS@@6B@ (+5 more); reference that name, not a new one"
@@ -409,7 +408,6 @@ dir32,0x0112B3AC,??_7Rva007F48B0VtableReseat@@6B@,"retail 0x0112B3AC is already 
 dir32,0x0112B3B8,??_7Rva007FA670VtableReseat@@6B@,"retail 0x0112B3B8 is already recorded as ??_7Rva007FA8E0Deleting@@6B@ (+2 more); reference that name, not a new one"
 dir32,0x0112B3C8,??_7Rva007F48A0ReseatTailDtor@@6B@,"retail 0x0112B3C8 is already recorded as ??_7Rva007F4900CleanupDeleting@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B3E4,??_7Rva007F48C0VtableReseat@@6B@,"retail 0x0112B3E4 is already recorded as ??_7Rva007F48D0Deleting@@6B@; reference that name, not a new one"
-dir32,0x0112B598,??_7Rva007F5540VfptrCtor@@6B@,"retail 0x0112B598 is already recorded as ?g_bfmeVftBTWB@@3PAPAXA; reference that name, not a new one"
 dir32,0x0112B890,??_7Rva007F8720VtableReseat@@6B@,"retail 0x0112B890 is already recorded as ??_7Rva007F89B0Deleting@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B954,??_7Rva007F8DA0VtableReseat@@6B@,"retail 0x0112B954 is already recorded as ??_7Rva007F8F40Deleting@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B980,??_7Rva007F8F60VfptrCtor@@6B@,the name encodes 0x007F8F60 but retail reads 0x0112B980
@@ -523,7 +521,6 @@ dir32,0x012F0760,?g_scriptFrame012F0764@@3HA,"nothing in the ledger owns 0x012F0
 dir32,0x012F0764,?g_scriptFrame012F0760@@3HA,"nothing in the ledger owns 0x012F0764. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x012F076C,?TheScriptEngine@@3PAVRva00336C20FieldAddress@@A,"retail 0x012F076C is already recorded as ?TheBfmeGlobal_012f076c@@3PAVBfmeGlobal_012f076c@@A (+44 more); reference that name, not a new one"
 dir32,0x012F0770,?g_rva012F0770@@3VShellGameLoadScreen@@A,"retail 0x012F0770 is already recorded as ?TheBfmeObject_00C6FE50@@3VGen_00C6FE50Target@@A; reference that name, not a new one"
-dir32,0x012F0898,?TheGameLogic0037C030@@3PAUGameLogic0037C030@@A,"retail 0x012F0898 is already recorded as ?Clock00200420@@3PAUFrame00200420@@A (+147 more); reference that name, not a new one"
 dir32,0x012F0898,?g00251530Va012F0898@@3PAVRoute00251530@@A,"retail 0x012F0898 is already recorded as ?Clock00200420@@3PAUFrame00200420@@A (+147 more); reference that name, not a new one"
 dir32,0x012F0FE0,?g_012F0FE0@@3PAVGen_0039B020@@A,"retail 0x012F0FE0 is already recorded as ?R2Ptr012F0FE0@@3PAVGen00049FDA@@A (+6 more); reference that name, not a new one"
 dir32,0x012F1024,?TheLivingWorldCampaignManager@@3PAVLivingWorldCampaignManager@@A,"retail 0x012F1024 is already recorded as ?Campaign00598950@@3PAXA (+12 more); reference that name, not a new one"

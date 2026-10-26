@@ -15,7 +15,8 @@ extern "C" const char g_011343E4[];
 // _g_011343DC: 6 retail bytes including the NUL.
 extern "C" const char g_011343DC[] = " EBX:";
 extern "C" const char g_011343D4[];
-extern "C" const char g_01080294[];
+// _g_01080294: 2 retail bytes including the NUL.
+extern "C" const char g_01080294[] = "\n";
 // _g_011343CC: 5 retail bytes including the NUL.
 extern "C" const char g_011343CC[] = "EDX:";
 // _g_011343C4: 6 retail bytes including the NUL.

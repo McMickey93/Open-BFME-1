@@ -37,7 +37,18 @@
 
 BFME_VFPTR_CTOR( Rva01129D1C )
 BFME_VFPTR_CTOR( Rva007EFF30VfptrCtor )
-BFME_VFPTR_CTOR( Rva007F5540VfptrCtor )
+// ??_7Rva007F5540VfptrCtor@@6B@: reference recorded ?g_bfmeVftBTWB@@3PAPAXA
+extern void *g_bfmeVftBTWB[];
+class Rva007F5540VfptrCtor
+{
+public:
+	Rva007F5540VfptrCtor();
+	void *m_vftable;
+};
+Rva007F5540VfptrCtor::Rva007F5540VfptrCtor()
+{
+	m_vftable = g_bfmeVftBTWB;
+}
 BFME_VFPTR_CTOR( Rva007F8F60VfptrCtor )
 BFME_VFPTR_CTOR( Rva007F9130VfptrCtor )
 BFME_VFPTR_CTOR( Rva008011C0VfptrCtor )

@@ -1,6 +1,6 @@
 # Gate debt repairs, thirteenth batch
 
-Shard 1/5 repair queue served these entries across FXParticleSystem and Common units.
+Shard 1/5 repair queue served these entries across FXParticleSystem and Common units:
 
 | Retail VA | Retired baseline finding | Fix / Owner |
 | --- | --- | --- |
@@ -13,6 +13,14 @@ Shard 1/5 repair queue served these entries across FXParticleSystem and Common u
 | 0x012F6D70 | `?Rva00EF6D70@@3PAXA` | Reference recorded owner `?sphereEmissionVolumeSourceAt8@FXParticleSystem@@3PAPAXA` in `Rva00C6BEA0Initializers.cpp` |
 | 0x012F6D78 | `?Rva00EF6D78@@3PAXA` | Reference recorded owner `?cylinderEmissionVolumeSourceAt8@FXParticleSystem@@3PAPAXA` in `Rva00C6BEA0Initializers.cpp` |
 
+Shard 2/5 repair queue served these entries across Common, GameLogic, and WWDebug units:
+
+| Retail VA | Retired baseline finding | Fix / Owner |
+| --- | --- | --- |
+| 0x012F0898 | `?TheGameLogic0037C030@@3PAUGameLogic0037C030@@A` | Reference recorded owner `?TheGameLogic@@3PAVGameLogic@@A` in `EmotionNugget.cpp` |
+| 0x01080294 | `_g_01080294` | Add data match for 2B newline string `_g_01080294` in `DebugExceptionhandler_LogRegisters.cpp` |
+| 0x0112B598 | `??_7Rva007F5540VfptrCtor@@6B@` | Reference recorded owner `?g_bfmeVftBTWB@@3PAPAXA` in `UnclaimedVfptrCtors.cpp` |
+
 Each exact keyed `repair_queue.py pass-test` passed and removed its baseline line from `body_guard_baseline.csv`.
 All affected functions, data rows, literals, float constants, and DIR32 references verify with zero baselined findings.
-8 exceptions retired; no escape hatches added.
+11 exceptions retired; no escape hatches added.

@@ -38,8 +38,10 @@ class Rva002E4CA0 { public: void *rva002E4CA0(int) const; };
 enum NameKeyType { InvalidKey=-1 };
 class NameKeyGenerator { public: NameKeyType nameToKey(const char *); };
 extern NameKeyGenerator *TheNameKeyGenerator;
+// ?TheGameLogic0037C030@@3PAUGameLogic0037C030@@A: reference recorded ?TheGameLogic@@3PAVGameLogic@@A
+class GameLogic;
+extern GameLogic *TheGameLogic;
 struct GameLogic0037C030 { char pad00[0x3c]; unsigned frame3c; };
-extern GameLogic0037C030 *TheGameLogic0037C030;
 struct NarrowHeader0037C030 { int refs; unsigned short len,cap; char text[1]; };
 inline const NarrowHeader0037C030 *header0037C030(const AsciiString &s) { return *(const NarrowHeader0037C030 *const *)&s; }
 inline bool empty0037C030(const AsciiString &s) { const NarrowHeader0037C030 *p=header0037C030(s); return !p || !p->len; }
@@ -55,7 +57,7 @@ class Rva0037C310Owner { public:
 };
 void Rva0037C310Owner::apply0037C030(Object *target)
 {
-    unsigned frame=TheGameLogic0037C030->frame3c;
+    unsigned frame=((GameLogic0037C030 *)TheGameLogic)->frame3c;
     frame30=frame;
     if(target) { id08=target->getID(); type0c=target->getTemplate()->getTemplateID(); }
     else { id08=0; type0c=0; }
