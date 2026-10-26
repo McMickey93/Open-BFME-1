@@ -58555,3 +58555,8 @@ __RTC_Terminate	0x00DF7F4E	0	blocked	gate-debt: false-reject locate_source: no s
 ?TheNullChr@?1??str@?$StringBase@D@@QBEPBDXZ@4DB	0x00C7388B	0	blocked	gate-debt: source is shared header string_base.h; full gate outside debt scope t=2 model=gemini-3.8-flash-medium
 ??_7TerrainCollisionParticleBase@FXParticleSystem@@6B?$CategoryModuleInfo@$07@1@@	0x00D1323C	0	blocked	gate-debt: requires class hierarchy/layout change of TerrainCollisionParticleBase; outside debt scope t=2 model=gemini-3.8-flash-medium
 ?g_bfmeEntriesDU@@3PAVRva008972B0Source@@A	0x013378E0	0	blocked	gate-debt: false-reject locate_source: baseline symbol not spelled literally in source t=2 model=gemini-3.8-flash-medium
+??_7GameClient@@6BSnapshot@@@	0x010F37DC	0	blocked	gate-debt: no source literally spells ??_7GameClient@@6BSnapshot@@@; pass-test cannot locate source t=2 model=gemini-3.8-flash-medium
+?g_rva012F1990@@3URva00C6B840Init@@A	0x012F1990	0	blocked	gate-debt: no source literally spells ?g_rva012F1990@@3URva00C6B840Init@@A; pass-test cannot locate source t=2 model=gemini-3.8-flash-medium
+?g_Rva00EEF418@@3IA	0x012EF418	0	solved	gate-debt: reference recorded ?TheBfmeDrawableDirtyFlags@@3HA in Rva0018EEF0ScaleTriples.cpp and data_rows.csv; keyed pass-test passes t=1 model=gemini-3.8-flash-medium
+?Rva00EA6918ModelConditionNames@@3PAPBDA	0x012A6918	0	blocked	gate-debt: recorded name ?s_bitNameList@?$BitFlags@$0BDA@@@0PAPBDA rejected by data_guard as unproven member of BitFlags<304>; non-mechanical t=3 model=gemini-3.8-flash-medium
+?g_rva012D5298Empty@@3VStringDataC@EAStringC@@A	0x012D5298	0	blocked	gate-debt: global referenced across dozens of files; renaming requires repo-wide coordination outside gate-debt repair scope. t=2 model=gemini-3.8-flash-medium
