@@ -255,3 +255,37 @@ void *Rva00845710Load( Rva00845700Object *object )
 {
 	return *(void **)( (char *)object + object->m_offsets[ 1 ] + 0x58 );
 }
+
+// 0x0083E9E0: `mov edx,[ecx+8] / mov eax,[esp+4] / or edx,eax /
+// mov [ecx+8],edx / ret 4`, OR-ing the argument into the dword at +8
+class Rva0083E9E0
+{
+public:
+	void orInto8( int bits );
+	char m_lead[ 8 ];
+	int m_8;
+};
+
+void Rva0083E9E0::orInto8( int bits ) { m_8 = m_8 | bits; }
+
+// 0x0083FCF0 / 0x0083FD50: `add [ecx+8],2*n / ret 4`, advancing a
+// two-byte-element pointer held at +8 by the argument
+class Rva0083FCF0
+{
+public:
+	void advance( int count );
+	char m_lead[ 8 ];
+	unsigned short *m_8;
+};
+
+void Rva0083FCF0::advance( int count ) { m_8 += count; }
+
+class Rva0083FD50
+{
+public:
+	void advance( int count );
+	char m_lead[ 8 ];
+	unsigned short *m_8;
+};
+
+void Rva0083FD50::advance( int count ) { m_8 += count; }
