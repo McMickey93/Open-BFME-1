@@ -160,7 +160,9 @@ extern const char g_0111182C[], g_01111828[], g_01111824[];
 extern "C" void *__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleSnapshotSlice@1@@")[];
 // retired debt: ?g_011132EC@@3QBDB replaced with ??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleCategorySlice@1@@
 extern "C" const char __identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleCategorySlice@1@@")[];
-extern const char g_011132F0[], g_011132D4[];
+// Retire ?g_011132D4@@3QBDB: use ??_7LightningEmissionModule@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7LightningEmissionModule@FXParticleSystem@@6B@")[];
+extern const char g_011132F0[];
 extern const char g_Va01112420[], g_Va0111241C[], g_Va01112418[], g_Va01112404[];
 
 struct GenNode_006fa270
@@ -260,7 +262,7 @@ Rva005EDFA0::Rva005EDFA0( const Rva005EDFA0 &other )
 	Rva005EDFA0FirstBase::m_vftable = (void *)g_011132F0;
 	Rva005EDFA0SecondBase::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleCategorySlice@1@@");
 	Rva005EDFA0ThirdBase::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6BParticleModuleSnapshotSlice@1@@");
-	FXParticleSystem::LightningEmissionInfo::m_vftable = (void *)g_011132D4;
+	FXParticleSystem::LightningEmissionInfo::m_vftable = (void *)__identifier("??_7LightningEmissionModule@FXParticleSystem@@6B@");
 }
 
 class Rva005EDF60 : public Rva005EDFA0

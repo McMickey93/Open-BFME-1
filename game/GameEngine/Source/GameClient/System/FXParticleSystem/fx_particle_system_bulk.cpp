@@ -1793,7 +1793,8 @@ extern const char g_01113A70[] = "HalfSize";
 // ?g_01113C94@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
 extern const char g_01113C94[] = "Length";
 // Former ?g_0109F2A4@FXParticleSystem@@3QBDB: retail 0x0109F2A4 is "Offset".
-extern const char g_010FA90C[];
+// ?g_010FA90C@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
+extern const char g_010FA90C[] = "Radial";
 // ?g_01114440@FXParticleSystem@@3QBDB: 10 retail bytes including the NUL.
 extern const char g_01114440[] = "EventTime";
 // ?g_01114434@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
@@ -1814,7 +1815,8 @@ extern const char g_011136A0[] = "TileTexture";
 extern const char g_01113E20[] = "StartPoint";
 // ?g_01113E14@FXParticleSystem@@3QBDB: 9 retail bytes including the NUL.
 extern const char g_01113E14[] = "EndPoint";
-extern const char g_010F1A0C[];
+// ?g_010F1A0C@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
+extern const char g_010F1A0C[] = "Amplitude1";
 // ?g_011142EC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_011142EC[] = "Frequency1";
 // ?g_011142E4@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
@@ -1830,7 +1832,8 @@ extern const char g_011142BC[] = "Amplitude3";
 extern const char g_011142AC[] = "Frequency3";
 // ?g_011142A4@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
 extern const char g_011142A4[] = "Phase3";
-extern const char g_010A141C[];
+// ?g_010A141C@FXParticleSystem@@3QBDB: 2 retail bytes including the NUL.
+extern const char g_010A141C[] = "Y";
 extern const char g_010AF400[];
 // ?g_0109D84C@FXParticleSystem@@3QBDB: 6 retail bytes including the NUL.
 extern const char g_0109D84C[] = "Speed";
