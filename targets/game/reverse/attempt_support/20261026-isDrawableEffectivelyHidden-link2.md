@@ -34,3 +34,8 @@ the submodule clone stalls on this host).
 3. The ZH-header copies stay wrong until those includers see BFME's layout (a
    Drawable.h layout adoption: full gate) or a TU-scoped out-of-line declaration.
    Linking preview is unknown here: no census index on this host.
+
+## Resolved (session 461)
+
+Landed in f50a955121: the 0x00410BA0 row is now ?isDrawableEffectivelyHidden@Drawable@@QBE_NXZ
+(ilt_oracle CONFIRMED), and the nine Gen_00410BA0 consumers call the Drawable name.
