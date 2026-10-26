@@ -4,9 +4,13 @@
 // import slot; `call dword ptr [0x01337830]` is what these bodies emit.
 extern void (__cdecl *TheBfmeFree)(void *storage, unsigned int size);
 
+// Retail VA 0x01337828: the matching run-time allocation callback cell.
+extern void *(__cdecl *Rva008C5D70Alloc)(unsigned int bytes);
+
 class Rva008C5B70Buf
 {
 public:
+	void rva008C5B50(unsigned int count);
 	void clear();
 
 private:
@@ -14,6 +18,14 @@ private:
 	unsigned int m_count;
 	void *m_ptr;
 };
+
+// Retail 0x008C5B50, the unreferenced sizing body just before clear():
+// record the count and allocate count dwords through the callback cell.
+void Rva008C5B70Buf::rva008C5B50(unsigned int count)
+{
+	m_count = count;
+	m_ptr = Rva008C5D70Alloc(count * sizeof(unsigned int));
+}
 
 void Rva008C5B70Buf::clear()
 {
@@ -27,6 +39,7 @@ void Rva008C5B70Buf::clear()
 class Rva008C5C40Buf
 {
 public:
+	void rva008C5C20(unsigned int count);
 	void clear();
 
 private:
@@ -34,6 +47,14 @@ private:
 	unsigned int m_count;
 	void *m_ptr;
 };
+
+// Retail 0x008C5C20, the unreferenced sizing body just before clear():
+// record the count and allocate count dwords through the callback cell.
+void Rva008C5C40Buf::rva008C5C20(unsigned int count)
+{
+	m_count = count;
+	m_ptr = Rva008C5D70Alloc(count * sizeof(unsigned int));
+}
 
 void Rva008C5C40Buf::clear()
 {
@@ -47,6 +68,7 @@ void Rva008C5C40Buf::clear()
 class Rva008C5D00Buf
 {
 public:
+	void rva008C5CE0(unsigned int count);
 	void clear();
 
 private:
@@ -54,6 +76,14 @@ private:
 	unsigned int m_count;
 	void *m_ptr;
 };
+
+// Retail 0x008C5CE0, the unreferenced sizing body just before clear():
+// record the count and allocate count dwords through the callback cell.
+void Rva008C5D00Buf::rva008C5CE0(unsigned int count)
+{
+	m_count = count;
+	m_ptr = Rva008C5D70Alloc(count * sizeof(unsigned int));
+}
 
 void Rva008C5D00Buf::clear()
 {
