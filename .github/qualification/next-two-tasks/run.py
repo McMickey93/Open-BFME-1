@@ -4,7 +4,7 @@ payload=Path(__file__).resolve().parent
 cfg=json.loads((payload/(sys.argv[1]+'.json')).read_text())
 root=Path.cwd(); evidence=root.parent/('evidence-'+sys.argv[1]);evidence.mkdir(exist_ok=True)
 bash=os.environ['BFME_NATIVE_BASH'];os.environ['PATH']=str(Path(bash).parent)+os.pathsep+os.environ['PATH']
-os.environ['PYTHONUNBUFFERED']='1';os.environ['BFME_CLAIM_OWNER']=cfg['owner']
+os.environ['BFME_CLAIM_NS']='refs/heads/claims/';os.environ['PYTHONUNBUFFERED']='1';os.environ['BFME_CLAIM_OWNER']=cfg['owner']
 results=[]
 def run(label,args,required=True,stdin=None):
  print('\n>>>',label,flush=True)
@@ -19,17 +19,22 @@ try:
  assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==cfg['base']
  if cfg['project']=='bfme2':
   run('reference-init',['git','-c','submodule.recurse=false','submodule','update','--init','--depth=1','reference/open-bfme-1'])
- run('requirements',[sys.executable,'-m','pip','install','--quiet','-r','tools/requirements.txt'])
+ run('requirements',[sys.executable,'-m','pip','install','--quiet','-r',('tools/requirements.txt' if cfg['project']=='bfme1' else 'reference/open-bfme-1/tools/requirements.txt')])
+ run('fetch-official-master',['git','-c','submodule.recurse=false','fetch','--depth=128','origin','+refs/heads/master:refs/remotes/origin/master'])
  run('setup-hooks',[bash,'tools/setup_hooks.sh'])
  run('check-ledger',[sys.executable,'tools/check_csv.py'])
  sys.path.insert(0,str(root/'tools'))
  import claims
- assert claims.fetch(), 'Cannot verify current upstream claims'
- current=claims._read_local()
  for c in cfg['claims']:
   key=int(c['rva'],16) if 'rva' in c else claims.key_of('file:'+c['source'])
-  token,info=current[key]
+  # Read exactly the held lease from origin; do not fetch unrelated claim
+  # histories. holds() is the project's own authoritative fencing check.
+  run('claim-ref-'+str(cfg['claims'].index(c)),['git','-c','submodule.recurse=false','fetch','--depth=1','--no-tags','origin','refs/heads/'+c['ref']])
+  token=subprocess.check_output(['git','rev-parse','FETCH_HEAD'],text=True).strip()
+  info=json.loads(subprocess.check_output(['git','show','-s','--format=%B',token],text=True))
   assert token==c['token'] and info['owner']==cfg['owner'] and info['expires']>time.time(), 'Claim changed'
+  assert claims.holds(key,token), 'Upstream fencing token changed'
+  claims._mirror(key,token)
  sources=cfg['sources'];provider=cfg['provider'];scope=sources+[provider]
  run('baseline-build',[bash,'build.sh',*scope])
  if cfg['project']=='bfme1':
@@ -50,7 +55,7 @@ try:
   run('stage-debt',['git','add','--','reverse/data_check_baseline.txt'])
  else:
   run('after-link',[sys.executable,'tools/link_check.py',*scope],False)
- run('progress',[sys.executable,'tools/progress.py','origin/master'])
+ run('progress',[sys.executable,'tools/progress.py',cfg['base']])
  run('candidate-diff',['git','diff','HEAD','--binary','--',*sources,*cfg.get('registers',[])])
  for path in sources+cfg.get('registers',[]):
   dest=evidence/'files'/path;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(root/path,dest)

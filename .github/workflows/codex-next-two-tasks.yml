@@ -17,6 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - key: b1
+            repository: Open-BFME/Open-BFME-1
+            pin: 179d0eb2814d08eaccab76f5c4f78bb7c4ad1467
           - key: b2
             repository: Open-BFME/Open-BFME-2
             pin: 13cfa404dfe65a062e2e5effe030ff826b905adc
