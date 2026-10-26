@@ -1,6 +1,5 @@
 check,target_rva,name,detail
 dir32,0x00400000,___ImageBase,"nothing in the ledger owns 0x00400000. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x00401A6E,?rva0032a490@@YAHPAVObject@@PAURva0032A490Context@@@Z,the name encodes 0x0032A490 but retail reads 0x00401A6E
 dir32,0x00401E15,??0BoneFXListInfo@@QAE@XZ,"nothing in the ledger owns 0x00401E15. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x004032DD,?condition002C5BE0@SupplyTruckStateMachine@@SA_NPAVState@@PAX@Z,"nothing in the ledger owns 0x004032DD. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x004046F6,??1Rva006967A0@@QAE@XZ,the name encodes 0x006967A0 but retail reads 0x004046F6

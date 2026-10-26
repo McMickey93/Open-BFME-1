@@ -14,7 +14,8 @@ typedef float Real;
 typedef unsigned short UnsignedShort;
 typedef bool Bool;
 
-extern const float g_rva01075350;
+extern const float BfmeBoundaryZero3D;
+#define g_rva01075350 BfmeBoundaryZero3D
 
 class Object;
 
@@ -37,7 +38,9 @@ struct Rva00324540
 };
 
 struct Rva0032A490Context;
-int rva0032a490(Object *object, Rva0032A490Context *context);
+// Retail passes the visitor through ILT slot 0x1A6E (?j_00001a6e, reaching
+// 0x0032A490), so the reference must name the thunk, not the body.
+extern void j_00001a6e();
 
 class Parameter
 {
@@ -122,7 +125,7 @@ Bool ScriptConditions::rva0032A550(Parameter *pPlayerParm, Parameter *pCompariso
 	{
 		Player *player = ThePlayerList->getEachPlayerFromMask(playerMask);
 		if (player)
-			player->iterateObjects((ObjectIterateFunc)rva0032a490,
+			player->iterateObjects((ObjectIterateFunc)j_00001a6e,
 				reinterpret_cast<Rva0032A490Context *>(&context));
 	}
 
