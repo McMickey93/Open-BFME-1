@@ -1,10 +1,10 @@
 // cl: /DNDEBUG /MD
-// Retail 0x00887000 (14 B narrow tolower) and 0x00887010 (13 B wide
+// Retail 0x00887000 (14 B narrow tolower) and 0x00887010 (11 B wide
 // towlower): file-static single-character case wrappers. File-static
 // scope is what keeps the narrow argument as (movsx eax,al / push
-// eax) instead of loading it from the stack. Retail lumps the two
-// bodies at one ledger row; the wide half keeps its address-derived
-// object symbol under the narrow row's name.
+// eax) instead of loading it from the stack. The wide one returns
+// towlower's unsigned short unchanged (no movzx), so it is declared
+// that way.
 
 extern "C" __declspec(dllimport) int __cdecl tolower(int value);
 extern "C" __declspec(dllimport) unsigned short __cdecl towlower(unsigned short value);
@@ -14,7 +14,7 @@ static int Rva00887000Narrow(char value)
 	return tolower(value);
 }
 
-static int Rva00887010Wide(unsigned short value)
+static unsigned short Rva00887010Wide(unsigned short value)
 {
 	return towlower(value);
 }
