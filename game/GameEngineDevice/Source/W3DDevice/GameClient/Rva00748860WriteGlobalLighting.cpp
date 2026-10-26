@@ -31,11 +31,10 @@ struct LightingCoord00747FF0 { float x, y, z; };
 extern LightingCoord00747FF0 Value012B4FC8;
 extern LightingCoord00747FF0 Value012B4FD8;
 extern LightingCoord00747FF0 Value012B4FE8;
-// 0x012ED5C8: left as the stand-in. The census proposes
-// ?GenFallback0012ED5C8@@3PAVGenFallback@@A, but GenFallback is authored in
-// S3TableLookupWithFallback.cpp with a 0x184-byte body that contradicts every
-// offset read here, and this pointer is GlobalData (Recorder.h).
-extern Rva00748860LightingData *lightingData;
+// Gate debt ?lightingData@@3PAURva00748860LightingData@@A: reference TheWritableGlobalData.
+class GlobalData;
+extern GlobalData *TheWritableGlobalData;
+#define lightingData ((Rva00748860LightingData *)TheWritableGlobalData)
 class W3DShadowManager;
 extern W3DShadowManager *TheW3DShadowManager;
 void WriteGlobalLighting00748860(DataChunkOutput *output)

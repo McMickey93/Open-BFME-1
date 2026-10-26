@@ -441,7 +441,6 @@ dir32,0x012ED5C8,?TheWritableGlobalData@@3PAUGlo012ED5C8Type@@A,"retail 0x012ED5
 dir32,0x012ED5C8,?TheWritableGlobalData@@3PAUGlobalData007B14A0@@A,"retail 0x012ED5C8 is already recorded as ?GenFallback0012ED5C8@@3PAVGenFallback@@A (+57 more); reference that name, not a new one"
 dir32,0x012ED5C8,?TheWritableGlobalData@@3PAUGlobalData0BC8@@A,"retail 0x012ED5C8 is already recorded as ?GenFallback0012ED5C8@@3PAVGenFallback@@A (+57 more); reference that name, not a new one"
 dir32,0x012ED5C8,?TheWritableGlobalData@@3PAUGlobalData367470@@A,"retail 0x012ED5C8 is already recorded as ?GenFallback0012ED5C8@@3PAVGenFallback@@A (+57 more); reference that name, not a new one"
-dir32,0x012ED5C8,?lightingData@@3PAURva00748860LightingData@@A,"retail 0x012ED5C8 is already recorded as ?GenFallback0012ED5C8@@3PAVGenFallback@@A (+57 more); reference that name, not a new one"
 dir32,0x012ED5CC,?m_theOriginal@GlobalData@@2PAV1@A,"retail 0x012ED5CC is already recorded as ?g_bfmeGlobalDataOriginal@@3PAVGlobalData@@A (+1 more); reference that name, not a new one"
 dir32,0x012ED5E0,?RvaObject012ED5E0@@3UGen00014475@@A,"retail 0x012ED5E0 is already recorded as ?BfmeTheMapObjectExtra@@3VBfmeMapObjectExtra@@A (+2 more); reference that name, not a new one"
 dir32,0x012ED5E0,?g_Va012ED5E0@@3VDict@@A,"retail 0x012ED5E0 is already recorded as ?BfmeTheMapObjectExtra@@3VBfmeMapObjectExtra@@A (+2 more); reference that name, not a new one"
