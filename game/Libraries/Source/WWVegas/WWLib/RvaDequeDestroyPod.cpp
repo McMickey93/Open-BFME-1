@@ -29,3 +29,14 @@ void Rva008FAED0(Rva008FAED0Iterator first, Rva008FAED0Iterator last)
 {
     _STL::_Destroy(first, last);
 }
+
+// Complete wrapper at 0x008FAF20 (78 B, unreferenced): the same STLport range
+// destroy over a deque of 8-byte elements. Here __destroy_aux stays out of line
+// and the call reaches 0x008FA480, whose loop steps 8 bytes over 0x80-byte
+// nodes; the element keeps the type token the 0x008FA480 pin is spelled with.
+struct Gen_t_008fb410_p16pod { int a[2]; };
+typedef _STL::deque<Gen_t_008fb410_p16pod>::iterator Rva008FAF20Iterator;
+void Rva008FAF20(Rva008FAF20Iterator first, Rva008FAF20Iterator last)
+{
+    _STL::_Destroy(first, last);
+}
