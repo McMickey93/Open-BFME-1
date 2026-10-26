@@ -69,3 +69,11 @@ __declspec(noinline) BfmeElemBE *bfmeFillBE(BfmeElemBE *first, unsigned count,
 	}
 	return cur;
 }
+
+// 0x0087F0D0: unreferenced 30-byte cdecl forwarder after int3 padding that
+// supplies the empty tag by reference (a pushed stack-slot address) and
+// returns bfmeFillBE's result; address-derived name, identity unproven.
+BfmeElemBE *rva0087F0D0FillBE(BfmeElemBE *first, unsigned count, const BfmeElemBE &value)
+{
+	return bfmeFillBE(first, count, value, BfmeFalseBE());
+}
