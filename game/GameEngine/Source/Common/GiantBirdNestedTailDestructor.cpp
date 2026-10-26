@@ -26,22 +26,24 @@ private:
 	void *m_data;
 };
 
-class GiantBirdNestedCoord3D
+// The record's ten-element array is destroyed through ILT 0x0001364C, the
+// matched empty ??1Coord3D@@QAE@XZ (0x0005BC40): BFME's class-keyed Coord3D.
+// class-gate: allow Coord3D the array destructor needs BFME's declared Coord3D destructor, absent from the struct-keyed canonical header
+class Coord3D
 {
 public:
-	~GiantBirdNestedCoord3D();
+	~Coord3D();
 
-private:
-	float m_x;
-	float m_y;
-	float m_z;
+	float x;
+	float y;
+	float z;
 };
 
 class GiantBirdNestedRecord
 {
 private:
 	unsigned char m_prefix[0x2c];
-	GiantBirdNestedCoord3D m_spots[10];
+	Coord3D m_spots[10];
 	unsigned char m_between[0x0c];
 	AsciiString m_name;
 	unsigned char m_tail[4];
