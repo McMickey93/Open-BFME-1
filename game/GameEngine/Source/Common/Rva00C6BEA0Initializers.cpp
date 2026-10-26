@@ -277,10 +277,11 @@ extern char Rva00D13DD4;
 // 0x00C6C1F0: independent INT3-bounded initializer.
 void Rva00C6C1F0() { Rva00EF6D60 = (void *)&Rva00D13DD4; }
 
-extern void *Rva00EF6D64;
+// Retire ?Rva00EF6D64@@3PAXA: retail VA 0x012F6D64 records the FX pointer.
+namespace FXParticleSystem { extern void **lineEmissionVolumeSourceAt4; }
 extern char Rva00D13DD8;
 // 0x00C6C200: independent INT3-bounded initializer.
-void Rva00C6C200() { Rva00EF6D64 = (void *)&Rva00D13DD8; }
+void Rva00C6C200() { FXParticleSystem::lineEmissionVolumeSourceAt4 = (void **)&Rva00D13DD8; }
 
 extern char Rva00D13A34;
 // 0x00C6C210: independent INT3-bounded initializer (?Rva00EF6D68@@3PAXA).
@@ -292,19 +293,21 @@ extern char Rva00D13A38;
 // 0x00C6C220: independent INT3-bounded initializer.
 void Rva00C6C220() { FXParticleSystem::boxEmissionVolumeSourceAt4 = (void **)&Rva00D13A38; }
 
-extern void *Rva00EF6D70;
+// Retire ?Rva00EF6D70@@3PAXA: retail VA 0x012F6D70 records the FX pointer.
+namespace FXParticleSystem { extern void **sphereEmissionVolumeSourceAt8; }
 extern char Rva00D14100;
 // 0x00C6C230: independent INT3-bounded initializer.
-void Rva00C6C230() { Rva00EF6D70 = (void *)&Rva00D14100; }
+void Rva00C6C230() { FXParticleSystem::sphereEmissionVolumeSourceAt8 = (void **)&Rva00D14100; }
 
 extern char Rva00D14104;
 // 0x00C6C240: independent INT3-bounded initializer (?Rva00EF6D74@@3PAXA).
 void Rva00C6C240() { FXParticleSystem::sphereEmissionVolumeSourceAt4 = (void **)&Rva00D14104; }
 
-extern void *Rva00EF6D78;
+// Retire ?Rva00EF6D78@@3PAXA: retail VA 0x012F6D78 records the FX pointer.
+namespace FXParticleSystem { extern void **cylinderEmissionVolumeSourceAt8; }
 extern char Rva00D13C4C;
 // 0x00C6C250: independent INT3-bounded initializer.
-void Rva00C6C250() { Rva00EF6D78 = (void *)&Rva00D13C4C; }
+void Rva00C6C250() { FXParticleSystem::cylinderEmissionVolumeSourceAt8 = (void **)&Rva00D13C4C; }
 
 extern char Rva00D13C50;
 // 0x00C6C260: independent INT3-bounded initializer (?Rva00EF6D7C@@3PAXA).

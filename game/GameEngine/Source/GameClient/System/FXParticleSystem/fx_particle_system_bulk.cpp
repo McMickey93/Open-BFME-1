@@ -115,7 +115,8 @@ extern void *g_vtbl_01073744[];
 extern void *g_vtbl_01073758[];
 extern void *g_vtbl_01073760[];
 extern void *g_vtbl_0110F978[];
-extern void *g_vtbl_0110F97C[];
+// ?g_vtbl_0110F97C@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110F980@@3PAPAXA: use recorded owner ??_7EmissionVolumeInfo@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7EmissionVolumeInfo@FXParticleSystem@@6B@")[];
 // Gate debt ?g_vtbl_0110F9AC@@3PAPAXA: use the owner recorded at 0x0110F9AC.
@@ -124,12 +125,14 @@ extern "C" void *__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$03@FXParticleSystem@@6B@")[];
 extern "C" void *__identifier("??_7?$CategoryModuleClass@$05@FXParticleSystem@@6B@")[];
 extern "C" void *__identifier("??_7?$CategoryModuleClass@$04@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_0110F9E4[];
+// ?g_vtbl_0110F9E4@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$02@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$02@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110F9E8@@3PAPAXA: use the owner recorded at 0x0110F9E8.
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$01@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110FA14@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$06@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$06@FXParticleSystem@@6B@")[];
-extern void *g_vtbl_0111098C[];
+// ?g_vtbl_0111098C@@3PAPAXA: use recorded owner ??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@")[];
 extern void *g_vtbl_011109CC[];
 extern "C" void *__identifier("??_7SphereEmissionVolumeInfo@FXParticleSystem@@6B@")[];
 extern "C" void *__identifier("??_7CylinderEmissionVolumeInfo@FXParticleSystem@@6B@")[]; // ?g_vtbl_01110A4C@@3PAPAXA
@@ -317,7 +320,8 @@ extern "C" void *__identifier("??_7MidX005ED230@@6B@")[];
 extern "C" void *__identifier("??_7GenX005ED230@@6B@")[];
 // ?g_vtbl_01112204@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@")[];
-extern void *g_vtbl_01112218[];
+// ?g_vtbl_01112218@@3PAPAXA: use recorded owner ??_7MidX005ED360@@6B@
+extern "C" void *__identifier("??_7MidX005ED360@@6B@")[];
 // ?g_vtbl_0111221C@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7GenX005ED360@@6B@")[];
 // ?g_vtbl_01112234@@3PAPAXA: use the owner recorded at 0x01112234.
@@ -345,7 +349,8 @@ extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot2@@@")[];
 extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot1@@@")[];
 // ?g_vtbl_011122E0@@3PAPAXA now references its recorded retail vtable directly.
 extern "C" void *__identifier("??_7Rva005ED7D0@@6BV3Slot0@@@")[];
-extern void *g_vtbl_01112304[];
+// ?g_vtbl_01112304@@3PAPAXA: use recorded owner ??_7Rva005ED980@@6BV3Slot3@@@
+extern "C" void *__identifier("??_7Rva005ED980@@6BV3Slot3@@@")[];
 extern void *g_vtbl_01112318[];
 // ?g_vtbl_0111231C@@3PAPAXA: use the owner recorded at 0x0111231C.
 extern "C" void *__identifier("??_7Rva005ED980@@6BV3Slot1@@@")[];
@@ -1074,7 +1079,7 @@ public:
 __forceinline void initializeSphericalEmissionVelocityModule(void *module)
 {
     *(unsigned int *)module = (unsigned int)__identifier("??_7GenX005ED360@@6B@");
-    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)g_vtbl_01112218;
+    *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7MidX005ED360@@6B@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)__identifier("??_7T1Derived_005E6670@@6BT1P2_005E3A20@@@");
 }
 
@@ -1142,7 +1147,7 @@ __forceinline void initializeLineEmissionVolumeModule(void *module)
     *(unsigned int *)module = (unsigned int)__identifier("??_7Rva005ED980@@6BV3Slot0@@@");
     *(unsigned int *)((unsigned char *)module + 0x14) = (unsigned int)__identifier("??_7Rva005ED980@@6BV3Slot1@@@");
     *(unsigned int *)((unsigned char *)module + 0x18) = (unsigned int)g_vtbl_01112318;
-    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)g_vtbl_01112304;
+    *(unsigned int *)((unsigned char *)module + 0x1c) = (unsigned int)__identifier("??_7Rva005ED980@@6BV3Slot3@@@");
 }
 
 class BoxEmissionVolumeTemplateCopyCtorShim {
@@ -1206,7 +1211,7 @@ public:
     {
         *(volatile unsigned int *)((unsigned char *)this + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)this + 0x0c) = 0;
-        *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)g_vtbl_0111098C;
+        *(volatile unsigned int *)((unsigned char *)this + 8) = (unsigned int)__identifier("??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)this + 0x10) = 0;
         *(volatile unsigned int *)((unsigned char *)this + 0x14) = 0;
         *(volatile unsigned int *)((unsigned char *)this + 0x18) = 0;
@@ -2565,7 +2570,7 @@ LineEmissionVolumeModuleTemplate *ConcreteModuleClass<ModuleTag<5, LINE_EMISSION
     if (result != 0) {
         *(volatile unsigned int *)((unsigned char *)result + 4) = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
         *((volatile unsigned char *)result + 0x0c) = 0;
-        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)g_vtbl_0111098C;
+        *(volatile unsigned int *)((unsigned char *)result + 8) = (unsigned int)__identifier("??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@");
         *(volatile unsigned int *)((unsigned char *)result + 0x10) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 0x14) = 0;
         *(volatile unsigned int *)((unsigned char *)result + 0x18) = 0;
@@ -3228,7 +3233,7 @@ ConcreteModuleTemplate<DefaultModuleTag<3> >::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F9E4;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$02@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3281,7 +3286,7 @@ ConcreteModuleTemplate<DefaultModuleTag<6> >::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3803,7 +3808,7 @@ ConcreteModuleTemplate<ModuleTag<5, LINE_EMISSION_VOLUME_MODULE_KEY, LINE_EMISSI
     slots[1] = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$04@FXParticleSystem@@6B@");
     _ReadWriteBarrier();
     *((volatile unsigned char *)this + 0x0c) = 0;
-    slots[2] = (unsigned int)g_vtbl_0111098C;
+    slots[2] = (unsigned int)__identifier("??_7LineEmissionVolumeInfo@FXParticleSystem@@6B@");
     slots[4] = 0;
     slots[5] = 0;
     slots[6] = 0;
@@ -3947,7 +3952,7 @@ ConcreteModuleTemplate<ModuleTag<6, BUTTERFLY_DRAW_MODULE_KEY, BUTTERFLY_DRAW_MO
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3993,7 +3998,7 @@ ConcreteModuleTemplate<ModuleTag<6, LIGHTNING_DRAW_MODULE_KEY, LIGHTNING_DRAW_MO
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -4044,7 +4049,7 @@ ConcreteModuleTemplate<ModuleTag<6, QUAD_DRAW_MODULE_KEY, QUAD_DRAW_MODULE_NAME,
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -4135,7 +4140,7 @@ ConcreteModuleTemplate<ModuleTag<6, STREAK_DRAW_MODULE_KEY, STREAK_DRAW_MODULE_N
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -7100,7 +7105,7 @@ LightningDrawModuleTemplate::~LightningDrawModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -7355,7 +7360,7 @@ void QuadDrawDtorBody::destroy()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 #pragma comment(linker, "/alternatename:??1QuadDrawModuleTemplate@FXParticleSystem@@UAE@XZ=?destroy@QuadDrawDtorBody@FXParticleSystem@@QAEXXZ")
@@ -7571,7 +7576,7 @@ StreakDrawModuleTemplate::~StreakDrawModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F97C;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
