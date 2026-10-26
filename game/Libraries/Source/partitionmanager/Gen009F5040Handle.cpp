@@ -55,17 +55,19 @@ public:
 	Gen009F5040Node *m_node;
 };
 
-// Retail passes ECX plus four stack arguments to 0x009F4900. That body
-// retains ECX for nested calls and returns RET16. The generated
-// zero-argument export below does not describe that native ABI.
-extern void d_009f4900();
+// Retail passes ECX plus four stack arguments to 0x009F4900 (RET16): the
+// matched ?calculate_009F4900@Gen009F5040@@QAEXPAUGen009F5040Node@@PAH11@Z
+// (Gen009F5040Calculate.cpp), called here on the manager as its receiver.
+class Gen009F5040
+{
+public:
+	void calculate_009F4900(Gen009F5040Node *node, int *result28, int *result2c, int *result24);
+};
 
 static __forceinline void calculate(PartitionManagerImpl *self, Gen009F5040Node *node,
 	int *result28, int *result2c, int *result24)
 {
-	typedef void (PartitionManagerImpl::*Fn)(Gen009F5040Node *, int *, int *, int *);
-	union { void (*fn)(); Fn call; } u = { d_009f4900 };
-	(self->*u.call)(node, result28, result2c, result24);
+	((Gen009F5040 *)self)->calculate_009F4900(node, result28, result2c, result24);
 }
 
 void PartitionManagerImpl::_RemoveObjectFromTree(Gen009F5040Node *node)
