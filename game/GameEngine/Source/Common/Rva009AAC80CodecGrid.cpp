@@ -11,7 +11,8 @@ struct Rva009AAC80Context
 	unsigned char *m_at6F0;
 };
 
-void __cdecl d_009b4390(void);
+// 0x009B4390 has since landed as ?Rva009B4390CodecCall@@YAHPAXHPBDZZ.
+int __cdecl Rva009B4390CodecCall(void *, int, const char *, ...);
 
 typedef void (__cdecl *Rva009B4390Four)(void *, int, void *, int);
 
@@ -34,7 +35,7 @@ void __cdecl Rva009AAC80CodecGrid(Rva009AAC80Context *self)
 				{
 					int value = ((const signed char *)self->m_at6F0)[self->m_at230 * row + column];
 					int offset = self->m_at1B8 * rowOffset + columnOffset + 5;
-					((Rva009B4390Four)d_009b4390)(
+					((Rva009B4390Four)Rva009B4390CodecCall)(
 						self, offset, (void *)"%d", value);
 					++column;
 					columnOffset += 0x10;
