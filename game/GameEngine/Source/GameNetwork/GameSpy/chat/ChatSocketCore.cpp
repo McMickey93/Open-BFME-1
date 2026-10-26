@@ -107,6 +107,13 @@ void gs_crypt(unsigned char *buffer, int length, gs_crypt_key *key);
 // Retail VA 0130E628 holds the four-byte interface address, initially zero.
 unsigned int gsiSocketInterface = 0;
 
+// Retail 0x0085A860: unreferenced getter of that address, after int3 padding
+// and right after the 0x0085A850 setter. Address-derived name.
+unsigned int Rva0085A860GetSocketInterface(void)
+{
+	return gsiSocketInterface;
+}
+
 static CHATBool ciBufferInit(ciBuffer *buffer)
 {
 	buffer->length = 0;
