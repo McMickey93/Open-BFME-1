@@ -1,4 +1,4 @@
-// 53 thirteen-byte __thiscall members with one shape:
+// 54 thirteen-byte __thiscall members with one shape:
 //
 //     mov eax,[esp+4] / mov [ecx+<DISP>],eax / ret 4
 //
@@ -87,3 +87,4 @@ BFME_DISP_DWORD_SETTER( Rva00746150DwordSlot, 0x23BC )
 BFME_DISP_DWORD_SETTER( Rva00751BB0DwordSlot, 0x314 )
 BFME_DISP_DWORD_SETTER( Rva008A0C20DwordSlot, 0x129C )
 BFME_DISP_DWORD_SETTER( Rva00955B50DwordSlot, 0xEC )
+BFME_DISP_DWORD_SETTER( Rva006D7570DwordSlot, 0x10C )
