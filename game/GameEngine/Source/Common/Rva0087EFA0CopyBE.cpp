@@ -1,23 +1,20 @@
-// cl: /O2 /Ob1 /G6 /GX-
+// cl: /O2 /Ob1 /G6 /GX- /Igame/Libraries/Source/WWVegas/WWLib
 
 // ??2@YAPAXIPAX@Z absent-from-retail
 inline void *operator new(unsigned int, void *p) { return p; }
 
 struct BfmeFalseBE {};
 
-struct BfmeTailBE
-{
-    char *m_p;
-    BfmeTailBE(const BfmeTailBE &);
-    void copyFrom(const BfmeTailBE *src);
-};
+// The tail member is an AsciiString: the element copy's one out-of-line
+// call is the StringBase<char> copy constructor at 0x00887B60.
+#include "ascii_string.h"
 
 struct BfmeGroup10BE
 {
     int m_10;
     int m_14;
     int m_18;
-    BfmeTailBE m_1C;
+    AsciiString m_1C;
     char m_20;
 };
 
