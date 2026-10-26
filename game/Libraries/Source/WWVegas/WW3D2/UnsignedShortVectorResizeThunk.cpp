@@ -69,6 +69,10 @@ public:
 
 	void resize(unsigned int newSize, Type value);
 
+	// The one-argument overload, retail 0x00940BC0: forwards a value-
+	// initialized element to the two-argument resize above.
+	void resize(unsigned int newSize) { resize(newSize, Type()); }
+
 	// ?_M_fill_insert@?$vector@GV?$allocator@G@_STL@@@_STL@@QAEXPAGIABG@Z
 	void _M_fill_insert(Type *pos, unsigned int n, const Type &value);
 
@@ -88,4 +92,5 @@ void vector<Type, Allocator>::resize(unsigned int newSize, Type value)
 }
 
 template void vector<unsigned short, allocator<unsigned short> >::resize(unsigned int, unsigned short);
+template void vector<unsigned short, allocator<unsigned short> >::resize(unsigned int);
 }
