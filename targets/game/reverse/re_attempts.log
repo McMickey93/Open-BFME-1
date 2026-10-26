@@ -58586,3 +58586,155 @@ __RTC_Terminate	0x00DF7F4E	0	blocked	gate-debt: false-reject locate_source: no s
 ?g_013385D8@@3URva008A9A70Str@@A	0x013385D8	0	blocked	false-reject dir32-name-address: Rva008A9A70Str type fragment in symbol matched by regex before data_rows lookup; matched owner exists in data_rows.csv t=5 model=gemini-3.8-flash-medium
 ?Rva00C19290Cleanup@@YAXXZ	0x00C19290	11	landed	landed-by=add_match source=game/GameEngine/Source/GameLogic/ScriptEngine/ScriptOwnedWrappersClear.cpp extent=0x00C19290..0x00C1929B size=11B model=claude-opus-5-5 ; notes: gen-funclet; object-symbol=$L443; parent=??0Rva003525E0Pair@@QAE@ABV0@@Z; retail parent 0x003525E0 -> handler 0x00C192A6 -> FuncInfo 0x01209238 state0 operator delete cleanup of the failed new BfmeItemCU; ret 0x00C1929A; model=claude-opus-5-5; host=app
 ?Rva00C1929BCleanup@@YAXXZ	0x00C1929B	11	landed	landed-by=add_match source=game/GameEngine/Source/GameLogic/ScriptEngine/ScriptOwnedWrappersClear.cpp extent=0x00C1929B..0x00C192A6 size=11B model=claude-opus-5-5 ; notes: gen-funclet; object-symbol=$L444; parent=??0Rva003525E0Pair@@QAE@ABV0@@Z; retail parent 0x003525E0 -> handler 0x00C192A6 -> FuncInfo 0x01209238 state2 operator delete cleanup of the failed new BfmeItemCV; ret 0x00C192A5; model=claude-opus-5-5; host=app
+??_7AIDockMoveToExitState@@6B@	0x01095E28	0	blocked	gate-debt: false-reject locate_source: mangled vtable symbol not in data_rows or source, requires identity reconciliation with Rva0014F690State t=2 model=gemini-3.8-flash-medium
+?g_rva0130A45CObject@@3VCAtlWinModule@ATL@@A	0x0130A45C	0	blocked	gate-debt: false-reject locate_source: mangled symbol not in data_rows or source, conflicting types at retail 0x0130A45C t=2 model=gemini-3.8-flash-medium
+??1BfmeGdElem36@@QAE@XZ	0x004128FA	0	blocked	gate-debt: renaming to GdElemSlot introduces unrecorded ctor DIR32 at 0x00436E7B t=3 model=gemini-3.8-flash-medium
+??_7SupplyTruckAIUpdate@@6BAnimalAIUpdateBase@@@	0x010C8FE8	0	blocked	gate-debt: renaming AnimalAIUpdateBase to ST_RootBase introduces unpinned ctor ??0ST_RootBase@@QAE@PAVThing@@PBVModuleData@@@Z t=3 model=gemini-3.8-flash-medium
+_bfmeINIParseUnsignedInt	0x00C52AC0	0	blocked	gate-debt: replacing _bfmeINIParseUnsignedInt leaves no source spelling it; locate_source returns None and pass-test fails t=3 model=gemini-3.8-flash-medium
+?g_rva012F19B8@@3URva00C6B880Init@@A	0x012F19B8	0	blocked	gate-debt: retail 0x012F19B8 has 3 conflicting names in dir32_addresses.csv; requires identity reconciliation t=2 model=gemini-3.8-flash-medium
+?cursorResources@@3PAY07PAXA	0x012F77A8	0	blocked	gate-debt: _g_bfmeSITable in BfmeThingSICtor.cpp blocks dir32_record retirement; requires cross-TU refactor t=3 model=gemini-3.8-flash-medium
+?g_rva012F1094@@3PAXA	0x012F1094	0	blocked	gate-debt: retail 0x012F1094 has 3 conflicting names in dir32_addresses.csv; requires identity reconciliation across multiple TUs t=3 model=gemini-3.8-flash-medium
+?ownerNotDockingOrIdle@SupplyTruckStateMachine@@SA_NPAVState@@PAX@Z	0x0040C5E0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??1RadiusDecalTemplate@@QAE@XZ	0x00423B41	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?Rva0051B560@LoadScreen0051BF30@@QAEXPAX0_N@Z	0x0042450F	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??1AttackPriorityInfo@@UAE@XZ	0x004268F5	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??0?$map@VAsciiString@@HU?$less@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@H@_STL@@@3@@_STL@@QAE@XZ	0x0042BC01	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??0Rva00386070@@QAE@XZ	0x0042E02D	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?Rva0051B5F0@LoadScreen0051BF30@@QAEXPAX0_N@Z	0x004442AB	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??0Rva00127AB0Element@@QAE@XZ	0x00447DB1	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_F?$list@U?$pair@VAsciiString@@W4ObjectID@@@_STL@@V?$allocator@U?$pair@VAsciiString@@W4ObjectID@@@_STL@@@2@@_STL@@QAEXXZ	0x004488EC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?d_00881ea0@@YAXXZ	0x00C81EA0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??0BfmeElemBW@@QAE@XZ	0x00C92B80	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?Callback00CB5770@@3PADA	0x00CB5770	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?obj@?1??getRva008877A0Singleton@@YAPAXXZ@$AVRva008877A0Type@@A	0x01070EC0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7MapObject@@6B@	0x0107C7E0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva001129B0@@6BSubsystemInterface@@@	0x01089644	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7RunOffMapBehaviorModuleData@@6B@	0x0108E9F0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7AIGuardPickUpCrateState@@6B@	0x01096348	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7TurretStateMachine@@6B@	0x0109B828	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheFieldParse@?1??getFieldParse@LocomotorTemplate@@QBEPBUFieldParse@@XZ@4QBU3@B	0x0109D860	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7GateOpenAndCloseBehaviorModuleData@@6B@	0x010A4210	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_010AF400@FXParticleSystem@@3QBDB	0x010AF400	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7HordeGarrisonContain@@6B?$OpenContainSecondaryBase@$02@@@	0x010AFB24	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7SpecialPowerUpdateInterface@@6B@	0x010B7C6C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7ProneUpdate@@6BUpdateModuleInterface@@@	0x010C1324	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7DeployStyleAIUpdateRva002B53E0@@6BAIUpdateInterface@@@	0x010C64B0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva010C8E90Base@@6B@	0x010C8E30	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+_g_010E84E4	0x010E84E4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7BfmeThingAVB@@6BSubsystemInterface@@@	0x010ECB78	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7LivingWorldLogic@@6BSubsystemInterface@@@	0x010EDBDC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_controlBarSchemeAnimationFieldParse@@3QBUFieldParse@@B	0x010FD0A8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_011052B8@@3URva00511430OutElse@@B	0x011052B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_01105A28@@3QBDB	0x01105A28	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_01110500@FXParticleSystem@@3QBUModuleCategoryEntry@1@B	0x01110500	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_011106F4@@3QBDB	0x011106F4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_0111109C@@3PAPAXA	0x0111109C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7T4Derived_005FDDE0@@6BBfmeHolderCU@@@	0x01113144	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7TerrainCollisionModule@FXParticleSystem@@6B?$CategoryModuleInfo@$07@1@@	0x011132B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva0111BAC8@@3PAURva006A16B0Entry@@A	0x0111BAC8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Gen006EF850@@6B@	0x0111EDD0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva00745B10Owner@@6BView@@@	0x011217A0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva007F4120ReseatTailDtor@@6B@	0x0112B248	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva00802200VtableReseat@@6B@	0x0112C4E8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva00802870VtableReseat@@6B@	0x0112C570	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva00802E30VtableReseat@@6B@	0x0112C640	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7_Locale_impl@_STL@@6B@	0x0112EB34	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7stdio_ostreambuf@_SgI@@6B@	0x0112F2B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+_g_01134390	0x01134390	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+_g_0113439C	0x0113439C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+_g_011343B4	0x011343B4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+_g_011343D4	0x011343D4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_012A72A4@@3MA	0x012A72A4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_Key001ABC90_012A77B8@@3VKey001ABC90@@A	0x012A77B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheKey_multiplayerIsLocal@@3VStaticNameKey@@B	0x012A7978	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?gameWindowFieldList@@3PAUGameWindowParse@@A	0x012B5AB0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classicFacets012C7388@@3PAPAVfacet@locale@_STL@@A	0x012C7388	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_Va012ED5E0@@3VDict@@A	0x012ED5E0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_scriptFrame012F0760@@3HA	0x012F0764	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheScriptEngine@@3PAVRva00336C20FieldAddress@@A	0x012F076C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva012F0770@@3VShellGameLoadScreen@@A	0x012F0770	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva012F1050@@3URva00C6B390Init@@A	0x012F1050	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva012F1404@@3URva00C6B4E0Init@@A	0x012F1404	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva012F19E8WindowManager@@3PAVBfmeLevelAN@@A	0x012F19E8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?Rva00EF4C84@@3PAVRva005B5440@@A	0x012F4C84	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheTerrainVisual@@3PAVTerrainVisual001AC3D0@@A	0x012F7014	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheTerrainVisual@@3PAVTerrainVisual001AE610@@A	0x012F7014	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheTerrainRenderObject@@3PAVRva0074B480TerrainAbi@@A	0x012F7FE0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_012F8058@@3PAVSink006E2540@@A	0x012F8058	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??m_resource012F9D18@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A	0x012F9D18	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva01309C18Object@@3VRva007E4960@@A	0x01309C18	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva0130A451@@3VRva00C6C790Init@@A	0x0130A451	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130B260@@3VBfmeF1124@@A	0x0130B260	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130B280@@3V?$ctype@G@_STL@@A	0x0130B280	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130B538@@3VBfmeChannelPair847F90@@A	0x0130B538	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130BA40@@3V?$money_put@DV?$ostreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@A	0x0130BA40	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130BA50@@3V?$time_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@A	0x0130BA50	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130BC90@@3V?$collate@D@_STL@@A	0x0130BC90	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva0130C0B0@@3VRva00C6DAA0Init@@A	0x0130C0B0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?render_state_changed@DX8Wrapper@@2IA	0x0133F49C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?_DefaultFileFactory@@3VSimpleFileFactoryClass@@A	0x0134ECF0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+__adjust_fdiv	0x013571F8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_F?$list@PAVDrawable@@V?$allocator@PAVDrawable@@@_STL@@@_STL@@QAEXXZ	0x0040F4ED	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??0BFMERetailAsciiString@@QAE@XZ	0x00417BD9	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??0Map0044B780@@QAE@XZ	0x0042254D	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?rva005A9B00@@YAHPAVObject@@PAX@Z	0x00428ACE	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??1?$vector@PAVUpdateModule@@V?$allocator@PAVUpdateModule@@@_STL@@@_STL@@QAE@XZ	0x004392AC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??1WaterSetting@@UAE@XZ	0x0043D4B0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??1Rva0074EB10TextureSlot@@QAE@XZ	0x00441B32	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?RvaData0107C7DC@@3PAIA	0x0107C7DC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7RubbleRiseUpdateModuleData@@6B@	0x0108EAF8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7AIDockApproachState@@6B@	0x01095B80	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7PlayerFilter002A1780@@6B@	0x01097144	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7AIAttackFireWeaponState@?A0x66c5bdcd@@6B@	0x01097DC0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Locomotor@@6B@	0x0109DEF0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Object@@6BThing@@@	0x0109EE58	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7HordeGarrisonContain@@6B?$OpenContainSecondaryBase@$03@@@	0x010AFB20	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7HordeGarrisonContain@@6BOpenContainPrimaryBase@@@	0x010AFDC0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7AttributeModifierAuraUpdate@@6BPB_Iface2@@@	0x010BAFA0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7GameLogic@@6BSnapshot@@@	0x010EB560	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7_bfme_AptGameWindow@@6BS4Owner@@@	0x010F7118	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7LoadScreen0051BF30@@6B@	0x01106070	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7ParticleSystem@@6B@	0x0110FE48	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_01110880@FXParticleSystem@@3QBDB	0x01110880	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_01111074@@3PAPAXA	0x01111074	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_0111110C@@3PAPAXA	0x0111110C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_01111150@@3PAPAXA	0x01111150	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_011111FC@@3PAPAXA	0x011111FC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7?$DefaultParticleModule@$04@FXParticleSystem@@6BBfmeHolderCU@@@	0x0111182C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7?$DefaultParticleModule@$03@FXParticleSystem@@6BBfmeHolderCU@@@	0x01111994	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_01112318@@3PAPAXA	0x01112318	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_vtbl_0111241C@@3PAPAXA	0x0111241C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7T4Derived_005FFB60@@6BBfmeHolderCU@@@	0x011131AC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva0078CFB0SentenceHolderBase@@6B@	0x01126D84	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva007EA6C0VtableReseat@@6B@	0x01129AF4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva007FA670VtableReseat@@6B@	0x0112B3B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva007F8F60VfptrCtor@@6B@	0x0112B980	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva007FBB50VtableReseat@@6B@	0x0112BEB0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva00802280VtableReseat@@6B@	0x0112C4FC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7?$num_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@6B@	0x0112E97C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_7Rva008DCC70Link@@6B@	0x01137808	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_Key001ABC90_012A77C8@@3VKey001ABC90@@A	0x012A77C8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?MasterFilterList@@3PAPAPAVW3DFilterInterface@@A	0x012BAE60	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheGameLODManager@@3PAVGameLODManager006B8220@@A	0x012ED5AC	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheWritableGlobalData@@3PAUGlobalData367470@@A	0x012ED5C8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?RvaObject012EF1F0@@3VAsciiString@@A	0x012EF1F0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_scriptFrame012F0764@@3HA	0x012F0760	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva012F1198@@3URva00C6B450Init@@A	0x012F1198	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?tooltipFunc@@3P6AXPAVGameWindow@@PAVWinInstanceData@@I@ZA	0x012F2564	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+_g_012F3930	0x012F3930	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?id@?$num_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@2V0locale@2@A	0x012F4A00	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?Rva00EF4C5C@@3PAVRva005A49E0RangeTest@@A	0x012F4C5C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+??_B?1??getModuleNameKey@BeaconClientUpdate@@UBE?AW4NameKeyType@@XZ@51	0x012F7024	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_rva01306978Object@@3VRvaList@@A	0x01306978	0	blocked	gate-debt: retail 0x01306978 has 3 conflicting names in dir32_addresses.csv; requires identity reconciliation t=2 model=gemini-3.8-flash-medium
+?g_rva013072B8Object@@3VRva007D85C0@@A	0x013072B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130B7A8@@3V?$num_get@GV?$istreambuf_iterator@GV?$char_traits@G@_STL@@@_STL@@@_STL@@A	0x0130B7A8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_classic0130BA18@@3V?$money_get@DV?$istreambuf_iterator@DV?$char_traits@D@_STL@@@_STL@@@_STL@@A	0x0130BA18	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?TheBfmeObject_00C70E50@@3VBfmeThingTB@@A	0x0130C0D4	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_01336CE0@@3PAVRva008838F0Owner@@A	0x01336CE0	0	blocked	false-reject dir32-name-address: Rva008838F0Owner type fragment in symbol matched by regex before data_rows lookup; matched owner exists in data_rows.csv t=2 model=gemini-3.8-flash-medium
+?debug01336E5C@@3PAVShadowDebug007BC270@@A	0x01336E5C	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_bfmeStringPool1284@@3PAP6AXPAX@ZA	0x01337A30	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?key013384C0@@3HA	0x013384C0	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?g_01338678@@3URva008A9A70Str@@A	0x01338678	0	blocked	false-reject dir32-name-address: Rva008A9A70Str type fragment in symbol matched by regex before data_rows lookup; matched owner exists in data_rows.csv t=2 model=gemini-3.8-flash-medium
+?render_state_changes@DX8Wrapper@@0IA	0x01340564	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?Vertex_Shader_Constants@DX8Wrapper@@2PAVVector4@@A	0x01340600	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
+?_QuadVertexLocationOrientationTable@PointGroupClass@@0PAY03VVector3@@A	0x013436B8	0	blocked	gate-debt: false-reject locate_source: no source spells symbol and not in data_rows t=1 model=gemini-3.8-flash-medium
