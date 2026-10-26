@@ -107,6 +107,8 @@ extern LivingWorldLogic *TheLivingWorldLogic;		///< retail 0x012F1028
 class ScoreKeeper
 {
 public:
+	// 0x000E89C0, defined at the end of this file.
+	Int rva000E89C0();
 	Int countMissionObjectives(Int *outTotal);
 	Int getTimeTakenScore(void);
 	Int calculateScore(void);
@@ -235,4 +237,15 @@ Int ScoreKeeper::getVictoryType(void)
 		tier = 0;
 
 	return tier;
+}
+
+// 0x000E89C0 (50 B, unreferenced; ILT 0x0002F7CA has no caller): the time
+// taken in whole minutes, from the same frame source getTimeTakenScore reads.
+// ?rva000E89C0@ScoreKeeper@@QAEHXZ
+Int ScoreKeeper::rva000E89C0()
+{
+	UnsignedInt frames = m_frameOverride;
+	if (frames == 0)
+		frames = TheGameLogic->m_frame;
+	return (Int)(frames / 5U) / 60;
 }
