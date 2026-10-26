@@ -24,6 +24,7 @@ def test_workspace_listing_survives_finalization(checkout, tmp_path, monkeypatch
         '    receipt["synthetic_execution"] = ',
         '    import build\n'
         '    assert build._case_resolve(str(ROOT / "game/f.cpp").swapcase()) == str(ROOT / "game/f.cpp")\n'
+        '    assert build._case_resolve(str(ROOT).swapcase()) == str(ROOT)\n'
         f'    list(Path({str(policy)!r}).iterdir())\n'
         '    receipt["synthetic_execution"] = '))
     git(root, 'add', 'tools/link_cycle.py')

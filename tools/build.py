@@ -923,7 +923,9 @@ def _case_resolve(path):
     reported = path.replace("\\", "/") if os.name == "nt" else path
     known = str(ROOT).replace("\\", "/") if os.name == "nt" else str(ROOT)
     prefix = known.rstrip("/") + "/"
-    if reported.lower().startswith(prefix.lower()):
+    if reported.lower() == known.rstrip("/").lower():
+        current, parts = str(ROOT), []
+    elif reported.lower().startswith(prefix.lower()):
         current, parts = str(ROOT), reported[len(prefix):].split("/")
     for part in parts:
         if not part:
