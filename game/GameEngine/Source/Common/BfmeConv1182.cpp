@@ -28,3 +28,11 @@ void bfmeInit1182(void)
 	g_Va0134CC58[13] = 1;
 	g_Va0134CC58[59] = 3;
 }
+
+// Retail 0x009CBB70: unreferenced cdecl leaf after int3 padding that reads
+// the class bfmeInit1182 assigns to a character (2 space, 1 CR/LF, 3 ';').
+// Address-derived name.
+int rva009CBB70Class(int c)
+{
+	return g_Va0134CC58[c];
+}
