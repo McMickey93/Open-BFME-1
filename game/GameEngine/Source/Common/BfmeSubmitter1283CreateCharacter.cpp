@@ -281,7 +281,9 @@ struct Rva008A5380List
 	BfmeNodeDX **m_items;
 	int m_count;
 };
-extern char *Rva008A5380Holder;
+// retail 0x013377D8; its one definition is ?g_bfmeHolderBU@@3PAUBfmePickWorld1284@@A
+struct BfmePickWorld1284;
+extern BfmePickWorld1284 *g_bfmeHolderBU;
 
 class BfmeSubmitter1283
 {
@@ -407,9 +409,9 @@ void BfmeSubmitter1283::create008BE760(int key, void *descriptorArg, int nameArg
 
 		if (kind == 13 || kind == 14)
 		{
-			Rva008A5380List *list = (Rva008A5380List *)Rva008A5380Holder;
+			Rva008A5380List *list = (Rva008A5380List *)((char *)g_bfmeHolderBU);
 			list->m_items[list->m_count] = node;
-			++((Rva008A5380List *)Rva008A5380Holder)->m_count;
+			++((Rva008A5380List *)((char *)g_bfmeHolderBU))->m_count;
 			node->retain();
 		}
 		else if (kind == 15)

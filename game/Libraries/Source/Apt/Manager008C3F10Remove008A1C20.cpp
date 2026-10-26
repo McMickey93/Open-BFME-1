@@ -69,7 +69,9 @@ struct Manager008C3F10
 	void remove008A1C20(Rva008C3F10Value *object);
 };
 
-extern char *Rva008A5380Holder;
+// retail 0x013377D8; its one definition is ?g_bfmeHolderBU@@3PAUBfmePickWorld1284@@A
+struct BfmePickWorld1284;
+extern BfmePickWorld1284 *g_bfmeHolderBU;
 
 void Manager008C3F10::remove008A1C20(Rva008C3F10Value *object)
 {
@@ -77,7 +79,7 @@ void Manager008C3F10::remove008A1C20(Rva008C3F10Value *object)
 	if (remaining == 0)
 		return;
 
-	for (int index = 0; index < *(int *)(Rva008A5380Holder + 0x12A4); ++index)
+	for (int index = 0; index < *(int *)((char *)g_bfmeHolderBU + 0x12A4); ++index)
 	{
 		if (m_slots[index].m_value == 0)
 			continue;

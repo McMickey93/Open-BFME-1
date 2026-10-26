@@ -69,7 +69,7 @@ public:
 	void forward(int a0);
 };
 
-extern const char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];
 
 extern "C" void _ReadWriteBarrier();
 #pragma intrinsic(_ReadWriteBarrier)
@@ -83,7 +83,7 @@ struct AsciiStringData
 
 __forceinline const char *bfmeEffectiveStr(AsciiStringData *data)
 {
-	return data ? (const char *)data + 8 : Rva006A16B0Empty;
+	return data ? (const char *)data + 8 : g_bfmeEmptyAscii;
 }
 
 __forceinline int bfmeGetLength(AsciiStringData *data)

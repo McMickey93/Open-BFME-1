@@ -11,7 +11,7 @@
 typedef bool Bool;
 typedef int Int;
 
-extern const char Rva006A16B0Empty[]; // retail 0x0107388B
+extern const char g_bfmeEmptyAscii[]; // retail 0x0107388B
 
 #include "ascii_string.h"
 template<> inline void StringBase<char>::concat(const StringBase<char> &str)

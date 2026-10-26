@@ -9,7 +9,7 @@
 
 #include "ascii_string.h"
 
-extern const char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];	// retail 0x0107388B (data_rows)
 
 // retired debt: ?TheNullChr@?1??str@Rva0025FBF0LayoutString@@QBEPBDXZ@4DB replaced with ?Rva006A16B0Empty@@3PADA
 class Rva0025FBF0LayoutString
@@ -17,7 +17,7 @@ class Rva0025FBF0LayoutString
 public:
     const char *str() const
     {
-        return m_data ? (const char *)m_data + 8 : Rva006A16B0Empty;
+        return m_data ? (const char *)m_data + 8 : g_bfmeEmptyAscii;
     }
 
     void *m_data;

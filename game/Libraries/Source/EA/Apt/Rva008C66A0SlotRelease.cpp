@@ -48,7 +48,9 @@ struct Rva008AE770Stack
 extern Rva008AE770Stack Rva008AE770TheStack;
 extern AptValue **g_bfmeArr1233;
 extern AptValue *g_bfmeFallbackDB;
-extern char *Rva008A5380Holder;
+// retail 0x013377D8; its one definition is ?g_bfmeHolderBU@@3PAUBfmePickWorld1284@@A
+struct BfmePickWorld1284;
+extern BfmePickWorld1284 *g_bfmeHolderBU;
 
 AptValue *__cdecl dup_008c66a0()
 {
@@ -56,13 +58,13 @@ AptValue *__cdecl dup_008c66a0()
 	if (!arg->isUndefined())
 	{
 		int index = arg->toInteger();
-		char *holder = Rva008A5380Holder;
+		char *holder = ((char *)g_bfmeHolderBU);
 		if (((Rva008A0FF0ValueStack *)*(char **)(holder + 0x1230))[index].m_value00)
 		{
 			((Rva008A0FF0ValueStack *)*(char **)(holder + 0x1230))[index].m_value04->release();
-			((Rva008A0FF0ValueStack *)*(char **)(Rva008A5380Holder + 0x1230))[index].m_value00 = 0;
-			((Rva008A0FF0ValueStack *)*(char **)(Rva008A5380Holder + 0x1230))[index].releaseAll();
-			--*(int *)(Rva008A5380Holder + 0x1234);
+			((Rva008A0FF0ValueStack *)*(char **)(((char *)g_bfmeHolderBU) + 0x1230))[index].m_value00 = 0;
+			((Rva008A0FF0ValueStack *)*(char **)(((char *)g_bfmeHolderBU) + 0x1230))[index].releaseAll();
+			--*(int *)(((char *)g_bfmeHolderBU) + 0x1234);
 		}
 	}
 	return g_bfmeFallbackDB;

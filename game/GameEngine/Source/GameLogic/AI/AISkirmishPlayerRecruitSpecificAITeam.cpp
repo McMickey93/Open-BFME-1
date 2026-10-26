@@ -41,7 +41,7 @@ public:
 
 #include "command_source_type.h"
 
-extern const char Rva006A16B0Empty[];
+extern const char g_bfmeEmptyAscii[];
 
 static inline void bfmeConcat(AsciiString &dst, const AsciiString &text)
 {
