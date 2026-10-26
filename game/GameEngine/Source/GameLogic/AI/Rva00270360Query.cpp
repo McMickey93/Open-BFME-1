@@ -1,7 +1,7 @@
 // Retail 0x00270360, 212 bytes. The matched Locomotor_rva001BC820 caller
 // reaches this Bool thiscall predicate through ILT 0x00023795.
 // Its semantic method name is unproven; preserve the address-derived identity.
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/aiupdatelayout /Igame/GameEngine/Include/Precompiled /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/aiupdatelayout /Igame/GameEngine/Include/Precompiled /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 // stlport
 #define __PLACEMENT_VEC_NEW_INLINE
 #include "GameLogic/Module/AIUpdate.h"

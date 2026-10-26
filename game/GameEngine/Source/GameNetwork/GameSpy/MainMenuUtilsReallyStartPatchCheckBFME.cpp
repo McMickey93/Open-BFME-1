@@ -1,6 +1,6 @@
 // BFME patch-check continuation reached by the matched HTTPThinkWrapper's
 // successful-DNS branch. Callback addresses are the retail call operands.
-// cl: /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC /D_STLP_NO_EXCEPTIONS /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/stlp_nodealloc /Iinputs/reference/shims/sweep /Igame/GameEngine/Source/GameNetwork /Igame/Libraries/Source/WWVegas/WWDownload /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDownload /Iinputs/reference/shims/gamespy
+// cl: /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC /D_STLP_NO_EXCEPTIONS /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/stlp_nodealloc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Igame/GameEngine/Source/GameNetwork /Igame/Libraries/Source/WWVegas/WWDownload /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDownload /Iinputs/reference/shims/gamespy
 // stlport
 
 #include <string>

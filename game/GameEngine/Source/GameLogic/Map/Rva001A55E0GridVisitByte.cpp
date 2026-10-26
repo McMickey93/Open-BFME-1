@@ -1,5 +1,5 @@
 // ?visit@Rva001A55E0GridVisitByte@@QAEXPBUCoord3D@@MPBEEH@Z
-// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 #include "Lib/BaseType.h"
 
 extern "C" __declspec(dllimport) double floor(double);
