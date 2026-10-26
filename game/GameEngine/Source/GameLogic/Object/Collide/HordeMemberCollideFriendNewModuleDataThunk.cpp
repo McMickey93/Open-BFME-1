@@ -39,12 +39,15 @@ public:
 		void (__cdecl *buildFieldParse)(MultiIniFieldParse &));
 };
 
-// Retail's second argument is the address of the module-data buildFieldParse
-// proc, which rides the matched ILT thunk at RVA 0x000173DC
-// (route 0x00122E80, a one-byte no-op builder shared with SquishCollide's
-// factory).  The reference spells the name the DIR32 ledger records there,
-// _HordeMemberCollideFieldParse.
-extern "C" void __cdecl HordeMemberCollideFieldParse(MultiIniFieldParse &parse);
+// The proc retail passes is VA 0x004173DC, the ILT stub at RVA 0x000173DC,
+// which jumps to the one-byte no-op builder at 0x00122E80 shared by the
+// HordeMemberCollide and SquishCollide factories.  No class-specific builder
+// name is provable for the shared stub, so the reference names the matched
+// address-derived ?Rva00122E80Noop@@YAXXZ that the stub reaches and casts it
+// to the initFromINIMultiProc parameter type (no code: push offset either
+// way).  That defined name lets the reference link.
+void Rva00122E80Noop();
+typedef void (__cdecl *Rva00122E80BuildFieldParse)(MultiIniFieldParse &);
 
 class HordeMemberCollide
 {
@@ -57,6 +60,7 @@ ModuleData *HordeMemberCollide::friend_newModuleData(INI *ini)
 {
 	HordeMemberCollideModuleData *data = new HordeMemberCollideModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, HordeMemberCollideFieldParse);
+		ini->initFromINIMultiProc(data,
+			(Rva00122E80BuildFieldParse)Rva00122E80Noop);
 	return (ModuleData *)data;
 }

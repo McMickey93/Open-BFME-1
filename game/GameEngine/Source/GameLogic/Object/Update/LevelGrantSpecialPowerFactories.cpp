@@ -35,14 +35,19 @@ public:
 };
 
 // The pushed immediate is 0x0044128B = the five-byte ILT thunk at 0x0004128B,
-// which the ledger defines as ?j_0004128b@@YAXXZ and which chains to the
-// LevelGrantSpecialPower field-parse builder ?buildFieldParse@Rva0025FCF0@@
-// (matched body 0x0065FCF0 in
-// game/GameEngine/Source/Common/WideBuildFieldParse.cpp).  Naming the real
-// method would link straight to the builder and change the bytes, so the thunk
-// is referenced and the cast keeps the proc type initFromINIMultiProc declares
-// for its second argument.
-extern "C" void __cdecl LevelGrantSpecialPowerFieldParse(MultiIniFieldParse &parse);	// DIR32-recorded name of ILT 0x0044128B
+// which chains to the LevelGrantSpecialPower field-parse builder, the matched
+// address-derived ?buildFieldParse@Rva0025FCF0@@SAXAAVWideMulti@@@Z (body
+// 0x0025FCF0 in game/GameEngine/Source/Common/WideBuildFieldParse.cpp).
+// Naming that defined builder lets the reference link; its WideMulti
+// receiver spelling is the matched row's, so the proc is cast to the
+// initFromINIMultiProc parameter type (no code: push offset either way).
+class WideMulti;
+class Rva0025FCF0
+{
+public:
+	static void buildFieldParse(WideMulti &);
+};
+typedef void (__cdecl *LevelGrantSpecialPowerBuildFieldParse)(MultiIniFieldParse &);
 
 class LevelGrantSpecialPower
 {
@@ -60,7 +65,8 @@ ModuleData *LevelGrantSpecialPower::friend_newModuleData(INI *ini)
 {
 	LevelGrantSpecialPowerModuleData *data = new LevelGrantSpecialPowerModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, LevelGrantSpecialPowerFieldParse);
+		ini->initFromINIMultiProc(data,
+			(LevelGrantSpecialPowerBuildFieldParse)Rva0025FCF0::buildFieldParse);
 	return (ModuleData *)data;
 }
 

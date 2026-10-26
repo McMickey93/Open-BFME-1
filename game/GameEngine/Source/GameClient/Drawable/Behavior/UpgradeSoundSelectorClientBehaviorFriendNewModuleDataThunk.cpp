@@ -30,16 +30,17 @@ public:
 		void (__cdecl *buildFieldParse)(MultiIniFieldParse &));
 };
 
-// Retail's factory does not push the field-parse builder itself: at +0x4E it
-// pushes VA 0x004151A9, the 5-byte ILT thunk RVA 0x000151A9
-// (e9 82 3f 5f 00 -> RVA 0x00609130, the 17-byte table-register forwarder
-// ?Rva00609130@@YAXPAVGen00850920@@@Z in Common/MidTableRegisterForwarders.cpp,
-// which registers the .rdata table 0x01115A9C).  The reference spells the
-// name the DIR32 ledger records there, _UpgradeSoundSelectorClientBehaviorFieldParse;
-// the real EA identity of the builder it reaches is
-// ?buildFieldParse@UpgradeSoundSelectorClientBehaviorModuleData@@SAXAAVMultiIniFieldParse@@@Z,
-// still address-derived in the ledger.
-extern "C" void __cdecl UpgradeSoundSelectorClientBehaviorFieldParse(MultiIniFieldParse &parse);
+// Retail pushes VA 0x004151A9, the five-byte ILT thunk at RVA 0x000151A9,
+// which jumps to the matched address-derived 17-byte table-register
+// forwarder ?Rva00609130@@YAXPAVGen00850920@@@Z (body 0x00609130 in
+// Common/MidTableRegisterForwarders.cpp, registering .rdata table 0x01115A9C);
+// its Gen00850920 receiver is that row's spelling, so the proc is cast to the
+// initFromINIMultiProc parameter type.
+// Naming that defined, matched body (instead of an undefined alias) lets the
+// reference link; the pushed operand is a relocation either way.
+class Gen00850920;
+void Rva00609130(Gen00850920 *receiver);
+typedef void (__cdecl *UpgradeSoundSelectorClientBehaviorBuildFieldParse)(MultiIniFieldParse &);
 
 class UpgradeSoundSelectorClientBehavior
 {
@@ -52,6 +53,7 @@ ModuleData *UpgradeSoundSelectorClientBehavior::friend_newModuleData(INI *ini)
 {
 	UpgradeSoundSelectorClientBehaviorModuleData *data = new UpgradeSoundSelectorClientBehaviorModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, UpgradeSoundSelectorClientBehaviorFieldParse);
+		ini->initFromINIMultiProc(data,
+			(UpgradeSoundSelectorClientBehaviorBuildFieldParse)Rva00609130);
 	return (ModuleData *)data;
 }

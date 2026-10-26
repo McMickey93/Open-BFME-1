@@ -33,13 +33,19 @@ public:
 };
 
 // The pushed immediate is 0x00410CEE = the five-byte ILT thunk at 0x00010CEE,
-// which chains to the GiveUpgradeUpdate field-parse builder
-// ?buildFieldParse@Rva0025D970@@ (matched body 0x0065D970 in
-// game/GameEngine/Source/Common/WideBuildFieldParse.cpp).  The reference spells
-// the name the DIR32 ledger records there, _GiveUpgradeUpdateFieldParse; the
-// real EA identity of the builder it reaches stays address-derived in the
-// ledger.
-extern "C" void __cdecl GiveUpgradeUpdateFieldParse(MultiIniFieldParse &parse);
+// which chains to the GiveUpgradeUpdate field-parse builder, the matched
+// address-derived ?buildFieldParse@Rva0025D970@@SAXAAVWideMulti@@@Z (body
+// 0x0025D970 in game/GameEngine/Source/Common/WideBuildFieldParse.cpp).
+// Naming that defined builder lets the reference link; its WideMulti
+// receiver spelling is the matched row's, so the proc is cast to the
+// initFromINIMultiProc parameter type (no code: push offset either way).
+class WideMulti;
+class Rva0025D970
+{
+public:
+	static void buildFieldParse(WideMulti &);
+};
+typedef void (__cdecl *GiveUpgradeUpdateBuildFieldParse)(MultiIniFieldParse &);
 
 class GiveUpgradeUpdate
 {
@@ -57,7 +63,8 @@ ModuleData *GiveUpgradeUpdate::friend_newModuleData(INI *ini)
 {
 	GiveUpgradeUpdateModuleData *data = new GiveUpgradeUpdateModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, GiveUpgradeUpdateFieldParse);
+		ini->initFromINIMultiProc(data,
+			(GiveUpgradeUpdateBuildFieldParse)Rva0025D970::buildFieldParse);
 	return (ModuleData *)data;
 }
 

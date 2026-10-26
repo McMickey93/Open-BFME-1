@@ -39,17 +39,20 @@ public:
 		void (__cdecl *buildFieldParse)(MultiIniFieldParse &));
 };
 
-// Retail's factory does not push the field-parse builder itself: at +0x51 it
-// pushes VA 0x00413C23, the 5-byte ILT thunk RVA 0x00013C23
-// (e9 98 70 24 00 -> RVA 0x0025ACC0, the 30-byte builder
-// ?buildFieldParse@Rva0025ACC0@@SAXAAVWideMulti@@@Z in
-// Common/WideBuildFieldParse.cpp, which chains the base builder at the thunk
-// RVA 0x0000629E then registers its own .rdata table).  The reference spells
-// the name the DIR32 ledger records there, _DominateEnemySpecialPowerFieldParse;
-// the real EA identity of the builder it reaches is
-// ?buildFieldParse@DominateEnemySpecialPowerModuleData@@SAXAAVMultiIniFieldParse@@@Z,
-// still address-derived in the ledger.
-extern "C" void __cdecl DominateEnemySpecialPowerFieldParse(MultiIniFieldParse &parse);
+// Retail pushes VA 0x00413C23, the five-byte ILT thunk at RVA 0x00013C23,
+// which jumps to the matched address-derived builder
+// ?buildFieldParse@Rva0025ACC0@@SAXAAVWideMulti@@@Z (body 0x0025ACC0 in
+// Common/WideBuildFieldParse.cpp); its WideMulti receiver is that row's
+// spelling, so the proc is cast to the initFromINIMultiProc parameter type.
+// Naming that defined, matched body (instead of an undefined alias) lets the
+// reference link; the pushed operand is a relocation either way.
+class WideMulti;
+class Rva0025ACC0
+{
+public:
+	static void buildFieldParse(WideMulti &);
+};
+typedef void (__cdecl *DominateEnemySpecialPowerBuildFieldParse)(MultiIniFieldParse &);
 
 class DominateEnemySpecialPower
 {
@@ -62,6 +65,7 @@ ModuleData *DominateEnemySpecialPower::friend_newModuleData(INI *ini)
 {
 	DominateEnemySpecialPowerModuleData *data = new DominateEnemySpecialPowerModuleData;
 	if (ini)
-		ini->initFromINIMultiProc(data, DominateEnemySpecialPowerFieldParse);
+		ini->initFromINIMultiProc(data,
+			(DominateEnemySpecialPowerBuildFieldParse)Rva0025ACC0::buildFieldParse);
 	return (ModuleData *)data;
 }
