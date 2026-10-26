@@ -25,6 +25,7 @@ class Rva008811C0DwordField { public: int get() const; };
 struct Rva00809500Entry;
 class Rva00803620Sink { public: void rva0080AA80( Rva00809500Entry *entry ); };
 class Rva00809BF0Owner { public: void notify( Rva00809500Entry *entry ); };
+class LanTheaterEmulator { public: void notifyAddress( Rva00809500Entry *entry ); };
 class Gen_007e86c0 { public: void m(); };
 class Rva00826840Owner { public: void resetTables(); };
 class Gen_0094BFB0 { public: void bfmeForward(); };
@@ -55,6 +56,9 @@ void Rva00803710Forward::forward( Rva00809500Entry *entry ) { m_target->rva0080A
 
 class Rva00803720Forward { public: void forward( Rva00809500Entry *entry ); char m_lead[ 0x18 ]; Rva00809BF0Owner *m_target; };
 void Rva00803720Forward::forward( Rva00809500Entry *entry ) { m_target->notify( entry ); }
+
+class Rva00803700Forward { public: void forward( Rva00809500Entry *entry ); char m_lead[ 0x18 ]; LanTheaterEmulator *m_target; };
+void Rva00803700Forward::forward( Rva00809500Entry *entry ) { m_target->notifyAddress( entry ); }
 
 // add ecx,<disp> / jmp
 class Rva008006B0Forward { public: void forward(); char m_lead[ 0x10 ]; Gen_007e86c0 m_member; };
