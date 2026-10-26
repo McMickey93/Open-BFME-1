@@ -601,12 +601,79 @@ void LanLobbyMenuShutdown( WindowLayout *layout, void *userData )
 //		TheShell->showShellMap(TRUE);
 }  // LanLobbyMenuShutdown
 
+// BFME callback identity: FunctionLexicon VA 0x012A9504 -> ILT 0x00041CC2 -> RVA 0x004CEC00.
+// The two join paths pass a zeroed dword/word aggregate by reference.
+struct LanAddress004CEC00 { unsigned int field00; unsigned short field04; LanAddress004CEC00() : field00(0), field04(0) {} };
+class LanDispatch004CEC00 {
+public:
+ virtual ~LanDispatch004CEC00();
+virtual void slot01();
+virtual void slot02();
+virtual void slot03();
+virtual void slot04();
+virtual void update(); // +0x14: ZH LANAPI::update, one slot later in BFME
+virtual void slot06();
+virtual void slot07();
+virtual void slot08();
+virtual void slot09();
+virtual void slot0a();
+virtual void RequestGameJoin(LANGameInfo *, const LanAddress004CEC00 &);
+virtual void slot0c();
+virtual void slot0d();
+virtual void slot0e();
+virtual void slot0f();
+virtual void RequestChat(UnicodeString, int);
+virtual void slot11();
+virtual void slot12();
+virtual void slot13();
+virtual void slot14();
+virtual void slot15();
+virtual void RequestGameCreate(UnicodeString, bool);
+virtual void slot17();
+virtual void RequestSetName(UnicodeString);
+virtual void RequestLobbyLeave(bool);
+virtual void slot1a();
+virtual void slot1b();
+virtual void slot1c();
+virtual void slot1d();
+virtual void slot1e();
+virtual void slot1f();
+virtual void slot20();
+virtual void slot21();
+virtual void slot22();
+virtual void slot23();
+virtual void slot24();
+virtual void slot25();
+virtual void slot26();
+virtual void slot27();
+virtual void slot28();
+virtual void slot29();
+virtual void slot2a();
+virtual LANGameInfo *LookupGameByListOffset(int);
+};
+
+// BFME GameLogic view: retail LanLobbyMenuUpdate reads the game mode at +0x10c
+// (ZH +0x94) and the frame at +0x3c through TheGameLogic (0x012F0898).
+class Rva004CE980Logic {
+public:
+	char opaque00[0x3c];
+	UnsignedInt frame;
+	char opaque40[0xcc];
+	Int gameMode;
+	Bool isInShellGame() { return gameMode == 4; }
+	UnsignedInt getFrame() { return frame; }
+};
+// Set by LanLobbyMenuInit next to justEntered; cleared once the headless
+// client has asked to join the first listed game.
+static Bool Rva012F3D51;
+static UnsignedInt Rva012F3DE4;
+
 //-------------------------------------------------------------------------------------------------
 /** Lan Lobby menu update method */
 //-------------------------------------------------------------------------------------------------
 void LanLobbyMenuUpdate( WindowLayout * layout, void *userData)
 {
-	if (TheGameLogic->isInShellGame() && TheGameLogic->getFrame() == 1)
+	if (((Rva004CE980Logic *)TheGameLogic)->isInShellGame() && ((Rva004CE980Logic *)TheGameLogic)->getFrame() == 1)
 	{
 		SignalUIInteraction(SHELL_SCRIPT_HOOK_LAN_ENTERED_FROM_GAME);
 	}
@@ -627,7 +694,7 @@ void LanLobbyMenuUpdate( WindowLayout * layout, void *userData)
 		shutdownCompleteLanLobbyMenu(layout);
 
 	if (TheShell->isAnimFinished() && !LANbuttonPushed && TheLAN)
-		TheLAN->update();
+		((LanDispatch004CEC00 *)TheLAN)->update();
 
 	if (LANSocketErrorDetected == TRUE) {
 		LANSocketErrorDetected = FALSE;
@@ -638,8 +705,17 @@ void LanLobbyMenuUpdate( WindowLayout * layout, void *userData)
 		TheWindowManager->winSendSystemMsg(buttonBack->winGetParent(), GBM_SELECTED,
 																			 (WindowMsgData)buttonBack, buttonBackID);
 	}
-
-	
+	else if (getenv("_EA_RTS_HEADLESS") && Rva012F3D51 && TheLAN)
+	{
+		LANGameInfo *game = ((LanDispatch004CEC00 *)TheLAN)->LookupGameByListOffset(0);
+		if (game && ++Rva012F3DE4 > 60)
+		{
+			Int sel = 0;
+			GadgetListBoxSetSelected(listboxGames, &sel, 1);
+			((LanDispatch004CEC00 *)TheLAN)->RequestGameJoin(game, LanAddress004CEC00());
+			Rva012F3D51 = FALSE;
+		}
+	}
 }// LanLobbyMenuUpdate
 
 //-------------------------------------------------------------------------------------------------
@@ -694,56 +770,6 @@ WindowMsgHandledType LanLobbyMenuInput( GameWindow *window, UnsignedInt msg,
 //-------------------------------------------------------------------------------------------------
 /** Lan Lobby menu window system callback */
 //-------------------------------------------------------------------------------------------------
-// BFME callback identity: FunctionLexicon VA 0x012A9504 -> ILT 0x00041CC2 -> RVA 0x004CEC00.
-// The two join paths pass a zeroed dword/word aggregate by reference.
-struct LanAddress004CEC00 { unsigned int field00; unsigned short field04; LanAddress004CEC00() : field00(0), field04(0) {} };
-class LanDispatch004CEC00 {
-public:
- virtual ~LanDispatch004CEC00();
-virtual void slot01();
-virtual void slot02();
-virtual void slot03();
-virtual void slot04();
-virtual void slot05();
-virtual void slot06();
-virtual void slot07();
-virtual void slot08();
-virtual void slot09();
-virtual void slot0a();
-virtual void RequestGameJoin(LANGameInfo *, const LanAddress004CEC00 &);
-virtual void slot0c();
-virtual void slot0d();
-virtual void slot0e();
-virtual void slot0f();
-virtual void RequestChat(UnicodeString, int);
-virtual void slot11();
-virtual void slot12();
-virtual void slot13();
-virtual void slot14();
-virtual void slot15();
-virtual void RequestGameCreate(UnicodeString, bool);
-virtual void slot17();
-virtual void RequestSetName(UnicodeString);
-virtual void RequestLobbyLeave(bool);
-virtual void slot1a();
-virtual void slot1b();
-virtual void slot1c();
-virtual void slot1d();
-virtual void slot1e();
-virtual void slot1f();
-virtual void slot20();
-virtual void slot21();
-virtual void slot22();
-virtual void slot23();
-virtual void slot24();
-virtual void slot25();
-virtual void slot26();
-virtual void slot27();
-virtual void slot28();
-virtual void slot29();
-virtual void slot2a();
-virtual LANGameInfo *LookupGameByListOffset(int);
-};
 
 template <typename T> inline bool StringBase<T>::isEmpty() const { return m_data == 0 || m_data->length == 0; }
 template <typename T> inline T StringBase<T>::getCharAt(int i) const { return m_data ? m_data->data[i] : 0; }
