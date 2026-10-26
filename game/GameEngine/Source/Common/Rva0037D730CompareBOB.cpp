@@ -1,4 +1,4 @@
-// cl: /MD /O2 /EHsc- /GR- /DNDEBUG /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
+// cl: /MD /O2 /EHsc- /GR- /DNDEBUG /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include
 
 #include "Common/GameMemory.h"
 #include "Common/Overridable.h"
