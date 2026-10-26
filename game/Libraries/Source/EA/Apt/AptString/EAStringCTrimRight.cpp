@@ -68,7 +68,9 @@ class EAStringC
 		return *this;
 	}
 	EAStringC Left(int count) const;
+	EAStringC &rva0089F420(const char *pStrText);
 	EAStringC &rva0089F530(const char *pStrText);
+	EAStringC &rva0089F640(const char *pStrText);
 };
 
 // 0x012D5298: the shared empty EA string block, defined once in
@@ -102,4 +104,13 @@ EAStringC &EAStringC::rva0089F530(const char *pStrText)
 	result = Left(static_cast<int>(uSize - uTrim));
 	*this = result;
 	return *this;
+}
+
+// 0x0089F640: unreferenced, directly after the trim above: runs the forward
+// character-set scan 0x0089F420 (EAStringCFirstOf.cpp) and then this trim with
+// the same set, returning the trim's result. Address-qualified name.
+EAStringC &EAStringC::rva0089F640(const char *pStrText)
+{
+	rva0089F420(pStrText);
+	return rva0089F530(pStrText);
 }
