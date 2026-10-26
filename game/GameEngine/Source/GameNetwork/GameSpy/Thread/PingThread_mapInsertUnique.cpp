@@ -18,3 +18,12 @@
 
 typedef _STL::map<_STL::string, int> Rva0064C4C0Map;
 template _STL::pair<Rva0064C4C0Map::iterator, bool> Rva0064C4C0Map::_Rep_type::insert_unique(const Rva0064C4C0Map::value_type &);
+// The hinted overload (retail 0x0064CBD0, 628 bytes): what map<string, int>::operator[]
+// reaches through the ILT thunk at 0x0003AFEE. INIMapCache.cpp and MapUtil.cpp had
+// claimed that body as three AsciiString-keyed instantiations; the comparator it calls
+// through 0x0001C01C is less<basic_string<char>> (0x006455D0, an out-of-line
+// basic_string operator<), not less<AsciiString> (0x00062FA0).
+template Rva0064C4C0Map::iterator Rva0064C4C0Map::_Rep_type::insert_unique(Rva0064C4C0Map::iterator, const Rva0064C4C0Map::value_type &);
+// Its map-level wrapper (retail 0x0064E5F0, 31 bytes): calls the hinted insert_unique
+// through the same thunk, and was claimed twice under AsciiString names as well.
+template Rva0064C4C0Map::iterator Rva0064C4C0Map::insert(Rva0064C4C0Map::iterator, const Rva0064C4C0Map::value_type &);
