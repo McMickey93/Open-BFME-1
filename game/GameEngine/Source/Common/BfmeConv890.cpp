@@ -355,7 +355,7 @@ struct BfmeHoldFAE
 
 extern int *g_rva0018EC80;		// retail 0x012ACB50, defined in Rva0018EC80Get.cpp
 extern int g_bfmeBFAE;
-extern int g_bfmeCFAE;
+extern int TheBfmeDrawableDirtyFlags;	// retail 0x012EF418
 
 void bfmeGoFAE()
 {
@@ -364,7 +364,7 @@ void bfmeGoFAE()
 	g_bfmeBFAE = 1;
 	if (p)
 		p->bfmeDelFAE(1);
-	g_bfmeCFAE |= 1;
+	TheBfmeDrawableDirtyFlags |= 1;
 }
 
 struct BfmeGlobFAF

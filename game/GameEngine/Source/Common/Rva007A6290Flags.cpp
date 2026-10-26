@@ -1,13 +1,14 @@
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc
 
-unsigned int g_rva007A6290Flags;
+// the one definition is ?TheBfmeDrawableDirtyFlags@@3HA (data_rows 0x012EF418)
+extern int TheBfmeDrawableDirtyFlags;
 
 int __cdecl rva007A6290Has(unsigned int mask)
 {
-	return (g_rva007A6290Flags & mask) == mask;
+	return (TheBfmeDrawableDirtyFlags & mask) == mask;
 }
 
 void __cdecl rva007A62B0Clear(unsigned int mask)
 {
-	g_rva007A6290Flags &= ~mask;
+	TheBfmeDrawableDirtyFlags &= ~mask;
 }
