@@ -49,11 +49,12 @@ extern void __cdecl Rva009AFEC0FilterHoriz(int, unsigned char *, int);
 extern void __cdecl bfmeFilterBlockMmx(void *, void *, int, void *);
 extern "C" void __cdecl Rva009C2620Vp6FilterDiag4(void *, void *, void *, int, int, int *);
 extern "C" void __cdecl Rva009C2320Vp6FilterDiag4(void *, void *, void *, int, int, int *);
-extern void __cdecl d_009bebb0(void);
-extern void __cdecl d_009bfa40(void);
-extern void __cdecl d_009b9700(void);
-extern void __cdecl d_009c1ed0(void);
+struct Rva009BEBB0Vp6PostProc;
+extern void __cdecl Rva009BEBB0Vp6DeblockBand(Rva009BEBB0Vp6PostProc *, unsigned char *, unsigned char *, unsigned int, unsigned int, unsigned int, unsigned int *);
+extern "C" void __cdecl DeblockLoopFilteredBand_WMT_Rva009BFA40();
+extern "C" void __cdecl Rva009B9700Vp6Reconstruct();
 struct Rva009C2170Ctx;
+extern void __cdecl bfmeDeblockEdgeVerticalByIndexMmx(Rva009C2170Ctx *, void *, int);
 extern void __cdecl bfmeDeblockEdgeByIndexMmx(Rva009C2170Ctx *, void *, int);
 extern void __cdecl bfmeFilterBlockByIndexMmx(int, void *, int);
 extern void __cdecl bfmeFilterBlockPairByIndexMmx(int, void *, int);
@@ -61,10 +62,10 @@ extern void __cdecl bfmeFilterRowByIndex8Mmx(int, void *, int);
 extern void __cdecl bfmeFilterRowByIndex12Mmx(int, void *, int);
 extern void __cdecl d_009bd470(void);
 extern "C" void __cdecl Rva009BD470Vp6FilterSse(void *, void *, void *, int, int);
-extern void __cdecl d_009c0a30(void);
+extern void __cdecl Rva009C0A30Vp6AddNoise(unsigned char *, unsigned int, unsigned int, int, int);
 extern "C" void __cdecl Rva009BE180Vp6FilterWideV2(void *, void *, void *, int, int, int *);
 extern "C" void __cdecl Rva009BD750Vp6FilterWide(void *, void *, void *, int, int, int *);
-extern void __cdecl d_009b8130(void);
+extern "C" void __cdecl Rva009B8130Vp6Reconstruct();
 extern void __cdecl d_009a5f50(void);
 
 // Slot fillers with neither a real identity nor a ghidra-boundary row yet;
@@ -182,10 +183,10 @@ void __cdecl bfmeInstallCpuDispatchTable(void)
 		g_rva01356E64 = (int *(__cdecl *)(Rva009ACBA0Context *, int))&Rva009B6D40;
 		g_bfmeCodecDispatch.slot[16] = (BfmeDispatchFn)&Rva009C2620Vp6FilterDiag4;
 		g_bfmeCodecDispatch.slot[24] = (BfmeDispatchFn)&Rva009C2320Vp6FilterDiag4;
-		g_bfmeCodecDispatch.slot[10] = (BfmeDispatchFn)&d_009bebb0;
-		g_bfmeCodecDispatch.slot[13] = (BfmeDispatchFn)&d_009bfa40;
-		g_bfmeCodecDispatch.slot[21] = (BfmeDispatchFn)&d_009b9700;
-		g_bfmeCodecDispatch.slot[9] = (BfmeDispatchFn)&d_009c1ed0;
+		g_bfmeCodecDispatch.slot[10] = (BfmeDispatchFn)&Rva009BEBB0Vp6DeblockBand;
+		g_bfmeCodecDispatch.slot[13] = (BfmeDispatchFn)&DeblockLoopFilteredBand_WMT_Rva009BFA40;
+		g_bfmeCodecDispatch.slot[21] = (BfmeDispatchFn)&Rva009B9700Vp6Reconstruct;
+		g_bfmeCodecDispatch.slot[9] = (BfmeDispatchFn)&bfmeDeblockEdgeVerticalByIndexMmx;
 		g_bfmeCodecDispatch.slot[25] = (BfmeDispatchFn)&bfmeDeblockEdgeByIndexMmx;
 		g_bfmeCodecDispatch.slot[8] = (BfmeDispatchFn)&bfmeExpandMmx;
 		g_bfmeCodecDispatch.slot[20] = (BfmeDispatchFn)&bfmeExpand3to5Mmx;
@@ -202,7 +203,7 @@ void __cdecl bfmeInstallCpuDispatchTable(void)
 		g_bfmeCodecDispatch.slot[14] = (BfmeDispatchFn)&bfmeFilterRowByIndex12Mmx;
 		g_bfmeCodecDispatch.slot[3] = (BfmeDispatchFn)&bfmeBlurRowsSse;
 		g_bfmeCodecDispatch.slot[19] = (BfmeDispatchFn)&Rva009BD470Vp6FilterSse;
-		g_bfmeCodecDispatch.slot[0] = (BfmeDispatchFn)&d_009c0a30;
+		g_bfmeCodecDispatch.slot[0] = (BfmeDispatchFn)&Rva009C0A30Vp6AddNoise;
 		return;
 	}
 	if (tierA)
@@ -215,9 +216,9 @@ void __cdecl bfmeInstallCpuDispatchTable(void)
 		g_bfmeCodecDispatch.slot[16] = (BfmeDispatchFn)&Rva009BE180Vp6FilterWideV2;
 		g_bfmeCodecDispatch.slot[24] = (BfmeDispatchFn)&Rva009BD750Vp6FilterWide;
 		g_bfmeCodecDispatch.slot[10] = (BfmeDispatchFn)&Rva009B6D80;
-		g_bfmeCodecDispatch.slot[13] = (BfmeDispatchFn)&d_009b8130;
-		g_bfmeCodecDispatch.slot[21] = (BfmeDispatchFn)&d_009b9700;
-		g_bfmeCodecDispatch.slot[9] = (BfmeDispatchFn)&d_009c1ed0;
+		g_bfmeCodecDispatch.slot[13] = (BfmeDispatchFn)&Rva009B8130Vp6Reconstruct;
+		g_bfmeCodecDispatch.slot[21] = (BfmeDispatchFn)&Rva009B9700Vp6Reconstruct;
+		g_bfmeCodecDispatch.slot[9] = (BfmeDispatchFn)&bfmeDeblockEdgeVerticalByIndexMmx;
 		g_bfmeCodecDispatch.slot[25] = (BfmeDispatchFn)&bfmeDeblockEdgeByIndexMmx;
 		g_bfmeCodecDispatch.slot[8] = (BfmeDispatchFn)&bfmeExpandMmx;
 		g_bfmeCodecDispatch.slot[20] = (BfmeDispatchFn)&bfmeExpand3to5Mmx;
