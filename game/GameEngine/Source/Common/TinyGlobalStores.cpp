@@ -164,3 +164,20 @@ unsigned char Rva00882F70::get( void )
 {
 	return g_rva0130E9F9;
 }
+
+// 0x00892350: `mov byte ptr [0x0133780C],1 / ret`, between the Rva00892340 and
+// Rva00892360 setters: raises the Apt flag AptTick00894660.cpp tests and
+// clears. Unreferenced in retail.
+extern unsigned char g_rva0133780C;
+
+class Rva00892350
+{
+public:
+	static void raise( void );
+};
+
+void Rva00892350::raise( void )
+{
+	g_rva0133780C = 1;
+}
+
