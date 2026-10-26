@@ -1790,43 +1790,52 @@ extern const char g_01113A7C[] = "IsHollow";
 // ?g_01113A70@FXParticleSystem@@3QBDB: twelve retail bytes including the NUL.
 extern const char g_01113A70[] = "HalfSize";
 // Former ?g_0108EE10@FXParticleSystem@@3QBDB: retail 0x0108EE10 is "Radius".
-extern const char g_01113C94[];
+// ?g_01113C94@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
+extern const char g_01113C94[] = "Length";
 // Former ?g_0109F2A4@FXParticleSystem@@3QBDB: retail 0x0109F2A4 is "Offset".
 extern const char g_010FA90C[];
-// Former ?g_0109C33C@FXParticleSystem@@3QBDB: retail 0x0109C33C is "Normal".
-extern const char g_01114440[];
+// ?g_01114440@FXParticleSystem@@3QBDB: 10 retail bytes including the NUL.
+extern const char g_01114440[] = "EventTime";
 // ?g_01114434@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
 extern const char g_01114434[] = "EventFX";
 // Former ?g_01114424@FXParticleSystem@@3QBDB: retail 0x01114424 is "PerParticle".
 // Former ?g_01114410@FXParticleSystem@@3QBDB: retail 0x01114410 is "KillAfterEvent".
-extern const char g_011136D8[];
-extern const char g_011136CC[];
+// ?g_011136D8@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
+extern const char g_011136D8[] = "OffsetX";
+// ?g_011136CC@FXParticleSystem@@3QBDB: 8 retail bytes including the NUL.
+extern const char g_011136CC[] = "OffsetY";
 // ?g_011136C0@FXParticleSystem@@3QBDB: eight retail bytes including the NUL.
 extern const char g_011136C0[] = "OffsetZ";
 // ?g_011136B0@FXParticleSystem@@3QBDB: twelve retail bytes including the NUL.
 extern const char g_011136B0[] = "MultiChance";
-extern const char g_011136A0[];
+// ?g_011136A0@FXParticleSystem@@3QBDB: 12 retail bytes including the NUL.
+extern const char g_011136A0[] = "TileTexture";
 // ?g_01113E20@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_01113E20[] = "StartPoint";
-extern const char g_01113E14[];
+// ?g_01113E14@FXParticleSystem@@3QBDB: 9 retail bytes including the NUL.
+extern const char g_01113E14[] = "EndPoint";
 extern const char g_010F1A0C[];
-extern const char g_011142EC[];
+// ?g_011142EC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
+extern const char g_011142EC[] = "Frequency1";
 // ?g_011142E4@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
 extern const char g_011142E4[] = "Phase1";
 // ?g_010F19FC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_010F19FC[] = "Amplitude2";
-extern const char g_011142D4[];
+// ?g_011142D4@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
+extern const char g_011142D4[] = "Frequency2";
 // Former ?g_011142CC@FXParticleSystem@@3QBDB: retail 0x011142CC is "Phase2".
 // ?g_011142BC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
 extern const char g_011142BC[] = "Amplitude3";
-extern const char g_011142AC[];
+// ?g_011142AC@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
+extern const char g_011142AC[] = "Frequency3";
 // ?g_011142A4@FXParticleSystem@@3QBDB: 7 retail bytes including the NUL.
 extern const char g_011142A4[] = "Phase3";
 extern const char g_010A141C[];
 extern const char g_010AF400[];
 // ?g_0109D84C@FXParticleSystem@@3QBDB: 6 retail bytes including the NUL.
 extern const char g_0109D84C[] = "Speed";
-extern const char g_01113FD4[];
+// ?g_01113FD4@FXParticleSystem@@3QBDB: 11 retail bytes including the NUL.
+extern const char g_01113FD4[] = "OtherSpeed";
 extern const char g_01113894[] = "MultiRenderObjects";
 extern const char g_01113884[] = "RenderGroup1";
 extern const char g_01113874[] = "NumObjects1";
