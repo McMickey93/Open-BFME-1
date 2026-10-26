@@ -57,8 +57,9 @@ extern void j_0003d1b3();
 
 // The state-condition callbacks are stored as function pointers whose retail
 // addresses are the ILT thunks 0x0000A27C (recorded as
-// WorkerStateMachine::supplyTruckSubMachineWantsToEnter) and j_0002d998.
-extern void j_0002d998();
+// WorkerStateMachine::supplyTruckSubMachineWantsToEnter) and
+// 0x0042D998 (?supplyTruckSubMachineReadyToLeave@WorkerStateMachine@@SA_NPAVState@@PAX@Z).
+// retired debt: ?j_0002d998@@YAXXZ replaced with ?supplyTruckSubMachineReadyToLeave@WorkerStateMachine@@SA_NPAVState@@PAX@Z
 
 class ActAsDozerState : public Rva000A19E0StateBase
 {
@@ -84,6 +85,7 @@ public:
 	WorkerStateMachine(Object *owner);
 
 	static bool supplyTruckSubMachineWantsToEnter(State *thisState, void *userData);
+	static bool supplyTruckSubMachineReadyToLeave(State *thisState, void *userData);
 };
 
 WorkerStateMachine::WorkerStateMachine(Object *owner)
@@ -101,7 +103,7 @@ WorkerStateMachine::WorkerStateMachine(Object *owner)
 
 	static const StateConditionInfo asTruckConditions[] =
 	{
-		StateConditionInfo((StateTransFuncPtr)(void *)j_0002d998, 0, 0),
+		StateConditionInfo(&WorkerStateMachine::supplyTruckSubMachineReadyToLeave, 0, 0),
 		StateConditionInfo(0, 0, 0)
 	};
 

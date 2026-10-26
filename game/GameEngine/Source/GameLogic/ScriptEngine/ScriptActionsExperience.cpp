@@ -41,10 +41,12 @@ class BfmeAgentBS;
 class BfmeInfoBS;
 struct BfmeObjectD120;
 struct BfmeObjectD150;
-extern int __cdecl bfmeApplyBS(BfmeAgentBS *, BfmeInfoBS *);
+// ?bfmeApplyBS@@YAHPAVBfmeAgentBS@@PAVBfmeInfoBS@@@Z: retail 0x00425301 is ?bfmeTeamGiveExperienceLevelVisitor@@YAXPAVObject@@PAX@Z
+extern void __cdecl bfmeTeamGiveExperienceLevelVisitor(Object *, void *);
 // ?bfmeRva0037D120AddExperience@@YAHPAUBfmeObjectD120@@H@Z: retail 0x0041ACB7 is ?bfmeTeamGiveExperiencePointsVisitor@@YAXPAVObject@@PAX@Z
 extern void __cdecl bfmeTeamGiveExperiencePointsVisitor(Object *, void *);
-extern int __cdecl bfmeRva0037D150Apply(BfmeObjectD150 *, int);
+// ?bfmeRva0037D150Apply@@YAHPAUBfmeObjectD150@@H@Z: retail 0x0040A95C is ?bfmeTeamSetExperiencePointsVisitor@@YAXPAVObject@@PAX@Z
+extern void __cdecl bfmeTeamSetExperiencePointsVisitor(Object *, void *);
 extern void __cdecl bfmeTeamRefreshExperienceVisitor(Object *, void *);
 
 class ExperienceLevelSystem
@@ -126,7 +128,7 @@ void ScriptActions::doTeamGiveExperienceLevel(
 	}
 
 	BfmeInnerIterable *members = (BfmeInnerIterable *)team;
-	members->bfmeVisit(reinterpret_cast<BfmeObjectVisitor>(bfmeApplyBS), level);
+	members->bfmeVisit(bfmeTeamGiveExperienceLevelVisitor, (void *)level);
 	members->bfmeVisit(bfmeTeamRefreshExperienceVisitor, 0);
 }
 
@@ -153,6 +155,6 @@ void ScriptActions::doTeamSetExperiencePoints(
 	}
 
 	BfmeInnerIterable *members = (BfmeInnerIterable *)team;
-	members->bfmeVisit(reinterpret_cast<BfmeObjectVisitor>(bfmeRva0037D150Apply), (void *)points);
+	members->bfmeVisit(bfmeTeamSetExperiencePointsVisitor, (void *)points);
 	members->bfmeVisit(bfmeTeamRefreshExperienceVisitor, 0);
 }

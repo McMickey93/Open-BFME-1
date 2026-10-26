@@ -68,11 +68,8 @@
 
 // ------------------------------------------------------------ zeroing ctor
 
-// Retail VA 0x0110FE78 is ParticleInfo's vftable, defined once by
-// game/GameEngine/Source/GameClient/System/ParticleInfoDeletingDestructor.cpp.
-// __identifier spells the defining symbol, so the store references the name
-// that exists instead of one invented for this TU's placeholder class.
-extern "C" int __identifier("??_7ParticleInfo@@6B@")[];
+// retired debt: ??_7ParticleInfo@@6B@ replaced with ??_7Rva005CE890Object@@6B@
+extern "C" int __identifier("??_7Rva005CE890Object@@6B@")[];
 
 class U1Triple
 {
@@ -149,7 +146,7 @@ U1Zero_005CEFC0::U1Zero_005CEFC0()
 	// novtable removed the vptr store; this writes it back at the only place it
 	// can go -- between the inlined non-polymorphic base and this class's own
 	// body -- which is where retail puts it.
-	*(volatile unsigned int *)this = (unsigned int)__identifier("??_7ParticleInfo@@6B@");
+	*(volatile unsigned int *)this = (unsigned int)__identifier("??_7Rva005CE890Object@@6B@");
 	m_g0 = 0;
 	m_g1 = 0;
 	m_g2 = 0;
