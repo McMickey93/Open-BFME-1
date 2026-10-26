@@ -895,4 +895,63 @@ void Rva00AFE6D0::decrement()
 	--m_14;
 }
 
+// 0x00844D50 (8 bytes): cdecl, returns the 16-bit value its argument points at
+unsigned short Rva00844D50WordLoad( const unsigned short *value )
+{
+	return *value;
+}
+
+// 0x00844EC0 (7 bytes): returns an all-ones 64-bit value
+unsigned __int64 Rva00844EC0AllOnes()
+{
+	return ~(unsigned __int64)0;
+}
+
+// 0x00849960 (15 bytes): moves the start of the span at +4 forward by n
+// and shrinks its length to match; pops 1 dword
+struct Rva00849960Span
+{
+	int m_0;
+	int m_4;
+};
+
+class Rva00849960
+{
+public:
+	void advance( int n );
+
+	char m_lead[ 0x4 ];
+	Rva00849960Span *m_4;
+};
+
+void Rva00849960::advance( int n )
+{
+	Rva00849960Span *span = m_4;
+	span->m_0 += n;
+	span->m_4 -= n;
+}
+
+// 0x0084E000 (4 bytes): returns -1
+int Rva0084E000MinusOne()
+{
+	return -1;
+}
+
+// 0x0084E010 (1 byte): returns
+void Rva0084E010Noop()
+{
+}
+
+// 0x0084E020 (5 bytes): cdecl, returns its fifth argument
+int Rva0084E020Fifth( int, int, int, int, int value )
+{
+	return value;
+}
+
+// 0x008915B0 (7 bytes): returns 2.0f
+float Rva008915B0Two()
+{
+	return 2.0f;
+}
+
 #pragma pack( pop )

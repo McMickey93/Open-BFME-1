@@ -87,3 +87,11 @@ void parseSubtitle( INI *ini, void *, void *, const void * )
 			ini->getFilename(), ini->getLineNum() );
 	}
 }
+
+// 0x0081D400: `mov eax,0x0112CDA0 / ret` after int3 padding, returning the
+// subtitle field-parse table parseSubtitle hands to initFromINI. Unreferenced
+// in retail; address-derived name.
+const FieldParse *Rva0081D400GetFieldParse()
+{
+	return Rva0081D7C0FieldParseTable;
+}
