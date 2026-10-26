@@ -18,7 +18,7 @@ public:
 	AptValue **m_bfmeArr;					// +0x08
 };
 
-void __cdecl d_008996b0(void);			// retail 0x008996B0
+class AptBoolean { public: static AptBoolean *Create(bool); };	// retail 0x008996B0, matched as ?Create@AptBoolean@@SAPAV1@_N@Z
 
 // ?bfmeSwapTop@@YAXPAVBfmeStack7490@@@Z
 void __cdecl bfmeSwapTop(BfmeStack7490 *stack)
@@ -35,7 +35,7 @@ void __cdecl bfmeSwapTop(BfmeStack7490 *stack)
 
 	stack->m_bfmeCount = stack->m_bfmeCount - 1;
 
-	AptValue *fresh = ((AptValue *(__cdecl *)(unsigned char))d_008996b0)(
+	AptValue *fresh = ((AptValue *(__cdecl *)(unsigned char))&AptBoolean::Create)(
 		!top->rva00898480Check());
 
 	stack->m_bfmeArr[stack->m_bfmeCount] = fresh;

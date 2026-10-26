@@ -42,7 +42,7 @@ public:
 
 extern AptValue *g_bfmeFallbackDB;
 unsigned int AptGetSwfVersion();
-void __cdecl d_008996b0(void);
+class AptBoolean { public: static AptBoolean *Create(bool); };	// retail 0x008996B0, matched as ?Create@AptBoolean@@SAPAV1@_N@Z
 
 void AptActionInterpreter::_FunctionAptActionEquals(
 	AptActionInterpreter *interpreter, LocalContextT *)
@@ -64,7 +64,7 @@ void AptActionInterpreter::_FunctionAptActionEquals(
 
 		difference = (float)fabs(difference);
 
-		result = ((AptValue *(__cdecl *)(unsigned char))d_008996b0)(
+		result = ((AptValue *(__cdecl *)(unsigned char))&AptBoolean::Create)(
 			difference < 0.001);	// __real@3f50624dd2f1a9fc, retail 0x01075D80
 	}
 
