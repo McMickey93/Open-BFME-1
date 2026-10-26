@@ -1,50 +1,28 @@
 // ?consume@Glo012F1028Sub@@QAEXPAVAsciiString@@@Z
-// partial score=0.75 date=2026-09-10
-// cl: /O2 /DNDEBUG /MD /EHsc
-//
-// Glo012F1028Sub::consume, retail 0x003C88E0, 283 bytes.  setCampaign at
-// 0x003B41A0 calls the 5-byte ILT 0x00045B88, whose retail jump target is this
-// body.  The sub-object owns the currently selected record at +4, the
-// ref-counted resource at +0x24, and a pointer vector at +0x28/+0x2c.
+// partial score=0.788 date=2026-10-26
+// cl: /O2 /DNDEBUG /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
+// ?consume@Glo012F1028Sub@@QAEXPAVAsciiString@@@Z 0x003C88E0 283 B
+// 283/283 B, shape 0.963, 60 non-reloc diffs (was 280 B / 191). Left: retail
+// keeps m_begin in ESI across the size guard (push esi before the guard,
+// key pointer in ECX); ours keeps it in ECX and pushes ebp/esi/edi later.
+// Gains: compare via getLength()/str() (TheNullChr fallback); explicit size
+// guard before the for (owner EBX); release helper taking Resource *& with
+// its own null test and store (keeps both +0x24 stores, the duplicate null
+// test and the EDI zero register). Inert: owner local, size() accessor,
+// != 0 guard, while loop, query ref, member/view compare, param order,
+// iterator pointer, /Ox /Ob1 /Ob2, shape_family_levers.
 
-extern const char g_bfmeEmptyAscii[];
-extern "C" int __cdecl memcmp(const void *left, const void *right,
-	unsigned int count);
-#pragma intrinsic(memcmp)
+#include "ascii_string.h"
 
-struct Glo012F1028AsciiData
+static inline int CompareAscii003C88E0(const AsciiString &self, const AsciiString &other)
 {
-	char m_pad00[4];
-	unsigned short m_length;
-	unsigned short m_pad06;
-	char m_text[1];
-};
-
-class AsciiString
-{
-public:
-	Glo012F1028AsciiData *m_data;
-};
-
-class Glo012F1028AsciiView
-{
-public:
-	int compare(const AsciiString &that) const
-	{
-		int thatLength = that.m_data ? that.m_data->m_length : 0;
-		const char *thatText = that.m_data ? that.m_data->m_text :
-			g_bfmeEmptyAscii;
-		int thisLength = m_data ? m_data->m_length : 0;
-		const char *thisText = m_data ? m_data->m_text : g_bfmeEmptyAscii;
-		int length = thisLength < thatLength ? thisLength : thatLength;
-		int difference = memcmp(thisText, thatText, length);
-		if (difference != 0)
-			return difference;
-		return thisLength - thatLength;
-	}
-
-	Glo012F1028AsciiData *m_data;
-};
+	int thatLen = other.getLength();
+	const char *thatData = other.str();
+	int thisLen = self.getLength();
+	const char *thisData = self.str();
+	int c = memcmp(thisData, thatData, thisLen < thatLen ? thisLen : thatLen);
+	return c ? c : thisLen - thatLen;
+}
 
 class Glo012F1028Record
 {
@@ -52,7 +30,6 @@ public:
 	char m_pad00[4];
 	AsciiString m_name;
 };
-
 class Glo012F1028Resource
 {
 public:
@@ -78,13 +55,15 @@ public:
 };
 
 static __forceinline void releaseGlo012F1028Resource(
-	Glo012F1028Resource *resource)
+	Glo012F1028Resource *&ref)
 {
+	Glo012F1028Resource *resource = ref;
 	if (resource != 0)
 	{
 		resource->slot16();
 		if (--resource->m_refCount == 0)
 			resource->slot00();
+		ref = 0;
 	}
 }
 
@@ -102,35 +81,24 @@ private:
 	Glo012F1028Record **m_end;
 };
 
-// ?consume@Glo012F1028Sub@@QAEXPAVAsciiString@@@Z
 void Glo012F1028Sub::consume(AsciiString *key)
 {
-	register Glo012F1028Sub *owner = this;
 	unsigned int index = 0;
-
-	if ((unsigned int)(owner->m_end - owner->m_begin) > 0)
+	if ((unsigned int)(m_end - m_begin) > 0)
+	for (; index < (unsigned int)(m_end - m_begin); ++index)
 	{
-		Glo012F1028AsciiView query = { key->m_data };
-		Glo012F1028Record **it = owner->m_begin;
-		for (; index < (unsigned int)(owner->m_end - owner->m_begin);
-			++index, ++it)
+		if (CompareAscii003C88E0(*key, m_begin[index]->m_name) == 0)
 		{
-			Glo012F1028Record *candidate = *it;
-			if (query.compare(candidate->m_name) == 0)
+			if (m_selected != 0 && m_selected != m_begin[index])
 			{
-				if (owner->m_selected != 0 &&
-					owner->m_selected != owner->m_begin[index])
-				{
-					Glo012F1028Resource *resource = owner->m_resource;
-					if (resource != 0)
-						releaseGlo012F1028Resource(resource);
-					owner->m_resource = 0;
-					owner->m_resource = 0;
-					owner->m_selected = 0;
-				}
-				owner->m_selected = owner->m_begin[index];
-				return;
+				if (m_resource != 0)
+					releaseGlo012F1028Resource(m_resource);
+				m_resource = 0;
+				m_resource = 0;
+				m_selected = 0;
 			}
+			m_selected = m_begin[index];
+			return;
 		}
 	}
 }
