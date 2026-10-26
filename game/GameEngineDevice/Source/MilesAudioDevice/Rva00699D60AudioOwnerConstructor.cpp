@@ -6,11 +6,14 @@
 // tears down: the holder at +0x08 and the handles at +0x1C/+0x20/+0x24 are the
 // unwind states 0, 1 and 2. Field names keep their offsets.
 
-class Rva00699D60Holder
+// Unwind state 0 destroys this holder through ILT 0x00008A99, which jumps to
+// the matched ??1Rva00691200Holder@@QAE@XZ (0x00691200): the same one-pointer
+// holder PlayingAudioConstructor.cpp declares.
+class Rva00691200Holder
 {
 public:
-	Rva00699D60Holder() : m_pointer(0) {}
-	~Rva00699D60Holder();
+	Rva00691200Holder() : m_pointer(0) {}
+	~Rva00691200Holder();
 
 	void *m_pointer;
 };
@@ -41,7 +44,7 @@ public:
 	unsigned char m_byte00;
 	unsigned char m_byte01;
 	void *m_sample;
-	Rva00699D60Holder m_child;
+	Rva00691200Holder m_child;
 	unsigned char m_byte0C;
 	int m_field10;
 	unsigned char *m_array;
