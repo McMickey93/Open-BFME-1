@@ -109,7 +109,6 @@ dir32,0x01081238,?g_rva01081238@@3QBDB,"retail 0x01081238 is already recorded as
 dir32,0x01083CFC,??_7Rva000CBA50@@6B@,"retail 0x01083CFC is already recorded as ?R2Data01083CFC@@3HA; reference that name, not a new one"
 dir32,0x01083D34,??_7Rva000CBAF0@@6B@,"retail 0x01083D34 is already recorded as ?Gen01083D34@@3HA; reference that name, not a new one"
 dir32,0x01083E50,??_7Gen_000D1730@?A0x832bc2b1@@6B@,"retail 0x01083E50 is already recorded as ??_7DisplayString@@6B@ (+1 more); reference that name, not a new one"
-dir32,0x01084168,_bfmeVftPlayerListSnapshot,"retail 0x01084168 is already recorded as ??_7PlayerList@@6BSnapshot@@@; reference that name, not a new one"
 dir32,0x010860B0,??_7Rva000FBDC0Filter@@6B@,"retail 0x010860B0 is already recorded as ?g_target_000FBDC0@@3HA; reference that name, not a new one"
 dir32,0x010860C4,??_7Rva000FC2E0Filter@@6B@,"retail 0x010860C4 is already recorded as ??_7DecalMeshClass@@6B@; reference that name, not a new one"
 dir32,0x01089644,??_7Rva001129B0@@6BSubsystemInterface@@@,"retail 0x01089644 is already recorded as ??_7BfmeOwnCE@@6BSubsystemInterface@@@ (+1 more); reference that name, not a new one"
