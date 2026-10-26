@@ -218,10 +218,11 @@ extern char Rva00D13EF8;
 // 0x00C6C130: independent INT3-bounded initializer (?Rva00EF6D30@@3PAXA).
 void Rva00C6C130() { FXParticleSystem::orthoEmissionVelocitySourceAt4 = (void **)&Rva00D13EF8; }
 
-extern void *Rva00EF6D34;
+// Retire ?Rva00EF6D34@@3PAXA: retail VA 0x012F6D34 records the FX pointer.
+namespace FXParticleSystem { extern void **orthoEmissionVelocitySourceAt8; }
 extern char Rva00D13EFC;
 // 0x00C6C140: independent INT3-bounded initializer.
-void Rva00C6C140() { Rva00EF6D34 = (void *)&Rva00D13EFC; }
+void Rva00C6C140() { FXParticleSystem::orthoEmissionVelocitySourceAt8 = (void **)&Rva00D13EFC; }
 
 extern char Rva00D14088;
 // 0x00C6C150: independent INT3-bounded initializer (?Rva00EF6D38@@3PAXA).
@@ -259,10 +260,11 @@ extern char Rva00D13F8C;
 // 0x00C6C1B0: independent INT3-bounded initializer.
 void Rva00C6C1B0() { FXParticleSystem::outwardEmissionVelocitySourceAt8 = (void **)&Rva00D13F8C; }
 
-extern void *Rva00EF6D54;
+// Retire ?Rva00EF6D54@@3PAXA: retail VA 0x012F6D54 records the FX pointer.
+namespace FXParticleSystem { extern void **outwardEmissionVelocitySourceAt4; }
 extern char Rva00D13F90;
 // 0x00C6C1C0: independent INT3-bounded initializer.
-void Rva00C6C1C0() { Rva00EF6D54 = (void *)&Rva00D13F90; }
+void Rva00C6C1C0() { FXParticleSystem::outwardEmissionVelocitySourceAt4 = (void **)&Rva00D13F90; }
 
 extern char Rva00D14020;
 // 0x00C6C1D0: independent INT3-bounded initializer (?Rva00EF6D58@@3PAXA).

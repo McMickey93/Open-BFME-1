@@ -1,11 +1,8 @@
 extern "C" int g_bfmeNameAZC;
 extern "C" int g_bfmeNameBZC;
 class BfmeThingVJL;
-class Rva007F4770
-{
-public:
-	static void __cdecl bfmeCbAZC(int unused, BfmeThingVJL *receiver);
-};
+// Gate debt ?bfmeCbAZC@Rva007F4770@@SAXHPAVBfmeThingVJL@@@Z: reference _bfmeCbAZC
+extern "C" void __cdecl bfmeCbAZC(int unused, BfmeThingVJL *receiver);
 class Rva007F4740Context;
 // Gate debt ?bfmeCbBZC@Rva007F4740@@SAXPAXPAVRva007F4740Context@@@Z: reference _bfmeCbBZC
 extern "C" void __cdecl bfmeCbBZC(void *, Rva007F4740Context *);
@@ -50,6 +47,6 @@ void BfmeOwnerZC::bfmeRegisterZC()
 
 	host->m_bfmeThingZC->bfmeSetZC(m_bfmeSubZC, 0);
 
-	host->bfmeAddZC(&g_bfmeNameAZC, (void *)Rva007F4770::bfmeCbAZC, this);
+	host->bfmeAddZC(&g_bfmeNameAZC, (void *)bfmeCbAZC, this);
 	host->bfmeAddZC(&g_bfmeNameBZC, (void *)bfmeCbBZC, this);
 }

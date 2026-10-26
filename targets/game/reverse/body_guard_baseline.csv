@@ -76,7 +76,6 @@ dir32,0x00948D90,?bfmeEnumThreadWndProc@@YGHPAXJ@Z,"retail 0x00948D90 is already
 dir32,0x00951DB0,?d_00551db0@@YAXXZ,"nothing in the ledger owns 0x00951DB0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BEFFE0,?g_00BEFFE0@@YAXXZ,"nothing in the ledger owns 0x00BEFFE0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x00BEFFF0,?g_00BEFFF0@@YAXXZ,"nothing in the ledger owns 0x00BEFFF0. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
-dir32,0x00BF4770,?bfmeCbAZC@Rva007F4770@@SAXHPAVBfmeThingVJL@@@Z,"retail 0x00BF4770 is already recorded as _bfmeCbAZC; reference that name, not a new one"
 dir32,0x00BF5A70,?Rva007F5A70Callback@@YAXPAVRva007E8810Message@@PAVRva007F5920Owner@@@Z,"retail 0x00BF5A70 is already recorded as ?BfmeGameBrowserVJPCallback@@YGXXZ; reference that name, not a new one"
 dir32,0x00BF5DF0,?Rva007F5DF0Callback@@YAXPAVRva007E8810Message@@PAVRva007F5D10GameBrowser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF5DF0
 dir32,0x00BF6FB0,?Rva007F6FB0BrowserLobbyReply@@YAXPAVRva007E8810Message@@PAVRva007F7980Browser@@@Z,the name encodes 0x007E8810 but retail reads 0x00BF6FB0
@@ -103,7 +102,6 @@ dir32,0x01070EC0,?obj@?1??getRva008877A0Singleton@@YAPAXXZ@$AVRva008877A0Type@@A
 dir32,0x01070EE0,?obj@?1??getRva008876E0Singleton@@YAPAXXZ@$AVRva008876E0Type@@A,the name encodes 0x008876E0 but retail reads 0x01070EE0
 dir32,0x01073744,?g_vtbl_01073744@@3PAPAXA,"retail 0x01073744 is already recorded as ??_7?$BasicTimerClass@VSystemTimerClass@@@@6B@ (+112 more); reference that name, not a new one"
 dir32,0x01073758,?g_vtbl_01073758@@3PAPAXA,"retail 0x01073758 is already recorded as ??_7?$DLListClass@VSortingNodeStruct@@@@6B@ (+4 more); reference that name, not a new one"
-dir32,0x01073760,?g_vtbl_01073760@@3PAPAXA,"retail 0x01073760 is already recorded as ??_7?$CategoryModuleInfo@$0A@@FXParticleSystem@@6B@ (+14 more); reference that name, not a new one"
 dir32,0x0107388B,?TheNullChr@?1??str@?$StringBase@D@@QBEPBDXZ@4DB,"retail 0x0107388B is already recorded as ?Rva006A16B0Empty@@3PADA (+28 more); reference that name, not a new one"
 dir32,0x0107388B,?TheNullChr@?1??str@Rva0025FBF0LayoutString@@QBEPBDXZ@4DB,"retail 0x0107388B is already recorded as ?Rva006A16B0Empty@@3PADA (+28 more); reference that name, not a new one"
 dir32,0x0107388C,?BFMEEmptyUnicodeString@@3QBGB,"retail 0x0107388C is already recorded as ?BFMEEmptyUnicodeString@@3GB (+7 more); reference that name, not a new one"
@@ -257,7 +255,6 @@ dir32,0x011060C0,??_7FunctorWrapper011060C0@@6B@,"retail 0x011060C0 is already r
 dir32,0x0110B5F0,?m_shellMenuSchemeFieldParseTable@ShellMenuSchemeManager@@2QBUFieldParse@@B,"retail 0x0110B5F0 is already recorded as ?m_shellMenuSchemeFieldParseTable@BfmeShellMenuSchemeManager@@2QBUFieldParse@@B; reference that name, not a new one"
 dir32,0x0110B638,?g_shellMenuSchemeImageFieldParse@@3QBUFieldParse@@B,"retail 0x0110B638 is already recorded as ?g_shellMenuSchemeImageFieldParse@@3QBEB; reference that name, not a new one"
 dir32,0x0110B6A0,?g_shellMenuSchemeLineFieldParse@@3QBUFieldParse@@B,"retail 0x0110B6A0 is already recorded as ?g_shellMenuSchemeLineFieldParse@@3QBEB; reference that name, not a new one"
-dir32,0x0110F978,?g_vtbl_0110F978@@3PAPAXA,"retail 0x0110F978 is already recorded as ??_7BaseY005E7360Secondary@@6B@ (+13 more); reference that name, not a new one"
 dir32,0x0110FE48,??_7ParticleSystem@@6B@,"nothing in the ledger owns 0x0110FE48. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x01110500,?g_01110500@FXParticleSystem@@3QBUModuleCategoryEntry@1@B,"nothing in the ledger owns 0x01110500. Give the datum a data row first (tools/add_data_match.py), or use an address name (g_Va<VA>)"
 dir32,0x011106F4,?g_011106F4@@3QBDB,"retail 0x011106F4 is already recorded as ??_7ParticleModuleSnapshotSlice@FXParticleSystem@@6B@ (+4 more); reference that name, not a new one"
@@ -522,10 +519,7 @@ dir32,0x012F4B84,?key012F4B84@@3VAsciiString@@A,"?key012F4B84@@3VAsciiString@@A 
 dir32,0x012F4B88,?key012F4B88@@3VAsciiString@@A,"?key012F4B88@@3VAsciiString@@A is a function the ledger places elsewhere, not at 0x012F4B88"
 dir32,0x012F4C5C,?Rva00EF4C5C@@3PAVRva005A49E0RangeTest@@A,"retail 0x012F4C5C is already recorded as ?Mouse0040F780@@3PAVMouse@@A (+12 more); reference that name, not a new one"
 dir32,0x012F4C84,?Rva00EF4C84@@3PAVRva005B5440@@A,"retail 0x012F4C84 is already recorded as ?g_bfmeSingletonVVD@@3PAVBfmeOwnVVD@@A (+1 more); reference that name, not a new one"
-dir32,0x012F4CB8,_g_bfmeBufferEQH,"retail 0x012F4CB8 is already recorded as ?g_bfmeBufferEQH@@3PAEA; reference that name, not a new one"
-dir32,0x012F6D34,?Rva00EF6D34@@3PAXA,"retail 0x012F6D34 is already recorded as ?orthoEmissionVelocitySourceAt8@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
 dir32,0x012F6D40,?Rva00EF6D40@@3PAXA,"retail 0x012F6D40 is already recorded as ?hemisphericalEmissionVelocitySourceAt8@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
-dir32,0x012F6D54,?Rva00EF6D54@@3PAXA,"retail 0x012F6D54 is already recorded as ?outwardEmissionVelocitySourceAt4@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
 dir32,0x012F6D60,?Rva00EF6D60@@3PAXA,"retail 0x012F6D60 is already recorded as ?lineEmissionVolumeSourceAt8@FXParticleSystem@@3PAPAXA; reference that name, not a new one"
 dir32,0x012F7014,?TheTerrainVisual@@3PAVTerrainVisual001AC3D0@@A,"retail 0x012F7014 is already recorded as ?TheTerrainVisual@@3PAVRva001A8820TerrainVisual@@A (+10 more); reference that name, not a new one"
 dir32,0x012F7014,?TheTerrainVisual@@3PAVTerrainVisual001AE610@@A,"retail 0x012F7014 is already recorded as ?TheTerrainVisual@@3PAVRva001A8820TerrainVisual@@A (+10 more); reference that name, not a new one"

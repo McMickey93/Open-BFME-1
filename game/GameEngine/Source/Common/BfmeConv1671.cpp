@@ -1,5 +1,6 @@
 extern "C" __declspec(dllimport) int __cdecl vsprintf(void *buffer, void *what, void **out);
-extern "C" unsigned char g_bfmeBufferEQH[];
+// retired debt _g_bfmeBufferEQH: reference recorded ?g_bfmeBufferEQH@@3PAEA
+extern unsigned char g_bfmeBufferEQH[];
 
 struct BfmeSinkEQH
 {

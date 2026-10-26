@@ -58484,3 +58484,6 @@ _piAuthenticateCDKeyCallback	0x00C60020	0	blocked	gate-debt: false-reject dir32:
 ??_9@$BBI@AE	0x010F0AE0	0	blocked	gate-debt: explicit declaration of ??_7BfmeA1134@@6B@ conflicts with compiler-synthesized vftable in BfmeA1134 ctor TU; non-mechanical repair. t=2 model=gemini-3.8-flash-medium
 ?g_Rva00F36E5C@@3PAXA	0x01336E5C	0	blocked	gate-debt: global referenced across dozens of files; renaming requires repo-wide coordination outside gate-debt repair scope. t=2 model=gemini-3.8-flash-medium
 ?g_rva01338478NodeHead@@3PAURva008C3B60Node@@A	0x01338478	0	blocked	gate-debt: renaming to recorded Rva008C3B60Head is refused by name_regression check (descriptive-to-placeholder). t=2 model=gemini-3.8-flash-medium
+___ImageBase	0x00400000	0	blocked	gate-debt: source not found by literal symbol and no data row for image base t=2min model=gemini-3.8-flash-medium
+?g_vtbl_0110F978@@3PAPAXA	0x0110F978	0	blocked	gate-debt: source not found by literal symbol (mangled vs unmangled) and absent in data_rows.csv t=3min model=gemini-3.8-flash-medium
+?g_vtbl_0110F978@@3PAPAXA	0x0110F978	0	void	retract premature blocked; pass-test succeeded model=gemini-3.8-flash-medium

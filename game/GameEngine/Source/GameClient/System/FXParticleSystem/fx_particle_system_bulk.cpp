@@ -113,8 +113,10 @@ extern "C" int __cdecl atexit(void (__cdecl *function)());
 
 extern void *g_vtbl_01073744[];
 extern void *g_vtbl_01073758[];
-extern void *g_vtbl_01073760[];
-extern void *g_vtbl_0110F978[];
+// retired debt ?g_vtbl_01073760@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$0A@@FXParticleSystem@@6B@
+extern "C" void *__identifier("??_7?$CategoryModuleInfo@$0A@@FXParticleSystem@@6B@")[];
+// retired debt ?g_vtbl_0110F978@@3PAPAXA: use recorded owner ??_7BaseY005E7360Secondary@@6B@
+extern "C" void *__identifier("??_7BaseY005E7360Secondary@@6B@")[];
 // ?g_vtbl_0110F97C@@3PAPAXA: use recorded owner ??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@
 extern "C" void *__identifier("??_7?$CategoryModuleInfo@$05@FXParticleSystem@@6B@")[];
 // ?g_vtbl_0110F980@@3PAPAXA: use recorded owner ??_7EmissionVolumeInfo@FXParticleSystem@@6B@
@@ -3112,7 +3114,7 @@ ConcreteModuleTemplate<DefaultModuleTag<0> >::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_01073760;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7?$CategoryModuleInfo@$0A@@FXParticleSystem@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
@@ -3157,7 +3159,7 @@ ConcreteModuleTemplate<DefaultModuleTag<1> >::~ConcreteModuleTemplate()
     *(volatile unsigned int *)info = (unsigned int)g_vtbl_01073744;
 
     unsigned char *base = this ? (unsigned char *)this + 4 : 0;
-    *(volatile unsigned int *)base = (unsigned int)g_vtbl_0110F978;
+    *(volatile unsigned int *)base = (unsigned int)__identifier("??_7BaseY005E7360Secondary@@6B@");
     *(volatile unsigned int *)this = (unsigned int)g_vtbl_01073758;
 }
 
