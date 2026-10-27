@@ -1,0 +1,41 @@
+{
+  "fork": "McMickey93/Open-BFME-1",
+  "official": "Open-BFME/Open-BFME-1",
+  "control_branch": "codex/20261027-round3-object-link-transfer",
+  "result_branch": "codex/20261027-round3-object-link-verified",
+  "checkpoint_prefix": "codex/20261027-round3-object-link-checkpoint",
+  "completion_branch": "codex/20261027-round3-object-link-proof",
+  "release_branch": "codex/20261027-round3-object-link-release",
+  "branch": "refs/heads/codex/20261027-round3-object-link-native",
+  "base": "cd722f434deae81f44ed564a9b51d3eb200f996d",
+  "source": "game/GameEngine/Source/GameLogic/Object/Object_bfmeTransferReplacementState.cpp",
+  "source_before": "20403100b4d92fe50a4afb6170ae7d9513bfbc75",
+  "source_blob": "ae39a0d29044e0adcaaf547b184365733004ff82",
+  "provider": "game/GameEngine/Source/Common/P7ByValueStringSetters.cpp",
+  "verify_sources": [
+    "game/GameEngine/Source/GameLogic/Object/Object_bfmeTransferReplacementState.cpp",
+    "game/GameEngine/Source/Common/P7ByValueStringSetters.cpp"
+  ],
+  "evidence": "targets/game/reverse/identity_evidence/20261027-object-replacement-string-setter-link.md",
+  "files": [
+    "game/GameEngine/Source/GameLogic/Object/Object_bfmeTransferReplacementState.cpp",
+    "targets/game/reverse/identity_evidence/20261027-object-replacement-string-setter-link.md",
+    "targets/game/reverse/re_attempts.log"
+  ],
+  "reviewed_blobs": {
+    "game/GameEngine/Source/Common/P7ByValueStringSetters.cpp": "b12731397ad2b8d8f5336e0896a01d2ee27901b9",
+    "game/Libraries/Source/WWVegas/WWLib/string_base.h": "2b9e7d703ce1deaf997756004ae49f59c0f5748c",
+    "inputs/reference/shims/stringbaseascii/Common/AsciiString.h": "28b432a3967b142f3f8ac5f02074be82e4d67a0e",
+    "inputs/reference/open-bfme-2": "73898a96342963eac2826836db10649a69e3dbb8"
+  },
+  "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
+  "claim_ref": "refs/heads/claims/0x001C5620",
+  "claim_owner": "github:McMickey93:bfme1:round3-20261027",
+  "claim_lease": "5bd911d6c9e1444e80b113f7cf07ba20",
+  "claim_initial_token": "e33d65b7cf04a42027c33943a4d86bf285fd9d52",
+  "transport_expected": "cd722f434deae81f44ed564a9b51d3eb200f996d",
+  "native_preparation": true,
+  "commit_message": "[BFME 2 donor] Bind replacement name transfer to the matched string setter\n\nUse the existing 78-byte Gen001C4240 by-value setter at its retail route while preserving the caller's instructions and EH data. Record the unrelated TerrainLogic DIR32 prerequisite without changing its source or weakening verification.\n\nAgent-Authored: OpenAI Codex\nClaim-Lease: 0x001C5620=5bd911d6c9e1444e80b113f7cf07ba20\n",
+  "terrain_duration_min": 15,
+  "object_started": 1793128072
+}
