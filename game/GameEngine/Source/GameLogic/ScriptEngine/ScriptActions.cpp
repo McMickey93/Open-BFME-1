@@ -1488,17 +1488,8 @@ void ScriptActions::doStopCameraFollowUnit(void)
 //-------------------------------------------------------------------------------------------------
 /** doSetTeamState */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doSetTeamState.cpp
-// ?doSetTeamState@ScriptActions@@IAEXABVAsciiString@@0@Z present-unmatched
-void ScriptActions::doSetTeamState(const AsciiString& team, const AsciiString& state)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( team );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// triggered the condition.  jba. :)
-	if (theTeam) {
-		theTeam->setState(state);
-	}
-}	
+// doSetTeamState@ScriptActions@@IAEXABVAsciiString@@0@Z
+// Body in ScriptActionsTeamState.cpp (exact 52B retail).
 
 /** doCreateReinforcements */
 //-------------------------------------------------------------------------------------------------
