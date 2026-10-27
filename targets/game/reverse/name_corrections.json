@@ -21241,5 +21241,25 @@
    "after_sha256": "78e76b24716eb8478fddeca2c9b62277a7b34c0b77e49bad7cb2fac6078e1b0b",
    "evidence": "targets/game/reverse/symbols.csv",
    "reason": "The filter privateAttackPosition builds installs vtable 0x010956C4 (recorded only as g_010956C4), while symbols.csv records ??_7PartitionFilterPossibleToAttack@@6B@ at 0x00CFD964 (VA 0x010FD964) from its exact constructor 0x004C12B0; the two tables differ, so the bank's borrowed Zero Hour name is not this class and an address-derived name replaces it."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x005c37e0.cpp",
+   "new_path": "targets/game/reverse/attempts/0x005c37e0.cpp",
+   "old_name": "GenNode_006fa270",
+   "new_name": "BfmeParticleSystemHandle",
+   "before_sha256": "56fe8d6ccdccae1b9401affb0cc6e7b6bac373d19c27ccaa5fe25adffef435c1",
+   "after_sha256": "7a4e08a64cba909dea980f6e7cb2606cfb93eede1ae32113173777bc194f1600",
+   "evidence": "targets/game/reverse/symbols.csv",
+   "reason": "The matched sibling ParticleSystemManager::reset already models this {system, previous, next} list value as BfmeParticleSystemHandle, and symbols.csv pins its destructor ??1BfmeParticleSystemHandle@@QAE@XZ at ILT 0x00013994, the call this body ends with; the bank's generated GenNode_006fa270 name is the same type."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x005c37e0.cpp",
+   "new_path": "targets/game/reverse/attempts/0x005c37e0.cpp",
+   "old_name": "m_lastUpdateSeconds",
+   "new_name": "m_lastUpdateMilliseconds",
+   "before_sha256": "56fe8d6ccdccae1b9401affb0cc6e7b6bac373d19c27ccaa5fe25adffef435c1",
+   "after_sha256": "7a4e08a64cba909dea980f6e7cb2606cfb93eede1ae32113173777bc194f1600",
+   "evidence": "targets/game/reverse/dir32_addresses.csv",
+   "reason": "The stored value is (counter difference * 1000.0f) / frequency; dir32_addresses.csv records the multiplier at 0x01075C68 as __real@447a0000 (1000.0f), so the field holds milliseconds, not seconds."
  }
 ]

@@ -1,125 +1,102 @@
 // ?update@ParticleSystemManager@@UAEXXZ
-// partial score=0.26 date=2026-09-21
+// partial score=0.9807 date=2026-10-28
 // cl: /DNDEBUG /MD /EHsc
-//
-// ParticleSystemManager::update, retail 0x005C37E0, 467 bytes. Vtable slot 5
-// of both installed ParticleSystemManager (0x0110FDCC) and
-// W3DParticleSystemManager (0x0112039C) reaches this body, and it follows
-// init (0x005BE6C0) and reset (0x005C3740, ParticleSystemManagerReset.cpp,
-// whose class layout this reuses) in slot order.
-//
-// BFME extends the ZH original (GeneralsMD/.../ParticleSys.cpp
-// ParticleSystemManager::update) with: an optional QueryPerformanceCounter
-// frame-time measurement gated by TheWritableGlobalData's flag at +0xa91,
-// stored as a float at this+0x94 (reset() zeroes the same slot as a plain
-// int -- BFME dual-purposes it); a "skip update" gate combining
-// TheGameClient+0xc4 and TheBfmeGameLogic+0x11d; and, per particle system
-// visited, a stack-resident GenNode_006fa270 guard spliced onto the visited
-// ParticleSystem's own owner list at +0x98/+0x9c (the exact class already
-// landed in Gen_006fa270.cpp) before the update()/delete dispatch, then
-// unlinked once at the very end via the same pinned ?unlink thunk. The
-// splice's purpose (guarding the *system's own* field-particle owner list
-// while update() may delete particles from it) is inferred from the shape,
-// not from a comment or symbol, so the guard's field-particle semantics
-// stay address-derived even though its class is a proven, already-landed
-// type.
+// ParticleSystemManager::update, retail 0x005C37E0, 467 B (vtable slot 5 of
+// ParticleSystemManager 0x0110FDCC and W3DParticleSystemManager 0x0112039C).
+// Zero Hour ParticleSys.cpp:2928 loop (including its `continue` without ++it)
+// over BFME's weak BfmeParticleSystemHandle list (layout from the matched
+// ParticleSystemManagerReset.cpp), plus QueryPerformanceCounter timing.
+// 467/467 B, 9 bytes off: VC7.1 puts `start` at [esp+14h] and `end` at
+// [esp+1Ch]; retail has them the other way round. See attempt_support handoff.
+typedef bool Bool;
+typedef float Real;
 
-struct GenNode_006fa270;
-
-struct GenOwner_006fa270
+union LARGE_INTEGER
 {
-	char m_pad[0x98];
-	GenNode_006fa270 *m_head; // owner + 0x98
-	GenNode_006fa270 *m_tail; // owner + 0x9C
+	struct { unsigned long LowPart; long HighPart; };
+	__int64 QuadPart;
 };
+extern "C" __declspec(dllimport) int __stdcall QueryPerformanceCounter(LARGE_INTEGER *count);
+extern "C" __declspec(dllimport) int __stdcall QueryPerformanceFrequency(LARGE_INTEGER *frequency);
 
-struct GenNode_006fa270
+class GlobalData
 {
-	GenOwner_006fa270 *m_owner; // +0
-	GenNode_006fa270 *m_prev;   // +4
-	GenNode_006fa270 *m_next;   // +8
-
-	void unlink(void)
-	{
-		if (m_owner != 0)
-		{
-			if (m_prev != 0)
-				m_prev->m_next = m_next;
-			else
-				m_owner->m_head = m_next;
-
-			if (m_next != 0)
-				m_next->m_prev = m_prev;
-			else
-				m_owner->m_tail = m_prev;
-
-			m_prev = 0;
-			m_next = 0;
-		}
-	}
-
-	void setOwner(GenOwner_006fa270 *owner)
-	{
-		m_owner = owner;
-		if (owner != 0)
-		{
-			m_prev = owner->m_tail;
-			m_next = 0;
-			owner->m_tail = this;
-			if (m_prev != 0)
-				m_prev->m_next = this;
-			else
-				m_owner->m_head = this;
-		}
-	}
-
-	~GenNode_006fa270(void) { unlink(); }
+public:
+	unsigned char m_unmodelled_000[0xA91];
+	Bool m_enableFrameTiming;			// +0xA91
 };
+extern GlobalData *TheWritableGlobalData;
 
-typedef int Bool_;
-typedef unsigned int UnsignedInt;
-
-extern "C" __declspec(dllimport) int __stdcall QueryPerformanceFrequency(UnsignedInt *freq);
-extern "C" __declspec(dllimport) int __stdcall QueryPerformanceCounter(UnsignedInt *counter);
-
-extern const float g_bfmeFrameTimeScale; // retail 0x01075C68
-
-struct Rva006C9270GlobalData
+class GameClient
 {
-	unsigned char m_unmodelled[0xa91];
-	bool m_enableFrameTiming;
+public:
+	unsigned char m_unmodelled_000[0xC4];
+	Bool m_clientFlag;						// +0xC4
 };
-extern Rva006C9270GlobalData *TheWritableGlobalData;
+extern GameClient *TheGameClient;
 
-struct ClientRoot4120
+class GameLogic
 {
-	unsigned char m_unmodelled[0xc4];
-	bool m_clientFlag;
+public:
+	unsigned char m_unmodelled_000[0x11D];
+	Bool m_gameLogicFlag;						// +0x11D
 };
-extern ClientRoot4120 *TheGameClient;
+extern GameLogic *TheGameLogic;
 
-struct Rva00367E30Logic
-{
-	unsigned char m_unmodelled[0x11d];
-	bool m_gameLogicFlag;
-};
-extern Rva00367E30Logic *TheBfmeGameLogic;
+struct BfmeParticleSystemHandle;
 
 class ParticleSystem
 {
 public:
-	virtual void deletingDtor(int flag);
-	unsigned char m_unmodelled00[0x10];
-	virtual bool update(int localPlayerIndex);
-	unsigned char m_unmodelled04[0x94 - 0x14];
-	int m_needsUpdate; // +0x94, this system's own field, unrelated to the manager's
-	unsigned char m_unmodelled98[4];
-	GenNode_006fa270 *m_fieldParticleHead; // +0x98
-	GenNode_006fa270 *m_fieldParticleTail; // +0x9c
+	virtual ~ParticleSystem();
+	virtual void slot01();
+	virtual void slot02();
+	virtual void slot03();
+	virtual Bool update(int localPlayerIndex);	// +0x10
+
+	unsigned char m_unmodelled_004[0x94 - 4];
+	int m_needsUpdate;					// +0x94
+	BfmeParticleSystemHandle *m_handleHead;	// +0x98
+	BfmeParticleSystemHandle *m_handleTail;	// +0x9C
 };
 
 struct BfmeParticleSystemHandle
 {
+	BfmeParticleSystemHandle() : m_system(0), m_previous(0), m_next(0) {}
+	~BfmeParticleSystemHandle() throw();
+	__forceinline BfmeParticleSystemHandle &operator=(const BfmeParticleSystemHandle &other)
+	{
+		if (this != &other)
+		{
+			if (m_system)
+			{
+				if (m_previous)
+					m_previous->m_next = m_next;
+				else
+					m_system->m_handleHead = m_next;
+				if (m_next)
+					m_next->m_previous = m_previous;
+				else
+					m_system->m_handleTail = m_previous;
+				m_previous = 0;
+				m_next = 0;
+			}
+			m_system = other.m_system;
+			if (m_system)
+			{
+				m_previous = m_system->m_handleTail;
+				m_next = 0;
+				m_system->m_handleTail = this;
+				if (m_previous)
+					m_previous->m_next = this;
+				else
+					m_system->m_handleHead = this;
+			}
+		}
+		return *this;
+	}
+	ParticleSystem *operator->() const { return m_system; }
+
 	ParticleSystem *m_system;
 	BfmeParticleSystemHandle *m_previous;
 	BfmeParticleSystemHandle *m_next;
@@ -147,69 +124,51 @@ private:
 	ParticleSystem *m_allParticlesHead[14];
 	ParticleSystem *m_allParticlesTail[14];
 	unsigned int m_uniqueSystemID;
-	BfmeParticleSystemList m_allParticleSystemList;
+	BfmeParticleSystemList m_allParticleSystemList;	// +0x80
 	unsigned int m_particleCount;
 	unsigned int m_fieldParticleCount;
 	unsigned int m_particleSystemCount;
 	int m_onScreenParticleCount;
-	float m_lastUpdateSeconds; // +0x94, dual-purposed vs reset()'s int zero
-	int m_localPlayerIndex;
+	Real m_lastUpdateMilliseconds;					// +0x94
+	int m_localPlayerIndex;					// +0x98
 };
 
-// ?update@ParticleSystemManager@@UAEXXZ
 void ParticleSystemManager::update()
 {
-	UnsignedInt startTime[2] = { 0, 0 };
-	UnsignedInt endTime[2] = { 0, 0 };
-	UnsignedInt freq[2] = { 0, 0 };
-
-	m_lastUpdateSeconds = 0.0f;
-
+	LARGE_INTEGER frequency, start, end;
+	m_lastUpdateMilliseconds = 0;
 	if (TheWritableGlobalData->m_enableFrameTiming)
 	{
-		QueryPerformanceFrequency(freq);
-		QueryPerformanceCounter(startTime);
+		QueryPerformanceFrequency(&frequency);
+		QueryPerformanceCounter(&start);
 	}
 
-	Bool_ skipUpdate = 0;
-	if (TheGameClient->m_clientFlag)
+	BfmeParticleSystemHandle sys;
+	Bool skipUpdate = TheGameClient->m_clientFlag && !TheGameLogic->m_gameLogicFlag;
+
+	for (BfmeParticleSystemNode *it = m_allParticleSystemList.m_node->m_next;
+		it != m_allParticleSystemList.m_node;)
 	{
-		skipUpdate = !TheBfmeGameLogic->m_gameLogicFlag;
-	}
+		sys = it->m_value;
+		if (!sys.m_system)
+			continue;
 
-	for (BfmeParticleSystemNode *node = m_allParticleSystemList.m_node->m_next;
-		node != m_allParticleSystemList.m_node; )
-	{
-		ParticleSystem *sys = node->m_value.m_system;
-
-		GenNode_006fa270 guard;
-		if (sys != 0)
-			guard.setOwner((GenOwner_006fa270 *)sys);
-
-		if (sys != 0)
+		if (sys->m_needsUpdate || skipUpdate)
 		{
-			if (sys->m_needsUpdate == 0)
+			if (sys->update(m_localPlayerIndex) == false)
 			{
-				if (!skipUpdate)
-				{
-					if (!sys->update(m_localPlayerIndex))
-					{
-						ParticleSystem *doomed = sys;
-						if (doomed != 0)
-							doomed->deletingDtor(1);
-					}
-				}
+				it = it->m_next;
+				delete sys.m_system;
+				continue;
 			}
 		}
-
-		node = node->m_next;
+		it = it->m_next;
 	}
 
 	if (TheWritableGlobalData->m_enableFrameTiming)
 	{
-		QueryPerformanceCounter(endTime);
-		__int64 delta = *(__int64 *)endTime - *(__int64 *)startTime;
-		m_lastUpdateSeconds =
-			(float)((double)delta * g_bfmeFrameTimeScale / (double)*(__int64 *)freq);
+		QueryPerformanceCounter(&end);
+		start.QuadPart = end.QuadPart - start.QuadPart;
+		m_lastUpdateMilliseconds = (Real)start.QuadPart * 1000.0f / (Real)frequency.QuadPart;
 	}
 }
