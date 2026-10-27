@@ -5943,17 +5943,8 @@ void ScriptActions::doTeamRemoveOverrideRelationToPlayer(const AsciiString& team
 //-------------------------------------------------------------------------------------------------
 /** doTeamRemoveAllOverrideRelations */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamRemoveAllOverrideRelations.cpp
-// ?doTeamRemoveAllOverrideRelations@ScriptActions@@IAEXABVAsciiString@@@Z present-unmatched
-void ScriptActions::doTeamRemoveAllOverrideRelations(const AsciiString& teamName)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( teamName );
-	if (theTeam) {
-		// invalid ID is OK -- it removes all relationships
-		theTeam->removeOverrideTeamRelationship( NULL );
-		theTeam->removeOverridePlayerRelationship( NULL );
-	}
-}
+// doTeamRemoveAllOverrideRelations@ScriptActions@@IAEXABVAsciiString@@@Z
+// Body in ScriptActionsTeamState.cpp (exact 61B retail).
 //-------------------------------------------------------------------------------------------------
 /** doUnitStartSequentialScript */
 //-------------------------------------------------------------------------------------------------
