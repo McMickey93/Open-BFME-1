@@ -13,6 +13,15 @@ const char *Rva0084DBC0GetText(const Rva0084DBText *owner)
     return text ? text : "";
 }
 
+// 0x0084DBE0, between the two text getters: returns the dword at 0x012C8390.
+// No call, jump or pointer in the image reaches it; owner and type unproven.
+extern void *g_Va012C8390;
+
+void *Rva0084DBE0()
+{
+    return g_Va012C8390;
+}
+
 const char *Rva0084DC40GetText(const Rva0084DBText *owner)
 {
     const char *text = owner->text;
