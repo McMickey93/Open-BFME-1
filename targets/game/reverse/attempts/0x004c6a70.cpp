@@ -1,25 +1,25 @@
-// ?bfmeReg1033True@@YA_NXZ
-// partial score=0.4 date=2026-09-02
+// ?rva004C6A70@@YA_NXZ
+// partial score=0.5676 date=2026-10-27
+// ?rva004C6A70@@YA_NXZ
 // cl: /DNDEBUG /MD /EHsc
-// Open-BFME5: bfmeReg1033, retail 0x004C6AA0. Matched caller
-// BfmeB1033::bfmeGo1033B jumps here through the 0x0002FCB1 thunk.
-// Body is xor-zero of two globals then call of the first function-pointer
-// argument. Retail wraps that in a 12-byte C++ EH frame with unwind state
-// stuck at -1 (no live object); empty-dtor locals, throw(), and /EHa all
-// failed to emit that frame without extra instructions.
-
-void *g_bfmeReg1033A;
-void *g_bfmeReg1033B;
-
-void bfmeReg1033(void (*a)(void), void (*b)(void))
+// Retail 0x004C6A70, 37 bytes: SEH frame, mov al,1, no state stores, no locals;
+// FuncInfo 0x00E19A68 has two nested states (1->0->-1) with NULL actions and no
+// try blocks; the function and its ILT 0x0004063D have no callers, so the ABI is
+// unproven. Two nested locals of a class whose destructor is only empty after
+// optimisation (if (0) call) keep the frame with zero state stores, but VC7.1 still
+// gives them a 4-byte slot (push ecx / mov ecx,[esp+4] / add esp,0x10): 39B vs 37B,
+// 12 non-reloc diffs. Retail's NULL actions mean the objects had no storage.
+void f004C6A70Sink();
+class Late004C6A70
 {
-	g_bfmeReg1033A = 0;
-	g_bfmeReg1033B = 0;
-	a();
-	(void)b;
-}
-
-bool bfmeReg1033True(void)
+public:
+	~Late004C6A70() { if (0) f004C6A70Sink(); }
+};
+bool rva004C6A70()
 {
+	Late004C6A70 x;
+	{
+		Late004C6A70 y;
+	}
 	return true;
 }

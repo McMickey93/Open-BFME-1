@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "sha256": "1cee3822511fb211386f9466dc138dd1cd5825563348e219e21a404471657328",
+  "symbol": "?bfmeReg1033True@@YA_NXZ",
+  "score_kind": "author-estimate",
+  "score": 0.4,
+  "source": "// ?bfmeReg1033True@@YA_NXZ\r\n// partial score=0.4 date=2026-09-02\r\n// cl: /DNDEBUG /MD /EHsc\r\n// Open-BFME5: bfmeReg1033, retail 0x004C6AA0. Matched caller\r\n// BfmeB1033::bfmeGo1033B jumps here through the 0x0002FCB1 thunk.\r\n// Body is xor-zero of two globals then call of the first function-pointer\r\n// argument. Retail wraps that in a 12-byte C++ EH frame with unwind state\r\n// stuck at -1 (no live object); empty-dtor locals, throw(), and /EHa all\r\n// failed to emit that frame without extra instructions.\r\n\r\nvoid *g_bfmeReg1033A;\r\nvoid *g_bfmeReg1033B;\r\n\r\nvoid bfmeReg1033(void (*a)(void), void (*b)(void))\r\n{\r\n\tg_bfmeReg1033A = 0;\r\n\tg_bfmeReg1033B = 0;\r\n\ta();\r\n\t(void)b;\r\n}\r\n\r\nbool bfmeReg1033True(void)\r\n{\r\n\treturn true;\r\n}\r\n"
+}
