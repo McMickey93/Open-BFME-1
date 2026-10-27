@@ -1,6 +1,13 @@
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/Compression /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngineDevice/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Main /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WW3D2 /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWMath /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWDebug /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWSaveLoad
 // stlport
 #define Matrix4x4 Matrix4  // BFME renamed it
+// Zero Hour's WorldHeightMap.h defines getDataPtr inline at its own offset (0x28);
+// declare it out of line instead, so this unit emits no COMDAT copy unlike retail's
+// 0x006C56E0 (BFME reads +0x24).
+// Only the definition spells `(void)`; the header's own calls stay calls.
+#define getDataPtr(args) getDataPtr_##args
+#define getDataPtr_void getDataPtr(void); UnsignedByte *zhInlineGetDataPtr(void)
+#define getDataPtr_ getDataPtr()
 #include "../../../../Libraries/Source/WWVegas/WW3D2/rendobj.h"  // game/ WW3D2 BFME RenderObjClass must win over the reference tree's same-directory copy
 // Retail allocates the tile index buffer through the unsigned-count ctor at
 // 0x0091D0A0 (??0DX8IndexBufferClass@@QAE@IW4UsageType@0@@Z), so take BFME's
@@ -105,6 +112,9 @@
 
 #include "Common/PerfTimer.h"
 #include "Common/UnitTimings.h" //Contains the DO_UNIT_TIMINGS define jba.		 
+#undef getDataPtr
+#undef getDataPtr_void
+#undef getDataPtr_
 
 #ifdef _INTERNAL
 // for occasional debugging...
