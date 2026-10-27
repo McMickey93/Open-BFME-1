@@ -21221,5 +21221,15 @@
    "after_sha256": "7e43ef82263cb27f187f87728095cbdc17228bdb66237b1b30574bb4376765b6",
    "evidence": "targets/game/reverse/bfme_layouts.json",
    "reason": "The bank's TU-local view borrowed the Zero Hour name SimpleObjectIterator for the 0x009F2960 result payload, whose fields (+4 end, +8 capacity, +0xC cursor) contradict the witnessed SimpleObjectIterator layout (m_firstClump/m_curClump/m_clumpCount); the view now carries an address-derived name."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x00302240.cpp",
+   "new_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamGarrisonNearestBuilding.cpp",
+   "old_name": "SimpleObjectIterator",
+   "new_name": "Rva00302240RangePayload",
+   "before_sha256": "cc7930f0573a8e8fdef7c4aaed0ea1305b5fa8313849077e2e1fdc75b1696d06",
+   "after_sha256": "7e43ef82263cb27f187f87728095cbdc17228bdb66237b1b30574bb4376765b6",
+   "evidence": "targets/game/reverse/bfme_layouts.json",
+   "reason": "The bank's TU-local view borrowed the Zero Hour name SimpleObjectIterator for the 0x009F2960 result payload, whose fields (+4 end, +8 capacity, +0xC cursor) contradict the witnessed SimpleObjectIterator layout (m_firstClump/m_curClump/m_clumpCount); the view now carries an address-derived name."
  }
 ]
