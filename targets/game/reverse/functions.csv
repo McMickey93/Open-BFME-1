@@ -30335,7 +30335,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?bfmeGo1082B@@YAXXZ,,0x008B39B0,89,game/GameEngine/Source/Common/BfmeConv1082.cpp,matched,
 ?bfmeGo1082C@@YAXXZ,,0x008B4290,89,game/GameEngine/Source/Common/BfmeConv1082.cpp,matched,
 ?bfmeGo1083A@@YAXXZ,,0x008B56D0,76,game/GameEngine/Source/Common/BfmeConv1083.cpp,matched,
-?bfmeGo1083B@@YAXXZ,,0x005A4570,59,game/GameEngine/Source/Common/BfmeConv1083.cpp,matched,
 ?bfmeGo1085A@@YAXXZ,,0x00565000,86,game/GameEngine/Source/Common/BfmeConv1085.cpp,matched,
 ?bfmeGo1085B@@YGXHHD@Z,,0x00302BF0,96,game/GameEngine/Source/Common/BfmeConv1085.cpp,matched,
 ?bfmeGo1086A@BfmeQ1086@@QAEXXZ,,0x001BF300,93,game/GameEngine/Source/Common/BfmeConv1086.cpp,matched,
@@ -38229,7 +38228,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00741360@@YAXXZ,,0x00741360,545,game/gen_asm/d_0073e050.asm,matched,gen-dump;ghidra=FUN_00b41360
 ?d_007418b0@@YAXXZ,,0x007418B0,676,game/gen_asm/d_0073e050.asm,matched,gen-dump;ghidra=FUN_00b418b0
 ?d_00742920@@YAXXZ,,0x00742920,726,game/gen_asm/d_00733000.asm,matched,gen-dump;bounds=high
-?d_00743ce0@@YAXXZ,,0x00743CE0,530,game/gen_asm/d_00733000.asm,matched,gen-dump;bounds=high
 ?d_00745370@@YAXXZ,,0x00745370,793,game/gen_asm/d_00733000.asm,matched,gen-dump;bounds=high
 ?d_00747940@@YAXXZ,,0x00747940,180,game/gen_asm/d_00745b10.asm,matched,gen-dump;ghidra=FUN_00b47940
 ?d_0074cdd0@@YAXXZ,,0x0074CDD0,271,game/gen_asm/d_00745b10.asm,matched,gen-dump;ghidra=FUN_00b4cdd0
@@ -58361,7 +58359,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?getPosition@Rva00248DB0@@QAEPAUBfmeRvaCoord3D@@XZ,,0x00248DB0,74,game/GameEngine/Source/GameLogic/AI/Rva00248DB0.cpp,matched,no commas
 ?getPosition@Rva00248E10@@QAEPAUBfmeRvaCoord3D@@XZ,,0x00248E10,74,game/GameEngine/Source/GameLogic/AI/Rva00248DB0.cpp,matched,no commas
 ?getPosition@Rva00248E70@@QAEPAUBfmeRvaCoord3D@@XZ,,0x00248E70,74,game/GameEngine/Source/GameLogic/AI/Rva00248DB0.cpp,matched,no commas
-?getPosition@Rva0073A680@@QBEXPAUVec3@@@Z,,0x0073A680,33,game/GameEngine/Source/Common/Bfme/Rva0073A680Pos.cpp,matched,three-dword field copy at +0x4B8 into out pointer
 ?getPosition@SphereEmissionVolumeModule@FXParticleSystem@@UAE?AVCoord3D@@MMMM@Z,,0x005FAA40,117,game/GameEngine/Source/GameClient/System/FXParticleSystem/SphereEmissionVolumeModuleGetPosition.cpp,matched,identity=Sphere ctor 0x005E36C0 installs primary vtable 0x0111192C slot6 via ILT 0x0002F7A7;abi=virtual thiscall hidden-sret global Coord3D plus four floats ret14h;layout=complete object hollow+20h radius+24h size28h;callee=Rva005FAD00FillUnitVector cdecl output pointer and GetGameClientRandomValueReal;source=retail string VA0x01114180 line86
 ?getPosition@View@@UAEXPAUCoord3D@@@Z,,0x0045BD40,26,game/GameEngine/Source/GameClient/View.cpp,matched,
 ?getPositionLinear@BFMERopeDrawableGetPositionShim@@QBEPBUBfmeLinearCoord3D@@XZ,,0x0041D150,164,game/GameEngine/Source/GameClient/BFMERopeDrawableLinearInterpolatedPosition.cpp,matched,BFME linear interpolation cache and x87 order
@@ -173390,3 +173387,6 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 ?rva008A30C0@Rva00899560Pool@@QAEXXZ,,0x008A30C0,62,game/Libraries/Source/Apt/AptValue/AptValueVector.cpp,matched,value-registry drain; EA path AptValueVector.cpp per brief wb1; registry ABI from AptValue.cpp release and matched callers; unrotated outer pass via inlined drainPass;model=claude-opus-5-5;host=Chartreuse
 ??0?$hash_map@HUGen_t_008535c0_p12cd@@U?$hash@H@_STL@@U?$equal_to@H@3@V?$allocator@U?$pair@$$CBHUGen_t_008535c0_p12cd@@@_STL@@@3@@_STL@@QAE@XZ,,0x00853EC0,72,game/GameEngine/Source/Common/Bfme/Rva00C6DB80StaticInit.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00853ec0.md;STLport default hash_map() over anonymous int-keyed 12B payload shared with 0x008535C0 via callee 0x00853510;sole caller dynamic initializer 0x00C6DB80 for VA 0x0130CE58;cleanup 0x00C70E60 to ~hashtable 0x00853460;ret at +0x57 then int3;model=claude-opus-5-5;host=Chartreuse
 ?notifyTeamOfObjectDeath@Team@@QAEXPAVObject@@@Z,,0x000EE7F0,279,game/GameEngine/Source/Common/RTS/Team_notifyTeamOfObjectDeath.cpp,matched,ilt_oracle CONFIRMED at ILT 0x30AA3 called from Object::onDie; ZH twin Team::notifyTeamOfObjectDeath; evidence=targets/game/reverse/identity_evidence/000ee7f0-event-lifetime.md;model=claude-opus-5-5;host=app
+?getPosition@Rva0073A680@@QBEPAUVec3@@PAU2@@Z,,0x0073A680,33,game/GameEngine/Source/Common/Bfme/Rva0073A680Pos.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00743ce0-callee-abi-corrections.md;returns the out pointer: caller W3DView 0x00743CE0 copies through EAX; opaque identity;model=claude-opus-5-5;host=app
+?rva005A4570@Mouse@@QAEXXZ,,0x005A4570,59,game/GameEngine/Source/Common/BfmeConv1083.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00743ce0-callee-abi-corrections.md;Mouse member: both W3DView 0x00743CE0 call sites load ECX from TheMouse before ILT 0x406DD; opaque name;model=claude-opus-5-5;host=app
+?rva00743CE0@W3DView@@UAEXHW4ObjectID@@_N1@Z,,0x00743CE0,530,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp,matched,W3DView vtable 0x011217A0 slot 115; evidence=targets/game/reverse/identity_evidence/00743ce0-w3dview-object-camera-mode.md;model=claude-opus-5-5;host=app

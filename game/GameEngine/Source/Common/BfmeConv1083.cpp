@@ -192,10 +192,18 @@ public:
 // Retail's singleton at 0x012F4C5C is EA's Mouse *TheMouse; (defined once in
 // GameClient/Input/Mouse.cpp).  BfmeZ1083 above is this TU's view of the
 // pointee's layout, so the calls cast and the global links under its real name.
-class Mouse;
+// Retail 0x005A4570 is a Mouse member: both callers in W3DView 0x00743CE0 load
+// ECX from TheMouse before calling ILT 0x000406DD, though the body re-reads the
+// global. The name keeps the address.
+class Mouse
+{
+public:
+	void rva005A4570(void);
+};
 extern Mouse *TheMouse;
 
-void bfmeGo1083B(void)
+// ?rva005A4570@Mouse@@QAEXXZ
+void Mouse::rva005A4570(void)
 {
 	if (g_bfmeD1083 && g_bfmeD1083->bfmeSlot1083D_114() && !bfmeB1083()->bfmeChk1083())
 		((BfmeZ1083 *)TheMouse)->bfmeSlot1083Z_17();

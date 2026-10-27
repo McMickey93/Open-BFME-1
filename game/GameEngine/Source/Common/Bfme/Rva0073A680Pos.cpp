@@ -1,4 +1,5 @@
-// 33-byte Vec3 getter with individual member assignments
+// 33-byte Vec3 getter with individual member assignments. It returns the
+// out pointer: W3DView 0x00743CE0 copies the vector through the returned EAX.
 
 struct Vec3
 {
@@ -10,7 +11,7 @@ struct Vec3
 class Rva0073A680
 {
 public:
-	void getPosition( Vec3 *out ) const;
+	Vec3 *getPosition( Vec3 *out ) const;
 
 	char m_pad00[ 0x4B8 ];
 	int  m_x;
@@ -18,9 +19,11 @@ public:
 	int  m_z;
 };
 
-void Rva0073A680::getPosition( Vec3 *out ) const
+// ?getPosition@Rva0073A680@@QBEPAUVec3@@PAU2@@Z
+Vec3 *Rva0073A680::getPosition( Vec3 *out ) const
 {
 	out->x = m_x;
 	out->y = m_y;
 	out->z = m_z;
+	return out;
 }
