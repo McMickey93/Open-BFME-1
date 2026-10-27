@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "project": 1,
+  "fork": "McMickey93/Open-BFME-1",
+  "control_branch": "codex/20261027-bfme1-controlbar-transfer",
+  "result_branch": "codex/20261027-bfme1-controlbar-verified",
+  "base": "a0940f921b5b8d9029fc922b8032abcf4e60d240",
+  "commit": "9116bca34d7112fb7f5d3eafef197a1e5f6c555b",
+  "tree": "ed9dc2e4763682d147e152b2499d249fbcee197e",
+  "branch": "refs/heads/codex/20261027-one-link-repair",
+  "sha256": "943802e785fc8c6b5d5aae7db35ced8e04bbc1562e9bd3492e7a22c051c9a5a9",
+  "files": [
+    "game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarSchemeManagerBodies.cpp",
+    "inputs/reference/open-bfme-2",
+    "targets/game/reverse/body_guard_baseline.csv",
+    "targets/game/reverse/identity_evidence/20261027-controlbar-fieldparse-ownership.md",
+    "targets/game/reverse/re_attempts.log"
+  ],
+  "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
+  "source": "game/GameEngine/Source/GameClient/GUI/ControlBar/ControlBarSchemeManagerBodies.cpp",
+  "source_blob": "a0617cef7c317850850ca83532160c98a0d33997",
+  "normal_precommit_passed": true,
+  "normal_official_prepush_passed": true,
+  "transport_expected": "a0940f921b5b8d9029fc922b8032abcf4e60d240",
+  "claims": [
+    {
+      "ref": "refs/heads/claims/0x004AE920",
+      "owner": "github:McMickey93:bfme1:one-link-20261027",
+      "lease": "6847275cf4a34259809146e1bbcecd60"
+    },
+    {
+      "ref": "refs/heads/claims/0x004AEA00",
+      "owner": "github:McMickey93:bfme1:one-link-20261027",
+      "lease": "ed5a6f75a8f6451b889a065f904b1caa"
+    }
+  ]
+}

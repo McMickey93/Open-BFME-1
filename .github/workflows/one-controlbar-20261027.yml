@@ -1,0 +1,88 @@
+name: Verify and transfer one BFME1 ControlBar repair
+
+on:
+  create:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bfme1-controlbar-one-20261027
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '3'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.longpaths
+  GIT_CONFIG_VALUE_1: 'true'
+  GIT_CONFIG_KEY_2: submodule.recurse
+  GIT_CONFIG_VALUE_2: 'false'
+  PY_PYTHON: '3.12'
+  PY_PYTHON3: '3.12'
+  PYTHONUTF8: '1'
+  PYTHONUNBUFFERED: '1'
+  BFME_CLAIM_NS: 'refs/heads/claims/'
+  BFME_CLAIM_OWNER: github:McMickey93:bfme1:one-link-20261027
+  BFME_MODEL: OpenAI-Codex
+  GIT_TERMINAL_PROMPT: '0'
+  GIT_EDITOR: 'true'
+  BUILD_POOL: '4'
+
+jobs:
+  transfer:
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/codex/20261027-bfme1-controlbar-transfer' &&
+      github.event.ref_type == 'branch'
+    permissions:
+      contents: write
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Read fixed native objects and transfer controls
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: control
+          sparse-checkout: .github/qualification/one-controlbar-20261027
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+      - name: Select native Windows Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Check out exact official base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: a0940f921b5b8d9029fc922b8032abcf4e60d240
+          path: source
+          persist-credentials: false
+          fetch-depth: 128
+          submodules: false
+      - name: Import native commit and run unmodified normal push hooks
+        shell: bash
+        working-directory: source
+        env:
+          BFME_TRANSFER_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git_bash="$BASH"
+          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
+          export BFME_QUALIFICATION_BASH="$(cygpath -aw "$git_bash")"
+          python -u ../control/.github/qualification/one-controlbar-20261027/transfer.py
+      - name: Preserve native verification evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: controlbar-one-${{ github.run_id }}-${{ github.run_attempt }}
+          path: source-transfer-evidence/
+          if-no-files-found: warn
+          retention-days: 14
