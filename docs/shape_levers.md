@@ -2264,3 +2264,20 @@ Zero Hour's inline recursive getFinalOverride with an OVERRIDE-style
 `if (!m_template) return 0;` produced the `xor ecx,ecx; jmp` null path.
 Source `game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp`
 (commit 824c56f66a).
+
+## Partition-iterate wide result: put next() on the result, compare against end
+
+`ScriptActions::doTeamGarrisonNearestBuilding` (0x00302240, 536 B) iterates the
+0x009F2960 `BfmeWideResult`. Calling `result.m_value->next()` with
+`if (m_current == m_end)` emitted `mov ecx,[eax+0xc]; cmp ecx,[eax+4]`, where
+retail loads end first: `mov ecx,[eax+4]; mov edx,[eax+0xc]; cmp edx,ecx;
+mov ecx,edx`. An inline `Object *next()` on the result struct itself that
+loads `BfmeRangeNode *end = m_value->m_end;` before comparing the cursor
+(the VeterancyCrateCollideExecute.cpp `m_items.end()` spelling has the same
+effect) reproduced retail and took the bank from 257 to 100 differing bytes.
+The rest fell to Zero Hour's own single expression
+`Int slotsAvailable = cmi->getContainMax() - cmi->getContainCount(false);`
+(MSVC 7.1 calls getContainCount first); split statements left the inner
+loop's latch inverted (jge outer + jmp top) or swapped EBX/EDI/EBP.
+VC7.1 /O2 (TU flags `/DNDEBUG /DWIN32 /MD /EHsc`, stringinline shim).
+Source `game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamGarrisonNearestBuilding.cpp`.

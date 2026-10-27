@@ -21211,5 +21211,15 @@
    "after_sha256": "303c924fbc591b93562407caf71a4a2e97bfe50ba0a72eae53a36012d5b81a09",
    "evidence": "targets/game/reverse/attempt_support/20261027-00259910-combinehorde-dospecialpower.md",
    "reason": "Bank rewrite, not a rename: the new stash still calls aiBfmeCommand45 and adds the 0x009F2960 bfmeForwardWideC iterate call; token alignment paired the two."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x00302240.cpp",
+   "new_path": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamGarrisonNearestBuilding.cpp",
+   "old_name": "SimpleObjectIterator",
+   "new_name": "Rva00302240RangePayload",
+   "before_sha256": "4ca9ad69ed4d12e5d5c87c208ff04cea27751c55e901fe64773c8f7814ad8c56",
+   "after_sha256": "7e43ef82263cb27f187f87728095cbdc17228bdb66237b1b30574bb4376765b6",
+   "evidence": "targets/game/reverse/bfme_layouts.json",
+   "reason": "The bank's TU-local view borrowed the Zero Hour name SimpleObjectIterator for the 0x009F2960 result payload, whose fields (+4 end, +8 capacity, +0xC cursor) contradict the witnessed SimpleObjectIterator layout (m_firstClump/m_curClump/m_clumpCount); the view now carries an address-derived name."
  }
 ]

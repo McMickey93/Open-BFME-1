@@ -1,10 +1,6 @@
-// ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
-// partial score=0.9813 date=2026-10-27
-// ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
-// partial score=0.52 date=2026-10-18 (532/536 B, 257 diffs, shape 0.988; was 588 B 286 diffs)
-// cl: /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/stringinline
+// cl: /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/stringinline /Igame/Libraries/Include
 //
-// ScriptActions::doTeamGarrisonNearestBuilding, retail RVA 0x00302240.
+// ScriptActions::doTeamGarrisonNearestBuilding, retail RVA 0x00302240 (536 B, ret 4).
 // The executeAction TEAM_GARRISON_NEAREST_BUILDING arm names this operation.
 // This TU keeps the BFME-only wide iterator and Object/DLINK layouts local;
 // the vendored Zero Hour declarations use a different iterator ABI here.
@@ -18,6 +14,13 @@ typedef unsigned int UnsignedInt;
 
 class Object;
 class Player;
+
+enum CommandSourceType
+{
+	CMD_FROM_PLAYER = 0,
+	CMD_FROM_SCRIPT = 1,
+	CMD_FROM_AI = 2
+};
 
 namespace _STL
 {
@@ -92,12 +95,7 @@ public:
 	T *m_overridable;
 };
 
-struct Coord3D
-{
-	Real x;
-	Real y;
-	Real z;
-};
+#include "Lib/Coord3D.h"
 
 enum KindOfType
 {
@@ -141,7 +139,7 @@ public:
 class AICommandInterface
 {
 public:
-	void aiEnter(Object *building, int source);
+	void aiEnter(Object *building, CommandSourceType source);
 };
 
 class BfmeAIUpdateView
@@ -339,7 +337,7 @@ struct BfmeRangeNode
 	UnsignedInt m_padding;
 };
 
-class SimpleObjectIterator
+class Rva00302240RangePayload
 {
 public:
 	Object *next(void)
@@ -373,7 +371,7 @@ public:
 
 struct BfmeWideResult
 {
-	SimpleObjectIterator *m_value;
+	Rva00302240RangePayload *m_value;
 
 	__forceinline ~BfmeWideResult(void)
 	{
@@ -453,9 +451,7 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 		if (!contain)
 			continue;
 
-		Int used = (Int)contain->getContainCount(false);
-		Int slotsMax = (Int)contain->getContainMax();
-		Int slotsAvailable = slotsMax - used;
+		Int slotsAvailable = contain->getContainMax() - contain->getContainCount(false);
 		for (Int i = 0; i < slotsAvailable; )
 		{
 			Object *object = diter.cur();
@@ -466,7 +462,7 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 			if (ai && object->isKindOf(KINDOF_INFANTRY) &&
 				!object->isKindOf(KINDOF_NO_GARRISON))
 			{
-				ai->m_commands.aiEnter(theBuilding, 1);
+				ai->m_commands.aiEnter(theBuilding, CMD_FROM_SCRIPT);
 				++i;
 			}
 			diter.advance();
