@@ -1,5 +1,5 @@
 // ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
-// partial score=0.5056 date=2026-10-18
+// partial score=0.7985 date=2026-10-27
 // ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
 // partial score=0.52 date=2026-10-18 (532/536 B, 257 diffs, shape 0.988; was 588 B 286 diffs)
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/stringinline
@@ -381,6 +381,13 @@ struct BfmeWideResult
 		if (m_value->m_refCount == 0)
 			m_value->deleteInstance();
 	}
+	Object *next(void)
+	{
+		BfmeRangeNode *end = m_value->m_end;
+		if (m_value->m_current == end)
+			return 0;
+		return (m_value->m_current++)->m_object;
+	}
 };
 
 class BfmeWideResultSource
@@ -440,8 +447,7 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 		(int)leader->getPosition(), 0x49742400, 3,
 		(int)PartitionFilterGarrisonableByPlayer(theTeam->getControllingPlayer(), true, 1).link(&PartitionFilterSameMapStatus(leader)), 1);
 
-	Object *theBuilding;
-	while ((theBuilding = result.m_value->next()) != 0)
+	while (Object *theBuilding = result.next())
 	{
 		ContainModuleInterface *contain = theBuilding->getContain();
 		if (!contain)
