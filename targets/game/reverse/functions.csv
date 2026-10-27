@@ -38221,7 +38221,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00734cb0@@YAXXZ,,0x00734CB0,3285,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00b34cb0
 ?d_00739d90@@YAXXZ,,0x00739D90,14,game/GameEngine/Source/Common/VirtualSlot5CallThunk.cpp,matched,object-symbol=?invokeAndSet@VirtualSlot3FlagThunk@@QAEXXZ;Open-BFME5 clean C++ virtual slot three invoke and flag
 ?d_0073cb10@@YAXXZ,,0x0073CB10,1540,game/gen_asm/d_006e2ac0.asm,matched,gen-dump;carved start=rel32-call/jmp;ghidra-start end=ret+int3 callers=1;ghidra=FUN_00b3cb10
-?d_0073d4c0@@YAXXZ,,0x0073D4C0,423,game/gen_asm/d_00734180.asm,matched,gen-dump;ghidra=FUN_00b3d4c0
 ?d_0073e050@@YAXXZ,,0x0073E050,5126,game/gen_asm/d_0073e050.asm,matched,gen-dump;ghidra=FUN_00b3e050
 ?d_00740f60@@YAXXZ,,0x00740F60,599,game/gen_asm/d_0073e050.asm,matched,gen-dump;ghidra=FUN_00b40f60
 ?d_00741360@@YAXXZ,,0x00741360,545,game/gen_asm/d_0073e050.asm,matched,gen-dump;ghidra=FUN_00b41360
@@ -173390,3 +173389,4 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 ?rva005A4570@Mouse@@QAEXXZ,,0x005A4570,59,game/GameEngine/Source/Common/BfmeConv1083.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00743ce0-callee-abi-corrections.md;Mouse member: both W3DView 0x00743CE0 call sites load ECX from TheMouse before ILT 0x406DD; opaque name;model=claude-opus-5-5;host=app
 ?rva00743CE0@W3DView@@UAEXHW4ObjectID@@_N1@Z,,0x00743CE0,530,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp,matched,W3DView vtable 0x011217A0 slot 115; evidence=targets/game/reverse/identity_evidence/00743ce0-w3dview-object-camera-mode.md;model=claude-opus-5-5;host=app
 ?privateMoveAwayFromUnit@AIUpdateInterface@@MAEXPAVObject@@W4CommandSourceType@@@Z,,0x0027D7F0,687,game/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp,matched,ilt_oracle CONFIRMED at ILT 0x2E7F3 (AIUpdate vtable 0x010BA8A8 slot 71); ZH twin privateMoveAwayFromUnit with BFME horde redirect;model=claude-opus-5-5;host=app
+?rva0073D4C0@W3DView@@UAEXXZ,,0x0073D4C0,423,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp,matched,W3DView vtable 0x011217A0 slot 118: leaves the object camera mode of slot 115 (0x00743CE0) and restores its saved globals;model=claude-opus-5-5;host=app

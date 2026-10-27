@@ -21191,5 +21191,15 @@
    "after_sha256": "442a6febbd563f4d16837c2cb0bba751389075620b0f1efca30ef33f77f43e46",
    "evidence": "targets/game/reverse/identity_evidence/0027d7f0-aiupdate-name-corrections.md",
    "reason": "Same VA 0x01075350; dir32_addresses.csv records ?BfmeBoundaryZero3D@@3MB there and the DIR32 check refuses the unrecorded spelling."
+ },
+ {
+   "old_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp",
+   "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp",
+   "old_name": "slot118",
+   "new_name": "rva0073D4C0",
+   "before_sha256": "8929e64906aba871fca3d9546ec79a3860c177a2130e03c03d4479d206520380",
+   "after_sha256": "e62da240965ca496074c7f12f45b31dbf97fc07bdb39738c7f6228c225c3ad48",
+   "evidence": "targets/game/reverse/identity_evidence/0073d4c0-w3dview-slot118.md",
+   "reason": "Vtable 0x011217A0 slot 118 resolves to 0x0073D4C0, which this TU now defines under the address-derived name; the slot-number placeholder named nothing."
  }
 ]

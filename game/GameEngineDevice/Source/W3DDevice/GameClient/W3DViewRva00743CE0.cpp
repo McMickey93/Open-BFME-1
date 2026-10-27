@@ -81,7 +81,21 @@ class Mouse
 {
 public:
 	void rva005A4570();
+	void _bfme_setEngineVisibility(Bool visible);
+
+	char m_pad0000[0x4E0D];
+	Bool m_4e0d;						// +0x4E0D
 };
+
+class Rva003FD060TerrainLogic
+{
+public:
+	virtual void slot00(); virtual void slot01(); virtual void slot02();
+	virtual void slot03(); virtual void slot04(); virtual void slot05();
+	virtual Real getGroundHeight(Real x, Real y, Coord3D *normal) const;	// +0x18
+};
+extern Rva003FD060TerrainLogic *TheTerrainLogic;
+extern const Real g_bfmeDirectionWeight1285;		// VA 0x01075C74, 10.0f
 extern Mouse *TheMouse;
 
 void __fastcall normAngle(Real &angle);
@@ -221,10 +235,10 @@ public:
     virtual void rva00743CE0(Int unused, ObjectID id, Bool enable, Bool repitch);	// slot 115, +0x1CC
     virtual ObjectID getCameraLock();				// slot 116, +0x1D0
     virtual void setCameraLock(ObjectID id);			// slot 117, +0x1D4
-    virtual void slot118();					// +0x1D8
+    virtual void rva0073D4C0();				// slot 118, +0x1D8
     virtual void slot119();
-    virtual void slot120();
-    virtual void slot121();
+    virtual void slot120();					// +0x1E0
+    virtual Bool slot121();					// +0x1E4
     virtual void slot122();
     virtual void slot123();
     virtual void slot124();
@@ -235,15 +249,43 @@ public:
     virtual void slot129();
     virtual void slot130();
     virtual void slot131(Real a, Real b);			// +0x20C
+    virtual void slot132();
+    virtual void slot133();
+    virtual void slot134();
+    virtual void slot135();
+    virtual void slot136();
+    virtual void slot137();
+    virtual void slot138();
+    virtual void slot139();
+    virtual void slot140();
+    virtual void slot141();
+    virtual void slot142();
+    virtual void slot143();
+    virtual void slot144();
+    virtual void slot145();
+    virtual void slot146();
+    virtual void slot147();
+    virtual void slot148();
+    virtual void slot149();
+    virtual void slot150();
+    virtual void slot151();
+    virtual void slot152();
+    virtual void slot153(Int a);				// +0x264
+    virtual Bool slot154();					// +0x268
+    virtual void slot155();
+    virtual void slot156(Int a);				// +0x270
 
 private:
 	char m_pad0004[0x0C - 0x04];
 	Coord3D m_pos;						// +0x0C
 	char m_pad0018[0x28 - 0x18];
 	Real m_angle;						// +0x28
-	char m_pad002c[0x3C - 0x2C];
+	Real m_2c;						// +0x2C
+	char m_pad0030[0x3C - 0x30];
 	Real m_3c;						// +0x3C
-	char m_pad0040[0x50 - 0x40];
+	Real m_40;						// +0x40
+	char m_pad0044[0x4C - 0x44];
+	Real m_4c;						// +0x4C
 	Real m_50;						// +0x50
 	char m_pad0054[0x6C - 0x54];
 	Real m_FXPitch;						// +0x6C
@@ -253,9 +295,16 @@ private:
 	Real m_b0;						// +0xB0
 	char m_pad00b4[0x23D8 - 0xB4];
 	Coord3D m_cameraOffset;					// +0x23D8
-	char m_pad23e4[0x2439 - 0x23E4];
+	char m_pad23e4[0x23F8 - 0x23E4];
+	Real m_groundLevel;						// +0x23F8
+	char m_pad23fc[0x240C - 0x23FC];
+	Bool m_cameraConstraintValid;						// +0x240C
+	char m_pad240d[0x2439 - 0x240D];
 	Bool m_objectCameraMode;				// +0x2439
-	char m_pad243a[0x2481 - 0x243A];
+	char m_pad243a[0x2474 - 0x243A];
+	Real m_2474;						// +0x2474
+	Real m_2478;						// +0x2478
+	char m_pad247c[0x2481 - 0x247C];
 	Bool m_2481;						// +0x2481
 	Bool m_2482;						// +0x2482
 	Bool m_2483;						// +0x2483
@@ -313,7 +362,7 @@ void W3DView::rva00743CE0(Int unused, ObjectID id, Bool enable, Bool repitch)
 	}
 	}
 	else
-		slot118();
+		rva0073D4C0();
 	TheMouse->rva005A4570();
 }
 
@@ -321,3 +370,58 @@ void W3DView::rva00743CE0(Int unused, ObjectID id, Bool enable, Bool repitch)
 
 // ext pos,off,ang
 
+
+// Retail 0x0073D4C0, 423 bytes: slot 118 leaves the object camera mode and
+// restores the view the call above saved.
+// ?rva0073D4C0@W3DView@@UAEXXZ
+void W3DView::rva0073D4C0()
+{
+	rva00746080Gate();
+	if (!rva00746080Gate())
+		return;
+
+	getCameraLock();
+	setCameraLock(INVALID_ID);
+	m_FXPitch = g_Va012F9DD8;
+	if (m_2483)
+	{
+		Coord3D pos;
+		pos.x = m_2474;
+		pos.y = m_2478;
+		pos.z = 0.0f;
+		m_pos = pos;
+	}
+	m_pos.z = g_Va012F9DE4.z;
+	m_3c = g_Va012F9DD4;
+	m_50 = m_40 = g_Va012F9DD0;
+	m_cameraOffset = g_Va012F9DF0;
+	m_angle = g_Va012F9DCC;
+	m_2c = m_4c;
+	m_pitch = g_Va012F9DC8;
+	m_ac = g_Va012F9DC4;
+	m_b0 = g_Va012F9DC0;
+
+	Real height;
+	if (TheTerrainLogic)
+	{
+		height = TheTerrainLogic->getGroundHeight(m_pos.x, m_pos.y, 0);
+		if (height > 700.0f)
+			height = 700.0f;
+	}
+	else
+		height = g_bfmeDirectionWeight1285;
+	if (height != m_groundLevel)
+	{
+		m_groundLevel = height;
+		m_cameraConstraintValid = false;
+	}
+	m_objectCameraMode = false;
+	TheMouse->rva005A4570();
+	if (slot121())
+		slot120();
+	slot156(0);
+	if (slot154())
+		slot153(0);
+	TheMouse->_bfme_setEngineVisibility(true);
+	TheMouse->m_4e0d = false;
+}
