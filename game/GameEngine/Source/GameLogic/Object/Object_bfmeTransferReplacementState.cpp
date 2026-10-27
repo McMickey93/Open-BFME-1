@@ -45,11 +45,18 @@ extern NameKeyGenerator *TheNameKeyGenerator;
 extern GameLogic *TheGameLogic;
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameLogic/Object.h
+// Declaration-only receiver for the existing 78-byte setter at 0x001C4240.
+// No object, member access, sizeof or layout is formed through this view.
+class Gen001C4240
+{
+public:
+	void bfmeSet(AsciiString value);
+};
+
 class Object
 {
 public:
 	void bfmeTransferReplacementState(Object *replacement);
-	void setName(AsciiString value);
 	const AsciiString &getName() const { return m_name; }
 
 protected:
@@ -64,7 +71,7 @@ void Object::bfmeTransferReplacementState(Object *replacement)
 {
 	if (replacement != 0)
 	{
-		replacement->setName(getName());
+		((Gen001C4240 *)replacement)->bfmeSet(getName());
 
 		static NameKeyType key_TemporarilyDefectUpdate =
 			TheNameKeyGenerator->nameToKey("TemporarilyDefectUpdate");
