@@ -36,6 +36,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // SYSTEM INCLUDES ////////////////////////////////////////////////////////////////////////////////
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 #include <stdlib.h>
 #include <windows.h>
 
@@ -104,6 +108,7 @@
 #include "WinMain.h"  /** @todo Remove this, it's only here because we
 													are using timeGetTime, but we can remove that
 													when we have our own timer */
+#undef isDrawableEffectivelyHidden
 // BFME adds View and Display virtuals that the shared Zero Hour headers omit;
 // these scoped views preserve the witnessed slots and +0x104 camera offset.
 class BfmeW3DViewViewportVtable

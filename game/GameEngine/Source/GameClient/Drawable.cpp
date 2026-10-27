@@ -36,6 +36,10 @@
 // class for this TU gives that call its own pinnable symbol instead of a second
 // address under a name another TU already resolves elsewhere.
 #define Snapshot BfmeDrawableSnapshot
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 #include "../../../Libraries/Source/WWVegas/WWLib/ascii_string.h"
 #define ASCIISTRING_H
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
@@ -141,6 +145,7 @@ template Int BitFlags<10>::getSingleBitFromName(const char *);
 #ifdef KRIS_BRUTAL_HACK_FOR_AIRCRAFT_CARRIER_DEBUGGING
 	#include "GameLogic/Module/ParkingPlaceBehavior.h"
 #endif
+#undef isDrawableEffectivelyHidden
 
 #ifdef _INTERNAL
 // for occasional debugging...

@@ -157086,7 +157086,7 @@ uw_00c10fe8,,0x00C10FE8,22,game/GameEngine/Source/GameLogic/Object/Update/BoneFX
 uw_00c10ffe,,0x00C10FFE,24,game/GameEngine/Source/GameLogic/Object/Update/BoneFXUpdateModuleDataDestructorThunk.cpp,matched,gen-funclet;parent=??1BoneFXUpdateModuleData@@UAE@XZ;object-symbol=$L1007;eh-state-pin $L355->$L443: retail unwind map (??1BoneFXUpdateModuleData@@UAE@XZ states [2]) binds this address to $L443;repin-model=claude-opus-5-5;eh-state-pin $L443->$L1007: retail unwind map (??1BoneFXUpdateModuleData@@UAE@XZ states [2]) binds this address to $L1007;repin-model=claude-opus-5-5
 uw_00c11030,,0x00C11030,8,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;object-symbol=$L7733
 uw_00c11038,,0x00C11038,11,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L15485
-uw_00c11090,,0x00C11090,14,game/GameEngine/Source/GameLogic/Object/Update/BoneFXUpdate.cpp,matched,gen-funclet;parent=?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ;object-symbol=$L66146;eh-state-pin $L66550->$L66590: retail unwind map (?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ states [0]) binds this address to $L66590;repin-model=claude-opus-5.5;eh-state-pin $L66590->$L66146: retail unwind map (?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ states [0]) binds this address to $L66146;repin-model=claude-sonnet
+uw_00c11090,,0x00C11090,14,game/GameEngine/Source/GameLogic/Object/Update/BoneFXUpdate.cpp,matched,gen-funclet;parent=?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ;object-symbol=$L67141;eh-state-pin $L66550->$L66590: retail unwind map (?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ states [0]) binds this address to $L66590;repin-model=claude-opus-5.5;eh-state-pin $L66590->$L66146: retail unwind map (?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ states [0]) binds this address to $L66146;repin-model=claude-sonnet;eh-state-pin $L66146->$L67141: retail unwind map (?getModuleNameKey@BoneFXUpdate@@UBE?AW4NameKeyType@@XZ states [0]) binds this address to $L67141;repin-model=claude-opus-5-5
 uw_00c110b0,,0x00C110B0,8,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;object-symbol=$L7733
 uw_00c110b8,,0x00C110B8,11,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L15485
 uw_00c11130,,0x00C11130,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L2485
@@ -159661,7 +159661,7 @@ uw_00c208c0,,0x00C208C0,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;obje
 uw_00c208c8,,0x00C208C8,8,game/gen_small/uw_gen_007.cpp,matched,gen-funclet;object-symbol=$L9476
 uw_00c208d0,,0x00C208D0,8,game/gen_small/uw_gen_007.cpp,matched,gen-funclet;object-symbol=$L6937
 uw_00c208f0,,0x00C208F0,11,game/gen_small/uw_gen_010.cpp,matched,gen-funclet;object-symbol=$L1243
-uw_00c20910,,0x00C20910,8,game/GameEngine/Source/GameClient/Drawable.cpp,matched,gen-funclet;parent=?setCaptionText@Drawable@@QAEXABVUnicodeString@@@Z;object-symbol=$L95382;repin-model=gpt-6.1-sol;source-only duplicate deletion $L92901->$L95472;unique byte match in existing parent;source-only duplicate xfer removal $L95472->$L95382;repin-model=gpt-6.1-sol
+uw_00c20910,,0x00C20910,8,game/GameEngine/Source/GameClient/Drawable.cpp,matched,gen-funclet;parent=?setCaptionText@Drawable@@QAEXABVUnicodeString@@@Z;object-symbol=$L96096;repin-model=gpt-6.1-sol;source-only duplicate deletion $L92901->$L95472;unique byte match in existing parent;source-only duplicate xfer removal $L95472->$L95382;repin-model=gpt-6.1-sol
 uw_00c20918,,0x00C20918,8,game/gen_small/uw_gen_000.cpp,matched,gen-funclet;object-symbol=$L4794
 uw_00c20930,,0x00C20930,8,game/gen_small/uw_gen_000.cpp,matched,gen-funclet;object-symbol=$L4794
 uw_00c20950,,0x00C20950,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L14313
@@ -160043,7 +160043,7 @@ uw_00c22e10,,0x00C22E10,8,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;obje
 uw_00c22e30,,0x00C22E30,8,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;object-symbol=$L16206
 uw_00c22e50,,0x00C22E50,8,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;object-symbol=$L526
 uw_00c22e70,,0x00C22E70,8,game/gen_small/uw_gen_004.cpp,matched,gen-funclet;object-symbol=$L4547
-uw_00c22e78,,0x00C22E78,8,game/GameEngine/Source/GameClient/MessageStream/SelectionXlat.cpp,matched,gen-funclet;parent=?selectFriends@SelectionTranslator@@AAE_NPAVDrawable@@PAVGameMessage@@_N@Z;object-symbol=$L71561
+uw_00c22e78,,0x00C22E78,8,game/GameEngine/Source/GameClient/MessageStream/SelectionXlat.cpp,matched,gen-funclet;parent=?selectFriends@SelectionTranslator@@AAE_NPAVDrawable@@PAVGameMessage@@_N@Z;object-symbol=$L73087
 uw_00c22e80,,0x00C22E80,8,game/gen_small/uw_gen_009.cpp,matched,gen-funclet;object-symbol=$L1717
 uw_00c22eae,,0x00C22EAE,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L493
 uw_00c22eb6,,0x00C22EB6,8,game/gen_small/uw_gen_006.cpp,matched,gen-funclet;object-symbol=$L2571
@@ -164980,8 +164980,8 @@ uw_00c391d0,,0x00C391D0,8,game/gen_small/uw_gen_007.cpp,matched,gen-funclet;obje
 uw_00c391d8,,0x00C391D8,8,game/GameEngine/Source/GameClient/DebugCommandMap.cpp,matched,gen-funclet;parent=?parseDebugCommandMap@@YAXPAVINI@@@Z;object-symbol=$L33809;eh-state-pin $L32989->$L33809: retail unwind map (?parseDebugCommandMap@@YAXPAVINI@@@Z states [1]) binds this address to $L33809;repin-model=gpt-6.1-sol
 uw_00c391f0,,0x00C391F0,8,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;object-symbol=$L9010
 uw_00c391f8,,0x00C391F8,11,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;object-symbol=$L14545
-uw_00c39220,,0x00C39220,8,game/GameEngine/Source/GameClient/MessageStream/SelectionXlat.cpp,matched,gen-funclet;parent=?killThemKillThemAll@SelectionTranslator@@AAE_NPAVDrawable@@PAVGameMessage@@@Z;object-symbol=$L67449
-uw_00c39228,,0x00C39228,8,game/GameEngine/Source/GameClient/MessageStream/SelectionXlat.cpp,matched,gen-funclet;parent=?killThemKillThemAll@SelectionTranslator@@AAE_NPAVDrawable@@PAVGameMessage@@@Z;object-symbol=$L67450
+uw_00c39220,,0x00C39220,8,game/GameEngine/Source/GameClient/MessageStream/SelectionXlat.cpp,matched,gen-funclet;parent=?killThemKillThemAll@SelectionTranslator@@AAE_NPAVDrawable@@PAVGameMessage@@@Z;object-symbol=$L69136
+uw_00c39228,,0x00C39228,8,game/GameEngine/Source/GameClient/MessageStream/SelectionXlat.cpp,matched,gen-funclet;parent=?killThemKillThemAll@SelectionTranslator@@AAE_NPAVDrawable@@PAVGameMessage@@@Z;object-symbol=$L69137
 uw_00c39240,,0x00C39240,8,game/gen_small/uw_gen_011.cpp,matched,gen-funclet;object-symbol=$L6252
 uw_00c39260,,0x00C39260,11,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9881
 uw_00c39280,,0x00C39280,8,game/gen_small/uw_gen_011.cpp,matched,gen-funclet;object-symbol=$L6252
@@ -168368,7 +168368,7 @@ uw_00c4c6a8,,0x00C4C6A8,8,game/gen_small/uw_gen_005.cpp,matched,gen-funclet;obje
 uw_00c4c6b0,,0x00C4C6B0,8,game/gen_small/uw_gen_009.cpp,matched,gen-funclet;object-symbol=$L1659
 uw_00c4c6d0,,0x00C4C6D0,8,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;object-symbol=$L8709
 uw_00c4c720,,0x00C4C720,8,game/Libraries/Source/WWVegas/WWMath/lookuptable.cpp,matched,gen-funclet;parent=??1?$RefMultiListClass@VLookupTableClass@@@@UAE@XZ;object-symbol=$L8374
-uw_00c4c740,,0x00C4C740,11,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DScene.cpp,matched,gen-funclet;parent=?getADynamicLight@RTS3DScene@@QAEPAVW3DDynamicLight@@XZ;object-symbol=$L76354;eh-state-pin $L76349->$L76354: retail unwind map (?getADynamicLight@RTS3DScene@@QAEPAVW3DDynamicLight@@XZ states [0]) binds this address to $L76354;repin-model=claude-opus-5.5
+uw_00c4c740,,0x00C4C740,11,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DScene.cpp,matched,gen-funclet;parent=?getADynamicLight@RTS3DScene@@QAEPAVW3DDynamicLight@@XZ;object-symbol=$L77543;eh-state-pin $L76349->$L76354: retail unwind map (?getADynamicLight@RTS3DScene@@QAEPAVW3DDynamicLight@@XZ states [0]) binds this address to $L76354;repin-model=claude-opus-5.5
 uw_00c4c760,,0x00C4C760,8,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;object-symbol=$L8709
 uw_00c4c768,,0x00C4C768,14,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;object-symbol=$L9000
 uw_00c4c776,,0x00C4C776,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L300
@@ -168887,7 +168887,7 @@ uw_00c4f8e9,,0x00C4F8E9,11,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;obj
 uw_00c4f8f4,,0x00C4F8F4,11,game/gen_small/uw_gen_015.cpp,matched,gen-funclet;object-symbol=$L15923
 uw_00c4f8ff,,0x00C4F8FF,11,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L14001
 uw_00c4f920,,0x00C4F920,14,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L13733
-uw_00c4f960,,0x00C4F960,8,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDraw.cpp,matched,gen-funclet;parent=?parseWeaponBoneName@@YAXPAVINI@@PAX1PBX@Z;object-symbol=$L124745
+uw_00c4f960,,0x00C4F960,8,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DModelDraw.cpp,matched,gen-funclet;parent=?parseWeaponBoneName@@YAXPAVINI@@PAX1PBX@Z;object-symbol=$L124618
 uw_00c4f980,,0x00C4F980,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1316
 uw_00c4f9a0,,0x00C4F9A0,8,game/gen_small/uw_gen_000.cpp,matched,gen-funclet;object-symbol=$L4794
 uw_00c4f9c0,,0x00C4F9C0,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L12912
@@ -169072,7 +169072,7 @@ uw_00c508c8,,0x00C508C8,14,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;obj
 uw_00c508f0,,0x00C508F0,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L15585
 uw_00c508f8,,0x00C508F8,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9529
 uw_00c50906,,0x00C50906,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9531
-uw_00c50930,,0x00C50930,14,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTankDraw.cpp,matched,gen-funclet;parent=?getClassMemoryPool@W3DTankDraw@@CAPAVMemoryPool@@XZ;object-symbol=$L109391
+uw_00c50930,,0x00C50930,14,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTankDraw.cpp,matched,gen-funclet;parent=?getClassMemoryPool@W3DTankDraw@@CAPAVMemoryPool@@XZ;object-symbol=$L111399
 uw_00c50950,,0x00C50950,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L15585
 uw_00c50958,,0x00C50958,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9529
 uw_00c50966,,0x00C50966,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9531
@@ -169111,7 +169111,7 @@ uw_00c50bd6,,0x00C50BD6,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;obj
 uw_00c50be4,,0x00C50BE4,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9533
 uw_00c50bf2,,0x00C50BF2,14,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L13900
 uw_00c50c00,,0x00C50C00,14,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L13904
-uw_00c50c30,,0x00C50C30,14,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTruckDraw.cpp,matched,gen-funclet;parent=?getClassMemoryPool@W3DTruckDraw@@CAPAVMemoryPool@@XZ;object-symbol=$L115656
+uw_00c50c30,,0x00C50C30,14,game/GameEngineDevice/Source/W3DDevice/GameClient/Drawable/Draw/W3DTruckDraw.cpp,matched,gen-funclet;parent=?getClassMemoryPool@W3DTruckDraw@@CAPAVMemoryPool@@XZ;object-symbol=$L115669
 uw_00c50c50,,0x00C50C50,8,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L15585
 uw_00c50c58,,0x00C50C58,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9530
 uw_00c50c66,,0x00C50C66,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L9532

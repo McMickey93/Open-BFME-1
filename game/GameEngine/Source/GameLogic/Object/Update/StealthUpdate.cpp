@@ -2,6 +2,10 @@
 // stlport
 #define Matrix4x4 Matrix4  // BFME renamed it
 #define __PLACEMENT_VEC_NEW_INLINE  // always.h/GameMemory.h define array placement-new themselves
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 // stlport
 /*
 **	Command & Conquer Generals Zero Hour(tm)
@@ -63,6 +67,7 @@
 #include "GameLogic/Module/PhysicsUpdate.h"
 #include "GameLogic/Module/ContainModule.h"
 #include "GameLogic/Module/SpawnBehavior.h"
+#undef isDrawableEffectivelyHidden
 
 
 #ifdef _INTERNAL

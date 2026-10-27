@@ -31,6 +31,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
 #include "Common/GameAudio.h"
@@ -56,6 +60,7 @@
 #include "GameLogic/TerrainLogic.h"
 #include "GameLogic/Module/ContainModule.h"
 #include "GameLogic/Module/StealthUpdate.h"
+#undef isDrawableEffectivelyHidden
 
 #ifdef _INTERNAL
 // for occasional debugging...

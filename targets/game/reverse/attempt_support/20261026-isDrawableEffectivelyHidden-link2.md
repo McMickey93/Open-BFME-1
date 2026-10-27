@@ -39,3 +39,17 @@ the submodule clone stalls on this host).
 
 Landed in f50a955121: the 0x00410BA0 row is now ?isDrawableEffectivelyHidden@Drawable@@QBE_NXZ
 (ilt_oracle CONFIRMED), and the nine Gen_00410BA0 consumers call the Drawable name.
+
+## Emitters fixed (session 464, link queue #1 `losers`, census a0940f921b)
+
+The eleven units that include the ZH `GameClient/Drawable.h` and call the accessor
+(W3DModelDraw, W3DTankDraw, W3DTankTruckDraw, W3DTruckDraw, W3DScene, W3DView,
+Radar, Drawable, SelectionXlat, BoneFXUpdate, StealthUpdate) each emitted a COMDAT
+`?isDrawableEffectivelyHidden@Drawable@@QBE_NXZ` reading [ecx+0x145]/[ecx+0x146].
+Each now wraps its includes in a function-like macro that turns the ZH inline
+definition into an out-of-line declaration plus an unused renamed inline, then
+`#undef`s it; objdump of all eleven rebuilt objects shows the name undefined (only
+Bfme5TinyTwentySeven.obj defines it, reading 0x3AD/0x3AE). Scoped builds: 414/414
+rows byte-verified; eight gen-funclet `$L` labels the edit renumbered were relabelled
+with tools/repoint_absent.py from build.py's own "renumbered" report (BoneFXUpdate's
+with eh_state_pins.py --fix). Linking preview unknown: no census index on this host.

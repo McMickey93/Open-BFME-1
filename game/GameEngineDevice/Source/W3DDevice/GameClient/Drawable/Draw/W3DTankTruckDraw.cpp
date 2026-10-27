@@ -31,6 +31,10 @@
 // Draw TankTrucks.  Actually, this draws quad cannon which has both treads and wheels.
 // Author: Mark Wilczynski, August 2002
 
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 #include <stdlib.h>
 #include <math.h>
 
@@ -51,6 +55,7 @@
 #include "W3DDevice/GameClient/W3DGameClient.h"
 #include "W3DDevice/GameClient/Module/W3DTankTruckDraw.h"
 #include "WW3D2/matinfo.h"
+#undef isDrawableEffectivelyHidden
 
 //#define SHOW_TANK_DEBRIS
 //-------------------------------------------------------------------------------------------------

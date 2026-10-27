@@ -38,6 +38,10 @@
 
 #define NO_DEBUG_CRC
 
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 #include "Common/CRC.h"
 #include "Common/CRCDebug.h"
 #include "Common/GameState.h"
@@ -101,6 +105,7 @@ static inline Bool isValidTimeToCalcLogicStuff()
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
+#undef isDrawableEffectivelyHidden
 #if defined(DEBUG_CRC) && (defined(_DEBUG) || defined(_INTERNAL))
 #include <cstdarg>
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/MiniLog.h

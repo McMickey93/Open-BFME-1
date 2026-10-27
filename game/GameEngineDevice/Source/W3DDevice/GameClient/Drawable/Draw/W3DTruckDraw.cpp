@@ -30,6 +30,10 @@
 // Draw Trucks.  Actually, this draws rocket buggies.
 // Author: John Ahlquist, March 2002
 
+// Zero Hour's Drawable.h defines isDrawableEffectivelyHidden inline with its own
+// offsets (0x145/0x146); declare it out of line instead, so this unit emits no COMDAT
+// copy unlike retail's 0x00410BA0 (BFME reads 0x3AD/0x3AE).
+#define isDrawableEffectivelyHidden() isDrawableEffectivelyHidden() const; Bool zhInlineIsDrawableEffectivelyHidden()
 #include <stdlib.h>
 #include <math.h>
 
@@ -52,6 +56,7 @@
 #include "GameLogic/ScriptEngine.h"
 #include "W3DDevice/GameClient/W3DGameClient.h"
 #include "W3DDevice/GameClient/Module/W3DTruckDraw.h"
+#undef isDrawableEffectivelyHidden
 
 #ifdef _INTERNAL
 // for occasional debugging...
