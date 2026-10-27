@@ -91,11 +91,18 @@ public:
 	void setPosition(const Coord3D *pos);
 };
 
+// The existing retail lookup owner is BfmeThingFactory at RVA 0x00137E80.
+// This pointer-only declaration models no factory layout or new object.
+class BfmeThingFactory
+{
+public:
+	const ThingTemplate *findTemplate(const AsciiString &name);
+};
+
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/ThingFactory.h
 class ThingFactory
 {
 public:
-	const ThingTemplate *findTemplate(const AsciiString &name);
 	Object *newObject(const ThingTemplate *tmplate, Team *team,
 		const ObjectStatusMaskType &statusBits, unsigned int flags);
 };
@@ -144,7 +151,8 @@ void OneRingPenaltyUpdate::rva00299080(void)
 {
 	const Rva00299080ModuleData *d = m_moduleData;
 	Object *owner = m_object;
-	const ThingTemplate *tmpl = TheThingFactory->findTemplate(d->m_objectName);
+	const ThingTemplate *tmpl =
+		reinterpret_cast<BfmeThingFactory *>(TheThingFactory)->findTemplate(d->m_objectName);
 	if (tmpl)
 	{
 		Team *team = ThePlayerList->getNeutralPlayer()
