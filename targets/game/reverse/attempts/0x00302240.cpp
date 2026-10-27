@@ -1,5 +1,5 @@
 // ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
-// partial score=0.7985 date=2026-10-27
+// partial score=0.9813 date=2026-10-27
 // ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z
 // partial score=0.52 date=2026-10-18 (532/536 B, 257 diffs, shape 0.988; was 588 B 286 diffs)
 // cl: /DNDEBUG /DWIN32 /MD /EHsc /Iinputs/reference/shims/stringinline
@@ -453,8 +453,9 @@ void ScriptActions::doTeamGarrisonNearestBuilding(const AsciiString &teamName)
 		if (!contain)
 			continue;
 
-		Int slotsAvailable = (Int)contain->getContainCount(false);
-		slotsAvailable = (Int)contain->getContainMax() - slotsAvailable;
+		Int used = (Int)contain->getContainCount(false);
+		Int slotsMax = (Int)contain->getContainMax();
+		Int slotsAvailable = slotsMax - used;
 		for (Int i = 0; i < slotsAvailable; )
 		{
 			Object *object = diter.cur();
