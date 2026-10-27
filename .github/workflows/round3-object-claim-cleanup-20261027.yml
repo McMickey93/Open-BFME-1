@@ -1,0 +1,47 @@
+name: Close the landed BFME1 object reservation 20261027
+
+on:
+  create:
+permissions:
+  contents: read
+
+jobs:
+  release:
+    if: >-
+      github.repository == 'McMickey93/Open-BFME-1' &&
+      github.event.repository.fork == true &&
+      github.ref == 'refs/heads/codex/20261027-round3-object-claim-cleanup' &&
+      github.event.ref_type == 'branch'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BFME_CLAIM_NS: refs/heads/claims/
+      BFME_CLAIM_OWNER: github:McMickey93:bfme1:round3-20261027
+      GIT_TERMINAL_PROMPT: '0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: McMickey93/Open-BFME-1
+          ref: ${{ github.sha }}
+          path: control
+          sparse-checkout: .github/qualification/round3-object-claim-cleanup-20261027
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          submodules: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Open-BFME/Open-BFME-1
+          ref: 18a151b039e67c8d72900f021090370f1a10e516
+          path: source
+          sparse-checkout: tools/claims.py
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+      - name: Produce the original expired marker after a single-ref ownership fence
+        working-directory: source
+        env:
+          BFME_TRANSFER_TOKEN: ${{ github.token }}
+        run: python3 ../control/.github/qualification/round3-object-claim-cleanup-20261027/release.py

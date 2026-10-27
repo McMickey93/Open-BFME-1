@@ -1,0 +1,9 @@
+{
+  "fork": "McMickey93/Open-BFME-1",
+  "cleanup_branch": "codex/20261027-round3-object-claim-cleanup",
+  "source_commit": "18a151b039e67c8d72900f021090370f1a10e516",
+  "claim_ref": "refs/heads/claims/0x001C5620",
+  "claim_owner": "github:McMickey93:bfme1:round3-20261027",
+  "claim_lease": "5bd911d6c9e1444e80b113f7cf07ba20",
+  "release_branch": "codex/20261027-round3-object-link-release"
+}
