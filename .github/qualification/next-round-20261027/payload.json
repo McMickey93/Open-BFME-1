@@ -7,7 +7,7 @@
   "upstream": "https://github.com/Open-BFME/Open-BFME-1.git",
   "base": "39e371392398a33a30e1a6b3af67e5662a745bb1",
   "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
-  "control_branch": "codex/20261027-bfme1-cleanup-qualification",
+  "control_branch": "codex/20261027-bfme1-transfer-recovery",
   "result_branch": "codex/20261027-bfme1-qualified-list-ownership",
   "reference_path": "inputs/reference/open-bfme-2",
   "new_reference": "09babd75f455d94ec1cd253fdc06c32d94184d6f",
@@ -113,5 +113,105 @@
       "refresh_reference": true,
       "message": "[BFME 2 donor] Keep list-word append definitions local to consumers\n\nUse a static inline adapter around the original insert(end(), value)\noperation in both complete transfer consumers. This preserves the existing\nretail inline path while suppressing two competing external push_back COMDATs.\nThe existing physical 45-byte provider, pin route and opaque identity stay put.\n\nNative scope: both full consumers plus the selected provider, 94 exact rows\nand eight DIR32 references. Object definitions disappear in both consumers.\nlink_check.py before/after: LINKED PREVIEW UNKNOWN (census index unavailable);\n1,110 queue bytes are only a ranking estimate. New exact C++ bytes: +0.\n\nReview donor 09babd75f455d94ec1cd253fdc06c32d94184d6f and retain its pointer.\nRecord target/donor facts, reverted compiler controls and the reusable lever.\n\nClaim-Lease: 0xFC7F89A6=f7c4e9a384d24bc1b52d40137ac622fb\nAgent-Authored: OpenAI Codex\n"
     }
-  ]
+  ],
+  "qualification_context": {
+    "GITHUB_REPOSITORY": "McMickey93/Open-BFME-1",
+    "GITHUB_SHA": "36eeb71b06044561523048255a1c7e715d5fa630",
+    "GITHUB_REF": "refs/heads/codex/20261027-bfme1-cleanup-qualification",
+    "GITHUB_RUN_ID": "40427942220",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_ACTOR": "McMickey93",
+    "GITHUB_TRIGGERING_ACTOR": "McMickey93"
+  },
+  "expected_manifest": {
+    "schema": 1,
+    "purpose": "verified-cleanup",
+    "fork": "McMickey93/Open-BFME-1",
+    "base": "39e371392398a33a30e1a6b3af67e5662a745bb1",
+    "commit": "e74410b3738a2bb75d626085d9ebfd3406a43ff7",
+    "tree": "d0b5af83c42f6ffe7305817af02845cb212e559e",
+    "local_ref": "refs/heads/qualification/next-round",
+    "files": [
+      {
+        "path": "docs/shape_levers.md",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "9b16e920314ddada50c8b30f3b230234542c27c8"
+      },
+      {
+        "path": "game/GameEngine/Source/Common/RTS/Team_DoXfer.cpp",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "f449dcf1ffcc2fdae86ab563403b3ea042f6efda"
+      },
+      {
+        "path": "game/GameEngine/Source/GameLogic/ScriptEngine/XferListInt.cpp",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "01a050785e3574b5d4c9ac1b7a5d636a7b6002b1"
+      },
+      {
+        "path": "inputs/reference/open-bfme-2",
+        "mode": "160000",
+        "kind": "commit",
+        "sha": "09babd75f455d94ec1cd253fdc06c32d94184d6f"
+      },
+      {
+        "path": "targets/game/reverse/attempt_support/20261026-00235cd0-nested-copy-optimizer.md",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "45e2a4be9794625a6538eca52391e6a9f09da24c"
+      },
+      {
+        "path": "targets/game/reverse/attempt_support/20261026-char-find-dir32-prerequisite.md",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "408abd543182fe7537243397ece702e1d2df92d2"
+      },
+      {
+        "path": "targets/game/reverse/identity_evidence/20261026-list-word-append-ownership.md",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "0435e0e0e0206ebbe0f33a8f6dc3cf55c2ebfd55"
+      },
+      {
+        "path": "targets/game/reverse/re_attempts.log",
+        "mode": "100644",
+        "kind": "blob",
+        "sha": "85c4b2dc338807574f8a7ff8056aa95a71d9f6d7"
+      }
+    ],
+    "normal_commit_hooks_passed": true,
+    "normal_actual_official_pre_push_passed": true,
+    "progress": {
+      "base": "39e371392398a33a30e1a6b3af67e5662a745bb1",
+      "head": "e74410b3738a2bb75d626085d9ebfd3406a43ff7",
+      "cpp_exact_before": 7609187,
+      "cpp_exact_after": 7609187,
+      "cpp_exact_delta": 0
+    },
+    "workflow": {
+      "GITHUB_REPOSITORY": "McMickey93/Open-BFME-1",
+      "GITHUB_SHA": "36eeb71b06044561523048255a1c7e715d5fa630",
+      "GITHUB_REF": "refs/heads/codex/20261027-bfme1-cleanup-qualification",
+      "GITHUB_RUN_ID": "40427942220",
+      "GITHUB_RUN_ATTEMPT": "1",
+      "GITHUB_ACTOR": "McMickey93",
+      "GITHUB_TRIGGERING_ACTOR": "McMickey93"
+    },
+    "claim": {
+      "key": "0xFC7F89A6",
+      "owner": "github:McMickey93:bfme1:next-round-20261026",
+      "lease": "f7c4e9a384d24bc1b52d40137ac622fb"
+    },
+    "claim_token": "ba5cb427752257914e5946658255cc6747bc2a26",
+    "release_message": "{\"created\": 1793061986, \"expires\": 1793058386, \"host\": \"runnervma5ucf\", \"lease\": \"f7c4e9a384d24bc1b52d40137ac622fb\", \"nonce\": \"48e31fe9781c489fb76bf2800b3d98bd\", \"note\": \"Completed cleanup; released after publication\", \"owner\": \"github:McMickey93:bfme1:next-round-20261026\", \"run\": \"\", \"since\": 1793057787}",
+    "bundle_sha256": "612a579617530845f0f5da729f962c12876d070fe8a1575d70185705c6d9f504",
+    "result_branch": "codex/20261027-bfme1-qualified-list-ownership"
+  },
+  "source_artifact": {
+    "id": 12700532511,
+    "sha256": "b4b73121337fb10ee53847912a661f29a6865b8bbd0b0d5fbdd958678cfe0898",
+    "run_id": 40427942220
+  }
 }

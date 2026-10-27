@@ -1,4 +1,4 @@
-name: Native BFME1 list ownership qualification 20261027
+name: Transfer exact qualified BFME1 cleanup 20261027
 
 # A branch-create event also works through the Git refs API. The fixed guard
 # prevents this fork-only control branch from running for any other reference.
@@ -27,89 +27,15 @@ env:
   BUILD_POOL: '4'
 
 jobs:
-  qualify:
-    if: >-
-      github.repository == 'McMickey93/Open-BFME-1' &&
-      github.event.repository.fork == true &&
-      github.event.repository.private == false &&
-      github.ref == 'refs/heads/codex/20261027-bfme1-cleanup-qualification' &&
-      github.event.ref_type == 'branch'
-    permissions:
-      contents: read
-    runs-on: windows-2022
-    timeout-minutes: 55
-    outputs:
-      artifact_id: ${{ steps.bundle.outputs.artifact-id }}
-      artifact_digest: ${{ steps.bundle.outputs.artifact-digest }}
-    steps:
-      - name: Read the immutable fixed cleanup controls
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          repository: McMickey93/Open-BFME-1
-          ref: ${{ github.sha }}
-          path: control
-          sparse-checkout: .github/qualification/next-round-20261027
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-          fetch-depth: 1
-          submodules: false
-          lfs: false
-      - name: Select native Windows Python
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
-        with:
-          python-version: '3.12'
-          architecture: x64
-          check-latest: false
-      - name: Check out the official project separately
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          repository: Open-BFME/Open-BFME-1
-          ref: 39e371392398a33a30e1a6b3af67e5662a745bb1
-          path: source
-          persist-credentials: false
-          fetch-depth: 128
-          submodules: false
-          lfs: false
-      - name: Native builds, ordinary commits and actual official pre-push gate
-        shell: bash
-        working-directory: source
-        run: |
-          set -euo pipefail
-          source .githooks/python3.sh
-          require_python3 next-round-native-qualification
-          git_bash="$BASH"
-          [[ "${git_bash,,}" == *.exe ]] || git_bash="${git_bash}.exe"
-          export BFME_QUALIFICATION_BASH="$(cygpath -aw "$git_bash")"
-          python3 -u ../control/.github/qualification/next-round-20261027/qualify.py qualify
-      - name: Retain the exact qualified Git objects
-        id: bundle
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
-        with:
-          name: qualified-next-${{ github.run_id }}-${{ github.run_attempt }}
-          path: qualified-objects/
-          if-no-files-found: error
-          retention-days: 14
-          compression-level: 0
-      - name: Retain native qualification diagnostics
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
-        with:
-          name: qualification-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: qualification-evidence/
-          if-no-files-found: warn
-          retention-days: 14
-          compression-level: 9
-
   transfer:
-    needs: qualify
     if: >-
       github.repository == 'McMickey93/Open-BFME-1' &&
       github.event.repository.fork == true &&
       github.event.repository.private == false &&
-      github.ref == 'refs/heads/codex/20261027-bfme1-cleanup-qualification' &&
+      github.ref == 'refs/heads/codex/20261027-bfme1-transfer-recovery' &&
       github.event.ref_type == 'branch'
-    # This job imports and transfers the exact objects. It executes only the
-    # immutable control code and official-base hooks, never artifact code.
+    # Import the exact objects from the pinned successful read-only job.
+    # Check out its qualified HEAD for the ordinary hook; never execute a game.
     permissions:
       contents: write
       actions: read
@@ -147,7 +73,10 @@ jobs:
       - name: Read only this successful job's qualified artifact
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
         with:
-          artifact-ids: ${{ needs.qualify.outputs.artifact_id }}
+          artifact-ids: 12700532511
+          repository: McMickey93/Open-BFME-1
+          run-id: 40427942220
+          github-token: ${{ github.token }}
           path: qualified-objects
           merge-multiple: true
       - name: Transfer exact native commits to the fresh fixed fork branch

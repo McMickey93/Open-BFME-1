@@ -345,12 +345,14 @@ def qualified(bash):
     print("QUALIFIED_OBJECTS " + json.dumps(manifest), flush=True)
 
 def transfer(bash):
+    os.environ["BFME_CLAIM_OWNER"] = DATA["claim"]["owner"]
+    os.environ["BFME_MODEL"] = "OpenAI-Codex"
     # This job never executes any source or code supplied by the artifact.
     manifest = json.loads((BUNDLE / "manifest.json").read_text(encoding="utf-8"))
     for key in ("schema", "purpose", "fork", "result_branch"):
         require(manifest[key] == (1 if key == "schema" else DATA[key]), "Wrong handoff identity")
-    require(manifest["workflow"] == {k: os.environ.get(k, "") for k in manifest["workflow"]},
-            "Artifact is not from this exact workflow execution")
+    require(manifest["workflow"] == DATA["qualification_context"] and manifest == DATA["expected_manifest"],
+            "Artifact differs from the pinned successful read-only qualification job")
     require(manifest["normal_commit_hooks_passed"] is True
             and manifest["normal_actual_official_pre_push_passed"] is True
             and manifest["progress"]["cpp_exact_delta"] == 0, "Native cleanup qualification missing")
@@ -371,8 +373,11 @@ def transfer(bash):
                                  LOCAL_REF, quiet=True).decode().split("\0")))
     require(actual == {f["path"] for f in manifest["files"]}, "Unreviewed commit content")
     git("fast-forward-lineage", "merge-base", "--is-ancestor", manifest["base"], LOCAL_REF, quiet=True)
-    # Install hooks from the trusted official base, without checking out or
-    # executing artifact code. The real fork push also keeps its normal hook.
+    # The changed-path proof excludes tools and hooks. Check out the exact
+    # qualified commit: the ordinary push hook requires HEAD to be outgoing.
+    # No game binary is executed. The normal official hook remains enabled.
+    git("checkout-qualified-commit", "switch", LOCAL_REF.removeprefix("refs/heads/"), quiet=True)
+    require(rev("HEAD") == manifest["commit"], "Wrong outgoing checkout")
     init_reference()
     run("transfer-requirements", [sys.executable, "-m", "pip", "install", "--disable-pip-version-check",
                                   "-r", "tools/requirements.txt"], quiet=True)
