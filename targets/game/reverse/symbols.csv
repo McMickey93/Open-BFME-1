@@ -83615,7 +83615,6 @@ name,address,notes
 ?g_w3dMouseCursorAnims@@3PAPAXA,0x012F8530,W3DMouse cursor animation table
 ?g_w3dMouseCursorImages@@3PAPAXA,0x012F86C0,W3DMouse polygon cursor image table
 ?g_w3dMouseCursorModels@@3PAPAXA,0x012F85F8,W3DMouse cursor model table
-?g_w3dMouseCursorTextures@@3PAY0BF@VBfmeHandleCX@@A,0x012F8798,route-type-correction=00C6C4A0 native1050 four-byte owning handle cells; mouse rawpointer member atoffset0
 ?g_w3dMouseD3DDevice@@3PAVD3DDeviceInterface@@A,0x01340534,W3DMouse destructor Direct3D device global
 ?g_w3dMouseDrawTarget@@3PAVW3DMouseDrawInterface@@A,0x012F4C5C,W3DMouse polling draw target
 ?g_w3dMouseIsThread@@3_NA,0x012F8788,W3DMouse polling-thread active flag
@@ -90020,7 +90019,6 @@ _bfmeNullNameXZ,0x00C80374,NULL name global
 _bfmeObjDAA,0x00EEF430,pin
 _bfmeObjDAB,0x00EF1608,pin
 _bfmeObjDAC,0x00F41148,pin
-_bfmeObjDAD,0x00EF8798,pin
 _bfmeObjDAE,0x00F38480,pin
 _bfmeOffEAA,0x00D09918,pin
 _bfmeOffEAB,0x00D05E70,pin

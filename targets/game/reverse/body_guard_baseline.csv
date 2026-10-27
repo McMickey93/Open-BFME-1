@@ -513,7 +513,6 @@ dir32,0x012F8044,?g_rva012F8044Object@@3VAsciiString@@A,"retail 0x012F8044 is al
 dir32,0x012F8058,?g_012F8058@@3PAVSink006E2540@@A,"retail 0x012F8058 is already recorded as ?Rva012F8058@@3PAVRva00712F60@@A (+10 more); reference that name, not a new one"
 dir32,0x012F8060,?m_3DInterfaceScene@Gen006EF850@@2PAVRTS3DInterfaceScene@@A,"retail 0x012F8060 is already recorded as ?Rva012F8060@@3PAVRva00711B00@@A (+1 more); reference that name, not a new one"
 dir32,0x012F878C,?g_rva012F878CObject@@3VCriticalSectionClass@@A,"retail 0x012F878C is already recorded as ?TheBfmeObject_00C709A0@@3VGen_00C709A0Target@@A; reference that name, not a new one"
-dir32,0x012F8798,?g_w3dMouseCursorTextures@@3PAY0BF@VBfmeHandleCX@@A,"retail 0x012F8798 is already recorded as ?g_w3dMouseCursorTextures@@3PAY0BF@PAVTextureClass@@A (+1 more); reference that name, not a new one"
 dir32,0x012F9D08,?m_renderTexture@W3DShaderManager@@2PAUIDirect3DTexture8@@A,"retail 0x012F9D08 is already recorded as ?m_renderTexture@W3DShaderManager@@1PAUIDirect3DTexture8@@A (+2 more); reference that name, not a new one"
 dir32,0x012F9D18,??m_resource012F9D18@W3DShaderManager@@1PAUShaderComResource@@A@@3PAUShaderComResource@@A,"retail 0x012F9D18 is already recorded as ?m_resource012F9D18@W3DShaderManager@@1PAUShaderComResource@@A (+1 more); reference that name, not a new one"
 dir32,0x01306978,?g_rva01306978Object@@3VRvaList@@A,"retail 0x01306978 is already recorded as ?TheBfmeObject_00C70AB0@@3VGen_00C70AB0Target@@A (+2 more); reference that name, not a new one"
