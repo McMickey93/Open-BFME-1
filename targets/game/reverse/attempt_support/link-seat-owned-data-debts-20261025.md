@@ -53,3 +53,27 @@ The measured improvement is three fewer gate debts, with all three machine
 pass-tests and provider/consumer checks passing. CSV validation, declared-
 unmatched checks and whitespace checks also pass. No full build or census
 build was started.
+
+## Re-draw 2026-10-27 (loop-draw-8, 0x01338524)
+
+Re-served from the gate-debt pool. Re-verified the false-reject against the
+current tree (046956357e): ENCODED_ADDRESS_RE (build.py:3585) matches the
+honest address-derived type fragment Rva008A9A70 in
+?g_01338524@@3URva008A9A70Str@@A (0x008A9A70 != base 0x01338524), firing in
+unrecorded_dir32_problem (build.py:3663-3669) before the data.get(sym)==base
+path that the matched data_rows.csv:99 owner (4 B .data @0x01338524) would
+clear; the step-1 recorded set is empty (the 3 names absent from
+dir32_addresses.csv) and dir32_record.py record is likewise guard-blocked.
+The only clear path (renaming type Rva008A9A70Str) stays nonmechanical and is
+now confirmed a trap: the type is embedded in the matched setter's mangled name
+?set@Rva008A9A70@@QAEXABURva008A9A70Str@@@Z (functions.csv:133169), which 9
+uneditable gen_asm EXTERN/call sites (d_0083c710.asm:105,938,943,948,953;
+d_008a9710.asm:32,350) resolve, so a rename breaks the full-gate link; and the
+scoped pass test (repair_queue.py pass_test) builds only the data row's TU
+(Rva008D5430.cpp), never the gen_asm objects or setter TU, so the rename would
+false-pass the pass test while breaking the full gate. Same type blocks the
+siblings 0x013385D8/0x01338678 (baseline 585/586). No rename forced, no tool
+changed, no ledger row edited; debt lines 583/585/586 stay. Resume only when
+the maintainer fixes ENCODED_ADDRESS_RE to skip type fragments, or the gen_asm
+setter references move to a renameable carrier. Blocked verdict recorded in
+re_attempts.log.
