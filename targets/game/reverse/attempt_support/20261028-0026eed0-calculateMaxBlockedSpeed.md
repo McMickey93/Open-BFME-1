@@ -45,3 +45,11 @@ Later inert or worse trials (same session): a `__forceinline` second-dot
 helper by reference or pointer, in either parameter order (295 B, like the
 non-forced ones); a separate `ourDot` variable and dropping `speedFactor`
 (both still 7 B).
+
+Update (same session, bank now 0.986, 4 bytes): residue 1 is fixed by making
+the helper a `__forceinline` const member of AIUpdateInterface that reads
+`getObject()` itself, `projectTowards(Coord2D &v, const Object *to, Real oy,
+Real ox)` (the from-object load then takes EAX as in retail). Only residue 2
+(second-dot load choice, +0xB6..+0xC2) is left; the 8 term/factor orders are
+still inert in the new context, and so are a Coord2D ourDir (11 B, frame
+0x10) and a full Coord3D copy (296 B).

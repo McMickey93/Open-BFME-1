@@ -1,13 +1,13 @@
 // ?calculateMaxBlockedSpeed@AIUpdateInterface@@IBEMPAVObject@@@Z
-// partial score=0.9758 date=2026-10-28
+// partial score=0.9862 date=2026-10-28
 // cl: /DNDEBUG /MD /EHsc
 // AIUpdateInterface::calculateMaxBlockedSpeed, retail 0x0026EED0, 289 B (ret 4).
 // ilt_oracle CONFIRMS ?calculateMaxBlockedSpeed@AIUpdateInterface@@IBEMPAVObject@@@Z.
 // Zero Hour AIUpdate.cpp:1258 twin; BFME replaces the physics velocity with
 // Object::bfmeGetNonnegativePreferredLocomotorHeight (ILT 0x47C8).
-// 289/289 B, 7 bytes off: (1) getObject() for the position delta loads ECX,
-// retail EAX (+0x2C/+0x32/+0x3C); (2) the second dot fld's vectorToOther,
-// retail fld's ourDir (+0xB6..+0xC2). See attempt_support handoff.
+// 289/289 B, 4 bytes off: the second dot fld's vectorToOther where retail
+// fld's ourDir (+0xB6..+0xC2). Reading getObject() inside a member helper
+// (not passing it in) gives retail's EAX. See attempt_support handoff.
 typedef float Real;
 typedef int Int;
 extern "C" double __cdecl sqrt(double value);
@@ -49,25 +49,25 @@ class AIUpdateInterface
 protected:
 	Real calculateMaxBlockedSpeed(Object *other) const;
 	Object *getObject() const { return m_object; }
+	__forceinline Real projectTowards(Coord2D &v, const Object *to, Real oy, Real ox) const
+	{
+		v.x = to->getPosition()->x - getObject()->getPosition()->x;
+		v.y = to->getPosition()->y - getObject()->getPosition()->y;
+		v.normalize();
+		return v.x*ox + v.y*oy;
+	}
 	char m_pad00[8];
 	Object *m_object;
 	char m_pad0c[0x170 - 0x0c];
 	Real m_curMaxBlockedSpeed;
 };
-static __forceinline Real projectTowards(Coord2D &v, const Object *to, const Object *from, Real oy, Real ox)
-{
-	v.x = to->getPosition()->x - from->getPosition()->x;
-	v.y = to->getPosition()->y - from->getPosition()->y;
-	v.normalize();
-	return v.x*ox + v.y*oy;
-}
 Real AIUpdateInterface::calculateMaxBlockedSpeed(Object *other) const
 {
 	const Coord3D *dir = getObject()->getUnitDirectionVector2D();
 	Coord3D ourDir; ourDir.x = dir->x; ourDir.y = dir->y;
 	Coord2D vectorToOther;
 	const Coord3D *odir = other->getUnitDirectionVector2D();
-	Real dotProduct = projectTowards(vectorToOther, other, getObject(), odir->y, odir->x);
+	Real dotProduct = projectTowards(vectorToOther, other, odir->y, odir->x);
 	if (dotProduct<0) return 0; // They are running into us.
 
 	Real speedFactor = dotProduct;
