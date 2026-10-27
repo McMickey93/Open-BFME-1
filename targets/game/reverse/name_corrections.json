@@ -21171,5 +21171,25 @@
    "after_sha256": "30e87b5702a741d32c2af526f8fd6527674f8eac4bb65090512ef85abffa4e7f",
    "evidence": "targets/game/reverse/identity_evidence/0021ac30-contestable-contain-slot48.md",
    "reason": "The bank's Owner was a generic placeholder; the matched ContestableContain ctor/dtor install vtable 0x010AB3C0 whose slot +0x48 is this body, overriding the OpenContain slot body 0x00228050 that it calls, so the owner becomes the address-derived ContestableContain view."
+ },
+ {
+   "old_path": "game/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp",
+   "new_path": "game/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp",
+   "old_name": "AI_MOVE_OUT_OF_THE_WAY",
+   "new_name": "BFME_AI_MOVE_OUT_OF_THE_WAY",
+   "before_sha256": "1fff0ade83b44ab4020b550367c905bd26d4fe597bd0bdfc65a5975372aa9a46",
+   "after_sha256": "442a6febbd563f4d16837c2cb0bba751389075620b0f1efca30ef33f77f43e46",
+   "evidence": "targets/game/reverse/identity_evidence/0027d7f0-aiupdate-name-corrections.md",
+   "reason": "Retail 0x0027D7F0 compares and sets temporary state 0x1A, not the reference enum value 0x17; the BFME constant names the BFME number."
+ },
+ {
+   "old_path": "game/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp",
+   "new_path": "game/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp",
+   "old_name": "g_rva01075350",
+   "new_name": "BfmeBoundaryZero3D",
+   "before_sha256": "1fff0ade83b44ab4020b550367c905bd26d4fe597bd0bdfc65a5975372aa9a46",
+   "after_sha256": "442a6febbd563f4d16837c2cb0bba751389075620b0f1efca30ef33f77f43e46",
+   "evidence": "targets/game/reverse/identity_evidence/0027d7f0-aiupdate-name-corrections.md",
+   "reason": "Same VA 0x01075350; dir32_addresses.csv records ?BfmeBoundaryZero3D@@3MB there and the DIR32 check refuses the unrecorded spelling."
  }
 ]

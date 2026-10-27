@@ -85,7 +85,7 @@ extern void j_0003a17a( void );
 extern void j_00008a9e( void );
 extern void j_00049413( void );
 extern void j_000022bb( void );
-extern const Real g_rva01075350;
+extern const Real BfmeBoundaryZero3D;
 extern Real g_bfmeDefaultBU;
 
 typedef void (__cdecl *BFMEPathDebugLogFunction)( void *, const char *, ... );
@@ -2906,7 +2906,7 @@ Bool AIUpdateInterface::needToRotate(void)
 		return TRUE; // new path will probably require rotation.
 
 	BFMELocomotorOverride *curLocomotor = fields->m_curLocomotor;
-	if (curLocomotor && curLocomotor->getWanderWidthFactor()>g_rva01075350)
+	if (curLocomotor && curLocomotor->getWanderWidthFactor()>BfmeBoundaryZero3D)
 		return FALSE; // wanderers don't need to rotate.
 
 	Real deltaAngle = 0;
@@ -4409,60 +4409,322 @@ Bool AIUpdateInterface::isMoving() const
 /**
  * Move out of the way of another unit.
  */
-// ?privateMoveAwayFromUnit@AIUpdateInterface@@ present-unmatched
+// BFME layout views for privateMoveAwayFromUnit (retail 0x0027D7F0, vtable
+// 0x010BA8A8 slot 71 via ILT 0x0002E7F3; ilt_oracle confirms the name there).
+// BFME first hands the request to the horde the unit belongs to, does not
+// test the unit's path for NULL, and keeps the moveAllies gate doPathfind uses.
+class BFMEMoveAwayHordeMember
+{
+public:
+	virtual void slot000(); virtual void slot001(); virtual void slot002(); virtual void slot003();
+	virtual void slot004(); virtual void slot005(); virtual void slot006(); virtual void slot007();
+	virtual void slot008(); virtual void slot009(); virtual void slot010(); virtual void slot011();
+	virtual void slot012(); virtual void slot013(); virtual void slot014(); virtual void slot015();
+	virtual void slot016(); virtual void slot017(); virtual void slot018(); virtual void slot019();
+	virtual void slot020(); virtual void slot021(); virtual void slot022(); virtual void slot023();
+	virtual void slot024(); virtual void slot025(); virtual void slot026(); virtual void slot027();
+	virtual void slot028(); virtual void slot029(); virtual void slot030(); virtual void slot031();
+	virtual void slot032(); virtual void slot033(); virtual void slot034(); virtual void slot035();
+	virtual void slot036(); virtual void slot037(); virtual void slot038(); virtual void slot039();
+	virtual void slot040(); virtual void slot041(); virtual void slot042(); virtual void slot043();
+	virtual void slot044(); virtual void slot045(); virtual void slot046(); virtual void slot047();
+	virtual void slot048(); virtual void slot049(); virtual void slot050(); virtual void slot051();
+	virtual void slot052(); virtual void slot053(); virtual void slot054(); virtual void slot055();
+	virtual void slot056(); virtual void slot057(); virtual void slot058(); virtual void slot059();
+	virtual void slot060(); virtual void slot061(); virtual void slot062(); virtual void slot063();
+	virtual void slot064(); virtual void slot065(); virtual void slot066(); virtual void slot067();
+	virtual void slot068(); virtual void slot069(); virtual void slot070(); virtual void slot071();
+	virtual void slot072(); virtual void slot073(); virtual void slot074(); virtual void slot075();
+	virtual void slot076(); virtual void slot077(); virtual void slot078(); virtual void slot079();
+	virtual void slot080(); virtual void slot081(); virtual void slot082(); virtual void slot083();
+	virtual void slot084(); virtual void slot085(); virtual void slot086(); virtual void slot087();
+	virtual void slot088(); virtual void slot089(); virtual void slot090(); virtual void slot091();
+	virtual void slot092(); virtual void slot093(); virtual void slot094(); virtual void slot095();
+	virtual void slot096(); virtual void slot097(); virtual void slot098(); virtual void slot099();
+	virtual void slot100(); virtual void slot101(); virtual void slot102(); virtual void slot103();
+	virtual void slot104(); virtual void slot105();
+	virtual void slot106();					///< +0x1A8
+};
+
+class BFMEMoveAwayContain
+{
+public:
+	virtual void slot000(); virtual void slot001(); virtual void slot002(); virtual void slot003();
+	virtual void slot004(); virtual void slot005(); virtual void slot006(); virtual void slot007();
+	virtual void slot008(); virtual void slot009(); virtual void slot010(); virtual void slot011();
+	virtual void slot012(); virtual void slot013(); virtual void slot014(); virtual void slot015();
+	virtual void slot016(); virtual void slot017(); virtual void slot018(); virtual void slot019();
+	virtual void slot020(); virtual void slot021(); virtual void slot022(); virtual void slot023();
+	virtual void slot024(); virtual void slot025();
+	virtual BFMEMoveAwayHordeMember *slot026();		///< +0x68
+};
+
+class BFMEMoveAwayAI
+{
+public:
+	virtual void slot000(); virtual void slot001(); virtual void slot002(); virtual void slot003();
+	virtual void slot004(); virtual void slot005(); virtual void slot006(); virtual void slot007();
+	virtual void slot008(); virtual void slot009(); virtual void slot010(); virtual void slot011();
+	virtual void slot012(); virtual void slot013(); virtual void slot014(); virtual void slot015();
+	virtual void slot016(); virtual void slot017(); virtual void slot018(); virtual void slot019();
+	virtual void slot020(); virtual void slot021(); virtual void slot022(); virtual void slot023();
+	virtual void slot024(); virtual void slot025(); virtual void slot026(); virtual void slot027();
+	virtual void slot028(); virtual void slot029(); virtual void slot030(); virtual void slot031();
+	virtual void slot032(); virtual void slot033(); virtual void slot034(); virtual void slot035();
+	virtual void slot036(); virtual void slot037(); virtual void slot038(); virtual void slot039();
+	virtual void slot040(); virtual void slot041(); virtual void slot042(); virtual void slot043();
+	virtual void slot044(); virtual void slot045(); virtual void slot046(); virtual void slot047();
+	virtual void slot048(); virtual void slot049(); virtual void slot050(); virtual void slot051();
+	virtual void slot052(); virtual void slot053(); virtual void slot054(); virtual void slot055();
+	virtual void slot056(); virtual void slot057(); virtual void slot058(); virtual void slot059();
+	virtual void slot060(); virtual void slot061(); virtual void slot062(); virtual void slot063();
+	virtual void slot064(); virtual void slot065(); virtual void slot066(); virtual void slot067();
+	virtual void slot068(); virtual void slot069(); virtual void slot070(); virtual void slot071();
+	virtual void slot072(); virtual void slot073(); virtual void slot074(); virtual void slot075();
+	virtual void slot076(); virtual void slot077(); virtual void slot078(); virtual void slot079();
+	virtual void slot080(); virtual void slot081(); virtual void slot082(); virtual void slot083();
+	virtual void slot084(); virtual void slot085(); virtual void slot086(); virtual void slot087();
+	virtual void slot088(); virtual void slot089(); virtual void slot090(); virtual void slot091();
+	virtual void slot092(); virtual void slot093();
+	virtual Bool isAllowedToMoveAwayFromUnit() const;	///< slot 94, +0x178
+	virtual void slot095(); virtual void slot096();
+	virtual Bool slot097();					///< +0x184
+
+	char m_unreconstructed_004[0x140 - 0x04];	///< AICommandInterface at +0x20
+	Path *m_path;						///< retail this+0x140
+};
+
+class BFMEMoveAwayObject
+{
+public:
+	char m_unreconstructed_000[0x74];
+	ObjectID m_id;						///< retail this+0x74
+	char m_unreconstructed_078[0x1FC - 0x78];
+	BFMEMoveAwayContain *m_contain;				///< retail this+0x1fc
+	char m_unreconstructed_200[0x204 - 0x200];
+	BFMEMoveAwayAI *m_ai;					///< retail this+0x204
+	char m_unreconstructed_208[0x214 - 0x208];
+	BFMEMoveAwayObject *m_horde;				///< retail this+0x214
+};
+
+class ObjectIsMobileBody
+{
+public:
+	Bool isMobile() const;
+};
+
+class Rva001B5CC0
+{
+public:
+	void set( const char *object );
+};
+
+struct BFMEMoveAwayTemporaryState
+{
+	char m_unreconstructed_000[0x04];
+	StateID m_id;						///< retail this+0x04
+};
+
+class Gen_0016AD50
+{
+public:
+	void bfmeSnapshot();
+};
+
+class BfmeHostXZ
+{
+public:
+	Int bfmeStartXZ( UnsignedInt state, Int frames );
+};
+
+class BFMEMoveAwayStateMachine
+{
+public:
+	StateID getTemporaryState() const
+	{
+		return m_temporaryState ? m_temporaryState->m_id : (StateID)INVALID_STATE_ID;
+	}
+
+	char m_unreconstructed_000[0x58];
+	BFMEMoveAwayTemporaryState *m_temporaryState;		///< retail this+0x58
+};
+
+// Pathfinder::getMoveAwayFromPath (0x003E86A0) and
+// AICommandInterface::aiMoveAwayFromUnit (0x001FCD40) are reached through
+// their ILTs; the reference declarations here are inline or ZH-shaped.
+extern void j_00029aa5( void );
+extern void j_0000b627( void );
+class BFMEMoveAwayPathfinder
+{
+public:
+	typedef Path *(BFMEMoveAwayPathfinder::*Call)( Object *, Object *, Path *, Object *, Path * );
+	__forceinline Path *getMoveAwayFromPath( Object *obj, Object *otherObj, Path *pathToAvoid,
+		Object *otherObj2, Path *pathToAvoid2 )
+	{
+		union { void (*address)(); Call member; } route = { j_00029aa5 };
+		return (this->*route.member)( obj, otherObj, pathToAvoid, otherObj2, pathToAvoid2 );
+	}
+};
+
+class BFMEMoveAwayCommand
+{
+public:
+	typedef void (BFMEMoveAwayCommand::*Call)( Object *, CommandSourceType );
+	__forceinline void aiMoveAwayFromUnit( Object *obj, CommandSourceType cmdSource )
+	{
+		union { void (*address)(); Call member; } route = { j_0000b627 };
+		(this->*route.member)( obj, cmdSource );
+	}
+};
+
+// BFME numbers the move-out-of-the-way state 0x1A (Zero Hour: 0x17).
+enum { BFME_AI_MOVE_OUT_OF_THE_WAY = 0x1A };
+
+struct BFMEMoveAwayFields
+{
+	void setCanPathThroughUnits( Bool canPath )
+	{
+		m_canPathThroughUnits = canPath;
+		if (canPath)
+			m_isBlockedAndStuck = FALSE;
+	}
+
+	void setIgnoreCollisionTime( Int frames )
+	{
+		m_ignoreCollisionsUntil = TheGameLogic->getFrame() + frames;
+	}
+
+	char m_unreconstructed_000[0x08];
+	Object *m_object;					///< retail this+0x08
+	char m_unreconstructed_00C[0x30 - 0x0C];
+	BFMEMoveAwayStateMachine *m_stateMachine;		///< retail this+0x30
+	char m_unreconstructed_034[0x140 - 0x34];
+	Path *m_path;						///< retail this+0x140
+	char m_unreconstructed_144[0x178 - 0x144];
+	UnsignedInt m_ignoreCollisionsUntil;			///< retail this+0x178
+	char m_unreconstructed_17C[0x198 - 0x17C];
+	ObjectID m_moveOutOfWay1;				///< retail this+0x198
+	ObjectID m_moveOutOfWay2;				///< retail this+0x19c
+	char m_unreconstructed_1A0[0x1CC - 0x1A0];
+	Rva001B5CC0 *m_curLocomotor;			///< retail this+0x1cc
+	char m_unreconstructed_1D0[0x325 - 0x1D0];
+	Bool m_isBlocked;					///< retail this+0x325
+	Bool m_isBlockedAndStuck;				///< retail this+0x326
+	char m_unreconstructed_327[0x328 - 0x327];
+	Bool m_canPathThroughUnits;				///< retail this+0x328
+	char m_unreconstructed_329[0x32B - 0x329];
+	Bool m_isAiDead;					///< retail this+0x32B
+};
+
+// ?privateMoveAwayFromUnit@AIUpdateInterface@@MAEXPAVObject@@W4CommandSourceType@@@Z
 void AIUpdateInterface::privateMoveAwayFromUnit( Object *unit, CommandSourceType cmdSource )
 {
+	BFMEMoveAwayFields *fields = reinterpret_cast<BFMEMoveAwayFields *>( this );
+
 	// the dead don't listen very well
-	if (isAiInDeadState() || (getObject()->isMobile() == FALSE) || !isAllowedToMoveAwayFromUnit()) 
+	if (fields->m_isAiDead ||
+		!reinterpret_cast<const ObjectIsMobileBody *>( fields->m_object )->isMobile() ||
+		!reinterpret_cast<const BFMEMoveAwayAI *>( this )->isAllowedToMoveAwayFromUnit())
 	{
 		return;
 	}
-	ObjectID id = unit->getID();
-	if (m_stateMachine->getTemporaryState() == AI_MOVE_OUT_OF_THE_WAY) {
-		if (m_moveOutOfWay1 == id) {
-			if (m_isBlocked) {
-				setIgnoreCollisionTime(LOGICFRAMES_PER_SECOND*2); // cheat for 2 seconds.
+
+	BFMEMoveAwayObject *horde = reinterpret_cast<BFMEMoveAwayObject *>( fields->m_object )->m_horde;
+	BFMEMoveAwayContain *contain = horde ? horde->m_contain : NULL;
+	BFMEMoveAwayHordeMember *member = contain ? contain->slot026() : NULL;
+	BFMEMoveAwayAI *hordeAI = member ? horde->m_ai : NULL;
+	if (hordeAI && !hordeAI->slot097())
+	{
+		reinterpret_cast<BFMEMoveAwayCommand *>(
+			reinterpret_cast<char *>( horde->m_ai ) + 0x20 )->aiMoveAwayFromUnit( unit, cmdSource );
+		member->slot106();
+		return;
+	}
+
+	ObjectID id = reinterpret_cast<BFMEMoveAwayObject *>( unit )->m_id;
+	if (fields->m_stateMachine->getTemporaryState() == (StateID)BFME_AI_MOVE_OUT_OF_THE_WAY) {
+		if (fields->m_moveOutOfWay1 == id) {
+			if (fields->m_isBlocked) {
+				fields->setIgnoreCollisionTime(10);
 			}
 			return;
 		}
-		if (m_moveOutOfWay2 == id) {
-			if (m_isBlocked) {
-				setIgnoreCollisionTime(LOGICFRAMES_PER_SECOND*2); // cheat for 2 seconds.
+		if (fields->m_moveOutOfWay2 == id) {
+			if (fields->m_isBlocked) {
+				fields->setIgnoreCollisionTime(10);
 			}
 			return;
 		}
 	}
-	m_moveOutOfWay2 = m_moveOutOfWay1;
-	m_moveOutOfWay1 = id;
-	Object *obj2 = TheGameLogic->findObjectByID(m_moveOutOfWay2);
+	ObjectID previous = fields->m_moveOutOfWay1;
+	fields->m_moveOutOfWay2 = previous;
+	fields->m_moveOutOfWay1 = id;
+	Object *obj2 = TheGameLogic->findObjectByID(fields->m_moveOutOfWay2);
 	Path *path2 = NULL;
-	if (obj2 && obj2->getAI()) {
-		path2 = obj2->getAI()->getPath();
+	if (obj2 && reinterpret_cast<BFMEMoveAwayObject *>( obj2 )->m_ai) {
+		path2 = reinterpret_cast<BFMEMoveAwayObject *>( obj2 )->m_ai->m_path;
 	}
 
-	Path* unitPath = NULL;
-	if (unit && unit->getAI()) {
-		unitPath = unit->getAI()->getPath();
+	Path *unitPath = NULL;
+	if (reinterpret_cast<BFMEMoveAwayObject *>( unit )->m_ai) {
+		unitPath = reinterpret_cast<BFMEMoveAwayObject *>( unit )->m_ai->m_path;
 	}
-	if (unitPath == NULL) return;
-	Path *newPath = TheAI->pathfinder()->getMoveAwayFromPath(getObject(), unit, unitPath, obj2, path2);
-	if (newPath==NULL && !canPathThroughUnits())	{
-		setCanPathThroughUnits(TRUE);
-		newPath = TheAI->pathfinder()->getMoveAwayFromPath(getObject(), unit, unitPath, obj2, path2);
+	Path *newPath = reinterpret_cast<BFMEMoveAwayPathfinder *>( bfmePathAI()->pathfinder() )->getMoveAwayFromPath(
+		fields->m_object, unit, unitPath, obj2, path2);
+	if (newPath == NULL && !fields->m_canPathThroughUnits) {
+		Object *self = fields->m_object;
+		fields->setCanPathThroughUnits(TRUE);
+		newPath = reinterpret_cast<BFMEMoveAwayPathfinder *>( bfmePathAI()->pathfinder() )->getMoveAwayFromPath(
+			self, unit, unitPath, obj2, path2);
 	}
-		
+	if (fields->m_curLocomotor)
+		fields->m_curLocomotor->set( reinterpret_cast<const char *>( fields->m_object ) );
+
 	if (newPath) {
+		reinterpret_cast<Gen_0016AD50 *>( fields->m_stateMachine )->bfmeSnapshot();
 		destroyPath();
-		m_path = newPath;
-		wakeUpNow();
-		m_stateMachine->setTemporaryState(AI_MOVE_OUT_OF_THE_WAY, 10*LOGICFRAMES_PER_SECOND);
-		if (m_path) 
+		fields->m_path = newPath;
+		AIUpdateInterface::friend_notifyStateMachineChanged();
+		reinterpret_cast<BfmeHostXZ *>( fields->m_stateMachine )->bfmeStartXZ(BFME_AI_MOVE_OUT_OF_THE_WAY, 50);
+		if (fields->m_path)
 		{
-	 		if( !getObject()->isKindOf(KINDOF_NO_COLLIDE))// If I don't collide with things, I don't need to tell them to get out of the way
-				TheAI->pathfinder()->moveAllies(getObject(), m_path);
+			Bool moveAllies;
+			if (*reinterpret_cast<const Bool *>(reinterpret_cast<const char *>(fields->m_path) + 0x0D) &&
+				!fields->m_object->isKindOf((KindOfType)0x1E))
+			{
+				moveAllies = TRUE;
+			}
+			else
+			{
+				moveAllies = FALSE;
+			}
+			Object *object = fields->m_object;
+			Bool isKindOf6C = object->isKindOf((KindOfType)0x6C);
+			BFMEPathAIRoot *ai = bfmePathAI();
+			if (isKindOf6C &&
+				!*reinterpret_cast<const Bool *>(reinterpret_cast<const char *>(ai->getAiData()) + 0xB5))
+			{
+				moveAllies = FALSE;
+			}
+			if (reinterpret_cast<const Rva00216D20 *>(object)->field() ||
+				object->isKindOf((KindOfType)0x7C))
+			{
+				moveAllies = TRUE;
+			}
+			if (!reinterpret_cast<const BFMEActionObject *>(object)->testStatus(0x38) &&
+				!reinterpret_cast<const BFMEActionObject *>(object)->testStatus(0x31) &&
+				!reinterpret_cast<const BFMESelectionStatusBits *>(object)->test(0x7C) &&
+				moveAllies)
+			{
+				Pathfinder *alliesPathfinder = ai->pathfinder();
+				char crushableLevel =
+					static_cast<char>(object->getCrushableLevel());
+				reinterpret_cast<BFMEPathfinderMoveAllies *>(alliesPathfinder)->moveAllies(
+					object, fields->m_path,
+					!(crushableLevel < 4));
+			}
 		}
 	}
-
 }
 
 //----------------------------------------------------------------------------------------
@@ -5796,7 +6058,7 @@ Object* AIUpdateInterface::getNextMoodTarget( Bool calledByAI, Bool calledDuring
 	}
 
 	Real rangeToFindWithin = AI::getAdjustedVisionRangeForObject(obj, 3);
-	if (rangeToFindWithin <= g_rva01075350)
+	if (rangeToFindWithin <= BfmeBoundaryZero3D)
 		return NULL;
 	void *container = *reinterpret_cast<void **>(object + 0x214);
 	if (container != NULL)
@@ -5925,7 +6187,7 @@ Object* AIUpdateInterface::getNextMoodTarget( Bool calledByAI, Bool calledDuring
 		return newVictim;
 
 	Real attackRange = *reinterpret_cast<Real *>(moduleData + 0x2C);
-	if (attackRange <= g_rva01075350)
+	if (attackRange <= BfmeBoundaryZero3D)
 		return NULL;
 	scratch.x = *reinterpret_cast<Real *>(reinterpret_cast<unsigned char *>(newVictim) + 0x38)
 		- *reinterpret_cast<Real *>(object + 0x38);
