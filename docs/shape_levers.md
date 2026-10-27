@@ -2215,3 +2215,20 @@ list->insert(list->end(), value) keeps all 94 consumer/provider rows exact and
 removes both competing push_back definitions. No shared header or runtime helper
 is added. Measured evidence:
 targets/game/reverse/identity_evidence/20261026-list-word-append-ownership.md.
+
+
+## Unrotated outer loop: loop over an inlined pass that returns bool (2026-10-27)
+
+Retail 0x008A30C0 (62 B) keeps a nested drain's outer loop unrotated: header
+`mov eax,[esi+4]; test eax,eax; je out; mov edi,eax` at +4 and a `jmp` back
+at +0x39. Every direct spelling under the default /O2 flags was rotated by
+MSVC 7.1 (header duplicated at the tail, 67 or 83 B): while/do/for(;;)+break,
+goto, `while ((n = m_count) != 0)`, tail recursion, up-counting inner loops
+(attempt log 0x008A30C0). Exact: move one pass into a `__forceinline bool`
+member (`int count = m_count; if (!count) return false; for (int n = count;
+n; --n) {...} return true;`) and write the function as `while (pass()) ;`.
+Measured effect: the inlined boolean return keeps the header as the loop
+entry with a plain back jump, and the separate `count` local gives retail's
+load into EAX followed by the copy into the EDI pass counter (testing `n`
+directly loads EDI and leaves 4 diffs). Source
+`game/Libraries/Source/Apt/AptValue/AptValueVector.cpp`.
