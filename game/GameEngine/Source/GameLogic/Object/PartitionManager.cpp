@@ -4888,12 +4888,8 @@ Bool PartitionFilterRepulsor::allow( Object *other )
 
 //-----------------------------------------------------------------------------
 
-// ?allow@PartitionFilterIrregularArea@@MAE_NPAVObject@@@Z present-unmatched here — matched copy lives in Common/PartitionFilters_allow_Thunk.cpp
-Bool PartitionFilterIrregularArea::allow( Object *other )
-{
-
-	return PointInsideArea2D(other->getPosition(), m_area, m_numPointsInArea);
-}
+// allow@PartitionFilterIrregularArea@@MAE_NPAVObject@@@Z
+// Body in PartitionFilters_allow_Thunk.cpp (exact 27B retail).
 
 //-----------------------------------------------------------------------------
 Bool PartitionFilterPolygonTrigger::allow( Object *other )
