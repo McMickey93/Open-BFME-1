@@ -127,3 +127,21 @@ BFME 2 tip advanced 73898a96 -> a32b57717 (635 commits); the span does not
 touch donor GameLogic.cpp or the shape/recipe docs and its commit messages
 carry no applicable hits (startNewGame/394260/regalloc/zero-register/FAsc/
 packing). No re-scan (unchanged inputs); verdict 15 recorded. Block stands.
+
+## Re-draw 2026-10-27 (7th draw)
+
+Re-drawn from the deferred pool after untried work ran dry (54
+already-investigated hidden, 6 deferred). Verified both Resume conditions
+unmet against 6f31f09be3: (a) the four dump callees
+0x0019FF20/0x0038F7B0/0x003916F0/0x00392D00 are still gen-dump rows in
+functions.csv (37174/37547/37549/37551) - none landed; (b) no new
+shape_levers entry - the only upstream commit since the 5th draw (6f31f09be3,
+another worker's 0x002850A0 shape-0.967 bank, model=claude-opus-5-5, residue =
+early push ebp +0x32 vs +0xCF plus m_object reload register) is a different
+function with a different residue family, recorded as a handoff note not a
+shape-lever entry. That commit touches nothing under docs/, game/ or inputs/
+(2 attempt_history JSONs + the handoff + the re_attempts.log line), so the
+bank inputs (bank file + TU + ledger + shims + shape_levers) are
+byte-unchanged and the in-repo ZH donor tree is unchanged. Per "do not repeat
+unchanged scans", no re-probe (shape 0.892 / 4655 non-reloc / 172 structural,
+frame 0x344 vs 0x340 stands). Verdict 16 (7th draw) recorded. Block stands.
