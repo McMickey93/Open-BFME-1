@@ -1,0 +1,42 @@
+# 0x0026EED0 AIUpdateInterface::calculateMaxBlockedSpeed (289 B), bank 0.976
+
+Identity: `ilt_oracle.py check '?calculateMaxBlockedSpeed@AIUpdateInterface@@IBEMPAVObject@@@Z' 0x0026EED0`
+is CONFIRMED (protected const; the other access spellings are contradicted).
+Zero Hour twin: GeneralsMD AIUpdate.cpp:1258. BFME replaces the physics
+velocity length with `Object::bfmeGetNonnegativePreferredLocomotorHeight()`
+(ILT 0x000047C8, pinned) and the formation id sits at Object+0x31C.
+
+Bank: `targets/game/reverse/attempts/0x0026eed0.cpp` (session 466, a1),
+289/289 B, 9 relocations, 7 non-reloc bytes. VC7.1 /O2, `/DNDEBUG /MD /EHsc`.
+
+What moved it from the old 0.72 bank (295 B, frame 0x10):
+- Frame 0x14: `Coord3D ourDir; ourDir.x = dir->x; ourDir.y = dir->y;` (a
+  Coord3D whose z is never written). Coord2D or scalars give 0x10; a full
+  `Coord3D ourDir = *dir` copies z and grows the code (302 B).
+- Retail keeps otherDir.x/y on the x87 stack and CONSUMES them in the first
+  dot (`fmul [dy]; fxch; fmul [dx]; faddp`). Locals in any scope (function,
+  nested block, const, Coord2D, Real) stay live and are popped late (295 B).
+  A `__forceinline` helper taking them BY VALUE, `projectTowards(Coord2D &v,
+  const Object *to, const Object *from, Real oy, Real ox)` that writes v,
+  normalizes and returns `v.x*ox + v.y*oy`, called with `odir->y, odir->x`,
+  reproduces the loads at the call site and the consuming products. Plain
+  `static inline` is NOT inlined (212 B call). Swapping the parameter order
+  (ox, oy) gives 291 B.
+
+Remaining 7 bytes:
+1. +0x2C/+0x32/+0x3C: `getObject()` for the position delta is ECX in ours,
+   EAX in retail. Inert: helper argument order (from, to), passing positions
+   instead of objects (worse, 291 B), declaration order.
+2. +0xB6..+0xC2: second dot `fld ourDir.y; fmul dy; fld ourDir.x; fmul dx`
+   in retail; ours fld's vectorToOther and fmul's ourDir. Inert: all 8
+   term/factor orders; vectorToOther declared before ourDir. Worse: a
+   Coord2D/Coord3D dot member (295 B), a by-value dot helper (295 B),
+   compound `+=` (295 B). Scalar ourDir copies keep the same choice (and lose
+   the frame). Observation: ours always loads the operand written by FPU
+   stores (vectorToOther), whatever its address.
+
+Constants: the bank uses literals 0.0f/1.0f/0.55f; retail reads
+0x01075350 (dir32 name ?BfmeBoundaryZero3D@@3MB), 0x01075334
+(?g_bfmeDefaultBU@@3MA) and 0x010B933C (?g_real3f0ccccd@@3MB). The landing
+gate will want the recorded names (see AIUpdateInterfacePrivateAttackPosition.cpp
+for the extern pattern); swap them in before landing.

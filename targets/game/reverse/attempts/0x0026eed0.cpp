@@ -1,66 +1,87 @@
-// ?blockedSpeed@Rva0026EED0AIUpdate@@QBEMPAVObject@@@Z
-// partial score=0.72 date=2026-09-26
+// ?calculateMaxBlockedSpeed@AIUpdateInterface@@IBEMPAVObject@@@Z
+// partial score=0.9758 date=2026-10-28
 // cl: /DNDEBUG /MD /EHsc
-// This is the AI collision-speed calculation analogous to the Zero Hour
-// blocked-speed formula, with BFME's locomotor-height term replacing the
-// upstream physics-velocity walk.
+// AIUpdateInterface::calculateMaxBlockedSpeed, retail 0x0026EED0, 289 B (ret 4).
+// ilt_oracle CONFIRMS ?calculateMaxBlockedSpeed@AIUpdateInterface@@IBEMPAVObject@@@Z.
+// Zero Hour AIUpdate.cpp:1258 twin; BFME replaces the physics velocity with
+// Object::bfmeGetNonnegativePreferredLocomotorHeight (ILT 0x47C8).
+// 289/289 B, 7 bytes off: (1) getObject() for the position delta loads ECX,
+// retail EAX (+0x2C/+0x32/+0x3C); (2) the second dot fld's vectorToOther,
+// retail fld's ourDir (+0xB6..+0xC2). See attempt_support handoff.
 typedef float Real;
-extern const Real BfmeZeroRange;
-extern Real g_bfmeDefaultBU;
+typedef int Int;
 extern "C" double __cdecl sqrt(double value);
 #pragma intrinsic(sqrt)
-
 struct Coord3D { Real x, y, z; };
-struct Rva0026EED0Direction2D { Real x, y; };
+struct Coord2D
+{
+	Real x, y;
+	Real length() const { return (Real)sqrt(x * x + y * y); }
+	void normalize()
+	{
+		Real len = length();
+		if (len != 0.0f)
+		{
+			Real inv = 1.0f / len;
+			x *= inv;
+			y *= inv;
+		}
+	}
+};
 class Thing
 {
 public:
 	const Coord3D *getUnitDirectionVector2D() const;
+	const Coord3D *getPosition() const { return &m_position; }
 	char m_pad00[0x38];
 	Coord3D m_position;
 	char m_pad44[0x31c - 0x44];
-	int m_formation;
+	Int m_formationID;
 };
 class Object : public Thing
 {
 public:
 	Real bfmeGetNonnegativePreferredLocomotorHeight() const;
+	Int getFormationID() const { return m_formationID; }
 };
-class Rva0026EED0AIUpdate
+class AIUpdateInterface
 {
-public:
-	Real blockedSpeed(Object *other) const;
+protected:
+	Real calculateMaxBlockedSpeed(Object *other) const;
+	Object *getObject() const { return m_object; }
 	char m_pad00[8];
 	Object *m_object;
 	char m_pad0c[0x170 - 0x0c];
 	Real m_curMaxBlockedSpeed;
 };
-Real Rva0026EED0AIUpdate::blockedSpeed(Object *other) const
+static __forceinline Real projectTowards(Coord2D &v, const Object *to, const Object *from, Real oy, Real ox)
 {
-	const Coord3D *direction = m_object->getUnitDirectionVector2D();
-	Rva0026EED0Direction2D ourDir = { direction->x, direction->y };
-	const Coord3D *otherDirection = other->getUnitDirectionVector2D();
-	Rva0026EED0Direction2D otherDir = { otherDirection->x, otherDirection->y };
-	Real dx = other->m_position.x - m_object->m_position.x;
-	Real dy = other->m_position.y - m_object->m_position.y;
-	Real length = (Real)sqrt(dx * dx + dy * dy);
-	if (length != BfmeZeroRange)
-	{
-		Real reciprocal = g_bfmeDefaultBU / length;
-		dx *= reciprocal;
-		dy *= reciprocal;
-	}
-	Real speedFactor = dx * otherDir.x + dy * otherDir.y;
-	if (speedFactor < BfmeZeroRange)
-		return BfmeZeroRange;
+	v.x = to->getPosition()->x - from->getPosition()->x;
+	v.y = to->getPosition()->y - from->getPosition()->y;
+	v.normalize();
+	return v.x*ox + v.y*oy;
+}
+Real AIUpdateInterface::calculateMaxBlockedSpeed(Object *other) const
+{
+	const Coord3D *dir = getObject()->getUnitDirectionVector2D();
+	Coord3D ourDir; ourDir.x = dir->x; ourDir.y = dir->y;
+	Coord2D vectorToOther;
+	const Coord3D *odir = other->getUnitDirectionVector2D();
+	Real dotProduct = projectTowards(vectorToOther, other, getObject(), odir->y, odir->x);
+	if (dotProduct<0) return 0; // They are running into us.
+
+	Real speedFactor = dotProduct;
 	Real awaySpeed = other->bfmeGetNonnegativePreferredLocomotorHeight() * speedFactor;
-	Real dot = dx * ourDir.x + dy * ourDir.y;
-	if (dot <= BfmeZeroRange)
+
+	// Now calculate the amount we are moving relative to towards them...
+	dotProduct = ourDir.x*vectorToOther.x + ourDir.y*vectorToOther.y;
+	if (dotProduct<=0) {
 		return m_curMaxBlockedSpeed;
-	Real maxSpeed = awaySpeed / dot;
-	if (other->m_formation != 0 && m_object->m_formation == other->m_formation)
+	}
+	Real maxSpeed = awaySpeed / dotProduct;
+	if (other->getFormationID()!=0 && getObject()->getFormationID()==other->getFormationID()) {
 		maxSpeed *= 0.55f;
-	if (maxSpeed > m_curMaxBlockedSpeed)
-		return m_curMaxBlockedSpeed;
+	}
+	if (maxSpeed>m_curMaxBlockedSpeed) return m_curMaxBlockedSpeed;
 	return maxSpeed;
 }
