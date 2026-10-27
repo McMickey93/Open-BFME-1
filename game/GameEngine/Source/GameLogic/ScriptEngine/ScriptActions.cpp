@@ -1926,32 +1926,8 @@ void ScriptActions::doModCameraFinalLookToward(const AsciiString& waypoint)
 //-------------------------------------------------------------------------------------------------
 /** doModCameraMoveToSelection */
 //-------------------------------------------------------------------------------------------------
-// ?doModCameraMoveToSelection@ScriptActions@@IAEXXZ present-unmatched
-void ScriptActions::doModCameraMoveToSelection(void)
-{
-	Int count=0;
-	Coord3D destination;
-	destination.x=destination.y=destination.z = 0;
-
-	for (Drawable *d = TheGameClient->firstDrawable(); d; d = d->getNextDrawable())
-	{
-		if (d->isSelected())
-		{	
-			Coord3D pos = *d->getPosition();
-			destination.x += pos.x;
-			destination.y += pos.y;
-			destination.z += pos.z;
-			count++;
-		}
-	}
-	if (count) {
-		destination.z /= count;
-		destination.x /= count;
-		destination.y /= count;
-		TheTacticalView->cameraModFinalMoveTo(&destination);			
-	}
-
-}
+// doModCameraMoveToSelection@ScriptActions@@IAEXXZ
+// Body in ScriptActionsCamera.cpp (exact 189B retail).
 
 //-------------------------------------------------------------------------------------------------
 /** doResetCamera */
