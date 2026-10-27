@@ -1,0 +1,33 @@
+{
+  "fork": "McMickey93/Open-BFME-1",
+  "control_branch": "codex/20261027-ring-factory-transfer",
+  "result_branch": "codex/20261027-ring-factory-verified",
+  "checkpoint_prefix": "codex/20261027-ring-factory-checkpoint",
+  "branch": "refs/heads/codex/20261027-next-link-repair",
+  "base": "08400aa3f07c4bbac6d652e78d288a70bc779ceb",
+  "commit": "ce1daafa6a59b48c3ca371de266ce299f79cbd99",
+  "tree": "181e725b53c35fcd44faf9259206d98b58ef0e95",
+  "files": [
+    "game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.cpp",
+    "targets/game/reverse/identity_evidence/20261027-one-ring-factory-link.md",
+    "targets/game/reverse/re_attempts.log"
+  ],
+  "source": "game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.cpp",
+  "source_blob": "3e3ffb9e819a0e6a5f61f66cfa0d1ddf939d324c",
+  "verify_sources": [
+    "game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.cpp",
+    "game/GameEngine/Source/Common/Thing/ThingFactoryFindTemplate.cpp"
+  ],
+  "reviewed_blobs": {
+    "game/GameEngine/Source/GameLogic/Object/Update/OneRingPenaltyUpdateRva00299080.cpp": "3e3ffb9e819a0e6a5f61f66cfa0d1ddf939d324c",
+    "game/GameEngine/Source/Common/Thing/ThingFactoryFindTemplate.cpp": "d4147a96add5f866ec51cc57c721d059570c2a99"
+  },
+  "sha256": "c8942161aa51cf960470240bf71625039f4acf992a50f6d3652ed000bf36b3a2",
+  "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
+  "normal_precommit_passed": true,
+  "normal_official_prepush_passed": true,
+  "transport_expected": "08400aa3f07c4bbac6d652e78d288a70bc779ceb",
+  "claim_ref": "refs/heads/claims/0x00299080",
+  "claim_owner": "github:McMickey93:bfme1:next-one-20261027",
+  "claim_lease": "69d807a7041847a291f636c9067db026"
+}
