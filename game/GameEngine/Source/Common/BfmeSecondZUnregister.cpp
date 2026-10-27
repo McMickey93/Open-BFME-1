@@ -14,12 +14,14 @@
 // rather than through the local. Reading via `n->m_bfmeNext`, a volatile
 // reload, a do-while, or an inlined pop-front all fold the test and land 88B.
 
-class BfmeNodeZ
+// Use the existing 72-byte destructor at 0x00354A00 through ILT 0x00042A32.
+// This view accesses only the next-link prefix; the provider owns +4 teardown.
+class Rva00354A00Node
 {
 public:
-	~BfmeNodeZ(void);					// retail 0x00042A32 (ILT)
+	~Rva00354A00Node(void);					// retail 0x00042A32 (ILT)
 
-	BfmeNodeZ *m_bfmeNext;					// +0x00
+	Rva00354A00Node *m_bfmeNext;					// +0x00
 };
 
 class BfmeElementZ
@@ -28,7 +30,7 @@ public:
 	~BfmeElementZ(void);					// retail 0x0004884C (ILT)
 
 	unsigned char m_bfmeHead[0x10];				// +0x00
-	BfmeNodeZ *m_bfmeList;					// +0x10
+	Rva00354A00Node *m_bfmeList;					// +0x10
 };
 
 class BfmeSecondZ
@@ -47,7 +49,7 @@ void __cdecl bfmeUnregister(BfmeSecondZ *second)
 
 		while (e->m_bfmeList)
 		{
-			BfmeNodeZ *n = e->m_bfmeList;
+			Rva00354A00Node *n = e->m_bfmeList;
 
 			e->m_bfmeList = e->m_bfmeList->m_bfmeNext;
 			delete n;

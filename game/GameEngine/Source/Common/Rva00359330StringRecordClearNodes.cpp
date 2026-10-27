@@ -3,11 +3,12 @@
 //
 // Drains the node chain hanging off a string record's +0x10 slot; the record
 // layout is the one Rva00359330StringRecordRelease.cpp established (20-byte
-// stride, name at +0x08). The node destructor is the BfmeNodeZ body (ILT
-// 0x00042A32) that bfmeUnregister(BfmeSecondZ *) at 0x0035AC30 also drains,
-// so the node type is spelled with that already-pinned name. No named caller
-// reaches the body (ILT 0x0001612B is unowned), so the function name is
-// address-derived.
+// stride, name at +0x08). Retail reaches the existing 72-byte node destructor
+// at 0x00354A00 through ILT 0x00042A32. Bind to its rowed Rva00354A00Node
+// identity; this TU only reads the next-link prefix and never allocates or
+// copies a node. The provider tears down the embedded subobject at +4.
+// No named caller reaches this clearer (ILT 0x0001612B is unowned), so its
+// function name remains address-derived.
 //
 // Shape lever (docs/shape_levers.md): the next link is read through the
 // field, not the local, so VC7.1 keeps the delete null test after the store
@@ -16,11 +17,11 @@
 
 void __cdecl operator delete(void *);
 
-class BfmeNodeZ
+class Rva00354A00Node
 {
 public:
-	~BfmeNodeZ();
-	BfmeNodeZ *m_next;
+	~Rva00354A00Node();
+	Rva00354A00Node *m_next;
 };
 
 struct Rva00359330Record
@@ -31,7 +32,7 @@ struct Rva00359330Record
 	unsigned char m_released;
 	unsigned char m_pad;
 	unsigned short m_references;
-	BfmeNodeZ *m_nodes;
+	Rva00354A00Node *m_nodes;
 };
 
 // ?clearRva00359330Nodes@@YAXPAURva00359330Record@@@Z
@@ -39,7 +40,7 @@ void clearRva00359330Nodes(Rva00359330Record *record)
 {
 	while (record->m_nodes)
 	{
-		BfmeNodeZ *node = record->m_nodes;
+		Rva00354A00Node *node = record->m_nodes;
 
 		record->m_nodes = record->m_nodes->m_next;
 		delete node;
