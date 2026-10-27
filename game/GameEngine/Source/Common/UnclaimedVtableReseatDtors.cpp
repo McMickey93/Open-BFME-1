@@ -29,7 +29,24 @@
 	}
 
 BFME_VTABLE_RESEAT_DTOR( Rva007EA6C0VtableReseat )
-BFME_VTABLE_RESEAT_DTOR( Rva007F48B0VtableReseat )
+// 0x0112B3AC is the vftable Rva007F4860VptrCtor.cpp emits (ledger dir32 row
+// ??_7Rva007F4860Owner@@6B@); this class's own vftable was the unrecorded name
+// the dir32 gate debt at 0x0112B3AC retires.  novtable suppresses it (and its
+// ??_G); the seven-byte body is the explicit store of the recorded vtable alone,
+// matching retail 0x007F48B0.
+// retired debt: ??_7Rva007F48B0VtableReseat@@6B@ replaced with ??_7Rva007F4860Owner@@6B@
+extern "C" void *__identifier("??_7Rva007F4860Owner@@6B@")[];
+
+class __declspec(novtable) Rva007F48B0VtableReseat
+{
+public:
+	virtual ~Rva007F48B0VtableReseat();
+};
+
+Rva007F48B0VtableReseat::~Rva007F48B0VtableReseat()
+{
+	*(volatile void **)this = (void *)__identifier("??_7Rva007F4860Owner@@6B@");
+}
 BFME_VTABLE_RESEAT_DTOR( Rva007F48C0VtableReseat )
 BFME_VTABLE_RESEAT_DTOR( Rva007F8720VtableReseat )
 BFME_VTABLE_RESEAT_DTOR( Rva007F8DA0VtableReseat )

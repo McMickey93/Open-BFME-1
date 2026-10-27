@@ -347,7 +347,6 @@ dir32,0x0112AC70,??_7Rva007F2200ReseatTailDtor@@6B@,"retail 0x0112AC70 is alread
 dir32,0x0112AF04,??_7Rva007F2E90ReseatTailDtor@@6B@,"retail 0x0112AF04 is already recorded as ??_7Gen007F33E0@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B048,??_7Rva007F3590ReseatTailDtor@@6B@,"retail 0x0112B048 is already recorded as ??_7Gen007F40C0@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B248,??_7Rva007F4120ReseatTailDtor@@6B@,"retail 0x0112B248 is already recorded as ??_7Gen007F47E0@@6B@ (+1 more); reference that name, not a new one"
-dir32,0x0112B3AC,??_7Rva007F48B0VtableReseat@@6B@,"retail 0x0112B3AC is already recorded as ??_7Rva007F4860Owner@@6B@ (+3 more); reference that name, not a new one"
 dir32,0x0112B3B8,??_7Rva007FA670VtableReseat@@6B@,"retail 0x0112B3B8 is already recorded as ??_7Rva007FA8E0Deleting@@6B@ (+2 more); reference that name, not a new one"
 dir32,0x0112B3C8,??_7Rva007F48A0ReseatTailDtor@@6B@,"retail 0x0112B3C8 is already recorded as ??_7Rva007F4900CleanupDeleting@@6B@ (+1 more); reference that name, not a new one"
 dir32,0x0112B3E4,??_7Rva007F48C0VtableReseat@@6B@,"retail 0x0112B3E4 is already recorded as ??_7Rva007F48D0Deleting@@6B@; reference that name, not a new one"
