@@ -5752,19 +5752,8 @@ void ScriptActions::doRadarRefresh( void )
 //-------------------------------------------------------------------------------------------------
 /** doCameraTetherNamed */
 //-------------------------------------------------------------------------------------------------
-// ?doCameraTetherNamed@ScriptActions@@IAEXABVAsciiString@@_NM@Z present-unmatched
-void ScriptActions::doCameraTetherNamed(const AsciiString& unit, Bool snapToUnit, Real play)
-{
-	Object *theObj = TheScriptEngine->getUnitNamed( unit );
-	if (theObj) 
-	{	
-		TheTacticalView->setCameraLock(theObj->getID());
-		if (snapToUnit)
-			TheTacticalView->snapToCameraLock();
-
-		TheTacticalView->setSnapMode( View::LOCK_TETHER, play );
-	}
-}
+// doCameraTetherNamed@ScriptActions@@IAEXABVAsciiString@@_NM@Z
+// Body in ScriptActionsCamera.cpp (exact 140B retail).
 
 //-------------------------------------------------------------------------------------------------
 /** doCameraStopTetherNamed */
