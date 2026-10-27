@@ -74,8 +74,12 @@ private:
 	friend class ControlBarSchemeManager;
 };
 
-extern const FieldParse g_controlBarSchemeImageFieldParse[];
-extern const FieldParse g_controlBarSchemeAnimationFieldParse[];
+// The address register owns these tables under byte-storage names. Keep the
+// FieldParse view at the API boundary instead of emitting a second name.
+// Former typed references: ?g_controlBarSchemeImageFieldParse@@3QBUFieldParse@@B
+// and ?g_controlBarSchemeAnimationFieldParse@@3QBUFieldParse@@B.
+extern const unsigned char g_controlBarSchemeImageFieldParse[];
+extern const unsigned char g_controlBarSchemeAnimationFieldParse[];
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/GameClient/ControlBarScheme.h
 class ControlBarSchemeManager
@@ -96,7 +100,8 @@ void __cdecl ControlBarSchemeManager::parseImagePart(INI *ini, void *instance,
 	void *, const void *)
 {
 	ControlBarSchemeImage *schemeImage = new ControlBarSchemeImage;
-	ini->initFromINI(schemeImage, g_controlBarSchemeImageFieldParse);
+	ini->initFromINI(schemeImage,
+		reinterpret_cast<const FieldParse *>(g_controlBarSchemeImageFieldParse));
 
 	if (schemeImage != 0)
 	{
@@ -113,7 +118,8 @@ void __cdecl ControlBarSchemeManager::parseAnimatingPart(INI *ini,
 	void *instance, void *, const void *)
 {
 	ControlBarSchemeAnimation *animation = new ControlBarSchemeAnimation;
-	ini->initFromINI(animation, g_controlBarSchemeAnimationFieldParse);
+	ini->initFromINI(animation,
+		reinterpret_cast<const FieldParse *>(g_controlBarSchemeAnimationFieldParse));
 
 	ControlBarScheme *scheme = static_cast<ControlBarScheme *>(instance);
 	if (animation != 0)
