@@ -117,3 +117,13 @@ shape-lever entry targets the zero-register/spill family. A donor-driven
 rewrite is not a shorter path; the identity is proven and the block is
 compiler-internal (frame packing + regalloc), recorded as
 blocker=stack-slot/frame-layout.
+
+## Re-draw 2026-10-27 (5th draw)
+
+Re-drawn from the deferred pool after untried work ran dry. Tree unchanged
+since verdict 14 (master == 7b17edd73a); the four dump callees are still
+gen-dump rows; no new shape_levers entry. Donor evidence revisited: official
+BFME 2 tip advanced 73898a96 -> a32b57717 (635 commits); the span does not
+touch donor GameLogic.cpp or the shape/recipe docs and its commit messages
+carry no applicable hits (startNewGame/394260/regalloc/zero-register/FAsc/
+packing). No re-scan (unchanged inputs); verdict 15 recorded. Block stands.
