@@ -199,16 +199,8 @@ static DynamicAudioEventInfo  * getNoSoundMarker()
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameClient/DrawableVisualState.cpp
-// ??0DrawableIconInfo@@QAE@XZ present-unmatched
-DrawableIconInfo::DrawableIconInfo()
-{
-	for (int i = 0; i < MAX_ICONS; ++i)
-	{
-		m_icon[i] = NULL;
-		m_keepTillFrame[i] = 0;
-	}
-}
+// DrawableIconInfo::DrawableIconInfo()
+// Body in DrawableVisualState.cpp (exact 32B retail).
 
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------

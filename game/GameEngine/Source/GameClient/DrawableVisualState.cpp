@@ -1,5 +1,4 @@
 // cl: /DNDEBUG /MD /EHsc /Iinputs/reference/shims/stringbaseascii /Igame/Libraries/Source/WWVegas/WWLib
-// readable body of ??0DrawableIconInfo@@QAE@XZ: game/GameEngine/Source/GameClient/Drawable.cpp
 // readable body of ?clear@DrawableIconInfo@@QAEXXZ: game/GameEngine/Source/GameClient/Drawable.cpp
 // readable body of ??1DrawableIconInfo@@MAE@XZ: game/GameEngine/Source/GameClient/Drawable.cpp
 // readable body of ?applyTint@Drawable@@QAEXURGBColor@@IIIMM@Z: game/GameEngine/Source/GameClient/Drawable.cpp
