@@ -4993,6 +4993,7 @@ void AIUpdateInterface::privateAttackTeam( const Team *team, Int maxShotsToFire,
 /**
  * Attack given spot
  */
+// byte-exact reconstruction: game/GameEngine/Source/GameLogic/Object/Update/AIUpdateInterfacePrivateAttackPosition.cpp
 // ?privateAttackPosition@AIUpdateInterface@@ present-unmatched
 void AIUpdateInterface::privateAttackPosition( const Coord3D *pos, Int maxShotsToFire, CommandSourceType cmdSource )
 {

@@ -2281,3 +2281,21 @@ The rest fell to Zero Hour's own single expression
 loop's latch inverted (jge outer + jmp top) or swapped EBX/EDI/EBP.
 VC7.1 /O2 (TU flags `/DNDEBUG /DWIN32 /MD /EHsc`, stringinline shim).
 Source `game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamGarrisonNearestBuilding.cpp`.
+
+## Volatile float local reproduces a dead-argument-home spill reloaded after a call (2026-10-28)
+
+Mismatch (0x0027DB50 AIUpdateInterface::privateAttackPosition, 555/562 B
+across five banks): retail copies a template float through EAX into the dead
+`cmdSource` argument home (`mov eax,[edx+510h]; mov [esp+80h],eax; fld
+[esp+80h]`), and after `PartitionFilter::link` reloads it with `mov edx,
+[esp+80h]; push edx` for getClosestObject. Plain and memcpy locals loaded the
+bits into EBX and pushed EBX (seven bytes short). Source change:
+`volatile float range = tmpl->continueRange;` passed as `*(float *)&range`
+(a non-volatile read, so the push is `mov edx`/`push edx`, not fld/fstp).
+Passing the volatile directly emitted fld/fstp (565 B). Measured effect: exact
+size, the only residue left was a separate EAX/ECX choice. That one fell to
+capturing the weapon-set word in a local, `unsigned int w =
+object->getWeaponSetFlags().word; if ((w & 0x100) && ...)`, which loads EAX
+where the inline `test(8)` spelling (and the sibling 0x00279050) loads ECX.
+VC7.1 /O2, `/DNDEBUG /MD /EHsc`. Source
+`game/GameEngine/Source/GameLogic/Object/Update/AIUpdateInterfacePrivateAttackPosition.cpp`.

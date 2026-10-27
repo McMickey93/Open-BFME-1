@@ -21231,5 +21231,15 @@
    "after_sha256": "7e43ef82263cb27f187f87728095cbdc17228bdb66237b1b30574bb4376765b6",
    "evidence": "targets/game/reverse/bfme_layouts.json",
    "reason": "The bank's TU-local view borrowed the Zero Hour name SimpleObjectIterator for the 0x009F2960 result payload, whose fields (+4 end, +8 capacity, +0xC cursor) contradict the witnessed SimpleObjectIterator layout (m_firstClump/m_curClump/m_clumpCount); the view now carries an address-derived name."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x0027db50.cpp",
+   "new_path": "game/GameEngine/Source/GameLogic/Object/Update/AIUpdateInterfacePrivateAttackPosition.cpp",
+   "old_name": "PartitionFilterPossibleToAttack",
+   "new_name": "Rva010956C4AttackFilter",
+   "before_sha256": "384b7ffb73f0503b2f9875e4718cec5b90d0959a86f580c3534925b7084cc7a3",
+   "after_sha256": "78e76b24716eb8478fddeca2c9b62277a7b34c0b77e49bad7cb2fac6078e1b0b",
+   "evidence": "targets/game/reverse/symbols.csv",
+   "reason": "The filter privateAttackPosition builds installs vtable 0x010956C4 (recorded only as g_010956C4), while symbols.csv records ??_7PartitionFilterPossibleToAttack@@6B@ at 0x00CFD964 (VA 0x010FD964) from its exact constructor 0x004C12B0; the two tables differ, so the bank's borrowed Zero Hour name is not this class and an address-derived name replaces it."
  }
 ]

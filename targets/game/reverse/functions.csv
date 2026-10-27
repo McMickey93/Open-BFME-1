@@ -37346,7 +37346,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_00278830@@YAXXZ,,0x00278830,99,game/gen_asm/d_00272800.asm,matched,gen-dump;ghidra=FUN_00678830
 ?d_00279a50@@YAXXZ,,0x00279A50,1760,game/gen_asm/d_00278950.asm,matched,gen-dump;ghidra=FUN_00679a50
 ?d_0027c250@@YAXXZ,,0x0027C250,2669,game/gen_asm/d_00278950.asm,matched,gen-dump;ghidra=FUN_0067c250
-?d_0027db50@@YAXXZ,,0x0027DB50,562,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_0067db50
 ?d_002850a0@@YAXXZ,,0x002850A0,479,game/gen_asm/d_0027db50.asm,matched,gen-dump;ghidra=FUN_006850a0
 ?d_0028f0c0@@YAXXZ,,0x0028F0C0,1,game/GameEngine/Source/Common/Rva0028F0E0Noop.cpp,matched,carved boundary contains only ret; no semantic identity evidence
 ?d_00290b90@@YAXXZ,,0x00290B90,536,game/gen_asm/d_0028fdf0.asm,matched,gen-dump;ghidra=FUN_00690b90
@@ -173391,3 +173390,4 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 ?rva0073D4C0@W3DView@@UAEXXZ,,0x0073D4C0,423,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp,matched,W3DView vtable 0x011217A0 slot 118: leaves the object camera mode of slot 115 (0x00743CE0) and restores its saved globals;model=claude-opus-5-5;host=app
 ?Rva0084DBE0@@YAPAXXZ,,0x0084DBE0,6,game/Libraries/Source/WWVegas/WWLib/Rva0084DBStringAndCodePage.cpp,matched,model=claude-opus-5-5;host=app
 ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z,,0x00302240,536,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamGarrisonNearestBuilding.cpp,matched,executeAction action 108 arm and ZH twin ScriptActions.cpp:3382 identify the body; 536 B ends ret 4;model=claude-opus-5-5;host=app
+?privateAttackPosition@AIUpdateInterface@@MAEXPBVCoord3D@@HW4CommandSourceType@@@Z,,0x0027DB50,562,game/GameEngine/Source/GameLogic/Object/Update/AIUpdateInterfacePrivateAttackPosition.cpp,matched,ZH AIUpdate.cpp privateAttackPosition twin; ilt_oracle confirms the class-keyed Coord3D name; Coord3D callees via their ILT thunk rows; volatile continue-range local reproduces the cmdSource-home spill; unsigned weapon-set word local gives EAX;model=claude-opus-5-5;host=app
