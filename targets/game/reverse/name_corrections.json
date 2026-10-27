@@ -21201,5 +21201,15 @@
    "after_sha256": "e62da240965ca496074c7f12f45b31dbf97fc07bdb39738c7f6228c225c3ad48",
    "evidence": "targets/game/reverse/identity_evidence/0073d4c0-w3dview-slot118.md",
    "reason": "Vtable 0x011217A0 slot 118 resolves to 0x0073D4C0, which this TU now defines under the address-derived name; the slot-number placeholder named nothing."
+ },
+ {
+   "old_path": "targets/game/reverse/attempts/0x00259910.cpp",
+   "new_path": "targets/game/reverse/attempts/0x00259910.cpp",
+   "old_name": "aiBfmeCommand45",
+   "new_name": "bfmeForwardWideC",
+   "before_sha256": "9ddeb663e29bdf89f60b52c463b5bdc032425f034c8760e69941f784bd13c0be",
+   "after_sha256": "303c924fbc591b93562407caf71a4a2e97bfe50ba0a72eae53a36012d5b81a09",
+   "evidence": "targets/game/reverse/attempt_support/20261027-00259910-combinehorde-dospecialpower.md",
+   "reason": "Bank rewrite, not a rename: the new stash still calls aiBfmeCommand45 and adds the 0x009F2960 bfmeForwardWideC iterate call; token alignment paired the two."
  }
 ]

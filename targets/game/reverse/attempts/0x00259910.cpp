@@ -1,87 +1,214 @@
-// ?scan@Rva00259910Owner@@QAEXXZ
-// partial score=0.1 date=2026-09-05
-// cl: /DNDEBUG /MD /EHsc
+// ?doSpecialPower@CombineHordeSpecialPower@@UAEXI@Z
+// partial score=0.9568 date=2026-10-27
+// CombineHordeSpecialPower::doSpecialPower, retail 0x00259910..0x00259AC8 (440 B):
+// slot 11 of the SpecialPowerModuleInterface table 0x010B3D58, which the
+// matched CombineHordeSpecialPower constructor 0x002596F0 stores at +0x10.
+// The body is reached only through ILT 0x0003EE9B; Object::doSpecialPower
+// (0x001C3790) calls slot 11 as doSpecialPower.
+// Evidence: targets/game/reverse/identity_evidence/00259910-combinehorde-dospecialpower.md
+// Filter and iterator views follow GrabPassengerSpecialPowerDoSpecialPower.cpp
+// and VeterancyCrateCollideExecute.cpp (same 0x009F2960 iterate call).
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Iinputs/reference/shims/bfmekindof /Iinputs/reference/shims/zhcanonascii /Iinputs/reference/shims/sweep /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Include /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas /Iinputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/Libraries/Source/WWVegas/WWLib
+// stlport
 
-// Open-BFME5: address-derived attempt for the BFME PartitionFilter scan at
-// retail 0x00259910 (440 B). This body stack-builds three PartitionFilter-
-// shaped objects (vtables 0x01085DD0/0x010B243C/0x01083B80/0x0109688C are
-// all shared with many other retail sites per tools/vtable_lookup.py, so
-// they are the generic 3-slot PartitionFilter interface, not evidence of a
-// specific subclass here), links them, and asks ThePartitionManager
-// (0x012ED5B8) for a wide forward search via bfmeForwardWideC. No Zero Hour
-// twin identified for the specific combination of filters. This is only a
-// scaffold: the SEH frame, the exact filter field layouts, and the STL
-// node-allocator cleanup tail (0x0082E5F0 / 0x00881EB0) are not faithfully
-// reproduced -- see ledger notes for open questions.
+#define _STLP_USE_STATIC_LIB 1
+#define _STLP_NO_EXCEPTIONS 1
+#define BFME_STLP_NODE_ALLOC 1
+#include "PreRTS.h"
+#include "Common/BitFlags.h"
+#include <vector>
 
-typedef int Int;
-typedef unsigned int UnsignedInt;
-typedef bool Bool;
 class Object;
+class Player;
+
+typedef BitFlags<192> Rva00259910KindOfMask;
 
 class PartitionFilter
 {
 public:
-	PartitionFilter *link(PartitionFilter *next);		// ILT 0x009F2AE0
+	PartitionFilter() : m_next(0) {}
+	virtual ~PartitionFilter() {}
+	virtual Bool allow(Object *) = 0;
+	virtual Int getPlayerMask();
+	PartitionFilter *link(PartitionFilter *next);
+	PartitionFilter *m_next;
 };
 
+// Retail table 0x01085DD0, one Object pointer after the base head.
+class Rva0025ED50ObjectFilter : public PartitionFilter
+{
+public:
+	Rva0025ED50ObjectFilter(Object *object) : m_object(object) {}
+	virtual ~Rva0025ED50ObjectFilter() {}
+	virtual Bool allow(Object *);
+	Object *m_object;
+};
+
+// Retail table 0x010B243C, one 24-byte kind-of mask after the base head.
+class Rva0025F2D0KindOfAnyFilter : public PartitionFilter
+{
+public:
+	Rva0025F2D0KindOfAnyFilter(const Rva00259910KindOfMask &mask)
+		: m_mask(mask) {}
+	virtual ~Rva0025F2D0KindOfAnyFilter() {}
+	virtual Bool allow(Object *);
+	Rva00259910KindOfMask m_mask;
+};
+
+// Retail table 0x01083B80, no fields after the base head.
+class Rva0025ED50RootFilter : public PartitionFilter
+{
+public:
+	Rva0025ED50RootFilter() {}
+	virtual ~Rva0025ED50RootFilter() {}
+	virtual Bool allow(Object *);
+};
+
+// Retail table 0x0109688C: player +0x08, match flag +0x0C.
+class PartitionFilterPlayer : public PartitionFilter
+{
+public:
+	PartitionFilterPlayer(const Player *player, Bool match)
+		: m_player(player), m_match(match) {}
+	virtual ~PartitionFilterPlayer() {}
+	virtual Bool allow(Object *);
+	const Player *m_player;
+	Bool m_match;
+};
+
+struct Rva00259910Item
+{
+	Object *m_object;
+	float m_distance;
+};
+struct Rva00259910Payload
+{
+	std::vector<Rva00259910Item> m_items;
+	Rva00259910Item *m_cursor;
+	int m_refCount;
+};
 struct BfmeWideResult
 {
-	Int a, b, c, d, e;
+	Rva00259910Payload *m_value;
+	~BfmeWideResult()
+	{
+		--m_value->m_refCount;
+		if (m_value->m_refCount == 0)
+			delete m_value;
+	}
+	Object *next()
+	{
+		if (m_value->m_cursor == m_value->m_items.end())
+			return 0;
+		return (m_value->m_cursor++)->m_object;
+	}
 };
-
 class BfmeWideForwardC
 {
 public:
-	BfmeWideResult bfmeForwardWideC(Int a, Int b, Int c, Int d, Int e);	// 0x009F2960
+	// RVA 0x009F2960 owns the five raw-word call signature.
+	BfmeWideResult bfmeForwardWideC(int, int, int, int, int);
 };
-
-extern BfmeWideForwardC *g_ThePartitionManager;		// ?ThePartitionManager@@3PAVPartitionManager@@A 0x012ED5B8
-
-class BfmeHold1004
-{
-public:
-	void *bfmeFind1004(void);				// ILT 0x0000D3B9
-};
+class PartitionManager;
+extern PartitionManager *ThePartitionManager;
 
 class AICommandInterface
 {
 public:
-	void aiBfmeCommand45(Object *obj, Int commandSource);	// ILT 0x00019628
+	void aiBfmeCommand45(Object *target, CommandSourceType commandSource);
 };
 
-class BfmeK1094
+class Rva00259910AI
 {
 public:
-	void *bfmeCur1094(void);				// ILT 0x00020824
+	char m_head[0x20];
+	AICommandInterface m_commands;
 };
 
-class Rva00259910Owner : public BfmeK1094, public BfmeHold1004
+// Interface reached through the address-derived Object accessor at 0x001BFE20;
+// slot 27 takes the special power's owner.
+class Rva00259910Interface
 {
 public:
-	void scan(void);
-
-	unsigned char m_bfmeGap[0x210];
-	void *m_bfmeAiInterface;				// +0x204 style field used via a sub-object
+	virtual void slot00(); virtual void slot01(); virtual void slot02();
+	virtual void slot03(); virtual void slot04(); virtual void slot05();
+	virtual void slot06(); virtual void slot07(); virtual void slot08();
+	virtual void slot09(); virtual void slot10(); virtual void slot11();
+	virtual void slot12(); virtual void slot13(); virtual void slot14();
+	virtual void slot15(); virtual void slot16(); virtual void slot17();
+	virtual void slot18(); virtual void slot19(); virtual void slot20();
+	virtual void slot21(); virtual void slot22(); virtual void slot23();
+	virtual void slot24(); virtual void slot25(); virtual void slot26();
+	virtual Bool slot27(Object *owner);
 };
 
-void Rva00259910Owner::scan(void)
+class Object
 {
-	bfmeCur1094();
+public:
+	Player *getControllingPlayer() const;
+	void *unidentified_001BFE20() const;
+	unsigned char m_00_to_38[0x38];
+	Coord3D m_position;
+	unsigned char m_44_to_1A4[0x1A4 - 0x44];
+	UnsignedInt m_disabledMask;
+	unsigned char m_1A8_to_204[0x204 - 0x1A8];
+	Rva00259910AI *m_ai;
+};
 
-	PartitionFilter filterA;
-	PartitionFilter filterB;
-	PartitionFilter filterC;
+struct Rva00259910Data
+{
+	unsigned char m_00_to_210[0x210];
+	Real m_range;
+};
 
-	filterA.link(&filterB);
-	filterB.link(&filterC);
-
-	g_ThePartitionManager->bfmeForwardWideC(0, 0, 0, 0, 2);
-
-	void *found = bfmeFind1004();
-	if (found)
+class CombineHordeSpecialPower
+{
+public:
+	virtual void slot00(); virtual void slot04(); virtual void slot08();
+	virtual void slot0C(); virtual void slot10(); virtual void slot14();
+	virtual void slot18(); virtual void slot1C(); virtual void slot20();
+	virtual void slot24(); virtual void slot28();
+	virtual void doSpecialPower(UnsignedInt options);
+	virtual void slot30(); virtual void slot34(); virtual void slot38();
+	virtual void slot3C();
+	virtual void startPowerRecharge();
+	Object *getObject() const
 	{
-		AICommandInterface *ai = (AICommandInterface *)m_bfmeAiInterface;
-		ai->aiBfmeCommand45((Object *)found, 2);
+		return *reinterpret_cast<Object *const *>(
+			reinterpret_cast<const unsigned char *>(this) - 8);
+	}
+	const Rva00259910Data *getData() const
+	{
+		return *reinterpret_cast<Rva00259910Data *const *>(
+			reinterpret_cast<const unsigned char *>(this) - 12);
+	}
+};
+
+void CombineHordeSpecialPower::doSpecialPower(UnsignedInt options)
+{
+	Object *object = getObject();
+	if (object->m_disabledMask)
+		return;
+
+	startPowerRecharge();
+
+	Rva00259910KindOfMask mask(Rva00259910KindOfMask::kInit, 108);
+	BfmeWideResult result = ((BfmeWideForwardC *)ThePartitionManager)->bfmeForwardWideC(
+		(int)&object->m_position, *reinterpret_cast<const int *>(&getData()->m_range), 0,
+		(int)PartitionFilterPlayer(object->getControllingPlayer(), true).link(
+			Rva0025ED50RootFilter().link(
+				Rva0025F2D0KindOfAnyFilter(mask).link(
+					&Rva0025ED50ObjectFilter(object)))),
+		1);
+	while (Object *other = result.next())
+	{
+		Rva00259910Interface *iface =
+			(Rva00259910Interface *)other->unidentified_001BFE20();
+		if (!iface)
+			continue;
+		if (!iface->slot27(object))
+			continue;
+		object->m_ai->m_commands.aiBfmeCommand45(other, CMD_FROM_AI);
+		break;
 	}
 }
