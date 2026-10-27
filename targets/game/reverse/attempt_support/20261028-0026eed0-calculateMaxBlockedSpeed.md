@@ -40,3 +40,8 @@ Constants: the bank uses literals 0.0f/1.0f/0.55f; retail reads
 (?g_bfmeDefaultBU@@3MA) and 0x010B933C (?g_real3f0ccccd@@3MB). The landing
 gate will want the recorded names (see AIUpdateInterfacePrivateAttackPosition.cpp
 for the extern pattern); swap them in before landing.
+
+Later inert or worse trials (same session): a `__forceinline` second-dot
+helper by reference or pointer, in either parameter order (295 B, like the
+non-forced ones); a separate `ourDot` variable and dropping `speedFactor`
+(both still 7 B).

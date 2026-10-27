@@ -28,3 +28,8 @@ wrong one (11 B). A separate `elapsed`, a `(Real)(end - start)` temporary or a
 three-member timer struct grow or reorder the frame (33-42 B). Observation
 (VC7.1 slot order looks weight-driven): retail's slots fit start, end and
 frequency all weighing the same, ordered by reverse first use.
+
+Later inert trials (same session): dead extra references to `end`
+(self-assign, a copy, a zero-valued `end - end` term), and mixed counter types
+(`__int64` start or end with a LARGE_INTEGER partner) all keep the swapped
+slots (9 B); `end = start` after the difference costs 8 B.
