@@ -4904,11 +4904,8 @@ Bool PartitionFilterPolygonTrigger::allow( Object *other )
 
 //-----------------------------------------------------------------------------
 
-// ?allow@PartitionFilterPlayer@@MAE_NPAVObject@@@Z present-unmatched here — matched copy lives in Common/PartitionFilters_allow_Thunk.cpp
-Bool PartitionFilterPlayer::allow( Object *other )
-{
-	return ((m_player == other->getControllingPlayer()) == m_match);
-}
+// allow@PartitionFilterPlayer@@MAE_NPAVObject@@@Z
+// Body in PartitionFilters_allow_Thunk.cpp (exact 39B retail).
 
 //-----------------------------------------------------------------------------
 // PartitionFilterPlayerAffiliation::allow: the retail body lives in
