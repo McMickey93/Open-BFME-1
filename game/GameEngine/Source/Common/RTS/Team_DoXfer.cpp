@@ -24,6 +24,13 @@
 #define _STLP_NO_EXCEPTIONS 1
 #include <list>
 
+// Use the original insert(end(), value) operation locally so this TU does
+// not instantiate a competing out-of-line list<int>::push_back.
+static inline void appendListWord(_STL::list<int> *list, const int &value)
+{
+	list->insert(list->end(), value);
+}
+
 #include "../../../../Libraries/Source/WWVegas/WWLib/ascii_string.h"
 #include "../System/xfer.h"
 #include "../System/snapshot.h"
@@ -226,7 +233,7 @@ void Team::DoXfer(Xfer &xfer)
 		for (UnsignedShort i = 0; i < memberCount; ++i)
 		{
 			Rva0010C3C0((MidVirtualSlot90Receiver *)&xfer, &memberID);
-			m_xferMemberIDList.push_back(memberID);
+			appendListWord(&m_xferMemberIDList, memberID);
 		}
 	}
 

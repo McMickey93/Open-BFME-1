@@ -4,6 +4,13 @@
 
 #define _STLP_NO_EXCEPTIONS 1
 #include <list>
+
+// Use the original insert(end(), value) operation locally so this TU does
+// not instantiate a competing out-of-line list<int>::push_back.
+static inline void appendListWord(_STL::list<int> *list, const int &value)
+{
+	list->insert(list->end(), value);
+}
 #include "string_base.h"
 
 typedef unsigned char UnsignedByte;
@@ -97,7 +104,7 @@ Xfer *xferListInt(Xfer *xfer, ListInt *list)
 		{
 			--count;
 			xfer->xferInt(&value);
-			list->push_back(value);
+			appendListWord(list, value);
 		}
 		--count;
 	}

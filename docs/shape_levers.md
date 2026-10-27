@@ -2202,3 +2202,16 @@ by-value parameter takes the dead argument home, the copy gets the
 register, and the default constructor's zero store dies. Source
 `game/GameEngine/Source/GameLogic/Object/Contain/ContestableContain_onRemoving.cpp`
 (commit c3f4ba7828).
+
+
+## Localize a template wrapper without changing its inline path (2026-10-26)
+
+Team_DoXfer.cpp and XferListInt.cpp inline list<int>::push_back but also emit
+non-retail external copies. An extern-template declaration prevents the required
+inline expansion; importing or specializing the member changes child outlining
+or register saves under native MSVC 7.1 with the existing /O2 /MD /EHsc flags.
+A static inline appendListWord(list, value) adapter calling the original
+list->insert(list->end(), value) keeps all 94 consumer/provider rows exact and
+removes both competing push_back definitions. No shared header or runtime helper
+is added. Measured evidence:
+targets/game/reverse/identity_evidence/20261026-list-word-append-ownership.md.
