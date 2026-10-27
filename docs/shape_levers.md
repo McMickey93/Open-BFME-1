@@ -2232,3 +2232,35 @@ entry with a plain back jump, and the separate `count` local gives retail's
 load into EAX followed by the copy into the EDI pass counter (testing `n`
 directly loads EDI and leaves 4 diffs). Source
 `game/Libraries/Source/Apt/AptValue/AptValueVector.cpp`.
+
+
+## Cache a field in a local before inline flag stores to hoist its argument load (2026-10-27)
+
+Retail 0x0027D7F0 (AIUpdateInterface::privateMoveAwayFromUnit, 687 B) loads
+`mov eax,[esi+8]` (the object argument of the retry call) before the two byte
+stores of the inlined setCanPathThroughUnits(TRUE) and interleaves the pushes
+with them. Re-reading `fields->m_object` in the call left the load after the
+stores (0.991, 3 structural diffs); an inline setter helper was inert. Exact:
+`Object *self = fields->m_object;` before the setter, then pass `self`.
+In the same body, `cond ? field : NULL` locals for the horde/contain/AI
+pointers (instead of an `&&` chain over member reads) moved each load into
+ECX ahead of its virtual call, and a ZH-style inline
+`getTemporaryState() { return m_temp ? m_temp->m_id : INVALID; }` gave
+retail's EAX/ECX split between the state pointer and the unit ID. MSVC 7.1
+/O2 /MD /EHsc; source
+`game/GameEngine/Source/GameLogic/Object/Update/AIUpdate.cpp` (commit
+23fc02f39f).
+
+## File-static save globals sink their stores below member loads (2026-10-27)
+
+Retail 0x00743CE0 (W3DView camera save, 530 B) copies nine view fields into
+globals at 0x012F9DC0..0x012F9DF8 with loads hoisted above most stores.
+All-extern globals kept every store in place; all-static hoisted too much.
+Exact: the two Coord3D globals `extern`, the seven scalar globals file
+`static` (body guard's static_skip accepts them). Also there: a
+`(3.14159265359f / 180.0f)` literal gives retail's `fld field; fmul const`
+order where the recorded `g_degToRad` extern gave `fld const; fmul field`, and
+Zero Hour's inline recursive getFinalOverride with an OVERRIDE-style
+`if (!m_template) return 0;` produced the `xor ecx,ecx; jmp` null path.
+Source `game/GameEngineDevice/Source/W3DDevice/GameClient/W3DViewRva00743CE0.cpp`
+(commit 824c56f66a).
