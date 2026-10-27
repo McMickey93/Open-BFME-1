@@ -34,6 +34,10 @@ object read after the disabled check, nested if instead of early return,
 `Object *const`, `self` copy of this, real MI view (ModuleBase+mux+interface,
 getObject()/getData() accessors), for(;;)/while/found-variable loop shapes,
 helper inlines for the slot-27 test or the AI command, inner block scope.
+Also inert on the 19-diff base: noinline-visible PartitionFilter::link and
+Object::getControllingPlayer bodies, `self` copy defined after object,
+`Object *other` / `Object *object` declared before assignment, found-variable
+loop, __forceinline helpers (MSVC refuses to inline the EH body).
 Worse: AI pointer local (89-183), Player* local (179-326), data/range local
 (112-322), getObject() per use (447-451 B), direct m_object/m_data in MI view
 (135).
