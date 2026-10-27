@@ -2278,30 +2278,8 @@ Bool Team::hasAnyBuildings(KindOfMaskType kindOf) const
 }
 
 // ------------------------------------------------------------------------
-// ?hasAnyUnits@Team@@QBE_NXZ present-unmatched
-Bool Team::hasAnyUnits() const
-{
-	for (DLINK_ITERATOR<Object> iter = iterate_TeamMemberList(); !iter.done(); iter.advance())
-	{
-		if (iter.cur()->isEffectivelyDead())
-			continue;
-
-		if (iter.cur()->isDestroyed()) 
-			continue;
-
-		// If it's a structure, it's not  a unit.
-		if (iter.cur()->isKindOf(KINDOF_STRUCTURE)) continue;
-
-		// If it's a projectile, it's not  a unit.
-		if (iter.cur()->isKindOf(KINDOF_PROJECTILE)) continue;
-
-		// If it's a mine, it's not  a unit.
-		if (iter.cur()->isKindOf(KINDOF_MINE)) continue;
-
-		return true;
-	}
-	return false;
-}
+// Team::hasAnyUnits (0x000F4C10) is defined in TeamMemberQueries.cpp, retail's body;
+// the Zero Hour copy here linked instead of it.
 
 // ------------------------------------------------------------------------
 // ?isIdle@Team@@QBE_NXZ present-unmatched

@@ -153667,7 +153667,7 @@ uw_00bfb886,,0x00BFB886,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;obj
 uw_00bfb894,,0x00BFB894,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L7873
 uw_00bfb8a2,,0x00BFB8A2,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L7874
 uw_00bfb8b0,,0x00BFB8B0,14,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L7876
-uw_00bfb8d6,,0x00BFB8D6,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=??0TeamTemplateInfo@@QAE@PAVDict@@@Z;object-symbol=$L83364
+uw_00bfb8d6,,0x00BFB8D6,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=??0TeamTemplateInfo@@QAE@PAVDict@@@Z;object-symbol=$L84659
 uw_00bfb8de,,0x00BFB8DE,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb8e6,,0x00BFB8E6,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb8ee,,0x00BFB8EE,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
@@ -153675,7 +153675,7 @@ uw_00bfb8f6,,0x00BFB8F6,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;obje
 uw_00bfb8fe,,0x00BFB8FE,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb906,,0x00BFB906,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb90e,,0x00BFB90E,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
-uw_00bfb916,,0x00BFB916,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=??0TeamTemplateInfo@@QAE@PAVDict@@@Z;object-symbol=$L83372
+uw_00bfb916,,0x00BFB916,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=??0TeamTemplateInfo@@QAE@PAVDict@@@Z;object-symbol=$L84667
 uw_00bfb91e,,0x00BFB91E,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb926,,0x00BFB926,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb92e,,0x00BFB92E,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
@@ -153686,10 +153686,10 @@ uw_00bfb94e,,0x00BFB94E,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;obje
 uw_00bfb956,,0x00BFB956,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb95e,,0x00BFB95E,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb966,,0x00BFB966,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L315
-uw_00bfb96e,,0x00BFB96E,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=??0TeamTemplateInfo@@QAE@PAVDict@@@Z;object-symbol=$L83381
+uw_00bfb96e,,0x00BFB96E,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=??0TeamTemplateInfo@@QAE@PAVDict@@@Z;object-symbol=$L84676
 uw_00bfb976,,0x00BFB976,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00bfb97e,,0x00BFB97E,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
-uw_00bfb9f0,,0x00BFB9F0,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=?updateGenericScripts@Team@@QAEXXZ;object-symbol=$L82565
+uw_00bfb9f0,,0x00BFB9F0,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=?updateGenericScripts@Team@@QAEXXZ;object-symbol=$L83892
 uw_00bfb9f8,,0x00BFB9F8,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L379
 uw_00bfba10,,0x00BFBA10,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L315
 uw_00bfba18,,0x00BFBA18,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L300
@@ -153760,7 +153760,7 @@ uw_00bfc078,,0x00BFC078,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;obje
 uw_00bfc080,,0x00BFC080,8,game/gen_small/uw_gen_007.cpp,matched,gen-funclet;object-symbol=$L8382
 uw_00bfc088,,0x00BFC088,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L300
 uw_00bfc0b0,,0x00BFC0B0,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L300
-uw_00bfc0b8,,0x00BFC0B8,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z;object-symbol=$L98280;eh-state-pin $L100365->$L100636: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L100636;repin-model=claude-opus-5.5;eh-state-pin $L100636->$L100313: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L100313;repin-model=claude-sonnet;eh-state-pin $L99481->$L98280: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L98280;repin-model=gpt-6.1-sol
+uw_00bfc0b8,,0x00BFC0B8,8,game/GameEngine/Source/Common/RTS/Team.cpp,matched,gen-funclet;parent=?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z;object-symbol=$L97846;eh-state-pin $L100365->$L100636: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L100636;repin-model=claude-opus-5.5;eh-state-pin $L100636->$L100313: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L100313;repin-model=claude-sonnet;eh-state-pin $L99481->$L98280: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L98280;repin-model=gpt-6.1-sol;eh-state-pin $L98280->$L97846: retail unwind map (?initFromSides@TeamFactory@@QAEXPAVSidesList@@@Z states [1]) binds this address to $L97846;repin-model=claude-opus-5-5
 uw_00bfc0d0,,0x00BFC0D0,8,game/gen_small/uw_gen_011.cpp,matched,gen-funclet;object-symbol=$L5778
 uw_00bfc0d8,,0x00BFC0D8,11,game/gen_small/uw_gen_014.cpp,matched,gen-funclet;object-symbol=$L15439
 uw_00bfc0e3,,0x00BFC0E3,11,game/gen_small/uw_gen_013.cpp,matched,gen-funclet;object-symbol=$L10686
