@@ -1,0 +1,89 @@
+// cl: /DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB /Iinputs/reference/shims/stringinline
+// stlport
+// Retail 0x005147F0, 473 bytes: AptInGameChat's button refresh, reached
+// through ILT 0x00006F4B, the pinned ?Rva00006F4BUpdateButtons@AptInGameChat
+// that the matched friends-list refresh (0x00515810) and the matched message
+// handler bank (0x00514A40) call.  It collects the selected friends' profile
+// IDs, enables Add only when every selected entry is a pending request,
+// enables Remove when a row is selected, sends each change to the Apt movie
+// once, and enables chat when a selected friend is online.  Declarations
+// follow the matched sibling BfmeAptScreenInGameChatRefreshFriendsList.cpp.
+#include <stl/_config.h>
+#include <vector>
+#include "StringInline.h"
+
+class GameWindow;
+
+void GadgetListBoxGetSelected( GameWindow *listbox, int *selectList );
+
+class BfmeLevelAN
+{
+public:
+	char *bfmeBuildAN( unsigned int movie, int name, int a, int b, int c, int d, int e, int f );
+};
+extern BfmeLevelAN *g_rva012F19E8WindowManager;
+extern BfmeLevelAN *Rva00579160TheManager;
+
+// "EnableRemoveButton" / "DisableRemoveButton", recorded under these names.
+extern char g_bfmeFmtB1064[];
+extern char g_bfmeFmtC1064[];
+
+class AptInGameChat
+{
+public:
+	void Rva00006F4BUpdateButtons();
+	int rva00512890( int profileID, UnicodeString &result );
+	int rva00513BF0( GameWindow *list, void *selected, int buddyMask, bool skipStatusFilter );
+	void _bfme_enableChat( bool enabled );
+
+private:
+	unsigned char m_unmodelled000[0x250];
+	unsigned int m_movie;
+	unsigned char m_unmodelled254[0x10];
+	GameWindow *m_friendsList;
+	unsigned char m_unmodelled268[0x2A];
+	bool m_addDirty;
+	bool m_addEnabled;
+	bool m_removeDirty;
+	bool m_removeEnabled;
+};
+
+// ?Rva00006F4BUpdateButtons@AptInGameChat@@QAEXXZ
+void AptInGameChat::Rva00006F4BUpdateButtons()
+{
+	std::vector<int> selected;
+	bool allRequests = false;
+	bool anyOnline = false;
+	if( rva00513BF0( m_friendsList, &selected, 7, false ) > 0 )
+	{
+		allRequests = true;
+		for( std::vector<int>::iterator it = selected.begin(); allRequests && it != selected.end(); ++it )
+		{
+			UnicodeString name;
+			if( rva00512890( *it, name ) != 4 )
+				allRequests = false;
+			if( rva00512890( *it, name ) == 1 )
+				anyOnline = true;
+		}
+	}
+
+	int *selectedRows = 0;
+	GadgetListBoxGetSelected( m_friendsList, (int *)&selectedRows );
+	bool removeEnabled = selectedRows && selectedRows[0] >= 0;
+
+	if( m_addDirty || allRequests != m_addEnabled )
+	{
+		m_addDirty = false;
+		m_addEnabled = allRequests;
+		g_rva012F19E8WindowManager->bfmeBuildAN( m_movie,
+			(int)(allRequests ? "EnableAddButton" : "DisableAddButton"), 0, 0, 0, 0, 0, 0 );
+	}
+	if( m_removeDirty || removeEnabled != m_removeEnabled )
+	{
+		m_removeEnabled = removeEnabled;
+		m_removeDirty = false;
+		g_rva012F19E8WindowManager->bfmeBuildAN( m_movie,
+			(int)(removeEnabled ? g_bfmeFmtB1064 : g_bfmeFmtC1064), 0, 0, 0, 0, 0, 0 );
+	}
+	_bfme_enableChat( anyOnline );
+}
