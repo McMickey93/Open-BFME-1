@@ -164481,7 +164481,7 @@ uw_00c36820,,0x00C36820,8,game/gen_small/uw_gen_016.cpp,matched,gen-funclet;obje
 uw_00c36828,,0x00C36828,11,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;object-symbol=$L547
 uw_00c36850,,0x00C36850,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L300
 uw_00c36870,,0x00C36870,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
-uw_00c36890,,0x00C36890,8,game/GameEngine/Source/GameClient/GUI/Shell/Shell.cpp,matched,gen-funclet;parent=?loadScheme@Shell@@QAEXVAsciiString@@@Z;object-symbol=$L51977;eh-state-pin $L51972->$L51977: retail unwind map (?loadScheme@Shell@@QAEXVAsciiString@@@Z states [0]) binds this address to $L51977;repin-model=claude-opus-5.5
+uw_00c36890,,0x00C36890,8,game/GameEngine/Source/GameClient/GUI/Shell/Shell.cpp,matched,gen-funclet;parent=?loadScheme@Shell@@QAEXVAsciiString@@@Z;object-symbol=$L52927;eh-state-pin $L51972->$L51977: retail unwind map (?loadScheme@Shell@@QAEXVAsciiString@@@Z states [0]) binds this address to $L51977;repin-model=claude-opus-5.5;eh-state-pin $L51977->$L52927: retail unwind map (?loadScheme@Shell@@QAEXVAsciiString@@@Z states [0]) binds this address to $L52927;repin-model=claude-opus-5-5
 uw_00c368b0,,0x00C368B0,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00c368d0,,0x00C368D0,8,game/GameEngine/Source/GameClient/GUI/Shell/Shell_push_Thunk.cpp,matched,gen-funclet;parent=?push@Shell@@QAEXVAsciiString@@_N@Z;object-symbol=$L904;model=claude-opus-5-5;host=GreatFaram;eh-state-pin $L52029->$L904: retail unwind map (?push@Shell@@QAEXVAsciiString@@_N@Z states [0]) binds this address to $L904;repin-model=gpt-6.1-sol
 uw_00c368f0,,0x00C368F0,8,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;object-symbol=$L526

@@ -162,20 +162,7 @@ void Shell::init( void )
 /** Reset the shell system to a clean state just as though init had
 	* just been called and ready to re-use */
 //-------------------------------------------------------------------------------------------------
-// ?reset@Shell@@UAEXXZ present-unmatched
-void Shell::reset( void )
-{
-	
-	if (TheIMEManager)
-		TheIMEManager->detatch();
-
-	// pop all screens
-	while( m_screenCount )
-		pop();
-
-	m_animateWindowManager->reset();
-
-}  // end reset
+// ?reset@Shell@@UAEXXZ: retail body is in Shell_reset.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** Update shell system cycle.  All windows are updated that are on the stack, starting
@@ -185,47 +172,12 @@ void Shell::reset( void )
 //-------------------------------------------------------------------------------------------------
 /** Find a screen via the .wnd script filename loaded */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameClient/GUI/Shell/Shell_findScreenByFilename.cpp
-// ?findScreenByFilename@Shell@@QAEPAVWindowLayout@@VAsciiString@@@Z present-unmatched
-WindowLayout *Shell::findScreenByFilename( AsciiString filename )
-{
-
-	if (filename.isEmpty())
-		return NULL;
-
-	// search screen list
-	WindowLayout *screen;
-	Int i;
-	for( i = 0; i < MAX_SHELL_STACK; i++ )
-	{
-
-		screen = m_screenStack[ i ];
-		if( screen && filename.compareNoCase(screen->getFilename()) == 0 )
-			return screen;
-
-	}  // end for i
-
-	return NULL;
-
-}  // end findScreenByFilename
+// ?findScreenByFilename@Shell@@QAEPAVWindowLayout@@VAsciiString@@@Z: retail body is in Shell_findScreenByFilename.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** Hide or unhide all window layouts loaded */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameClient/Shell_hide.cpp
-// ?hide@Shell@@QAEX_N@Z present-unmatched
-void Shell::hide( Bool hide )
-{
-	Int i;
-
-	for( i = 0; i < MAX_SHELL_STACK; i++ )
-		if( m_screenStack[ i ] )
-			m_screenStack[ i ]->hide( hide );
-
-	if (TheIMEManager)
-		TheIMEManager->detatch();
-
-}  // end hide
+// ?hide@Shell@@QAEX_N@Z: retail body is in Shell_hide.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** Push layout onto shell */
@@ -465,29 +417,7 @@ void Shell::unlinkScreen( WindowLayout *screen )
 //-------------------------------------------------------------------------------------------------
 /** Actually do the work for a push */
 //-------------------------------------------------------------------------------------------------
-// ?doPush@Shell@@IAEXVAsciiString@@@Z present-unmatched
-void Shell::doPush( AsciiString layoutFile )
-{
-	if(TheGameSpyInfo)
-			GameSpyCloseAllOverlays();
-	WindowLayout *newScreen;
-	
-	// create new layout and load from window manager
-	newScreen = TheWindowManager->winCreateLayout( layoutFile );
-	DEBUG_ASSERTCRASH( newScreen != NULL, ("Shell unable to load pending push layout\n") );
-
-	// link screen to the top
-	linkScreen( newScreen );
-
-	if (TheIMEManager)
-		TheIMEManager->detatch();
-
-	// run the init function automatically
-	newScreen->runInit( NULL );
-	newScreen->bringForward();
-
-
-}  // end doPush
+// ?doPush@Shell@@IAEXVAsciiString@@@Z: retail body is in Shell_doPush.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** Actually do the work for a pop */
