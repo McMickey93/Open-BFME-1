@@ -883,7 +883,6 @@ functions	0x000F87A0	??$find@U?$_List_iterator@PAVDrawable@@U?$_Nonconst_traits@
 functions	0x000F8810	?getContainCount@TunnelTracker@@QAEIH@Z
 functions	0x000F8E20	?xfer@TunnelTracker@@MAEXPAVXfer@@@Z
 functions	0x000F8F60	?loadPostProcess@TunnelTracker@@MAEXXZ
-functions	0x000F9250	?setCanOptimize@PathNode@@QAEX_N@Z
 functions	0x000F9700	?evaluateSkirmishSupplySourceAttacked@ScriptConditions@@IAE_NPAVParameter@@@Z
 functions	0x000FB9C0	?Set@Vector3@@QAEXMMM@Z
 functions	0x000FB9C0	?_M_set@?$vector@EV?$allocator@E@_STL@@@_STL@@IAEXPAE00@Z

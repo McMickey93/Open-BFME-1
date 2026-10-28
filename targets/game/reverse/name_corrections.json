@@ -21341,5 +21341,15 @@
   "after_sha256": "2542e2277795e821531066540d6ad4885d501521c0ace7d5f17253ae836e52be",
   "evidence": "targets/game/reverse/identity_evidence/0x0007eeb0-gamelod-init.md",
   "reason": "ilt_oracle confirms refreshCustomStaticLODLevel at ILT 0x00023DAD, but the callee row 0x0007C1D0 is still ledgered as a placeholder and pin_consistency refuses a second route pin; the unit calls the existing pin name until that row is renamed."
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "PathNode",
+  "new_name": "Rva000F9250",
+  "before_sha256": "52b4609afbae297bb0dd8086b32b6b0c6088670d22b5be59874f1167d1b6c80f",
+  "after_sha256": "4b5ab2268cf11e79f69d69bf36a119f2370b97400a5f616bf0a4ebcb28c5c4d2",
+  "evidence": "targets/game/reverse/identity_evidence/000f9250-not-pathnode-setcanoptimize.md",
+  "reason": "dead +0x24 bool setter; ILT order contradicts PathNode::setCanOptimize and BFME's matched PathNode users inline it at +0x1C"
  }
 ]
