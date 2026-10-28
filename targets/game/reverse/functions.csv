@@ -29095,7 +29095,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?bfmeCleanup@Gen_008925F0@@QAEXXZ,,0x008925F0,35,game/GameEngine/Source/Common/S3ChildTeardown.cpp,matched,
 ?bfmeCleanup@Gen_00892CA0@@QAEXXZ,,0x00892CA0,35,game/GameEngine/Source/Common/S3ChildTeardown.cpp,matched,
 ?bfmeCleanup@Gen_00893990@@QAEXXZ,,0x00893990,35,game/GameEngine/Source/Common/S3ChildTeardown.cpp,matched,
-?bfmeCleanup@Rva00784A70Cleanup@@QAEXXZ,,0x00784A70,35,game/GameEngine/Source/Common/Rva00784A70Cleanup.cpp,matched,opaque address-derived one-pointer cleanup; decrement helper then drop callback
 ?bfmeCleanupYX@BfmeOwnerYX@@QAEXXZ,,0x00958640,58,game/GameEngine/Source/Common/BfmeConv1867.cpp,matched,shutdown then release the two handles and the array
 ?bfmeClear964@BfmeClear964@@QAEXXZ,,0x0048A2C0,72,game/GameEngine/Source/Common/BfmeConv964.cpp,matched,
 ?bfmeClear@Bfme5OwnerList@@QAEXXZ,,0x0037DCA0,58,game/GameEngine/Source/Common/Bfme5ListSurgery.cpp,matched,
@@ -173389,3 +173388,4 @@ uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI
 ?get@Rva00477B30@@QAEPAVRva00477B30Value@@XZ,,0x00477B30,7,game/GameEngine/Source/GameLogic/Object/Rva00477B30.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00477b30-not-object-getai.md;model=claude-opus-5-5;host=app
 ?getAI@Object@@QAEPAVAIUpdateInterface@@XZ,,0x000E59A0,7,game/GameEngine/Source/GameLogic/AI/AITNGuardIdleStateOnEnter.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00477b30-not-object-getai.md;model=claude-opus-5-5;host=app
 ?rva003DC780@@YA_N_NPAVPathfindCell@@I@Z,,0x003DC780,105,game/GameEngine/Source/GameLogic/AI/PathfinderClearCellForDiameter.cpp,matched,model=claude-opus-5-5;host=app
+??1RefHandle008958D0@@QAE@XZ,,0x00784A70,35,game/GameEngine/Source/Common/Rva00784A70Cleanup.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/00784a70-refhandle008958d0-dtor.md;RefHandle008958D0 dtor; unwind funclets 0x00C570B8/0x00C570E8 reach it via ILT 0x000463AD; select-any copy emitted at its own link position;model=claude-opus-5-5;host=Desktop
