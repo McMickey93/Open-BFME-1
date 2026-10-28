@@ -41,11 +41,14 @@ extern BFMEWaterTrackTextureHandle BFMEGetWaterTrackTexture(
 
 typedef _STL::string Rva00900FF0InnerVector;
 
+extern void j_0000b109();
+class Rva00900FF0VecOfVec;
+static __forceinline void destroyVec008FFF40(Rva00900FF0VecOfVec &value);
 class Rva00900FF0VecOfVec : public _STL::_Vector_base<Rva00900FF0InnerVector, _STL::allocator<Rva00900FF0InnerVector> >
 {
 public:
  Rva00900FF0VecOfVec(const Rva00900FF0VecOfVec &source);
- ~Rva00900FF0VecOfVec();
+ ~Rva00900FF0VecOfVec() { destroyVec008FFF40(*this); }
  bool empty() const { return _M_start==_M_finish; }
  unsigned size() const { return (unsigned)(_M_finish-_M_start); }
  void pop_back() { if(!empty()) (--_M_finish)->~Rva00900FF0InnerVector(); }
@@ -53,6 +56,13 @@ public:
  Rva00900FF0InnerVector *end() { return _M_finish; }
  Rva00900FF0InnerVector &back() { return *(end()-1); }
 };
+static __forceinline void destroyVec008FFF40(Rva00900FF0VecOfVec &value)
+{
+ typedef void (Rva00900FF0VecOfVec::*Operation)();
+ union { void *address; Operation method; } call;
+ call.address = reinterpret_cast<void *>(j_0000b109);
+ (value.*call.method)();
+}
 
 class Rva00900FF0VectorHolder
 {

@@ -20,17 +20,27 @@ private:
 	char m_pad[0x10];
 };
 
+extern void j_0000b109();
+class Rva00900FF0VecOfVec;
+static __forceinline void destroyVec00900E40(Rva00900FF0VecOfVec &value);
 class Rva00900FF0VecOfVec
 {
 public:
 	Rva00900FF0VecOfVec(int allocator);
 	Rva00900FF0VecOfVec(const Rva00900FF0VecOfVec &source);
-	~Rva00900FF0VecOfVec();
+	~Rva00900FF0VecOfVec() { destroyVec00900E40(*this); }
 
 	char *m_start;
 	char *m_finish;
 	char *m_endOfStorage;
 };
+static __forceinline void destroyVec00900E40(Rva00900FF0VecOfVec &value)
+{
+	typedef void (Rva00900FF0VecOfVec::*Operation)();
+	union { void *address; Operation method; } call;
+	call.address = reinterpret_cast<void *>(j_0000b109);
+	(value.*call.method)();
+}
 
 #pragma comment(linker, "/alternatename:??0Rva00900FF0VecOfVec@@QAE@ABV0@@Z=?d_008ffb80@@YAXXZ")
 

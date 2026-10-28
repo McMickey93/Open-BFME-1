@@ -50,17 +50,27 @@ public:
 	char *m_endOfStorage;
 };
 
+extern void j_0000b109();
+class Rva00900FF0VecOfVec;
+static __forceinline void destroyVec009002C0(Rva00900FF0VecOfVec &value);
 class Rva00900FF0VecOfVec
 {
 public:
 	Rva00900FF0VecOfVec(int allocator);
 	Rva00900FF0VecOfVec(const Rva00900FF0VecOfVec &source);
-	~Rva00900FF0VecOfVec();
+	~Rva00900FF0VecOfVec() { destroyVec009002C0(*this); }
 
 	char *m_start;
 	char *m_finish;
 	char *m_endOfStorage;
 };
+static __forceinline void destroyVec009002C0(Rva00900FF0VecOfVec &value)
+{
+	typedef void (Rva00900FF0VecOfVec::*Operation)();
+	union { void *address; Operation method; } call;
+	call.address = reinterpret_cast<void *>(j_0000b109);
+	(value.*call.method)();
+}
 
 class Gen_ve_001f9520
 {

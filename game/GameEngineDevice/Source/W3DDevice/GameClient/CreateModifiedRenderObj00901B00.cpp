@@ -46,6 +46,7 @@ private:
 // Address-only call bridge: the ledger still gives the target an unrelated
 // AnimSet instantiation name. Do not add a conflicting second body identity.
 extern void j_00008f17();
+extern void j_0000b109();
 static __forceinline void appendString00901B00(_STL::vector<_STL::string> &out, const _STL::string &value)
 {
  typedef void (_STL::vector<_STL::string>::*Operation)(const _STL::string &);
@@ -53,13 +54,22 @@ static __forceinline void appendString00901B00(_STL::vector<_STL::string> &out, 
  call.address = reinterpret_cast<void *>(j_00008f17);
  (out.*call.method)(value);
 }
+class Rva00900FF0VecOfVec;
+static __forceinline void destroyVec00901B00(Rva00900FF0VecOfVec &value);
 class Rva00900FF0VecOfVec {
 public:
  Rva00900FF0VecOfVec() : m_start(0),m_finish(0),m_end(0) {}
  Rva00900FF0VecOfVec(const Rva00900FF0VecOfVec &);
- ~Rva00900FF0VecOfVec();
+ ~Rva00900FF0VecOfVec() { destroyVec00901B00(*this); }
  char *m_start,*m_finish,*m_end;
 };
+static __forceinline void destroyVec00901B00(Rva00900FF0VecOfVec &value)
+{
+ typedef void (Rva00900FF0VecOfVec::*Operation)();
+ union { void *address; Operation method; } call;
+ call.address = reinterpret_cast<void *>(j_0000b109);
+ (value.*call.method)();
+}
 class Rva00900FF0 {
 public:
  Rva00900FF0(const char *,const char *,int,int,Rva00900FF0VecOfVec,Rva00900FF0VecOfVec,Rva00900FF0VecOfVec,int);

@@ -48,10 +48,13 @@ public:
 	char *m_endOfStorage;
 };
 
+extern void j_0000b109();
+class Rva00900FF0VecOfVec;
+static __forceinline void destroyVec00900FF0(Rva00900FF0VecOfVec &value);
 class Rva00900FF0VecOfVec
 {
 public:
-	~Rva00900FF0VecOfVec();
+	~Rva00900FF0VecOfVec() { destroyVec00900FF0(*this); }
 
 	void erase( Rva00900FF0InnerVector *first, Rva00900FF0InnerVector *last );
 	void clear( void )
@@ -65,6 +68,13 @@ public:
 	Rva00900FF0InnerVector *m_finish;
 	Rva00900FF0InnerVector *m_endOfStorage;
 };
+static __forceinline void destroyVec00900FF0(Rva00900FF0VecOfVec &value)
+{
+	typedef void (Rva00900FF0VecOfVec::*Operation)();
+	union { void *address; Operation method; } call;
+	call.address = reinterpret_cast<void *>(j_0000b109);
+	(value.*call.method)();
+}
 
 struct Rva00900FF0Elem4
 {

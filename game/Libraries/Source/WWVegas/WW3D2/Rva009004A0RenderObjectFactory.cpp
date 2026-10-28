@@ -61,14 +61,24 @@ public:
 };
 }
 typedef _STL::basic_string<char,_STL::char_traits<char>,_STL::allocator<char> > Rva009004A0String;
+extern void j_0000b109();
+class Rva00900FF0VecOfVec;
+static __forceinline void destroyVec009004A0(Rva00900FF0VecOfVec &value);
 class Rva00900FF0VecOfVec {
 public:
  Rva009004A0String *first,*last,*end;
  Rva00900FF0VecOfVec(const Rva00900FF0VecOfVec&);
- ~Rva00900FF0VecOfVec();
+ ~Rva00900FF0VecOfVec() { destroyVec009004A0(*this); }
  unsigned size() const {return last-first;}
  bool empty() const {return first==last;}
 };
+static __forceinline void destroyVec009004A0(Rva00900FF0VecOfVec &value)
+{
+ typedef void (Rva00900FF0VecOfVec::*Operation)();
+ union { void *address; Operation method; } call;
+ call.address = reinterpret_cast<void *>(j_0000b109);
+ (value.*call.method)();
+}
 class Gen_ve_001f9520 {};
 namespace _STL {
 template<class T,class Alloc> class vector {
