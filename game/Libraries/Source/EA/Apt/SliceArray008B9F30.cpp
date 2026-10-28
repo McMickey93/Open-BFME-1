@@ -27,12 +27,12 @@ void *Rva008A90F0(unsigned bytes);
 class Rva008A9120HeaderedDelete { public:
   static void operator delete(void *p, unsigned n);
 };
-class ArrayValue008B9C60 : public AptValue, public Rva008A9120HeaderedDelete { public:
- ArrayValue008B9C60();
+class Rva008B9C90HeaderedDeleting : public AptValue, public Rva008A9120HeaderedDelete { public:
+ Rva008B9C90HeaderedDeleting();
  char m_unmodelled08[0x24];
  static void *operator new(unsigned n) { return Rva008A90F0(n); }
  };
-// ArrayValue008B9C60 takes operator delete from Rva008A9120HeaderedDelete, so
+// Rva008B9C90HeaderedDeleting takes operator delete from Rva008A9120HeaderedDelete, so
 // the compiler's unwind funclet calls 0x008A9120 by that name directly.
 extern AptValue *g_bfmeFallbackDB;
 struct Rva008AE770Stack { int field00; };
@@ -53,7 +53,7 @@ AptValue *slice008B9F30(AptValue *value,int argc)
    else if(end>array->field28) end=array->field28;
   }
   if(start>end || start<0 || end<0) return g_bfmeFallbackDB;
-  BfmeN1242 *out=(BfmeN1242 *)new ArrayValue008B9C60;
+  BfmeN1242 *out=(BfmeN1242 *)new Rva008B9C90HeaderedDeleting;
   for(int i=start;i<end;++i)
    out->set(out->field28,(AptValue *)(array->field20[i]&~1));
   return (AptValue *)out;

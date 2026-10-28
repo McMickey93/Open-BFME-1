@@ -15,9 +15,9 @@ extern void *(__cdecl *Rva008C5D70Alloc)(unsigned);
 class Rva008A9120HeaderedDelete { public:
     static void operator delete(void *p, unsigned n);
 };
-class ArrayValue008B9C60 : public AptValue, public Rva008A9120HeaderedDelete {
+class Rva008B9C90HeaderedDeleting : public AptValue, public Rva008A9120HeaderedDelete {
 public:
-    ArrayValue008B9C60();
+    Rva008B9C90HeaderedDeleting();
     char m_unmodelled08[0x24];
     void *operator new(unsigned n) {
         void *raw = Rva008C5D70Alloc(n + 8);
@@ -46,7 +46,7 @@ struct Stack008C8240 {
 void ArrayFromStack008C8240(Stack008C8240 *state) {
     int count = state->m_values[state->m_count-1]->toInteger();
     state->pop(1);
-    ArrayValue008B9C60 *array = new ArrayValue008B9C60;
+    Rva008B9C90HeaderedDeleting *array = new Rva008B9C90HeaderedDeleting;
     array->retain();
     for (int i=0; i<count; ++i)
         ((BfmeN1242 *)array)->rva008B8E10(i, (BfmeE1242 *)state->m_values[state->m_count-i-1]);

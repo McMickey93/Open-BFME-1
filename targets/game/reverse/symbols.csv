@@ -2385,7 +2385,7 @@ name,address,notes
 ??0ArchivedDirectoryInfo@@QAE@XZ,0x009CA460,the only non-allocator call in ArchiveFileSystem::ArchiveFileSystem at 0x009CAA34; m_rootDirectory is the only member needing a constructor
 ??0ArchivedFileInfo@@QAE@XZ,0x009CC650,archive directory entry ctor
 ??0ArmorUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z,0x0003582D,module ctor (friend_newModuleInstance retail call target)
-??0ArrayValue008B9C60@@QAE@XZ,0x008B9C60,Constructor ABI view of existing bfmeGo1030C; body constructs kind22 base and zeroes 20 24 28 then installs vtable; caller008C8240 allocates44B and registers ctor unwind
+?bfmeGo1030C@BfmeC1030@@QAEPAV1@XZ,0x008B9C60,Address-only compatibility for the frozen gen_asm callers d_008a9710/d_0084de40; the body is ??0Rva008B9C90HeaderedDeleting@@QAE@XZ (identity_evidence/0x008B9C60.md)
 ??0ArrowStormUpdateModuleDataBase@@QAE@XZ,0x0003F503,ArrowStormUpdateModuleData ctor base
 ??0AsciiString@@AAE@PBD@Z,0x00888BC0,probe: plain-class variant of the StringBase<char> const char* constructor
 ??0AsciiString@@QAE@ABV0@@Z,0x000416AF,Open-BFME7 ILT thunk of the out-of-line AsciiString copy (0x0005EE50) that the PlayerInfoMap hinted insert_unique at 0x00634650 calls after MSVC stops inlining the forwarder

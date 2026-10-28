@@ -2,7 +2,6 @@
 
 extern "C" void *bfmeVft1030A[];
 extern "C" void *bfmeVft1030B[];
-extern "C" void *bfmeVft1030C[];
 
 extern "C" __declspec(dllimport) int __stdcall CreateMutexA(int a, int b, int c);
 
@@ -47,30 +46,33 @@ BfmeB1030 *BfmeB1030::bfmeGo1030B(int a)
 	return this;
 }
 
-class BfmeC1030
+// 0x008B9C60 is the out-of-line constructor of the type-22 array value whose
+// vtable is 0x01136D58 (??_7Rva008B9C90HeaderedDeleting@@6B@); ConcatArray
+// 0x008B9CC0 inlines the same constructor (same base call 0x00899F00(0x16, 8),
+// same three zeroed fields, same vtable).
+class Rva00899F00Base
 {
 public:
-	BfmeC1030 *bfmeGo1030C(void);
-	void bfmeBase1030C(int n, int m);
-
-	void *m_bfmeVfptr;
-	char m_bfmePad[0x1c];
-	int m_bfme20;
-	int m_bfme24;
-	int m_bfme28;
+	Rva00899F00Base(unsigned, int);
+	virtual ~Rva00899F00Base();
+	unsigned flags;
+	char field08[0x18];
 };
 
-BfmeC1030 *BfmeC1030::bfmeGo1030C(void)
+class Rva008B9C90HeaderedDeleting : public Rva00899F00Base
 {
-	bfmeBase1030C(0x16, 8);
+public:
+	unsigned *m_elements;
+	int m_capacity, m_length;
+	virtual ~Rva008B9C90HeaderedDeleting();
+	Rva008B9C90HeaderedDeleting();
+};
 
-	int z = 0;
-
-	m_bfme24 = z;
-	m_bfme20 = z;
-	m_bfme28 = z;
-	m_bfmeVfptr = bfmeVft1030C;
-	return this;
+Rva008B9C90HeaderedDeleting::Rva008B9C90HeaderedDeleting() : Rva00899F00Base(0x16, 8)
+{
+	m_capacity = 0;
+	m_elements = 0;
+	m_length = 0;
 }
 
 extern "C" void bfmeCtor1030(void);

@@ -21371,5 +21371,25 @@
   "after_sha256": "c31636a8f72a1e7ef6ecc650a99145fc4ab8e59a613ae73c66a21e0ebc603006",
   "evidence": "targets/game/reverse/identity_evidence/00477b30-not-object-getai.md",
   "reason": "dead +0x19C getter; ILT order contradicts Object::getAI here and confirms it at 0x000E59A0 (+0x204)"
+ },
+ {
+  "old_path": "game/Libraries/Source/EA/Apt/ArrayFromStack008C8240.cpp",
+  "new_path": "game/Libraries/Source/EA/Apt/ArrayFromStack008C8240.cpp",
+  "old_name": "ArrayValue008B9C60",
+  "new_name": "Rva008B9C90HeaderedDeleting",
+  "before_sha256": "e8f50833f7dab3bfee9df50ac57877359f90e00e9247c0af97545fff9fc3eb3e",
+  "after_sha256": "9d5f9face9d0ac5ca404bf12fb2931e99425f88f4bf94f918d5c5851e30a85fe",
+  "evidence": "targets/game/reverse/identity_evidence/0x008B9C60.md",
+  "reason": "0x008B9C60 installs vtable 0x01136D58 recorded as ??_7Rva008B9C90HeaderedDeleting@@6B@; it is that class ctor (ConcatArray 0x008B9CC0 inlines the same one)"
+ },
+ {
+  "old_path": "game/Libraries/Source/EA/Apt/SliceArray008B9F30.cpp",
+  "new_path": "game/Libraries/Source/EA/Apt/SliceArray008B9F30.cpp",
+  "old_name": "ArrayValue008B9C60",
+  "new_name": "Rva008B9C90HeaderedDeleting",
+  "before_sha256": "011ed2d77777292efb8f26176d9146d68debc980306f91096286886851aad5b0",
+  "after_sha256": "dabcac80fdb5c801e1bbaa745c54e891d17e638b6a7bc82f626f496176f0e375",
+  "evidence": "targets/game/reverse/identity_evidence/0x008B9C60.md",
+  "reason": "0x008B9C60 installs vtable 0x01136D58 recorded as ??_7Rva008B9C90HeaderedDeleting@@6B@; it is that class ctor (ConcatArray 0x008B9CC0 inlines the same one)"
  }
 ]
