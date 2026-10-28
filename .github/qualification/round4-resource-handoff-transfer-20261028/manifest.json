@@ -1,0 +1,42 @@
+{
+  "fork": "McMickey93/Open-BFME-1",
+  "control_branch": "codex/20261028-round4-resource-handoff-transfer",
+  "result_branch": "codex/20261028-round4-resource-handoff-verified",
+  "checkpoint_prefix": "codex/20261028-round4-resource-handoff-checkpoint",
+  "completion_branch": "codex/20261028-round4-resource-handoff-completed",
+  "release_branch": "codex/20261028-round4-resource-handoff-release",
+  "branch": "refs/heads/codex/20261028-round4-resource-handoff",
+  "base": "c2503fbc13389c06061ada96ec794b2d3339cbeb",
+  "transport_expected": "c2503fbc13389c06061ada96ec794b2d3339cbeb",
+  "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
+  "native_preparation": true,
+  "source": "game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp",
+  "source_before": "a7431ee7e24059f018c432042c71072361f007cc",
+  "source_blob": "a7431ee7e24059f018c432042c71072361f007cc",
+  "provider": "game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp",
+  "verify_sources": [
+    "game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp",
+    "game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp"
+  ],
+  "reviewed_blobs": {
+    "game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp": "a3f5736ca2a00ba1114b4741a2aa62dbf76da8e1"
+  },
+  "files": [
+    "targets/game/reverse/attempt_support/20261028-resource-bar-livingworld-owner.md",
+    "targets/game/reverse/attempt_support/20261028-resource-bar-owner-trial.patch",
+    "targets/game/reverse/re_attempts.log"
+  ],
+  "evidence": "targets/game/reverse/attempt_support/20261028-resource-bar-livingworld-owner.md",
+  "claim_ref": "refs/heads/claims/0x0058DD70",
+  "claim_refs": [
+    "refs/heads/claims/0x0058DD70",
+    "refs/heads/claims/0x0058DDD0",
+    "refs/heads/claims/0xFF4186CD"
+  ],
+  "claim_owner": "github:McMickey93:bfme1:round4-20261028",
+  "claim_lease": "51dce34f0ca74a209c0657f46a548a18",
+  "started": 1793181250,
+  "commit_message": "[BFME 2 donor] Record the resource-bar canonical-owner admission blocker\n\nPreserve the measured trial and both native outcomes; leave the game source and authority registers unchanged.\nNo new C++ bytes or measured link gain.\n\nClaim-Lease: 0x0058DD70=51dce34f0ca74a209c0657f46a548a18\nClaim-Lease: 0x0058DDD0=51dce34f0ca74a209c0657f46a548a18\nClaim-Lease: 0xFF4186CD=51dce34f0ca74a209c0657f46a548a18\nAgent-Authored: OpenAI Codex\n",
+  "patch": "targets/game/reverse/attempt_support/20261028-resource-bar-owner-trial.patch",
+  "patch_blob": "c30e27ac700eb4815f2680b21b41c836deaec5c0"
+}
