@@ -27,6 +27,10 @@ class WinInstanceData
 public:
 	virtual ~WinInstanceData(void);
 
+	// retail 0x00478780 (WinInstanceDataAssignment.cpp); this view must not
+	// generate its own copy from the byte-array layout.
+	WinInstanceData &operator=(const WinInstanceData &);
+
 	UnicodeString getText(void);
 	Int getTextLength(void)
 	{

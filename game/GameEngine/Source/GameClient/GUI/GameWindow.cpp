@@ -968,42 +968,10 @@ Color GameWindow::winGetHiliteTextBorderColor( void )
 }  // end winGetHiliteTextBorderColor
 
 // GameWindow::winSetInstanceData =============================================
-/** Sets the window's instance data which includes parameters
-	* such as background color. */
-//=============================================================================
 // byte-exact reconstruction: game/GameEngine/Source/GameClient/GUI/GameWindowWinSetInstanceData.cpp
-// ?winSetInstanceData@GameWindow@@QAEHPAVWinInstanceData@@@Z present-unmatched
-// Keep the ZH reference body available for comparison; the BFME ABI slice is
-// emitted from GameWindowWinSetInstanceData.cpp.
-Int GameWindow::winSetInstanceData_ZHReference( WinInstanceData *data )
-{
-	DisplayString *text, *tooltipText;
-
-	// save our own instance of text and tooltip text display strings
-	text = m_instData.m_text;
-	tooltipText = m_instData.m_tooltip;
-
-	// copy over all values from the inst data passed in
-	// using memcpy is VERY VERY bad here, since the strings
-	// must be copied 'correctly' or bad things will ensue
-	m_instData = *data;
-
-	// put our text instance pointers back
-	m_instData.m_text = text;
-	m_instData.m_tooltip = tooltipText;
-
-	// make sure we didn't try to copy over a video buffer.
-	m_instData.m_videoBuffer = NULL;
-
-	// set our text display instance text if present
-	if( data->getTextLength() )
-		m_instData.setText( data->getText() );
-	if( data->getTooltipTextLength() )
-		m_instData.setTooltipText( data->getTooltipText() );
-
-	return WIN_ERR_OK;
-
-}  // end WinSetInstanceData
+// The Zero Hour reference copy that used to sit here emitted a second, non-retail
+// ??4WinInstanceData COMDAT (retail's is 0x00478780, WinInstanceDataAssignment.cpp)
+// that the link could keep; it is removed.
 
 // GameWindow::winGetInstanceData =============================================
 /** Return pointer to the instance data for this window */
