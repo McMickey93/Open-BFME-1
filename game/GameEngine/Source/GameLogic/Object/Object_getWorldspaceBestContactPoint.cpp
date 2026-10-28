@@ -258,3 +258,7 @@ Bool Object::getWorldspaceBestContactPoint(Coord3D *pointOut,
 
 	return true;
 }
+
+// Retail calls GeometryInfo::getBestContactPoint directly at 0x0087F590
+// (pinned), whose only ledger body is still the gen_asm dump.
+#pragma comment(linker, "/alternatename:?getBestContactPoint@GeometryInfo@@QBE_NPAUCoord3D@@PBU2@PBDHH_N@Z=?d_0087f590@@YAXXZ")
