@@ -1,0 +1,53 @@
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /O2 /Ob2 /D_STLP_USE_STATIC_LIB /Igame/Libraries/Source/WWVegas/WWLib
+// stlport
+#define _STLP_NO_EXCEPTIONS 1
+#include <hash_map>
+#include "ascii_string.h"
+
+namespace rts
+{
+	template <class T> struct hash { size_t operator()(T value) const { return (size_t)value; } };
+	template <class T> struct equal_to { bool operator()(T a, T b) const { return a == b; } };
+}
+
+struct FXListView
+{
+	unsigned char m_head[0xC];
+	AsciiString m_name;
+};
+
+typedef _STL::hash_map<unsigned int, FXListView, rts::hash<unsigned int>, rts::equal_to<unsigned int> > FXListMap;
+
+class BfmeSubBGC
+{
+public:
+	void bfmeDoBGC(void *out);
+};
+
+struct FXListStoreView
+{
+	unsigned char m_head[8];
+	FXListMap m_fxmap;
+};
+
+extern FXListStoreView *g_bfmeOwnerABM;
+
+class BfmeSinkABM
+{
+public:
+	virtual void bfmeVisitABM(const char *name);
+};
+
+void __stdcall bfmeEachABM(BfmeSinkABM *sink)
+{
+	FXListMap::iterator it;
+	((BfmeSubBGC *)&g_bfmeOwnerABM->m_fxmap)->bfmeDoBGC(&it);
+	while (it._M_cur)
+	{
+		FXListMap::iterator cur(it);
+		sink->bfmeVisitABM(cur->second.m_name.str());
+		it = ++cur;
+	}
+}
+
+// h
