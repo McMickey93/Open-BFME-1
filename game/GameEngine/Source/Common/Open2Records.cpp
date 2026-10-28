@@ -131,7 +131,7 @@ Open2Rec439370::Open2Rec439370( const Open2Rec439370 &other )
 class PlayerInfo
 {
 public:
-	PlayerInfo( const PlayerInfo &other );
+	__declspec(noinline) PlayerInfo( const PlayerInfo &other );
 	AsciiString m_name;
 	AsciiString m_at04;
 	AsciiString m_at08;
@@ -147,10 +147,21 @@ public:
 	int m_at30;
 };
 
+// Inline (select-any), not a strong definition: every TU that copies a
+// PlayerInfo emits the implicit copy constructor as a select-any COMDAT, and a
+// strong definition here collides with them (LNK2005). This object comes first
+// in link order, so its retail copy is the one the linker keeps.
 // @??0PlayerInfo@@QAE@ABV0@@Z 0x004F1120
-PlayerInfo::PlayerInfo( const PlayerInfo &other )
+inline PlayerInfo::PlayerInfo( const PlayerInfo &other )
 	: m_name( other.m_name ), m_at04( other.m_at04 ), m_at08( other.m_at08 ), m_at0c( other.m_at0c ), m_at10( other.m_at10 ), m_profileID( other.m_profileID ), m_at18( other.m_at18 ), m_at1c( other.m_at1c ), m_at20( other.m_at20 ), m_at24( other.m_at24 ), m_at28( other.m_at28 ), m_at2c( other.m_at2c ), m_at30( other.m_at30 )
 {
+}
+
+// ?bfme_force_playerinfo_copy_emission@@YAXPAXABVPlayerInfo@@@Z absent-from-retail
+// Emits the select-any copy constructor COMDAT above; nothing calls it.
+void bfme_force_playerinfo_copy_emission( void *place, const PlayerInfo &other )
+{
+	new ( place ) PlayerInfo( other );
 }
 
 // -------------------------------------------------------------------------
