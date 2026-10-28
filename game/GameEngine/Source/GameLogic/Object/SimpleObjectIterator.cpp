@@ -75,7 +75,7 @@ SimpleObjectIterator::~SimpleObjectIterator()
 
 //=============================================================================
 // SimpleObjectIterator::insert is BFME retail 0x001DDCB0 (matched in
-// Bfme5RefNodes.cpp as Bfme5PushList::bfmePushFront); this ZH body was a
+// Bfme5RefNodes.cpp); this ZH body was a
 // second strong definition the link selected ahead of retail's copy.
 
 //=============================================================================

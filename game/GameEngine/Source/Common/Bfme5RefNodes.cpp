@@ -114,18 +114,20 @@ struct Bfme5PushNode
 	void *m_bfmeB;
 };
 
-class Bfme5PushList
+class Object;
+
+class SimpleObjectIterator
 {
 public:
-	void bfmePushFront(void *a, void *b);
+	void insert(Object *a, float b);
 
 	int m_bfme00;
-	Bfme5PushNode *m_bfmeHead;
-	int m_bfme08;
-	int m_bfmeCount;
+	Bfme5PushNode *m_firstClump;
+	int m_curClump;
+	int m_clumpCount;
 };
 
-void Bfme5PushList::bfmePushFront(void *a, void *b)
+void SimpleObjectIterator::insert(Object *a, float b)
 {
 	Bfme5PushNode *q = (Bfme5PushNode *)operator new(16);
 	Bfme5PushNode *n;
@@ -140,9 +142,9 @@ void Bfme5PushList::bfmePushFront(void *a, void *b)
 		n = 0;
 	}
 
-	n->m_bfmeNext = m_bfmeHead;
-	m_bfmeHead = n;
+	n->m_bfmeNext = m_firstClump;
+	m_firstClump = n;
 	n->m_bfmeA = a;
-	n->m_bfmeB = b;
-	++m_bfmeCount;
+	n->m_bfmeB = *(void **)&b;
+	++m_clumpCount;
 }
