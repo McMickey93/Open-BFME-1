@@ -8,11 +8,11 @@
 
 #include <cstring>
 
-extern "C" void *(__cdecl *bfme_memmove_ptr)(void *, const void *, unsigned int);
-
-#define memmove (*bfme_memmove_ptr)
+// Retail reaches memmove through its MSVCR71 import slot (`ff 15`, IAT
+// 0x0135945C); /MD's <string.h> declares it dllimport, so the call binds to
+// __imp__memmove.
+#include <string.h>
 #include <vector>
-#undef memmove
 
 #include "ascii_string.h"
 

@@ -28,12 +28,10 @@
 
 typedef unsigned int size_t_;
 
-// Retail reaches memmove through the import slot (`ff 15`), not through a
-// direct call to a thunk, so it is spelled as a pointer here for the same
-// reason VectorIntegerInsertOverflowThunk.cpp spells it that way -- the pin
-// `_bfme_memmove_ptr` is already in targets/game/reverse/symbols.csv at that slot.
-extern "C" void *(__cdecl *bfme_memmove_ptr)(void *, const void *, unsigned int);
-#define memmove (*bfme_memmove_ptr)
+// Retail reaches memmove through its MSVCR71 import slot (`ff 15`, IAT
+// 0x0135945C); /MD's <string.h> declares it dllimport, so the call binds to
+// __imp__memmove.
+#include <string.h>
 
 namespace _STL
 {
