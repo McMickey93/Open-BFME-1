@@ -7,7 +7,7 @@
 
 class PartitionFilterPolygonTrigger
 {
-protected:
+public:
 	virtual ~PartitionFilterPolygonTrigger();
 private:
 	friend void forcePartitionFilterPolygonTriggerDeletingDestructor();

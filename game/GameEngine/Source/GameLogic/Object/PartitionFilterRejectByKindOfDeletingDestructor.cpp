@@ -7,7 +7,7 @@
 
 class PartitionFilterRejectByKindOf
 {
-protected:
+public:
 	virtual ~PartitionFilterRejectByKindOf();
 private:
 	friend void forcePartitionFilterRejectByKindOfDeletingDestructor();

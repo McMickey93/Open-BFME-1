@@ -9204,10 +9204,10 @@ name,address,notes
 ??1PartitionFilterFlammable@@UAE@XZ,0x0000D378,vtable 0x00CBE9EC slots name PartitionFilterFlammable; protected complete destructor called by wrapper 0x00292590;ilt-verified=T1-access(efp=9.46e-03)
 ??1PartitionFilterPlayer@@MAE@XZ,0x00016D5B,vtable 0x00C9688C slots name PartitionFilterPlayer; protected complete destructor called by wrapper 0x00161360
 ??1PartitionFilterPlayerAffiliation@@MAE@XZ,0x0003D659,vtable 0x00C9689C slots name PartitionFilterPlayerAffiliation; protected complete destructor called by wrapper 0x00161390
-??1PartitionFilterPolygonTrigger@@MAE@XZ,0x0000C5F9,vtable 0x00C95714 slots name PartitionFilterPolygonTrigger; protected complete destructor called by wrapper 0x0014AC00
+??1PartitionFilterPolygonTrigger@@UAE@XZ,0x0000C5F9,vtable 0x00C95714 slots name PartitionFilterPolygonTrigger; protected complete destructor called by wrapper 0x0014AC00;ilt-verified=T1-access(efp=3.59e-03)
 ??1PartitionFilterPossibleToAttack@@MAE@XZ,0x0002C935,exact constructor 0x004C12B0 and dedicated vtable 0x00CFD964 establish the protected complete destructor called by wrapper 0x004C12E0
-??1PartitionFilterRejectBuildings@@MAE@XZ,0x0002C9AD,vtable 0x00C9FB64 slots name PartitionFilterRejectBuildings; protected complete destructor called by wrapper 0x001DD430
-??1PartitionFilterRejectByKindOf@@MAE@XZ,0x00034F04,vtable 0x00C9686C slots name PartitionFilterRejectByKindOf; protected complete destructor called by wrapper 0x00161300
+??1PartitionFilterRejectBuildings@@UAE@XZ,0x0002C9AD,vtable 0x00C9FB64 slots name PartitionFilterRejectBuildings; protected complete destructor called by wrapper 0x001DD430;ilt-verified=T1-access(efp=3.91e-03)
+??1PartitionFilterRejectByKindOf@@UAE@XZ,0x00034F04,vtable 0x00C9686C slots name PartitionFilterRejectByKindOf; protected complete destructor called by wrapper 0x00161300;ilt-verified=T1-access(efp=6.85e-03)
 ??1PartitionFilterRelationship@@MAE@XZ,0x00004C87,vtable 0x00C85DC0 slots name PartitionFilterRelationship; protected complete destructor called by wrapper 0x000ED500
 ??1PassiveAreaEffectBehavior@@MAE@XZ,0x000116E4,authentic scalar-deleting wrapper callee ILT; routes to exact complete destructor body 0x002022B0;ilt-verified=T1-access(efp=9.78e-04)
 ??1PassiveAreaEffectBehaviorModuleData@@UAE@XZ,0x0002F0C2,destructor ILT used by the PassiveAreaEffectBehaviorModuleData scalar-deleting destructor
@@ -12576,10 +12576,10 @@ name,address,notes
 ??_GPartitionFilterFlammable@@UAEPAXI@Z,0x0003E595,vtable 0x00CBE9EC slot zero routes through this ILT to scalar wrapper 0x00292590;ilt-verified=T1-access(efp=9.46e-03)
 ??_GPartitionFilterPlayer@@MAEPAXI@Z,0x00003EB8,vtable 0x00C9688C slot zero routes through this ILT to scalar wrapper 0x00161360
 ??_GPartitionFilterPlayerAffiliation@@MAEPAXI@Z,0x000275E8,vtable 0x00C9689C slot zero routes through this ILT to scalar wrapper 0x00161390
-??_GPartitionFilterPolygonTrigger@@MAEPAXI@Z,0x000432AC,vtable 0x00C95714 slot zero routes through this ILT to scalar wrapper 0x0014AC00
+??_GPartitionFilterPolygonTrigger@@UAEPAXI@Z,0x000432AC,vtable 0x00C95714 slot zero routes through this ILT to scalar wrapper 0x0014AC00;ilt-verified=T1-access(efp=3.59e-03)
 ??_GPartitionFilterPossibleToAttack@@MAEPAXI@Z,0x00009B7E,dedicated vtable 0x00CFD964 slot zero routes through this ILT to scalar wrapper 0x004C12E0
-??_GPartitionFilterRejectBuildings@@MAEPAXI@Z,0x000058E9,vtable 0x00C9FB64 slot zero routes through this ILT to scalar wrapper 0x001DD430
-??_GPartitionFilterRejectByKindOf@@MAEPAXI@Z,0x00039FA4,vtable 0x00C9686C slot zero routes through this ILT to scalar wrapper 0x00161300
+??_GPartitionFilterRejectBuildings@@UAEPAXI@Z,0x000058E9,vtable 0x00C9FB64 slot zero routes through this ILT to scalar wrapper 0x001DD430;ilt-verified=T1-access(efp=3.91e-03)
+??_GPartitionFilterRejectByKindOf@@UAEPAXI@Z,0x00039FA4,vtable 0x00C9686C slot zero routes through this ILT to scalar wrapper 0x00161300;ilt-verified=T1-access(efp=6.85e-03)
 ??_GPartitionFilterRelationship@@MAEPAXI@Z,0x000080B7,vtable 0x00C85DC0 slot zero routes through this ILT to scalar wrapper 0x000ED500
 ??_GPhysicsBehaviorModuleData@@UAEPAXI@Z,0x00040827,dedicated vtable 0x00CC0910 slot zero routes through this ILT to scalar wrapper 0x0029A610;ilt-verified=T1-access(efp=9.78e-04)
 ??_GPinger@@UAEPAXI@Z,0x00047E97,exact Pinger constructor 0x00660FD0 installs vtable 0x0111A1D0 whose slot zero routes through this ILT to wrapper 0x00661160

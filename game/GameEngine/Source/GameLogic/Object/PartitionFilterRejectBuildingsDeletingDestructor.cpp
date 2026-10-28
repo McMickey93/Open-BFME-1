@@ -7,7 +7,7 @@
 
 class PartitionFilterRejectBuildings
 {
-protected:
+public:
 	virtual ~PartitionFilterRejectBuildings();
 private:
 	friend void forcePartitionFilterRejectBuildingsDeletingDestructor();
