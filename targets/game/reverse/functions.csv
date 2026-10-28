@@ -36443,7 +36443,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_0007cc10@@YAXXZ,,0x0007CC10,11,game/GameEngine/Source/Common/Rva7CC10ValueCopy.cpp,matched,object-symbol=?copy@Rva7CC10ValueCopy@@QAEPAIPAI@Z;hand-reconciled C++
 ?d_0007cc20@@YAXXZ,,0x0007CC20,14,game/GameEngine/Source/Common/VtableSlot2StoreThunk.cpp,matched,object-symbol=?getFifteenth@VtableSlot2StoreThunk@@QBE?AUVtableSlot2Result@@XZ;Open-BFME5 clean C++ vtable slot 2 value return
 ?d_0007cd30@@YAXXZ,,0x0007CD30,11,game/GameEngine/Source/Common/Rva7CD30ValueCopy.cpp,matched,object-symbol=?copy@Rva7CD30ValueCopy@@QAEPAIPAI@Z;hand-reconciled C++
-?d_0007eeb0@@YAXXZ,,0x0007EEB0,1074,game/gen_asm/d_0007eeb0.asm,matched,gen-dump;int3-carved start=int3-aligned end=ret+int3 refs=0
 ?d_0007f6f0@@YAXXZ,,0x0007F6F0,5,game/GameEngine/Source/Common/ShardSevenIdentityWithArgumentThunk.cpp,matched,object-symbol=?identity@ShardSevenIdentityWithArgumentThunk@@QAEPAU1@H@Z;Open-BFME5 clean C++ shard seven identity with one argument
 ?d_0007f700@@YAXXZ,,0x0007F700,5,game/GameEngine/Source/Common/ShardSevenCdeclPointerIdentityThunk.cpp,matched,object-symbol=?shard_seven_pointer_identity@@YAPAXPAX@Z;Open-BFME5 clean C++ shard seven cdecl pointer identity
 ?d_0007f710@@YAXXZ,,0x0007F710,5,game/GameEngine/Source/Common/SecondShardSevenCdeclPointerIdentityThunk.cpp,matched,object-symbol=?second_shard_seven_pointer_identity@@YAPAXPAX@Z;Open-BFME5 clean C++ second shard seven cdecl pointer identity
@@ -123579,7 +123578,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?j_00711b30@@YAXXZ,,0x00711B30,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00943AD0
 ?j_00711ed6@@YAXXZ,,0x00711ED6,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000299B0
 ?j_00713506@@YAXXZ,,0x00713506,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x000080FD
-?j_00718da0@@YAXXZ,,0x00718DA0,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b17880
 ?j_00746176@@YAXXZ,,0x00746176,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00041191
 ?j_00746186@@YAXXZ,,0x00746186,5,game/gen_small/gthunks_085.cpp,matched,gen-thunk;gap;target=0x00014A38
 ?j_00746190@@YAXXZ,,0x00746190,5,game/gen_small/thunks_037.cpp,matched,gen-thunk;target=thunk_FUN_00b40cf0
@@ -173389,3 +173387,5 @@ uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI
 ?W3DPowerDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z,,0x0079A980,1068,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,BFME W3DPowerDraw: FunctionLexicon string W3DPowerDraw points to ILT 0x00046BB4 which jumps here (ilt_oracle CONFIRMED); ZH body ported through the matched W3DPowerDrawA views (local player without observer bar);model=claude-opus-5-5;host=app
 ?rva0050AA30@BfmeQuickMatchScreen@@QAEXPAX@Z,,0x0050AA30,523,game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/WOLQuickMatchMenuInit.cpp,matched,BfmeQuickMatchScreen vtable 0x0110405C slot 0 (ctor 0x00505FB0 installs it); BFME screen form of ZH WOLQuickMatchMenuInit; address-named member;model=claude-opus-5-5;host=app
 ?rva00517220@BfmeAptScreenLanLobby@@QAEX_N@Z,,0x00517220,241,game/GameEngine/Source/GameClient/GUI/BfmeAptScreenLanLobby_rva00517220.cpp,matched,BfmeAptScreenLanLobby vtable slot 14 (installed by the matched ctor 0x00519F90); QM:STARTINGGAME message box via bfmeMakeZB then TheLAN request; address-named member;model=claude-opus-5-5;host=app
+?testMinimumRequirements@@YA_NPAW4ChipsetType@@PAW4CpuType@@PAH2PAM33@Z,,0x00718DA0,5,game/GameEngineDevice/Source/W3DDevice/GameClient/W3DShaderManager.cpp,matched,Zero Hour W3DShaderManager.cpp global forwarder to W3DShaderManager::testMinimumRequirements; tail jmp via ILT 0x00041E7A; ilt_oracle CONFIRMED at caller ILT 0x0001391C;model=claude-opus-5-5;host=app
+?init@GameLODManager@@QAEXXZ,,0x0007EEB0,1074,game/GameEngine/Source/Common/GameLODManagerInit.cpp,matched,ZH GameLODManager::init port; ilt_oracle CONFIRMED init at body; BFME 2 donor GameLODManagerInit.cpp 73898a9634; inline getStaticGameLODLevelName accessor;model=claude-opus-5-5;host=app

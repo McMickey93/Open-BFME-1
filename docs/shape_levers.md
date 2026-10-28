@@ -2346,3 +2346,19 @@ converting constructor from Region3D built a temporary and copied it again
 (0.953). Measured effect: the copy, the spill and the whole frame exact.
 VC7.1 /O2 `/DNDEBUG /DWIN32 /MD /EHsc`. Source
 `game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp`.
+
+## Global table read through ZH's inline name accessor (2026-10-28)
+
+Mismatch (0x0007EEB0 GameLODManager::init, 1074 B, first probe 147 bytes,
+shape 0.989): `pref["FixedStaticGameLOD"] = StaticGameLODNames[level]`
+loaded the table entry into ecx where retail uses eax, and the register
+choice cascaded into three later clusters (a copy through eax instead of
+edx, the TheWritableGlobalData reload after a call taking ecx and the
+1-byte-longer `mov ecx,[mem]` encoding, the fprintf argument registers).
+Source change: read the entry through Zero Hour's in-class inline accessor
+`const char *getStaticGameLODLevelName(StaticGameLODLevel l) { return
+StaticGameLODNames[l]; }`. Measured effect: the whole body exact, including
+the far clusters; a void callee return and a const global view changed
+nothing. Like the accessor entry above, an inlined accessor call is not the
+same as the bare expression. VC7.1 /O2 `/DNDEBUG /MD /EHsc`, STLport map.
+Source `game/GameEngine/Source/Common/GameLODManagerInit.cpp`.

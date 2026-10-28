@@ -21291,5 +21291,55 @@
   "after_sha256": "aec3731864674018a7804f3bdc1593ba57086f8364a68de635af248e51027361",
   "evidence": "targets/game/reverse/functions.csv",
   "reason": "Not a rename: GameWindow::winGetEnabledImage stays declared by the Zero Hour header. Retail W3DDrawMapPreview (0x0079A330) reads the enabled images at window offset 0x48, four bytes past that header's layout, so the body uses a retail-offset accessor; its image draws call the out-of-line Real-coordinate wrapper at 0x0040D900, whose matched ledger row is ?bfmeRunE@Bfme5Host@@QAEXPBVImage@@MMMMHH@Z."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0007eeb0.cpp",
+  "new_path": "game/GameEngine/Source/Common/GameLODManagerInit.cpp",
+  "old_name": "m_audioLOD",
+  "new_name": "m_field16C4",
+  "before_sha256": "bafa359b13d1d7eb4a93643e5bf3f515fb5c166a07ccdaf35ba213cda77b4f7c",
+  "after_sha256": "2542e2277795e821531066540d6ad4885d501521c0ace7d5f17253ae836e52be",
+  "evidence": "targets/game/reverse/identity_evidence/0x0007eeb0-gamelod-init.md",
+  "reason": "Bank whole-class view guessed this ZH name; the body proves only a fixed static detail level at +0x16C4, named by offset."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0007eeb0.cpp",
+  "new_path": "game/GameEngine/Source/Common/GameLODManagerInit.cpp",
+  "old_name": "m_dynamicParticleSkipMask",
+  "new_name": "m_field16CC",
+  "before_sha256": "bafa359b13d1d7eb4a93643e5bf3f515fb5c166a07ccdaf35ba213cda77b4f7c",
+  "after_sha256": "2542e2277795e821531066540d6ad4885d501521c0ace7d5f17253ae836e52be",
+  "evidence": "targets/game/reverse/identity_evidence/0x0007eeb0-gamelod-init.md",
+  "reason": "Bank view guess; the body proves only the current audio LOD compare/store at +0x16CC, named by offset."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0007eeb0.cpp",
+  "new_path": "game/GameEngine/Source/Common/GameLODManagerInit.cpp",
+  "old_name": "m_numParticleGenerations",
+  "new_name": "m_field16C8",
+  "before_sha256": "bafa359b13d1d7eb4a93643e5bf3f515fb5c166a07ccdaf35ba213cda77b4f7c",
+  "after_sha256": "2542e2277795e821531066540d6ad4885d501521c0ace7d5f17253ae836e52be",
+  "evidence": "targets/game/reverse/identity_evidence/0x0007eeb0-gamelod-init.md",
+  "reason": "Bank view guess; the body never touches +0x16C8, kept as an offset-named field."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0007eeb0.cpp",
+  "new_path": "game/GameEngine/Source/Common/GameLODManagerInit.cpp",
+  "old_name": "pad16ef",
+  "new_name": "m_pad16EF",
+  "before_sha256": "bafa359b13d1d7eb4a93643e5bf3f515fb5c166a07ccdaf35ba213cda77b4f7c",
+  "after_sha256": "2542e2277795e821531066540d6ad4885d501521c0ace7d5f17253ae836e52be",
+  "evidence": "targets/game/reverse/identity_evidence/0x0007eeb0-gamelod-init.md",
+  "reason": "Padding byte renamed to the unit convention m_pad16EF; no identity change."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x0007eeb0.cpp",
+  "new_path": "game/GameEngine/Source/Common/GameLODManagerInit.cpp",
+  "old_name": "refreshCustomStaticLODLevel",
+  "new_name": "rva0007C1D0",
+  "before_sha256": "bafa359b13d1d7eb4a93643e5bf3f515fb5c166a07ccdaf35ba213cda77b4f7c",
+  "after_sha256": "2542e2277795e821531066540d6ad4885d501521c0ace7d5f17253ae836e52be",
+  "evidence": "targets/game/reverse/identity_evidence/0x0007eeb0-gamelod-init.md",
+  "reason": "ilt_oracle confirms refreshCustomStaticLODLevel at ILT 0x00023DAD, but the callee row 0x0007C1D0 is still ledgered as a placeholder and pin_consistency refuses a second route pin; the unit calls the existing pin name until that row is renamed."
  }
 ]

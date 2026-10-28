@@ -29,3 +29,13 @@ nesting; ternary label for 1/4 (0.746); barriers at arm starts (160) or
 around the chain (27); swapped intrinsic roles (19, same); WWLib
 `unicode_string.h` with body-call constructors instead of StringInline.h
 (19, same).
+
+## Session 470 re-probe (2026-10-28, claude-opus-5-5)
+
+Bank re-probed 628/628 B, 19 diffs, unchanged. Further ruled out (diffs):
+the status-2 `_WriteBarrier()` is redundant (removing it: 19, same
+layout); Null arm without barrier (63); `tooltip` declared before `name`
+(45); `unsigned` status (19); `Mouse *` local (453); hoisted `name.str()`
+local (418); inline non-virtual `fetch` wrapper for the 1/4/Null arms (443)
+or all arms (438). The eax/edx role swap therefore does not come from
+declaration order, the barrier on arm 2, or an inline fetch layer.
