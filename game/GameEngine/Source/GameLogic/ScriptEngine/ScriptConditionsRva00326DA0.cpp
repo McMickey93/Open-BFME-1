@@ -22,7 +22,6 @@ typedef UnsignedShort PlayerMaskType;
 // TU names the thunk addresses directly instead of the owning member.
 extern void j_00001140();
 extern void j_00022a70();
-extern void j_000022bb();
 extern void j_0003e80b();
 extern void j_00028560();
 extern void j_0004b4fc();
@@ -62,7 +61,7 @@ class BfmeThingFactory
 
 // Retail's TU inlines one recursion frame of getFinalOverride (the
 // m_nextOverride test stays at the call site) and reaches the recursive step
-// through the ILT thunk at 0x000022BB, so the thunk is a separate name here.
+// through the ILT thunk at 0x000022BB (pinned name).
 class Overridable
 {
 public:
@@ -71,16 +70,8 @@ public:
 	const Overridable *getFinalOverride() const
 	{
 		if( m_nextOverride )
-			return m_nextOverride->getFinalOverrideThunk();
+			return m_nextOverride->getFinalOverride();
 		return this;
-	}
-
-	const Overridable *getFinalOverrideThunk() const
-	{
-		typedef const Overridable *( Overridable::*GetFinalOverride )() const;
-		union { void ( *fn )(); GetFinalOverride call; } getFinalOverride =
-			{ j_000022bb };
-		return ( this->*getFinalOverride.call )();
 	}
 
 	Overridable *m_nextOverride;

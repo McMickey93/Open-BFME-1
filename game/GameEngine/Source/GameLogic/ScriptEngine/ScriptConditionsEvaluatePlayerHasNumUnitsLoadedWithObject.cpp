@@ -22,7 +22,6 @@ typedef UnsignedShort PlayerMaskType;
 // written as member-pointer unions so no linker alias mapping is needed.
 extern void j_00001140();
 extern void j_00022a70();
-extern void j_000022bb();
 extern void j_0003e80b();
 extern void j_00028560();
 
@@ -65,14 +64,12 @@ class Overridable
 {
 public:
 	virtual ~Overridable();
-	// Retail's recursive walk: the recursive step is the ILT thunk, so exactly
-	// this one level of the recursion is inline here.
-	__forceinline const Overridable *getFinalOverride() const
+	// Retail's recursive walk: one level inlines here and the recursive step
+	// reaches the pinned ILT thunk at 0x000022BB.
+	const Overridable *getFinalOverride() const
 	{
-		typedef const Overridable *(Overridable::*Fn)() const;
-		union { void (*fn)(); Fn call; } u = { j_000022bb };
 		if( m_nextOverride )
-			return ( m_nextOverride->*u.call )();
+			return m_nextOverride->getFinalOverride();
 		return this;
 	}
 	Overridable *m_nextOverride;
