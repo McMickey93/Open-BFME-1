@@ -43,7 +43,16 @@ public:
 };
 
 // ?resize@BfmeVec60@@QAEXI@Z
-void BfmeVec60::resize(unsigned n)
+// Select-any, not strong: GeometryInfoDoXfer.cpp emits the same retail body
+// as an inline COMDAT, and a strong definition here collided with it (LNK2005).
+__declspec(noinline) inline void BfmeVec60::resize(unsigned n)
 {
 	resize(n, BfmeElem60());
+}
+
+// ?bfme_force_bfmevec60_resize_emission@@YAXPAVBfmeVec60@@I@Z absent-from-retail
+// Emits the select-any resize COMDAT above; nothing calls it.
+void bfme_force_bfmevec60_resize_emission(BfmeVec60 *vec, unsigned n)
+{
+	vec->resize(n);
 }
