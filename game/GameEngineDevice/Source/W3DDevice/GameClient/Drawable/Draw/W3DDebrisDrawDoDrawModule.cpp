@@ -27,10 +27,17 @@ class Object : public Thing
 {
 };
 
+// Retail's getTransformMatrix body (0x0041CEC0, through ILT 0x00017512) is
+// matched in BfmeCalc919G.cpp under its placeholder name.
+class BfmeCalc919G { public: int bfmeCalc919G(); };
+
 class Drawable
 {
 public:
-	const Matrix3D *getTransformMatrix() const;
+	const Matrix3D *getTransformMatrix() const
+	{
+		return (const Matrix3D *)((BfmeCalc919G *)this)->bfmeCalc919G();
+	}
 	const Coord3D *getPosition() const;
 
 	__forceinline Object *getObject() const
