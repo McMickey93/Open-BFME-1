@@ -2329,3 +2329,20 @@ mov eax,[eax]` and the full register assignment, exact. The same private view
 is exact in parseMapStringFile, so it is not wrong in general. VC7.1 /O2,
 `/DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc`. Source
 `game/GameEngine/Source/GameClient/GameTextManager_parseStringFile.cpp`.
+
+## By-value Region3D argument copied in place with an esp spill (2026-10-28)
+
+Mismatch (0x0079A330 W3DDrawMapPreview, 1285 B, first probe 0.982 shape):
+the `findDrawPositions(..., mmData->m_extent, ...)` argument copy. Retail
+copies the six words straight from `[esi+8..0x1c]` into the `sub esp,0x18`
+slot through `mov eax,esp` and then stores `esp` into a frame slot
+(`mov [esp+0x44],esp`); the Zero Hour plain-struct Region3D copied through a
+second pointer register (`add esi,8; mov eax,esi`), and spelling the
+width()/height() fields explicitly only moved the allocator onto EBX.
+Source change: pass `*(const View *)&mmData->m_extent` where View is a
+same-layout struct with an inline member-wise COPY constructor and an empty
+destructor, called through a signature cast to the real function. A
+converting constructor from Region3D built a temporary and copied it again
+(0.953). Measured effect: the copy, the spill and the whole frame exact.
+VC7.1 /O2 `/DNDEBUG /DWIN32 /MD /EHsc`. Source
+`game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp`.

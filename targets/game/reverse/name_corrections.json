@@ -21281,5 +21281,15 @@
   "after_sha256": "d7fc48a8eaa3627811e00cf6e0abb80e665c672e7094ad439bcb595328fba6d4",
   "evidence": "targets/game/reverse/functions.csv",
   "reason": "The bank's initStringFile was a /alternatename alias for ILT 0x0001EFDD, the matched GameTextManager::getStringCount, which this source now calls by that real name. bfmeGoCXD is the ledger name of a different callee (0x00437C40); no descriptive identity is lost."
+ },
+ {
+  "old_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp",
+  "new_path": "game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp",
+  "old_name": "winGetEnabledImage",
+  "new_name": "bfmeRunE",
+  "before_sha256": "9c5c2a79e8c4db3dd02d6b3731dcf9885c4451c24989417361ac81a88cd2aa21",
+  "after_sha256": "aec3731864674018a7804f3bdc1593ba57086f8364a68de635af248e51027361",
+  "evidence": "targets/game/reverse/functions.csv",
+  "reason": "Not a rename: GameWindow::winGetEnabledImage stays declared by the Zero Hour header. Retail W3DDrawMapPreview (0x0079A330) reads the enabled images at window offset 0x48, four bytes past that header's layout, so the body uses a retail-offset accessor; its image draws call the out-of-line Real-coordinate wrapper at 0x0040D900, whose matched ledger row is ?bfmeRunE@Bfme5Host@@QAEXPBVImage@@MMMMHH@Z."
  }
 ]

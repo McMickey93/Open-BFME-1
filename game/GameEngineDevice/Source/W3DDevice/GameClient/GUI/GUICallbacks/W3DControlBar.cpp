@@ -544,82 +544,168 @@ void W3DNoDraw( GameWindow *window, WinInstanceData *instData )
 }  // end W3DRightHUDDraw
 
 void drawSkinnyBorder( Int x, Int y, Int width, Int height);
+// BFME's Display 2D calls take Real coordinates and each one is bracketed by
+// beginImageDraw/endImageDraw (slots 0xB0 and 0xDC), the shape of the
+// matched FullFadeTransition::draw.  The Zero Hour Display.h above declares
+// the Zero Hour vtable, so the map preview reaches them through a slot view.
+class BfmeMapPreviewDisplay
+{
+public:
+	virtual void slot00();
+	virtual void slot01();
+	virtual void slot02();
+	virtual void slot03();
+	virtual void slot04();
+	virtual void slot05();
+	virtual void slot06();
+	virtual void slot07();
+	virtual void slot08();
+	virtual void slot09();
+	virtual void slot10();
+	virtual void slot11();
+	virtual void slot12();
+	virtual void slot13();
+	virtual void slot14();
+	virtual void slot15();
+	virtual void slot16();
+	virtual void slot17();
+	virtual void slot18();
+	virtual void slot19();
+	virtual void slot20();
+	virtual void slot21();
+	virtual void slot22();
+	virtual void slot23();
+	virtual void slot24();
+	virtual void slot25();
+	virtual void slot26();
+	virtual void slot27();
+	virtual void slot28();
+	virtual void slot29();
+	virtual void slot30();
+	virtual void slot31();
+	virtual void slot32();
+	virtual void slot33();
+	virtual void slot34();
+	virtual void slot35();
+	virtual void slot36();
+	virtual void slot37();
+	virtual void slot38();
+	virtual void slot39();
+	virtual void slot40();
+	virtual void slot41();
+	virtual void slot42();
+	virtual void slot43();
+	virtual void beginImageDraw();
+	virtual void slot45();
+	virtual void drawLine( Real startX, Real startY, Real endX, Real endY,
+		Real lineWidth, UnsignedInt lineColor );
+	virtual void drawOpenRect( Real startX, Real startY, Real width, Real height,
+		Real lineWidth, UnsignedInt lineColor );
+	virtual void drawFillRect( Real startX, Real startY, Real width, Real height,
+		UnsignedInt color );
+	virtual void slot49();
+	virtual void slot50();
+	virtual void slot51();
+	virtual void slot52();
+	virtual void slot53();
+	virtual void slot54();
+	virtual void endImageDraw();
+};
+
+inline void mapPreviewFillRect( BfmeMapPreviewDisplay *display, Real x, Real y,
+	Real width, Real height, UnsignedInt color )
+{
+	display->beginImageDraw();
+	display->drawFillRect( x, y, width, height, color );
+	display->endImageDraw();
+}
+
+inline void mapPreviewLine( BfmeMapPreviewDisplay *display, Real startX, Real startY,
+	Real endX, Real endY, Real lineWidth, UnsignedInt lineColor )
+{
+	display->beginImageDraw();
+	display->drawLine( startX, startY, endX, endY, lineWidth, lineColor );
+	display->endImageDraw();
+}
+
+// The out-of-line Real-coordinate drawImage wrapper at retail 0x0040D900
+// (begin, slot 0xD4, end), called by its ledger name as in the matched
+// Rva00470C90Render.cpp.
+class Bfme5Host
+{
+public:
+	void bfmeRunE( const Image *image, float startX, float startY, float endX,
+		float endY, int color, int mode );
+};
+
+// BFME's Region3D argument is copied by a user copy constructor (its Coord3D
+// halves are class types with one in BFME): retail copies the six words
+// field by field into the argument slot and spills the slot's address.
+// The Zero Hour BaseType.h Region3D above is a plain struct, so the call
+// passes this same-layout view of it.
+struct BfmeMapPreviewExtent
+{
+	BfmeMapPreviewExtent( const BfmeMapPreviewExtent &that )
+		: loX( that.loX ), loY( that.loY ), loZ( that.loZ ),
+		  hiX( that.hiX ), hiY( that.hiY ), hiZ( that.hiZ ) {}
+	~BfmeMapPreviewExtent() {}
+	Real loX, loY, loZ, hiX, hiY, hiZ;
+};
+typedef void (*BfmeFindDrawPositionsCall)( Int startX, Int startY, Int width, Int height,
+	BfmeMapPreviewExtent extent, ICoord2D *ul, ICoord2D *lr );
+
+// BFME's enabled draw data (12-byte image/color/border entries) starts at
+// window offset 0x48, four bytes past the Zero Hour GameWindow.h layout.
+inline const Image *mapPreviewEnabledImage( GameWindow *window, Int index )
+{
+	return *(const Image **)((char *)window + 0x48 + index * 12);
+}
+
+// BFME W3DDrawMapPreview: retail 0x0079A330, registered by name in the
+// FunctionLexicon table (string "W3DDrawMapPreview" -> ILT 0x0004ABDD).
+// Against Zero Hour it returns at once without map data, draws through the
+// Real-coordinate display calls, layers the second enabled image under the
+// first, and drops the supply/tech icons and the skinny border.
 void W3DDrawMapPreview( GameWindow *window, WinInstanceData *instData)
 {
 	MapMetaData *mmData = (MapMetaData *)window->winGetUserData();
 	Int pixelX, pixelY, width, height;
-	// if the local player does not have a radar then we can't draw anything
 	window->winGetScreenPosition(&pixelX, &pixelY);
 	window->winGetSize(&width, &height);
 	if(!mmData)
-	{
-		W3DGameWinDefaultDraw( window, instData );
-		drawSkinnyBorder(pixelX - 1, pixelY - 1, width + 2, height + 2);
 		return;
-	}
-	
-	
-	
-		
-	//
-	// given a upper left corner at pixelX|Y and a width and height to draw into, figure out
-	// where we should start and end the image so that the final drawn image has the
-	// same ratio as the map and isn't stretched or distorted
-	//
+
 	ICoord2D ul, lr;
-	findDrawPositions( pixelX, pixelY, width, height, mmData->m_extent, &ul, &lr );
+	((BfmeFindDrawPositionsCall)findDrawPositions)( pixelX, pixelY, width, height, *(const BfmeMapPreviewExtent *)&mmData->m_extent, &ul, &lr );
 
-//	Int scaledWidth = lr.x - ul.x;
-//	Int scaledHeight = lr.y - ul.y;
-
-	// draw black border areas where we need map
 	Color fillColor = GameMakeColor( 0, 0, 0, 255 );
 	Color lineColor = GameMakeColor( 50, 50, 50, 255 );
-	
+
 	if( mmData->m_extent.width()/width >= mmData->m_extent.height()/height )
 	{
-		
 		// draw horizontal bars at top and bottom
-		TheDisplay->drawFillRect( pixelX, pixelY, width, ul.y - pixelY - 1, fillColor );
-		TheDisplay->drawFillRect( pixelX, lr.y + 1, width, pixelY + height - lr.y - 1, fillColor);
-		TheDisplay->drawLine(pixelX, ul.y, pixelX + width, ul.y, 1, lineColor);
-		TheDisplay->drawLine(pixelX, lr.y + 1, pixelX + width, lr.y + 1, 1, lineColor);
-
+		mapPreviewFillRect( (BfmeMapPreviewDisplay *)TheDisplay, pixelX, pixelY, width, ul.y - pixelY - 1, fillColor );
+		mapPreviewFillRect( (BfmeMapPreviewDisplay *)TheDisplay, pixelX, lr.y + 1, width, pixelY + height - lr.y - 1, fillColor );
+		mapPreviewLine( (BfmeMapPreviewDisplay *)TheDisplay, pixelX, ul.y, pixelX + width, ul.y, 1, lineColor );
+		mapPreviewLine( (BfmeMapPreviewDisplay *)TheDisplay, pixelX, lr.y + 1, pixelX + width, lr.y + 1, 1, lineColor );
 	}  // end if
 	else
 	{
-
 		// draw vertical bars to the left and right
-		TheDisplay->drawFillRect( pixelX, pixelY, ul.x - pixelX - 1, height, fillColor );
-		TheDisplay->drawFillRect( lr.x + 1, pixelY, width - (lr.x - pixelX) - 1, height, fillColor );
-		TheDisplay->drawLine(ul.x, pixelY, ul.x, pixelY + height, 1, lineColor);
-		TheDisplay->drawLine(lr.x + 1, pixelY, lr.x + 1, pixelY + height, 1, lineColor);
-
+		mapPreviewFillRect( (BfmeMapPreviewDisplay *)TheDisplay, pixelX, pixelY, ul.x - pixelX - 1, height, fillColor );
+		mapPreviewFillRect( (BfmeMapPreviewDisplay *)TheDisplay, lr.x + 1, pixelY, width - (lr.x - pixelX) - 1, height, fillColor );
+		mapPreviewLine( (BfmeMapPreviewDisplay *)TheDisplay, ul.x, pixelY, ul.x, pixelY + height, 1, lineColor );
+		mapPreviewLine( (BfmeMapPreviewDisplay *)TheDisplay, lr.x + 1, pixelY, lr.x + 1, pixelY + height, 1, lineColor );
 	}  // end else
 
-	if(!BitTest(window->winGetStatus(), WIN_STATUS_IMAGE) || !window->winGetEnabledImage(0))
-		TheDisplay->drawFillRect(ul.x, ul.y, lr.x -ul.x, lr.y-ul.y, lineColor);
+	if(!BitTest(window->winGetStatus(), WIN_STATUS_IMAGE) || !mapPreviewEnabledImage( window, 0 ))
+		mapPreviewFillRect( (BfmeMapPreviewDisplay *)TheDisplay, ul.x, ul.y, lr.x -ul.x, lr.y-ul.y, lineColor );
 	else
-		TheDisplay->drawImage(window->winGetEnabledImage(0) , ul.x, ul.y, lr.x, lr.y );
-
-	const Image *image = TheMappedImageCollection->findImageByName("TecBuilding");
-	ICoord2DList::iterator it = TheSupplyAndTechImageLocations.m_techPosList.begin();
-	if(image)
-		while(it != TheSupplyAndTechImageLocations.m_techPosList.end())
-		{
-			TheDisplay->drawImage(image, pixelX + it->x, pixelY + it->y, pixelX + it->x + SUPPLY_TECH_SIZE, pixelY + it->y +SUPPLY_TECH_SIZE);
-			it++;
-		}
-
-	image = TheMappedImageCollection->findImageByName("Cash");
-	it = TheSupplyAndTechImageLocations.m_supplyPosList.begin();
-	if(image)
-		while(it != TheSupplyAndTechImageLocations.m_supplyPosList.end())
-		{
-			TheDisplay->drawImage(image, pixelX + it->x, pixelY + it->y, pixelX + it->x + SUPPLY_TECH_SIZE, pixelY + it->y +SUPPLY_TECH_SIZE);
-			it++;
-		}
-	drawSkinnyBorder(pixelX - 1, pixelY - 1, width + 2, height + 2);
+	{
+		if( mapPreviewEnabledImage( window, 1 ) )
+			((Bfme5Host *)TheDisplay)->bfmeRunE( mapPreviewEnabledImage( window, 1 ), ul.x, ul.y, lr.x, lr.y, 0xFFFFFFFF, 2 );
+		((Bfme5Host *)TheDisplay)->bfmeRunE( mapPreviewEnabledImage( window, 0 ), ul.x, ul.y, lr.x, lr.y, 0xFFFFFFFF, 2 );
+	}
 }
 
 // W3DCommandBarHelpPopupDraw exact retail body is emitted by
