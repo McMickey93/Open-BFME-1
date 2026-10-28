@@ -1,0 +1,26 @@
+--- a/game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva0032ABC0.cpp
++++ b/game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva0032ABC0.cpp
+@@ -156,6 +156,9 @@
+ 	Bool m_enteredOrExited;
+ };
+ 
++// The matched ILT 0x00022A70 reaches the complete this+0x14 getter.
++extern void j_00022a70();
++
+ typedef BfmeTeamInstanceLink *(BfmeTeamInstanceLink::*BfmeGetNextTeamFunc)();
+ 
+ class BfmeTeamIterator
+@@ -180,7 +183,12 @@
+ public:
+ 	unsigned char m_pad[0x274];
+ 	Team *m_firstInstance;
+-	BfmeTeamIterator iterate_TeamInstanceList() const { return BfmeTeamIterator(m_firstInstance, &BfmeTeamInstanceLink::_bfme_nextInInstanceList); }
++	BfmeTeamIterator iterate_TeamInstanceList() const
++	{
++		union { void *address; BfmeGetNextTeamFunc method; } next;
++		next.address = reinterpret_cast<void *>(j_00022a70);
++		return BfmeTeamIterator(m_firstInstance, next.method);
++	}
+ };
+ 
+ struct PlayerTeamNode
