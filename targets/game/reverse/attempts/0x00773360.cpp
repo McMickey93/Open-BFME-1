@@ -1,5 +1,10 @@
 // ??0W3DModelDraw@@QAE@PAVThing@@PBVModuleData@@@Z
-// partial score=0.9274 date=2026-10-20
+// partial score=0.9367 date=2026-10-28
+// Banked LOD-switch variant: the shared `m_lodResult = r` epilogue moved into
+// each case body (per-target stores): 1179/1185B, 75 non-reloc diffs (was 82).
+// Single structural residue at +0x43D (retail jump table vs our if-chain).
+// Ruled out: goto-free break-only switch (82); no-default (898, layout blowup);
+// signed switch without the (unsigned int) cast (906, early drift).
 // ??0W3DModelDraw@@QAE@PAVThing@@PBVModuleData@@@Z
 // cl: /DNDEBUG /MD /EHsc /O2 /D_STLP_USE_STATIC_LIB /DBFME_STLP_NODE_ALLOC /Igame/Libraries/Source/WWVegas/WWMath /Igame/Libraries/Source/WWVegas/WWLib /Igame/Libraries/Source/WWVegas/WWDebug
 // stlport
@@ -433,23 +438,20 @@ W3DModelDraw::W3DModelDraw(Thing *thing,
 	m_field268 = -1;
 
 	{
-		int r;
 		switch ((unsigned int)TheGameLODManager->m_level)
 		{
 		case 0:
 		case 1:
-			r = 2;
-			goto done;
+			m_lodResult = 2;
+			break;
 		case 2:
-			r = 1;
-			goto done;
+			m_lodResult = 1;
+			break;
 		case 3:
 		case 4:
 		default:
-			r = 0;
+			m_lodResult = 0;
 			break;
 		}
-	done:
-		m_lodResult = r;
 	}
 }
