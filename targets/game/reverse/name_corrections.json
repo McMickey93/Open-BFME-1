@@ -21391,5 +21391,15 @@
   "after_sha256": "dabcac80fdb5c801e1bbaa745c54e891d17e638b6a7bc82f626f496176f0e375",
   "evidence": "targets/game/reverse/identity_evidence/0x008B9C60.md",
   "reason": "0x008B9C60 installs vtable 0x01136D58 recorded as ??_7Rva008B9C90HeaderedDeleting@@6B@; it is that class ctor (ConcatArray 0x008B9CC0 inlines the same one)"
- }
+ },
+  {
+    "old_path": "game/GameEngine/Source/GameClient/GameText.cpp",
+    "new_path": "game/GameEngine/Source/GameClient/GameTextManager_initMapStringFile_Thunk.cpp",
+    "old_name": "qsort",
+    "new_name": "bfmeSortLookUp",
+    "before_sha256": "6369b62b4bf9e0f8318c73f51bf18986cef3d5cace5184fd1a24d4343cf2c2d1",
+    "after_sha256": "7d87ba26218169e9c04cd00391b6ba7896ab2f8abbfc0c4340c52107eff72598",
+    "evidence": "targets/game/reverse/identity_evidence/00438d50-initmapstringfile-sort.md",
+    "reason": "retail initMapStringFile 0x00438D50 sorts with STLport sort (ILTs 0x000323F3/0x00007F4F), never qsort; the ZH qsort copy was non-retail and removed, and only its funclet row moved"
+  }
 ]

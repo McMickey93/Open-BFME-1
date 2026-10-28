@@ -1044,32 +1044,8 @@ quit:
 // GameTextManager::initMapStringFile
 //============================================================================
 
-// byte-exact reconstruction: game/GameEngine/Source/Common/GameTextManager_initMapStringFile_Thunk.cpp
-// ?initMapStringFile@GameTextManager@@UAEXABVAsciiString@@@Z present-unmatched
-void GameTextManager::initMapStringFile( const AsciiString& filename )
-{
-	m_mapTextCount = 0;
-	getStringCount( filename.str(), m_mapTextCount );
-
-	m_mapStringInfo = NEW StringInfo[m_mapTextCount];
-
-	parseMapStringFile( filename.str() );
-
-	m_mapStringLUT = NEW StringLookUp[m_mapTextCount];
-
-	StringLookUp *lut = m_mapStringLUT;
-	StringInfo *info = m_mapStringInfo;
-
-	for ( Int i = 0; i < m_mapTextCount; i++ )
-	{
-		lut->info = info;
-		lut->label = &info->label;
-		lut++;
-		info++;
-	}
-
-	qsort( m_mapStringLUT, m_mapTextCount, sizeof(StringLookUp), compareLUT  );
-}
+// The retail body is matched in GameTextManager_initMapStringFile_Thunk.cpp;
+// Zero Hour's copy here was not retail's and collided with it at link time.
 
 //============================================================================
 // GameTextManager::parseMapStringFile

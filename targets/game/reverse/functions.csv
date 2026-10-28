@@ -159865,7 +159865,6 @@ uw_00c222e0,,0x00C222E0,11,game/GameEngine/Source/GameClient/GameText.cpp,matche
 uw_00c22300,,0x00C22300,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00c22350,,0x00C22350,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L379
 uw_00c22358,,0x00C22358,8,game/gen_small/uw_gen_001.cpp,matched,gen-funclet;object-symbol=$L315
-uw_00c22380,,0x00C22380,11,game/GameEngine/Source/GameClient/GameText.cpp,matched,gen-funclet;parent=?initMapStringFile@GameTextManager@@UAEXABVAsciiString@@@Z;object-symbol=$L36620
 uw_00c223a0,,0x00C223A0,8,game/gen_small/uw_gen_000.cpp,matched,gen-funclet;object-symbol=$L4794
 uw_00c223c0,,0x00C223C0,8,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;object-symbol=$L526
 uw_00c223e0,,0x00C223E0,8,game/gen_small/uw_gen_012.cpp,matched,gen-funclet;object-symbol=$L526
@@ -173391,4 +173390,5 @@ uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI
 ?b_00c70bf0@@YAXXZ,,0x00C70BF0,1,game/GameEngine/Source/Common/Rva004C5480EmptyBodies.cpp,matched,empty atexit teardown (lone ret before int3) registered by the matched initializer 00C6C7F0 which calls it by this pinned name;model=claude-opus-5-5;host=app
 ?b_00c70e70@@YAXXZ,,0x00C70E70,1,game/GameEngine/Source/Common/Rva004C5480EmptyBodies.cpp,matched,empty atexit teardown (lone ret before int3) registered by the matched initializer 00C6DBA0 which calls it by this pinned name;model=claude-opus-5-5;host=app
 ??0Rva008B9C90HeaderedDeleting@@QAE@XZ,,0x008B9C60,33,game/GameEngine/Source/Common/BfmeConv1030.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/0x008B9C60.md;out-of-line ctor of the type-22 array with vtable 0x01136D58 (??_7Rva008B9C90HeaderedDeleting@@6B@); ConcatArray 0x008B9CC0 inlines the same ctor;model=claude-opus-5.5;host=GreatFaram
+uw_00c22380,,0x00C22380,11,game/GameEngine/Source/GameClient/GameTextManager_initMapStringFile_Thunk.cpp,matched,gen-funclet;parent=?initMapStringFile@GameTextManager@@UAEXABVAsciiString@@@Z;object-symbol=$L2128;model=claude-opus-5-5;host=Desktop
 ?insert@SimpleObjectIterator@@QAEXPAVObject@@M@Z,,0x001DDCB0,68,game/GameEngine/Source/Common/Bfme5RefNodes.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/001ddcb0-simpleobjectiterator-insert.md;Zero Hour SimpleObjectIterator::insert: 16-byte Clump pushed at the front with the numeric copied as a dword; ILT 0x0002CAE8; previously placeholder Bfme5PushList::bfmePushFront;model=claude-opus-5-5;host=Desktop
