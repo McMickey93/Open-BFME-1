@@ -116,10 +116,6 @@ public:
 	};
 
 	void reset(void);
-	void setType(CellType type)
-	{
-		((Gen_003F68B0 *)this)->bfmeSetMode((unsigned int)type);
-	}
 
 	void setLayer(PathfindLayerEnum layer)
 	{
@@ -157,6 +153,14 @@ private:
 	unsigned int m_connectsToLayer:6;
 	unsigned int m_unused:14;
 };
+
+// PathfindCell::setType is retail 0x003F68B0, matched as Gen_003F68B0::bfmeSetMode.
+// A file-static forwarder: a member setType here would emit a non-retail
+// COMDAT of that name (or bind only through the pin).
+static inline void setType(PathfindCell *cell, PathfindCell::CellType type)
+{
+	((Gen_003F68B0 *)cell)->bfmeSetMode((unsigned int)type);
+}
 
 class Pathfinder
 {
@@ -301,12 +305,12 @@ void PathfindLayer::classifyCells(void)
 
 			cell->reset();
 			cell->setLayer(m_layer);
-			cell->setType(PathfindCell::CELL_IMPASSABLE);
+			setType(cell, PathfindCell::CELL_IMPASSABLE);
 			if (bridgeCount == 4) {
-				cell->setType(PathfindCell::CELL_CLEAR);
+				setType(cell, PathfindCell::CELL_CLEAR);
 			} else {
 				if (bridgeCount != 0) {
-					cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
+					setType(cell, PathfindCell::CELL_BRIDGE_IMPASSABLE);
 				}
 
 				Region2D cellBounds;
@@ -316,14 +320,14 @@ void PathfindLayer::classifyCells(void)
 				cellBounds.hi.y = bottomRightCorner.y;
 
 				if (m_bridge->isCellOnSide(&cellBounds)) {
-					cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
+					setType(cell, PathfindCell::CELL_BRIDGE_IMPASSABLE);
 				} else {
 					if (m_bridge->isCellOnEnd(&cellBounds)) {
-						cell->setType(PathfindCell::CELL_CLEAR);
+						setType(cell, PathfindCell::CELL_CLEAR);
 					}
 					Real entryZ;
 					if (m_bridge->isCellEntryPoint(&cellBounds, &entryZ)) {
-						cell->setType(PathfindCell::CELL_CLEAR);
+						setType(cell, PathfindCell::CELL_CLEAR);
 						cell->setConnectLayer(LAYER_GROUND);
 						PathfindCell *groundCell = TheAI->pathfinder()->getCell(
 							LAYER_GROUND, cellX, cellY);
@@ -347,7 +351,7 @@ void PathfindLayer::classifyCells(void)
 						PathfindCell *groundCell = TheAI->pathfinder()->getCell(
 							LAYER_GROUND, cellX, cellY);
 						if (groundCell->getType() != PathfindCell::CELL_OBSTACLE) {
-							groundCell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
+							setType(groundCell, PathfindCell::CELL_BRIDGE_IMPASSABLE);
 						}
 					}
 				}
@@ -388,7 +392,7 @@ void PathfindLayer::classifyCells(void)
 						groundCell->setConnectLayer(LAYER_INVALID);
 					}
 				}
-				cell->setType(PathfindCell::CELL_BRIDGE_IMPASSABLE);
+				setType(cell, PathfindCell::CELL_BRIDGE_IMPASSABLE);
 			}
 		}
 	}

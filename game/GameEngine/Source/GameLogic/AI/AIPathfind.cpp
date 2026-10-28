@@ -1340,19 +1340,9 @@ Bool PathfindCell::setTypeAsObstacle( Object *obstacle, Bool isFence, const ICoo
 	return true;
 }
 
-/**
- * Flag this cell as given type.
- */
-// ?setType@PathfindCell@@QAEXW4CellType@1@@Z present-unmatched
-void PathfindCell::setType( CellType type )
-{
-	if (m_info && (m_info->m_obstacleID != INVALID_ID)) {
-		DEBUG_ASSERTCRASH(type==PathfindCell::CELL_OBSTACLE, ("Wrong type."));
-		m_type = PathfindCell::CELL_OBSTACLE;
-		return;
-	}
-	m_type = type;
-}
+// PathfindCell::setType is BFME retail 0x003F68B0 (matched in Bfme5Seventy.cpp
+// as Gen_003F68B0::bfmeSetMode); this ZH body was a second strong definition
+// that collided with it at link.
 
 /**
  * Unflag this cell as an obstacle, from the given one.

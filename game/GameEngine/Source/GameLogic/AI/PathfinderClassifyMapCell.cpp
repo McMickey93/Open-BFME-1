@@ -30,6 +30,12 @@ extern "C" double __cdecl fabs(double);
 inline Coord3D::Coord3D() {}
 inline Coord3D::~Coord3D() {}
 
+class Gen_003F68B0
+{
+public:
+	void bfmeSetMode(unsigned int mode);
+};
+
 class PathfindCell
 {
 public:
@@ -43,7 +49,6 @@ public:
 
 	CellType getType(void) const { return (CellType)m_type; }
 	void setPinched(Bool pinch) { m_pinched = pinch; }
-	void setType(CellType type);
 
 	void setBit21(Bool on)
 	{
@@ -75,6 +80,14 @@ private:
 public:
 	void setSlope22(Int level) { m_slope22 = level; }
 };
+
+// PathfindCell::setType is retail 0x003F68B0, matched as Gen_003F68B0::bfmeSetMode.
+// A file-static forwarder: a member setType here would emit a non-retail
+// COMDAT of that name (or bind only through the pin).
+static inline void setType(PathfindCell *cell, PathfindCell::CellType type)
+{
+	((Gen_003F68B0 *)cell)->bfmeSetMode((unsigned int)type);
+}
 
 class TerrainLogic
 {
@@ -155,7 +168,7 @@ void Pathfinder::classifyMapCell(Int i, Int j, PathfindCell *cell)
 
 	if (hasObstacle)
 		type = PathfindCell::CELL_OBSTACLE;
-	cell->setType(type);
+	setType(cell, type);
 
 	static const Real s_invDistance[3] =
 	{
