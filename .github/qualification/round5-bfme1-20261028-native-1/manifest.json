@@ -1,0 +1,57 @@
+{
+  "project": 1,
+  "tag": "round5-bfme1-20261028-native-1",
+  "base": "ef3dac58ec78589ecc71251205a2885bf81eefdf",
+  "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
+  "source": "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva0032ABC0.cpp",
+  "source_before": "7c5e76ceacf2495958a042f7b4f4c3a11c71fcc5",
+  "variants": [
+    {
+      "name": "retail-ilt",
+      "file": "candidate-retail-ilt.cpp.txt",
+      "blob": "960d6a0a41c5db378a6f5a6492b481897f6ac60e"
+    }
+  ],
+  "fork": "McMickey93/Open-BFME-1",
+  "official": "Open-BFME/Open-BFME-1",
+  "owner": "github:McMickey93:bfme1:round5-20261028",
+  "control_branch": "codex/round5-bfme1-20261028-native-1-control",
+  "native_branch": "codex/round5-bfme1-20261028-native-1-native",
+  "status_branch": "codex/round5-bfme1-20261028-native-1-status",
+  "result_branch": "codex/round5-bfme1-20261028-native-1-verified",
+  "decision_branch": "codex/round5-bfme1-20261028-native-1-decision",
+  "verify_sources": [
+    "game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva0032ABC0.cpp",
+    "game/gen_small/thunks_016.cpp"
+  ],
+  "ledger": "targets/game/reverse/functions.csv",
+  "attempt_log": "targets/game/reverse/re_attempts.log",
+  "evidence": "targets/game/reverse/attempt_support/round5-bfme1-20261028-native-1.md",
+  "reference_path": "inputs/reference/open-bfme-2",
+  "task": "Script-condition team-instance iterator binding",
+  "removed_symbol": "?_bfme_nextInInstanceList@BfmeTeamInstanceLink@@QAEPAV1@XZ",
+  "function": "?rva0032ABC0@ScriptConditions@@IAE_NPAVCondition@@PAVParameter@@1111@Z",
+  "rva": "0x0032ABC0",
+  "size": 820,
+  "commit_title": "Bind the unit-kind script condition to its verified team-list thunk",
+  "index_archive": "https://api.github.com/repos/Open-BFME/Open-BFME-1/actions/artifacts/12824462671/zip",
+  "index_sha256": "87b86c430eb32a458fe3afbde7bcdc3594f0d091cde32e30815ce80fa06c1ff2",
+  "evidence_intro": "# Script-condition team-list binding, 2026-10-28\n\nSelected by the normal link queue after the original Object::getAI candidate became foreign-reserved. The existing 820-byte ScriptConditions::rva0032ABC0 owns the whole comparison switch and player/team/member walk. Its unresolved BfmeTeamInstanceLink spelling is a pin-only view of the existing matched ILT 0x00022A70, which jumps to 0x000C8A30 (4 bytes: 8b4114c3, this+0x14 pointer, ret). ScriptConditionsRva0032C990.cpp already forms the same pointer-to-member from j_00022a70, and ScriptConditionsRva00326C00.cpp uses the corresponding direct-call bridge. The trial preserves the existing non-const PMF type and complete caller body, and changes only its address factory. No pin, ledger identity, address admission or baseline changes.\n\nBFME2 donor review: e7abc6a62c786c16dc79a9ee86df40894be49ff0, Code/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsPlayerUnitCounts.cpp and ScriptConditions_evaluateTeamStateIs.cpp use Team::dlink_next_TeamInstanceList and a +0x334 prototype list. Those corroborate iteration only; BFME1 sibling, retail thunk and complete getter establish this repair. No BFME2 field offset or address is imported.",
+  "mode": "retarget",
+  "replacement_symbol": "?j_00022a70@@YAXXZ",
+  "route_proof": {
+    "0x22a70": {
+      "bytes": "e9bb5f0a00",
+      "instructions": [
+        "jmp 0xc8a30"
+      ]
+    },
+    "0xc8a30": {
+      "bytes": "8b4114c3",
+      "instructions": [
+        "mov eax, dword ptr [ecx + 0x14]",
+        "ret "
+      ]
+    }
+  }
+}
