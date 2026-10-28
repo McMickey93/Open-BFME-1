@@ -1150,7 +1150,10 @@ inline __declspec(noinline) const char* INI::getNextToken(const char* seps)
 
 //-------------------------------------------------------------------------------------------------
 // ?getNextTokenOrNull@INI@@QAEPBDPBD@Z
-const char* INI::getNextTokenOrNull(const char* seps)
+// Select-any, not strong: the INI thunk units and ini_parsers.cpp emit the same
+// retail body as an inline COMDAT, and a strong definition here collided with
+// them (LNK2005). noinline keeps this unit's callers calling it.
+__declspec(noinline) inline const char* INI::getNextTokenOrNull(const char* seps)
 {
 	if (!seps) seps = m_seps;
 	const char *token = ::strtok(NULL, seps);
