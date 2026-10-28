@@ -123,17 +123,21 @@ Open2Rec439370::Open2Rec439370( const Open2Rec439370 &other )
 }
 
 // -------------------------------------------------------------------------
-// 0x004F1120 -- 158 bytes, ctor
-class Open2Rec4F1120
+// 0x004F1120 -- 158 bytes, ctor: PlayerInfo's copy constructor. The ILT
+// oracle confirms ??0PlayerInfo@@QAE@ABV0@@Z at this address, and the 52-byte
+// layout (three AsciiStrings, profile ID at +0x14) is the BFME PlayerInfo
+// that matched PlayerInfo::isIgnored (PlayerInfoIsIgnored.cpp) reads.
+// Evidence: targets/game/reverse/identity_evidence/004f1120-playerinfo-copy-ctor.md
+class PlayerInfo
 {
 public:
-	Open2Rec4F1120( const Open2Rec4F1120 &other );
-	AsciiString m_at00;
+	PlayerInfo( const PlayerInfo &other );
+	AsciiString m_name;
 	AsciiString m_at04;
 	AsciiString m_at08;
 	int m_at0c;
 	int m_at10;
-	int m_at14;
+	int m_profileID;
 	int m_at18;
 	int m_at1c;
 	int m_at20;
@@ -143,9 +147,9 @@ public:
 	int m_at30;
 };
 
-// @??0Open2Rec4F1120@@QAE@ABV0@@Z 0x004F1120
-Open2Rec4F1120::Open2Rec4F1120( const Open2Rec4F1120 &other )
-	: m_at00( other.m_at00 ), m_at04( other.m_at04 ), m_at08( other.m_at08 ), m_at0c( other.m_at0c ), m_at10( other.m_at10 ), m_at14( other.m_at14 ), m_at18( other.m_at18 ), m_at1c( other.m_at1c ), m_at20( other.m_at20 ), m_at24( other.m_at24 ), m_at28( other.m_at28 ), m_at2c( other.m_at2c ), m_at30( other.m_at30 )
+// @??0PlayerInfo@@QAE@ABV0@@Z 0x004F1120
+PlayerInfo::PlayerInfo( const PlayerInfo &other )
+	: m_name( other.m_name ), m_at04( other.m_at04 ), m_at08( other.m_at08 ), m_at0c( other.m_at0c ), m_at10( other.m_at10 ), m_profileID( other.m_profileID ), m_at18( other.m_at18 ), m_at1c( other.m_at1c ), m_at20( other.m_at20 ), m_at24( other.m_at24 ), m_at28( other.m_at28 ), m_at2c( other.m_at2c ), m_at30( other.m_at30 )
 {
 }
 
