@@ -77,7 +77,19 @@ public:
 	void *m_prototype;
 };
 
-class Team { public: unsigned char m_prefix[12]; Object *m_head; Team *_bfme_nextInInstanceList() const; };
+class Team { public: unsigned char m_prefix[12]; Object *m_head; };
+
+// Retail advances the team instance list through ILT 0x00022A70 (pinned
+// Team::_bfme_nextInInstanceList); nothing defines that name, so take the
+// member pointer from the matched ?j_00022a70 thunk.
+extern void j_00022a70();
+typedef Team *(Team::*BfmeTeamNextFunc)() const;
+static __forceinline BfmeTeamNextFunc teamNextInInstanceList()
+{
+	union { void *address; BfmeTeamNextFunc method; } next;
+	next.address = reinterpret_cast<void *>(j_00022a70);
+	return next.method;
+}
 
 class TeamPrototypeView
 {
@@ -133,7 +145,7 @@ unsigned char ScriptConditions::rva0032C990(Parameter *playerParam, Parameter *t
 		node != player->m_playerTeamPrototypes.end(); ++node)
 	{
 		TeamPrototypeView *prototype = *node;
-			for(BfmeDlinkIterator<Team> instances(prototype->m_teamHead,&Team::_bfme_nextInInstanceList); !instances.done(); instances.advance()) {
+			for(BfmeDlinkIterator<Team> instances(prototype->m_teamHead,teamNextInInstanceList()); !instances.done(); instances.advance()) {
 			Team *instance=instances.cur();
 			if (!instance) continue;
 			Object *head = instance->m_head;

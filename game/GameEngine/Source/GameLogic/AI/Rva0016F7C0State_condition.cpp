@@ -104,8 +104,6 @@ public:
 class Team
 {
 public:
-	Team *_bfme_nextInInstanceList() const;				// symbols.csv pin, ILT 0x00022A70
-
 	void *m_vptr;
 	void *m_proto;
 	void *m_id;
@@ -117,13 +115,25 @@ public:
 	}
 };
 
+// Retail advances the team instance list through ILT 0x00022A70 (pinned
+// Team::_bfme_nextInInstanceList); nothing defines that name, so take the
+// member pointer from the matched ?j_00022a70 thunk.
+extern void j_00022a70();
+typedef Team *(Team::*BfmeTeamNextFunc)() const;
+static __forceinline BfmeTeamNextFunc teamNextInInstanceList()
+{
+	union { void *address; BfmeTeamNextFunc method; } next;
+	next.address = reinterpret_cast<void *>(j_00022a70);
+	return next.method;
+}
+
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/Team.h
 class TeamPrototype
 {
 public:
 	DLINK_ITERATOR<Team> iterate_TeamInstanceList()
 	{
-		return DLINK_ITERATOR<Team>(m_teamInstanceList, Team::_bfme_nextInInstanceList);
+		return DLINK_ITERATOR<Team>(m_teamInstanceList, teamNextInInstanceList());
 	}
 
 	unsigned char m_unmodelled_000[0x274];
