@@ -388,7 +388,12 @@ void W3DGadgetTabControlDraw( GameWindow *tabControl, WinInstanceData *instData 
 // W3DGadgetRadioButtonImageDraw ==============================================
 /** Draw tabs with user supplied images */
 //=============================================================================
-void W3DGadgetTabControlImageDraw( GameWindow *tabControl, 
+// Retail 0x00797EF0 is W3DGadgetTabControlImageDraw.cpp's body. This Zero Hour
+// copy stays only because it emits the GadgetTabControlGet*ImageTab* COMDATs
+// ledgered on this unit; under its own name it was a second, non-retail
+// definition the link could keep.
+// ?W3DGadgetTabControlImageDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z present-unmatched
+void W3DGadgetTabControlImageDraw_ZHReference( GameWindow *tabControl, 
 																	WinInstanceData *instData )
 {
 	ICoord2D origin, size;
