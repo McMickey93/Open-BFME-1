@@ -113,7 +113,9 @@ public:
 	const Coord3D *getPosition(void) const { return &m_pos; }
 	PathfindLayerEnum getLayer(void) const { return m_layer; }
 	Bool getCanOptimize(void) const { return m_canOptimize; }
-	void setCanOptimize(Bool canOpt) { m_canOptimize = canOpt; }
+	// No setCanOptimize: this view stores m_canOptimize at +0x1C, but retail's
+	// PathNode::setCanOptimize copies (0x00168640, 0x0036B9E0, 0x00756C20) store at
+	// +0x24, so an inline one here would emit a non-retail COMDAT of that name.
 	PathNode *getNextOptimized(void) const { return m_nextOpti; }
 	PathNode *getPrevious(void) const { return m_prev; }
 	PathNode *getNext(void) const { return m_next; }
@@ -215,7 +217,7 @@ void Path::xfer00401C70(Xfer *xfer)
 
 			PathNode *newNode = new PathNode(&pos, layer);
 			indexNode[nodeId] = newNode;
-			newNode->setCanOptimize(canOpt);
+			newNode->m_canOptimize = canOpt;
 			newNode->m_costSoFar = cost;
 
 			PathNode *optNode = 0;

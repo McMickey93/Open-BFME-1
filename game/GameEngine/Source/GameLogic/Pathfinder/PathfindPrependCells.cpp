@@ -40,7 +40,9 @@ class PathNode
 public:
 	const Coord3D *getPosition(void) const { return &m_pos; }
 	void setLayer(PathfindLayerEnum layer) { m_layer = layer; }
-	void setCanOptimize(Bool canOpt) { m_canOptimize = canOpt; }
+	// No setCanOptimize: this view stores m_canOptimize at +0x1C, but retail's
+	// PathNode::setCanOptimize copies (0x00168640, 0x0036B9E0, 0x00756C20) store at
+	// +0x24, so an inline one here would emit a non-retail COMDAT of that name.
 
 	PathNode *m_next;
 	PathNode *m_prev;
@@ -217,7 +219,7 @@ void Pathfinder::prependCells(Path *path, const Coord3D *fromPos, PathfindCell *
 		if (cell->getType() == PathfindCell::CELL_CLIFF) {
 			if (prevCell && prevCell->getType() != PathfindCell::CELL_CLIFF) {
 				if (path->getFirstNode()) {
-					path->getFirstNode()->setCanOptimize(false);
+					path->getFirstNode()->m_canOptimize = false;
 				}
 			}
 		} else {
@@ -234,7 +236,7 @@ void Pathfinder::prependCells(Path *path, const Coord3D *fromPos, PathfindCell *
 				if (cell->m_waypoint) {
 					if (path->getFirstNode()) {
 						path->getFirstNode()->m_costSoFar = cell->m_waypoint->m_cost;
-						path->getFirstNode()->setCanOptimize(false);
+						path->getFirstNode()->m_canOptimize = false;
 					}
 					path->prependNode(&cell->m_waypoint->m_pos, cell->getLayer());
 				}
@@ -252,7 +254,7 @@ void Pathfinder::prependCells(Path *path, const Coord3D *fromPos, PathfindCell *
 					}
 					if (path->getFirstNode()) {
 						path->getFirstNode()->m_costSoFar = link->m_cost;
-						path->getFirstNode()->setCanOptimize(false);
+						path->getFirstNode()->m_canOptimize = false;
 					}
 					path->prependNode(&link->m_pos, cell->getLayer());
 					if (link->m_last)
@@ -260,13 +262,13 @@ void Pathfinder::prependCells(Path *path, const Coord3D *fromPos, PathfindCell *
 				}
 				if (path->getFirstNode()) {
 					path->getFirstNode()->m_costSoFar = cost;
-					path->getFirstNode()->setCanOptimize(false);
+					path->getFirstNode()->m_canOptimize = false;
 				}
 			}
 		}
 
 		path->prependNode(&pos, TheTerrainLogic->getLayerForDestination(0, &pos));
-		path->getFirstNode()->setCanOptimize(canOptimize);
+		path->getFirstNode()->m_canOptimize = canOptimize;
 		if (cell->isBlockedByAlly()) {
 			path->setBlockedByAlly(true);
 		}
