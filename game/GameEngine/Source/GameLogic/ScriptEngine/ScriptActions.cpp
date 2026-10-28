@@ -3058,26 +3058,7 @@ void ScriptActions::doNamedGuard(const AsciiString& unitName)
 //-------------------------------------------------------------------------------------------------
 /** doTeamGuard */
 //-------------------------------------------------------------------------------------------------
-// ?doTeamGuard@ScriptActions@@IAEXABVAsciiString@@@Z present-unmatched
-void ScriptActions::doTeamGuard(const AsciiString& teamName)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( teamName );
-	if (!theTeam) {
-		return;
-	}
-
-	// Have all the members of the team guard at their current pos.
-	for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance())
-	{
-		Object *obj = iter.cur();
-		AIUpdateInterface *ai = obj->getAIUpdateInterface();
-		if (!ai) {
-			continue;
-		}
-		Coord3D pos = *obj->getPosition();
-		ai->aiGuardPosition(&pos, GUARDMODE_NORMAL, CMD_FROM_SCRIPT);
-	}
-}
+// ?doTeamGuard@ScriptActions@@IAEXABVAsciiString@@@Z: retail body is in ScriptActions_doTeamGuard.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** doTeamGuardPosition */
@@ -3477,27 +3458,7 @@ void ScriptActions::doTeamDecreasePriority(const AsciiString& teamName)
 //-------------------------------------------------------------------------------------------------
 /** doTeamWanderInPlace */
 //-------------------------------------------------------------------------------------------------
-// ?doTeamWanderInPlace@ScriptActions@@IAEXABVAsciiString@@@Z present-unmatched
-void ScriptActions::doTeamWanderInPlace(const AsciiString& teamName)
-{
-	Team *team = TheScriptEngine->getTeamNamed(teamName);
-
-	if (!team) {
-		return;
-	}
-
-	// Have all the members of the team wander.
-	for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance())
-	{
-		Object *obj = iter.cur();
-		AIUpdateInterface *ai = obj->getAIUpdateInterface();
-		if (!ai) {
-			continue;
-		}
-		ai->chooseLocomotorSet(LOCOMOTORSET_WANDER);
-		ai->aiWanderInPlace(CMD_FROM_SCRIPT);
-	}
-}
+// ?doTeamWanderInPlace@ScriptActions@@IAEXABVAsciiString@@@Z: retail body is in ScriptActions_doTeamWanderInPlace.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** doTeamPanic */
@@ -4401,34 +4362,7 @@ void ScriptActions::doTeamGarrisonSpecificBuilding(const AsciiString& teamName, 
 //-------------------------------------------------------------------------------------------------
 /** doExitSpecificBuilding */
 //-------------------------------------------------------------------------------------------------
-// ?doExitSpecificBuilding@ScriptActions@@IAEXABVAsciiString@@@Z present-unmatched
-void ScriptActions::doExitSpecificBuilding(const AsciiString& buildingName)
-{
-	Object *theBuilding = TheScriptEngine->getUnitNamed(buildingName);
-	if (!theBuilding) 
-	{
-		return;
-	}
-	
-	if (!theBuilding->isKindOf(KINDOF_STRUCTURE)) 
-	{
-		return;
-	}
-
-	AIUpdateInterface *ai = theBuilding->getAIUpdateInterface();
-	if (ai) 
-	{
-		ai->chooseLocomotorSet(LOCOMOTORSET_NORMAL);
-		ai->aiEvacuate( FALSE, CMD_FROM_SCRIPT );
-		return;
-	}
-
-	ContainModuleInterface *contain = theBuilding->getContain();
-	if (contain) 
-	{
-		contain->removeAllContained( FALSE );
-	}
-}
+// ?doExitSpecificBuilding@ScriptActions@@IAEXABVAsciiString@@@Z: retail body is in ScriptActions_doExitSpecificBuilding.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** doTeamGarrisonNearestBuilding */
@@ -5023,29 +4957,7 @@ void ScriptActions::doCameraSetAudibleDistance(Real audibleDistance)
 //-------------------------------------------------------------------------------------------------
 /** doSetStoppingDistance */
 //-------------------------------------------------------------------------------------------------
-// ?doSetStoppingDistance@ScriptActions@@IAEXABVAsciiString@@M@Z present-unmatched
-void ScriptActions::doSetStoppingDistance(const AsciiString& team, Real stoppingDistance)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( team );
-
-	if (theTeam)
-	{
-		for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance())
-		{
-			Object *obj = iter.cur();
-
-			AIUpdateInterface *aiUpdate = obj->getAIUpdateInterface();
-			if (!aiUpdate || !aiUpdate->getCurLocomotor()) {
-				return;
-			}
-			
-			if (stoppingDistance >= 0.5f)
-			{
-				aiUpdate->getCurLocomotor()->setCloseEnoughDist(stoppingDistance);
-			}
-		}
-	}
-}
+// ?doSetStoppingDistance@ScriptActions@@IAEXABVAsciiString@@M@Z: retail body is in ScriptActions_doSetStoppingDistance.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** doNamedSetHeld */
@@ -5242,21 +5154,7 @@ void ScriptActions::doAudioSetVolume(AudioAffect whichToAffect, Real newVolumeLe
 //-------------------------------------------------------------------------------------------------
 /** doTransferTeamToPlayer */
 //-------------------------------------------------------------------------------------------------
-// ?doTransferTeamToPlayer@ScriptActions@@IAEXABVAsciiString@@0@Z present-unmatched
-void ScriptActions::doTransferTeamToPlayer(const AsciiString& teamName, const AsciiString& playerName)
-{
-
-	Team *theTeam = TheScriptEngine->getTeamNamed(teamName);
-	Player* playerDest = TheScriptEngine->getPlayerFromAsciiString(playerName);
-	if (!(theTeam && playerDest)) {
-		return;
-	}
-
-	theTeam->setControllingPlayer(playerDest);
-
-	// srj sez: ensure that all these guys get the upgrades that belong to the new player
-	theTeam->iterateObjects(updateTeamAndPlayerStuff, NULL);
-}
+// ?doTransferTeamToPlayer@ScriptActions@@IAEXABVAsciiString@@0@Z: retail body is in ScriptActions_doTransferTeamToPlayer_Rva003028B0.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** doSetMoney */
@@ -6168,47 +6066,7 @@ void ScriptActions::doBorderSwitch(Int borderToUse)
 //-------------------------------------------------------------------------------------------------
 /** doForceObjectSelection */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doForceObjectSelection_Thunk.cpp
-// ?doForceObjectSelection@ScriptActions@@IAEXABVAsciiString@@0_N0@Z present-unmatched
-void ScriptActions::doForceObjectSelection(const AsciiString& teamName, const AsciiString& objectType, Bool centerInView, const AsciiString& audioToPlay)
-{
-	Team *team = TheScriptEngine->getTeamNamed(teamName);
-	
-	if (!team) {
-		return;
-	}
-
-	Object *bestGuess = NULL;
-
-	for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *obj = iter.cur();
-		if (!obj) {
-			continue;
-		}
-		
-		if (obj->getTemplate() && obj->getTemplate()->getName() == objectType) {
-			if (bestGuess == NULL || obj->getID() < bestGuess->getID()) { // lower ID means its newer
-				bestGuess = obj;				
-			}
-		}
-	}
-	
-	if (!(bestGuess && bestGuess->getDrawable())) {
-		return;
-	}
-
-	TheInGameUI->deselectAllDrawables();
-	TheInGameUI->selectDrawable(bestGuess->getDrawable());
-	// play the sound
-	AudioEventRTS audioEvent(audioToPlay);
-	audioEvent.setPlayerIndex(ThePlayerList->getLocalPlayer()->getPlayerIndex());
-	TheAudio->addAudioEvent(&audioEvent);
-
-	if (centerInView) {
-		Coord3D pos = *bestGuess->getPosition();
-		TheTacticalView->moveCameraTo(&pos, 0, 0, FALSE, 0.0f, 0.0f);
-	}
-}
+// ?doForceObjectSelection@ScriptActions@@IAEXABVAsciiString@@0_N0@Z: retail body is in ScriptActions_doForceObjectSelection_Thunk.cpp
 
 void* __cdecl killTheObject( Object *obj, void* userObj )
 {
@@ -7404,24 +7262,7 @@ void ScriptActions::doGuardSupplyCenter(const AsciiString& teamName, Int supplie
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?doTeamGuardInTunnelNetwork@ScriptActions@@IAEXABVAsciiString@@@Z present-unmatched
-void ScriptActions::doTeamGuardInTunnelNetwork(const AsciiString& teamName)
-{
-	Team *team = TheScriptEngine->getTeamNamed(teamName);
-	if (!team) {
-		return;
-	}
-	// Have all the members of the team guard at a tunnel network.
-	for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance())
-	{
-		Object *obj = iter.cur();
-		AIUpdateInterface *ai = obj->getAIUpdateInterface();
-		if (!ai) {
-			continue;
-		}
-		ai->aiGuardTunnelNetwork(GUARDMODE_NORMAL, CMD_FROM_SCRIPT);
-	}
-}
+// ?doTeamGuardInTunnelNetwork@ScriptActions@@IAEXABVAsciiString@@@Z: retail body is in ScriptActions_doTeamGuardInTunnelNetwork.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?doRemoveCommandBarButton@ScriptActions@@IAEXABVAsciiString@@0@Z
