@@ -169260,11 +169260,8 @@ uw_00c51952,,0x00C51952,16,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI
 uw_00c51962,,0x00C51962,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L484
 uw_00c5196a,,0x00C5196A,16,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,gen-funclet;parent=?W3DPowerDrawA@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L65900;eh-state-pin $L64120->$L65900: retail unwind map (?W3DPowerDrawA@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z states [18]) binds this address to $L65900;repin-model=gpt-6-astra
 uw_00c5197a,,0x00C5197A,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L484
-uw_00c519d0,,0x00C519D0,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L64740
 uw_00c519de,,0x00C519DE,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L466
-uw_00c519e6,,0x00C519E6,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L64742
 uw_00c519f4,,0x00C519F4,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L466
-uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L64744
 uw_00c51a0a,,0x00C51A0A,8,game/gen_small/uw_gen_002.cpp,matched,gen-funclet;object-symbol=$L466
 uw_00c51a30,,0x00C51A30,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
 uw_00c51a38,,0x00C51A38,8,game/gen_small/uw_gen_008.cpp,matched,gen-funclet;object-symbol=$L1317
@@ -173391,3 +173388,6 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 ?Rva0084DBE0@@YAPAXXZ,,0x0084DBE0,6,game/Libraries/Source/WWVegas/WWLib/Rva0084DBStringAndCodePage.cpp,matched,model=claude-opus-5-5;host=app
 ?doTeamGarrisonNearestBuilding@ScriptActions@@IAEXABVAsciiString@@@Z,,0x00302240,536,game/GameEngine/Source/GameLogic/ScriptEngine/ScriptActions_doTeamGarrisonNearestBuilding.cpp,matched,executeAction action 108 arm and ZH twin ScriptActions.cpp:3382 identify the body; 536 B ends ret 4;model=claude-opus-5-5;host=app
 ?privateAttackPosition@AIUpdateInterface@@MAEXPBVCoord3D@@HW4CommandSourceType@@@Z,,0x0027DB50,562,game/GameEngine/Source/GameLogic/Object/Update/AIUpdateInterfacePrivateAttackPosition.cpp,matched,ZH AIUpdate.cpp privateAttackPosition twin; ilt_oracle confirms the class-keyed Coord3D name; Coord3D callees via their ILT thunk rows; volatile continue-range local reproduces the cmdSource-home spill; unsigned weapon-set word local gives EAX;model=claude-opus-5-5;host=app
+uw_00c519d0,,0x00C519D0,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DCommandBarGenExpDraw.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L1138;model=claude-opus-5-5;host=app
+uw_00c519e6,,0x00C519E6,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DCommandBarGenExpDraw.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L1140;model=claude-opus-5-5;host=app
+uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DCommandBarGenExpDraw.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L1142;model=claude-opus-5-5;host=app
