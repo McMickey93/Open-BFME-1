@@ -37945,7 +37945,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_005147f0@@YAXXZ,,0x005147F0,473,game/gen_asm/d_00512e40.asm,matched,gen-dump;ghidra=FUN_009147f0
 ?d_00514a40@@YAXXZ,,0x00514A40,628,game/gen_asm/d_0050fec0.asm,matched,gen-dump;bounds=high
 ?d_00516850@@YAXXZ,,0x00516850,239,game/gen_asm/d_00512e40.asm,matched,gen-dump;ghidra=FUN_00916850
-?d_00517220@@YAXXZ,,0x00517220,241,game/gen_small/dumps_000.cpp,matched,gen-dump;ghidra=FUN_00917220
 ?d_00518ff0@@YAXXZ,,0x00518FF0,282,game/gen_asm/d_00512e40.asm,matched,gen-dump;ghidra=FUN_00918ff0
 ?d_00519150@@YAXXZ,,0x00519150,884,game/gen_asm/d_004e8320.asm,matched,gen-dump;switch-carved start=int3-aligned end=switch-table+int3 refs=0
 ?d_0051d700@@YAXXZ,,0x0051D700,484,game/gen_asm/d_00517720.asm,matched,gen-dump;switch-carved start=int3-aligned end=switch-table+int3 refs=0
@@ -173389,3 +173388,4 @@ uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI
 ?W3DDrawMapPreview@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z,,0x0079A330,1285,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,BFME W3DDrawMapPreview: FunctionLexicon string W3DDrawMapPreview at 0x00EBA5F8 points to ILT 0x0004ABDD which jumps here (ilt_oracle CONFIRMED); ZH body with Real-coordinate begin/end display calls; two enabled images; copy-constructed extent argument;model=claude-opus-5-5;host=app
 ?W3DPowerDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z,,0x0079A980,1068,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DControlBar.cpp,matched,BFME W3DPowerDraw: FunctionLexicon string W3DPowerDraw points to ILT 0x00046BB4 which jumps here (ilt_oracle CONFIRMED); ZH body ported through the matched W3DPowerDrawA views (local player without observer bar);model=claude-opus-5-5;host=app
 ?rva0050AA30@BfmeQuickMatchScreen@@QAEXPAX@Z,,0x0050AA30,523,game/GameEngine/Source/GameClient/GUI/GUICallbacks/Menus/WOLQuickMatchMenuInit.cpp,matched,BfmeQuickMatchScreen vtable 0x0110405C slot 0 (ctor 0x00505FB0 installs it); BFME screen form of ZH WOLQuickMatchMenuInit; address-named member;model=claude-opus-5-5;host=app
+?rva00517220@BfmeAptScreenLanLobby@@QAEX_N@Z,,0x00517220,241,game/GameEngine/Source/GameClient/GUI/BfmeAptScreenLanLobby_rva00517220.cpp,matched,BfmeAptScreenLanLobby vtable slot 14 (installed by the matched ctor 0x00519F90); QM:STARTINGGAME message box via bfmeMakeZB then TheLAN request; address-named member;model=claude-opus-5-5;host=app
