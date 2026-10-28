@@ -866,120 +866,12 @@ Bool ScriptConditions::evaluateTeamOutsideAreaEntirely(Parameter *pTeamParm, Par
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedAttackedByType */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateNamedAttackedByType@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateNamedAttackedByType(Parameter *pUnitParm, Parameter *pTypeParm)
-{
-	Object *theObj = TheScriptEngine->getUnitNamed( pUnitParm->getString() );
-	if (!theObj) {
-		return false;
-	}
-
-	BodyModuleInterface* theBodyModule = theObj->getBodyModule();
-	if (!theBodyModule) {
-		return false;
-	}
-	
-	const DamageInfo* lastDamageInfo = theBodyModule->getLastDamageInfo();
-	
-	if (!lastDamageInfo) {
-		return false;
-	}
-	
-	const ThingTemplate *attackerTemplate = lastDamageInfo->in.m_sourceTemplate;
-	if( attackerTemplate )
-	{
-		//New system... we don't care if the attacker is alive or dead... we just want the type right?
-		ScriptConditionsObjectTypesTemp types;
-		objectTypesFromParam(pTypeParm, types.m_types);
-		if( types.m_types->isInSet( attackerTemplate ) )
-		{
-			return TRUE;
-		}
-	}
-	else
-	{
-		//Old system... just incase m_sourceTemplate doesn't get set, don't want to foobar the logic.
-		ObjectID id = lastDamageInfo->in.m_sourceID;
-		Object* pAttacker = TheGameLogic->findObjectByID(id);
-		if (!pAttacker || !pAttacker->getTemplate()) 
-		{
-			return FALSE;
-		}
-		ScriptConditionsObjectTypesTemp types;
-		objectTypesFromParam(pTypeParm, types.m_types);
-		if( types.m_types->isInSet( pAttacker->getTemplate()->getName() ) )
-		{
-			return TRUE;
-		}
-	}
-
-	return FALSE;
-}
+// ?evaluateNamedAttackedByType@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsNamedByType.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamAttackedByType */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamAttackedByType@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateTeamAttackedByType(Parameter *pTeamParm, Parameter *pTypeParm)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!theTeam) {
-		return FALSE;
-	}
-
-	ScriptConditionsObjectTypesTemp types;
-	objectTypesFromParam(pTypeParm, types.m_types);
-
-	for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *pCur = iter.cur();
-		if (!pCur) {
-			continue;
-		}
-		
-		BodyModuleInterface* theBodyModule = pCur->getBodyModule();
-		if (!theBodyModule) {
-			continue;
-		}
-		
-		const DamageInfo* lastDamageInfo = theBodyModule->getLastDamageInfo();
-		
-		if (!lastDamageInfo) {
-			continue;
-		}
-
-		ScriptConditionsObjectTypesTemp types;
-		objectTypesFromParam(pTypeParm, types.m_types);
-
-		const ThingTemplate *attackerTemplate = lastDamageInfo->in.m_sourceTemplate;
-		if( attackerTemplate )
-		{
-			//New system... we don't care if the attacker is alive or dead... we just want the type right?
-			if( types.m_types->isInSet( attackerTemplate ) )
-			{
-				return TRUE;
-			}
-		}
-		else
-		{
-			//Old system... just incase m_sourceTemplate doesn't get set, don't want to foobar the logic.
-			ObjectID id = lastDamageInfo->in.m_sourceID;
-			Object* pAttacker = TheGameLogic->findObjectByID(id);
-			if (!pAttacker || !pAttacker->getTemplate()) 
-			{
-				//Kris: Woah... do not return false here... because we need to iterate other team members!
-				//return FALSE;
-				continue;
-			}
-			if( types.m_types->isInSet( pAttacker->getTemplate()->getName() ) )
-			{
-				return TRUE;
-			}
-		}
-		
-	}
-
-	return FALSE;
-}
+// ?evaluateTeamAttackedByType@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTeamAttackedByType.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedAttackedByPlayer */
@@ -1609,21 +1501,7 @@ Bool ScriptConditions::evaluateNamedOwnedByPlayer(Parameter *pUnitParm, Paramete
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamOwnedByPlayer */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamOwnedByPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateTeamOwnedByPlayer(Parameter *pTeamParm, Parameter *pPlayerParm)
-{
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	if (!pPlayer) {
-		return false;
-	}
-
-	Team* pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!pTeam) {
-		return false;
-	}
-	
-	return (pTeam->getControllingPlayer() == pPlayer);
-}
+// ?evaluateTeamOwnedByPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTeamCompare.cpp
 
 
 //-------------------------------------------------------------------------------------------------
@@ -2543,52 +2421,7 @@ Bool ScriptConditions::evaluateSkirmishCommandButtonIsReady( Parameter * /* pSki
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishUnownedFactionUnitComparison@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishUnownedFactionUnitComparison( Parameter * /*pSkirmishPlayerParm*/, Parameter *pComparisonParm, Parameter *pCountParm )
-{
-	Player *player = ThePlayerList->getNeutralPlayer();
-	if (!player) {
-		return FALSE;
-	}
-
-	// Note: This looks slow, but in practice it shouldn't be. The neutral player shouldn't really ever
-	// have more than one team.
-	Int numFactionUnits = 0;
-	Player::PlayerTeamList::const_iterator it;
-	for (it = player->getPlayerTeams()->begin(); it != player->getPlayerTeams()->end(); ++it) {
-		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
-			Team *team = iter.cur();
-			if (!team) {
-				continue;
-			}
-			
-			for (DLINK_ITERATOR<Object> objIter = team->iterate_TeamMemberList(); !objIter.done(); objIter.advance()) {
-				Object *obj = objIter.cur();
-				if (!obj) {
-					continue;
-				}
-				
-				if( obj->isDisabledByType( DISABLED_UNMANNED ) )
-				{
-					++numFactionUnits;
-				}
-			}
-		}
-	}
-		
-	switch (pComparisonParm->getInt())
-	{
-		case Parameter::LESS_THAN			:	return numFactionUnits < pCountParm->getInt();	break;
-		case Parameter::LESS_EQUAL		:	return numFactionUnits <= pCountParm->getInt(); break;
-		case Parameter::EQUAL					:	return numFactionUnits == pCountParm->getInt(); break;
-		case Parameter::GREATER_EQUAL :	return numFactionUnits >= pCountParm->getInt(); break;
-		case Parameter::GREATER				:	return numFactionUnits > pCountParm->getInt();	break;
-		case Parameter::NOT_EQUAL			:	return numFactionUnits != pCountParm->getInt();	break;
-	}
-
-	DEBUG_CRASH(("ScriptConditions::evaluateSkirmishUnownedFactionUnitComparison: Invalid comparison type. (jkmcd)"));
-	return FALSE;
-}
+// ?evaluateSkirmishUnownedFactionUnitComparison@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsUnownedFactionRva00329230.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?evaluateSkirmishPlayerHasPrereqsToBuild@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
@@ -2606,56 +2439,7 @@ Bool ScriptConditions::evaluateSkirmishPlayerHasPrereqsToBuild( Parameter *pSkir
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishPlayerHasComparisonGarrisoned@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishPlayerHasComparisonGarrisoned(Parameter *pSkirmishPlayerParm, Parameter *pComparisonParm, Parameter *pCountParm )
-{
-	Player *player = playerFromParam(pSkirmishPlayerParm);
-	if (!player) {
-		return FALSE;
-	}
-
-	// Note: This looks slow, and probably is. 
-	// @todo: PERF_EVALUATE
-	Int numGarrisonedBuildings = 0;
-	Player::PlayerTeamList::const_iterator it;
-	for (it = player->getPlayerTeams()->begin(); it != player->getPlayerTeams()->end(); ++it) {
-		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
-			Team *team = iter.cur();
-			if (!team) {
-				continue;
-			}
-			
-			for (DLINK_ITERATOR<Object> objIter = team->iterate_TeamMemberList(); !objIter.done(); objIter.advance()) {
-				Object *obj = objIter.cur();
-				if (!obj) {
-					continue;
-				}
-				
-				ContainModuleInterface *cmi = obj->getContain();
-				if (!cmi) {
-					continue;
-				}
-				
-				if (cmi->isGarrisonable() && cmi->getContainCount() > 0) {
-					++numGarrisonedBuildings;
-				}
-			}
-		}
-	}
-
-	switch (pComparisonParm->getInt())
-	{
-		case Parameter::LESS_THAN			:	return numGarrisonedBuildings < pCountParm->getInt();	break;
-		case Parameter::LESS_EQUAL		:	return numGarrisonedBuildings <= pCountParm->getInt(); break;
-		case Parameter::EQUAL					:	return numGarrisonedBuildings == pCountParm->getInt(); break;
-		case Parameter::GREATER_EQUAL :	return numGarrisonedBuildings >= pCountParm->getInt(); break;
-		case Parameter::GREATER				:	return numGarrisonedBuildings > pCountParm->getInt();	break;
-		case Parameter::NOT_EQUAL			:	return numGarrisonedBuildings != pCountParm->getInt();	break;
-	}
-
-	DEBUG_CRASH(("ScriptConditions::evaluateSkirmishPlayerHasComparisonGarrisoned: Invalid comparison type. (jkmcd)"));
-	return FALSE;
-}
+// ?evaluateSkirmishPlayerHasComparisonGarrisoned@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsGarrisonedUnits.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?evaluateSkirmishPlayerHasComparisonCapturedUnits@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
