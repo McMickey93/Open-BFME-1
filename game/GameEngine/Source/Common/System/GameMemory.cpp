@@ -1591,17 +1591,7 @@ void MemoryPool::init(MemoryPoolFactory *factory, const char *poolName, Int allo
 /**
 	throw away the pool, and all blocks/blobs associated with it.
 */
-// byte-exact reconstruction: game/GameEngine/Source/Common/MemoryPoolDestructor.cpp
-// ??1MemoryPool@@ present-unmatched
-MemoryPool::~MemoryPool()
-{   
-	// toss everything. we could do this slightly more efficiently,
-	// but not really worth the extra code to do so.
-	while (m_firstBlob) 
-	{
-		freeBlob(m_firstBlob);
-	}
-}
+// ??1MemoryPool@@QAE@XZ: retail body is in MemoryPoolDestructor.cpp
 
 //-----------------------------------------------------------------------------
 /**

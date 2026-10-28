@@ -106,63 +106,7 @@ SpawnBehavior::SpawnBehavior( Thing *thing, const ModuleData* moduleData )
 } 
 
 // ------------------------------------------------------------------------------------------------
-// ?onDie@SpawnBehavior@@ present-unmatched
-void SpawnBehavior::onDie( const DamageInfo *damageInfo )
-{
-	const SpawnBehaviorModuleData *modData = getSpawnBehaviorModuleData();
-
-	///@todo isDieApplicable should be called outside of the onDie call
-	if( modData->m_dieMuxData.isDieApplicable( getObject(), damageInfo ) == FALSE )
-		return;
-
-	for( objectIDListIterator iter = m_spawnIDs.begin();
-				iter != m_spawnIDs.end();
-				iter++
-					)
-	{
-		Object *currentSpawn = TheGameLogic->findObjectByID( (*iter) );
-		if( currentSpawn )
-		{
-			// Go through all my spawns and see if they have a SlavedUpdate I can tell I was killed to
-			for (BehaviorModule** update = currentSpawn->getBehaviorModules(); *update; ++update)
-			{
-				SlavedUpdateInterface* sdu = (*update)->getSlavedUpdateInterface();
-				if (sdu != NULL)
-				{
-					sdu->onSlaverDie( damageInfo );
-					break;
-				}
-			}
-
-			// our spawner has died, we must invalidate the ID now in the spawned object
-			currentSpawn->setProducer( NULL );
-
-		}
-	}
-
-	// kill anything that we have spawned if our module data directs us to do so
-	if( modData->m_spawnedRequireSpawner )
-	{
-		Object *obj;
-
-		for( objectIDListIterator it = m_spawnIDs.begin(); it != m_spawnIDs.end(); /*emtpy*/ )
-		{
-
-			// get object
-			obj = TheGameLogic->findObjectByID( *it );
-
-			// increment iterator incase the id list is alterd because what we're about to do
-			++it;
-
-			// kill it if not already dead
-			if( obj && obj->isEffectivelyDead() == FALSE )
-				obj->kill();
-
-		}  // end for, it
-
-	}  // end if
-
-}
+// ?onDie@SpawnBehavior@@UAEXPBVDamageInfo@@@Z: retail body is in SpawnBehaviorOnDie.cpp
 
 // Retail SpawnBehavior::update (0x0020C750) is implemented in SpawnBehaviorUpdate.cpp.
 

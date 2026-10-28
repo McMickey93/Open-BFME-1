@@ -2589,32 +2589,7 @@ ParticleSystemTemplate *ParticleSystemManager::findParentTemplate( const AsciiSt
 // ------------------------------------------------------------------------------------------------
 /** Destroy any particle systems that are attached to this object */	
 // ------------------------------------------------------------------------------------------------
-// ?destroyAttachedSystems@ParticleSystemManager@@QAEXPAVObject@@@Z present-unmatched
-void ParticleSystemManager::destroyAttachedSystems( Object *obj )
-{
-
-	// sanity
-	if( obj == NULL )
-		return;
-
-	// iterate through all systems
-	ParticleSystem *system = NULL;
-
-	for( ParticleSystemListIt it = m_allParticleSystemList.begin(); 
-			 it != m_allParticleSystemList.end(); 
-			 ++it ) 
-	{
-
-		system = *it;
-		if( system == NULL )
-			continue;
-		
-		if( system->getAttachedObject() == obj->getID() )
-			system->destroy();
-
-	}
-
-}
+// ?destroyAttachedSystems@ParticleSystemManager@@QAEXPAVObject@@@Z: retail body is in ParticleSystemManager_destroyAttachedSystems.cpp
 
 // ------------------------------------------------------------------------------------------------
 /** Add a particle to the global particle list. */

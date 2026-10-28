@@ -2204,21 +2204,7 @@ void Team::countObjectsByThingTemplate(Int numTmplates, const ThingTemplate* con
 // Team::countBuildings: retail body (0x000F4900) in Team_countBuildings.cpp.
 
 // ------------------------------------------------------------------------
-// ?countObjects@Team@@QAEHV?$BitFlags@$0HE@@@0@Z present-unmatched
-Int Team::countObjects(KindOfMaskType setMask, KindOfMaskType clearMask)
-{
-	int retVal = 0;
-	for (DLINK_ITERATOR<Object> iter = iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		const ThingTemplate* objtmpl = iter.cur()->getTemplate();
-		if (!objtmpl) {
-			continue;
-		}
-		if (objtmpl->isKindOfMulti(setMask, clearMask)) {
-			++retVal;
-		}
-	}
-	return retVal;
-}
+// ?countObjects@Team@@QAEHV?$BitFlags@$0HE@@@0@Z: retail body is in Team_countObjects.cpp
 
 // ------------------------------------------------------------------------
 // ?healAllObjects@Team@@QAEXXZ present-unmatched
@@ -2973,17 +2959,7 @@ void Team::moveTeamTo(Coord3D destination)
 }
 
 // ------------------------------------------------------------------------
-// ?hasAnyBuildFacility@Team@@QBE_NXZ present-unmatched
-Bool Team::hasAnyBuildFacility() const
-{
-	for (DLINK_ITERATOR<Object> iter = iterate_TeamMemberList(); !iter.done(); iter.advance())
-	{
-		const ThingTemplate *objtmpl = iter.cur()->getTemplate();
-		if (objtmpl->isBuildFacility()) 
-			return true;
-	}
-	return false;
-}
+// ?hasAnyBuildFacility@Team@@QBE_NXZ: retail body is in Team_hasAnyBuildFacility.cpp
 
 // ------------------------------------------------------------------------
 //DECLARE_PERF_TIMER(updateGenericScripts)

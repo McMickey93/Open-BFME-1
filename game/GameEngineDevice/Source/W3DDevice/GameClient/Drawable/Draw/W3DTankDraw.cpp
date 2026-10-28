@@ -299,38 +299,7 @@ void W3DTankDraw::tossEmitters( void )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-// ?createEmitters@W3DTankDraw@@ present-unmatched
-void W3DTankDraw::createEmitters( void )
-{
-	if (!m_treadDebrisLeft)
-	{
-		const ParticleSystemTemplate *sysTemplate;
-		sysTemplate = TheParticleSystemManager->findTemplate(getW3DTankDrawModuleData()->m_treadDebrisNameLeft);
-		if (sysTemplate)
-		{
-			m_treadDebrisLeft = TheParticleSystemManager->createParticleSystem( sysTemplate );
-			m_treadDebrisLeft->attachToDrawable(getDrawable());
-			// important: mark it as do-not-save, since we'll just re-create it when we reload.
-			m_treadDebrisLeft->setSaveable(FALSE);
-			// they come into being stopped.
-	  	m_treadDebrisLeft->stop();
-		}
-	}
-	if (!m_treadDebrisRight)
-	{
-		const ParticleSystemTemplate *sysTemplate;
-		sysTemplate = TheParticleSystemManager->findTemplate(getW3DTankDrawModuleData()->m_treadDebrisNameRight);
-		if (sysTemplate)
-		{
-			m_treadDebrisRight = TheParticleSystemManager->createParticleSystem( sysTemplate );
-			m_treadDebrisRight->attachToDrawable(getDrawable());
-			// important: mark it as do-not-save, since we'll just re-create it when we reload.
-			m_treadDebrisRight->setSaveable(FALSE);
-			// they come into being stopped.
-	  	m_treadDebrisRight->stop();
-		}
-	}
-}
+// ?createEmitters@W3DTankDraw@@IAEXXZ: retail body is in W3DTankDrawCreateEmitters.cpp
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------

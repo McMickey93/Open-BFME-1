@@ -1375,18 +1375,7 @@ void LANAPI::addGame( LANGameInfo *game )
 
 // ?addPlayer@LANAPI@@IAEXPAVLANPlayer@@@Z lives in LANAPIAddPlayer.cpp (retail 0x00686FD0).
 
-// ?SetLocalIP@LANAPI@@UAE_NI@Z present-unmatched
-Bool LANAPI::SetLocalIP( UnsignedInt localIP )
-{
-	Bool retval = TRUE;
-	m_localIP = localIP;
-
-	m_transport->reset();
-	retval = m_transport->init(m_localIP, lobbyPort);
-	m_transport->allowBroadcasts(true);
-
-	return retval;
-}
+// ?SetLocalIP@LANAPI@@UAE_NI@Z: retail body is in LANAPISetLocalIP.cpp
 
 // The two SetLocalIP overloads are six BFME-only virtuals further down the
 // vtable than this tree's header puts them: retail dispatches the UnsignedInt

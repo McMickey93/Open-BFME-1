@@ -3698,35 +3698,7 @@ Upgrade *Player::addUpgrade( const UpgradeTemplate *upgradeTemplate, UpgradeStat
 /** 
 	An upgrade just finished, do things like tell all objects to recheck UpgradeModules 
 */  
-// ?onUpgradeCompleted@Player@@QAEXPBVUpgradeTemplate@@@Z present-unmatched
-void Player::onUpgradeCompleted( const UpgradeTemplate *upgradeTemplate )
-{
-	for (PlayerTeamList::iterator it = m_playerTeamPrototypes.begin(); 
-			 it != m_playerTeamPrototypes.end(); ++it) 
-	{
-		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) 
-		{
-			Team *team = iter.cur();
-			if( team == NULL ) 
-			{
-				continue;
-			}
-			for (DLINK_ITERATOR<Object> iterObj = team->iterate_TeamMemberList(); !iterObj.done(); iterObj.advance()) 
-			{
-				Object *obj = iterObj.cur();
-				if( obj == NULL ) 
-				{
-					continue;
-				}
-				// Dear copy-paste monkeys, the meat of this iterate-all-player-objects loop goes twixt the MEAT comments
-
-				obj->updateUpgradeModules();
-
-				// end MEAT
-			}
-		}
-	}
-}
+// ?onUpgradeCompleted@Player@@QAEXPBVUpgradeTemplate@@@Z: retail body is in Player_onUpgradeCompleted_stl.cpp
 
 // Player::removeUpgrade is defined by the retail-matched PlayerUpgrades.cpp.
 

@@ -240,28 +240,7 @@ void BuildAssistant::init( void )
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
-// ?reset@BuildAssistant@@ present-unmatched
-void BuildAssistant::reset( void )
-{
-
-	// clear all our data from the sell list
-	ObjectSellInfo *sellInfo;
-	ObjectSellListIterator it;
-	for( it = m_sellList.begin(); it != m_sellList.end(); ++it )
-	{
-
-		// get sell info
-		sellInfo = (*it);
-
-		// delete our data and erase this entry from the list
-		sellInfo->deleteInstance();
-
-	}  // end for
-
-	// clear the sell list
-	m_sellList.clear();
-
-}  // end reset
+// ?reset@BuildAssistant@@UAEXXZ: retail body is in BuildAssistant_reset.cpp
 
 static const Real FRAMES_TO_ALLOW_SCAFFOLD = LOGICFRAMES_PER_SECOND * 1.5f;
 static const Real TOTAL_FRAMES_TO_SELL_OBJECT = LOGICFRAMES_PER_SECOND * 3.0f;
