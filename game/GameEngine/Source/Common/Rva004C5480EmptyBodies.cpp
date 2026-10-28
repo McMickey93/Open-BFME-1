@@ -25,3 +25,10 @@ void Rva00C70AE0Empty() {}
 void Rva00C70AF0Empty() {}
 void Rva00C70B80Empty() {}
 void Rva00C70B90Empty() {}
+
+// Empty atexit teardowns registered by the matched initializers 0x00C6B710,
+// 0x00C6C7F0 and 0x00C6DBA0 (Rva00883CF0AtexitInitializers.cpp), which
+// already call them by these pinned address-derived names.
+void b_00c6ffe0() {}
+void b_00c70bf0() {}
+void b_00c70e70() {}
