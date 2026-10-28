@@ -53,3 +53,14 @@ Real ox)` (the from-object load then takes EAX as in retail). Only residue 2
 (second-dot load choice, +0xB6..+0xC2) is left; the 8 term/factor orders are
 still inert in the new context, and so are a Coord2D ourDir (11 B, frame
 0x10) and a full Coord3D copy (296 B).
+
+Session 467 (a1) re-probe: bank still 289/289, 4 bytes. Reading the slots:
+ourDir lives at [esp+0x10]/[esp+0x14] (integer-copied at +0x18/+0x1E),
+vectorToOther at [esp+8]/[esp+0xC]; retail fld's ourDir.y then fmul's
+vectorToOther.y, ours the reverse. Further inert (4 B) or worse trials:
+second dot through `const Coord3D *od = &ourDir` (4 B); through a
+`const Coord2D *` to vectorToOther, alone or with od (295 B); `(double)`
+promoted products (4 B); `-(-a - b)` (293 B); `dir->x/dir->y` read again
+instead of ourDir (279 B); helper taking `Coord2D *` (4 B); vectorToOther
+declared before ourDir (4 B); a block-scope copy of vectorToOther (311 B);
+ourDir.y stored before ourDir.x (10 B, the copy order is load-bearing).
