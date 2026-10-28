@@ -21351,5 +21351,25 @@
   "after_sha256": "4b5ab2268cf11e79f69d69bf36a119f2370b97400a5f616bf0a4ebcb28c5c4d2",
   "evidence": "targets/game/reverse/identity_evidence/000f9250-not-pathnode-setcanoptimize.md",
   "reason": "dead +0x24 bool setter; ILT order contradicts PathNode::setCanOptimize and BFME's matched PathNode users inline it at +0x1C"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "Object",
+  "new_name": "Rva00477B30",
+  "before_sha256": "4e2997ae4cd82a5453b4dfbdec10ac82c62e779c732e83e19f7ed00d10baadba",
+  "after_sha256": "c31636a8f72a1e7ef6ecc650a99145fc4ab8e59a613ae73c66a21e0ebc603006",
+  "evidence": "targets/game/reverse/identity_evidence/00477b30-not-object-getai.md",
+  "reason": "dead +0x19C getter; ILT order contradicts Object::getAI here and confirms it at 0x000E59A0 (+0x204)"
+ },
+ {
+  "old_path": "targets/game/reverse/functions.csv",
+  "new_path": "targets/game/reverse/functions.csv",
+  "old_name": "AIUpdateInterface",
+  "new_name": "Rva00477B30Value",
+  "before_sha256": "4e2997ae4cd82a5453b4dfbdec10ac82c62e779c732e83e19f7ed00d10baadba",
+  "after_sha256": "c31636a8f72a1e7ef6ecc650a99145fc4ab8e59a613ae73c66a21e0ebc603006",
+  "evidence": "targets/game/reverse/identity_evidence/00477b30-not-object-getai.md",
+  "reason": "dead +0x19C getter; ILT order contradicts Object::getAI here and confirms it at 0x000E59A0 (+0x204)"
  }
 ]

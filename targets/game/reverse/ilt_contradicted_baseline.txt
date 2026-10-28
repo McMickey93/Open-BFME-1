@@ -3798,7 +3798,6 @@ functions	0x004768F0	?__partial_sort@@YAXPAUQ3SortElem16@@000UQ3SortCompare@@@Z
 functions	0x00477320	?parseFontDefaultSettings@@YAXPAVINI@@@Z
 functions	0x004775D0	?__introsort_loop@@YAXPAUQ3SortElem16@@00HUQ3SortCompare@@@Z
 functions	0x004779C0	?parseFontSubstitution@@YAXPAVINI@@@Z
-functions	0x00477B30	?getAI@Object@@QAEPAVAIUpdateInterface@@XZ
 functions	0x00477B40	?getNumSkirmishTeams@SidesList@@QAEHXZ
 functions	0x00478480	?winGetStatus@GameWindow@@QAEIXZ
 functions	0x00478550	?winSetFont@GameWindow@@UAEXPAVGameFont@@@Z
