@@ -155,3 +155,29 @@ void Rva00494EC0EntryView::rva00494FA0(const AsciiString &name, unsigned int fla
  m_at20 = (m_at20 & 0xfd) | 1;
  update();
 }
+
+// Retail 0x00C6B9E0 (29 B) is the next CRT initializer after this unit's
+// _$E1 above: it builds an AudioEventRTS in place in the 0x70-byte global at
+// 0x012F3370 (the data row g_q3IndexedFallback) from the shared empty string
+// and 0 through ILT 0x00025306 (matched ??0AudioEventRTS 0x000B2CC0), then
+// registers the matched teardown forwarder 0x00C70110 (~AudioEventRTS on the
+// same global) with atexit. The global is defined as an opaque byte record
+// elsewhere, so the construction is spelled as placement new rather than as
+// a second definition.
+class AudioEventRTS
+{
+public:
+	AudioEventRTS(const AsciiString &eventName, int ownerID) throw();
+private:
+	char m_storage[0x70];
+};
+struct Q3IndexedItem { char m_bytes[ 0x70 ]; };
+extern Q3IndexedItem g_q3IndexedFallback;
+void bfmeForward_00C70110(void);
+extern "C" int __cdecl atexit(void (__cdecl *callback)());
+
+void Rva00C6B9E0Initialize()
+{
+	new (&g_q3IndexedFallback) AudioEventRTS(AsciiString::TheEmptyString, 0);
+	atexit(bfmeForward_00C70110);
+}
