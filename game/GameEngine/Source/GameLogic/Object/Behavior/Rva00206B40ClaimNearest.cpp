@@ -1,6 +1,16 @@
-// ?claimNearest@Rva00206B40Owner@@QAEHH@Z
-// partial score=0.0407 date=2026-10-18
 // cl: /O2 /GR- /DNDEBUG /DWIN32 /MD /EHsc- /Igame/Libraries/Include /Igame/GameEngine/Source/GameLogic/Object
+// stlport
+//
+// Retail 0x00206B40 (295 B, ret 4 at +0x124): vtable 0x010A626C slot 2,
+// the secondary vtable the matched SiegeDockingBehavior constructor
+// (0x002062C0) stores at +0x20. It finds the Object by id, sweeps the
+// primary at this-0x20 (bfmeSweepERP 0x00206460), then claims the
+// nearest unclaimed slot of the item vector at this+4 and returns its
+// index. Owner class and method are unproven, so the names keep the
+// address. The early `count == 0` return of -1 shares the epilogue with the
+// final return; writing it as an if-block over the loop moves the
+// bestIndex spill ahead of the branch.
+#include <vector>
 typedef float Real;
 typedef int Int;
 typedef unsigned int UnsignedInt;
@@ -83,8 +93,7 @@ public:
 	Int claimNearest(Int objectID);
 
 	void *m_vtable;
-	ArrayItem **m_begin;
-	ArrayItem **m_end;
+	_STL::vector<ArrayItem *> m_items;
 };
 
 Int Rva00206B40Owner::claimNearest(Int objectID)
@@ -95,16 +104,15 @@ Int Rva00206B40Owner::claimNearest(Int objectID)
 
 	((BfmeHostERP *)((char *)this - 0x20))->bfmeSweepERP();
 
-	ArrayItem **items = m_begin;
-	UnsignedInt count = m_end - items;
-	Int bestIndex = -1;
+	UnsignedInt count = m_items.size();
 	if (count == 0)
-		return bestIndex;
+		return -1;
 
+	Int bestIndex = -1;
 	Real bestDist = 99999.0f;
 	for (UnsignedInt i = 0; i < count; ++i)
 	{
-		ArrayItem *item = m_begin[i];
+		ArrayItem *item = m_items[i];
 		if (item->m_claimantID != 0)
 			continue;
 		if (!(obj->getTemplate00206B40()->m_flagsD8 & 0x400) && item->m_occupied != 0)
@@ -126,6 +134,6 @@ Int Rva00206B40Owner::claimNearest(Int objectID)
 	}
 
 	if (bestIndex >= 0)
-		items[bestIndex]->m_claimantID = objectID;
+		m_items[bestIndex]->m_claimantID = objectID;
 	return bestIndex;
 }

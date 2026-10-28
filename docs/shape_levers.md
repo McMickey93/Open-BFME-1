@@ -2362,3 +2362,21 @@ the far clusters; a void callee return and a const global view changed
 nothing. Like the accessor entry above, an inlined accessor call is not the
 same as the bare expression. VC7.1 /O2 `/DNDEBUG /MD /EHsc`, STLport map.
 Source `game/GameEngine/Source/Common/GameLODManagerInit.cpp`.
+
+## Nearest-slot scan: STLport vector plus an early empty return (2026-10-28)
+
+Mismatch (0x00206B40 Rva00206B40Owner::claimNearest, 295 B, bank 281 B
+shape 0.85): the found Object stayed in EBP where retail spills it and
+reloads it into ESI per iteration, the item array's begin was materialised
+before the `count == 0` branch, and the empty case got its own epilogue.
+Source changes, each measured on the probe: (1) give the item array a real
+`_STL::vector<Item *>` member and use `size()` / `m_items[i]` (end loaded
+first, begin saved only at the loop preheader; a local `items = m_begin`
+copy cost 10-26 B); (2) write `if (count == 0) return -1;` and declare
+`Int bestIndex = -1; Real bestDist = 99999.0f;` after it, in that order.
+An `if (count != 0) { ... }` block over the loop kept the bestIndex spill
+ahead of the branch (76 bytes), and swapping the two declarations left
+10 bytes. A `volatile` Object pointer did force the reload but also added
+one after the call. Measured effect: whole body exact. VC7.1
+`/O2 /GR- /DNDEBUG /DWIN32 /MD /EHsc-`, STLport. Source
+`game/GameEngine/Source/GameLogic/Object/Behavior/Rva00206B40ClaimNearest.cpp`.
