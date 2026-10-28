@@ -1,1 +1,1 @@
-{"commands": [{"exit_code": 0, "label": "public-author", "log": "00-public-author.log"}], "new_cpp_bytes": 0, "project": 1, "schema": 1, "started": 1793217230, "status": "starting", "step": "public-author"}
+{"commands": [{"exit_code": 0, "label": "public-author", "log": "00-public-author.log"}, {"exit_code": null, "label": "public-author-email", "log": "01-public-author-email.log"}], "new_cpp_bytes": 0, "project": 1, "schema": 1, "started": 1793217230, "status": "starting", "step": "public-author-email"}
