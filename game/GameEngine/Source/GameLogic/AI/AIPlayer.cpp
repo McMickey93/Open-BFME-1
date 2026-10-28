@@ -50,7 +50,57 @@
 #include "GameClient/TerrainVisual.h"	
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/Object.h"
+// Zero Hour's MAKE_DLINK(TeamInQueue, ...) places both queue links one pointer
+// past retail's (retail 0x001604E0 reads +0x08, 0x001605D0 +0x10), so the
+// iterate_*() member pointers made this TU emit wrong dlink_next_* COMDATs.
+// For TeamInQueue's links only, declare dlink_next_* instead of defining it, so
+// the iterators bind to retail's bodies; everything else is Zero Hour's macro.
+#pragma push_macro("MAKE_DLINK")
+#undef MAKE_DLINK
+#define MAKE_DLINK(OBJCLASS, LISTNAME)	\
+public:	\
+	OBJCLASS* dlink_prev_##LISTNAME() const { return m_dlink_##LISTNAME.m_prev; }	\
+	OBJCLASS* dlink_next_##LISTNAME() const;	\
+	void dlink_swapLinks_##LISTNAME()	\
+	{	\
+		OBJCLASS* originalNext = m_dlink_##LISTNAME.m_next;	\
+		m_dlink_##LISTNAME.m_next = m_dlink_##LISTNAME.m_prev;	\
+		m_dlink_##LISTNAME.m_prev = originalNext;	\
+	}	\
+	Bool dlink_isInList_##LISTNAME(OBJCLASS* const* pListHead) const	\
+	{	\
+		return *pListHead == this || m_dlink_##LISTNAME.m_prev || m_dlink_##LISTNAME.m_next;	\
+	}	\
+	void dlink_prependTo_##LISTNAME(OBJCLASS** pListHead)	\
+	{	\
+		m_dlink_##LISTNAME.m_next = *pListHead;	\
+		if (*pListHead)	\
+			(*pListHead)->m_dlink_##LISTNAME.m_prev = this;	\
+		*pListHead = this;	\
+	}	\
+	void dlink_removeFrom_##LISTNAME(OBJCLASS** pListHead)	\
+	{	\
+		if (m_dlink_##LISTNAME.m_next)	\
+			m_dlink_##LISTNAME.m_next->m_dlink_##LISTNAME.m_prev = m_dlink_##LISTNAME.m_prev;	\
+		if (m_dlink_##LISTNAME.m_prev)	\
+			m_dlink_##LISTNAME.m_prev->m_dlink_##LISTNAME.m_next = m_dlink_##LISTNAME.m_next;	\
+		else	\
+			*pListHead = m_dlink_##LISTNAME.m_next;	\
+		m_dlink_##LISTNAME.m_prev = 0;	\
+		m_dlink_##LISTNAME.m_next = 0;	\
+	}	\
+private:	\
+	struct DLINK_##LISTNAME	\
+	{	\
+	public:	\
+		OBJCLASS* m_prev;	\
+		OBJCLASS* m_next;	\
+		inline DLINK_##LISTNAME() : m_prev(0), m_next(0) { }	\
+		inline ~DLINK_##LISTNAME() { }	\
+	};	\
+	DLINK_##LISTNAME m_dlink_##LISTNAME;
 #include "GameLogic/AIPlayer.h"
+#pragma pop_macro("MAKE_DLINK")
 #include "GameLogic/SidesList.h"
 #include "GameLogic/AI.h"
 #include "GameLogic/AIPathfind.h"
