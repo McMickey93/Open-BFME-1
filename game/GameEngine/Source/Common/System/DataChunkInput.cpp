@@ -88,9 +88,15 @@ public:
 	// ?set@UnicodeString@@QAEXABV1@@Z pin (see symbols.csv) -- both types
 	// share this StringBase<char> implementation.
 	void set(const StringBase &other);
+	// Inline as in the shared string_base.h: scope exits call releaseBuffer
+	// (0x00887940) directly, as retail does.
+	~StringBase() { releaseBuffer(); }
 
 protected:
 	void *m_data;
+
+private:
+	void releaseBuffer();
 };
 
 // upstream layout: inputs/reference/CnC_Generals_Zero_Hour/GeneralsMD/Code/GameEngine/Include/Common/AsciiString.h
@@ -102,7 +108,7 @@ public:
 	// encodes the base copy ctor at 0x00887B60 directly, so the delegation has
 	// to be visible here.
 	AsciiString(const AsciiString &other) : StringBase<char>(other) {}
-	~AsciiString();
+	~AsciiString() {}
 
 	AsciiString &operator=(const AsciiString &other)
 	{
