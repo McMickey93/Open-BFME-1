@@ -39,4 +39,36 @@ void Rva00C6E34DInitialize()
     atexit(Rva00C715DERelease);
 }
 
+// Retail 0x00C6E337 and 0x00C6E363 (22 B each) are further unreferenced copies
+// of the matched 0x00C6C770 initializer of the ATL CAtlWinModule global at
+// 0x0130A45C (ATL defines it selectany, so each including unit emits one and
+// the linker kept a single table entry). 0x00C6E337 starts right after the
+// RET at 0x00C6E336 and ends before the table-proven 0x00C6E34D; 0x00C6E363
+// starts after the RET at 0x00C6E362 and ends with the RET at 0x00C6E378
+// before int3 padding. Teardowns are the matched forwarders at 0x00C715D4 and
+// 0x00C715E8.
+namespace ATL
+{
+class CAtlWinModule
+{
+public:
+    CAtlWinModule() throw();			// retail 0x007E85A0
+private:
+    unsigned char m_storage[44];
+};
+}
+extern ATL::CAtlWinModule g_rva0130A45CObject;
+void bfmeForward_00C715D4(void);
+void bfmeForward_00C715E8(void);
 
+void Rva00C6E337Initialize()
+{
+    new (&g_rva0130A45CObject) ATL::CAtlWinModule;
+    atexit(bfmeForward_00C715D4);
+}
+
+void Rva00C6E363Initialize()
+{
+    new (&g_rva0130A45CObject) ATL::CAtlWinModule;
+    atexit(bfmeForward_00C715E8);
+}

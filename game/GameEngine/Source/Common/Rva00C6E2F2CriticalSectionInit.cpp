@@ -20,3 +20,30 @@ void bfmeRva00C6E2F2InitializeCriticalSection()
     new (&g_bfmeRva0134FB18Static) Rva009F67EDCriticalSection;
     atexit(rva00C715AARelease);
 }
+
+// Retail 0x00C6E308 (22 B) follows the RET at 0x00C6E307 that ends the body
+// above and ends with the RET at 0x00C6E31D just before the CRT initializer
+// at 0x00C6E31E (table slot 0x00EA5518). It is another copy of the matched
+// 0x00C6C770 initializer of the ATL CAtlWinModule global at 0x0130A45C: ATL
+// defines that module object selectany, so every including unit emits its
+// own constructor-plus-atexit initializer and the linker kept only one table
+// entry; this copy is unreferenced. Its teardown is the matched forwarder at
+// 0x00C715C0.
+namespace ATL
+{
+class CAtlWinModule
+{
+public:
+    CAtlWinModule() throw();			// retail 0x007E85A0
+private:
+    unsigned char m_storage[44];
+};
+}
+extern ATL::CAtlWinModule g_rva0130A45CObject;
+void bfmeForward_00C715C0(void);
+
+void Rva00C6E308Initialize()
+{
+    new (&g_rva0130A45CObject) ATL::CAtlWinModule;
+    atexit(bfmeForward_00C715C0);
+}
