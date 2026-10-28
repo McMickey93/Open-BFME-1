@@ -1,0 +1,30 @@
+--- a/game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva0032ABC0.cpp
++++ b/game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditionsRva0032ABC0.cpp
+@@ -158,6 +158,18 @@
+ 
+ typedef BfmeTeamInstanceLink *(BfmeTeamInstanceLink::*BfmeGetNextTeamFunc)();
+ 
++// The matched ILT thunk at 0x00022A70 jumps to the complete retail getter
++// at 0x000C8A30 (mov eax,[ecx+0x14]; ret). Use the same pointer-to-member
++// construction as ScriptConditionsRva0032C990.cpp; no second callee pin.
++extern void j_00022a70();
++static __forceinline BfmeGetNextTeamFunc teamNextInInstanceList()
++{
++	union { void *address; BfmeGetNextTeamFunc method; } next;
++	next.address = reinterpret_cast<void *>(j_00022a70);
++	return next.method;
++}
++
++
+ class BfmeTeamIterator
+ {
+ public:
+@@ -180,7 +192,7 @@
+ public:
+ 	unsigned char m_pad[0x274];
+ 	Team *m_firstInstance;
+-	BfmeTeamIterator iterate_TeamInstanceList() const { return BfmeTeamIterator(m_firstInstance, &BfmeTeamInstanceLink::_bfme_nextInInstanceList); }
++	BfmeTeamIterator iterate_TeamInstanceList() const { return BfmeTeamIterator(m_firstInstance, teamNextInInstanceList()); }
+ };
+ 
+ struct PlayerTeamNode
