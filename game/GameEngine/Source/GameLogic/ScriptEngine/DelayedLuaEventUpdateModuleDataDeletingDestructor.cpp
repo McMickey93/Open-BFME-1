@@ -7,7 +7,7 @@
 
 class DelayedLuaEventUpdateModuleData
 {
-protected:
+public:
 	virtual ~DelayedLuaEventUpdateModuleData();
 private:
 	friend void forceDelayedLuaEventUpdateModuleDataDeletingDestructor();

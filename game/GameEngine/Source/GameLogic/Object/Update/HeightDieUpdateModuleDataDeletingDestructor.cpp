@@ -7,7 +7,7 @@
 
 class HeightDieUpdateModuleData
 {
-protected:
+public:
 	virtual ~HeightDieUpdateModuleData();
 private:
 	friend void forceHeightDieUpdateModuleDataDeletingDestructor();

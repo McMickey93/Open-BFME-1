@@ -7,7 +7,7 @@
 
 class SquishCollideModuleData
 {
-protected:
+public:
 	virtual ~SquishCollideModuleData();
 private:
 	friend void forceSquishCollideModuleDataDeletingDestructor();

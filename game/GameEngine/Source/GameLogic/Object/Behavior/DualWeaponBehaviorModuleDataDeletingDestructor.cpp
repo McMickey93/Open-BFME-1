@@ -7,7 +7,7 @@
 
 class DualWeaponBehaviorModuleData
 {
-protected:
+public:
 	virtual ~DualWeaponBehaviorModuleData();
 private:
 	friend void forceDualWeaponBehaviorModuleDataDeletingDestructor();

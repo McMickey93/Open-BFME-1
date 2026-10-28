@@ -7,7 +7,7 @@
 
 class SiegeDockingBehaviorModuleData
 {
-protected:
+public:
 	virtual ~SiegeDockingBehaviorModuleData();
 private:
 	friend void forceSiegeDockingBehaviorModuleDataDeletingDestructor();

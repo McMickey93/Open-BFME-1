@@ -7,7 +7,7 @@
 
 class FireWeaponUpdateModuleData
 {
-protected:
+public:
 	virtual ~FireWeaponUpdateModuleData();
 private:
 	friend void forceFireWeaponUpdateModuleDataDeletingDestructor();

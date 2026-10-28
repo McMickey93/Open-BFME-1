@@ -66,7 +66,6 @@ functions	0x0002E9C4	?parseSoundsList@INI@@SAXPAV1@PAX1PBX@Z
 functions	0x0002F1CB	?iterateObjects@Player@@QBEXP6AXPAVObject@@PAX@Z1@Z
 functions	0x000313AE	??$_M_allocate_and_copy@PBUNugget@ModuleInfo@@@?$vector@UNugget@ModuleInfo@@V?$allocator@UNugget@ModuleInfo@@@_STL@@@_STL@@IAEPAUNugget@ModuleInfo@@IPBU23@0@Z
 functions	0x000314AD	?connectCallback@BuddyThreadClass@@QAEXPAVGPConnection@@PAUGPConnectResponseArg@@@Z
-functions	0x000317D7	??RGameSortStruct@@QBE_NPAVGameSpyStagingRoom@@0@Z
 functions	0x000319CB	?shutdownThunk@WaterTracksRenderSystem@@QAEXXZ
 functions	0x0003291B	?anyIntersectionWith@?$BitFlags@$0HE@@@QBE_NABV1@@Z
 functions	0x0003291B	?countIntersection@?$BitFlags@$0HF@@@QBEHABV1@@Z
@@ -93,7 +92,6 @@ functions	0x000458BD	?clear@?$hashtable@U?$pair@PBVGameWindow@@PAVWindowVideo@@@
 functions	0x000458BD	?clear@?$hashtable@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@PBVGameWindow@@UhashConstGameWindowPtr@WindowVideoManager@@U?$_Select1st@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@2@U?$equal_to@PBVGameWindow@@@2@V?$allocator@U?$pair@QB
 functions	0x00046803	??8@YA_NABVAsciiString@@0@Z
 functions	0x000486BC	?_M_insert_overflow@?$vector@PAVObject@@V?$allocator@PAVObject@@@_STL@@@_STL@@IAEXPAPAVObject@@ABQAV3@ABU__true_type@2@I_N@Z
-functions	0x0004887E	?_M_erase@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@AAEXPAU?$_Rb_tree_node@U?$pair@$$CBHI@_STL@@@2@@Z
 functions	0x00049AA3	??0UpgradeModuleData@@QAE@XZ
 functions	0x00049AD0	?ReleaseWindowLayout@@YAXPAVWindowLayout@@@Z
 functions	0x00049F80	?queueSend@Transport@@QAE_NIGPBEH@Z
@@ -110,22 +108,6 @@ functions	0x0005BEF0	?UnlockBits@Bitmap@Gdiplus@@QAEHPAUBitmapData@2@@Z
 functions	0x0005C080	?acquire@DcPool@@QAEPAXXZ
 functions	0x0005C280	?setColorTable@DibPalette@@QAEXIIPBUtagRGBQUAD@@@Z
 functions	0x0005C320	??4KeyClass@Curve3DClass@@QAEAAV01@ABV01@@Z
-functions	0x0005C5D0	??0?$DLNodeClass@USmudge@@@@QAE@XZ
-functions	0x0005C5D0	??0?$DLNodeClass@USmudgeSet@@@@QAE@XZ
-functions	0x0005C5D0	??0?$DLNodeClass@VSortingNodeStruct@@@@QAE@XZ
-functions	0x0005C5D0	??0?$DLNodeClass@VThumbnailManagerClass@@@@QAE@XZ
-functions	0x0005C5D0	??0AnimSet@GenericObjectCreationNugget@@QAE@XZ
-functions	0x0005C5D0	??0ArmorTemplateSet@@QAE@XZ
-functions	0x0005C5D0	??0AssistanceRequestData@@QAE@XZ
-functions	0x0005C5D0	??0DistLODDefClass@@QAE@XZ
-functions	0x0005C5D0	??0DistLODNodeDefStruct@@QAE@XZ
-functions	0x0005C5D0	??0ModuleInfo@@QAE@XZ
-functions	0x0005C5D0	??0ModuleTemplate@ModuleFactory@@QAE@XZ
-functions	0x0005C5D0	??0ObjectCreationList@@QAE@XZ
-functions	0x0005C5D0	??0ResolutionDescClass@@QAE@XZ
-functions	0x0005C5D0	??0Smudge@@QAE@XZ
-functions	0x0005C5D0	??0TeamsInfoRec@@QAE@XZ
-functions	0x0005C5D0	??0WeaponRecoilInfo@W3DModelDraw@@QAE@XZ
 functions	0x0005C6C0	??0ChunkHeader@@QAE@XZ
 functions	0x0005DBB0	?Clear@?$VectorClass@PAUW3dAggregateSubobjectStruct@@@@UAEXXZ
 functions	0x0005E0C0	?DrawImage@Graphics@Gdiplus@@QAEHPAVImage@2@HH@Z
@@ -157,7 +139,6 @@ functions	0x0005F270	?str@UnicodeString@@QBEPBGXZ
 functions	0x0005F590	??6@YAAAVDebug@@AAV0@ABV?$StringBase@D@@@Z
 functions	0x0005FEB0	?compare@AsciiString@@QBEHABV1@@Z
 functions	0x000607A0	??8@YA_NABV?$StringBase@G@@0@Z
-functions	0x00061C30	?concat@AsciiString@@QAEXPBD@Z
 functions	0x00061D90	??0?$BitFlags@$0BB@@@QAE@XZ
 functions	0x00061D90	??0?$BitFlags@$0L@@@QAE@XZ
 functions	0x00061D90	??0?$BitFlags@$0N@@@QAE@XZ
@@ -345,7 +326,6 @@ functions	0x00087A50	??0PartitionFilterRejectBehind@@QAE@PAVObject@@@Z
 functions	0x00087A50	??0PartitionFilterWithinAttackRange@@QAE@PBVObject@@@Z
 functions	0x00087E00	?getWaypointID@MapObject@@QAE?AW4WaypointID@@XZ
 functions	0x00087E50	?setWaypointName@MapObject@@QAEXVAsciiString@@@Z
-functions	0x00088160	??0MapObject@@QAE@UCoord3D@@VAsciiString@@MHPBVDict@@PBVThingTemplate@@@Z
 functions	0x00088350	??1MapObject@@MAE@XZ
 functions	0x00088AE0	?getWaypointName@MapObject@@QAE?AVAsciiString@@XZ
 functions	0x00089360	??_GMapObject@@MAEPAXI@Z
@@ -408,7 +388,6 @@ functions	0x00095280	??$make_pair@W4ObjectID@@H@_STL@@YA?AU?$pair@W4ObjectID@@H@
 functions	0x00095570	??$__copy_backward_ptrs@PAUICoord2D@@PAU1@@_STL@@YAPAUICoord2D@@PAU1@00ABU__false_type@0@@Z
 functions	0x00095980	??$__copy_backward_ptrs@PAU?$pair@W4ObjectID@@I@_STL@@PAU12@@_STL@@YAPAU?$pair@W4ObjectID@@I@0@PAU10@00ABU__false_type@0@@Z
 functions	0x00095B70	??$__copy_backward_aux@PAU?$pair@W4ObjectID@@I@_STL@@PAU12@@_STL@@YAPAU?$pair@W4ObjectID@@I@0@PAU10@00ABU__true_type@0@@Z
-functions	0x00095CA0	?erase@?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@_STL@@QAEPAUICoord2D@@PAU3@0@Z
 functions	0x00096060	?clear@?$vector@UUpgrades@CashHackSpecialPowerModuleData@@V?$allocator@UUpgrades@CashHackSpecialPowerModuleData@@@_STL@@@_STL@@QAEXXZ
 functions	0x00097360	?restoreGlobalDataFields@RecorderClass@@QAEXXZ
 functions	0x00097DB0	??B?$OVERRIDE@VWaterTransparencySetting@@@@QBEPBVWaterTransparencySetting@@XZ
@@ -479,9 +458,7 @@ functions	0x000A89E0	??R?$less@W4NameKeyType@@@_STL@@QBE_NABW4NameKeyType@@0@Z
 functions	0x000A9B80	??1?$pair@$$CBVUnicodeString@@VAsciiString@@@_STL@@QAE@XZ
 functions	0x000A9DB0	??0?$_Rb_tree_base@U?$pair@$$CBVAsciiString@@VArchivedFileInfo@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@VArchivedFileInfo@@@_STL@@@2@@_STL@@QAE@ABV?$allocator@U?$pair@$$CBVAsciiString@@VArchivedFileInfo@@@_STL@@@1@@Z
 functions	0x000AA230	??8@YA_NABV?$StringBase@D@@PBD@Z
-functions	0x000AAC70	?_M_copy@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@AAEPAU?$_Rb_tree_node@U?$pair@$$CBHI@_STL@@@2@PAU32@0@Z
 functions	0x000AAF30	??1UserPreferencesBodyShim@@UAE@XZ
-functions	0x000AB1C0	??1?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAE@XZ
 functions	0x000ABCD0	?getAsciiString@UserPreferences@@QBE?AVAsciiString@@V2@0@Z
 functions	0x000ACFF0	?setAsciiString@UserPreferences@@QAEXVAsciiString@@0@Z
 functions	0x000AEE00	?getUnicodeVersion@Version@@
@@ -650,7 +627,6 @@ functions	0x000C2AC0	?parseTerrainDefinition@INI@@SAXPAV1@@Z
 functions	0x000C2BC0	?parseWaterTextureListDefinition@INI@@SAXPAV1@@Z
 functions	0x000C2D70	?parseTerrainBridgeDefinition@INI@@SAXPAV1@@Z
 functions	0x000C2EE0	?parseTerrainRoadDefinition@INI@@SAXPAV1@@Z
-functions	0x000C31B0	?removeSide@SidesList@@QAEXH@Z
 functions	0x000C3480	?parseVideoDefinition@INI@@SAXPAV1@@Z
 functions	0x000C36F0	??B?$OVERRIDE@VThingTemplate@@@@QBEPBVThingTemplate@@XZ
 functions	0x000C3710	??D?$OVERRIDE@VLocomotorTemplate@@@@QBEPBVLocomotorTemplate@@XZ
@@ -670,7 +646,6 @@ functions	0x000C4AD0	?_Unchecked_set@?$bitset@$0CN@@_STL@@QAEAAV12@I@Z
 functions	0x000C6930	?canDoSpecialPowerAtLocation@ActionManager@@QAE_NPBVObject@@PBUCoord3D@@W4CommandSourceType@@PBVSpecialPowerTemplate@@0I_N@Z
 functions	0x000C7EB0	?getSepsPercent@INI@@QBEPBDXZ
 functions	0x000C85D0	?addMoneySpent@ScoreKeeper@@QAEXH@Z
-functions	0x000C85F0	?addMoneyEarned@ScoreKeeper@@QAEXH@Z
 functions	0x000C8A70	?getPlayingHandle@AudioEventRTS@@QAEIXZ
 functions	0x000C8B10	?Get_Local_Center@BoxRenderObjClass@@QAEABVVector3@@XZ
 functions	0x000C8B40	?getDrawModulesNonDirty@Drawable@@QAEPAPAVDrawModule@@XZ
@@ -731,8 +706,6 @@ functions	0x000D0D30	??9@YA_NABV?$StringBase@D@@PBD@Z
 functions	0x000D0D50	?xferListUnsignedShort@@YAPAVXfer@@PAV1@PAV?$list@GV?$allocator@G@_STL@@@_STL@@@Z
 functions	0x000D0FE0	?clear@?$vector@PAVScienceInfo@@V?$allocator@PAVScienceInfo@@@_STL@@@_STL@@QAEXXZ
 functions	0x000D1070	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
-functions	0x000D1690	??1WorkerAIUpdateModuleData@@UAE@XZ
-functions	0x000D16F0	??0DisplayString@@QAE@XZ
 functions	0x000D1960	?loadPostProcess@Squad@@MAEXXZ
 functions	0x000D1A90	?findSkirmishSide@Player@@QAE_NPAH@Z
 functions	0x000D2A60	?processAddTeamGameMessage@Player@@QAEXHPAVGameMessage@@@Z
@@ -744,7 +717,6 @@ functions	0x000D3430	?_M_insert@?$hashtable@U?$pair@$$CBHH@_STL@@HU?$hash@H@2@U?
 functions	0x000D3600	?_M_insert@?$hashtable@U?$pair@$$CBHPAX@_STL@@HU?$hash@H@2@U?$_Select1st@U?$pair@$$CBHPAX@_STL@@@2@U?$equal_to@H@2@V?$allocator@U?$pair@$$CBHPAX@_STL@@@2@@_STL@@QAEAAU?$pair@$$CBHPAX@2@ABU32@@Z
 functions	0x000D38F0	?resize@?$hashtable@U?$pair@$$CBVAsciiString@@M@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@M@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@M@_STL@@@2@@_STL@@QAEXI@Z
 functions	0x000D3DF0	?xfer@?$BitFlags@$0LF@@@QAEXPAVXfer@@@Z
-functions	0x000D3E80	??_GWorkerAIUpdateModuleData@@UAEPAXI@Z
 functions	0x000D3EB0	?setStatusBit@Object@@QAEXH_N@Z
 functions	0x000D3F50	?init@ScienceStore@@UAEXXZ
 functions	0x000D4060	??_GSquad@@MAEPAXI@Z
@@ -866,7 +838,6 @@ functions	0x000F7020	?hasAnyBuildings@TeamPrototype@@QAE_NV?$BitFlags@$0MA@@@_N@
 functions	0x000F70C0	?hasAnyObjects@TeamPrototype@@QBE_NPBVObjectFilter@@_N@Z
 functions	0x000F7170	?hasAnyObjects@TeamPrototype@@QAE_N_N@Z
 functions	0x000F7280	??_GTeam@@MAEPAXI@Z
-functions	0x000F7310	??A?$hash_map@VAsciiString@@EU?$hash@VAsciiString@@@rts@@U?$equal_to@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@E@_STL@@@_STL@@@_STL@@QAEAAEABVAsciiString@@@Z
 functions	0x000F7580	??_GTeamPrototype@@MAEPAXI@Z
 functions	0x000F7FA0	?xfer@TeamPrototype@@UAEXPAVXfer@@@Z
 functions	0x000F8510	?getExternalIP@GameSpyInfo@@UAEIXZ
@@ -1275,7 +1246,6 @@ functions	0x0010DB40	??0FXLocInfo@@QAE@XZ
 functions	0x0010DB40	??0NoString@@QAE@XZ
 functions	0x0010DE20	??0?$_STLP_alloc_proxy@PAU?$_List_node@U?$pair@VAsciiString@@M@_STL@@@_STL@@U12@V?$allocator@U?$_List_node@U?$pair@VAsciiString@@M@_STL@@@_STL@@@2@@_STL@@QAE@ABV?$allocator@U?$_List_node@U?$pair@VAsciiString@@M@_STL@@@_STL@@@1@PAU?$_List_node@U?$pair@VAsciiString@@M@_STL@@@1@@Z
 functions	0x0010FBD0	?xferSaveData@GameState@@AAEXPAVXfer@@W4SnapshotType@@@Z
-functions	0x0010FE90	?parsePreferredAgainst@WeaponTemplateSet@@CAXPAVINI@@PAX1PBX@Z
 functions	0x00110CF0	?friend_xferSaveDataForCRC@GameState@@QAEXPAVXfer@@W4SnapshotType@@@Z
 functions	0x001121A0	?populateSaveGameListbox@GameState@@QAEXPAVGameWindow@@0_NH@Z
 functions	0x00112970	?setAction@Script@@QAEXPAVScriptAction@@@Z
@@ -1401,7 +1371,6 @@ functions	0x00125220	?friend_newModuleData@BridgeTowerBehavior@@SAPAVModuleData@
 functions	0x00125340	?friend_newModuleData@KeepObjectDie@@SAPAVModuleData@@PAVINI@@@Z
 functions	0x00125440	?buildFieldParse@GarrisonContainModuleData@@SAXAAVWideMulti@@@Z
 functions	0x00125470	?friend_newModuleData@TransportContain@@SAPAVModuleData@@PAVINI@@@Z
-functions	0x001259C0	??_GQueueProductionExitUpdateModuleData@@MAEPAXI@Z
 functions	0x00125E40	??1ConvertToCarBombCrateCollideModuleData@@UAE@XZ
 functions	0x001262E0	?clear@?$BitFlags@$0ED@@@QAEXXZ
 functions	0x00126380	??1?$_Rb_tree_base@U?$pair@$$CBW4NameKeyType@@PAVLocomotorTemplate@@@_STL@@V?$allocator@U?$pair@$$CBW4NameKeyType@@PAVLocomotorTemplate@@@_STL@@@2@@_STL@@QAE@XZ
@@ -1513,7 +1482,6 @@ functions	0x00141D00	??6AssetList@@QAEAAV0@ABVAsciiString@@@Z
 functions	0x00142160	?countConditionInverseIntersection@?$SparseMatchFinder@VArmorTemplateSet@@V?$BitFlags@$0L@@@@@CAHABV?$BitFlags@$0L@@@0@Z
 functions	0x001426A0	?insert_unique@?$_Rb_tree@$$CBV?$BitFlags@$0L@@@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VArmorTemplateSet@@V?$BitFlags@$0L@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@2@@2@U32@ABU?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@2@@Z
 functions	0x001429C0	?insert_unique@?$_Rb_tree@$$CBV?$BitFlags@$0BB@@@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VWeaponTemplateSet@@V?$BitFlags@$0BB@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@2@@2@U32@ABU?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@2@@Z
-functions	0x00143580	?GetAssetList@ThingTemplate@@QBEXAAVAssetList@@PAX@Z
 functions	0x00144000	?findBestInfoSlow@WeaponFindBestInfoSlowShim@@QBEPBVWeaponTemplateSet@@ABV?$vector@VWeaponTemplateSet@@V?$allocator@VWeaponTemplateSet@@@_STL@@@_STL@@ABV?$BitFlags@$0BB@@@@Z
 functions	0x00144300	?findBestInfoSlow@?$SparseMatchFinder@VArmorTemplateSet@@V?$BitFlags@$0L@@@@@ABEPBVArmorTemplateSet@@ABV?$vector@VArmorTemplateSet@@V?$allocator@VArmorTemplateSet@@@_STL@@@_STL@@ABV?$BitFlags@$0L@@@@Z
 functions	0x00144420	?insert@?$map@W4NameKeyType@@MU?$less@W4NameKeyType@@@_STL@@V?$allocator@U?$pair@$$CBW4NameKeyType@@M@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBW4NameKeyType@@M@_STL@@U?$_Nonconst_traits@U?$pair@$$CBW4NameKeyType@@M@_STL@@@2@@2@U32@ABU?$pair@$$CBW4NameKeyType@@M@2@@Z
@@ -1655,11 +1623,9 @@ functions	0x0016CCA0	?xfer@AIDockState@@MAEXPAVXfer@@@Z
 functions	0x0016D820	?xfer@AIGuardRetaliateState@@MAEXPAVXfer@@@Z
 functions	0x0016E5A0	??_GAttackMeleeStateMachine@@UAEPAXI@Z
 functions	0x0016E600	??_GAttackFireWhileMovingMachine@@UAEPAXI@Z
-functions	0x0016E630	??_GAttackHordeStateMachine@@UAEPAXI@Z
 functions	0x0016F9E0	?loadPostProcess@AIAttackState@@MAEXXZ
 functions	0x00170E70	?loadPostProcess@FailureState@@MAEXXZ
 functions	0x00170F00	?loadPostProcess@ContinueState@@MAEXXZ
-functions	0x00171B40	??0AttackHordeStateMachine@@QAE@PAVObject@@PAVAIAttackState@@VAsciiString@@@Z
 functions	0x00172600	?onEnter@AIInternalMoveToStateOnEnterShim@@QAE?AW4StateReturnType@@XZ
 functions	0x00172D80	?onExit@AIInternalMoveToStateOnExitShim@@QAEXW4StateExitType@@@Z
 functions	0x00172E70	?update@AIInternalMoveToStateUpdateShim@@QAE?AW4StateReturnType@@XZ
@@ -1861,7 +1827,6 @@ functions	0x001BD2E0	?setAreaToGuard@AIGuardMachine@@QAEXPBVPolygonTrigger@@@Z
 functions	0x001BD2F0	?setRenderObject@W3DProjectedShadow@@QAEXPAVRenderObjClass@@@Z
 functions	0x001BD300	?setMapContentsMask@GameInfo@@QAEXH@Z
 functions	0x001BD310	?setCustomFrame@Condition@@QAEXH@Z
-functions	0x001BD6A0	?winSetNextInLayout@GameWindow@@QAEXPAV1@@Z
 functions	0x001BD780	?Poke_Texture@TextureBaseClass@@IAEXPAUIDirect3DBaseTexture8@@@Z
 functions	0x001BD780	?setLastFrameInGame@GameSlot@@QAEXI@Z
 functions	0x001BD780	?setRiverStart@PolygonTrigger@@QAEXH@Z
@@ -1967,7 +1932,6 @@ functions	0x001CF9F0	?query@Object@@QAE_NPAV1@H@Z
 functions	0x001D01D0	?internal_classifyObjectFootprint@Pathfinder@@IAEXPAVObject@@_N@Z
 functions	0x001D0490	?attemptDamage@Object@@QAEXPAVDamageInfo@@@Z
 functions	0x001D0FA0	?updateTeam@Object@@QAEXPAVTeam@@@Z
-functions	0x001D1FA0	?doCommandButtonAtPosition@Object@@QAEXPBVCommandButton@@PBUCoord3D@@W4CommandSourceType@@@Z
 functions	0x001D27D0	?removeWallFromMyFootprint@Pathfinder@@QAEXPAVObject@@@Z
 functions	0x001D29A0	??0Object@@QAE@PBVThingTemplate@@ABV?$BitFlags@$0CN@@@PAVTeam@@@Z
 functions	0x001D4010	??1Object@@MAE@XZ
@@ -2019,8 +1983,6 @@ functions	0x001E05F0	?xfer@VictorySystem@@UAEXPAVXfer@@@Z
 functions	0x001E0A80	?doFXPos@FXList@@SAXPBV1@PBUCoord3D@@PBVMatrix3D@@M1@Z
 functions	0x001E0B60	?Is_Blocked@WWMouseClass@@ABE_NXZ
 functions	0x001E0C40	?getCurrentPlayerTemplateNum@ChallengeGenerals@@QAEHXZ
-functions	0x001E0CE0	?Get_Locked_Volume_Slice_Pitch@VolumeTextureLoadTaskClass@@AAEII@Z
-functions	0x001E0CE0	?Peek_Single_Material@MeshMatDescClass@@QBEPAVVertexMaterialClass@@H@Z
 functions	0x001E1040	?selectSkillset@AIPlayer@@UAEXH@Z
 functions	0x001E1060	?setUnderConstruction@BuildListInfo@@QAEX_N@Z
 functions	0x001E1220	?parseMinMaxDuration@@YAXPAVINI@@PAX1PBX@Z
@@ -2071,10 +2033,8 @@ functions	0x001EB8F0	?getModelConditionForWeaponSlot@WeaponSet@@SA?AV?$BitFlags@
 functions	0x001EBEB0	?getAbleToUseWeaponAgainstTarget@WeaponSet@@QBE?AW4CanAttackResult@@W4AbleToAttackType@@PBVObject@@1PBUCoord3D@@W4CommandSourceType@@@Z
 functions	0x001ECDC0	?parsePreferredAgainst@@YAXPAVINI@@PAX1PBX@Z
 functions	0x001ECE00	?parseOnlyAgainst@@YAXPAVINI@@PAX1PBX@Z
-functions	0x001ED120	??_GAimWeaponBehaviorModuleData@@MAEPAXI@Z
 functions	0x001ED6E0	??1AutoAbilityBehavior@@UAE@XZ
 functions	0x001ED970	??_GAutoAbilityBehavior@@UAEPAXI@Z
-functions	0x001EDCA0	??1AutoAbilityBehaviorModuleData@@UAE@XZ
 functions	0x001EE630	?giveSelfUpgrade@SpyVisionUpgradeMux@@IAEXXZ
 functions	0x001EE7D0	?Set_Modified@ParameterClass@@UAEX_N@Z
 functions	0x001EE7D0	?Set_Post_Load_Registered@PostLoadableClass@@QAEX_N@Z
@@ -2096,7 +2056,6 @@ functions	0x001F00A0	?projectileFire@BezierProjectileBehavior@@QAEXXZ
 functions	0x001F0480	?projectileFireAtObjectOrPosition@BezierProjectileBehavior@@QAEXPAVObject@@PBUCoord3D@@@Z
 functions	0x001F08B0	?handle@BezierProjectileBehavior@@QAE_NPAVObject@@@Z
 functions	0x001F11E0	?xferCoord3DVector@@YAPAVXfer@@PAV1@PAV?$vector@UCoord3D@@V?$allocator@UCoord3D@@@_STL@@@_STL@@@Z
-functions	0x001F1370	??1OathbreakersFadeAwayBehavior@@UAE@XZ
 functions	0x001F1860	?xfer@BezierProjectileBehavior@@MAEXPAVXfer@@@Z
 functions	0x001F1EF0	?setAttackInfo@AIUpdateInterface@@QAEXPBVAttackPriorityInfo@@@Z
 functions	0x001F1FD0	?getRandomSurfacePosition@BridgeBehavior@@IAEXPAVTerrainRoadType@@PBVBridgeInfo@@PAUCoord3D@@@Z
@@ -2117,7 +2076,6 @@ functions	0x001F5E80	?onObjectCreated@BridgeScaffoldBehavior@@UAEXPAVObject@@@Z
 functions	0x001F5F30	??_GParkingPlaceBehavior@@MAEPAXI@Z
 functions	0x001F60F0	?getClassMemoryPool@BridgeTowerBehavior@@CAPAVMemoryPool@@XZ
 functions	0x001F6F60	?getDisabledTypesToProcess@OCLUpdate@@UBE?AV?$BitFlags@$0N@@@XZ
-functions	0x001F8040	??_GDualWeaponBehaviorModuleData@@MAEPAXI@Z
 functions	0x001F83A0	?setNemesisID@AIGuardRetaliateMachine@@QAEXW4ObjectID@@@Z
 functions	0x001F84C0	??1MemoryPool@@QAE@XZ
 functions	0x001F8920	?getUpgradeActivationMasks@FireWeaponWhenDeadBehavior@@MBEXAAV?$BitFlags@$0IA@@@0@Z
@@ -2171,9 +2129,7 @@ functions	0x00203F30	??1EnragedBehaviorModuleData@@UAE@XZ
 functions	0x002046E0	??_GReplenishUnitsBehavior@@UAEPAXI@Z
 functions	0x00204B50	??1ReplenishUnitsBehavior@@UAE@XZ
 functions	0x00204E70	?parseFromINI@?$BitFlags@$0CN@@@SAXPAVINI@@PAX1PBX@Z
-functions	0x00204ED0	??0BattlePlanUpdateModuleData@@QAE@XZ
 functions	0x00205AC0	??1ShareExperienceBehavior@@UAE@XZ
-functions	0x00206070	??_GSiegeDockingBehaviorModuleData@@MAEPAXI@Z
 functions	0x00206710	?stopDocking@SiegeDockingBehavior@@AAEXXZ
 functions	0x00206FF0	?xfer@SiegeDockingBehavior@@MAEXPAVXfer@@@Z
 functions	0x002072E0	_SlaveWatcherBehaviorFieldParse
@@ -2242,7 +2198,6 @@ functions	0x002164F0	??_GFireWeaponCollide@@UAEPAXI@Z
 functions	0x00216900	??_GHordeMemberCollideModuleData@@MAEPAXI@Z
 functions	0x00216AB0	?getObserverLookAtPlayer@ControlBar@@QAEPAVPlayer@@XZ
 functions	0x00216C00	?getClassMemoryPool@SquishCollide@@CAPAVMemoryPool@@XZ
-functions	0x00216D50	??_GSquishCollideModuleData@@MAEPAXI@Z
 functions	0x00217730	?onCollide@CrateCollide@@UAEXPAVObject@@PBUCoord3D@@1@Z
 functions	0x00217930	??_GConvertToCarBombCrateCollideModuleData@@UAEPAXI@Z
 functions	0x00217B50	?getClassMemoryPool@HealCrateCollide@@CAPAVMemoryPool@@XZ
@@ -2352,14 +2307,12 @@ functions	0x00249BC0	??_GContestableContainModuleData@@UAEPAXI@Z
 functions	0x0024B580	??0TunnelContainModuleData@@QAE@XZ
 functions	0x0024B630	??_GTunnelContainModuleData@@UAEPAXI@Z
 functions	0x0024B660	??1TunnelContainModuleData@@UAE@XZ
-functions	0x0024C530	??1HordeTransportContain@@UAE@XZ
 functions	0x0024CD10	?update@HordeTransportContain@@QAEXXZ
 functions	0x0024D190	??0HordeGarrisonContainModuleData@@QAE@XZ
 functions	0x0024D1B0	??_GHordeGarrisonContainModuleData@@UAEPAXI@Z
 functions	0x0024E6A0	?Set_Intensity@LightClass@@QAEXM@Z
 functions	0x0024E8E0	??1SlaughterHordeContainBase@@UAE@XZ
 functions	0x0024EA90	??_GSlaughterHordeContainBase@@UAEPAXI@Z
-functions	0x0024F7D0	??_GExperienceLevelCreateModuleData@@MAEPAXI@Z
 functions	0x0024F8E0	?getClassMemoryPool@GrantUpgradeCreate@@CAPAVMemoryPool@@XZ
 functions	0x0024FCB0	?getClassMemoryPool@LockWeaponCreate@@CAPAVMemoryPool@@XZ
 functions	0x0024FF00	?getClassMemoryPool@PreorderCreate@@CAPAVMemoryPool@@XZ
@@ -2368,7 +2321,6 @@ functions	0x002502F0	?getClassMemoryPool@SupplyCenterCreate@@CAPAVMemoryPool@@XZ
 functions	0x002504E0	?getClassMemoryPool@SupplyWarehouseCreate@@CAPAVMemoryPool@@XZ
 functions	0x002507C0	?getClassMemoryPool@BoneFXDamage@@CAPAVMemoryPool@@XZ
 functions	0x00251460	?onDamage@EvacuateDamage@@UAEXPAUDamageInfo@@@Z
-functions	0x00251870	??_GReflectDamageModuleData@@MAEPAXI@Z
 functions	0x00251CD0	??0SnapshotBlock@GameState@@QAE@XZ
 functions	0x00252F50	??0TensileFormationUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 functions	0x00253000	?getClassMemoryPool@TransitionDamageFX@@CAPAVMemoryPool@@XZ
@@ -2434,7 +2386,6 @@ functions	0x00268920	?isShortcutPower@SpecialPowerTemplate@@QBE_NXZ
 functions	0x00268980	?getRadiusCursorRadius@SpecialPowerTemplate@@QBEMXZ
 functions	0x002689B0	?getPalantirMovie@SpecialPowerTemplate@@QBE?AVAsciiString@@XZ
 functions	0x00268A00	??_GRiderChangeContainModuleData@@UAEPAXI@Z
-functions	0x00268CB0	??1PlayerHealSpecialPowerModuleData@@UAE@XZ
 functions	0x00269130	?createViewObject@SpecialPowerModule@@IAEXPBUCoord3D@@@Z
 functions	0x002693E0	??1DarknessSpecialPowerModuleData@@UAE@XZ
 functions	0x002693E0	??1StopSpecialPowerModuleData@@UAE@XZ
@@ -2617,7 +2568,6 @@ functions	0x00284C80	?parseBannerCarrierExpLevelDraw@@YAXPAVINI@@PAX1PBX@Z
 functions	0x00285650	??1BattlePlanUpdate@@UAE@XZ
 functions	0x002857E0	?getClassMemoryPool@BattlePlanUpdate@@CAPAVMemoryPool@@XZ
 functions	0x00285D00	??_GBattlePlanUpdate@@UAEPAXI@Z
-functions	0x00285F10	??0BannerCarrierUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 functions	0x00286DC0	??1SmartBombTargetHomingUpdate@@MAE@XZ
 functions	0x00286F80	??0PointDefenseLaserUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 functions	0x00286F80	??0SmartBombTargetHomingUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
@@ -2639,12 +2589,10 @@ functions	0x0028A5A0	??1CivilianSpawnUpdate@@UAE@XZ
 functions	0x0028AC00	?getClassMemoryPool@CommandButtonHuntUpdate@@CAPAVMemoryPool@@XZ
 functions	0x0028AD70	??_GCommandButtonHuntUpdate@@UAEPAXI@Z
 functions	0x0028ADA0	?onObjectCreated@CommandButtonHuntUpdate@@UAEXPAVObject@@@Z
-functions	0x0028BC70	??_GDelayedLuaEventUpdateModuleData@@MAEPAXI@Z
 functions	0x0028C2A0	??0BaseRegenerateUpdateModuleData@@QAE@XZ
 functions	0x0028C620	?getClassMemoryPool@DeletionUpdate@@CAPAVMemoryPool@@XZ
 functions	0x0028C870	?getClassMemoryPool@DemoTrapUpdate@@CAPAVMemoryPool@@XZ
 functions	0x0028CA30	??_GDemoTrapUpdateModuleData@@MAEPAXI@Z
-functions	0x0028CEF0	??_GDestroyEnvironmentUpdateModuleData@@MAEPAXI@Z
 functions	0x0028CFB0	??1DestroyEnvironmentUpdate@@UAE@XZ
 functions	0x0028D090	??_GDestroyEnvironmentUpdate@@UAEPAXI@Z
 functions	0x0028D4C0	??$_Construct@UWeaponDelayedDamageInfo@WeaponStore@@U12@@_STL@@YAXPAUWeaponDelayedDamageInfo@WeaponStore@@ABU12@@Z
@@ -2663,11 +2611,9 @@ functions	0x00291EB0	??1HitReactionBehaviorModuleData@@UAE@XZ
 functions	0x002921F0	?setTargetObject@HijackerUpdate@@QAEXPBVObject@@@Z
 functions	0x002925C0	?allow@PartitionFilterFlammable@@UAE_NPAVObject@@@Z
 functions	0x00292780	?getClassMemoryPool@FireSpreadUpdate@@CAPAVMemoryPool@@XZ
-functions	0x002928C0	??_GFireSpreadUpdateModuleData@@MAEPAXI@Z
 functions	0x00292B50	??1FireWeaponUpdate@@UAE@XZ
 functions	0x00292C10	?getClassMemoryPool@FireWeaponUpdate@@CAPAVMemoryPool@@XZ
 functions	0x00292DD0	??_GFireWeaponUpdate@@UAEPAXI@Z
-functions	0x00292EC0	??_GFireWeaponUpdateModuleData@@MAEPAXI@Z
 functions	0x002933B0	?getClassMemoryPool@FlammableUpdate@@CAPAVMemoryPool@@XZ
 functions	0x00293440	??1FlammableUpdate@@UAE@XZ
 functions	0x002937D0	??_GFlammableUpdate@@UAEPAXI@Z
@@ -2675,7 +2621,6 @@ functions	0x00293800	?doAflameDamage@FlammableUpdate@@QAEXXZ
 functions	0x00294F70	?buildFieldParse@FloatUpdateModuleData@@SAXAAVWideMulti@@@Z
 functions	0x00295010	?getClassMemoryPool@FloatUpdate@@CAPAVMemoryPool@@XZ
 functions	0x002955E0	?getClassMemoryPool@HeightDieUpdate@@CAPAVMemoryPool@@XZ
-functions	0x00295720	??_GHeightDieUpdateModuleData@@MAEPAXI@Z
 functions	0x00295AA0	?setDirty@LaserUpdate@@QAEX_N@Z
 functions	0x00295BB0	?getClassMemoryPool@HijackerUpdate@@CAPAVMemoryPool@@XZ
 functions	0x00297500	?isInHorde@HordeUpdate@@UBE_NXZ
@@ -2706,7 +2651,6 @@ functions	0x002A0720	??_GRadiusDecalUpdate@@UAEPAXI@Z
 functions	0x002A0750	?createRadiusDecal@RadiusDecalUpdate@@QAEXABVRadiusDecalTemplate@@MABUCoord3D@@@Z
 functions	0x002A0840	?update@RadiusDecalUpdate@@QAE?AW4UpdateSleepTime@@XZ
 functions	0x002A0A30	?Adjust_X_Translation@Matrix3D@@QAEXM@Z
-functions	0x002A0C50	??_GRainOfFireUpdateModuleData@@MAEPAXI@Z
 functions	0x002A0C90	??1RainOfFireUpdate@@UAE@XZ
 functions	0x002A1170	??_GRainOfFireUpdate@@UAEPAXI@Z
 functions	0x002A14C0	??$_Construct@UtConnInfoStruct@@U1@@_STL@@YAXPAUtConnInfoStruct@@ABU1@@Z
@@ -2986,7 +2930,6 @@ functions	0x002F1560	?doNamedBaseUnpack@ScriptActions@@IAEXABVAsciiString@@0_N@Z
 functions	0x002F16C0	?doBuildBaseBuilding@ScriptActions@@IAEXABVAsciiString@@00@Z
 functions	0x002F1840	?doBuildBaseBuildingInSlot@ScriptActions@@IAEXABVAsciiString@@PAVScriptActionParameter@@00@Z
 functions	0x002F1C10	?doVictory@ScriptActions@@IAEXXZ
-functions	0x002F22A0	?doPlaySoundEffect@ScriptActions@@IAEXABVAsciiString@@@Z
 functions	0x002F2440	?doTeamCall2440@ScriptActions@@IAEXABVAsciiString@@PAX1@Z
 functions	0x002F2490	?doNamedAssignTeam@ScriptActions@@IAEXABVAsciiString@@0@Z
 functions	0x002F2790	?doMoveCameraAlongSplinePath@ScriptActions@@IAEXABVAsciiString@@MMMMM_N@Z
@@ -3203,7 +3146,6 @@ functions	0x0035F1A0	?updateEndGame@VictoryConditions@@UAEXXZ
 functions	0x0035F4C0	?isPlayerDefeated@VictoryConditions@@UAE_NH@Z
 functions	0x0035F770	?hideEndGame@VictoryConditions@@UAEXXZ
 functions	0x0035FFD0	?lookupInitialWalkOnWaypoints@@YG_NPAPAVWaypoint@@0@Z
-functions	0x003601A0	?armyNameFromIndex@@YGXIPAVAsciiString@@@Z
 functions	0x00360540	?getRadarColor@TerrainRoadType@@QAE?AURGBColor@@XZ
 functions	0x00360640	?setWidth@GameLogic@@QAEXM@Z
 functions	0x003606F0	?Set_Looping@Curve1DClass@@UAEX_N@Z
@@ -3331,7 +3273,6 @@ functions	0x00383BC0	?setPlayerLeaveStatus@GameLogic@@QAEXHH@Z
 functions	0x00385430	?assignRandomStillImage@@YAXPAVAsciiString@@HH@Z
 functions	0x00386DE0	?loadAmbientLightMap@GameLogic@@QAEXVAsciiString@@@Z
 functions	0x00387350	??0?$pair@VAsciiString@@PAVParticleSystemTemplate@@@_STL@@QAE@ABVAsciiString@@ABQAVParticleSystemTemplate@@@Z
-functions	0x00387A50	?endMenu@EstablishConnectionsMenu@@
 functions	0x00389A20	?_M_insert@?$hashtable@U?$pair@$$CBIH@_STL@@IU?$hash@I@2@U?$_Select1st@U?$pair@$$CBIH@_STL@@@2@U?$equal_to@I@2@V?$allocator@U?$pair@$$CBIH@_STL@@@2@@_STL@@QAEAAU?$pair@$$CBIH@2@ABU32@@Z
 functions	0x0038A0C0	?setDefaults@GameLogic@@QAEX_N@Z
 functions	0x0038D090	?sendObjectDestroyed@GameLogic@@QAEXPAVObject@@@Z
@@ -3562,7 +3503,6 @@ functions	0x003F1840	?cellCallback@TightenPathCallbackInfo@@QAEHPAVPathfindCell@
 functions	0x003F18E0	?iterateCircular2@Pathfinder@@QAE_NPAUICoord2D@@HPAX@Z
 functions	0x003F1C40	?iterateCellsAlongLine@Pathfinder@@QAEXABUCoord3D@@0W4PathfindLayerEnum@@PAUMADStruct@@@Z
 functions	0x003F1F00	?iterateCellsAlongLine@Pathfinder@@IAEHABUICoord2D@@0W4PathfindLayerEnum@@PAX@Z
-functions	0x003F2160	?findGroundPath@Pathfinder@@QAEPAVPath@@PBUCoord3D@@0H_N@Z
 functions	0x003F2DB0	?adjustTargetDestination@Pathfinder@@QAE_NPBVObject@@0PBUCoord3D@@PBVWeapon@@PAU3@@Z
 functions	0x003F2EC0	?moveAlliesAwayFromDestination@Pathfinder@@QAEXPAVObject@@ABUCoord3D@@@Z
 functions	0x003F2F60	?findPath@Pathfinder@@EAEPAVPath@@PAVObject@@ABVLocomotorSet@@PBUCoord3D@@2@Z
@@ -3656,7 +3596,6 @@ functions	0x004132A0	?getElevatorCorrectionRate@Locomotor@@QBEMXZ
 functions	0x004133C0	??1DrawableIconInfo@@MAE@XZ
 functions	0x00413930	?getPristineBonePositions@Drawable@@QBEHPBDHPAUCoord3D@@PAVMatrix3D@@H@Z
 functions	0x004143F0	?calcPhysicsXformTreads@Drawable@@IAEXPBVLocomotor@@AAUPhysicsXformInfo@1@@Z
-functions	0x00414E40	?drawContained@Drawable@@AAEXPBUIRegion2D@@@Z
 functions	0x00415BB0	?validate@UnicodeString@@ABEXXZ
 functions	0x00415D20	??_GDrawableIconInfo@@MAEPAXI@Z
 functions	0x00416A30	?attachModel@Drawable@@QAEXVAsciiString@@_NH@Z
@@ -3666,9 +3605,7 @@ functions	0x00416FA0	?getSound@ThingTemplate@@QBEPBVAudioEventRTS@@H@Z
 functions	0x00416FC0	?query@Q2FlagOwner@@QAE_NH@Z
 functions	0x00417220	?hasSound95@ThingTemplate@@QBEHXZ
 functions	0x00417E20	?xferDrawableModules@Drawable@@IAEXPAVXfer@@@Z
-functions	0x00418490	?drawBombed@Drawable@@AAEXXZ
 functions	0x0041A230	?setDrawableHidden@Drawable@@QAEX_N@Z
-functions	0x0041A780	?drawEnthusiastic@Drawable@@AAEXPBUIRegion2D@@@Z
 functions	0x0041AA90	?applyPendingModelConditionFlags@Drawable@@AAEX_N@Z
 functions	0x0041AB20	?getBarrelCount@Drawable@@QBEHW4WeaponSlotType@@@Z
 functions	0x0041AD20	?setCustomSoundAmbientInfo@Drawable@@QAEXPAPAVDynamicAudioEventInfo@@@Z
@@ -3786,13 +3723,11 @@ functions	0x0044F960	?positionStartSpotControls@@YAXPAVGameWindow@@0PAUCoord3D@@
 functions	0x00450DE0	?getDescription@MapMetaData@@QAE?AVUnicodeString@@XZ
 functions	0x00451350	?getFileName@MapMetaData@@QBE?AVUnicodeString@@XZ
 functions	0x004515F0	?WouldMapTransfer@@YA_NPAVGameInfo@@@Z
-functions	0x00451E10	?erase@?$vector@UINILine@@V?$allocator@UINILine@@@_STL@@@_STL@@QAEPAUINILine@@PAU3@0@Z
 functions	0x00452AD0	?positionAdditionalImages@@YAXPAVMapMetaData@@PAVGameWindow@@_N@Z
 functions	0x004545A0	??A?$map@VAsciiString@@DU?$less@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@D@_STL@@@3@@_STL@@QAEAADABVAsciiString@@@Z
 functions	0x00455DC0	?erase@?$_Rb_tree@JU?$pair@$$CBJVLadderPref@@@_STL@@U?$_Select1st@U?$pair@$$CBJVLadderPref@@@_STL@@@2@U?$less@J@2@V?$allocator@U?$pair@$$CBJVLadderPref@@@_STL@@@2@@_STL@@QAEXU?$_Rb_tree_iterator@U?$pair@$$CBJVLadderPref@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBJVLadderPref@@@_STL@@@2@@2@@Z
 functions	0x004564A0	?positionStartSpots@@YAXPAVGameInfo@@QAPAVGameWindow@@PAV2@_N@Z
 functions	0x00456570	?erase@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@@_STL@@QAEXU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@V1@@_STL@@@2@@2@0@Z
-functions	0x00456690	?erase@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@V1@@_STL@@@3@@_STL@@QAEIABVAsciiString@@@Z
 functions	0x004583A0	?setPosition@RadiusDecal@@QAEXABUCoord3D@@@Z
 functions	0x004588D0	?createRadiusDecal@RadiusDecalTemplate@@QAEXMMMIHAAVRadiusDecal@@M@Z
 functions	0x00458C80	?createRadiusDecal@RadiusDecalTemplate@@QBEXABUCoord3D@@MPBVPlayer@@AAVRadiusDecal@@@Z
@@ -3871,7 +3806,6 @@ functions	0x00477B40	?getNumSkirmishTeams@SidesList@@QAEHXZ
 functions	0x00478480	?winGetStatus@GameWindow@@QAEIXZ
 functions	0x00478550	?winSetFont@GameWindow@@UAEXPAVGameFont@@@Z
 functions	0x00478C70	?winGetUserData@GameWindow@@QAEPAXXZ
-functions	0x00478DD0	?winSetPrevInLayout@GameWindow@@QAEXPAV1@@Z
 functions	0x00478DF0	?winSetNextInLayout@GameWindow@@QAEHPAV1@@Z
 functions	0x00478E00	?winSetPrevInLayout@GameWindow@@QAEHPAV1@@Z
 functions	0x00478E10	?winSetLayout@GameWindow@@QAEHPAVWindowLayout@@@Z
@@ -4102,9 +4036,7 @@ functions	0x004D9800	?InsertBattleHonor@@YAXPAVGameWindow@@PBVImage@@_NHAAH3VUni
 functions	0x004DA530	?CalculateRank@@YAHABVPSPlayerStats@@@Z
 functions	0x004E4E20	??$find@H@?$_Rb_tree@HU?$pair@$$CBHVBuddyInfo@@@_STL@@U?$_Select1st@U?$pair@$$CBHVBuddyInfo@@@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHVBuddyInfo@@@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHVBuddyInfo@@@_STL@@U?$_Nonconst
 functions	0x004EA730	__stringbase_isnone_cmp_wchar
-functions	0x004ECD10	?showNotificationBox@@YAXVAsciiString@@VUnicodeString@@@Z
 functions	0x004EDFA0	?addBuddyMessage@@YAXABVBuddyMessage@@@Z
-functions	0x004EE0E0	??4?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAEAAV01@ABV01@@Z
 functions	0x004F39E0	?erase@?$list@VQueuedDownload@@V?$allocator@VQueuedDownload@@@_STL@@@_STL@@QAE?AU?$_List_iterator@VQueuedDownload@@U?$_Nonconst_traits@VQueuedDownload@@@_STL@@@2@U32@@Z
 functions	0x004F3AC0	?pop_front@?$list@VQueuedDownload@@V?$allocator@VQueuedDownload@@@_STL@@@_STL@@QAEXXZ
 functions	0x004F9500	?setPlayingAudioIndex@AudioEventRTS@@QAEXH@Z
@@ -4223,7 +4155,6 @@ functions	0x00565DA0	?DeleteButtonFlash@@YAXPBVGenString@@@Z
 functions	0x00565E90	?ShowButtonFlash@@YAXPBVGenString@@@Z
 functions	0x00565EE0	?HideButtonFlash@@YAXPBVGenString@@@Z
 functions	0x005671E0	?_M_copy@?$_Rb_tree@W4NameKeyType@@U?$pair@$$CBW4NameKeyType@@M@_STL@@U?$_Select1st@U?$pair@$$CBW4NameKeyType@@M@_STL@@@3@U?$less@W4NameKeyType@@@3@V?$allocator@U?$pair@$$CBW4NameKeyType@@M@_STL@@@3@@_STL@@AAEPAU?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@M@_STL@@@2@PAU32@0@Z
-functions	0x005672C0	??4?$_Rb_tree@W4NameKeyType@@U?$pair@$$CBW4NameKeyType@@M@_STL@@U?$_Select1st@U?$pair@$$CBW4NameKeyType@@M@_STL@@@3@U?$less@W4NameKeyType@@@3@V?$allocator@U?$pair@$$CBW4NameKeyType@@M@_STL@@@3@@_STL@@QAEAAV01@ABV01@@Z
 functions	0x00567440	??4?$map@W4NameKeyType@@MU?$less@W4NameKeyType@@@_STL@@V?$allocator@U?$pair@$$CBW4NameKeyType@@M@_STL@@@3@@_STL@@QAEAAV01@ABV01@@Z
 functions	0x005695A0	?surrenderQuitMenu@@YAXXZ
 functions	0x005696D0	?HideSaveLoadMenu@@YAXXZ
@@ -4279,10 +4210,8 @@ functions	0x00588940	?setRankProgress@AptPalantir@@QAEXM@Z
 functions	0x00589490	?renderRadar@AptPalantir@@QAEXHHHHPAH@Z
 functions	0x00589750	?showSpellStore@AptPalantir@@QAEXXZ
 functions	0x00589D80	??D?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@V1@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@V1@@_STL@@@2@@_STL@@QBEAAU?$pair@$$CBVAsciiString@@V1@@1@XZ
-functions	0x0058AE70	?getFieldParseTable@AudioManager@@QBEPBUFieldParse@@XZ
 functions	0x0058AF00	?_M_set_node@?$_Deque_iterator_base@VPingRequest@@@_STL@@QAEXPAPAVPingRequest@@@Z
 functions	0x0058C420	??1?$vector@PAVLocomotor@@V?$allocator@PAVLocomotor@@@_STL@@@_STL@@QAE@XZ
-functions	0x0058C4C0	??1UpgradeMuxData@@QAE@XZ
 functions	0x0058C5A0	??R?$_Select1st@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@_STL@@QBEABVAsciiString@@ABU?$pair@$$CBVAsciiString@@VMapMetaData@@@1@@Z
 functions	0x005918F0	?clear@AptPalantirStore@@QAEXXZ
 functions	0x00591D60	??1AptPalantirHeroSelector@@QAE@XZ
@@ -4430,7 +4359,6 @@ functions	0x005D30E0	??0LocomotorStore@@QAE@XZ
 functions	0x005D3170	??_GLocomotorStore@@UAEPAXI@Z
 functions	0x005D31A0	?insert@?$map@PBVThingTemplate@@HU?$less@PBVThingTemplate@@@_STL@@V?$allocator@U?$pair@QBVThingTemplate@@H@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@QBVThingTemplate@@H@_STL@@U?$_Nonconst_traits@U?$pair@QBVThingTemplate@@H@_STL@@@2@@2@U32@ABU?$pair@QBVThingTemplate@@H@2@@Z
 functions	0x005D31D0	?load@Image@@QAEXXZ
-functions	0x005D3380	??A?$map@PBVThingTemplate@@HU?$less@PBVThingTemplate@@@_STL@@V?$allocator@U?$pair@QBVThingTemplate@@H@_STL@@@3@@_STL@@QAEAAHABQBVThingTemplate@@@Z
 functions	0x005D3510	?addRayEffect@RayEffectSystem@@QAEXPBVDrawable@@PBUCoord3D@@1@Z
 functions	0x005D3980	?Insert_After@?$DLNodeClass@VThumbnailManagerClass@@@@QAEXPAV1@@Z
 functions	0x005D3B70	?Remove_Head@?$DLListClass@VThumbnailManagerClass@@@@QAEXXZ
@@ -4499,7 +4427,6 @@ functions	0x005F6660	??AMatrix3@@QAEAAVVector3@@H@Z
 functions	0x005F6660	??AMatrix3x3@@QAEAAVVector3@@H@Z
 functions	0x005F6910	??0Matrix3@@QAE@ABVVector3@@00@Z
 functions	0x005F6970	??0Matrix3@@QAE@ABV0@@Z
-functions	0x005F6970	??0Matrix3x3@@QAE@ABV0@@Z
 functions	0x005F6970	??4Matrix3@@QAEAAV0@ABV0@@Z
 functions	0x005F6970	??4SentenceDataStruct@Render2DSentenceClass@@QAEAAU01@ABU01@@Z
 functions	0x005F7820	??0RenderObjectDrawModule@FXParticleSystem@@QAE@AAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@1@PBX@Z
@@ -4626,20 +4553,13 @@ functions	0x0063CA60	?requestCallback@BuddyThreadClass@@QAEXPAVGPConnection@@PAU
 functions	0x0063EA60	?callbackWrapper@@YAXPAVGPConnection@@PAX1@Z
 functions	0x00640980	?c_str@?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@QBEPBDXZ
 functions	0x00642A10	?getPreferredDockID@WorkerAIUpdate@@UBE?AW4ObjectID@@XZ
-functions	0x006455D0	??R?$less@VAsciiString@@@_STL@@QBE_NABVAsciiString@@0@Z
 functions	0x00647290	?insert@?$map@HIU?$less@H@_STL@@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHI@_STL@@U?$_Nonconst_traits@U?$pair@$$CBHI@_STL@@@2@@2@U32@ABU?$pair@$$CBHI@2@@Z
 functions	0x006472C0	?_M_push_back_aux_v@?$deque@HV?$allocator@H@_STL@@@_STL@@IAEXABH@Z
-functions	0x006473A0	??A?$map@HIU?$less@H@_STL@@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAEAAIABH@Z
 functions	0x00647C60	??$_Construct@UupgradePair@@U1@@_STL@@YAXPAUupgradePair@@ABU1@@Z
 functions	0x00647CD0	?packStatKey@PeerThreadClass@@QAE?AV?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@PBD0@Z
 functions	0x00648FF0	?quickmatchEnumPlayersCallback@@YAXPAXHW4RoomType@@HPBDH0@Z
 functions	0x0064C3D0	?_M_insert@?$_Rb_tree@VAsciiString@@UupgradePair@@U?$_Select1st@UupgradePair@@@_STL@@U?$less@VAsciiString@@@4@V?$allocator@UupgradePair@@@4@@_STL@@AAE?AU?$_Rb_tree_iterator@UupgradePair@@U?$_Nonconst_traits@UupgradePair@@@_STL@@@2@PAU_Rb_tree_node_base@2@0ABUupgradePair@@0@Z
 functions	0x0064C710	??1GameResultsQueueWide@@UAE@XZ
-functions	0x0064CBD0	?insert_unique@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@@2@@2@U32@ABU?$pair@$$CBVAsciiString@@UCoord3D@@@2@@Z
-functions	0x0064CBD0	?insert_unique@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@2@@2@U32@ABU?$pair@$$CBVAsciiString@@VMapMetaData@@@2@@Z
-functions	0x0064CBD0	?insert_unique@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@_N@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@_N@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@_N@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@_N@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@_N@_STL@@@2@@2@U32@ABU?$pair@$$CBVAsciiString@@_N@2@@Z
-functions	0x0064E5F0	?insert@?$map@VAsciiString@@UCoord3D@@U?$less@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@@4@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@@2@@2@U32@ABU?$pair@$$CBVAsciiString@@UCoord3D@@@2@@Z
-functions	0x0064E5F0	?insert@?$map@VAsciiString@@VMapMetaData@@U?$less@VAsciiString@@@_STL@@V?$allocator@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@4@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@2@@2@U32@ABU?$pair@$$CBVAsciiString@@VMapMetaData@@@2@@Z
 functions	0x0064EA90	?getRoomKeysCallback@@YAXPAXHW4RoomType@@PBDHPAPAD30@Z
 functions	0x00652030	??$?9U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@1@U?$equal_to@VAsciiString@@@4@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@1@@_STL@@YA_NABU?$_Hashtable_iterator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@@0@0@Z
 functions	0x00652290	?deallocate@?$_STLP_alloc_proxy@PAU?$_Rb_tree_node@U?$pair@$$CBHVPSPlayerStats@@@_STL@@@_STL@@U12@V?$allocator@U?$_Rb_tree_node@U?$pair@$$CBHVPSPlayerStats@@@_STL@@@_STL@@@2@@_STL@@QAEXPAU?$_Rb_tree_node@U?$pair@$$CBHVPSPlayerStats@@@_STL@@@2@I@Z
@@ -4808,9 +4728,7 @@ functions	0x006A6590	?doesViolateLimit@MilesAudioManager@@QBE_NPAVAudioEventRTS@
 functions	0x006A6960	?isPlayingAlready@MilesAudioManager@@QBE_NPAVAudioEventRTS@@@Z
 functions	0x006A6CA0	?push_back@?$vector@UHideShowSubObjInfo@ModelConditionInfo@@V?$allocator@UHideShowSubObjInfo@ModelConditionInfo@@@_STL@@@_STL@@QAEXABUHideShowSubObjInfo@ModelConditionInfo@@@Z
 functions	0x006A6F00	?erase@?$deque@VPlayingAudioRef@@V?$allocator@VPlayingAudioRef@@@_STL@@@_STL@@QAE?AU?$_Deque_iterator@VPlayingAudioRef@@U?$_Nonconst_traits@VPlayingAudioRef@@@_STL@@@2@U32@@Z
-functions	0x006A78C0	?erase@?$hashtable@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@@_STL@@QAEIABVAsciiString@@@Z
 functions	0x006A7DF0	?_M_push_back_aux_v@?$deque@VThingRef@@V?$allocator@VThingRef@@@_STL@@@_STL@@IAEXABVThingRef@@@Z
-functions	0x006A7F00	?_M_skip_to_next@?$_Hashtable_iterator@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@@_STL@@QAEPAU?$_Hashtable_node@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@XZ
 functions	0x006A9910	?setHardwareAccelerated@MilesAudioManager@@AAEXE@Z
 functions	0x006AC1A0	?isMusicAlreadyLoaded@AudioManager@@UBE_NXZ
 functions	0x006AC500	?count@?$map@GEU?$less@G@_STL@@V?$allocator@U?$pair@$$CBGE@_STL@@@2@@_STL@@QBEIABG@Z
@@ -5042,7 +4960,6 @@ functions	0x006CF680	?onEnter@AIBusyState@@UAE?AW4StateReturnType@@XZ
 functions	0x006CF680	?onEnter@ActAsDozerState@@UAE?AW4StateReturnType@@XZ
 functions	0x006CF680	?onEnter@ActAsSupplyTruckState@@UAE?AW4StateReturnType@@XZ
 functions	0x006CF680	?onEnter@ContinueState@@UAE?AW4StateReturnType@@XZ
-functions	0x006CF680	?onEnter@State@@UAE?AW4StateReturnType@@XZ
 functions	0x006CF680	?onEnter@TurretAIAimTurretState@@UAE?AW4StateReturnType@@XZ
 functions	0x006CF680	?onEnter@TurretAIRecenterTurretState@@UAE?AW4StateReturnType@@XZ
 functions	0x006CF680	?readEntireAndClose@StreamingArchiveFile@@UAEPADXZ
@@ -5261,7 +5178,6 @@ functions	0x00710E70	?Convert_Color@DX8Wrapper@@SAIABVVector3@@M@Z
 functions	0x00710F50	??9ShaderClass@@QAE_NABV0@@Z
 functions	0x00710F70	?Vertex_Material_Count@MaterialInfoClass@@QBEHXZ
 functions	0x00710F80	?getFullyObscuredByShroud@Drawable@@QAE_NXZ
-functions	0x00710FC0	??0?$MultiListClass@VDX8FVFCategoryContainer@@@@QAE@XZ
 functions	0x00711B40	?Add@?$RefMultiListClass@VLookupTableClass@@@@QAE_NPAVLookupTableClass@@_N@Z
 functions	0x00711BE0	??0?$allocator@VMoney@@@_STL@@QAE@XZ
 functions	0x00711C00	?Peek_Obj@?$RefMultiListIterator@VLookupTableClass@@@@QAEPAVLookupTableClass@@XZ
@@ -5371,7 +5287,6 @@ functions	0x007401A0	?cameraModFinalLookToward@W3DView@@UAEXPAUCoord3D@@@Z
 functions	0x007406B0	?getPickRay@W3DView@@AAEXPBUICoord2D@@PAVVector3@@1@Z
 functions	0x00741610	?screenToWorldAtZ@W3DView@@UAEXPBUICoord2D@@PAUCoord3D@@M@Z
 functions	0x00742DF0	?applyDefaultProjection@W3DView@@QAEXXZ
-functions	0x00742E60	?setZoom@W3DView@@UAEXM@Z
 functions	0x00743060	?setZoomToDefault@W3DView@@QAEXXZ
 functions	0x00743640	?resetCamera@W3DView@@UAEXPBUCoord3D@@HMM@Z
 functions	0x00746020	?getPitch@View@@UAEMXZ
@@ -5426,8 +5341,6 @@ functions	0x00755E10	?erase@?$vector@V?$vector@UICoord2D@@V?$allocator@UICoord2D
 functions	0x00755F10	?push_back@?$vector@UAnimSet@GenericObjectCreationNugget@@V?$allocator@UAnimSet@GenericObjectCreationNugget@@@_STL@@@_STL@@QAEXABUAnimSet@GenericObjectCreationNugget@@@Z
 functions	0x00755F60	?clear@?$vector@V?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@_STL@@V?$allocator@V?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@_STL@@@2@@_STL@@QAEXXZ
 functions	0x00756D90	??$_Construct@VAsciiString@@V1@@_STL@@YAXPAVAsciiString@@ABV1@@Z
-functions	0x00757C70	?_M_insert_overflow@?$vector@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@IAEXPAVAsciiString@@ABV3@ABU__false_type@2@I_N@Z
-functions	0x00757E20	?push_back@?$vector@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@QAEXABVAsciiString@@@Z
 functions	0x00758AC0	?reactToTransformChange@W3DLightDraw@@UAEXPBVMatrix3D@@PBUCoord3D@@M@Z
 functions	0x00759460	??0W3DFloorDrawModuleDataBase@@QAE@XZ
 functions	0x00759480	??1W3DFloorDrawModuleDataBase@@UAE@XZ
@@ -5487,7 +5400,6 @@ functions	0x0076D0E0	??4?$map@GEU?$less@G@_STL@@V?$allocator@U?$pair@$$CBGE@_STL
 functions	0x0076D1A0	?clear@?$vector@UWeaponBarrelInfo@ModelConditionInfo@@V?$allocator@UWeaponBarrelInfo@ModelConditionInfo@@@_STL@@@_STL@@QAEXXZ
 functions	0x0076D380	?_M_insert_overflow@?$vector@UWeaponBarrelInfo@ModelConditionInfo@@V?$allocator@UWeaponBarrelInfo@ModelConditionInfo@@@_STL@@@_STL@@IAEXPAUWeaponBarrelInfo@ModelConditionInfo@@ABU34@ABU__false_type@2@I_N@Z
 functions	0x0076F610	??0?$list@PAVParticleSystem@@V?$allocator@PAVParticleSystem@@@_STL@@@_STL@@QAE@ABV?$allocator@PAVParticleSystem@@@1@@Z
-functions	0x0076F640	??0?$list@PAVSuperweaponInfo@@V?$allocator@PAVSuperweaponInfo@@@_STL@@@_STL@@QAE@ABV01@@Z
 functions	0x0076F6F0	?push_back@?$vector@UWeaponBarrelInfo@ModelConditionInfo@@V?$allocator@UWeaponBarrelInfo@ModelConditionInfo@@@_STL@@@_STL@@QAEXABUWeaponBarrelInfo@ModelConditionInfo@@@Z
 functions	0x00770B20	??$_Construct@UElem32@@U1@@_STL@@YAXPAUElem32@@ABU1@@Z
 functions	0x00770FA0	?rebuildWeaponRecoilInfo@W3DModelDraw@@AAEXPBUModelConditionInfo@@@Z
@@ -5532,7 +5444,6 @@ functions	0x007850E0	??$_Construct@U?$pair@W4ObjectID@@W41@@_STL@@U12@@_STL@@YAX
 functions	0x007868B0	?resize@?$hashtable@U?$pair@$$CBHW4Relationship@@@_STL@@HU?$hash@H@2@U?$_Select1st@U?$pair@$$CBHW4Relationship@@@_STL@@@2@U?$equal_to@H@2@V?$allocator@U?$pair@$$CBHW4Relationship@@@_STL@@@2@@_STL@@QAEXI@Z
 functions	0x00787140	?_M_insert@?$hashtable@U?$pair@$$CBHW4Relationship@@@_STL@@HU?$hash@H@2@U?$_Select1st@U?$pair@$$CBHW4Relationship@@@_STL@@@2@U?$equal_to@H@2@V?$allocator@U?$pair@$$CBHW4Relationship@@@_STL@@@2@@_STL@@QAEAAU?$pair@$$CBHW4Relationship@@@2@ABU32@@Z
 functions	0x007871D0	?_M_insert@?$hashtable@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@PBVGameWindow@@UhashConstGameWindowPtr@WindowVideoManager@@U?$_Select1st@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@2@U?$equal_to@PBVGameWindow@@@2@V?$allocator@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@2@@_STL@@QAEAAU?$pair@QBVGameWindow@@PAVWindowVideo@@@2@ABU32@@Z
-functions	0x00787D80	??A?$hash_map@HW4Relationship@@U?$hash@H@_STL@@U?$equal_to@H@3@V?$allocator@U?$pair@$$CBHW4Relationship@@@_STL@@@3@@_STL@@QAEAAW4Relationship@@ABH@Z
 functions	0x00787E00	??A?$hash_map@PBVGameWindow@@PAVWindowVideo@@UhashConstGameWindowPtr@WindowVideoManager@@U?$equal_to@PBVGameWindow@@@_STL@@V?$allocator@U?$pair@QBVGameWindow@@PAVWindowVideo@@@_STL@@@6@@_STL@@QAEAAPAVWindowVideo@@ABQBVGameWindow@@@Z
 functions	0x00787E80	?_M_insert_overflow@?$vector@VProductionPrerequisite@@V?$allocator@VProductionPrerequisite@@@_STL@@@_STL@@IAEXPAVProductionPrerequisite@@ABV3@ABU__false_type@2@I_N@Z
 functions	0x00788030	?_M_insert_overflow@?$vector@VW3DAnimationInfo@@V?$allocator@VW3DAnimationInfo@@@_STL@@@_STL@@IAEXPAVW3DAnimationInfo@@ABV3@ABU__false_type@2@I_N@Z
@@ -5824,7 +5735,6 @@ functions	0x007A51E0	??E?$_Ht_iterator@U?$pair@$$CBVAsciiString@@PAUAudioEventIn
 functions	0x007A51E0	??E?$_Ht_iterator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@U?$equal_to@VAsciiString@@@6@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@@_STL@@QAEAAU01@XZ
 functions	0x007A5200	?init@WaterRenderObjClass@@QAEHMMMPAVSceneClass@@W4WaterType@@@Z
 functions	0x007A5CD0	??E?$_Ht_iterator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@U?$equal_to@VAsciiString@@@6@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@@_STL@@QAE?AU01@H@Z
-functions	0x007A62E0	??0Vector4@@QAE@XZ
 functions	0x007A62F0	?Init@Matrix4@@QAEXMMMMMMMMMMMMMMMM@Z
 functions	0x007AB9A0	?init@WaterTracksRenderSystemInitShim@@QAEXXZ
 functions	0x007AC7E0	?loadTracks@WaterTracksRenderSystemLoadTracksShim@@QAEXXZ
@@ -5833,20 +5743,9 @@ functions	0x007AE640	?getFrontCrushed@ActiveBody@@UBE_NXZ
 functions	0x007AE650	?setBackCrushed@ActiveBody@@UAEX_N@Z
 functions	0x007AE660	?getBackCrushed@ActiveBody@@UBE_NXZ
 functions	0x007AE830	??0HAnimManagerIterator@@QAE@AAVHAnimManagerClass@@@Z
-functions	0x007AE850	?Get_Current_Geom@W3DShadowGeometryManagerIterator@@QAEPAVW3DShadowGeometry@@XZ
 functions	0x007AEA90	?removeAllShadows@W3DProjectedShadowManager@@QAEXXZ
-functions	0x007AEEA0	?Free_All_Geoms@W3DShadowGeometryManager@@QAEXXZ
-functions	0x007AEF40	?Peek_Geom@W3DShadowGeometryManager@@QAEPAVW3DShadowGeometry@@PBD@Z
-functions	0x007AEF70	?Get_Geom@W3DShadowGeometryManager@@QAEPAVW3DShadowGeometry@@PBD@Z
-functions	0x007AEFA0	?Add_Geom@W3DShadowGeometryManager@@QAE_NPAVW3DShadowGeometry@@@Z
-functions	0x007AF050	?Is_Missing@W3DShadowGeometryManager@@QAE_NPBD@Z
 functions	0x007AF300	?add@Coord3D@@QAEXPBU1@@Z
 functions	0x007AFAA0	?recycleFromList@W3DProjectedShadowManager@@QAE_NPAUW3DProjectedShadow@@PAPAU2@@Z
-functions	0x007B0FF0	??1W3DShadowGeometryManager@@QAE@XZ
-functions	0x007B1100	??_GMissingGeomClass@@UAEPAXI@Z
-functions	0x007B1130	??1MissingGeomClass@@UAE@XZ
-functions	0x007B1190	?Register_Missing@W3DShadowGeometryManager@@QAEXPBD@Z
-functions	0x007B13E0	??_GW3DShadowGeometryManager@@QAEPAXI@Z
 functions	0x007B40B0	?addDecal@W3DProjectedShadowManager@@UAEPAVShadow@@PAUShadowTypeInfo@2@@Z
 functions	0x007B4340	?addShadow@W3DProjectedShadowManager@@QAEPAVW3DProjectedShadow@@PAVRenderObjClass@@PAUShadowTypeInfo@Shadow@@PAVDrawable@@@Z
 functions	0x007B74A0	??_GW3DShadowHelperManager@@QAEPAXI@Z
@@ -5999,9 +5898,6 @@ pins	0x000013C5	??$_Construct@U?$pair@$$CBHW4Relationship@@@_STL@@U12@@_STL@@YAX
 pins	0x000013E8	?_M_insert@?$hashtable@U?$pair@$$CBHW4Relationship@@@_STL@@HU?$hash@H@2@U?$_Select1st@U?$pair@$$CBHW4Relationship@@@_STL@@@2@U?$equal_to@H@2@V?$allocator@U?$pair@$$CBHW4Relationship@@@_STL@@@2@@_STL@@QAEAAU?$pair@$$CBHW4Relationship@@@2@ABU32@@Z
 pins	0x00001663	??$_Destroy@PAVW3DAnimationInfo@@@_STL@@YAXPAVW3DAnimationInfo@@0@Z
 pins	0x000016A4	?testStatus@Object@@QBE_NH@Z
-pins	0x00001780	??0ActiveBodyModuleData@@QAE@XZ
-pins	0x00001780	??0AutoDepositUpdateModuleData@@QAE@XZ
-pins	0x00001780	??0OCLUpdateModuleData@@QAE@XZ
 pins	0x00001780	??0W3DProjectileStreamDrawModuleData@@QAE@XZ
 pins	0x00001942	?aptPalantirOnButtonCommand@@YAXPAD@Z
 pins	0x0000198D	??0KindOfMask@@QAE@HHH@Z
@@ -6015,9 +5911,7 @@ pins	0x00001BAE	?largeGroupRandom@@YAHHHPBDH@Z
 pins	0x00001BAE	?spyVisionRandom@@YAHHHPBDH@Z
 pins	0x00001C03	?isMassSelectable@Object@@QBE_NXZ
 pins	0x00001C17	?getAimPosition@WeaponTemplate@@QAEPAUCoord3D@@PAU2@PBVObject@@1H@Z
-pins	0x00001C30	?getHeightAboveTerrainOrWater@Thing@@QBEMXZ
 pins	0x00001CDA	??0GenerateMinefieldBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00001CDA	??0SlavedUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00001D34	??_GScaleUpTransition@@MAEPAXI@Z
 pins	0x00001DA7	??0?$_Vector_base@PAVObject@@V?$allocator@PAVObject@@@_STL@@@_STL@@QAE@IABV?$allocator@PAVObject@@@1@@Z
 pins	0x00001E79	??4WtTail@@QAEAAV0@ABV0@@Z
@@ -6039,7 +5933,6 @@ pins	0x00002383	?selectHero@AptPalantir@@QAEXH@Z
 pins	0x00002383	?selectHero@AptPalantirHeroSelector@@QAEXH@Z
 pins	0x000023A1	??0HordeTransportContainBase@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00002432	??0W3DDisplay@@QAE@XZ
-pins	0x00002450	??0TransitionDamageFX@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00002469	??_GAIIdleState@@MAEPAXI@Z
 pins	0x000024A5	?reset@TransitionGroup@@QAEXXZ
 pins	0x00002509	?find@GameLogicFindControlBarOverrideILT@@QBE_NABVAsciiString@@HAAPBVCommandButton@@@Z
@@ -6056,14 +5949,11 @@ pins	0x00002874	??0?$SimpleParameterClass@M$00@@QAE@PAXPBD@Z
 pins	0x00002874	??0?$SimpleParameterClass@M$0N@@@QAE@PAXPBD@Z
 pins	0x00002874	??0ClientUpdateModule@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00002874	??0DrawModule@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00002874	??0ModelConditionSoundSelectorClientBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00002874	??0UpgradeSoundSelectorClientBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0000289C	??0W3DHordeModelDrawModuleDataBase@@QAE@XZ
 pins	0x0000289C	??0W3DQuadrupedDrawModuleDataBase@@QAE@XZ
 pins	0x0000289C	??0W3DSupplyDrawModuleDataBase@@QAE@XZ
 pins	0x0000289C	??0W3DTankDrawModuleDataBase@@QAE@XZ
 pins	0x000028AB	??0JetAIUpdateModuleData@@QAE@XZ
-pins	0x000028AB	??0StatusBitsUpgradeModuleData@@QAE@XZ
 pins	0x000028AB	??0TensileFormationUpdateModuleData@@QAE@XZ
 pins	0x000028C4	?_M_insert_overflow@?$vector@HV?$allocator@H@_STL@@@_STL@@IAEXPAHABHABU__true_type@2@I_N@Z
 pins	0x00002955	??$__copy@PAUAttributeModifierEntry@@PAU1@H@_STL@@YAPAUAttributeModifierEntry@@PAU1@00ABUrandom_access_iterator_tag@0@PAH@Z
@@ -6091,7 +5981,6 @@ pins	0x00002DD3	??$__copy@PAVLivingWorldPlayerArmy@@PAV1@H@_STL@@YAPAVLivingWorl
 pins	0x00002E3C	?parse@RenderObjectUpdateTemplateParseShim@FXParticleSystem@@QAEXPAVINI@@@Z
 pins	0x00002EA0	??1AIGiantBirdAttackState@@UAE@XZ
 pins	0x00002ECD	??0SidesInfoSub@@QAE@H@Z
-pins	0x00002ECD	?getName@DataChunkTableOfContents@@QAE?AVAsciiString@@I@Z
 pins	0x00002EF0	?playAttackVoiceResponse@AIUpdateInterface@@IAEXPAVObject@@@Z
 pins	0x00002F1D	?shutdownComplete@Shell@@QAEXPAVWindowLayout@@H@Z
 pins	0x00002F5E	??1ParticleSystemTemplateBase@FXParticleSystem@@UAE@XZ
@@ -6105,7 +5994,6 @@ pins	0x0000315C	?ignoreObstacle@AIUpdateInterface@@QAEXPAVObject@@@Z
 pins	0x00003193	??$_Construct@VLivingWorldArmy@@V1@@_STL@@YAXPAVLivingWorldArmy@@ABV1@@Z
 pins	0x0000320B	?evaCheckCopy@@YAPAUEvaCheck@@PAU1@00ABUEvaCheckCopyTag@@PAH@Z
 pins	0x000032A6	??$__uninitialized_copy@PBUHideShowSubObjInfo@ModelConditionInfo@@PAU12@@_STL@@YAPAUHideShowSubObjInfo@ModelConditionInfo@@PBU12@0PAU12@ABU__false_type@0@@Z
-pins	0x000032A6	??$__uninitialized_copy@PBUParticleSysBoneInfo@@PAU1@@_STL@@YAPAUParticleSysBoneInfo@@PBU1@0PAU1@ABU__false_type@0@@Z
 pins	0x000032CE	?addProp@W3DPropBuffer@@QAEXHUCoord3D@@MMABVAsciiString@@@Z
 pins	0x0000335F	?xfer@?$BitFlags@$0MA@@@QAEXPAVXfer@@@Z
 pins	0x0000336E	?find@PlayerAITypeSet@@QAEHPAVAsciiString@@@Z
@@ -6117,9 +6005,6 @@ pins	0x00003544	?xferTree@@YAXPAVXfer@@PAX@Z
 pins	0x000036F7	??R?$less@V?$StringBase@G@@@_STL@@QBE_NABV?$StringBase@G@@0@Z
 pins	0x00003751	?countVotesForPlayer@DisconnectManager@@IAEHH@Z
 pins	0x00003751	?countVotesForPlayer@DisconnectManager@@IAEHHPAVConnectionManager@@@Z
-pins	0x00003873	?anyIntersectionWith@?$BitFlags@$0HE@@@QBE_NABV1@@Z
-pins	0x00003873	?countInverseIntersection@?$BitFlags@$0BB@@@QBEHABV1@@Z
-pins	0x00003873	?freeBlock@MemoryPool@@QAEXPAX@Z
 pins	0x00003909	?findClosestByKindOf@RegroupingPlayerView@@QAEPAVObject@@PAV2@V?$BitFlags@$0MA@@@1@Z
 pins	0x00003A12	?GetPicPreviewFromMap@@YA?AVAsciiString@@V1@@Z
 pins	0x00003A17	??0CampaignReviewArgHolder@@QAE@UFunctorBinding@@@Z
@@ -6141,9 +6026,6 @@ pins	0x000044C1	?xfer@UpdateModule@@MAEXPAVXfer@@@Z
 pins	0x0000466F	??1HideShowSubObjInfo@ModelConditionInfo@@QAE@XZ
 pins	0x0000467E	?drawRemainingRectClock@Display@@QAEXMMMMMH@Z
 pins	0x00004692	?construct@OrthoEmissionVelocityModuleCtorShim@FXParticleSystem@@QAEXAAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@@PBX@Z
-pins	0x0000497B	??0CreateCrateDieModuleData@@QAE@XZ
-pins	0x0000497B	??0SpecialPowerCompletionDieModuleData@@QAE@XZ
-pins	0x0000497B	??0UpgradeDieModuleData@@QAE@XZ
 pins	0x000049E9	?setFrameFade@W3DDynamicLightPulseShim@@QAEXII@Z
 pins	0x00004A75	?assign@StlWStr@@QAEAAV1@PBG0@Z
 pins	0x00004AB1	?_M_clear@?$vector@URunwayInfo@FlightDeckBehavior@@V?$allocator@URunwayInfo@FlightDeckBehavior@@@_STL@@@_STL@@IAEXXZ
@@ -6151,7 +6033,6 @@ pins	0x00004AD9	??_GProcessAnimateWindowSlideFromTop@@MAEPAXI@Z
 pins	0x00004B47	?parseFXList@INI@@SAXPAV1@PAX1PBX@Z
 pins	0x00004C87	??1PartitionFilterRelationship@@MAE@XZ
 pins	0x00004C9B	??0CleanupHazardUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00004D36	??0SpyVisionUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00004DBD	??1Anim2D@@MAE@XZ
 pins	0x00004E67	?adjustFontSize@GlobalLanguageData@@QAEHH@Z
 pins	0x00004E71	?updatePendingDamage@Object@@UAEXXZ
@@ -6191,11 +6072,8 @@ pins	0x00006258	?prepSpecial@AIGroup@@QAEXXZ
 pins	0x00006375	??1GenericObjectCreationNuggetAnimSets@@QAE@XZ
 pins	0x000063CF	?doCommandButton@Object@@QAEXPBVCommandButton@@HH@Z
 pins	0x000063FC	?bannerAptOnButton@@YAXXZ
-pins	0x00006451	??1SiegeDockingBehaviorModuleData@@MAE@XZ
 pins	0x00006780	??0CountermeasuresBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00006780	??0NeutronMissileSlowDeathBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00006780	??0StealthUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00006780	??0ToppleUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0000679E	??$__copy@PAUGeometryRecord@@PAU1@H@_STL@@YAPAUGeometryRecord@@PAU1@00ABUrandom_access_iterator_tag@0@PAH@Z
 pins	0x000067B2	??$copy@U?$_Deque_iterator@VPlayingAudioRef@@U?$_Nonconst_traits@VPlayingAudioRef@@@_STL@@@_STL@@U12@@_STL@@YA?AU?$_Deque_iterator@VPlayingAudioRef@@U?$_Nonconst_traits@VPlayingAudioRef@@@_STL@@@0@U10@00@Z
 pins	0x000067BC	?HideDiplomacy@@YAXXZ
@@ -6207,7 +6085,6 @@ pins	0x00006C58	?setRange@GameClientRandomVariable@FXParticleSystem@@QAEXMMW4Dis
 pins	0x00006D0C	?updateFadeLevel@ScreenCrossFadeFilter@@IAE_NXZ
 pins	0x00006D7F	?removeObjectFromPathfindMap@Pathfinder@@QAEXPAVObject@@@Z
 pins	0x00006DAC	?getRenderTexture@W3DShaderManager@@SAPAUIDirect3DTexture8@@XZ
-pins	0x00006DB6	?concat@AsciiString@@QAEXPBD@Z
 pins	0x00006E92	?validateStuff@RvaModelConditionInfo@@QBEXPAXMABURvaVector@@PBU1@1@Z
 pins	0x00006EB5	?loadPostProcess@Script@@UAEXXZ
 pins	0x00006F37	??$__copy@PAUNugget@ModuleInfo@@PAU12@H@_STL@@YAPAUNugget@ModuleInfo@@PAU12@00ABUrandom_access_iterator_tag@0@PAH@Z
@@ -6231,7 +6108,6 @@ pins	0x00007928	??1LevelUpFXInfo@@QAE@XZ
 pins	0x00007978	?_M_reallocate_map@?$deque@HV?$allocator@H@_STL@@@_STL@@IAEXI_N@Z
 pins	0x000079EB	?insert_unique@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHI@_STL@@U?$_Nonconst_traits@U?$pair@$$CBHI@_STL@@@2@@2@U32@ABU?$pair@$$CBHI@2@@Z
 pins	0x00007A45	?erase@W3DProjectileStreamResources@@QAEXPAX0@Z
-pins	0x00007A63	??4StringClass@@QAEABV0@ABV0@@Z
 pins	0x00007AD6	?getCenterPoint@PolygonTrigger@@QBEXPAUCoord3D@@@Z
 pins	0x00007AD6	?getPosition@Object@@QBE?AUCoord3D@@XZ
 pins	0x00007B08	??0?$_Vector_base@UGeometryShape@@V?$allocator@UGeometryShape@@@_STL@@@_STL@@QAE@IABV?$allocator@UGeometryShape@@@1@@Z
@@ -6247,7 +6123,6 @@ pins	0x00007E37	??0PartitionFilterRejectByKindOf@@QAE@ABUVptrZeroBlock24@@0@Z
 pins	0x00007E50	?setPosition@RadiusDecal@@QAEXABUCoord3D@@@Z
 pins	0x00007F36	??_GDelayedWorldTextEventModule@@MAEPAXI@Z
 pins	0x00007FB8	??1SpyVisionUpdateModuleDataMemberG@@QAE@XZ
-pins	0x00007FF4	??0PhysicsBehaviorModuleData@@QAE@XZ
 pins	0x00008049	??$_Construct@URunwayInfo@FlightDeckBehavior@@U12@@_STL@@YAXPAURunwayInfo@FlightDeckBehavior@@ABU12@@Z
 pins	0x00008049	?_Construct@_STL@@YAXPAURunwayInfo@FlightDeckBehavior@@ABU23@@Z
 pins	0x00008094	?writeDefaultAlphaHeader@FXParticleSystem@@YAXPBXPAVFile@@PAI@Z
@@ -6262,21 +6137,13 @@ pins	0x000086A2	?_M_insert@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@VM
 pins	0x000086A2	?_M_insert@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@_N@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@_N@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@_N@_STL@@@3@@_STL@@AAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@_N@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@_N@_STL@@@2@@2@PAU_Rb_tree_node_base@2@0ABU?$pair@$$CBVAsciiString@@_N@2@0@Z
 pins	0x00008823	??1AttachedModelFXNugget@@MAE@XZ
 pins	0x00008837	?_M_clear@?$vector@VW3DAnimationInfo@@V?$allocator@VW3DAnimationInfo@@@_STL@@@_STL@@IAEXXZ
-pins	0x00008878	??0FXListDie@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00008878	??0FireWeaponCollide@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00008878	??0FireWeaponWhenDeadBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00008878	??0GrantScienceUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00008878	??0InactiveBody@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x00008878	??0SpecialPowerCompletionDie@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x000088F0	?setGridChangeAttenuationFactors@WaterRenderObjClass@@QAEXMMMM@Z
 pins	0x00008963	?isEqualCommandMsg@NetCommandListEqualShim@@QAE_NPAVNetCommandMsg@@0@Z
 pins	0x00008995	?checkTarget@SpecialAbilityUpdate@@QAE_NPAVObject@@@Z
 pins	0x00008B0C	?removeOldestParticles@ParticleSystemManager@@QAEHIW4ParticlePriorityType@@@Z
 pins	0x00008B61	??1GiantBirdMemberA@@QAE@XZ
 pins	0x00008B8E	?createEvent@Radar@@QAEXPBUCoord3D@@W4RadarEventType@@M@Z
 pins	0x00008D0F	??0?$BitFlags@$0MA@@@QAE@W4BogusInitType@0@H@Z
-pins	0x00008DCD	??0?$list@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@QAE@ABV?$allocator@VAsciiString@@@1@@Z
-pins	0x00008DCD	??0?$list@VQueuedDownload@@V?$allocator@VQueuedDownload@@@_STL@@@_STL@@QAE@ABV?$allocator@VQueuedDownload@@@1@@Z
 pins	0x00008DFA	?postLoad@ExperienceLevelSystem@@QAEXPAVObject@@@Z
 pins	0x00008E86	??0AudioEventRTS@@QAE@ABUAudioEventInfoRef@@W4ObjectID@@@Z
 pins	0x00008EC2	?_M_fill_insert@?$list@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@QAEXU?$_List_iterator@VAsciiString@@U?$_Nonconst_traits@VAsciiString@@@_STL@@@2@IABVAsciiString@@@Z
@@ -6309,7 +6176,6 @@ pins	0x00009D04	?snapPosition@Pathfinder@@QAEXPAVObject@@PAUCoord3D@@@Z
 pins	0x00009E8A	?_M_clear@?$vector@UEvaMessageInfo@@V?$allocator@UEvaMessageInfo@@@_STL@@@_STL@@IAEXXZ
 pins	0x00009F6B	??1FXListAtBonePosFXNugget@@MAE@XZ
 pins	0x0000A114	?drawImage@Display@@QAEXPBVImage@@MMMMHH@Z
-pins	0x0000A1B9	??0GameSpyPeerMessageQueueInterface@@QAE@XZ
 pins	0x0000A277	??1?$pair@$$CBVAsciiString@@UAptTextRecord@@@_STL@@QAE@XZ
 pins	0x0000A416	?HideSaveLoadMenu@@YAXXZ
 pins	0x0000A47A	?_M_insert_overflow@?$vector@UFlightDeckInfo@FlightDeckBehavior@@V?$allocator@UFlightDeckInfo@FlightDeckBehavior@@@_STL@@@_STL@@IAEXPAUFlightDeckInfo@FlightDeckBehavior@@ABU34@ABU__false_type@2@I_N@Z
@@ -6331,7 +6197,6 @@ pins	0x0000AC63	??$__uninitialized_copy@PAUEvaSideSounds@@PAU1@@_STL@@YAPAUEvaSi
 pins	0x0000ACFE	?showAptScreenWithArg@CampaignReviewRegistry@@QAEXABVAsciiString@@PAXVCampaignReviewArgHolder@@@Z
 pins	0x0000ADDA	?construct@OrthoEmissionVelocityTemplateCopyCtorShim@FXParticleSystem@@QAEXPBX@Z
 pins	0x0000AE20	??$_M_find@V?$BitFlags@$0L@@@@?$_Rb_tree@$$CBV?$BitFlags@$0L@@@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VArmorTemplateSet@@V?$BitFlags@$0L@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@3@@_STL@@ABEPAU?$_Rb_tree_node@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@1@ABV?$BitFlags@$0L@@@@Z
-pins	0x0000AE93	?_M_insert_overflow@?$vector@UDetonatorInfo@MinefieldBehavior@@V?$allocator@UDetonatorInfo@MinefieldBehavior@@@_STL@@@_STL@@IAEXPAUDetonatorInfo@MinefieldBehavior@@ABU34@ABU__false_type@2@I_N@Z
 pins	0x0000AE93	?_M_insert_overflow@?$vector@UStationPointData@GarrisonContain@@V?$allocator@UStationPointData@GarrisonContain@@@_STL@@@_STL@@IAEXPAUStationPointData@GarrisonContain@@ABU34@ABU__false_type@2@I_N@Z
 pins	0x0000AEAC	?find@CustomPreferenceMapShim@@QAEPAUCustomMapNodeShim@@ABVAsciiString@@@Z
 pins	0x0000AEAC	?find@CustomPreferenceMapShim@@QAEPAUCustomMapNodeShim@@PAUCustomAsciiStringShim@@@Z
@@ -6363,7 +6228,6 @@ pins	0x0000B9CE	?Clear@?$VectorClass@U_ArcInfoStruct@VehicleCurveClass@@@@UAEXXZ
 pins	0x0000B9CE	?Clear@?$VectorClass@VTCBClass@TCBSpline3DClass@@@@UAEXXZ
 pins	0x0000B9CE	?Clear@?$VectorClass@VTangentsClass@HermiteSpline1DClass@@@@UAEXXZ
 pins	0x0000B9CE	?Clear@?$VectorClass@VTangentsClass@HermiteSpline3DClass@@@@UAEXXZ
-pins	0x0000B9CE	?Remove_All@?$SList@VTagBlockIndex@@@@UAEXXZ
 pins	0x0000B9CE	?getClassMemoryPool@ObjectDefectionHelper@@SAPAVMemoryPool@@XZ
 pins	0x0000B9CE	?init@NetCommandList@@QAEXXZ
 pins	0x0000BA50	?finishUpdate@OpenContain@@QAEXXZ
@@ -6389,7 +6253,6 @@ pins	0x0000C5F9	??1PartitionFilterPolygonTrigger@@MAE@XZ
 pins	0x0000C61C	?coord3DUninitializedCopy@_STL@@YAPAUCoord3D@@PBU2@0PAU2@ABU__false_type@1@@Z
 pins	0x0000C658	?groupGuardAreaFromPosition@AIGroup@@QAEXPAVPolygonTrigger@@W4GuardMode@@W4CommandSourceType@@PBUCoord3D@@@Z
 pins	0x0000C662	??4CloudEffect@@QAEAAU0@ABU0@@Z
-pins	0x0000C6E9	??0AIMoveToState@@QAE@PAVStateMachine@@@Z
 pins	0x0000C784	??_GDemoTrapUpdateModuleData@@MAEPAXI@Z
 pins	0x0000C7FC	?produceStoredValue@@YGHH@Z
 pins	0x0000C874	?GadgetTextEntrySetText@@YAXPAVGameWindow@@VScoreScreenRvaUnicodeString@@@Z
@@ -6405,7 +6268,6 @@ pins	0x0000CC4D	?construct_from@DefaultModuleTemplate7CopyCtorShim@FXParticleSys
 pins	0x0000CC8E	?removeAllTerrainBibs@BaseHeightMapRenderObjClass@@QAEXXZ
 pins	0x0000CC8E	?removeTerrainBibHighlighting@BaseHeightMapRenderObjClass@@QAEXXZ
 pins	0x0000CD2E	?_M_lower_bound@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@D@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@D@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@D@_STL@@@3@@_STL@@ABEPAU?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@D@_STL@@@2@ABVAsciiString@@@Z
-pins	0x0000CDD8	??0ParkingPlaceBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0000CE5F	?findByCondition@RvaModuleData@@QBEPBURvaModelConditionInfo@@ABV?$BitFlags@$0HF@@@@Z
 pins	0x0000CED2	??$_Construct@UFactionVictoryParameters@@U1@@_STL@@YAXPAUFactionVictoryParameters@@ABU1@@Z
 pins	0x0000CF59	?scoreRowFinalInsertionSort@@YAXPAUScoreRowSortValue@@00@Z
@@ -6436,12 +6298,10 @@ pins	0x0000DDAF	??$_Construct@UAnimSet@GenericObjectCreationNugget@@U12@@_STL@@Y
 pins	0x0000DE68	??1?$vector@UCoord3D@@V?$allocator@UCoord3D@@@_STL@@@_STL@@QAE@XZ
 pins	0x0000DE68	??1PathVector@@QAE@XZ
 pins	0x0000DEA9	??1ParkingPlaceBehavior@@MAE@XZ
-pins	0x0000DECC	??_GDelayedLuaEventUpdateModuleData@@MAEPAXI@Z
 pins	0x0000DF7B	??0HordeGarrisonContainModuleData@@QAE@XZ
 pins	0x0000DFDA	?isMissionObjectiveComplete@CampaignManager@@QAEEH@Z
 pins	0x0000E2FF	??1TerrainTreeFinalizer@@QAE@XZ
 pins	0x0000E363	?_M_erase@?$_Rb_tree@W4NameKeyType@@U?$pair@$$CBW4NameKeyType@@PAVLocomotorTemplate@@@_STL@@U?$_Select1st@U?$pair@$$CBW4NameKeyType@@PAVLocomotorTemplate@@@_STL@@@3@U?$less@W4NameKeyType@@@3@V?$allocator@U?$pair@$$CBW4NameKeyType@@PAVLocomotorTemplate@@@_STL@@@3@@_STL@@AAEXPAU?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@PAVLocomotorTemplate@@@_STL@@@2@@Z
-pins	0x0000E363	?_M_erase@?$_Rb_tree@W4NameKeyType@@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@U?$_Select1st@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@3@U?$less@W4NameKeyType@@@3@V?$allocator@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@3@@_STL@@AAEXPAU?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@2@@Z
 pins	0x0000E3BD	??$_Construct@UAttributeModifierEntry@@U1@@_STL@@YAXPAUAttributeModifierEntry@@ABU1@@Z
 pins	0x0000E421	??1DeletionUpdateModuleDataBase@@UAE@XZ
 pins	0x0000E43A	?messageCallback@BuddyThreadClass@@QAEXPAVGPConnection@@PAUGPRecvBuddyMessageArg@@@Z
@@ -6453,10 +6313,8 @@ pins	0x0000E584	??0?$ConcreteModuleTemplate@UOutwardEmissionVelocityModuleTag@FX
 pins	0x0000E647	??_GAIAttackAreaState@@MAEPAXI@Z
 pins	0x0000E68D	??1?$_List_base@HV?$allocator@H@_STL@@@_STL@@QAE@XZ
 pins	0x0000E868	?_M_insert_overflow@?$vector@UTransitionInfo@State@@V?$allocator@UTransitionInfo@State@@@_STL@@@_STL@@IAEXPAUTransitionInfo@State@@ABU34@ABU__false_type@2@I_N@Z
-pins	0x0000E868	?_M_insert_overflow@?$vector@VArmorTemplateSet@@V?$allocator@VArmorTemplateSet@@@_STL@@@_STL@@IAEXPAVArmorTemplateSet@@ABV3@ABU__false_type@2@I_N@Z
 pins	0x0000E8E0	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PBVCommandButton@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
 pins	0x0000E9B7	??$fill@PAUEvaSideSounds@@U1@@_STL@@YAXPAUEvaSideSounds@@0ABU1@@Z
-pins	0x0000E9F8	??0ProductionUpdateModuleData@@QAE@XZ
 pins	0x0000EA39	??1CommandSet@@MAE@XZ
 pins	0x0000EA52	??1?$DefaultParticleModule@$03@FXParticleSystem@@UAE@XZ
 pins	0x0000EA84	??1MoveAwayAndCowerState@@MAE@XZ
@@ -6468,10 +6326,6 @@ pins	0x0000ED2C	?insert_unique@?$_Rb_tree@HU?$pair@$$CBHPAU_SBServer@@@_STL@@U?$
 pins	0x0000ED77	?construct@AODHordeContainModuleDataBaseShim@@QAEXXZ
 pins	0x0000EE08	??_GAIWaitState@@MAEPAXI@Z
 pins	0x0000EF2A	??_GCommandButtonHuntUpdate@@UAEPAXI@Z
-pins	0x0000EF5C	??0OCLUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0000EF5C	??0PointDefenseLaserUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0000EF5C	??0RadiusDecalUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0000EF5C	??0SmartBombTargetHomingUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0000EF75	??1SlaughterHordeContainModuleData@@UAE@XZ
 pins	0x0000EFCF	?_M_insert@?$hashtable@U?$pair@$$CBW4NameKeyType@@P6APAVTransition@@XZ@_STL@@W4NameKeyType@@U?$hash@W4NameKeyType@@@rts@@U?$_Select1st@U?$pair@$$CBW4NameKeyType@@P6APAVTransition@@XZ@_STL@@@2@U?$equal_to@W4NameKeyType@@@5@V?$allocator@U?$pair@$$CBW4NameKeyType@@P6APAVTransition@@XZ@_STL@@@2@@_STL@@QAEAAU?$pair@$$CBW4NameKeyType@@P6APAVTransition@@XZ@2@ABU32@@Z
 pins	0x0000F03D	??$find@H@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHI@_STL@@U?$_Nonconst_traits@U?$pair@$$CBHI@_STL@@@2@@1@ABH@Z
@@ -6494,7 +6348,6 @@ pins	0x0000F376	?u4FormatFloat@@YAXPAVINI@@N@Z
 pins	0x0000F461	??0?$_STLP_alloc_proxy@PAU?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@_STL@@U12@V?$allocator@U?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@_STL@@@2@@_STL@@QAE@ABV?$allocator@U?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@_STL@@@1@PAU?$_Rb_tree_node@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@1@@Z
 pins	0x0000F510	?first@HordeTransportContainBase@@QAEXXZ
 pins	0x0000F538	??_GMapTransferLoadScreen@@MAEPAXI@Z
-pins	0x0000F56A	??0StreakDrawModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x0000F664	??1AIAttackFollowWaypointPathState@@MAE@XZ
 pins	0x0000F6C3	?_M_reallocate_map@?$deque@UMapObjectIDPointer@@V?$allocator@UMapObjectIDPointer@@@_STL@@@_STL@@IAEXI_N@Z
 pins	0x0000F727	??$_M_find@VAsciiString@@@?$hashtable@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@@_STL@@ABEPAU?$_Hashtable_node@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@1@ABVAsciiString@@@Z
@@ -6521,13 +6374,11 @@ pins	0x0000FECA	?construct@PointEmissionVolumeTemplateCopyCtorShim@FXParticleSys
 pins	0x0000FED4	?loadAmmoNow@Weapon@@QAEXPBVThing@@@Z
 pins	0x0000FEE8	?getBounds@Bridge@@QBEXPAURegion2D@@@Z
 pins	0x0000FFD3	?start@ParticleSystem@@QAEXXZ
-pins	0x0001005F	??0?$pair@$$CBVAsciiString@@VArchivedFileInfo@@@_STL@@QAE@ABU01@@Z
 pins	0x000100AF	??1HordeContainModuleData@@UAE@XZ
 pins	0x000103F7	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PAUAudioEventInfo@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
 pins	0x0001044C	?xfer@Script@@UAEXPAVXfer@@@Z
 pins	0x00010488	?_M_insert@?$hashtable@U?$pair@QBVThingTemplate@@_N@_STL@@PBVThingTemplate@@U?$hash@PBVThingTemplate@@@2@U?$_Select1st@U?$pair@QBVThingTemplate@@_N@_STL@@@2@U?$equal_to@PBVThingTemplate@@@2@V?$allocator@U?$pair@QBVThingTemplate@@_N@_STL@@@2@@_STL@@QAEAAU?$pair@QBVThingTemplate@@_N@2@ABU32@@Z
 pins	0x000104B0	?isReady@AIGroup@@QAEDXZ
-pins	0x000104B5	??0AssistedTargetingUpdateModuleData@@QAE@XZ
 pins	0x00010532	?cellCallback@ExamineCellsStruct@@QAEHPAVPathfindCell@@0HH@Z
 pins	0x00010582	??0LivingWorldPlayerArmy@@QAE@XZ
 pins	0x0001060E	?playAttackVoiceResponse@AIUpdateInterface@@IAEXPBUCoord3D@@@Z
@@ -6538,19 +6389,12 @@ pins	0x00010AAF	??$_M_find@VAsciiString@@@?$_Rb_tree@VAsciiString@@U?$pair@$$CBV
 pins	0x00010B1D	??RMapHelper@?$SparseMatchFinder@VWeaponTemplateSet@@V?$BitFlags@$0BB@@@@@QBE_NABV?$BitFlags@$0BB@@@0@Z
 pins	0x00010B2C	??0AIUpdateModuleData@@QAE@XZ
 pins	0x00010B2C	??0BunkerBusterBehaviorModuleData@@QAE@XZ
-pins	0x00010B2C	??0CreateObjectDieModuleData@@QAE@XZ
 pins	0x00010B2C	??0PropagandaTowerBehaviorModuleData@@QAE@XZ
-pins	0x00010B2C	??0ToppleUpdateModuleData@@QAE@XZ
 pins	0x00010B5E	?loadRoadsHelper2@W3DRoadBuffer@@QAEXXZ
 pins	0x00010BB3	?erase@PrereqVector@@QAEPAXPAX0@Z
-pins	0x00010C80	??0ExperienceScalarUpgradeModuleData@@QAE@XZ
 pins	0x00010C80	??0GrantScienceUpgradeModuleData@@QAE@XZ
-pins	0x00010C80	??0ModelConditionUpgradeModuleData@@QAE@XZ
-pins	0x00010C80	??0ObjectCreationUpgradeModuleData@@QAE@XZ
-pins	0x00010C80	??0RadarUpgradeModuleData@@QAE@XZ
 pins	0x00010C80	??0ReplaceObjectUpgradeModuleData@@QAE@XZ
 pins	0x00010C80	??0SiegeAIUpdateModuleData@@QAE@XZ
-pins	0x00010C80	??0UnpauseSpecialPowerUpgradeModuleData@@QAE@XZ
 pins	0x00010C85	?removeApproachPosition@DockUpdateStorage@@QAEXH@Z
 pins	0x00010F05	?getWaypointName@MapObject@@QAE?AVAsciiString@@XZ
 pins	0x00010F1E	?insert_unique@?$_Rb_tree@$$CBV?$BitFlags@$0BB@@@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VWeaponTemplateSet@@V?$BitFlags@$0BB@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@2@@2@U32@ABU?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@2@@Z
@@ -6562,17 +6406,13 @@ pins	0x00011103	?Free_Object_Memory@?$ObjectPoolClass@VGenericSLNode@@$0BAA@@@QA
 pins	0x00011162	??1ClickReactionBehaviorModuleData@@MAE@XZ
 pins	0x000111A3	??_GGameFont@@MAEPAXI@Z
 pins	0x000111C6	?assign@DefaultModuleTemplate0AssignShim@FXParticleSystem@@QAEXPBX@Z
-pins	0x0001125C	?getGridResolution@WaterRenderObjClass@@QAEXPAM00@Z
 pins	0x000112FC	??$__copy@PAV?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@_STL@@PAV12@H@_STL@@YAPAV?$vector@UICoord2D@@V?$allocator@UICoord2D@@@_STL@@@0@PAV10@00ABUrandom_access_iterator_tag@0@PAH@Z
 pins	0x0001136A	?setAptPalantirAlertVisible@@YAXH_N@Z
 pins	0x00011383	?refreshObjectColor@Radar@@QAEXPAX@Z
 pins	0x000113C4	??0LwsAudioEventRTS@@QAE@ABVAsciiString@@PBUCoord3D@@H@Z
 pins	0x00011487	??1?$pair@$$CBVAsciiString@@VBannerType@@@_STL@@QAE@XZ
-pins	0x000114BE	??1QueueProductionExitUpdateModuleData@@MAE@XZ
 pins	0x00011513	?radarToWorld@Radar@@QAE_NPBUICoord2D@@PAUCoord3D@@@Z
-pins	0x000118E7	??0FireWeaponUpdateModuleData@@QAE@XZ
 pins	0x000118E7	??0LaserUpdateModuleData@@QAE@XZ
-pins	0x000118E7	??0SupplyCenterDockUpdateModuleData@@QAE@XZ
 pins	0x0001193C	??0EmotionNugget@@QAE@XZ
 pins	0x00011AD6	??_GApplyRandomForceNugget@@MAEPAXI@Z
 pins	0x00011B0D	?bannerAptOnInitialized@@YAXXZ
@@ -6588,13 +6428,11 @@ pins	0x00011F77	?isEmpty@FXList@@QBE_NXZ
 pins	0x00011F77	?isEmpty@StructureCollapseFXShim@@QBE_NXZ
 pins	0x00011F77	?shouldSkip@BridgeAreaEffectsFXShim@@QBE_NXZ
 pins	0x00011FEF	?cleanup@NestedAt0C@@QAEXXZ
-pins	0x00012125	??_GSiegeDockingBehaviorModuleData@@MAEPAXI@Z
 pins	0x00012148	??0TTreeType@@QAE@XZ
 pins	0x00012319	?attachToDrawable@StructureToppleParticleSystemAttachShim@@QAEXPBVDrawable@@@Z
 pins	0x0001235A	??0FirestormDynamicGeometryInfoUpdateModuleData@@QAE@XZ
 pins	0x0001235A	??0W3DDependencyModelDrawModuleData@@QAE@XZ
 pins	0x0001235A	??0W3DScienceModelDrawModuleData@@QAE@XZ
-pins	0x0001235A	??0W3DSupplyDrawModuleData@@QAE@XZ
 pins	0x00012602	?construct@TerrainCollisionTemplateCtorShim@FXParticleSystem@@QAEXXZ
 pins	0x000126BB	?setObjectsShouldReceiveDifficultyBonus@ScriptEngine@@QAEX_N@Z
 pins	0x000126E8	?setSlotData@GI_SlotObj@@QAEXPAVGameSlot@@@Z
@@ -6606,7 +6444,6 @@ pins	0x000129EF	?init@W3DFloorBuffer@@QAEXXZ
 pins	0x00012B16	??1DistLODPrototypeClass@@UAE@XZ
 pins	0x00012C51	?push_back@?$deque@PAU_SBServer@@V?$allocator@PAU_SBServer@@@_STL@@@_STL@@QAEXABQAU_SBServer@@@Z
 pins	0x00012DFA	??1FullFadeTransition@@MAE@XZ
-pins	0x00012E2C	?drawDemoralized@Drawable@@AAEXXZ
 pins	0x00012EC7	??1RadiusDecalUpdate@@UAE@XZ
 pins	0x00013075	?stop@ParticleSystem@@QAEXXZ
 pins	0x00013084	?isMissionObjectiveIndexed@CampaignManager@@QAEEH@Z
@@ -6621,8 +6458,6 @@ pins	0x00013183	??1DelayedWorldTextEventModule@@MAE@XZ
 pins	0x000131A1	?showOptions@AptPalantir@@QAEXXZ
 pins	0x0001321E	?Set_DX8_Render_State@DX8Wrapper@@SAXKI@Z
 pins	0x000132AF	?HeaderTemplateGetRegistryLanguage@@YA?AVHeaderTemplateString@@XZ
-pins	0x000132B4	??0MessageStream@@QAE@XZ
-pins	0x000132B4	??0NetDisconnectKeepAliveCommandMsg@@QAE@XZ
 pins	0x000132B4	??0NetPacketRouterAckCommandMsg@@QAE@XZ
 pins	0x000132B4	??0NetPacketRouterQueryCommandMsg@@QAE@XZ
 pins	0x00013336	?get_allocator@?$vector@UGeometryRecord@@V?$allocator@UGeometryRecord@@@_STL@@@_STL@@QBE?AV?$allocator@UGeometryRecord@@@2@XZ
@@ -6639,7 +6474,6 @@ pins	0x000135E8	?insert_unique@?$_Rb_tree@U?$pair@HH@_STL@@U?$pair@$$CBU?$pair@H
 pins	0x00013647	?updatePos@Pathfinder@@QAEXPAVObject@@PBUCoord3D@@@Z
 pins	0x0001366F	?setStatus@Object@@QAEXV?$BitFlags@$0CN@@@_N@Z
 pins	0x00013746	??4StlStr@@QAEAAV0@PBD@Z
-pins	0x00013750	??0TensileFormationUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00013796	?_M_range_initialize@?$basic_string@GV?$char_traits@G@_STL@@V?$allocator@G@2@@_STL@@AAEXPBG0ABUforward_iterator_tag@2@@Z
 pins	0x00013818	?getPreAttackDelay@Weapon@@QBEHPBVObject@@0PBUCoord3D@@@Z
 pins	0x00013818	?getPreAttackDelay@Weapon@@QBEHPBVObject@@HH@Z
@@ -6666,10 +6500,8 @@ pins	0x000142EA	??1AnimationSoundClientBehaviorModuleDataMember@@QAE@XZ
 pins	0x00014466	?getSegmentPoints@BezierSegment@@QBEXHPAV?$vector@UCoord3D@@V?$allocator@UCoord3D@@@_STL@@@_STL@@@Z
 pins	0x00014470	??$_M_allocate_and_copy@PBUPrereqUnitRec@ProductionPrerequisite@@@?$vector@UPrereqUnitRec@ProductionPrerequisite@@V?$allocator@UPrereqUnitRec@ProductionPrerequisite@@@_STL@@@_STL@@IAEPAUPrereqUnitRec@ProductionPrerequisite@@IPBU23@0@Z
 pins	0x00014565	??0ContestableContainModuleDataBase@@QAE@XZ
-pins	0x00014619	??0RiderChangeContainModuleData@@QAE@XZ
 pins	0x00014637	?isPointOnBridge@Bridge@@QAE_NPBUCoord3D@@@Z
 pins	0x0001478B	?hasAnyObjects@Team@@QAE_N_N@Z
-pins	0x0001481C	??1?$_Rb_tree@IU?$pair@$$CBI_N@_STL@@U?$_Select1st@U?$pair@$$CBI_N@_STL@@@2@U?$less@I@2@V?$allocator@U?$pair@$$CBI_N@_STL@@@2@@_STL@@QAE@XZ
 pins	0x000148A8	?GadgetTextEntrySetCursorPosition@@YAXPAVGameWindow@@I@Z
 pins	0x0001491B	?apply@ObjectAttemptDamageHook@@QAEXPAVDamageInfo@@@Z
 pins	0x00014952	?getText@SubtitleEntry@@QBE?AVAsciiString@@XZ
@@ -6718,7 +6550,6 @@ pins	0x000157DA	?setWakeFrame@UpdateModule@@QAEXPAVObject@@I@Z
 pins	0x000157DA	?setWakeFrame@WeaponModeSpecialPowerUpdateBase@@IAEXPAVObject@@W4UpdateSleepTime@@@Z
 pins	0x000157DA	?setWakeFrameViaThunk@UpdateModule@@IAEXPAVObject@@W4UpdateSleepTime@@@Z
 pins	0x00015870	??0QuitMenuHolder@@QAE@UFunctorBinding@@@Z
-pins	0x00015898	??8@YA_NABVAsciiString@@0@Z
 pins	0x00015898	??M@YA_NABVAsciiString@@0@Z
 pins	0x0001593D	?doFXPos@FXList@@SAXPBV1@PBUCoord3D@@PBVMatrix3D@@M1@Z
 pins	0x0001598D	?construct@SphereEmissionVolumeTemplateCopyCtorShim@FXParticleSystem@@QAEXPBX@Z
@@ -6817,9 +6648,7 @@ pins	0x000174A9	??1AIMoveAndTightenState@@MAE@XZ
 pins	0x00017503	?showBuildTooltipLayout@ControlBar@@QAEXPAVGameWindow@@@Z
 pins	0x0001753F	?erase@?$deque@VPlayingAudioRef@@V?$allocator@VPlayingAudioRef@@@_STL@@@_STL@@QAE?AU?$_Deque_iterator@VPlayingAudioRef@@U?$_Nonconst_traits@VPlayingAudioRef@@@_STL@@@2@U32@@Z
 pins	0x000175B7	??1SiegeDeployHordeSpecialPowerModuleData@@UAE@XZ
-pins	0x0001762A	??_GDecalMeshClass@@UAEPAXI@Z
 pins	0x00017774	??1TerrainTracksRenderObjClass@@UAE@XZ
-pins	0x00017873	??_GFireWeaponUpdateModuleData@@MAEPAXI@Z
 pins	0x000178A0	?construct@HemisphericalEmissionVelocityModuleCtorShim@FXParticleSystem@@QAEXAAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@@PBX@Z
 pins	0x000178A0	?construct@SphericalEmissionVelocityModuleCtorShim@FXParticleSystem@@QAEXAAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@@PBX@Z
 pins	0x000178B4	??$__uninitialized_copy@PBUPrereqUnitRec@ProductionPrerequisite@@PAU12@@_STL@@YAPAUPrereqUnitRec@ProductionPrerequisite@@PBU12@0PAU12@ABU__false_type@0@@Z
@@ -6827,7 +6656,6 @@ pins	0x0001799F	?erase@?$_Rb_tree@HU?$pair@$$CBHVAsciiString@@@_STL@@U?$_Select1
 pins	0x000179B8	??1HordeSiegeEngineContainModuleDataBase@@UAE@XZ
 pins	0x000179B8	??1TunnelContainModuleDataBase@@UAE@XZ
 pins	0x000179BD	?hasPurchaseScience@Player@@QAE_NXZ
-pins	0x000179BD	?winGetPosition@GameWindow@@QAEHPAH0@Z
 pins	0x00017B0C	?insert_unique@?$_Rb_tree@HU?$pair@$$CBHVFontDefaultSettingsRef@@@_STL@@U?$_Select1st@U?$pair@$$CBHVFontDefaultSettingsRef@@@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHVFontDefaultSettingsRef@@@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHVFontDefaultSettingsRef@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBHVFontDefaultSettingsRef@@@_STL@@@2@@2@U32@ABU?$pair@$$CBHVFontDefaultSettingsRef@@@2@@Z
 pins	0x00017BD9	??0RetailLayoutString@@QAE@XZ
 pins	0x00017BD9	??0W3DQuadrupedElement@@QAE@XZ
@@ -6847,31 +6675,26 @@ pins	0x00018016	?hasAnyObjects@Player@@QBE_NPBVObjectFilter@@_N@Z
 pins	0x00018034	?pushPosition@XferBlockPositionStack@@QAEXABH@Z
 pins	0x000180F7	??_GLoadGameFadeWrapper@@UAEPAXI@Z
 pins	0x00018101	?construct@RenderObjectUpdateTemplateCopyCtorShim@FXParticleSystem@@QAEXPBX@Z
-pins	0x00018156	??_GBroadcastStealthUpdate@@UAEPAXI@Z
 pins	0x0001819C	??$__uninitialized_copy@PBUNugget@ModuleInfo@@PAU12@@_STL@@YAPAUNugget@ModuleInfo@@PBU12@0PAU12@ABU__false_type@0@@Z
 pins	0x000181A1	??$__copy@PAVProductionPrerequisite@@PAV1@H@_STL@@YAPAVProductionPrerequisite@@PAV1@00ABUrandom_access_iterator_tag@0@PAH@Z
 pins	0x000181C9	??1LGA_MemberObj@@QAE@XZ
 pins	0x000181C9	??1LargeGroupAudioKeyMap@@QAE@XZ
 pins	0x0001827D	?hide@Radar@@QAEXXZ
-pins	0x00018322	??0W3DTankDrawModuleData@@QAE@XZ
 pins	0x00018458	??1AIMoveAndEvacuateState@@MAE@XZ
 pins	0x000184B2	?lookup@GenTable@@QAEMH@Z
 pins	0x00018593	??1TimedOperationNode@@UAE@XZ
 pins	0x000185BB	??4WtVecPod12@@QAEAAV0@ABV0@@Z
 pins	0x00018674	??$__copy@PAUHideShowSubObjInfo@ModelConditionInfo@@PAU12@H@_STL@@YAPAUHideShowSubObjInfo@ModelConditionInfo@@PAU12@00ABUrandom_access_iterator_tag@0@PAH@Z
-pins	0x000186FB	??0SlowDeathBehaviorModuleData@@QAE@XZ
 pins	0x0001871E	??1ContestableContainModuleData@@UAE@XZ
 pins	0x000187AF	??0?$VectorClass@UAcceleratorTracker@@@@QAE@HPBUAcceleratorTracker@@@Z
 pins	0x000187AF	??0?$VectorClass@UFileInfoStruct@MixFileCreator@@@@QAE@HPBUFileInfoStruct@MixFileCreator@@@Z
 pins	0x000187AF	??0?$VectorClass@UFileOffsetStruct@@@@QAE@HPBUFileOffsetStruct@@@Z
 pins	0x000187AF	??0?$VectorClass@UPtrPairStruct@PointerRemapClass@@@@QAE@HPBUPtrPairStruct@PointerRemapClass@@@Z
 pins	0x000187AF	??0?$VectorClass@USentenceDataStruct@Render2DSentenceClass@@@@QAE@HPBUSentenceDataStruct@Render2DSentenceClass@@@Z
-pins	0x000187AF	??0?$VectorClass@U_ENUM_VALUE@EnumParameterClass@@@@QAE@HPBU_ENUM_VALUE@EnumParameterClass@@@Z
 pins	0x000187AF	??0?$VectorClass@VHashItem@?$UniqueArrayClass@VFaceClass@MeshBuilderClass@@@@@@QAE@HPBVHashItem@?$UniqueArrayClass@VFaceClass@MeshBuilderClass@@@@@Z
 pins	0x000187AF	??0?$VectorClass@VKeyClass@Curve3DClass@@@@QAE@HPBVKeyClass@Curve3DClass@@@Z
 pins	0x000187AF	??0?$VectorClass@VRenderDeviceDescClass@@@@QAE@HPBVRenderDeviceDescClass@@@Z
 pins	0x000187AF	??0?$VectorClass@VResolutionDescClass@@@@QAE@HPBVResolutionDescClass@@@Z
-pins	0x000187AF	??0?$VectorClass@VShaderClass@@@@QAE@HPBVShaderClass@@@Z
 pins	0x000187AF	??0?$VectorClass@VVector2@@@@QAE@HPBVVector2@@@Z
 pins	0x000187FA	??$copy_backward@U?$_Deque_iterator@VPlayingAudioRef@@U?$_Nonconst_traits@VPlayingAudioRef@@@_STL@@@_STL@@U12@@_STL@@YA?AU?$_Deque_iterator@VPlayingAudioRef@@U?$_Nonconst_traits@VPlayingAudioRef@@@_STL@@@0@U10@00@Z
 pins	0x00018818	??A?$map@HHU?$less@H@_STL@@V?$allocator@U?$pair@$$CBHH@_STL@@@2@@_STL@@QAEAAHABH@Z
@@ -6892,7 +6715,6 @@ pins	0x00018FCF	??1TextureStatisticsStructWide@@QAE@XZ
 pins	0x0001901A	??0GODupBase@@QAE@XZ
 pins	0x000190B0	?iterateCellsAlongLine@Pathfinder@@IAEHABUICoord2D@@0W4PathfindLayerEnum@@PAX@Z
 pins	0x00019155	??A?$map@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@UMapHelper@?$SparseMatchFinder@VWeaponTemplateSet@@V?$BitFlags@$0BB@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@_STL@@@_STL@@QAEAAPBVWeaponTemplateSet@@ABV?$BitFlags@$0BB@@@@Z
-pins	0x0001922C	??1SquishCollideModuleData@@MAE@XZ
 pins	0x00019420	?doParticleSystemAtBone@BoneFXUpdate@@IAEXPBVParticleSystemTemplate@@PBUCoord3D@@@Z
 pins	0x0001944D	?insert_unique@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@D@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@D@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@D@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBVAsciiString@@D@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@D@_STL@@@2@@2@U32@ABU?$pair@$$CBVAsciiString@@D@2@@Z
 pins	0x0001949D	?arrange@ControlBarArranger@@QAEXHH@Z
@@ -6900,7 +6722,6 @@ pins	0x00019501	?aptPalantirRenderRadarViewBox@@YAXXZ
 pins	0x00019565	??1BehaviorModule@@UAE@XZ
 pins	0x00019583	?HideInGameChat@@YAXXZ
 pins	0x000195FB	??1PrereqUnitRec@ProductionPrerequisite@@QAE@XZ
-pins	0x00019614	??0LightningDrawModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x000196AF	??1RvaStagingServerMap@@QAE@XZ
 pins	0x000196C8	?pickAndPlayUnitVoiceResponse@@YAXPBV?$list@PAVDrawable@@V?$allocator@PAVDrawable@@@_STL@@@_STL@@W4Type@GameMessage@@PAVPickAndPlayInfo@@@Z
 pins	0x0001980D	??1ArrowStormUpdateModuleDataBase@@UAE@XZ
@@ -6925,7 +6746,6 @@ pins	0x00019DC1	?computeGoal@AIFollowWaypointPathState@@QAEX_N@Z
 pins	0x00019E2A	??0AICommandParmsStorage@@QAE@ABUAICommandParms@@@Z
 pins	0x00019E6B	?refreshPair@@YGXHH@Z
 pins	0x00019E7F	??_GAIMoveToPositionAndDieState@@MAEPAXI@Z
-pins	0x00019F88	??0LightningEmissionModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x00019FAB	?GetArtPreviewFromMap@@YA?AVAsciiString@@V1@@Z
 pins	0x00019FF1	?isSignificantlyAboveTerrain@Object@@QBE_NXZ
 pins	0x0001A0F0	?aptPalantirRenderMovie@@YAXPBUPalantirPoint@@0@Z
@@ -6934,7 +6754,6 @@ pins	0x0001A3D4	?getArgumentDataType@GameMessage@@QAEHH@Z
 pins	0x0001A401	??1AttributeModifierAuraUpdateModuleDataMemberC@@QAE@XZ
 pins	0x0001A401	??1AutoPickUpUpdateModuleDataMemberA@@QAE@XZ
 pins	0x0001A401	??1BannerStringMember@@QAE@XZ
-pins	0x0001A401	??1Buffer@@QAE@XZ
 pins	0x0001A401	??1CivilianSpawnUpdateModuleDataMemberA@@QAE@XZ
 pins	0x0001A401	??1EmotionTrackerUpdateName@@QAE@XZ
 pins	0x0001A401	??1GrantStealthBehaviorModuleDataMemberA@@QAE@XZ
@@ -6964,12 +6783,9 @@ pins	0x0001AA9B	??1CountUpTransitionBase@@UAE@XZ
 pins	0x0001AB59	??$_Construct@U?$pair@$$CBHPAX@_STL@@U12@@_STL@@YAXPAU?$pair@$$CBHPAX@0@ABU10@@Z
 pins	0x0001ABD1	?begin@?$hashtable@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@@_STL@@QAE?AU?$_Ht_iterator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@U?$equal_to@VAsciiString@@@6@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@@2@XZ
 pins	0x0001ABD1	?begin@?$hashtable@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@@2@@_STL@@QAE?AU?$_Ht_iterator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@@2@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@FXParticleSystem@@@_STL@@@2@@2@XZ
-pins	0x0001ABF9	??0BaikonurLaunchPowerModuleData@@QAE@XZ
 pins	0x0001ABF9	??0CashBountyPowerModuleData@@QAE@XZ
 pins	0x0001ABF9	??0CleanupAreaPowerModuleData@@QAE@XZ
-pins	0x0001ABF9	??0DefectorSpecialPowerModuleData@@QAE@XZ
 pins	0x0001ABF9	??0FireWeaponPowerModuleData@@QAE@XZ
-pins	0x0001ABF9	??0SubObjectsUpgradeModuleData@@QAE@XZ
 pins	0x0001ACBC	?process@TerrainLogic@@QAEXPAVHarvestRecord@@PAX@Z
 pins	0x0001ADBB	?_M_insert_overflow@?$vector@UNugget@ModuleInfo@@V?$allocator@UNugget@ModuleInfo@@@_STL@@@_STL@@IAEXPAUNugget@ModuleInfo@@ABU34@ABU__false_type@2@I_N@Z
 pins	0x0001ADFC	??0?@V?@@FXParticleSystem@@@FXParticleSystem@@QAE@ABV01@@Z
@@ -7011,11 +6827,9 @@ pins	0x0001BB21	?doFXPos@StructureCollapseFXShim@@QBEXPBUCoord3D@@PBVMatrix3D@@M
 pins	0x0001BBCB	??1ParticleEmitterPrototypeClass@@UAE@XZ
 pins	0x0001BBE4	??1WeaponModeSpecialPowerUpdateModuleDataBase@@UAE@XZ
 pins	0x0001BD38	?erase@?$vector@UGeometryRecord@@V?$allocator@UGeometryRecord@@@_STL@@@_STL@@QAEPAUGeometryRecord@@PAU3@0@Z
-pins	0x0001BD65	??1AttackHordeStateMachine@@UAE@XZ
 pins	0x0001BD9C	??0CampaignReviewRefHolder@@QAE@UFunctorBinding@@@Z
 pins	0x0001BE23	??$_Construct@U?$pair@UICoord2D@@UCoord3D@@@_STL@@U12@@_STL@@YAXPAU?$pair@UICoord2D@@UCoord3D@@@0@ABU10@@Z
 pins	0x0001BE41	??0HordeUpdateModuleData@@QAE@XZ
-pins	0x0001BE41	??0W3DLaserDrawModuleData@@QAE@XZ
 pins	0x0001BEFA	?_M_clear@?$vector@UPrereqUnitRec@ProductionPrerequisite@@V?$allocator@UPrereqUnitRec@ProductionPrerequisite@@@_STL@@@_STL@@IAEXXZ
 pins	0x0001BF36	?HideQuitMenu@@YAXXZ
 pins	0x0001BF86	?construct@HemisphericalEmissionVelocityTemplateCtorShim@FXParticleSystem@@QAEXXZ
@@ -7031,17 +6845,14 @@ pins	0x0001C44A	??1CommandButtonHuntUpdate@@UAE@XZ
 pins	0x0001C4DB	??1SpyVisionUpdateModuleDataMemberF@@QAE@XZ
 pins	0x0001C58F	??$_M_allocate_and_copy@PBQAX@?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@IAEPAPAXIPBQAX0@Z
 pins	0x0001C675	?getLayerForDestination@TerrainLogic@@QAE?AW4PathfindLayerEnum@@PAVObject@@PBUCoord3D@@@Z
-pins	0x0001C67A	??$_Construct@U?$pair@$$CBHI@_STL@@U12@@_STL@@YAXPAU?$pair@$$CBHI@0@ABU10@@Z
 pins	0x0001C774	??1GiantBirdAIBase@@UAE@XZ
 pins	0x0001C88C	??1BannerType@@QAE@XZ
 pins	0x0001C92C	?pop_front@?$deque@VBuddyResponse@@V?$allocator@VBuddyResponse@@@_STL@@@_STL@@QAEXXZ
 pins	0x0001C936	?worldToScreen@View@@QAE_NPBUCoord3D@@PAUICoord2D@@@Z
-pins	0x0001C95E	??_GHeightDieUpdateModuleData@@MAEPAXI@Z
 pins	0x0001C9B8	?_M_clear@?$vector@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@IAEXXZ
 pins	0x0001C9D6	?resetLanGameState@@YAXXZ
 pins	0x0001CA26	?getText@StreamTextAccessor@@QAE?AV?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@XZ
 pins	0x0001CAA8	??$find@PAX@?$_Rb_tree@PAXU?$pair@QAXPAX@_STL@@U?$_Select1st@U?$pair@QAXPAX@_STL@@@2@U?$less@PAX@2@V?$allocator@U?$pair@QAXPAX@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@QAXPAX@_STL@@U?$_Nonconst_traits@U?$pair@QAXPAX@_STL@@@2@@1@ABQAX@Z
-pins	0x0001CB57	??1FireWeaponUpdateModuleData@@MAE@XZ
 pins	0x0001CB9D	?_M_insert_overflow@?$vector@UCoord2D@@V?$allocator@UCoord2D@@@_STL@@@_STL@@QAEXPAUCoord2D@@ABU3@ABU__false_type@2@I_N@Z
 pins	0x0001CBF7	?findGoodBuildOrRepairPosition@WorkerAIUpdate@@IAE_NPBVObject@@0AAUCoord3D@@@Z
 pins	0x0001CBFC	?_M_insert_overflow@?$vector@HV?$allocator@H@_STL@@@_STL@@IAEXPAHABHABU__true_type@2@I_N@Z
@@ -7057,17 +6868,10 @@ pins	0x0001D192	??$uninitialized_fill_n@PAUCoord3D@@IU1@@_STL@@YAPAUCoord3D@@PAU
 pins	0x0001D1BF	?insert_unique@?$_Rb_tree@HU?$pair@$$CBH_N@_STL@@U?$_Select1st@U?$pair@$$CBH_N@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBH_N@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBH_N@_STL@@U?$_Nonconst_traits@U?$pair@$$CBH_N@_STL@@@2@@2@U32@ABU?$pair@$$CBH_N@2@@Z
 pins	0x0001D1C9	?isLivingWorld@GameLogic@@QAE_NXZ
 pins	0x0001D278	?construct@QuadDrawTemplateCtorShim@FXParticleSystem@@QAEXXZ
-pins	0x0001D3AE	??0BeaconClientUpdate@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0ConvertToCarBombCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0ConvertToHijackedVehicleCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0CreateCrateDie@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0CreateObjectDie@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0CrushDie@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0DamDie@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0DestroyDie@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0EjectPilotDie@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0InstantDeathBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0KeepObjectDie@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0RebuildHoleExposeDie@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0SabotageCommandCenterCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0SabotageFakeBuildingCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
@@ -7077,8 +6881,6 @@ pins	0x0001D3AE	??0SabotagePowerPlantCrateCollide@@QAE@PAVThing@@PBVModuleData@@
 pins	0x0001D3AE	??0SabotageSuperweaponCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0SabotageSupplyCenterCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D3AE	??0SabotageSupplyDropzoneCrateCollide@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0SquishCollide@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x0001D3AE	??0UpgradeDie@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001D435	??0ROUMT_CopyBase@@QAE@ABV0@@Z
 pins	0x0001D435	?construct_from@DefaultModuleTemplate01BaseCopyShim@FXParticleSystem@@QAEXPBX@Z
 pins	0x0001D534	?get_allocator@?$vector@PAVObject@@V?$allocator@PAVObject@@@_STL@@@_STL@@QBE?AV?$allocator@PAVObject@@@2@XZ
@@ -7130,7 +6932,6 @@ pins	0x0001EC36	?assign@DefaultModuleTemplate1AssignShim@FXParticleSystem@@QAEXP
 pins	0x0001EC3B	?destroyPlacementIcons@InGameUI@@QAEXXZ
 pins	0x0001ECCC	?createEmitters@W3DTankTruckDraw@@IAEXXZ
 pins	0x0001ED26	??0LibraryMapsParser@@QAE@PAX000@Z
-pins	0x0001EDA3	??0SphereEmissionVolumeModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x0001EDDA	?selectSpell@AptPalantir@@QAEXH@Z
 pins	0x0001EE20	??1LoadGameFadeWrapper@@UAE@XZ
 pins	0x0001F028	?resize@?$hashtable@U?$pair@$$CBHPAX@_STL@@HU?$hash@H@2@U?$_Select1st@U?$pair@$$CBHPAX@_STL@@@2@U?$equal_to@H@2@V?$allocator@U?$pair@$$CBHPAX@_STL@@@2@@_STL@@AAEXI@Z
@@ -7141,7 +6942,6 @@ pins	0x0001F4F1	??1AIGuardRetaliateMachine@@MAE@XZ
 pins	0x0001F55F	??1RecorderClass@@QAE@XZ
 pins	0x0001F587	??1AIMoveOutOfTheWayState@@MAE@XZ
 pins	0x0001F62C	?aptPalantirOnInitialized@@YAXXZ
-pins	0x0001F659	??0W3DSupplyDraw@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0001F82A	?assignTeamReference@ScriptEngine@@QAEXABVAsciiString@@PAVTeam@@@Z
 pins	0x0001F843	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
 pins	0x0001F843	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
@@ -7154,17 +6954,14 @@ pins	0x0001FD2A	?_M_upper_bound@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiStrin
 pins	0x0001FD43	??1ParticleUplinkCannonUpdateModuleDataMemberB@@QAE@XZ
 pins	0x0001FE6F	??0LivingWorldArmy@@QAE@ABV0@@Z
 pins	0x0001FE92	?_M_clear@?$vector@VProductionPrerequisite@@V?$allocator@VProductionPrerequisite@@@_STL@@@_STL@@IAEXXZ
-pins	0x0001FEB0	??0AnimationSteeringUpdateModuleData@@QAE@XZ
 pins	0x0001FEB0	??0PowerPlantUpdateModuleData@@QAE@XZ
 pins	0x0001FF1E	?countObjects@Player@@QAEHV?$BitFlags@$0MA@@@0@Z
 pins	0x0001FF41	?push_back@?$list@UEvacuationRecord@@V?$allocator@UEvacuationRecord@@@_STL@@@_STL@@QAEXABUEvacuationRecord@@@Z
 pins	0x0001FFEB	??$__uninitialized_copy@PBVProductionPrerequisite@@PAV1@@_STL@@YAPAVProductionPrerequisite@@PBV1@0PAV1@ABU__false_type@0@@Z
 pins	0x0002001D	?loadRoadsHelper1@W3DRoadBuffer@@QAEXXZ
 pins	0x000200FE	??1?$pair@$$CBVAsciiString@@UCoord3D@@@_STL@@QAE@XZ
-pins	0x000201F3	?disconnectPlayer@DisconnectManager@@IAEXHPAVConnectionManager@@@Z
 pins	0x00020243	?populateGameFonts@HeaderTemplateManager@@AAEXXZ
 pins	0x000202A7	?helper@PoisonedBehaviorOwnerShim@@QAE?AW4UpdateSleepTime@@HPAXHH@Z
-pins	0x000202E3	??4StringClass@@QAEAAV0@PBD@Z
 pins	0x000202ED	?findAttributeModifierPoolUpdate@Object@@ABEPAVAttributeModifierPoolUpdate@@XZ
 pins	0x00020301	?get_allocator@?$vector@PAVObject@@V?$allocator@PAVObject@@@_STL@@@_STL@@QBE?AV?$allocator@PAVObject@@@2@XZ
 pins	0x00020301	?get_allocator@?$vector@PBVLocomotorTemplate@@V?$allocator@PBVLocomotorTemplate@@@_STL@@@_STL@@QBE?AV?$allocator@PBVLocomotorTemplate@@@2@XZ
@@ -7190,7 +6987,6 @@ pins	0x00020DD3	??0?@V?@@FXParticleSystem@@3QBDB@2@3QBDBVSphericalEmissionVeloci
 pins	0x00020E69	?constructBuddyMessageAt@@YAXPAXABVBuddyMessage@@@Z
 pins	0x00020EB4	?setPlayerTimeoutTime@DisconnectMenu@@QAEXHH@Z
 pins	0x00021166	??_GCommandSet@@MAEPAXI@Z
-pins	0x00021274	??1?$pair@$$CBHVGameSpyGroupRoom@@@_STL@@QAE@XZ
 pins	0x0002130F	?findClosestFreeGarrisonPointIndex@GarrisonContain@@IAEHHPBUCoord3D@@@Z
 pins	0x00021323	?getCountForCategoryMask@AttributeModifierPoolUpdate@@QBEHPBVAttributeModifierCategoryMask@@@Z
 pins	0x0002133C	?setSize@Shadow@@QAEXMM@Z
@@ -7206,11 +7002,9 @@ pins	0x00021832	?setPosition@ParticleSystem@@QAEXPBUCoord3D@@@Z
 pins	0x000218FF	?forceEmotion@Object@@QAEXW4EmotionType@@MPBV1@@Z
 pins	0x0002191D	?notifyModelConditionChanged@AIUpdateInterface@@QAEXXZ
 pins	0x0002191D	?notifyModelConditionChanged@Object@@QAEXXZ
-pins	0x00021927	??$swap@V?$_STLP_alloc_proxy@PAU?$_List_node@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@_STL@@U12@V?$allocator@U?$_List_node@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@_STL@@@2@@_STL@@@_STL@@YAXAAV?$_STLP_alloc_proxy@PAU?$_List_node@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@_STL@@U12@V?$allocator@U?$_List_node@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@_STL@@@2@@0@0@Z
 pins	0x00021927	?formatInteger@@YAPAVStreamWriter@@PAV1@I@Z
 pins	0x00021927	?u1FormatPointer@@YAXPAVINI@@PAX@Z
 pins	0x00021CB0	??0?\@UOrthoEmissionVelocityModuleTag@FXParticleSystem@@@FXParticleSystem@@QAE@ABV01@@Z
-pins	0x00021CB0	??0OrthoEmissionVelocityModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x00021D14	??1DecalMeshClass@@UAE@XZ
 pins	0x00021D96	?hasAnyObjects@TeamPrototype@@QAE_N_N@Z
 pins	0x00021DEB	??$__copy@PAUParticleSysBoneInfo@@PAU1@H@_STL@@YAPAUParticleSysBoneInfo@@PAU1@00ABUrandom_access_iterator_tag@0@PAH@Z
@@ -7221,8 +7015,6 @@ pins	0x00022034	?isCliffMappedTexture@WorldHeightMap@@QAE_NHH@Z
 pins	0x00022039	?deleteInstance@ScriptPoolObject@@QAEXH@Z
 pins	0x000220C5	?compare@AsciiString@@QBEHABV1@@Z
 pins	0x000220C5	?compare@AsciiStringCompareShim@@QBEHABVAsciiString@@@Z
-pins	0x000220CF	??_GRainOfFireUpdateModuleData@@MAEPAXI@Z
-pins	0x0002218D	??0QuadDrawModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x00022197	?_M_insert@?$_Rb_tree@$$CBV?$BitFlags@$0BB@@@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VWeaponTemplateSet@@V?$BitFlags@$0BB@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@@_STL@@AAE?AU?$_Rb_tree_iterator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@2@@2@PAU_Rb_tree_node_base@2@0ABU?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@2@0@Z
 pins	0x00022390	??1EvaSideSounds@@QAE@XZ
 pins	0x0002244E	??0?$_STLP_alloc_proxy@PAU?$_List_node@PAVShellMenuSchemeImage@@@_STL@@U12@V?$allocator@U?$_List_node@PAVShellMenuSchemeImage@@@_STL@@@2@@_STL@@QAE@ABV?$allocator@U?$_List_node@PAVShellMenuSchemeImage@@@_STL@@@1@PAU?$_List_node@PAVShellMenuSchemeImage@@@1@@Z
@@ -7234,7 +7026,6 @@ pins	0x00022674	??1?$DefaultModule@$00@FXParticleSystem@@UAE@XZ
 pins	0x000226AB	?find@TerrainLogic@@QAEPAVHarvestRecord@@PAV2@M@Z
 pins	0x000226EC	?compare@UnicodeString@@QBEHABV1@@Z
 pins	0x00022764	??0W3DShadowHelperManager@@QAE@XZ
-pins	0x00022782	?drawAmmo@Drawable@@AAEXXZ
 pins	0x0002278C	?friend_applyDifficultyBonusesForObject@Player@@QAEXPAVObject@@_N@Z
 pins	0x000227D7	??_GAttachedModelFXNugget@@MAEPAXI@Z
 pins	0x00022872	?doPhaseStuff@StructureCollapseUpdate@@IAEXW4StructureCollapsePhaseType@@PBUCoord3D@@@Z
@@ -7289,7 +7080,6 @@ pins	0x00024023	??$__copy@PAVW3DAnimationInfo@@PAV1@H@_STL@@YAPAVW3DAnimationInf
 pins	0x0002408C	?separate@StreamWriter@@QAEXH@Z
 pins	0x0002408C	?u4Finish@INI@@QAEXH@Z
 pins	0x00024091	??0?$_STLP_alloc_proxy@PAU?$_List_node@PAVParticleSystem@@@_STL@@U12@V?$allocator@U?$_List_node@PAVParticleSystem@@@_STL@@@2@@_STL@@QAE@ABV?$allocator@U?$_List_node@PAVParticleSystem@@@_STL@@@1@PAU?$_List_node@PAVParticleSystem@@@1@@Z
-pins	0x00024181	??1DestroyEnvironmentUpdateModuleData@@MAE@XZ
 pins	0x000241AE	??1ModelConditionSoundSelectorClientBehaviorModuleDataMember@@QAE@XZ
 pins	0x000241FE	?getPosition@Team@@QAEXPAUCoord3D@@@Z
 pins	0x00024267	?refreshGameSlots@SkirmishScreenState@@QAEXXZ
@@ -7303,8 +7093,6 @@ pins	0x00024848	_ShowControlBar
 pins	0x0002487A	??$_Construct@U?$pair@$$CBW4NameKeyType@@M@_STL@@U12@@_STL@@YAXPAU?$pair@$$CBW4NameKeyType@@M@0@ABU10@@Z
 pins	0x0002499C	??1BuffNuggetFXNugget@@UAE@XZ
 pins	0x00024BE5	??$__copy@PAV?$BitFlags@$0HB@@@PAV1@H@_STL@@YAPAV?$BitFlags@$0HB@@@PAV1@00ABUrandom_access_iterator_tag@0@PAH@Z
-pins	0x00024BFE	??0WorkerAIUpdateModuleData@@QAE@XZ
-pins	0x00024C12	???0DLinkAt4@@QAE@PAX@Z
 pins	0x00024C17	?assign@BuffNuggetFXNuggetMember@@QAEXPAX0@Z
 pins	0x00024C17	?erase@?$vector@UQ3SortElem4@@V?$allocator@UQ3SortElem4@@@_STL@@@_STL@@QAEPAUQ3SortElem4@@PAU3@0@Z
 pins	0x00024C17	?erase@CRCParameterList@@QAEXPAVAsciiString@@0@Z
@@ -7347,13 +7135,10 @@ pins	0x00025C89	?_M_insert_overflow@?$vector@URunwayInfo@FlightDeckBehavior@@V?$
 pins	0x00025CA7	?construct_from@DefaultModuleTemplate0ABaseCopyShim@FXParticleSystem@@QAEXPBX@Z
 pins	0x00025D92	?primaryValueFor@AttributeModifierDefinition@@QBEHPBVObject@@@Z
 pins	0x00025EA5	??1W3DTankDraw@@MAE@XZ
-pins	0x00025EBE	??0FXListDieModuleData@@QAE@XZ
-pins	0x00025EBE	??0FireWeaponWhenDeadBehaviorModuleData@@QAE@XZ
 pins	0x00025EBE	??0SpyVisionSpecialPowerModuleData@@QAE@XZ
 pins	0x00025EBE	??0W3DModelDrawModuleData@@QAE@XZ
 pins	0x00025EBE	??0W3DOverlordAircraftDrawModuleData@@QAE@XZ
 pins	0x00025FA9	?u4AppendVector@@YAPAVINI@@PAV1@PBX@Z
-pins	0x0002603F	?query@ExperienceLevelSystemQueryShim@@QAEPAXPAX@Z
 pins	0x000261CA	??0CleanupHazardUpdateModuleData@@QAE@XZ
 pins	0x000261CA	??0PilotFindVehicleUpdateModuleData@@QAE@XZ
 pins	0x000261CA	??0RebuildHoleBehaviorModuleData@@QAE@XZ
@@ -7433,7 +7218,6 @@ pins	0x000275E8	??_GPartitionFilterPlayerAffiliation@@MAEPAXI@Z
 pins	0x00027651	?calcPhysicsXformThrust@Drawable@@IAEXPBVLocomotor@@AAUPhysicsXformInfo@1@@Z
 pins	0x000278B8	??1?$DefaultModule@$05@FXParticleSystem@@UAE@XZ
 pins	0x00027903	?aiMoveToAndEvacuate@AICommandInterface@@QAEXPBUCoord3D@@W4CommandSourceType@@@Z
-pins	0x00027908	??_GDestroyEnvironmentUpdateModuleData@@MAEPAXI@Z
 pins	0x00027921	?load@GameWindowTransitionsHandler@@QAEXXZ
 pins	0x00027999	?parse@BoxEmissionVolumeTemplateParseShim@FXParticleSystem@@QAEXPAVINI@@@Z
 pins	0x00027BAB	??$__find@U?$_List_iterator@VAsciiString@@U?$_Nonconst_traits@VAsciiString@@@_STL@@@_STL@@VAsciiString@@@_STL@@YA?AU?$_List_iterator@VAsciiString@@U?$_Nonconst_traits@VAsciiString@@@_STL@@@0@U10@0ABVAsciiString@@ABUinput_iterator_tag@0@@Z
@@ -7462,7 +7246,6 @@ pins	0x00028560	?findTemplate@ThingFactory@@QAEPAVThingTemplate@@ABVAsciiString@
 pins	0x00028560	?findTemplateInternal@ThingFactory@@QAEPAVThingTemplate@@ABVAsciiString@@@Z
 pins	0x00028655	?getCurrent@BezFwdIterator@@QBEABUCoord3D@@XZ
 pins	0x000286AA	??$_M_allocate_and_copy@PBUParticleSysBoneInfo@@@?$vector@UParticleSysBoneInfo@@V?$allocator@UParticleSysBoneInfo@@@_STL@@@_STL@@IAEPAUParticleSysBoneInfo@@IPBU2@0@Z
-pins	0x000287C7	??0StructureToppleUpdateModuleData@@QAE@XZ
 pins	0x000287D6	??1?$DefaultModule@$01@FXParticleSystem@@UAE@XZ
 pins	0x0002880D	??1VisPolyClass@@MAE@XZ
 pins	0x00028957	??$_Construct@UPrereqUnitRec@ProductionPrerequisite@@U12@@_STL@@YAXPAUPrereqUnitRec@ProductionPrerequisite@@ABU12@@Z
@@ -7493,7 +7276,6 @@ pins	0x000292A3	??0TransportAIUpdateBase@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00029375	?computeQuickPath@AIUpdateInterface@@QAE_NPBUCoord3D@@@Z
 pins	0x000293ED	??1MainMenuScaleUpTransition@@MAE@XZ
 pins	0x000294B5	?startAmbientSound@Drawable@@AAEX_N@Z
-pins	0x00029555	??1RAMFile@@MAE@XZ
 pins	0x000295AF	??1HitReactionBehaviorModuleData@@UAE@XZ
 pins	0x000296BD	?insert_unique@?$_Rb_tree@W4NameKeyType@@U?$pair@$$CBW4NameKeyType@@PAVTeamPrototype@@@_STL@@U?$_Select1st@U?$pair@$$CBW4NameKeyType@@PAVTeamPrototype@@@_STL@@@3@U?$less@W4NameKeyType@@@3@V?$allocator@U?$pair@$$CBW4NameKeyType@@PAVTeamPrototype@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBW4NameKeyType@@PAVTeamPrototype@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBW4NameKeyType@@PAVTeamPrototype@@@_STL@@@2@@2@U32@ABU?$pair@$$CBW4NameKeyType@@PAVTeamPrototype@@@2@@Z
 pins	0x000296BD	?insert_unique@?$_Rb_tree@W4ObjectID@@U?$pair@$$CBW4ObjectID@@W4ObjectEnterExitType@@@_STL@@U?$_Select1st@U?$pair@$$CBW4ObjectID@@W4ObjectEnterExitType@@@_STL@@@3@U?$less@W4ObjectID@@@3@V?$allocator@U?$pair@$$CBW4ObjectID@@W4ObjectEnterExitType@@@_STL@@@3@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBW4ObjectID@@W4ObjectEnterExitType@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBW4ObjectID@@W4ObjectEnterExitType@@@_STL@@@2@@2@U32@ABU?$pair@$$CBW4ObjectID@@W4ObjectEnterExitType@@@2@@Z
@@ -7557,7 +7339,6 @@ pins	0x0002BDA0	?erase@?$map@HHU?$less@H@_STL@@V?$allocator@U?$pair@$$CBHH@_STL@
 pins	0x0002BE72	?newOverride@WeaponStore@@SAPAVWeaponTemplate@@PAV2@@Z
 pins	0x0002BF2B	?internal_classifyObjectFootprint@Pathfinder@@IAEXPAVObject@@_N@Z
 pins	0x0002BFF3	??1TimeCodedMorphKeysClass@@QAE@XZ
-pins	0x0002BFF8	??0DemoTrapUpdateModuleData@@QAE@XZ
 pins	0x0002BFF8	??0DozerAIUpdateModuleData@@QAE@XZ
 pins	0x0002C106	?reset@PathfindCell@@QAEXXZ
 pins	0x0002C179	??1WeaponChangeSpecialPowerModuleModuleData@@UAE@XZ
@@ -7577,7 +7358,6 @@ pins	0x0002C958	?_M_upper_bound@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiStrin
 pins	0x0002C958	?_M_upper_bound@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@3@@_STL@@ABEPAU?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@VMapMetaData@@@_STL@@@2@ABVAsciiString@@@Z
 pins	0x0002C958	?_M_upper_bound@?$_Rb_tree@VAsciiString@@V1@U?$_Identity@VAsciiString@@@_STL@@U?$less@VAsciiString@@@3@V?$allocator@VAsciiString@@@3@@_STL@@ABEPAU?$_Rb_tree_node@VAsciiString@@@2@ABVAsciiString@@@Z
 pins	0x0002C9AD	??1PartitionFilterRejectBuildings@@MAE@XZ
-pins	0x0002C9D0	??0RailedTransportDockUpdateModuleData@@QAE@XZ
 pins	0x0002CA61	?value@ObjectAttemptDamageFlagHook@@QAEHXZ
 pins	0x0002CC14	??_GW3DBuffDraw@@UAEPAXI@Z
 pins	0x0002CC69	??$__uninitialized_copy@PBUGeometryShape@@PAU1@@_STL@@YAPAUGeometryShape@@PBU1@0PAU1@ABU__false_type@0@@Z
@@ -7605,8 +7385,6 @@ pins	0x0002D5C4	?isNotEmpty@AsciiString@@QBE_NXZ
 pins	0x0002D600	?loadPostProcess@UpdateModule@@MAEXXZ
 pins	0x0002D70E	?getName@WeaponTemplate@@QBE?AVAsciiString@@XZ
 pins	0x0002D74A	??ANickMap@@QAEAAV?$list@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@ABVAsciiString@@@Z
-pins	0x0002D77C	?pop_front@?$deque@VPSRequest@@V?$allocator@VPSRequest@@@_STL@@@_STL@@QAEXXZ
-pins	0x0002D79A	??_GQueueProductionExitUpdateModuleData@@MAEPAXI@Z
 pins	0x0002D7BD	??1?$SubsystemSlot@VParticleSystemManager@@@@UAE@XZ
 pins	0x0002D7F9	??0TightenPathStruct@@QAE@PAVPathfinder@@PAVObject@@PBVLocomotorSet@@W4PathfindLayerEnum@@PBUCoord3D@@@Z
 pins	0x0002D989	?getAsInt@RGBColor@@QBEIXZ
@@ -7617,7 +7395,6 @@ pins	0x0002DA10	?insert_unique@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString
 pins	0x0002DA5B	?giveUpgrade@Team@@QAEXPBVUpgradeTemplate@@@Z
 pins	0x0002DAE2	?getCollapseHeight@StructureCollapseRetailLayout@@QAEMXZ
 pins	0x0002DB50	?construct@HemisphericalEmissionVelocityTemplateCopyCtorShim@FXParticleSystem@@QAEXPBX@Z
-pins	0x0002DC9A	??1HeightDieUpdateModuleData@@MAE@XZ
 pins	0x0002DD08	??0Emotion@@QAE@PAVObject@@PAVEmotionTrackerUpdateEntry@@@Z
 pins	0x0002DD44	??0AnimateWindow@@QAE@XZ
 pins	0x0002DE75	??0ParticleUplinkCannonUpdateModuleData@@QAE@XZ
@@ -7643,7 +7420,6 @@ pins	0x0002E89D	??_GSmartBombTargetHomingUpdate@@MAEPAXI@Z
 pins	0x0002E91A	??$_Construct@UHorzLine@@U1@@_STL@@YAXPAUHorzLine@@ABU1@@Z
 pins	0x0002EA3C	?setDebugPath@Pathfinder@@QAEXPAVPath@@@Z
 pins	0x0002EA73	??0OverchargeBehaviorModuleData@@QAE@XZ
-pins	0x0002EA73	??0TechBuildingBehaviorModuleData@@QAE@XZ
 pins	0x0002EA73	??0VeterancyGainCreateModuleData@@QAE@XZ
 pins	0x0002EA91	?refreshPlayerFactionControl@SkirmishScreenState@@QAEXH_N@Z
 pins	0x0002EBD1	?setConnectionStateRetail@NAT@@IAEXHH@Z
@@ -7651,7 +7427,6 @@ pins	0x0002ECAD	?getPreferredHeight@Locomotor@@QBEMXZ
 pins	0x0002EDCA	??1ClientUpdateModule@@UAE@XZ
 pins	0x0002EDF7	??0Locomotor@@IAE@PBVLocomotorTemplate@@@Z
 pins	0x0002EE60	?getEachPlayerFromMask@PlayerList@@QAEPAVPlayer@@AAG@Z
-pins	0x0002EEDD	??1FireSpreadUpdateModuleData@@MAE@XZ
 pins	0x0002EF2D	?allocateBridgeBuffers@W3DBridgeBuffer@@AAEXXZ
 pins	0x0002F01D	?aptPalantirOnSpellBookUIShown@@YAXXZ
 pins	0x0002F022	?_M_insert_overflow@?$vector@UPayload@DeliverPayloadNugget@@V?$allocator@UPayload@DeliverPayloadNugget@@@_STL@@@_STL@@IAEXPAUPayload@DeliverPayloadNugget@@ABU34@ABU__false_type@2@I_N@Z
@@ -7661,13 +7436,10 @@ pins	0x0002F162	??1RainOfFireUpdate@@UAE@XZ
 pins	0x0002F1CB	?iterateObjects@Player@@QBEXP6AXPAVObject@@PAX@Z1@Z
 pins	0x0002F28E	?getMap@GameSpyStagingRoom@@QBE?AVAsciiString@@XZ
 pins	0x0002F28E	?getMapTo@GameInfoMapShim@@QBEPAVAsciiString@@PAV2@@Z
-pins	0x0002F333	??0?$list@PAVFXNugget@@V?$allocator@PAVFXNugget@@@_STL@@@_STL@@QAE@ABV01@@Z
 pins	0x0002F338	?GadgetComboBoxAddEntryPopulateRemoteIPComboBox@@YAHPAVGameWindow@@VPopulateRemoteIPComboBoxEntry@@H@Z
 pins	0x0002F374	?findGoodBuildOrRepairPositionAndTarget@WorkerAIUpdate@@IAEPAVObject@@PAV2@0AAUCoord3D@@@Z
 pins	0x0002F3C4	?removeEntry@ProductionUpdate@@AAEXPAVProductionEntry@@@Z
 pins	0x0002F3E7	?find@ObjectTypeCount@@QBEPAUObjectTypeCountNode@@ABVAsciiString@@@Z
-pins	0x0002F6E9	?drawBombed@Drawable@@AAEXXZ
-pins	0x0002F7B1	??_GReflectDamageModuleData@@MAEPAXI@Z
 pins	0x0002F801	?clear@AptPalantirStore@@QAEXXZ
 pins	0x0002F8AB	??1AttackFireWhileMovingMachine@@UAE@XZ
 pins	0x0002F8E2	?Get_Material@MeshMatDescClass@@QBEPAVVertexMaterialClass@@HH@Z
@@ -7698,9 +7470,7 @@ pins	0x0002FFB3	?getAttackRange@WeaponTemplate@@QBEMPBVObject@@ABVWeaponBonus@@P
 pins	0x00030111	??1FireWeaponUpdate@@UAE@XZ
 pins	0x0003018E	??1MoveAwayPanicState@@MAE@XZ
 pins	0x00030215	??$__find@PBW4ScienceType@@W41@@_STL@@YAPBW4ScienceType@@PBW41@0ABW41@ABUrandom_access_iterator_tag@0@@Z
-pins	0x0003025B	??0BattlePlanUpdateModuleData@@QAE@XZ
 pins	0x0003025B	??0CountermeasuresBehaviorModuleData@@QAE@XZ
-pins	0x0003025B	??0FireWeaponWhenDamagedBehaviorModuleData@@QAE@XZ
 pins	0x0003025B	??0MissileLauncherBuildingUpdateModuleData@@QAE@XZ
 pins	0x0003029C	?shouldRefresh@SkirmishScreenState@@QAE_NXZ
 pins	0x00030495	?write@CustomMatchPreferences@@UAE_NXZ
@@ -7714,7 +7484,6 @@ pins	0x00030698	?insert_unique@?$_Rb_tree@IU?$pair@$$CBIVModelConditionFlags@@@_
 pins	0x000307E7	?setStatus@Object@@QAEXABV?$BitFlags@$0FG@@@_N@Z
 pins	0x00030959	??1OrConditionAllocation@@MAE@XZ
 pins	0x000309CC	?Free_Definitions@DefinitionMgrClass@@SAXXZ
-pins	0x000309CC	?close@File@@UAEXXZ
 pins	0x000309F4	??1ClearanceTestingSlowDeathBehaviorModuleDataMember@@QAE@XZ
 pins	0x00030A8A	?privateFireWeapon@Weapon@@QAE_NPBVObject@@PBUCoord3D@@0H1HHHPAH@Z
 pins	0x00030B48	?erase@?$vector@VLivingWorldArmy@@V?$allocator@VLivingWorldArmy@@@_STL@@@_STL@@QAEPAVLivingWorldArmy@@PAV3@0@Z
@@ -7755,7 +7524,6 @@ pins	0x000315E3	?_M_clear@?$vector@UParkingPlaceInfo@ParkingPlaceBehavior@@V?$al
 pins	0x000316FB	?testForAny@ObjectStatusMaskType@@QBE_NABV1@@Z
 pins	0x00031728	?setTimeOfDay@W3DGameClientWaterShim@@QAEXW4TimeOfDay@@@Z
 pins	0x00031750	?construct@LineEmissionVolumeModuleCtorShim@FXParticleSystem@@QAEXAAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@@PBX@Z
-pins	0x0003179B	??_GExperienceLevelCreateModuleData@@MAEPAXI@Z
 pins	0x000317D7	??RGameSortStruct@@QBE_NPAVGameSpyStagingRoom@@0@Z
 pins	0x00031881	?winSetLayout@GameWindow@@QAEHPAVWindowLayout@@@Z
 pins	0x000318FE	?removeTreesForConstruction@W3DShrubBuffer@@QAEXPBUCoord3D@@ABVGeometryInfo@@M@Z
@@ -7771,7 +7539,6 @@ pins	0x00031F7A	?clearModelConditionState@Object@@QAEXH@Z
 pins	0x00031F7A	?clearModelConditionState@Object@@QAEXW4ModelConditionFlagType@@@Z
 pins	0x00031F7A	?clearStatus@Object@@QAEXW4ObjectStatusTypes@@@Z
 pins	0x00031F8E	?testForAll@?$BitFlags@$0MA@@@QBE_NABV1@@Z
-pins	0x000320BA	??_GDualWeaponBehaviorModuleData@@MAEPAXI@Z
 pins	0x00032182	??0AIInternalMoveToState@@QAE@PAXVAsciiString@@@Z
 pins	0x00032182	?ensureUniqueBufferOfSize@AsciiString@@IAEXH_NPBD1@Z
 pins	0x000322F4	?readUnicodeString@@YA?AVUnicodeString@@PAU_iobuf@@@Z
@@ -7842,7 +7609,6 @@ pins	0x00034559	??0MissingAnimClass@@QAE@PBD@Z
 pins	0x000345B8	?_M_insert_overflow@?$vector@VLivingWorldPlayerArmy@@V?$allocator@VLivingWorldPlayerArmy@@@_STL@@@_STL@@IAEXPAVLivingWorldPlayerArmy@@ABV3@ABU__false_type@2@I_N@Z
 pins	0x00034649	??$_M_allocate_and_copy@PBUEvaMessageInfo@@@?$vector@UEvaMessageInfo@@V?$allocator@UEvaMessageInfo@@@_STL@@@_STL@@IAEPAUEvaMessageInfo@@IPBU2@0@Z
 pins	0x000346DA	??$find@H@?$_Rb_tree@HU?$pair@$$CBHH@_STL@@U?$_Select1st@U?$pair@$$CBHH@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHH@_STL@@@2@@_STL@@QAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHH@_STL@@U?$_Nonconst_traits@U?$pair@$$CBHH@_STL@@@2@@1@ABH@Z
-pins	0x00034711	??0SpawnBehavior@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x0003475C	??0StructureCollapseOCLVector@@QAE@XZ
 pins	0x00034789	?intersectsVisibleBounds@W3DVolumetricShadow@@QBE_NABVAABoxClass@@@Z
 pins	0x00034798	??_GProcessAnimateWindowSlideFromBottomTimed@@MAEPAXI@Z
@@ -7890,9 +7656,7 @@ pins	0x00036165	?getContainCount@TunnelTracker@@QAEIH@Z
 pins	0x00036197	??_GParticleEmitterPrototypeClass@@UAEPAXI@Z
 pins	0x000361AB	?initiateIntentToDoSpecialPower@SpecialPowerModule@@QAE_NPBVObject@@PBVCoord3D@@PBVWaypoint@@I@Z
 pins	0x00036241	??1RunwayInfo@FlightDeckBehavior@@QAE@XZ
-pins	0x00036291	??1?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@QAE@XZ
 pins	0x000362AA	?getPlayerStructureBounds@AIPlayer@@SAXPAURegion2D@@H@Z
-pins	0x000364EE	??1DualWeaponBehaviorModuleData@@MAE@XZ
 pins	0x000366EC	?construct@DefaultModuleTemplate7CtorShim@FXParticleSystem@@QAEXXZ
 pins	0x00036818	??0ModuleDataBase@@QAE@XZ
 pins	0x00036818	??0RespawnBodyModuleDataBase@@QAE@XZ
@@ -7946,11 +7710,9 @@ pins	0x00037BD2	?getNthPlayerTemplate@PlayerTemplateStore@@QAEPBVPlayerTemplate@
 pins	0x00037BF0	?destroy@EvaSideSoundVector@@QAEXXZ
 pins	0x00037C90	?_M_initialize_map@?$_Deque_base@UMapObjectIDPointer@@V?$allocator@UMapObjectIDPointer@@@_STL@@@_STL@@IAEXI@Z
 pins	0x00037ECF	?_M_erase@?$_Rb_tree@HU?$pair@$$CBHVModuleTemplate@ModuleFactory@@@_STL@@U?$_Select1st@U?$pair@$$CBHVModuleTemplate@ModuleFactory@@@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHVModuleTemplate@ModuleFactory@@@_STL@@@2@@_STL@@AAEXPAU?$_Rb_tree_node@U?$pair@$$CBHVModuleTemplate@ModuleFactory@@@_STL@@@2@@Z
-pins	0x00037F0B	??_GAimWeaponBehaviorModuleData@@MAEPAXI@Z
 pins	0x00037FAB	??0SlaughterHordeContainBase@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00038055	??1CritterEmitterUpdateModuleDataUnknownB4@@QAE@XZ
 pins	0x000381E0	??$__copy@PBUGeometryShape@@PAU1@H@_STL@@YAPAUGeometryShape@@PBU1@0PAU1@ABUrandom_access_iterator_tag@0@PAH@Z
-pins	0x00038235	??_GFireSpreadUpdateModuleData@@MAEPAXI@Z
 pins	0x00038262	??1OathbreakersFadeAwayBehavior@@UAE@XZ
 pins	0x000382E4	?writePhysicsVector@FXParticleSystem@@YAXPAVINI@@PAXPBXPBM@Z
 pins	0x000382FD	??0PartitionFilterAcceptByKindOf@@QAE@ABV?$BitFlags@$0MA@@@0@Z
@@ -7960,28 +7722,20 @@ pins	0x00038389	?setTerrainTextureFilters@@YAXI@Z
 pins	0x00038550	??0ProductionPrerequisiteRetailCopy@@QAE@ABV0@@Z
 pins	0x000387C6	?assign@ParticleSystemTemplateInfoAssignShim@FXParticleSystem@@QAEXPBX@Z
 pins	0x00038A91	??_GPoisonedBehavior@@MAEPAXI@Z
-pins	0x00038AAA	?drawDisabled@Drawable@@AAEXXZ
-pins	0x00038BAE	?drawEnthusiastic@Drawable@@AAEXXZ
 pins	0x00038C80	??$__uninitialized_copy@PAURunwayInfo@FlightDeckBehavior@@PAU12@@_STL@@YAPAURunwayInfo@FlightDeckBehavior@@PAU12@00ABU__false_type@0@@Z
 pins	0x00038DAC	??1ApplyRandomForceNugget@@MAE@XZ
 pins	0x00038DDE	??$_M_find@VAsciiString@@@?$_Rb_tree@VAsciiString@@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@U?$_Select1st@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@3@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@3@@_STL@@QBEPAU?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@1@ABVAsciiString@@@Z
 pins	0x00038DED	?erase@?$vector@UFactionVictoryParameters@@V?$allocator@UFactionVictoryParameters@@@_STL@@@_STL@@QAEPAUFactionVictoryParameters@@PAU3@0@Z
 pins	0x00038E15	?doDrawModule@W3DModelDraw@@UAEXPBVMatrix3D@@@Z
 pins	0x00038ECE	?Resize@?$SimpleVecClass@M@@UAE_NH@Z
-pins	0x00038ECE	?Resize@?$SimpleVecClass@PAV?$MultiListClass@VDX8FVFCategoryContainer@@@@@@UAE_NH@Z
-pins	0x00038ECE	?Resize@?$SimpleVecClass@PAVBSPClass@@@@UAE_NH@Z
-pins	0x00038ECE	?Resize@?$SimpleVecClass@PAVDynamicMeshClass@@@@UAE_NH@Z
 pins	0x00038F4B	?helper@ControlBar@@QAEXXZ
 pins	0x000390B3	??$_Construct@UupgradePairWide@@U1@@_STL@@YAXPAUupgradePairWide@@ABU1@@Z
 pins	0x000390F9	??1HLodPrototypeClass@@UAE@XZ
 pins	0x00039103	??$_M_find@VAsciiString@@@?$_Rb_tree@VAsciiString@@V1@U?$_Identity@VAsciiString@@@_STL@@U?$less_than_nocase@VAsciiString@@@rts@@V?$allocator@VAsciiString@@@3@@_STL@@ABEPAU?$_Rb_tree_node@VAsciiString@@@1@ABVAsciiString@@@Z
 pins	0x000391A3	??0?\@UPointEmissionVolumeModuleTag@FXParticleSystem@@@FXParticleSystem@@QAE@ABV01@@Z
-pins	0x000391A3	??0PointEmissionVolumeModuleTemplate@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x000391F3	?construct@DefaultModule6CtorShim@FXParticleSystem@@QAEXAAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@@PBX@Z
 pins	0x00039202	?processInactiveLanMessages@@YAXXZ
-pins	0x00039397	??1AimWeaponBehaviorModuleData@@MAE@XZ
 pins	0x0003939C	?getScale@Drawable@@QBEMXZ
-pins	0x000393B0	??1ReflectDamageModuleData@@MAE@XZ
 pins	0x000393FB	?WouldMapTransfer@@YA_NPAVGameInfo@@@Z
 pins	0x000395CC	?_M_fill_insert@?$vector@PAVDrawable@@V?$allocator@PAVDrawable@@@_STL@@@_STL@@QAEXPAPAVDrawable@@IABQAV3@@Z
 pins	0x00039770	??0W3DFloorDrawBase@@QAE@PAVThing@@PBVModuleData@@@Z
@@ -8032,7 +7786,6 @@ pins	0x0003B2AA	?construct@LightningDrawTemplateCtorShim@FXParticleSystem@@QAEXX
 pins	0x0003B304	?destroyNodeValue@UnicodeString@@QAEXXZ
 pins	0x0003B31D	??1BeaconClientUpdate@@UAE@XZ
 pins	0x0003B359	?validMovementPosition@Pathfinder@@QAE_NPBUCoord3D@@W4PathfindLayerEnum@@IPAVObject@@@Z
-pins	0x0003B3E5	??$_Construct@GG@_STL@@YAXPAGABG@Z
 pins	0x0003B3F4	??_GAIDockState@@MAEPAXI@Z
 pins	0x0003B417	?invoke@GameLogic@@QAEXXZ
 pins	0x0003B59D	?findCommandButton@ControlBar@@AAEPBVCommandButton@@ABVAsciiString@@@Z
@@ -8046,7 +7799,6 @@ pins	0x0003BD1D	??1W3DOverlordTankDrawModuleData@@UAE@XZ
 pins	0x0003BD59	??1ProductionUpdateModuleDataBase@@UAE@XZ
 pins	0x0003BD8B	?statusCallback@BuddyThreadClass@@QAEXPAVGPConnection@@PAUGPRecvBuddyStatusArg@@@Z
 pins	0x0003BECB	?updateCenter@BaseHeightMapUpdateNoArgs@@QAEXXZ
-pins	0x0003BF52	??1RainOfFireUpdateModuleData@@MAE@XZ
 pins	0x0003C038	??1Player@@MAE@XZ
 pins	0x0003C29F	??0?$ConcreteModuleTemplate@UButterflyDrawModuleTag@FXParticleSystem@@@FXParticleSystem@@QAE@ABV01@@Z
 pins	0x0003C420	??_GSwayClientUpdate@@UAEPAXI@Z
@@ -8094,7 +7846,6 @@ pins	0x0003D3C5	??$_M_allocate_and_copy@PBVW3DAnimationInfo@@@?$vector@VW3DAnima
 pins	0x0003D4C9	??1AITNGuardMachine@@MAE@XZ
 pins	0x0003D4E2	?isUsed@PathfindLayer@@QAE_NXZ
 pins	0x0003D50F	?getPortableFilename@NetFileAnnounceCommandMsg@@QAE?AV?$StringBase@D@@XZ
-pins	0x0003D514	?drawHealing@Drawable@@AAEXXZ
 pins	0x0003D659	??1PartitionFilterPlayerAffiliation@@MAE@XZ
 pins	0x0003D663	?assignUnitReference@ScriptEngine@@QAEXABVAsciiString@@PAVObject@@@Z
 pins	0x0003D7B2	?_M_insert_overflow@?$vector@UWeaponBarrelInfo@ModelConditionInfo@@V?$allocator@UWeaponBarrelInfo@ModelConditionInfo@@@_STL@@@_STL@@IAEXPAUWeaponBarrelInfo@ModelConditionInfo@@ABU34@ABU__false_type@2@I_N@Z
@@ -8184,9 +7935,6 @@ pins	0x0003FDA5	??$_Construct@UCoord3D@@U1@@_STL@@YAXPAUCoord3D@@ABU1@@Z
 pins	0x0003FF49	??1SiegeEngineContainBase@@UAE@XZ
 pins	0x0003FF58	??1SpawnPointProductionExitUpdate@@UAE@XZ
 pins	0x0003FFA3	??0?$ConcreteModuleTemplate@UHemisphericalEmissionVelocityModuleTag@FXParticleSystem@@@FXParticleSystem@@QAE@ABV01@@Z
-pins	0x0003FFF8	??1ExperienceLevelCreateModuleData@@MAE@XZ
-pins	0x0004004D	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
-pins	0x0004004D	?_M_bkt_num_key@?$hashtable@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@W4BuildableStatus@@@_STL@@@2@@_STL@@ABEIABVAsciiString@@I@Z
 pins	0x00040066	?_M_insert@?$hashtable@U?$pair@$$CBVAsciiString@@E@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@E@_STL@@@2@U?$equal_to@VAsciiString@@@5@V?$allocator@U?$pair@$$CBVAsciiString@@E@_STL@@@2@@_STL@@QAEAAU?$pair@$$CBVAsciiString@@E@2@ABU32@@Z
 pins	0x0004016A	??1?$DefaultParticleModule@$04@FXParticleSystem@@UAE@XZ
 pins	0x0004018D	?construct@SphereEmissionVolumeModuleCtorShim@FXParticleSystem@@QAEXAAV?$TrackingPtr@VParticleSystem@FXParticleSystem@@@@PBX@Z
@@ -8232,7 +7980,6 @@ pins	0x00041272	??1GameSpyLoadScreen@@MAE@XZ
 pins	0x000412C2	?refreshLayout@GameWindowManager@@QAEXPAX@Z
 pins	0x000413AD	??$_Destroy@PAUHideShowSubObjInfo@ModelConditionInfo@@@_STL@@YAXPAUHideShowSubObjInfo@ModelConditionInfo@@0@Z
 pins	0x000413B2	?isValid@ObjectFilter@@QBE_NXZ
-pins	0x0004142A	??_GCreateCrateDie@@UAEPAXI@Z
 pins	0x000414BB	??1T2VBaseA@@UAE@XZ
 pins	0x00041579	?writeLANGameInfo@@YAXPBVLANGameInfo@@PADI@Z
 pins	0x00041597	?aptPalantirOnButtonSpellStore@@YAXXZ
@@ -8266,7 +8013,6 @@ pins	0x00042A7D	?openMouse@DirectInputMouse@@AAEXXZ
 pins	0x00042AC3	?xfer@?$BitFlags@$0L@@@QAEXPAVXfer@@@Z
 pins	0x00042B04	??_GAIDeadState@@MAEPAXI@Z
 pins	0x00042B27	??_GMoney@@MAEPAXI@Z
-pins	0x00042BB3	?_M_copy@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@AAEPAU?$_Rb_tree_node@U?$pair@$$CBHI@_STL@@@2@PAU32@0@Z
 pins	0x00042C3A	??0MissingGeomClass@@QAE@PBD@Z
 pins	0x00042D1B	??$_M_find@V?$BitFlags@$0BB@@@@?$_Rb_tree@$$CBV?$BitFlags@$0BB@@@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VWeaponTemplateSet@@V?$BitFlags@$0BB@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@3@@_STL@@ABEPAU?$_Rb_tree_node@U?$pair@$$CBV?$BitFlags@$0BB@@@PBVWeaponTemplateSet@@@_STL@@@1@ABV?$BitFlags@$0BB@@@@Z
 pins	0x00042E06	?get_allocator@?$vector@PBVLocomotorTemplate@@V?$allocator@PBVLocomotorTemplate@@@_STL@@@_STL@@QBE?AV?$allocator@PBVLocomotorTemplate@@@2@XZ
@@ -8335,7 +8081,6 @@ pins	0x00045322	?registerGameWindow@AnimateWindowManager@@QAEXPAVGameWindow@@H_N
 pins	0x00045363	?addPlayer@LANAPI@@IAEXPAVLANPlayer@@@Z
 pins	0x000453EF	??_GAIHuntState@@MAEPAXI@Z
 pins	0x0004547B	??$_M_allocate_and_copy@PBQAVObject@@@?$vector@PAVObject@@V?$allocator@PAVObject@@@_STL@@@_STL@@IAEPAPAVObject@@IPBQAV2@0@Z
-pins	0x00045561	??0SpawnBoneRow@@QAE@XZ
 pins	0x00045633	??1?$pair@$$CBVAsciiString@@PAVParticleSystemTemplate@@@_STL@@QAE@XZ
 pins	0x0004570F	?xferInteger_4570F@@YAXAAVXfer@@AAH@Z
 pins	0x0004570F	?xferRandomVariable_4570F@@YAXAAVXfer@@AAVGameClientRandomVariable@@@Z
@@ -8380,7 +8125,6 @@ pins	0x00046F33	??_GObject@@MAEPAXI@Z
 pins	0x0004700A	??$__copy@PAVLivingWorldArmy@@PAV1@H@_STL@@YAPAVLivingWorldArmy@@PAV1@00ABUrandom_access_iterator_tag@0@PAH@Z
 pins	0x00047069	?getCountdownPercent@OCLUpdate@@QAEMXZ
 pins	0x0004709B	??0ActiveShroudUpgrade@@QAE@PAVThing@@PBVModuleData@@@Z
-pins	0x000470EB	??_GSquishCollideModuleData@@MAEPAXI@Z
 pins	0x000470F5	??1_ENUM_VALUE@EnumParameterClass@@QAE@XZ
 pins	0x000471A4	??1HordeSiegeEngineContainModuleData@@UAE@XZ
 pins	0x0004727B	??$__unguarded_linear_insert@PAHHP6A_NHH@Z@_STL@@YAXPAHHP6A_NHH@Z@Z
@@ -8425,7 +8169,6 @@ pins	0x000486BC	?_M_insert_overflow@?$vector@PAVObject@@V?$allocator@PAVObject@@
 pins	0x00048725	??4ScienceInfoBase@@QAEAAV0@ABV0@@Z
 pins	0x0004883D	??$_Destroy@PAUNugget@ModuleInfo@@@_STL@@YAXPAUNugget@ModuleInfo@@0@Z
 pins	0x00048851	?xferInteger_48851@@YAXAAVXfer@@AAH@Z
-pins	0x0004887E	?_M_erase@?$_Rb_tree@HU?$pair@$$CBHI@_STL@@U?$_Select1st@U?$pair@$$CBHI@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHI@_STL@@@2@@_STL@@AAEXPAU?$_Rb_tree_node@U?$pair@$$CBHI@_STL@@@2@@Z
 pins	0x000488BA	?erase@?$map@VAsciiString@@V?$list@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@U?$less@VAsciiString@@@3@V?$allocator@U?$pair@$$CBVAsciiString@@V?$list@VAsciiString@@V?$allocator@VAsciiString@@@_STL@@@_STL@@@_STL@@@3@@_STL@@QAEIABVAsciiString@@@Z
 pins	0x000488E7	??$_M_allocate_and_copy@PBQAX@?$vector@PAXV?$allocator@PAX@_STL@@@_STL@@IAEPAPAXIPBQAX0@Z
 pins	0x000488F6	?update@AIMoveOutOfTheWayStateUpdateShim@@QAE?AW4StateReturnType@@XZ
@@ -8448,7 +8191,6 @@ pins	0x00048B9E	??0W3DTracerDraw@@QAE@PAVThing@@PBVModuleData@@@Z
 pins	0x00048BC6	??1ProcessAnimateWindowSpiral@@MAE@XZ
 pins	0x00048BD0	??$_M_find@VAsciiString@@@?$hashtable@U?$pair@$$CBVAsciiString@@VBannerType@@@_STL@@VAsciiString@@U?$hash@VAsciiString@@@rts@@U?$_Select1st@U?$pair@$$CBVAsciiString@@VBannerType@@@_STL@@@2@U?$equal_to@VAsciiString@@@2@V?$allocator@U?$pair@$$CBVAsciiString@@VBannerType@@@_STL@@@2@@_STL@@ABEPAU?$_Hashtable_node@U?$pair@$$CBVAsciiString@@VBannerType@@@_STL@@@1@ABVAsciiString@@@Z
 pins	0x00048C07	?aptPalantirOnButtonOptions@@YAXXZ
-pins	0x00048C61	?friend_getFinalOverride@Overridable@@QBEPBV1@XZ
 pins	0x00048D06	?fire@BezierLaunchHelper@@QAE_NPAVObject@@00PAX@Z
 pins	0x00048D29	?clearCellForDiameter@Pathfinder@@QAEHHHHHHH@Z
 pins	0x00048DB0	?construct@OutwardEmissionVelocityTemplateCtorShim@FXParticleSystem@@QAEXXZ
@@ -8465,14 +8207,10 @@ pins	0x00049553	?getDecayFilename@AudioEventRTS@@QAE?AVAsciiString@@XZ
 pins	0x00049585	?applyAttributeModifier@AttributeModifierPoolUpdate@@QAE_NABVAsciiString@@H@Z
 pins	0x00049684	??1GameResultsResponseQueueWide@@QAE@XZ
 pins	0x00049792	??_GEstablishConnectionsMenu@@MAEPAXI@Z
-pins	0x000497D3	?TEST_KINDOFMASK_ANY@@YA_NABV?$BitFlags@$0HE@@@0@Z
-pins	0x000497D3	?countIntersection@?$BitFlags@$0HF@@@QBEHABV1@@Z
-pins	0x000497D3	?countInverseIntersection@?$BitFlags@$0HF@@@QBEHABV1@@Z
 pins	0x00049832	??0?$ShareBufferClass@VVector3@@@@QAE@HPBDH@Z
 pins	0x00049968	??A?$map@W4NameKeyType@@VObjectCreationList@@U?$less@W4NameKeyType@@@_STL@@V?$allocator@U?$pair@$$CBW4NameKeyType@@VObjectCreationList@@@_STL@@@4@@_STL@@QAEAAVObjectCreationList@@ABW4NameKeyType@@@Z
 pins	0x00049AA3	??0UpgradeModuleData@@QAE@XZ
 pins	0x00049AD0	?ReleaseWindowLayout@@YAXPAVWindowLayout@@@Z
-pins	0x00049B4D	??1DelayedLuaEventUpdateModuleData@@MAE@XZ
 pins	0x00049BA7	?_M_insert@?$_Rb_tree@$$CBV?$BitFlags@$0L@@@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@U?$_Select1st@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@3@UMapHelper@?$SparseMatchFinder@VArmorTemplateSet@@V?$BitFlags@$0L@@@@@V?$allocator@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@3@@_STL@@AAE?AU?$_Rb_tree_iterator@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@U?$_Nonconst_traits@U?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@_STL@@@2@@2@PAU_Rb_tree_node_base@2@0ABU?$pair@$$CBV?$BitFlags@$0L@@@PBVArmorTemplateSet@@@2@0@Z
 pins	0x00049CD8	??_GCostModifierUpgrade@@UAEPAXI@Z
 pins	0x00049D14	?reset@GameInfo@@UAEXXZ
@@ -8486,7 +8224,6 @@ pins	0x0004A160	?updateHiddenStatus@Drawable@@AAEXXZ
 pins	0x0004A1EC	?setCursor@Mouse@@UAEXH@Z
 pins	0x0004A1EC	?setCursor@Win32Mouse@@UAEXH@Z
 pins	0x0004A232	?assign@ParticleSystemTemplateTailAssignShim@FXParticleSystem@@QAEXPBX@Z
-pins	0x0004A250	??0FlammableUpdateModuleData@@QAE@XZ
 pins	0x0004A2F5	?initFromMesh@W3DShadowGeometry@@QAEHPAVRenderObjClass@@HPAV1@@Z
 pins	0x0004A327	?clientSafeQuickDoesPathExist@Pathfinder@@QAE_NPAVObject@@PBVCoord3D@@1H@Z
 pins	0x0004A327	?slowDoesPathExist@Pathfinder@@QAE_NPAVObject@@PBUCoord3D@@1W4ObjectID@@@Z
@@ -8515,7 +8252,6 @@ pins	0x0004B024	??0PLEMT_Base@FXParticleSystem@@QAE@XZ
 pins	0x0004B024	?construct@LifeEventTemplateCtorShim@FXParticleSystem@@QAEXXZ
 pins	0x0004B06F	??_GBezierProjectileBehaviorModuleData@@MAEPAXI@Z
 pins	0x0004B0AB	?init@PathfindLayer@@QAE_NPAVBridge@@W4PathfindLayerEnum@@@Z
-pins	0x0004B0B0	?sendPlayerDestruct@DisconnectManager@@IAEXHPAVConnectionManager@@@Z
 pins	0x0004B10A	??1Payload@DeliverPayloadNugget@@QAE@XZ
 pins	0x0004B12D	?getPosition@Drawable@@QBEPBUCoord3D@@XZ
 pins	0x0004B213	??1AIPickUpCrateState@@MAE@XZ
@@ -8533,7 +8269,6 @@ pins	0x0005B8E0	?AtlW2AHelper@ATL@@YGPADPADPBGHI@Z
 pins	0x0005C0C0	?release@DcPool@@QAEXPAX@Z
 pins	0x0005E4C0	?isEmpty@AsciiString@@QBE_NXZ
 pins	0x0005EE90	?add@TeamsInfoRecAddTeamShim@@QAEXPBVDict@@@Z
-pins	0x000668C0	??0?$_STLP_alloc_proxy@PAVAsciiString@@V1@V?$allocator@VAsciiString@@@_STL@@@_STL@@QAE@ABV?$allocator@VAsciiString@@@1@PAVAsciiString@@@Z
 pins	0x00066A90	??0?$_Vector_base@HV?$allocator@H@_STL@@@_STL@@QAE@IABV?$allocator@H@1@@Z
 pins	0x000673D0	??$_M_allocate_and_copy@PAH@?$vector@HV?$allocator@H@_STL@@@_STL@@IAEPAHIPAH0@Z
 pins	0x000681C0	?release@DictReleaseDataShim@@QAEXXZ
@@ -8669,7 +8404,6 @@ pins	0x000EF540	??1?$_Rb_tree@U?$pair@HH@_STL@@U?$pair@$$CBU?$pair@HH@_STL@@PAVT
 pins	0x000F2420	?getEstimateTeamPosition@Team@@QBEPAUCoord3D@@PAU2@@Z
 pins	0x000F3A20	??A?$map@U?$pair@HH@_STL@@PAVTeamPrototype@@U?$less@U?$pair@HH@_STL@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@_STL@@PAVTeamPrototype@@@_STL@@@2@@_STL@@QAEAAPAVTeamPrototype@@ABU?$pair@HH@1@@Z
 pins	0x000F3AA0	??0?$_Rb_tree@U?$pair@HH@_STL@@U?$pair@$$CBU?$pair@HH@_STL@@PAVTeamPrototype@@@2@U?$_Select1st@U?$pair@$$CBU?$pair@HH@_STL@@PAVTeamPrototype@@@_STL@@@2@U?$less@U?$pair@HH@_STL@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@_STL@@PAVTeamPrototype@@@_STL@@@2@@_STL@@QAE@ABV01@@Z
-pins	0x000F3C50	?loadPostProcess@TeamRelationMap@@MAEXXZ
 pins	0x000F3C50	?xfer@TeamRelationMap@@MAEXPAVXfer@@@Z
 pins	0x000F3E40	??0TeamPrototype@@QAE@PAVTeamFactory@@ABVAsciiString@@1PAVPlayer@@_NPAVDict@@H@Z
 pins	0x000F40E0	?countObjects@TeamPrototype@@QAEHV?$BitFlags@$0MA@@@0@Z
@@ -8746,7 +8480,6 @@ pins	0x001A5F40	?test@BridgePointOnBridgeShim@@QAE_NPBUCoord3D@@@Z
 pins	0x001A60F0	?add@TerrainLogicAddWaypointLinkShim@@QAEXHH@Z
 pins	0x001A6550	?onMatch@TerrainLogicP48Owner@@QAEXPAUTerrainLogicP48Rec@@H@Z
 pins	0x001A7520	?compute@BridgeGetBridgeHeightShim@@QAEMPBUCoord3D@@PAU2@@Z
-pins	0x001A7C20	?getLayerForDestination@TerrainLogic@@QAE?AW4PathfindLayerEnum@@PAVObject@@PBVCoord3D@@@Z
 pins	0x001A9580	?_M_insert@?$_Rb_tree@IU?$pair@$$CBIE@_STL@@U?$_Select1st@U?$pair@$$CBIE@_STL@@@2@U?$less@I@2@V?$allocator@U?$pair@$$CBIE@_STL@@@2@@_STL@@AAE?AU?$_Rb_tree_iterator@U?$pair@$$CBIE@_STL@@U?$_Nonconst_traits@U?$pair@$$CBIE@_STL@@@2@@2@PAU_Rb_tree_node_base@2@0ABU?$pair@$$CBIE@2@0@Z
 pins	0x001A9660	?insert_unique@?$_Rb_tree@IU?$pair@$$CBIE@_STL@@U?$_Select1st@U?$pair@$$CBIE@_STL@@@2@U?$less@I@2@V?$allocator@U?$pair@$$CBIE@_STL@@@2@@_STL@@QAE?AU?$pair@U?$_Rb_tree_iterator@U?$pair@$$CBIE@_STL@@U?$_Nonconst_traits@U?$pair@$$CBIE@_STL@@@2@@_STL@@_N@2@ABU?$pair@$$CBIE@2@@Z
 pins	0x001A98A0	??0Bridge@@QAE@AAVBridgeInfo@@PAVDict@@VAsciiString@@H@Z
@@ -8803,8 +8536,6 @@ pins	0x00268A60	?getPowerName@ProductionSpeedBonus@@UBE?AVAsciiString@@XZ
 pins	0x00273960	?setCurrentVictim@AIUpdateInterface@@IAEXPBVObject@@@Z
 pins	0x0027CF60	?attackOrdinaryTarget@AIStateTargetDispatch@@QAEXPAVThing@@@Z
 pins	0x0027E070	?attackOptimizedTarget@AIStateTargetDispatch@@QAEXPAVThing@@@Z
-pins	0x00285F10	?construct@AutoHealBehaviorModuleData@@AAEXXZ
-pins	0x00285F10	?construct@AutoHealBehaviorModuleData@@QAEXXZ
 pins	0x00287BC0	?parse@BoneFXUpdateModuleDataParseFXListShim@@SAXPAVINI@@PAX1PBX@Z
 pins	0x00287D00	?parse@BoneFXUpdateModuleDataParseObjectCreationListShim@@SAXPAVINI@@PAX1PBX@Z
 pins	0x00287E40	?parseParticleSystem@BoneFXParseParticleSystemShim@@SAXPAVINI@@PAX1PBX@Z
@@ -8918,8 +8649,6 @@ pins	0x003C16A0	?_M_insert_overflow@?$vector@UMissionObjectiveState@@V?$allocato
 pins	0x003C16A0	?insert_overflow@UnsignedShortInsertOverflowShim@_STL@@QAEXPAGABGABU__true_type@2@I_N@Z
 pins	0x003CD590	??0LargeGroupAudioUnusedKnownKeys@@QAE@ABV0@@Z
 pins	0x003D3380	??0?$_STLP_alloc_proxy@PAU?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@_STL@@U12@V?$allocator@U?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@_STL@@@2@@_STL@@QAE@ABV?$allocator@U?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@_STL@@@1@PAU?$_Rb_tree_node@U?$pair@$$CBVAsciiString@@VHotKey@@@_STL@@@1@@Z
-pins	0x003D6040	?adjustCoordToCell@Pathfinder@@IAEXHH_NAAVCoord3D@@W4PathfindLayerEnum@@@Z
-pins	0x003D7EC0	?worldToCell@Pathfinder@@QAE_NPBVCoord3D@@PAUICoord2D@@@Z
 pins	0x003DBDC0	?_M_insert@?$_Rb_tree@HU?$pair@$$CBHE@_STL@@U?$_Select1st@U?$pair@$$CBHE@_STL@@@2@U?$less@H@2@V?$allocator@U?$pair@$$CBHE@_STL@@@2@@_STL@@AAE?AU?$_Rb_tree_iterator@U?$pair@$$CBHE@_STL@@U?$_Nonconst_traits@U?$pair@$$CBHE@_STL@@@2@@2@PAU_Rb_tree_node_base@2@0ABU?$pair@$$CBHE@2@0@Z
 pins	0x003E6EE0	?examineNeighboringCells@Pathfinder@@IAEHPAVPathfindCell@@0ABVLocomotorSet@@_N2HABUICoord2D@@PBVObject@@H@Z
 pins	0x003E9720	?updateGoal@Pathfinder@@QAEXPAVObject@@PBUCoord3D@@HPBDH@Z
@@ -8927,7 +8656,6 @@ pins	0x003E9720	?updateGoal@Pathfinder@@QAEXPAVObject@@PBUCoord3D@@W4PathfindLay
 pins	0x003EC8C0	?findSafePath@Pathfinder@@EAEPAVPath@@PBVObject@@ABVLocomotorSet@@PBUCoord3D@@22M@Z
 pins	0x003F0F40	?checkForAdjust@Pathfinder@@QAEEPAVObject@@ABVLocomotorSet@@EHHHHEPAUCoord3D@@PBU4@MPAPAVPathfindCell@@H@Z
 pins	0x003F18E0	?iterateCircular2@Pathfinder@@QAE_NPAUICoord2D@@HPAX@Z
-pins	0x003F5FD0	?tightenPath@Pathfinder@@IAEXPAVObject@@ABVLocomotorSet@@PAVCoord3D@@PBV4@@Z
 pins	0x003F68B0	?setType@PathfindCell@@QAEXW4CellType@1@@Z
 pins	0x003F6E10	?releaseInto@MixFileInfoBuffer@@QAEXPAX@Z
 pins	0x003F7630	?classifyMapCell@Pathfinder@@SAXHHPAVPathfindCell@@@Z
@@ -9009,7 +8737,6 @@ pins	0x005226A0	?assign@ReferencePointerAssignmentThunk@@QAEPAU1@PBU1@@Z
 pins	0x00522740	?run@ReleaseWindowLayoutShim@@SAXPAVWindowLayout@@@Z
 pins	0x00526BC0	?initialize@BitVectorInitializeShim@_STL@@QAEXI@Z
 pins	0x00532A00	?insert_overflow@UnicodeStringInsertOverflowShim@_STL@@QAEXPAVUnicodeString@@ABV3@ABU__false_type@2@I_N@Z
-pins	0x0053EDD0	?compare@GameSortStructCallOperatorShim@@QAE_NPAVGameSpyStagingRoom@@0@Z
 pins	0x005740A0	?_M_insert_overflow@?$vector@UScoreRowSortValue@@V?$allocator@UScoreRowSortValue@@@_STL@@@_STL@@IAEXPAUScoreRowSortValue@@ABU3@ABU__false_type@2@I_N@Z
 pins	0x00574BC0	??1?$vector@U?$pair@HVAsciiString@@@_STL@@V?$allocator@U?$pair@HVAsciiString@@@_STL@@@2@@_STL@@QAE@XZ
 pins	0x0057FB40	?showShellMap@Shell@@QAEX_N@Z

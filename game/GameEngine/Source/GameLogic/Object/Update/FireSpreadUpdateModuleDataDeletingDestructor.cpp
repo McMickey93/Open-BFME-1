@@ -7,7 +7,7 @@
 
 class FireSpreadUpdateModuleData
 {
-protected:
+public:
 	virtual ~FireSpreadUpdateModuleData();
 private:
 	friend void forceFireSpreadUpdateModuleDataDeletingDestructor();

@@ -7,7 +7,7 @@
 
 class RainOfFireUpdateModuleData
 {
-protected:
+public:
 	virtual ~RainOfFireUpdateModuleData();
 private:
 	friend void forceRainOfFireUpdateModuleDataDeletingDestructor();

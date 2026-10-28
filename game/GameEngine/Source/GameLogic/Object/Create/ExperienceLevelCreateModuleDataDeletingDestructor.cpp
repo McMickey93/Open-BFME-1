@@ -7,7 +7,7 @@
 
 class ExperienceLevelCreateModuleData
 {
-protected:
+public:
 	virtual ~ExperienceLevelCreateModuleData();
 private:
 	friend void forceExperienceLevelCreateModuleDataDeletingDestructor();

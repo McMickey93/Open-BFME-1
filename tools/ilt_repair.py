@@ -224,7 +224,11 @@ def edit_member(text, cls, member, old, new):
     want, have = ACCESS[new[0]], ACCESS[old[0]]
     seen = list(re.finditer(r"\b(public|protected|private)\s*:(?!:)", text[start:pos]))
     current = seen[-1].group(1) if seen else ("private" if kind == "class" else "public")
-    if current != have or want == have:
+    if want == have:
+        return None
+    if current == want:
+        return ABSENT                          # this view already declares the new access
+    if current != have:
         return None
     stmt = text.rfind("\n", start, pos) + 1
     after = close + 1

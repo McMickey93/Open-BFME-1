@@ -7,7 +7,7 @@
 
 class DestroyEnvironmentUpdateModuleData
 {
-protected:
+public:
 	virtual ~DestroyEnvironmentUpdateModuleData();
 private:
 	friend void forceDestroyEnvironmentUpdateModuleDataDeletingDestructor();

@@ -7,7 +7,7 @@
 
 class AimWeaponBehaviorModuleData
 {
-protected:
+public:
 	virtual ~AimWeaponBehaviorModuleData();
 private:
 	friend void forceAimWeaponBehaviorModuleDataDeletingDestructor();

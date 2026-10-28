@@ -7,7 +7,7 @@
 
 class ReflectDamageModuleData
 {
-protected:
+public:
 	virtual ~ReflectDamageModuleData();
 private:
 	friend void forceReflectDamageModuleDataDeletingDestructor();

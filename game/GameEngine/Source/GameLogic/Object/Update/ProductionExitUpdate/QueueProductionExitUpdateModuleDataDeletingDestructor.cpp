@@ -7,7 +7,7 @@
 
 class QueueProductionExitUpdateModuleData
 {
-protected:
+public:
 	virtual ~QueueProductionExitUpdateModuleData();
 private:
 	friend void forceQueueProductionExitUpdateModuleDataDeletingDestructor();
