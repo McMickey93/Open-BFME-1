@@ -1,15 +1,16 @@
-// ?d_00436960@@YAXXZ
-// partial score=0.85 date=2026-09-26
 // cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
 //
-// Retail 0x00436C40, 660 bytes through the int3 run at +0x294; Ghidra split it
-// at the null-file exit (+0x55).  GameTextManager::initMapStringFile (0x00438D50)
-// opens the map string file and passes the File* in through ILT 0x0001D7E1.
-// This is Zero Hour's parseMapStringFile with BFME's changes: the caller owns
-// the file, the quote scratch buffers are locals, the wide buffer lives at
-// +0x280C (sizeof(GameTextManager) is 0x7840) and there is no speech field.
-// Retail inlines readLine, AsciiString::str() and operator=(const char *), so
-// this TU spells them inline; the helpers are the matched GameText.cpp bodies.
+// Retail 0x00436960, 587 bytes through RET 4 at +0x248; the generator split it
+// at the null-file exit (+0x32). GameTextManager::init (gen dump 0x004389E0)
+// allocates m_stringInfo at +0x780C, then passes the File* in through ILT
+// 0x00035175 (ilt_oracle CONFIRMED this decoration) and calls deinit on failure.
+// Zero Hour's parseStringFile with BFME's changes, the same ones as its matched
+// sibling GameTextManager_parseMapStringFile.cpp: the caller owns the file, the
+// quote scratch buffers are locals, and there is no speech field. Unlike the
+// map file, the text is assigned straight from the wide buffer, with no
+// language filter, and the duplicate-label scan uses Zero Hour's inline
+// AsciiString::str() (the map body's private labelText view left a register
+// assignment here that retail does not have).
 
 #include <string.h>
 #include "ascii_string.h"
@@ -22,7 +23,7 @@ typedef wchar_t WideChar;
 
 #define MAX_UITEXT_LENGTH (10*1024)
 
-extern "C" __declspec(dllimport) int __cdecl _stricmp( const char *a, const char *b );
+extern "C" __declspec(dllimport) int __cdecl _strcmpi( const char *a, const char *b );
 
 inline UnicodeString::UnicodeString( const wchar_t *str )
 {
@@ -61,13 +62,20 @@ public:
 	virtual Int read( void *, Int );
 };
 
-class LanguageFilter
+static inline Bool readLine( char *buffer, Int max, File *file )
 {
-public:
-	void filterLine( UnicodeString &line );
-};
-
-extern LanguageFilter *TheLanguageFilter;
+	Int ok = 0;
+	while( max && file->read( buffer, 1 ) == 1 )
+	{
+		ok = 1;
+		if( *buffer == '\n' )
+			break;
+		buffer++;
+		max--;
+	}
+	*buffer = 0;
+	return ok != 0;
+}
 
 struct StringInfo
 {
@@ -75,46 +83,22 @@ struct StringInfo
 	UnicodeString text;
 };
 
-static inline const char *labelText( const AsciiString &label )
-{
-	const char *text = *(const char * const *)&label;
-	return text ? text + 8 : "";
-}
-
 class GameTextManager
 {
 protected:
 	Bool parseStringFile( File *file );
-	Bool parseMapStringFile( File *file );
 
 	void stripSpaces( WideChar *string );
 	void removeLeadingAndTrailing( Char *buffer );
 	void readToEndOfQuote( File *file, Char *in, Char *out, Char *wavefile, Int maxBufLen );
 	void translateCopy( WideChar *outbuf, Char *inbuf );
 
-	Bool readLine( char *buffer, Int max, File *file )
-	{
-		Int ok = 0;
-		while( max && file->read( buffer, 1 ) == 1 )
-		{
-			ok = 1;
-			if( *buffer == '\n' )
-				break;
-			buffer++;
-			max--;
-		}
-		*buffer = 0;
-		return ok != 0;
-	}
-
 	void *m_vptr;
 	Int m_textCount;
 	Int m_unmodelled08;
 	Char m_buffer[ MAX_UITEXT_LENGTH ];
 	WideChar m_tbuffer[ MAX_UITEXT_LENGTH ];
-	StringInfo *m_stringInfo;
-	char m_unmodelled7810[ 0x18 ];
-	StringInfo *m_mapStringInfo;
+	StringInfo *m_stringInfo;		// +0x780C
 };
 
 Bool GameTextManager::parseStringFile( File *file )
@@ -139,8 +123,7 @@ Bool GameTextManager::parseStringFile( File *file )
 
 		for( Int i = 0; i < listCount; i++ )
 		{
-			StringInfo *info = &m_stringInfo[ i ];
-			if( !_stricmp( labelText( info->label ), m_buffer ) )
+			if( !_strcmpi( m_stringInfo[ i ].label.str(), m_buffer ) )
 			{
 			}
 		}
@@ -174,7 +157,7 @@ Bool GameTextManager::parseStringFile( File *file )
 					readString = true;
 				}
 			}
-			else if( !_stricmp( m_buffer, "END" ) )
+			else if( !_strcmpi( m_buffer, "END" ) )
 			{
 				break;
 			}
