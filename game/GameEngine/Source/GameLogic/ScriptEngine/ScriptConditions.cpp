@@ -438,18 +438,7 @@ Bool ScriptConditions::evaluateAllBuildFacilitiesDestroyed(Parameter *pSideParm 
 //-------------------------------------------------------------------------------------------------
 /** evaluateIsDestroyed */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateIsDestroyed.cpp
-// ?evaluateIsDestroyed@ScriptConditions@@IAE_NPAVParameter@@@Z present-unmatched
-Bool ScriptConditions::evaluateIsDestroyed(Parameter *pTeamParm)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// is being considered for the condition.  jba. :)
-	if (theTeam) {
-		return (!theTeam->hasAnyObjects());
-	}
-	return false; // Non existent team is not destroyed. 
-}  
+// ?evaluateIsDestroyed@ScriptConditions@@IAE_NPAVParameter@@@Z: retail body is in ScriptConditionsTeamState.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateBridgeBroken */
@@ -613,23 +602,7 @@ Bool ScriptConditions::evaluateHasUnits(Parameter *pTeamParm)
 //-------------------------------------------------------------------------------------------------
 /** evaluateUnitsEntered */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_insideArea.cpp
-// ?evaluateTeamInsideAreaPartially@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateTeamInsideAreaPartially(Parameter *pTeamParm, Parameter *pTriggerAreaParm, Parameter *pTypeParm)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// is being considered for the condition.  jba. :)
-	AsciiString triggerName = pTriggerAreaParm->getString();
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerAreaParm->getString());
-	
-	if (pTrig == NULL) return false;
-	if (theTeam) {
-		return (theTeam->someInsideSomeOutside(pTrig, (UnsignedInt) pTypeParm->getInt()) ||
-						theTeam->allInside(pTrig, (UnsignedInt) pTypeParm->getInt()));
-	}
-	return false; // Non existent team isn't in trigger area. :)
-}  
+// ?evaluateTeamInsideAreaPartially@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerHasUnitTypeInArea */
@@ -810,35 +783,13 @@ Bool ScriptConditions::evaluatePlayerHasUnitKindInArea(Condition *pCondition, Pa
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamStateIs */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamStateIs@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateTeamStateIs(Parameter *pTeamParm, Parameter *pStateParm )
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// is being considered for the condition.  jba. :)
-	AsciiString stateName = pStateParm->getString();
-	if (theTeam) {
-		return (theTeam->getState() == stateName);
-	}
-	return false; // Non existent team isn't in any state. 
-}  
+// ?evaluateTeamStateIs@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTeamState.cpp
 
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamStateIsNot */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamStateIsNot@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateTeamStateIsNot(Parameter *pTeamParm, Parameter *pStateParm )
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	// The team is the team based on the name, and the calling team (if any) and the team that
-	// is being considered for the condition.  jba. :)
-	AsciiString stateName = pStateParm->getString();
-	if (theTeam) {
-		return (!(theTeam->getState() == stateName));
-	}
-	return false; // Non existent team isn't in any state. 
-}  
+// ?evaluateTeamStateIsNot@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTeamState.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedOutsideArea */
@@ -915,43 +866,7 @@ Bool ScriptConditions::evaluateNamedAttackedByPlayer(Parameter *pUnitParm, Param
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamAttackedByPlayer */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamAttackedByPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateTeamAttackedByPlayer(Parameter *pTeamParm, Parameter *pPlayerParm)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!theTeam) {
-		return false;
-	}
-
-	for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *pCur = iter.cur();
-		if (!pCur) {
-			continue;
-		}
-		BodyModuleInterface* theBodyModule = pCur->getBodyModule();
-		if (!theBodyModule) {
-			continue;
-		}
-		
-		const DamageInfo* lastDamageInfo = theBodyModule->getLastDamageInfo();
-		
-		if (!lastDamageInfo) {
-			continue;
-		}
-		
-		ObjectID id = lastDamageInfo->in.m_sourceID;
-		Object* pAttacker = TheGameLogic->findObjectByID(id);
-		if (!pAttacker) {
-			continue;
-		}
-		
-		if (pAttacker->getControllingPlayer() == playerFromParam(pPlayerParm)) {
-			return true;
-		}
-	}
-
-	return false;
-}
+// ?evaluateTeamAttackedByPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTeamMembers.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateBuiltByPlayer */
@@ -1013,71 +928,17 @@ Bool ScriptConditions::evaluateNamedCreated(Parameter* pUnitParm)
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamCreated */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateTeamCreated.cpp
-// ?evaluateTeamCreated@ScriptConditions@@IAE_NPAVParameter@@@Z present-unmatched
-Bool ScriptConditions::evaluateTeamCreated(Parameter* pTeamParm)
-{
-	Team *pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (pTeam) {
-		return pTeam->isCreated();
-	}
-	return ( false );
-}
+// ?evaluateTeamCreated@ScriptConditions@@IAE_NPAVParameter@@@Z: retail body is in ScriptConditionsTeamState.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateUnitHealth */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateUnitHealth@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateUnitHealth(Parameter *pUnitParm, Parameter* pComparisonParm, Parameter *pHealthPercent)
-{
-	Object *theObj = TheScriptEngine->getUnitNamed( pUnitParm->getString() );
-	if (!theObj) {
-		return false;
-	}
-	if (!theObj->getBodyModule()) return false;
-
-	Real curHealth = theObj->getBodyModule()->getHealth();
-	Real initialHealth = theObj->getBodyModule()->getInitialHealth();
-	Int curPercent = (curHealth*100 + initialHealth/2)/initialHealth;
-
-	switch (pComparisonParm->getInt())
-	{
-		case Parameter::LESS_THAN :			return (curPercent < pHealthPercent->getInt()); 
-		case Parameter::LESS_EQUAL :		return (curPercent <= pHealthPercent->getInt());
-		case Parameter::EQUAL :					return (curPercent == pHealthPercent->getInt()); 
-		case Parameter::GREATER_EQUAL :	return (curPercent >= pHealthPercent->getInt());
-		case Parameter::GREATER :				return (curPercent > pHealthPercent->getInt());
-		case Parameter::NOT_EQUAL :			return (curPercent != pHealthPercent->getInt());
-	}
-
-	return false;
-}
+// ?evaluateUnitHealth@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsCompare.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerHasCredits */
 //-------------------------------------------------------------------------------------------------
-// ?evaluatePlayerHasCredits@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerHasCredits(Parameter *pCreditsParm, Parameter* pComparisonParm, Parameter *pPlayerParm)
-{
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	if (!pPlayer) {
-		return false;
-	}
-	
-	if (pPlayer && pPlayer->getMoney()) {
-		switch (pComparisonParm->getInt())
-		{
-			case Parameter::LESS_THAN :			return (pCreditsParm->getInt() < pPlayer->getMoney()->countMoney()); break;
-			case Parameter::LESS_EQUAL :		return (pCreditsParm->getInt() <= pPlayer->getMoney()->countMoney()); break;
-			case Parameter::EQUAL :					return (pCreditsParm->getInt() == pPlayer->getMoney()->countMoney()); break;
-			case Parameter::GREATER_EQUAL :	return (pCreditsParm->getInt() >= pPlayer->getMoney()->countMoney()); break;
-			case Parameter::GREATER :				return (pCreditsParm->getInt() > pPlayer->getMoney()->countMoney()); break;
-			case Parameter::NOT_EQUAL :			return (pCreditsParm->getInt() != pPlayer->getMoney()->countMoney()); break;
-		}
-	}
-
-	return false;
-}
+// ?evaluatePlayerHasCredits@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPlayerMask.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateBuildingEntered */
@@ -1480,23 +1341,7 @@ Bool ScriptConditions::evaluateMissionAttempts(Parameter *pPlayerParm, Parameter
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedOwnedByPlayer */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/ScriptConditions_evaluateNamedOwnedByPlayer_Thunk.cpp
-// ?evaluateNamedOwnedByPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateNamedOwnedByPlayer(Parameter *pUnitParm, Parameter *pPlayerParm)
-{
-
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	if (!pPlayer) {
-		return false;
-	}
-
-	Object* pObj = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-	if (!pObj) {
-		return false;
-	}
-	
-	return (pObj->getControllingPlayer() == pPlayer);
-}
+// ?evaluateNamedOwnedByPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsPlayerMask.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamOwnedByPlayer */
@@ -1521,38 +1366,12 @@ Bool ScriptConditions::evaluatePlayerHasNOrFewerBuildings(Parameter *pBuildingCo
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerHasNOrFewerFactionBuildings */
 //-------------------------------------------------------------------------------------------------
-// ?evaluatePlayerHasNOrFewerFactionBuildings@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerHasNOrFewerFactionBuildings(Parameter *pBuildingCountParm, Parameter *pPlayerParm)
-{
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	if (!pPlayer) {
-		return false;
-	}
-
-	KindOfMaskType mask;
-	mask.set(KINDOF_MP_COUNT_FOR_VICTORY);
-	mask.set(KINDOF_STRUCTURE);
-	return (pBuildingCountParm->getInt() >= pPlayer->countObjects(mask, KINDOFMASK_NONE));
-}
+// ?evaluatePlayerHasNOrFewerFactionBuildings@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsPlayerMask.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerHasPower */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1090.cpp
-// ?evaluatePlayerHasPower@ScriptConditions@@IAE_NPAVParameter@@@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerHasPower(Parameter *pPlayerParm)
-{
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	if (!pPlayer) {
-		return false;
-	}
-	
-	Energy* pPlayersEnergy = pPlayer->getEnergy();
-	if (!pPlayersEnergy) {
-		return false;
-	}
-	return pPlayersEnergy->hasSufficientPower();
-}
+// ?evaluatePlayerHasPower@ScriptConditions@@IAE_NPAVParameter@@@Z: retail body is in ScriptConditionsPlayerHasPower.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedReachedWaypointsEnd */
@@ -1584,47 +1403,7 @@ Bool ScriptConditions::evaluateNamedReachedWaypointsEnd(Parameter *pUnitParm, Pa
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamReachedWaypointsEnd */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamReachedWaypointsEnd@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateTeamReachedWaypointsEnd(Parameter *pTeamParm, Parameter* pWaypointPathParm)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	if (!theTeam) {
-		return false;
-	}
-
-	AsciiString	pathName = pWaypointPathParm->getString();
-	Bool anyAtEnd = false;
-	Bool anyNotAtEnd = false;
-	// Note - This returns true if any of the team completed the path.  This is as the current
-	// implementation tends to do group pathfinding by default, so we trigger when the leader actually thinks
-	// that he has reached the end of the waypoint path.
-//int i = 0;
-	for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *pObj = iter.cur();
-		if (!pObj) {
-			continue;
-		}
-		AIUpdateInterface *ai = pObj->getAIUpdateInterface();
-		if (!ai) continue; // in case there are any rocks or trees in the team :)
-
-		const Waypoint *targetWay = ai->getCompletedWaypoint();
-
-		if (!targetWay) {
-			anyNotAtEnd = true;
-			continue;
-		}
-		Bool found = false;
-		if (targetWay->getPathLabel1() == pathName) found = true;
-		if (targetWay->getPathLabel2() == pathName) found = true;
-		if (targetWay->getPathLabel3() == pathName) found = true;
-		if (found) {
-			anyAtEnd = true;
-		} else {
-			anyNotAtEnd = true;
-		}
-	}
-	return anyAtEnd;
-}
+// ?evaluateTeamReachedWaypointsEnd@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditions_evaluateTeamReachedWaypointsEnd.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateVideoHasCompleted */
@@ -1662,128 +1441,27 @@ Bool ScriptConditions::evaluateAudioHasCompleted(Parameter *pAudioParm)
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerSpecialPowerFromUnitTriggered */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1088.cpp
-// ?evaluatePlayerSpecialPowerFromUnitTriggered@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerSpecialPowerFromUnitTriggered(Parameter *pPlayerParm, Parameter *pSpecialPowerParm, Parameter* pUnitParm)
-{
-	Player *pPlayer = playerFromParam(pPlayerParm);
-	ObjectID sourceID = INVALID_ID;
-	if (pUnitParm)
-	{
-		Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-		if (!pUnit)
-		{
-			// we cared about the source object, but it is dead.  No sense checking anymore, since we don't know it's objectID anymore. :P
-			return FALSE;
-		}
-		sourceID = pUnit->getID();
-	}
-
-	if (pPlayer)
-	{
-		return TheScriptEngine->isSpecialPowerTriggered(pPlayer->getPlayerIndex(), pSpecialPowerParm->getString(), TRUE, sourceID);
-	}
-	return FALSE;
-}
+// ?evaluatePlayerSpecialPowerFromUnitTriggered@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPowerAndUpgradeFromUnit.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerSpecialPowerFromUnitMidway */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1088.cpp
-// ?evaluatePlayerSpecialPowerFromUnitMidway@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerSpecialPowerFromUnitMidway(Parameter *pPlayerParm, Parameter *pSpecialPowerParm, Parameter* pUnitParm)
-{
-	Player *pPlayer = playerFromParam(pPlayerParm);
-	ObjectID sourceID = INVALID_ID;
-	if (pUnitParm)
-	{
-		Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-		if (!pUnit)
-		{
-			// we cared about the source object, but it is dead.  No sense checking anymore, since we don't know it's objectID anymore. :P
-			return FALSE;
-		}
-		sourceID = pUnit->getID();
-	}
-
-	if (pPlayer)
-	{
-		return TheScriptEngine->isSpecialPowerMidway(pPlayer->getPlayerIndex(), pSpecialPowerParm->getString(), TRUE, sourceID);
-	}
-	return FALSE;
-}
+// ?evaluatePlayerSpecialPowerFromUnitMidway@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPowerAndUpgradeFromUnit.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerSpecialPowerFromUnitComplete */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1088.cpp
-// ?evaluatePlayerSpecialPowerFromUnitComplete@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerSpecialPowerFromUnitComplete(Parameter *pPlayerParm, Parameter *pSpecialPowerParm, Parameter* pUnitParm)
-{
-	Player *pPlayer = playerFromParam(pPlayerParm);
-	ObjectID sourceID = INVALID_ID;
-	if (pUnitParm)
-	{
-		Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-		if (!pUnit)
-		{
-			// we cared about the source object, but it is dead.  No sense checking anymore, since we don't know it's objectID anymore. :P
-			return FALSE;
-		}
-		sourceID = pUnit->getID();
-	}
-
-	if (pPlayer)
-	{
-		return TheScriptEngine->isSpecialPowerComplete(pPlayer->getPlayerIndex(), pSpecialPowerParm->getString(), TRUE, sourceID);
-	}
-	return FALSE;
-}
+// ?evaluatePlayerSpecialPowerFromUnitComplete@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPowerAndUpgradeFromUnit.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateUpgradeFromUnitComplete */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1088.cpp
-// ?evaluateUpgradeFromUnitComplete@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateUpgradeFromUnitComplete(Parameter *pPlayerParm, Parameter *pUpgradeParm, Parameter* pUnitParm)
-{
-	Player *pPlayer = playerFromParam(pPlayerParm);
-	ObjectID sourceID = INVALID_ID;
-	if (pUnitParm)
-	{
-		Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-		if (!pUnit)
-		{
-			// we cared about the source object, but it is dead.  No sense checking anymore, since we don't know it's objectID anymore. :P
-			return FALSE;
-		}
-		sourceID = pUnit->getID();
-	}
-
-	if (pPlayer)
-	{
-		return TheScriptEngine->isUpgradeComplete(pPlayer->getPlayerIndex(), pUpgradeParm->getString(), TRUE, sourceID);
-	}
-	return FALSE;
-}
+// ?evaluateUpgradeFromUnitComplete@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPowerAndUpgradeFromUnit.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateScienceAcquired */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1091.cpp
-// ?evaluateScienceAcquired@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateScienceAcquired(Parameter *pPlayerParm, Parameter *pScienceParm)
-{
-	Player *pPlayer = playerFromParam(pPlayerParm);
-	if (pPlayer)
-	{
-		ScienceType science = TheScienceStore->getScienceFromInternalName(pScienceParm->getString());
-		if (science == SCIENCE_INVALID)
-			return FALSE;
-		return TheScriptEngine->isScienceAcquired(pPlayer->getPlayerIndex(), science, TRUE);
-	}
-	return FALSE;
-}
+// ?evaluateScienceAcquired@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsScienceAcquired.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateCanPurchaseScience */
@@ -1805,174 +1483,43 @@ Bool ScriptConditions::evaluateCanPurchaseScience(Parameter *pPlayerParm, Parame
 //-------------------------------------------------------------------------------------------------
 /** evaluateSciencePurchasePoints */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv1089.cpp
-// ?evaluateSciencePurchasePoints@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateSciencePurchasePoints(Parameter *pPlayerParm, Parameter *pSciencePointParm)
-{
-	Player *pPlayer = playerFromParam(pPlayerParm);
-	if (pPlayer)
-	{
-		Int pointsNeeded = pSciencePointParm->getInt();
-		return pPlayer->getSciencePurchasePoints() >= pointsNeeded;
-	}
-	return FALSE;
-}
+// ?evaluateSciencePurchasePoints@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsSciencePurchasePoints.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedHasFreeContainerSlots */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateNamedHasFreeContainerSlots.cpp
-// ?evaluateNamedHasFreeContainerSlots@ScriptConditions@@IAE_NPAVParameter@@@Z present-unmatched
-Bool ScriptConditions::evaluateNamedHasFreeContainerSlots(Parameter *pUnitParm)
-{
-	Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-	if (!pUnit) {
-		return false;
-	}
-
-	ContainModuleInterface *contain = pUnit->getContain();
-	if( contain )
-	{
-		UnsignedInt max = contain->getContainMax();
-		UnsignedInt cur = contain->getContainCount();
-
-		if( cur < max )
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
+// ?evaluateNamedHasFreeContainerSlots@ScriptConditions@@IAE_NPAVParameter@@@Z: retail body is in ScriptConditionsNamedContain.cpp
 
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedEnteredArea */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateNamedEnteredArea@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateNamedEnteredArea(Parameter *pUnitParm, Parameter *pTriggerParm)
-{
-	Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-	if (!pUnit) {
-		return false;
-	}
-
-	if (pUnit->isKindOf(KINDOF_INERT)) {
-		return false;
-	}
-
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-
-	if (!pTrig) {
-		return false;
-	}
-	
-	return (pUnit->didEnter(pTrig));
-}
+// ?evaluateNamedEnteredArea@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsNamedEnteredArea.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateNamedExitedArea */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateNamedExitedArea.cpp
-// ?evaluateNamedExitedArea@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateNamedExitedArea(Parameter *pUnitParm, Parameter *pTriggerParm)
-{
-	Object* pUnit = TheScriptEngine->getUnitNamed(pUnitParm->getString());
-	if (!pUnit) {
-		return false;
-	}
-
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-
-	if (!pTrig) {
-		return false;
-	}
-	
-	return (pUnit->didExit(pTrig));
-}
+// ?evaluateNamedExitedArea@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamEnteredAreaEntirely */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateTeamEnteredExitedArea.cpp
-// ?evaluateTeamEnteredAreaEntirely@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateTeamEnteredAreaEntirely(Parameter *pTeamParm, Parameter *pTriggerParm, Parameter *pTypeParm)
-{
-	Team* pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!pTeam) {
-		return false;
-	}
-
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-
-	if (pTrig) {
-		return pTeam->didAllEnter(pTrig, (UnsignedInt)pTypeParm->getInt());
-	}
-	
-	return false;
-}
+// ?evaluateTeamEnteredAreaEntirely@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamEnteredAreaPartially */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateTeamEnteredExitedArea.cpp
-// ?evaluateTeamEnteredAreaPartially@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateTeamEnteredAreaPartially(Parameter *pTeamParm, Parameter *pTriggerParm, Parameter *pTypeParm)
-{
-	Team* pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!pTeam) {
-		return false;
-	}
-
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-
-	if (pTrig) {
-		return pTeam->didPartialEnter(pTrig, (UnsignedInt)pTypeParm->getInt());
-	}
-	
-	return false;
-}
+// ?evaluateTeamEnteredAreaPartially@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamExitedAreaEntirely */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateTeamEnteredExitedArea.cpp
-// ?evaluateTeamExitedAreaEntirely@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateTeamExitedAreaEntirely(Parameter *pTeamParm, Parameter *pTriggerParm, Parameter *pTypeParm)
-{
-	Team* pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!pTeam) {
-		return false;
-	}
-
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-
-	if (!pTrig) {
-		return false;
-	}
-	
-	return (pTeam->didAllExit(pTrig, (UnsignedInt)pTypeParm->getInt()));
-}
+// ?evaluateTeamExitedAreaEntirely@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateTeamExitedAreaPartially */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateTeamEnteredExitedArea.cpp
-// ?evaluateTeamExitedAreaPartially@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateTeamExitedAreaPartially(Parameter *pTeamParm, Parameter *pTriggerParm, Parameter *pTypeParm)
-{
-	Team* pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!pTeam) {
-		return false;
-	}
-
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-
-	if (!pTrig) {
-		return false;
-	}
-	
-	return (pTeam->didPartialExit(pTrig, (UnsignedInt)pTypeParm->getInt()));
-}
+// ?evaluateTeamExitedAreaPartially@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateMultiplayerAlliedVictory */
@@ -1995,12 +1542,7 @@ Bool ScriptConditions::evaluateMultiplayerAlliedDefeat(void)
 //-------------------------------------------------------------------------------------------------
 /** evaluateMultiplayerPlayerDefeat */
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/Common/BfmeConv895.cpp
-// ?evaluateMultiplayerPlayerDefeat@ScriptConditions@@IAE_NXZ present-unmatched
-Bool ScriptConditions::evaluateMultiplayerPlayerDefeat(void)
-{
-	return TheVictoryConditions->isLocalDefeat() && !TheVictoryConditions->isLocalAlliedDefeat();
-}
+// ?evaluateMultiplayerPlayerDefeat@ScriptConditions@@IAE_NXZ: retail body is in BfmeConv895.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerUnitCondition */
@@ -2010,26 +1552,7 @@ Bool ScriptConditions::evaluateMultiplayerPlayerDefeat(void)
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerHasComparisonPercentPower */
 //-------------------------------------------------------------------------------------------------
-// ?evaluatePlayerHasComparisonPercentPower@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerHasComparisonPercentPower(Parameter *pPlayerParm, Parameter *pComparisonParm, Parameter *pPercentParm)
-{
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	if (!pPlayer) {
-		return false;
-	}
-	Real powerRatio = pPlayer->getEnergy()->getEnergySupplyRatio();
-	Real testRatio = pPercentParm->getInt()/100.0f;
-	switch (pComparisonParm->getInt())
-	{
-		case Parameter::LESS_THAN :			return (powerRatio < testRatio); 
-		case Parameter::LESS_EQUAL :		return (powerRatio <= testRatio);
-		case Parameter::EQUAL :					return (powerRatio == testRatio); 
-		case Parameter::GREATER_EQUAL :	return (powerRatio >= testRatio);
-		case Parameter::GREATER :				return (powerRatio > testRatio);
-		case Parameter::NOT_EQUAL:			return (powerRatio != testRatio);
-	}
-	return false;
-}
+// ?evaluatePlayerHasComparisonPercentPower@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPlayerMask.cpp
 //-------------------------------------------------------------------------------------------------
 /** evaluateRva003231E0: original retail condition spelling is unproven. */
 //-------------------------------------------------------------------------------------------------
@@ -2063,71 +1586,13 @@ Bool ScriptConditions::evaluateRva003231E0(Parameter *pPlayerParm, Parameter *pC
 //-------------------------------------------------------------------------------------------------
 /** evaluateSkirmishSpecialPowerIsReady - does any unit have this special power ready to use? */
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishSpecialPowerIsReady@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishSpecialPowerIsReady(Parameter *pSkirmishPlayerParm, Parameter *pPower)
-{
-	if (pPower->getInt() == -1) return false;
-	if (pPower->getInt()>0 && pPower->getInt()>TheGameLogic->getFrame()) {
-		return false;
-	}
-	Int nextFrame = TheGameLogic->getFrame() + 10*LOGICFRAMES_PER_SECOND;
-	const SpecialPowerTemplate *power = TheSpecialPowerStore->findSpecialPowerTemplate(pPower->getString());
-	if (power==NULL) {
-		pPower->friend_setInt(-1); // flag as never true.
-		return false;
-	}
-	Bool found = false;
-	Player::PlayerTeamList::const_iterator it;
-	Player *pPlayer = playerFromParam(pSkirmishPlayerParm);
-	if (pPlayer==NULL) 
-		return false;
-
-	for (it = pPlayer->getPlayerTeams()->begin(); it != pPlayer->getPlayerTeams()->end(); ++it) {
-		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
-			Team *team = iter.cur();
-			if (!team) continue;
-			for (DLINK_ITERATOR<Object> iter = team->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-				Object *pObj = iter.cur();
-				if (!pObj) continue;
-				if( pObj->getStatusBits().test( OBJECT_STATUS_UNDER_CONSTRUCTION ) || pObj->isDisabled() )
-				{
-					continue; // can't fire if under construction or disabled.
-				}
-				SpecialPowerModuleInterface *mod = pObj->getSpecialPowerModule(power);
-				if (mod)
-				{
-					if (!TheSpecialPowerStore->canUseSpecialPower(pObj, power)) {
-						continue;
-					}
-					found = true;
-					if (mod->isReady()) return true;
-					if (mod->getReadyFrame()<nextFrame) nextFrame = mod->getReadyFrame();
-				}
-
-			}
-		}
-	}
-	pPower->friend_setInt(nextFrame);
-	return false;
-}
+// ?evaluateSkirmishSpecialPowerIsReady@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsSkirmishSpecialPowerIsReady.cpp
 
 
 //-------------------------------------------------------------------------------------------------
 /** evaluatePlayerDestroyedNOrMoreBuildings */
 //-------------------------------------------------------------------------------------------------
-// ?evaluatePlayerDestroyedNOrMoreBuildings@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluatePlayerDestroyedNOrMoreBuildings(Parameter *pPlayerParm, Parameter *pNumParm, Parameter *pOpponentParm)
-{
-	Player* pPlayer = playerFromParam(pPlayerParm);
-	Player* pOpponent = playerFromParam(pOpponentParm);
-//Int N = pNumParm->getInt();
-	if (!pPlayer || !pOpponent) {
-		return false;
-	}
-
-	/// @todo CLH implement me!
-	return FALSE;
-}
+// ?evaluatePlayerDestroyedNOrMoreBuildings@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsPlayerMask.cpp
 
 //-------------------------------------------------------------------------------------------------
 /** evaluateUnitHasEmptied */
@@ -2185,50 +1650,7 @@ Bool ScriptConditions::evaluateUnitHasEmptied(Parameter *pUnitParm)
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamIsContained@ScriptConditions@@MAE_NPAVParameter@@_N@Z present-unmatched
-Bool ScriptConditions::evaluateTeamIsContained(Parameter *pTeamParm, Bool allContained)
-{
-	Team* pTeam = TheScriptEngine->getTeamNamed(pTeamParm->getString());
-	if (!pTeam) {
-		return false;
-	}
-
-	Bool anyConsidered = FALSE;
-	for (DLINK_ITERATOR<Object> iter = pTeam->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *obj = iter.cur();
-		if (!obj) {
-			continue;
-		}
-		
-		Bool isContained = (obj->getContainedBy() != NULL);
-		if (!isContained) {
-			// we could still be exiting, in which case we should pretend like we are contained.
-
-			AIUpdateInterface *ai = obj->getAIUpdateInterface();
-			if (ai) {
-				isContained = (isContained && (ai->getCurrentStateID() == AI_EXIT));
-			}
-		}
-
-		if (isContained) {
-			if (!allContained) {
-				return TRUE;
-			}
-		} else {
-			if (allContained) {
-				return FALSE;
-			}
-		}
-
-		anyConsidered = TRUE;
-	}
-
-	if (anyConsidered) {
-		return allContained;
-	}
-
-	return FALSE;
-}
+// ?evaluateTeamIsContained@ScriptConditions@@MAE_NPAVParameter@@_N@Z: retail body is in ScriptConditionsTeamMembers.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?evaluateUnitHasObjectStatus@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
@@ -2243,56 +1665,14 @@ Bool ScriptConditions::evaluateUnitHasObjectStatus(Parameter *pUnitParm, Paramet
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateTeamHasObjectStatus@ScriptConditions@@IAE_NPAVParameter@@0_N@Z present-unmatched
-Bool ScriptConditions::evaluateTeamHasObjectStatus(Parameter *pTeamParm, Parameter *pObjectStatus, Bool entireTeam)
-{
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	if (!theTeam) {
-		return false;
-	}
-
-	for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *pObj = iter.cur();
-		if (!pObj) {
-			return false;
-		}
-
-		ObjectStatusMaskType objStatus = pObjectStatus->getStatus();
-		Bool currObjHasStatus = pObj->getStatusBits().testForAny( objStatus );
-
-		if( entireTeam && !currObjHasStatus ) 
-		{
-			return false;
-		} 
-		else if( !entireTeam && currObjHasStatus )
-		{
-			return true;
-		}
-
-	}
-
-	if (entireTeam) {
-		return true;
-	}
-	
-	return false;
-}
+// ?evaluateTeamHasObjectStatus@ScriptConditions@@IAE_NPAVParameter@@0_N@Z: retail body is in ScriptConditionsTeamMembers.cpp
 
 //-------------------------------------------------------------------------------------------------
 // The byte-matched BFME implementation lives in
 // ScriptConditionsSkirmishValueInArea.cpp.
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishPlayerIsFaction@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishPlayerIsFaction(Parameter *pSkirmishPlayerParm, Parameter *pFactionParm)
-{
-	Player *player = playerFromParam(pSkirmishPlayerParm);
-	if (!player) {
-		return false;
-	}
-
-	return (player->getSide() == pFactionParm->getString());
-}
+// ?evaluateSkirmishPlayerIsFaction@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsPlayerMask.cpp
 
 //-------------------------------------------------------------------------------------------------
 // byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateSkirmishSuppliesWithinDistancePerimeter_Thunk.cpp
@@ -2382,43 +1762,7 @@ Bool ScriptConditions::evaluateSkirmishPlayerTechBuildingWithinDistancePerimeter
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishCommandButtonIsReady@ScriptConditions@@MAE_NPAVParameter@@00_N@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishCommandButtonIsReady( Parameter * /* pSkirmishPlayerParm */, Parameter *pTeamParm, Parameter *pCommandButtonParm, Bool allReady )
-{
-	// In this one case, the pSkirmishPlayerParm isn't used.
-	Team *theTeam = TheScriptEngine->getTeamNamed( pTeamParm->getString() );
-	if (!theTeam) {
-		return false;
-	}
-
-	const CommandButton *commandButton = TheControlBar->findCommandButton( pCommandButtonParm->getString() );
-	if( !commandButton ) {
-		return false;
-	}
-
-	for (DLINK_ITERATOR<Object> iter = theTeam->iterate_TeamMemberList(); !iter.done(); iter.advance()) {
-		Object *pObj = iter.cur();
-		if (commandButton->getSpecialPowerTemplate()) {
-			if( !pObj->hasSpecialPower( commandButton->getSpecialPowerTemplate()->getSpecialPowerType() ) ) {
-				continue;
-			}
-		} else if (!commandButton->getUpgradeTemplate()) {
-			continue;
-		}
-
-		if (commandButton->isReady(pObj)) {
-			if (!allReady) {
-				return true;
-			}
-		} else {
-			if (allReady) {
-				return false;
-			}
-		}
-	}
-
-	return allReady;
-}
+// ?evaluateSkirmishCommandButtonIsReady@ScriptConditions@@MAE_NPAVParameter@@00_N@Z: retail body is in ScriptConditionsTeamMembers.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?evaluateSkirmishUnownedFactionUnitComparison@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsUnownedFactionRva00329230.cpp
@@ -2442,60 +1786,10 @@ Bool ScriptConditions::evaluateSkirmishPlayerHasPrereqsToBuild( Parameter *pSkir
 // ?evaluateSkirmishPlayerHasComparisonGarrisoned@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsGarrisonedUnits.cpp
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishPlayerHasComparisonCapturedUnits@ScriptConditions@@IAE_NPAVParameter@@00@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishPlayerHasComparisonCapturedUnits(Parameter *pSkirmishPlayerParm, Parameter *pComparisonParm, Parameter *pCountParm )
-{
-	Player *player = playerFromParam(pSkirmishPlayerParm);
-	if (!player) {
-		return FALSE;
-	}
-
-	// Note: This looks slow, and probably is. 
-	// @todo: PERF_EVALUATE
-	Int numCapturedUnits = 0;
-	Player::PlayerTeamList::const_iterator it;
-	for (it = player->getPlayerTeams()->begin(); it != player->getPlayerTeams()->end(); ++it) {
-		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
-			Team *team = iter.cur();
-			if (!team) {
-				continue;
-			}
-			
-			for (DLINK_ITERATOR<Object> objIter = team->iterate_TeamMemberList(); !objIter.done(); objIter.advance()) {
-				Object *obj = objIter.cur();
-				if (!obj) {
-					continue;
-				}
-
-				if (obj->isCaptured()) {
-					++numCapturedUnits;
-				}
-			}
-		}
-	}
-
-	switch (pComparisonParm->getInt())
-	{
-		case Parameter::LESS_THAN			:	return numCapturedUnits < pCountParm->getInt();	break;
-		case Parameter::LESS_EQUAL		:	return numCapturedUnits <= pCountParm->getInt(); break;
-		case Parameter::EQUAL					:	return numCapturedUnits == pCountParm->getInt(); break;
-		case Parameter::GREATER_EQUAL :	return numCapturedUnits >= pCountParm->getInt(); break;
-		case Parameter::GREATER				:	return numCapturedUnits > pCountParm->getInt();	break;
-		case Parameter::NOT_EQUAL			:	return numCapturedUnits != pCountParm->getInt();	break;
-	}
-
-	DEBUG_CRASH(("ScriptConditions::evaluateSkirmishPlayerHasComparisonCapturedUnits: Invalid comparison type. (jkmcd)"));
-	return FALSE;
-}
+// ?evaluateSkirmishPlayerHasComparisonCapturedUnits@ScriptConditions@@IAE_NPAVParameter@@00@Z: retail body is in ScriptConditionsSkirmishPlayerHasComparisonCapturedUnits.cpp
 
 //-------------------------------------------------------------------------------------------------
-// byte-exact reconstruction: game/GameEngine/Source/GameLogic/ScriptEngine/ScriptConditions_evaluateSkirmishNamedAreaExists.cpp
-// ?evaluateSkirmishNamedAreaExists@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishNamedAreaExists(Parameter *, Parameter *pTriggerParm)
-{
-	PolygonTrigger *pTrig = TheScriptEngine->getQualifiedTriggerAreaByName(pTriggerParm->getString());
-	return (pTrig != NULL);
-}
+// ?evaluateSkirmishNamedAreaExists@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsTriggerAreas.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?evaluateSkirmishPlayerHasUnitsInArea@ScriptConditions@@IAE_NPAVCondition@@PAVParameter@@1@Z present-unmatched
@@ -2667,53 +1961,10 @@ Bool ScriptConditions::evaluateSkirmishPlayerIsOutsideArea(Condition *pCondition
 }
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateSkirmishPlayerHasDiscoveredPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateSkirmishPlayerHasDiscoveredPlayer(Parameter *pSkirmishPlayerParm, Parameter *pDiscoveredByParm )
-{
-	Player *player = playerFromParam(pSkirmishPlayerParm);
-	if (!player) {
-		return FALSE;
-	}
-
-	Player *discoveredBy = playerFromParam(pDiscoveredByParm);
-	if (!discoveredBy) {
-		return FALSE;
-	}
-
-	Int discoveredByIndex = discoveredBy->getPlayerIndex();
-
-	Player::PlayerTeamList::const_iterator it;
-	for (it = player->getPlayerTeams()->begin(); it != player->getPlayerTeams()->end(); ++it) {
-		for (DLINK_ITERATOR<Team> iter = (*it)->iterate_TeamInstanceList(); !iter.done(); iter.advance()) {
-			Team *team = iter.cur();
-			if (!team) {
-				continue;
-			}
-			
-			for (DLINK_ITERATOR<Object> objIter = team->iterate_TeamMemberList(); !objIter.done(); objIter.advance()) {
-				Object *obj = objIter.cur();
-				if (!obj) {
-					continue;
-				}
-
-				ObjectShroudStatus shroudStatus = obj->getShroudedStatus(discoveredByIndex);
-				if (shroudStatus == OBJECTSHROUD_CLEAR || shroudStatus == OBJECTSHROUD_PARTIAL_CLEAR) {
-					return TRUE;
-				}
-			}
-		}
-	}
-
-	return FALSE;
-}
+// ?evaluateSkirmishPlayerHasDiscoveredPlayer@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditionsSkirmishPlayerHasDiscoveredPlayer.cpp
 
 //-------------------------------------------------------------------------------------------------
-// ?evaluateMusicHasCompleted@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
-Bool ScriptConditions::evaluateMusicHasCompleted(Parameter *pMusicParm, Parameter *pIntParm)
-{
-	AsciiString str = pMusicParm->getString();
-	return TheAudio->hasMusicTrackCompleted(str, pIntParm->getInt());
-}
+// ?evaluateMusicHasCompleted@ScriptConditions@@IAE_NPAVParameter@@0@Z: retail body is in ScriptConditions_evaluateMusicHasCompleted_Bfme.cpp
 
 //-------------------------------------------------------------------------------------------------
 // ?evaluatePlayerLostObjectType@ScriptConditions@@IAE_NPAVParameter@@0@Z present-unmatched
