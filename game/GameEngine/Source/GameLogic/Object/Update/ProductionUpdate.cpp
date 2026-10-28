@@ -159,27 +159,7 @@ ProductionUpdateModuleData::ProductionUpdateModuleData( void )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
 //-------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------
-// ??0ProductionEntry@@ present-unmatched
-ProductionEntry::ProductionEntry( void )
-{
-
-	m_type = PRODUCTION_INVALID;
-	m_objectToProduce = NULL;
-	m_upgradeToResearch = NULL;
-	m_productionID = (ProductionID)1;
-	m_percentComplete = 0.0f;
-	m_framesUnderConstruction = 0;
-	m_next = NULL;
-	m_prev = NULL;
-	//Added By Sadullah Nader
-	//Initializations inserted
-	m_productionQuantityProduced = 0;
-	m_productionQuantityTotal = 0;
-	//
-}  // end ProductionEntry
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
