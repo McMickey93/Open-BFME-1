@@ -4713,88 +4713,9 @@ Bool Pathfinder::adjustToLandingDestination(Object *obj, Coord3D *dest)
 
 
 
-/**
- * Find an unoccupied spot for a unit to move to.
- * Returns false if there are no spots available within a reasonable radius.
- */
-// ?adjustDestination@Pathfinder@@QAE_NPAVObject@@ABVLocomotorSet@@PAUCoord3D@@PBU4@@Z present-unmatched
-Bool Pathfinder::adjustDestination(Object *obj, const LocomotorSet& locomotorSet, Coord3D *dest, const Coord3D *groupDest)
-{
-	if( obj->isKindOf(KINDOF_PROJECTILE) )
-	{
-		return true; // missiles can go wherever they want to. jba.
-	}
-
-	Bool isHuman = true;
-	if (obj && obj->getControllingPlayer() && (obj->getControllingPlayer()->getPlayerType()==PLAYER_COMPUTER)) {
-		isHuman = false; // computer gets to cheat.
-	}
-	Int iRadius;
-	Bool center;
-	getRadiusAndCenter(obj, iRadius, center);
-	ICoord2D cell;
-	Coord3D adjustDest = *dest;
-	if (!center) {
-		adjustDest.x += PATHFIND_CELL_SIZE_F/2;
-		adjustDest.y += PATHFIND_CELL_SIZE_F/2;
-	}
-	worldToCell( &adjustDest, &cell );
-	PathfindLayerEnum layer = TheTerrainLogic->getLayerForDestination(dest);
-	if (groupDest) {
-		layer = TheTerrainLogic->getLayerForDestination(groupDest);
-	}
-
-	enum {MAX_CELLS_TO_TRY=400};
-	Int limit = MAX_CELLS_TO_TRY; 
-	Int i, j;
-	i = cell.x;
-	j = cell.y;
-	if (checkForAdjust(obj, locomotorSet, isHuman, i,j, layer, iRadius, center, dest, groupDest)) {
-		return true;
-	}
-
-	Int delta=1;
-	Int count;
-	while (limit>0) {
-		for (count = delta; count>0; count--) {
-			i++;
-			limit--;
-			if (checkForAdjust(obj, locomotorSet, isHuman, i,j, layer, iRadius, center, dest, groupDest)) {
-				return true;
-			}
-		}
-		for (count = delta; count>0; count--) {
-			j++;
-			limit--;
-			if (checkForAdjust(obj, locomotorSet, isHuman, i,j, layer, iRadius, center, dest, groupDest)) {
-				return true;
-			}
-		}
-		delta++;
-		for (count = delta; count>0; count--) {
-			i--;
-			limit--;
-			if (checkForAdjust(obj, locomotorSet, isHuman, i,j, layer, iRadius, center, dest, groupDest)) {
-				return true;
-			}
-		}
-		for (count = delta; count>0; count--) {
-			j--;
-			limit--;
-			if (checkForAdjust(obj, locomotorSet, isHuman, i,j, layer, iRadius, center, dest, groupDest)) {
-				return true;
-			}
-		}
-		delta++;
-	}
-	if (groupDest) {
-		// Didn't work, so just do simple adjust.
-		return(adjustDestination(obj, locomotorSet, dest, NULL));
-	}
-	//DEBUG_LOG(("adjustDestination failed, dest (%f, %f), adj dest (%f,%f), %x %s\n", dest->x, dest->y, adjustDest.x, adjustDest.y,
-		//obj, obj->getTemplate()->getName().str()));
-	return false;
-}
+// Pathfinder::adjustDestination is BFME retail 0x003F6090 (matched in
+// PathfinderAdjustDestination003F6090.cpp); this ZH body was a second strong
+// definition that the link selected ahead of retail's copy.
 
 /**
  * Find an unoccupied spot for a unit to move to that can fire at victim.
