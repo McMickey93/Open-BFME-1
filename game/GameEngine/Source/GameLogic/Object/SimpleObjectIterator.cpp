@@ -74,21 +74,9 @@ SimpleObjectIterator::~SimpleObjectIterator()
 }
 
 //=============================================================================
-// ?insert@SimpleObjectIterator@@QAEXPAVObject@@M@Z present-unmatched
-void SimpleObjectIterator::insert(Object *obj, Real numeric)
-{
-	DEBUG_ASSERTCRASH(obj, ("sorry, no nulls allowed here"));
-
-	Clump *clump = newInstance(Clump)();
-
-	clump->m_nextClump = m_firstClump;
-	m_firstClump = clump;
-
-	clump->m_obj = obj;
-	clump->m_numeric = numeric;
-
-	++m_clumpCount;
-}
+// SimpleObjectIterator::insert is BFME retail 0x001DDCB0 (matched in
+// Bfme5RefNodes.cpp as Bfme5PushList::bfmePushFront); this ZH body was a
+// second strong definition the link selected ahead of retail's copy.
 
 //=============================================================================
 Object *SimpleObjectIterator::nextWithNumeric(Real *num)
