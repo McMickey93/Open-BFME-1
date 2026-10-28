@@ -21261,5 +21261,25 @@
    "after_sha256": "7a4e08a64cba909dea980f6e7cb2606cfb93eede1ae32113173777bc194f1600",
    "evidence": "targets/game/reverse/dir32_addresses.csv",
    "reason": "The stored value is (counter difference * 1000.0f) / frequency; dir32_addresses.csv records the multiplier at 0x01075C68 as __real@447a0000 (1000.0f), so the field holds milliseconds, not seconds."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x004389e0.cpp",
+  "new_path": "game/GameEngine/Source/GameClient/GameTextManager_init.cpp",
+  "old_name": "StringLookUp",
+  "new_name": "BfmePairCXD",
+  "before_sha256": "285392f8ca51a6b080304e4f06a722fb6682aae2b816a0d5609fa7e7bf159f99",
+  "after_sha256": "d7fc48a8eaa3627811e00cf6e0abb80e665c672e7094ad439bcb595328fba6d4",
+  "evidence": "targets/game/reverse/functions.csv",
+  "reason": "Not a rename of the lookup record: StringLookUp stays this TU's struct name. The bank cast its call to the 0x00437C40 unguarded-insertion-sort callee through StringLookUp pointers, while the ledger's matched row for that body is ?bfmeGoCXD@@YAXPAUBfmePairCXD@@0PAX@Z, so the call now spells the ledger's parameter type."
+ },
+ {
+  "old_path": "targets/game/reverse/attempts/0x004389e0.cpp",
+  "new_path": "game/GameEngine/Source/GameClient/GameTextManager_init.cpp",
+  "old_name": "initStringFile",
+  "new_name": "bfmeGoCXD",
+  "before_sha256": "285392f8ca51a6b080304e4f06a722fb6682aae2b816a0d5609fa7e7bf159f99",
+  "after_sha256": "d7fc48a8eaa3627811e00cf6e0abb80e665c672e7094ad439bcb595328fba6d4",
+  "evidence": "targets/game/reverse/functions.csv",
+  "reason": "The bank's initStringFile was a /alternatename alias for ILT 0x0001EFDD, the matched GameTextManager::getStringCount, which this source now calls by that real name. bfmeGoCXD is the ledger name of a different callee (0x00437C40); no descriptive identity is lost."
  }
 ]
