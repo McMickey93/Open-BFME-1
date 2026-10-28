@@ -204,3 +204,7 @@ void GarrisonContain::xfer(Xfer *xfer)
 	target->xferBool(&self->m_rallyValid);
 	target->xferCoord3D(&self->m_exitRallyPoint);
 }
+
+// Retail calls the shared snapshot routine (0x002298B0, still a gen_asm dump)
+// through its ILT at 0x000489DC, where symbols.csv pins xferBase2298B0.
+#pragma comment(linker, "/alternatename:?xferBase2298B0@BfmeBase002298B0@@AAEXPAVXfer@@@Z=?j_000489dc@@YAXXZ")
