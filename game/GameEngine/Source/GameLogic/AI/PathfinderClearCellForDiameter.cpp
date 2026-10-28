@@ -36,7 +36,7 @@ public:
 	unsigned char m_prefix[0x18];
 	ObjectID m_objectID18;
 	unsigned char m_unknown1C[8];
-	UnsignedInt m_bits003DC810;
+	union { UnsignedInt m_bits003DC810; struct { UnsignedInt m_bit0:1; UnsignedInt m_obstacleIsFence:1; }; };
 };
 
 class PathfindCell
@@ -48,6 +48,7 @@ public:
 	Int getType( void ) const { return m_type; }
 	Int getFlags( void ) const { return m_flags; }
 	ObjectID getObjectID003DC810( void ) const { ObjectID id = m_info ? m_info->m_objectID18 : INVALID_ID; return id; }
+	Bool isObstacleFenceZH( void ) const { return m_info ? m_info->m_obstacleIsFence : false; }
 	Bool isObstacleFence( void ) const { return m_info && (((unsigned char)(m_info->m_bits003DC810 >> 1)) & 1); }
 
 	Rva003DC810CellInfo *m_info;
@@ -184,4 +185,39 @@ Int Pathfinder::clearCellForDiameter( UnsignedInt crusher, Int cellX, Int cellY,
 	if (radius == 0)
 		return 1;
 	return 2*radius;
+}
+
+// Retail 0x003DC780 (105 B), just before clearCellForDiameter: the same per-cell test as
+// a file-static helper (fixed-unit crush check when asked, then the cell type with the
+// crusher fence exception). No direct retail caller reaches it (every use is inlined),
+// so its name stays address-derived; as a file-static it takes the unit-check flag in
+// AL, the cell in ESI and the crusher level in EDI, retail's private convention.
+// The cell type as a switch whose default returns false puts that shared return right
+// after the crush test, and Zero Hour's isObstacleFence() spelling (m_info ? bit field
+// : false) gives retail's shr/and extraction of the fence bit at cell info +0x24.
+// ?rva003DC780@@YA_N_NPAVPathfindCell@@I@Z
+static __declspec(noinline) Bool rva003DC780( Bool checkUnits, PathfindCell *cell, UnsignedInt crusher )
+{
+	if (checkUnits && cell->getFlags() == PathfindCell::UNIT_PRESENT_FIXED)
+	{
+		Object *obj = TheGameLogic->findObjectByID(cell->getObjectID003DC810());
+		if (obj && (UnsignedInt)(signed char)obj->getCrushableLevel() > crusher)
+			return false;
+	}
+	switch (cell->getType())
+	{
+	case PathfindCell::CELL_CLEAR:
+		return true;
+	case PathfindCell::CELL_OBSTACLE:
+		return crusher && cell->isObstacleFenceZH();
+	default:
+		return false;
+	}
+}
+
+// absent-from-retail: ?rva003DC780Caller@@YA_N_NPAVPathfindCell@@I@Z, a TU-local caller that
+// keeps the static above alive.
+Bool rva003DC780Caller( Bool checkUnits, PathfindCell *cell, UnsignedInt crusher )
+{
+	return rva003DC780(checkUnits, cell, crusher);
 }

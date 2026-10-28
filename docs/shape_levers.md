@@ -2380,3 +2380,20 @@ ahead of the branch (76 bytes), and swapping the two declarations left
 one after the call. Measured effect: whole body exact. VC7.1
 `/O2 /GR- /DNDEBUG /DWIN32 /MD /EHsc-`, STLport. Source
 `game/GameEngine/Source/GameLogic/Object/Behavior/Rva00206B40ClaimNearest.cpp`.
+
+## Shared `return false` placement via switch default; ZH bit-field ternary (2026-10-28)
+
+Mismatch (0x003DC780 rva003DC780, 105 B file-static cell test, bank 25
+diffs): retail emits the shared `xor al,al; ret` right after the crush test
+and the not-obstacle path jumps back to it; nested ifs, early returns,
+positive branches and goto all put the merged block after the type test.
+Source change: write the cell-type tail as `switch (type) { case CLEAR:
+return true; case OBSTACLE: return crusher && cell->isObstacleFence();
+default: return false; }` (a switch with no default left 25 diffs).
+Remaining 4 bytes: retail extracts the fence bit as `mov eax,[eax+0x24];
+shr eax,1; and eax,1`, ours `mov edx,...; shr edx,1; test dl,1` for every
+shift/mask, Bool-cast or inline-getter spelling and a cast-on bit-field
+view; Zero Hour's own accessor `m_info ? m_info->m_obstacleIsFence : false`
+over an `UnsignedInt m_obstacleIsFence:1` member (anonymous union over the
+raw word) made it exact. VC7.1 `/DNDEBUG /MD`, STLport. Source
+`game/GameEngine/Source/GameLogic/AI/PathfinderClearCellForDiameter.cpp`.
