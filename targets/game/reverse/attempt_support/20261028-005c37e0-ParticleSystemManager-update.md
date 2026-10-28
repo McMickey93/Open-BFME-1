@@ -33,3 +33,9 @@ Later inert trials (same session): dead extra references to `end`
 (self-assign, a copy, a zero-valued `end - end` term), and mixed counter types
 (`__int64` start or end with a LARGE_INTEGER partner) all keep the swapped
 slots (9 B); `end = start` after the difference costs 8 B.
+
+Session 467 (a1): slots read off the probe: frequency [esp+24h] in both;
+retail start [1Ch] / end [14h], ours start [14h] / end [1Ch]. Further inert
+(still 9 B): the difference through a `__forceinline` `bfmeTicks(end, start)`
+helper, through `LARGE_INTEGER *ps = &start`, through
+`const LARGE_INTEGER *pe = &end`, and as `-(start - end)`.
