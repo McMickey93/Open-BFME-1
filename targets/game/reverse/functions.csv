@@ -124526,7 +124526,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_00125810@@QAEXXZ,,0x00125810,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00525810
 ?m@Gen_00125850@@QAEXXZ,,0x00125850,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00525850
 ?m@Gen_00125920@@QAEXXZ,,0x00125920,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00525920
-?m@Gen_001259f0@@QAEXXZ,,0x001259F0,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005259f0
 ?m@Gen_00125c90@@QAEXXZ,,0x00125C90,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00525c90
 ?m@Gen_00125cd0@@QAEXXZ,,0x00125CD0,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00525cd0
 ?m@Gen_00125e30@@QAEXXZ,,0x00125E30,7,game/gen_small/fun_000.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00525e30
@@ -124665,7 +124664,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_001e3b20@@QAEPAXHH@Z,,0x001E3B20,11,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=this-store-arg2;ghidra=FUN_005e3b20
 ?m@Gen_001eaf40@@QAEHXZ,,0x001EAF40,4,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=getter-d8;ghidra=FUN_005eaf40
 ?m@Gen_001ecff0@@QAEIXZ,,0x001ECFF0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_005ecff0
-?m@Gen_001ed150@@QAEXXZ,,0x001ED150,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005ed150
 ?m@Gen_001ed550@@QAEXXZ,,0x001ED550,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005ed550
 ?m@Gen_001ed890@@QAEXXZ,,0x001ED890,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005ed890
 ?m@Gen_001ef410@@QAEXXZ,,0x001EF410,1,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-void;ghidra=FUN_005ef410
@@ -124675,7 +124673,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_001f6fa0@@QAEPADXZ,,0x001F6FA0,14,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_005f6fa0
 ?m@Gen_001f7060@@QAEXXZ,,0x001F7060,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005f7060
 ?m@Gen_001f7b00@@QAEXXZ,,0x001F7B00,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005f7b00
-?m@Gen_001f8070@@QAEXXZ,,0x001F8070,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_005f8070
 ?m@Gen_001f8370@@QAE_NXZ,,0x001F8370,3,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-false;ghidra=FUN_005f8370
 ?m@Gen_001f8c40@@QAEPADXZ,,0x001F8C40,14,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_005f8c40
 ?m@Gen_001f8f80@@QAEHH@Z,,0x001F8F80,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-arg1;ghidra=FUN_005f8f80
@@ -124696,7 +124693,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_002050b0@@QAEIXZ,,0x002050B0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_006050b0
 ?m@Gen_002050c0@@QAEPADXZ,,0x002050C0,14,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_006050c0
 ?m@Gen_00205810@@QAEPADXZ,,0x00205810,14,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_00605810
-?m@Gen_002060a0@@QAEXXZ,,0x002060A0,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_006060a0
 ?m@Gen_002063a0@@QAEPADXZ,,0x002063A0,14,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_006063a0
 ?m@Gen_002072a0@@QAEHXZ,,0x002072A0,4,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=getter-d8;ghidra=FUN_006072a0
 ?m@Gen_0020b010@@QAEIXZ,,0x0020B010,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_0060b010
@@ -124710,7 +124706,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_0020fac0@@QAE?AUAccessWord@@XZ,,0x0020FAC0,15,game/gen_small/accessors_000.cpp,matched,gen-shim;accessor-batch;skeleton=access-aggregate-store;source=Code/gen_asm/d_001fecd0.asm
 ?m@Gen_00216210@@QAE_NXZ,,0x00216210,3,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-false;ghidra=FUN_00616210
 ?m@Gen_002162c0@@QAEPADXZ,,0x002162C0,14,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_006162c0
-?m@Gen_00216d80@@QAEXXZ,,0x00216D80,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00616d80
 ?m@Gen_00217430@@QAEIXZ,,0x00217430,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_00617430
 ?m@Gen_002176c0@@QAEXXZ,,0x002176C0,8,game/gen_small/accessor_002176c0.cpp,matched,gen-shim;accessor-batch;skeleton=access-virtual-adjust;source=Code/gen_asm/d_001fecd0.asm
 ?m@Gen_002176e0@@QAE_NXZ,,0x002176E0,3,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-false;ghidra=FUN_006176e0
@@ -124748,11 +124743,9 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_0024f5a0@@QAEIXZ,,0x0024F5A0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_0064f5a0
 ?m@Gen_0024f690@@QAEXXZ,,0x0024F690,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0064f690
 ?m@Gen_0024f7c0@@QAE_NXZ,,0x0024F7C0,3,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-true;ghidra=FUN_0064f7c0
-?m@Gen_0024f800@@QAEXXZ,,0x0024F800,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0064f800
 ?m@Gen_0024feb0@@QAEIXZ,,0x0024FEB0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_0064feb0
 ?m@Gen_002500b0@@QAEIXZ,,0x002500B0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_006500b0
 ?m@Gen_002504a0@@QAEIXZ,,0x002504A0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_006504a0
-?m@Gen_002518a0@@QAEXXZ,,0x002518A0,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_006518a0
 ?m@Gen_002519d0@@QAEXXZ,,0x002519D0,7,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_006519d0
 ?m@Gen_00253ec0@@QAEIXZ,,0x00253EC0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_00653ec0
 ?m@Gen_002546d0@@QAEIXZ,,0x002546D0,6,game/gen_small/fun_001.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_006546d0
@@ -124797,23 +124790,17 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?m@Gen_0028ad60@@QAEXXZ,,0x0028AD60,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0068ad60
 ?m@Gen_0028b640@@QAE_NXZ,,0x0028B640,3,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-false;ghidra=FUN_0068b640
 ?m@Gen_0028b730@@QAEPADXZ,,0x0028B730,14,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_0068b730
-?m@Gen_0028bca0@@QAEXXZ,,0x0028BCA0,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0068bca0
 ?m@Gen_0028c340@@QAEIXZ,,0x0028C340,6,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_0068c340
 ?m@Gen_0028c480@@QAEXXZ,,0x0028C480,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0068c480
 ?m@Gen_0028c860@@QAEIXZ,,0x0028C860,6,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_0068c860
 ?m@Gen_0028ca60@@QAEXXZ,,0x0028CA60,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0068ca60
-?m@Gen_0028cf20@@QAEXXZ,,0x0028CF20,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0068cf20
 ?m@Gen_0028d630@@QAEIXZ,,0x0028D630,6,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_0068d630
 ?m@Gen_0028ee20@@QAEXXZ,,0x0028EE20,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_0068ee20
 ?m@Gen_00291880@@QAEXXZ,,0x00291880,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00691880
 ?m@Gen_00292770@@QAEIXZ,,0x00292770,6,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_00692770
-?m@Gen_002928f0@@QAEXXZ,,0x002928F0,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_006928f0
-?m@Gen_00292ef0@@QAEXXZ,,0x00292EF0,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00692ef0
-?m@Gen_00295750@@QAEXXZ,,0x00295750,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00695750
 ?m@Gen_00297470@@QAEXXZ,,0x00297470,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_00697470
 ?m@Gen_002989d0@@QAEIXZ,,0x002989D0,6,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_006989d0
 ?m@Gen_002a0880@@QAEXH@Z,,0x002A0880,10,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=setter-d8;ghidra=FUN_006a0880
-?m@Gen_002a0c80@@QAEXXZ,,0x002A0C80,7,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=store-imm-0;ghidra=FUN_006a0c80
 ?m@Gen_002a4210@@QAE_NXZ,,0x002A4210,3,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-false;ghidra=FUN_006a4210
 ?m@Gen_002a42f0@@QAEIXZ,,0x002A42F0,6,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=ret-imm;ghidra=FUN_006a42f0
 ?m@Gen_002a4300@@QAEPADXZ,,0x002A4300,14,game/gen_small/fun_002.cpp,matched,gen-shim;skeleton=adjustor;ghidra=FUN_006a4300
@@ -173389,3 +173376,16 @@ uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI
 ??1RadarUpdateModuleData@@UAE@XZ,,0x002A03D0,7,game/GameEngine/Source/GameLogic/Object/Update/RadarUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; pinned ILT routes here and ilt_oracle confirms the decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
 ??1SupplyWarehouseCripplingBehaviorModuleData@@UAE@XZ,,0x0020D920,7,game/GameEngine/Source/GameLogic/Object/Behavior/SupplyWarehouseCripplingBehaviorModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; pinned ILT routes here and ilt_oracle confirms the decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
 ?set@Rva000F9250@@QAEX_N@Z,,0x000F9250,10,game/GameEngine/Source/GameLogic/AI/Rva000F9250.cpp,matched,identity-correction=targets/game/reverse/identity_evidence/000f9250-not-pathnode-setcanoptimize.md;model=claude-opus-5-5;host=app
+??1AimWeaponBehaviorModuleData@@UAE@XZ,,0x001ED150,7,game/GameEngine/Source/GameLogic/Object/Behavior/AimWeaponBehaviorModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1DelayedLuaEventUpdateModuleData@@UAE@XZ,,0x0028BCA0,7,game/GameEngine/Source/GameLogic/ScriptEngine/DelayedLuaEventUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1DestroyEnvironmentUpdateModuleData@@UAE@XZ,,0x0028CF20,7,game/GameEngine/Source/GameLogic/Object/Update/DestroyEnvironmentUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1DualWeaponBehaviorModuleData@@UAE@XZ,,0x001F8070,7,game/GameEngine/Source/GameLogic/Object/Behavior/DualWeaponBehaviorModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1ExperienceLevelCreateModuleData@@UAE@XZ,,0x0024F800,7,game/GameEngine/Source/GameLogic/Object/Create/ExperienceLevelCreateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1FireSpreadUpdateModuleData@@UAE@XZ,,0x002928F0,7,game/GameEngine/Source/GameLogic/Object/Update/FireSpreadUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1FireWeaponUpdateModuleData@@UAE@XZ,,0x00292EF0,7,game/GameEngine/Source/GameLogic/Object/Update/FireWeaponUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1HeightDieUpdateModuleData@@UAE@XZ,,0x00295750,7,game/GameEngine/Source/GameLogic/Object/Update/HeightDieUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1QueueProductionExitUpdateModuleData@@UAE@XZ,,0x001259F0,7,game/GameEngine/Source/GameLogic/Object/Update/ProductionExitUpdate/QueueProductionExitUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1RainOfFireUpdateModuleData@@UAE@XZ,,0x002A0C80,7,game/GameEngine/Source/GameLogic/Object/Update/RainOfFireUpdateModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1ReflectDamageModuleData@@UAE@XZ,,0x002518A0,7,game/GameEngine/Source/GameLogic/Object/Damage/ReflectDamageModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1SiegeDockingBehaviorModuleData@@UAE@XZ,,0x002060A0,7,game/GameEngine/Source/GameLogic/Object/Behavior/SiegeDockingBehaviorModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
+??1SquishCollideModuleData@@UAE@XZ,,0x00216D80,7,game/GameEngine/Source/GameLogic/Object/Collide/SquishCollideModuleDataDestructor.cpp,matched,empty complete destructor keeps only the Snapshot vtable store 0x01073744; matched scalar deleting destructor calls it through the pinned ILT; ilt_oracle confirms the UAE decoration; replaces gen-shim placeholder;model=claude-opus-5-5;host=vm
