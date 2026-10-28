@@ -38084,8 +38084,6 @@ $L314,,0x00C1FC1D,24,game/GameEngine/Source/Common/Rva00C1FC1DVecDtor.cpp,matche
 ?d_005c1270@@YAXXZ,,0x005C1270,1,game/GameEngine/Source/Common/Rva0008TinyBodies.cpp,matched,Carved one-byte ret; address-derived identity preserves the boundary
 ?d_005c37e0@@YAXXZ,,0x005C37E0,467,game/gen_asm/d_005b3e30.asm,matched,gen-dump;ghidra=FUN_009c37e0
 ?d_005c4480@@YAXXZ,,0x005C4480,1,game/GameEngine/Source/Common/Rva005C4480Noop.cpp,matched,carved ret boundary; address-derived identity
-?d_005cb600@@YAXXZ,,0x005CB600,28,game/gen_asm/d_005bf0a0.asm,matched,gen-dump;bounds=high
-?d_005cb61c@@YAXXZ,,0x005CB61C,202,game/gen_asm/d_005c5e40.asm,matched,gen-dump;ghidra=FUN_009cb61c
 ?d_005cb720@@YAXXZ,,0x005CB720,460,game/gen_asm/d_005c5e40.asm,matched,gen-dump;ghidra=FUN_009cb720
 ?d_005d20d0@@YAXXZ,,0x005D20D0,1,game/GameEngine/Source/Common/Rva005D20D0Noop.cpp,matched,opaque address-derived body with proven ret boundary
 ?d_005d4c20@@YAXXZ,,0x005D4C20,1,game/GameEngine/Source/Common/Rva005D4C40NoOp.cpp,matched,carved ret body and generated thunk caller prove empty cdecl body; owner unknown
@@ -173391,3 +173389,4 @@ _piCalculatePing,,0x00872EA0,3,game/GameEngine/Source/GameNetwork/GameSpy/pinger
 uw_00c519d0,,0x00C519D0,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DCommandBarGenExpDraw.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L1138;model=claude-opus-5-5;host=app
 uw_00c519e6,,0x00C519E6,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DCommandBarGenExpDraw.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L1140;model=claude-opus-5-5;host=app
 uw_00c519fc,,0x00C519FC,14,game/GameEngineDevice/Source/W3DDevice/GameClient/GUI/GUICallbacks/W3DCommandBarGenExpDraw.cpp,matched,gen-funclet;parent=?W3DCommandBarGenExpDraw@@YAXPAVGameWindow@@PAVWinInstanceData@@@Z;object-symbol=$L1142;model=claude-opus-5-5;host=app
+?findParentTemplate@ParticleSystemManager@FXParticleSystem@@QBEPAVParticleSystemTemplate@2@ABVAsciiString@@H@Z,,0x005CB600,230,game/GameEngine/Source/GameClient/System/FXParticleSystem/ParticleSystemManagerFindParentTemplate.cpp,matched,ZH ParticleSystemManager::findParentTemplate; ILT 0x00048220 ilt_oracle CONFIRMED the FXParticleSystem decoration (global spelling CONTRADICTED); map +0x9C as ParticleSystemManagerWriteINI.cpp; m_slaveSystemName +0x68 as ParticleSystemTemplateCreateSlave.cpp;model=claude-opus-5-5;host=app
