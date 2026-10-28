@@ -3843,16 +3843,9 @@ void Drawable::setInstanceMatrix( const Matrix3D *instance )
  * If this Drawable is attached to an Object, return the Object's transform instead.
  */
 //-------------------------------------------------------------------------------------------------
-// ?getTransformMatrix@Drawable@@QBEPBVMatrix3D@@XZ present-unmatched
-const Matrix3D *Drawable::getTransformMatrix( void ) const
-{
-	const Object *obj = getObject();
-
-	if (obj)
-		return obj->getTransformMatrix();
-	else
-		return Thing::getTransformMatrix();
-}
+// Drawable::getTransformMatrix is pinned to retail ILT 0x00017512, whose
+// target 0x0041CEC0 is matched (BfmeCalc919G.cpp); this ZH body was a second
+// strong definition the link selected ahead of retail's copy.
 
 //-------------------------------------------------------------------------------------------------
 /** 
