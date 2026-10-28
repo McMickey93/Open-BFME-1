@@ -17,6 +17,7 @@ class StringBase
 
 private:
 	StringBase(const StringBase<T> &src);
+	void releaseBuffer();
 
 	struct Header
 	{
@@ -39,7 +40,12 @@ public:
 		((StringBase<char> *)this)->StringBase<char>::StringBase(
 			*(const StringBase<char> *)&other);
 	}
-	~AsciiString();
+	// Retail inlines this one too: scope exits call releaseBuffer
+	// (0x00887940) directly, not the 0x0005EE90 forwarder.
+	~AsciiString()
+	{
+		((StringBase<char> *)this)->releaseBuffer();
+	}
 	void toLower();
 
 private:
