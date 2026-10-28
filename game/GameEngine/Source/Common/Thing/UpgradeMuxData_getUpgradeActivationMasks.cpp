@@ -60,19 +60,23 @@ template <int NUMBITS>
 class BitFlags
 {
 public:
-	void clear()
-	{
-		m_bits.reset();
-	}
-
 	void set(unsigned int bit)
 	{
 		m_bits._Unchecked_set((size_t)bit);
 	}
 
-private:
+	// This mirror holds 192 bits (the masks sit at +0x00 and +0x18), so a
+	// member clear() would emit a six-dword ?clear@?$BitFlags@$0IA@@@ copy
+	// that loses to retail's four-dword body at 0x00065E10; retail inlines
+	// the clear here, so it is a TU-local helper.
 	_STL::bitset<192> m_bits;
 };
+
+template <int NUMBITS>
+static inline void clearMaskBits(BitFlags<NUMBITS> &mask)
+{
+	mask.m_bits.reset();
+}
 
 	typedef BitFlags<128> UpgradeMaskType;
 
@@ -123,8 +127,8 @@ void Rva002D9FF0UpgradeMuxData::getUpgradeActivationMasks(
 {
 	if (!m_activationUpgradeNames.empty() || !m_conflictingUpgradeNames.empty())
 	{
-		m_activationMask.clear();
-		m_conflictingMask.clear();
+		clearMaskBits(m_activationMask);
+		clearMaskBits(m_conflictingMask);
 
 		_STL::vector<BFMERetailAsciiString>::const_iterator it;
 		for (it = m_activationUpgradeNames.begin();
