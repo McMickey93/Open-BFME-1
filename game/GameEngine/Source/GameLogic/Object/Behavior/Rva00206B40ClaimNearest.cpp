@@ -1,13 +1,14 @@
 // cl: /O2 /GR- /DNDEBUG /DWIN32 /MD /EHsc- /Igame/Libraries/Include /Igame/GameEngine/Source/GameLogic/Object
 // stlport
 //
-// Retail 0x00206B40 (295 B, ret 4 at +0x124): vtable 0x010A626C slot 2,
-// the secondary vtable the matched SiegeDockingBehavior constructor
-// (0x002062C0) stores at +0x20. It finds the Object by id, sweeps the
-// primary at this-0x20 (bfmeSweepERP 0x00206460), then claims the
-// nearest unclaimed slot of the item vector at this+4 and returns its
-// index. Owner class and method are unproven, so the names keep the
-// address. The early `count == 0` return of -1 shares the epilogue with the
+// Retail 0x00206890 (156 B, ret 4 at +0x99) and 0x00206B40 (295 B, ret 4
+// at +0x124): slots 3 and 2 of vtable 0x010A626C, the secondary vtable the
+// matched SiegeDockingBehavior constructor (0x002062C0) stores at +0x20.
+// Both find the Object by id and sweep the primary at this-0x20
+// (bfmeSweepERP 0x00206460). query reports whether an unclaimed slot of the
+// item vector at this+4 is usable; claimNearest claims the nearest one and
+// returns its index. Owner class and methods are unproven, so the names
+// keep the address. The early `count == 0` return of -1 shares the epilogue with the
 // final return; writing it as an if-block over the loop moves the
 // bestIndex spill ahead of the branch.
 #include <vector>
@@ -90,11 +91,35 @@ struct ArrayItem
 class Rva00206B40Owner
 {
 public:
+	Bool query(Int objectID);
 	Int claimNearest(Int objectID);
 
 	void *m_vtable;
 	_STL::vector<ArrayItem *> m_items;
 };
+
+Bool Rva00206B40Owner::query(Int objectID)
+{
+	Object *obj = TheGameLogic->findObjectByID(objectID);
+	if (obj == 0)
+		return false;
+
+	((BfmeHostERP *)((char *)this - 0x20))->bfmeSweepERP();
+
+	UnsignedInt count = m_items.size();
+	if (count == 0)
+		return false;
+
+	for (UnsignedInt i = 0; i < count; ++i)
+	{
+		ArrayItem *item = m_items[i];
+		if (item->m_claimantID != 0)
+			continue;
+		if ((obj->getTemplate00206B40()->m_flagsD8 & 0x400) || item->m_occupied == 0)
+			return true;
+	}
+	return false;
+}
 
 Int Rva00206B40Owner::claimNearest(Int objectID)
 {
