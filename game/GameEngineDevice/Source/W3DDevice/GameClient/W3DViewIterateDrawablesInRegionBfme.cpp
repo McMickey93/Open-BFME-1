@@ -234,3 +234,8 @@ Int W3DView::iterateDrawablesInRegion(IRegion2D *screenRegion,
 
 	return count;
 }
+
+// Retail reaches Drawable::getPosition (pinned 0x0041D090) here through its
+// ILT thunk at 0x0004B12D (+0x175); the ledger body at 0x0041D090 is
+// BFMERopeDrawableInterpolatedPosition.cpp's object symbol.
+#pragma comment(linker, "/alternatename:?getPosition@Drawable@@QBEPBVCoord3D@@XZ=?get@BFMERopeDrawableGetPositionShim@@QBEPBUCoord3D@@XZ")
