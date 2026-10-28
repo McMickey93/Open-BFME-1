@@ -1,0 +1,175 @@
+// cl: /DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc /Igame/Libraries/Source/WWVegas/WWLib
+#include <string.h>
+#include "ascii_string.h"
+#include "unicode_string.h"
+
+typedef bool Bool;
+typedef int Int;
+typedef char Char;
+typedef wchar_t WideChar;
+
+#define MAX_UITEXT_LENGTH (10*1024)
+
+inline UnicodeString::UnicodeString()
+{
+	m_text = 0;
+}
+
+inline UnicodeString::UnicodeString( const wchar_t *str )
+{
+	((StringBase<unsigned short> *)this)->StringBase<unsigned short>::StringBase( (const unsigned short *)str );
+}
+
+inline UnicodeString::UnicodeString( const UnicodeString &that )
+{
+	((StringBase<unsigned short> *)this)->StringBase<unsigned short>::StringBase( *(const StringBase<unsigned short> *)&that );
+}
+
+inline UnicodeString &UnicodeString::operator=( const UnicodeString &that )
+{
+	((StringBase<unsigned short> *)this)->set( *(const StringBase<unsigned short> *)&that );
+	return *this;
+}
+
+__forceinline UnicodeString::~UnicodeString()
+{
+	((StringBase<unsigned short> *)this)->releaseBuffer();
+}
+
+inline AsciiString &AsciiString::operator=( const char *str )
+{
+	((StringBase<char> *)this)->set( str, str ? strlen( str ) : 0 );
+	return *this;
+}
+
+// Retail compares the missing-string text in line: lengths and data of the
+// argument first, then a 16-bit element loop and the length difference.
+static __forceinline int compareText( const UnicodeString &text, const UnicodeString &that )
+{
+	int thatLen = that.getLength();
+	const wchar_t *thatData = that.str();
+	int thisLen = text.getLength();
+	const wchar_t *thisData = text.str();
+	for( int n = thisLen < thatLen ? thisLen : thatLen; n > 0; --n, ++thisData, ++thatData )
+	{
+		if( *thisData != *thatData )
+			return *thisData - *thatData;
+	}
+	return thisLen - thatLen;
+}
+
+struct StringInfo
+{
+	AsciiString label;
+	UnicodeString text;
+};
+
+struct GameTextStringLookUp
+{
+	AsciiString *label;
+	StringInfo *info;
+};
+
+struct GameTextStringCompare
+{
+};
+
+namespace _STL
+{
+	template <class T1, class T2>
+	struct pair
+	{
+		T1 first;
+		T2 second;
+		pair(const T1 &a, const T2 &b) : first(a), second(b) {}
+	};
+}
+
+// Retail 0x00437B30, STLport __equal_range over the lookup table, called
+// through ILT 0x00028358.
+_STL::pair<GameTextStringLookUp *, GameTextStringLookUp *> Rva00437B30EqualRange(
+	GameTextStringLookUp *first, GameTextStringLookUp *last,
+	const char *const &value, GameTextStringCompare comp, int *distance );
+
+struct NoString
+{
+	NoString *m_next;
+	UnicodeString m_text;
+};
+
+class GameTextManager
+{
+public:
+	virtual UnicodeString fetch( const Char *label, Bool *exists = NULL );
+
+private:
+	Int m_subsystemBase;
+	Int m_textCount;							// +0x08
+	Char m_buffer[ MAX_UITEXT_LENGTH ];
+	WideChar m_tbuffer[ MAX_UITEXT_LENGTH ];
+	StringInfo *m_stringInfo;					// +0x780C
+	GameTextStringLookUp *m_stringLUT;					// +0x7810
+	Bool m_initialized;
+	NoString *m_noStringList;					// +0x7818
+	Int m_useStringFile;
+	Int m_language;
+	UnicodeString m_failed;						// +0x7824
+	StringInfo *m_mapStringInfo;
+	GameTextStringLookUp *m_mapStringLUT;				// +0x782C
+	Int m_mapTextCount;							// +0x7830
+};
+
+UnicodeString GameTextManager::fetch( const Char *label, Bool *exists )
+{
+	if( m_stringInfo == NULL )
+	{
+		if( exists )
+			*exists = false;
+		return m_failed;
+	}
+
+	AsciiString lb;
+	lb = label;
+
+	GameTextStringLookUp *lookUp = NULL;
+	_STL::pair<GameTextStringLookUp *, GameTextStringLookUp *> range =
+		Rva00437B30EqualRange( m_stringLUT, m_stringLUT + m_textCount, label, GameTextStringCompare(), (int *)0 );
+	if( range.first != range.second )
+	{
+		lookUp = range.first;
+	}
+	else if( m_mapStringLUT && m_mapTextCount )
+	{
+		_STL::pair<GameTextStringLookUp *, GameTextStringLookUp *> mapRange =
+			Rva00437B30EqualRange( m_mapStringLUT, m_mapStringLUT + m_mapTextCount, label, GameTextStringCompare(), (int *)0 );
+		if( mapRange.first != mapRange.second )
+			lookUp = mapRange.first;
+	}
+
+	if( lookUp == NULL )
+	{
+		if( exists )
+			*exists = false;
+
+		UnicodeString missingString;
+		missingString.format( UnicodeString( L"MISSING: '%hs'" ), label );
+
+		NoString *noString = m_noStringList;
+		while( noString )
+		{
+			if( compareText( noString->m_text, missingString ) == 0 )
+				return missingString;
+			noString = noString->m_next;
+		}
+
+		noString = new NoString;
+		noString->m_text = missingString;
+		noString->m_next = m_noStringList;
+		m_noStringList = noString;
+		return noString->m_text;
+	}
+
+	if( exists )
+		*exists = true;
+	return lookUp->info->text;
+}
