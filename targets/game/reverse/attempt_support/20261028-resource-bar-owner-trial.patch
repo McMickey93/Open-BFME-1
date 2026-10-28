@@ -1,0 +1,50 @@
+--- a/game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp
++++ b/game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp
+@@ -67,7 +67,10 @@
+ 	bool m_byte2d;
+ };
+ 
+-extern Glo012F1028Type *Glo012F1028;
++// The data ledger owns this singleton at VA 0x012F1028.
++// Keep the witnessed local field view separate from its canonical pointee.
++class LivingWorldLogic;
++extern LivingWorldLogic *TheLivingWorldLogic;
+ 
+ class BfmeCampaignManagerVictorious
+ {
+@@ -273,7 +276,7 @@
+ 
+ void Rva0058DBC0Owner::rva0058DDD0()
+ {
+-	bool livingWorld = Glo012F1028 && Glo012F1028->m_byte2c && Glo012F1028->m_byte2d;
++	bool livingWorld = ((Glo012F1028Type *)TheLivingWorldLogic) && ((Glo012F1028Type *)TheLivingWorldLogic)->m_byte2c && ((Glo012F1028Type *)TheLivingWorldLogic)->m_byte2d;
+ 
+ 	Player *player = getLocalPlayer( ThePlayerList );
+ 	bool moneyShown = false;
+@@ -319,7 +322,7 @@
+ 		typedef int ( Rva0058DDD0Call::*Function )();
+ 		union { void ( *raw )(); Function member; } function;
+ 		function.raw = j_0000353f;
+-		int value = ( reinterpret_cast<Rva0058DDD0Call *>( Glo012F1028 )
++		int value = ( reinterpret_cast<Rva0058DDD0Call *>( ((Glo012F1028Type *)TheLivingWorldLogic) )
+ 			->*function.member )();
+ 		if( value != m_lastCount00 )
+ 		{
+@@ -377,14 +380,14 @@
+ 	if( !livingWorld )
+ 	{
+ 		m_multiplierAnim24.clear();
+-		if( Glo012F1028 && Glo012F1028->m_byte2c )
+-			multiplier = rva003BDCF0Get( Glo012F1028 ) * 0.01f + 1.0f;
++		if( ((Glo012F1028Type *)TheLivingWorldLogic) && ((Glo012F1028Type *)TheLivingWorldLogic)->m_byte2c )
++			multiplier = rva003BDCF0Get( ((Glo012F1028Type *)TheLivingWorldLogic) ) * 0.01f + 1.0f;
+ 		else
+ 			multiplier = 1.0f;
+ 	}
+ 	else
+ 	{
+-		int percent = rva003BDCF0Get( Glo012F1028 );
++		int percent = rva003BDCF0Get( ((Glo012F1028Type *)TheLivingWorldLogic) );
+ 		if( percent > m_lastPercent04 )
+ 		{
+ 			m_multiplierAnim24.reset( new Rva0058DDD0MultiplierAnim(
