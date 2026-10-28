@@ -2299,3 +2299,33 @@ object->getWeaponSetFlags().word; if ((w & 0x100) && ...)`, which loads EAX
 where the inline `test(8)` spelling (and the sibling 0x00279050) loads ECX.
 VC7.1 /O2, `/DNDEBUG /MD /EHsc`. Source
 `game/GameEngine/Source/GameLogic/Object/Update/AIUpdateInterfacePrivateAttackPosition.cpp`.
+
+## Early local over a call-heavy span reloads a stack-table value at its use (2026-10-28)
+
+Mismatch (0x000AF660 Rva000AF660Owner::method, 0.88 bank at 277/275 B):
+retail walks a local `{index, name}` table and reloads `entries[i].name` from
+the stack (`mov ecx,[esp+10h]; push eax; mov eax,[esp+ecx*8+20h]; push eax`)
+for `StringBase<char>::set(name, len)` right after the inline strlen. Spelling
+`entries[i].name` at the call kept the pointer in ESI (269 B, 61 diffs). A
+volatile index read forced the reload but cost two extra loads of `i` at the
+latch (277 B). Source change: read `const char *name = entries[i].name;` at
+the top of the iteration, before the STLport `vector::erase` loops, and use
+`name` in the set call. Measured effect: the compiler rematerializes the value
+from the table instead of keeping it in a register across the erase loops.
+That gave exact bytes, whether the local sits before or after the `record`
+reference. VC7.1 /O2, `/DNDEBUG /MD /EHsc /D_STLP_USE_STATIC_LIB`, STLport.
+Source `game/GameEngine/Source/Common/Rva000AF660Owner.cpp`.
+
+## Zero Hour's inline AsciiString::str() over a private label view (2026-10-28)
+
+Mismatch (0x00436960 GameTextManager::parseStringFile, 0.85 bank at 579/587 B):
+the duplicate-label scan's `labelText(info->label)`, a private
+`*(const char *const *)&label` view taken from the matched sibling
+parseMapStringFile, compiled to `mov eax,[ecx+esi*8]` and permuted
+EBX/EDI/EBP through the whole body. Source change: Zero Hour's spelling
+`_strcmpi(m_stringInfo[i].label.str(), m_buffer)` with string_base.h's
+inline str() (TheNullChr). Measured effect: retail's `lea eax,[ecx+esi*8];
+mov eax,[eax]` and the full register assignment, exact. The same private view
+is exact in parseMapStringFile, so it is not wrong in general. VC7.1 /O2,
+`/DNDEBUG /DWIN32 /D_WINDOWS /MD /EHsc`. Source
+`game/GameEngine/Source/GameClient/GameTextManager_parseStringFile.cpp`.
