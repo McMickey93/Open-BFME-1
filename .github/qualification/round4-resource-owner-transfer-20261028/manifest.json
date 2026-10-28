@@ -1,0 +1,40 @@
+{
+  "fork": "McMickey93/Open-BFME-1",
+  "control_branch": "codex/20261028-round4-resource-owner-transfer",
+  "result_branch": "codex/20261028-round4-resource-owner-verified",
+  "checkpoint_prefix": "codex/20261028-round4-resource-owner-checkpoint",
+  "completion_branch": "codex/20261028-round4-resource-owner-completed",
+  "release_branch": "codex/20261028-round4-resource-owner-release",
+  "branch": "refs/heads/codex/20261028-round4-resource-owner",
+  "base": "c2503fbc13389c06061ada96ec794b2d3339cbeb",
+  "transport_expected": "c2503fbc13389c06061ada96ec794b2d3339cbeb",
+  "agents_blob": "06b755567bb147dfee3a89f70f7bbcd38410b5b4",
+  "native_preparation": true,
+  "source": "game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp",
+  "source_before": "a7431ee7e24059f018c432042c71072361f007cc",
+  "source_blob": "31daf5b64acd4aed5ce0158465ad91c9660d03a7",
+  "provider": "game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp",
+  "verify_sources": [
+    "game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp",
+    "game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp"
+  ],
+  "reviewed_blobs": {
+    "game/GameEngine/Source/GameLogic/LivingWorld/LivingWorldLogic.cpp": "a3f5736ca2a00ba1114b4741a2aa62dbf76da8e1"
+  },
+  "files": [
+    "game/GameEngine/Source/GameClient/Rva0058DBC0OwnerUpdate.cpp",
+    "targets/game/reverse/attempt_support/20261028-resource-bar-livingworld-owner.md",
+    "targets/game/reverse/re_attempts.log"
+  ],
+  "evidence": "targets/game/reverse/attempt_support/20261028-resource-bar-livingworld-owner.md",
+  "claim_ref": "refs/heads/claims/0x0058DD70",
+  "claim_refs": [
+    "refs/heads/claims/0x0058DD70",
+    "refs/heads/claims/0x0058DDD0",
+    "refs/heads/claims/0xFF4186CD"
+  ],
+  "claim_owner": "github:McMickey93:bfme1:round4-20261028",
+  "claim_lease": "51dce34f0ca74a209c0657f46a548a18",
+  "started": 1793181250,
+  "commit_message": "[BFME 2 donor] Bind resource-bar refresh to the LivingWorldLogic owner\n\nUse the existing typed singleton and retain the witnessed local field view.\nThe data owner and both existing bodies are verified together. No new C++ bytes or census gain is claimed.\n\nClaim-Lease: 0x0058DD70=51dce34f0ca74a209c0657f46a548a18\nClaim-Lease: 0x0058DDD0=51dce34f0ca74a209c0657f46a548a18\nClaim-Lease: 0xFF4186CD=51dce34f0ca74a209c0657f46a548a18\nAgent-Authored: OpenAI Codex\n"
+}
